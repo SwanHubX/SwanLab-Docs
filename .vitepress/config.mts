@@ -22,6 +22,19 @@ export default defineConfig({
     // 顶部logo
     logo: 'assets/icon.svg',
 
+    lastUpdated: {
+      text: '更新于',
+      formatOptions: {
+        dateStyle: 'full',
+        timeStyle: 'medium'
+      },
+    },
+
+    editLink: {
+      pattern: 'https://github.com/swanhubx/swanlab-docs/edit/main/:path',
+      text: '在GitHub编辑此页面'
+    },
+
     // 侧边栏配置
     outline: {
       label: '页面导航',
@@ -32,6 +45,7 @@ export default defineConfig({
     sidebar: [
       {
         text: '简介',
+        collapsed: false,
         items: [
           { text: '什么是SwanLab？', link: '/what-is-swanlab' },
           { text: '快速开始', link: '/quick-start' },
@@ -40,6 +54,7 @@ export default defineConfig({
       },
       {
         text: 'AI实验跟踪',
+        collapsed: false,
         items: [
           { text: '什么是AI实验跟踪？', link: '/what-is-experiment-track' },
           { text: '创建一个实验', link: '/create-experiment' },
@@ -55,6 +70,7 @@ export default defineConfig({
       },
       {
         text: '集成',
+        collapsed: false,
         items: [
           { text: '添加SwanLab到任何库', link: '/create-experiment' },
           { text: 'Hydra', link: '/create-experiment' },
@@ -63,6 +79,7 @@ export default defineConfig({
       },
       {
         text: '关于我们',
+        collapsed: false,
         items: [
           { text: '在线支持', link: '/create-experiment' },
           { text: 'SwanLab团队', link: '/create-experiment' },
