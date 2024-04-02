@@ -1,6 +1,7 @@
 :root {
     --vp-c-brand-1: #107d8b;
     --vp-layout-max-width: 1440px;
+    --vp-sidebar-bg-color: var(--vp-c-bg);
 }
 
 .dark {
