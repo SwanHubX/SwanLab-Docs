@@ -1,0 +1,8 @@
+:root {
+    --vp-c-brand-1: #107d8b;
+    --vp-layout-max-width: 1440px;
+}
+
+.dark {
+    --vp-c-brand-1: #2e9dac;
+}

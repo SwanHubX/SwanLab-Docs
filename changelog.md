@@ -1,6 +1,6 @@
-# 更新日志
+# ⚡️更新日志
 
-::: info
+::: warning 更新指南
 升级到最新版：`pip install -U swanlab`  
 升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.2.4`
 ::: 
@@ -36,7 +36,7 @@
 **🔧修复问题**
 - 修复部分Bug
 
-## 开源库 v0.2.1    2024.3.1
+## 开源库 v0.2.1 - 2024.3.1
 **🚀新增功能**
 - 文本图表：支持log文本类型
 - 多实验图表支持图像图表和音频图表
