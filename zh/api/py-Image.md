@@ -123,7 +123,38 @@ image = swanlab.Image("path/to/file",
 
 ### 对传入图像做Resize
 
+在默认情况，`swanlab.Image`不对图像做任何尺寸缩放。  
 
+如果需要放缩图像，我们可以通过设置`size`参数，来调节图像尺寸。
+
+放缩规则为：  
+
+1. 默认: 不对图像做任何缩放
+
+2. `size`为int类型: 如果最长边超过`size`, 则将最长边设为`size`, 另一边等比例缩放; 否则不缩放
+
+3. `size`为list/tuple类型: 
+
+    - (int, int): 将图像缩放到宽为size[0], 高为size[1]
+    - (int, None): 将图像缩放到宽为size[0], 高等比例缩放
+    - (None, int): 将缩放缩放到高为size[1], 宽等比例缩放
+
+```python
+print(im_array.shape)
+# [1024, 512, 3]
+
+im1 = swanlab.Image(im_array, size=512)
+# [512, 256, 3]
+
+im2 = swanlab.Image(im_array, size=(512, 512))
+# [512, 512, 3]
+
+im3 = swanlab.Image(im_array, size=(None, 1024))
+# [2048, 1024, 3]
+
+im4 = swanlab.Image(im_array, size=(256, None))
+# [256, 128, 3]
+```
 
 ### 记录Matplotlib图表
 
