@@ -12,7 +12,7 @@ export default defineConfig({
   lang: 'zh-CN',
   // 标签页logo
   head: [['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }]],
-  
+
   // markdown: {
   //   lineNumbers: true
   // },
@@ -170,8 +170,9 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: 'CLI',
     // collapsed: false,
     items: [
-      { text: 'swanlab watch', link: '/swanlab-watch' },
-      { text: 'swanlab login', link: '/swanlab-login' },
+      { text: 'swanlab watch', link: '/cli-swanlab-watch' },
+      { text: 'swanlab login', link: '/cli-swanlab-login' },
+      { text: '其他', link: '/cli-swanlab-other' },
     ]
   },
   {
@@ -179,7 +180,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'init', link: '/py-init' },
-      { text: 'config', link: '/py-config' },
       { text: 'log', link: '/py-log' },
       { text: '多媒体数据', items: [
         { text: 'Image', link: '/py-Image' },
