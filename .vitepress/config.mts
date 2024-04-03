@@ -12,6 +12,10 @@ export default defineConfig({
   lang: 'zh-CN',
   // 标签页logo
   head: [['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }]],
+  
+  // markdown: {
+  //   lineNumbers: true
+  // },
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -23,7 +27,7 @@ export default defineConfig({
       { text: 'SwanLab', link: 'https://swanlab.pro' },
       { text: '用户指南/云端', link: base_path_guide_cloud + '/what-is-swanlab' },
       { text: '用户指南/本地', link: base_path_guide_local +  '/changelog' },
-      { text: 'API', link: base_path_api + '/changelog' },
+      { text: 'API', link: base_path_api + '/api-index' },
       { text: 'v0.2.4',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/changelog' },
         { text: '参与贡献', link: '/' },
@@ -163,31 +167,25 @@ function sidebarGuideLocal(): DefaultTheme.SidebarItem[] {
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
   return [{
-    text: '简介',
+    text: 'CLI',
     // collapsed: false,
     items: [
-      { text: '什么是SwanLab？', link: '/what-is-swanlab' },
+      { text: 'swanlab watch', link: '/swanlab-watch' },
+      { text: 'swanlab login', link: '/swanlab-login' },
     ]
   },
   {
-    text: 'AI实验跟踪',
+    text: 'Python SDK',
     // collapsed: false,
     items: [
-      { text: '什么是AI实验跟踪？', link: '/what-is-experiment-track' },
-    ]
-  },
-  {
-    text: '集成',
-    // collapsed: false,
-    items: [
-      { text: '添加SwanLab到任何库', link: '/create-experiment' },
-    ]
-  },
-  {
-    text: '关于我们',
-    // collapsed: false,
-    items: [
-      { text: '在线支持', link: '/create-experiment' },
+      { text: 'init', link: '/py-init' },
+      { text: 'config', link: '/py-config' },
+      { text: 'log', link: '/py-log' },
+      { text: '多媒体数据', items: [
+        { text: 'Image', link: '/py-Image' },
+        { text: 'Audio', link: '/py-Audio' },
+        { text: 'Text', link: '/py-Text' },
+      ]}
     ]
   },]
 }
