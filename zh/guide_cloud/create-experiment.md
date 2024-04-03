@@ -10,7 +10,7 @@
 2. 传递一个超参数字典
 3. 在你的训练循环中记录指标
 
-### 初始化SwanLab
+### 1. 初始化SwanLab
 
 `swanlab.init()`的作用是初始化一个SwanLab实验，它将启动后台进程以同步和记录数据。  
 下面的代码片段展示了如何创建一个名为 **cat-dog-classification** 的新SwanLab项目。并为其添加了：
@@ -41,7 +41,7 @@ run = swanlab.init(
 
 <br>
 
-### 传递超参数字典
+### 2. 传递超参数字典
 
 传递超参数字典，例如学习率或模型类型。  
 你在`config`中传入的字典将被保存并用于后续的实验对比与结果查询。
@@ -55,7 +55,7 @@ swanlab.config={"epochs": 20, "learning_rate": 1e-4, "batch_size": 32, "model_ty
 
 <br>
 
-### 在训练循环中记录指标
+### 3. 在训练循环中记录指标
 在每轮for循环（epoch）中计算准确率与损失值指标，并用`swanlab.log()`将它们记录到SwanLab中。  
 在默认情况下，当您调用`swanlab.log`时，它会创建一个新的step添加到对应指标的历史数据中，规则是新的step=旧的最大step数+1。  
 下面的代码示例展示了如何用`swanlab.log()`记录指标：  

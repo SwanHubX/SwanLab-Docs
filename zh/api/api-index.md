@@ -7,7 +7,6 @@
 ## Python SDK
 - [init](/zh/api/py-init.md)
 - [config](/zh/api/py-config.md)
-- [log](/zh/api/py-log.md)
 - [Image](/zh/api/py-image.md)
 - [Audio](/zh/api/py-audio.md)
 - [Text](/zh/api/py-text.md)
