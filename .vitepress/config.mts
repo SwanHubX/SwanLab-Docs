@@ -118,7 +118,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: '添加SwanLab到任何库', link: 'create-experiment' },
-      { text: 'PyTorch', link: 'create-experiment-by-configfile' },
+      { text: 'PyTorch', link: 'integration-pytorch' },
+      { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
+      { text: 'HuggingFace Transformers', link: 'integration-huggingface-transformers' },
       { text: 'Hydra', link: 'integration-hydra' },
     ]
   },
