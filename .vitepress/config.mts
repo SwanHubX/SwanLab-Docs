@@ -125,11 +125,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '关于我们',
+    text: '👥 社区',
     // collapsed: false,
     items: [
-      { text: '在线支持', link: 'create-experiment' },
-      { text: 'SwanLab团队', link: 'create-experiment' },
+      { text: '在线支持', link: 'online-support'},
+      { text: 'Github徽章', link: 'github-badge'},
+      { text: '论文引用', link: 'paper-cite'},
     ]
   },]
 }
