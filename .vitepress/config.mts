@@ -26,7 +26,7 @@ export default defineConfig({
     nav: [
       { 
         text: '用户指南',
-        link: base_path_guide_cloud + '/what-is-swanlab',
+        link: base_path_guide_cloud + '/general/what-is-swanlab',
         activeMatch: '/zh/guide_cloud/',
       },
       { 
@@ -92,7 +92,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '简介',
     // collapsed: false,
     items: [
-      { text: '什么是SwanLab？', link: '/what-is-swanlab' },
+      { text: '什么是SwanLab？', link: 'general/what-is-swanlab' },
       { text: '快速开始', link: 'general/quick-start' },
       { text: '更新日志', link: 'general/changelog' }
     ]
