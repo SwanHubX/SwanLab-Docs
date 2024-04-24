@@ -25,12 +25,12 @@ export default defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: '用户指南/云端',
+        text: '用户指南',
         link: base_path_guide_cloud + '/what-is-swanlab',
         activeMatch: '/zh/guide_cloud/',
       },
       { 
-        text: '用户指南/本地',
+        text: '自托管',
         link: base_path_guide_local +  '/changelog',
         activeMatch: '/zh/guide_local/',
        },

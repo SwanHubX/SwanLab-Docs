@@ -1,12 +1,14 @@
 # SwanLab
 
-[官网](https://swanlab.pro) ｜ [Github](https://github.com/swanhubx/swanlab) ｜[机器之心](https://mp.weixin.qq.com/s/_xQPs7plX9pEiMxEjql4kg) ｜ [SwanHub开源社区](https://swanhub.co)
+[官网](https://swanlab.pro) · [Github](https://github.com/swanhubx/swanlab) · [机器之心](https://mp.weixin.qq.com/s/_xQPs7plX9pEiMxEjql4kg) · [SwanHub开源社区](https://swanhub.co)
 
 ![](/assets/swanlab-show.png)
 
 ## 简介
 
-SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个跟踪、比较、和协作实验的平台，旨在加速AI研发团队100倍的研发效率。
+SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个**跟踪、比较、和协作**实验的平台，旨在加速AI研发团队100倍的研发效率。
+
+> 后面插入一张图片
 
 其提供了友好的API和漂亮的界面，结合了超参数跟踪、指标记录、在线协作、实验链接分享、实时消息通知等功能，让您可以快速跟踪ML实验、可视化过程、分享给同伴。
 
@@ -15,10 +17,10 @@ SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个跟�
 以下是其核心特性列表：
 
 **1. 📊实验指标与超参数跟踪**: 极简的代码嵌入您的机器学习pipeline，跟踪记录训练关键指标
-   - 自由的超参数与实验配置记录
-   - **支持的元数据类型**：标量指标、图像、音频、文本、...
-   - **支持的图表类型**：折线图、媒体图（图像、音频、文本）、...
-   - **自动记录**：控制台logging、GPU硬件、Git信息、Python解释器、Python库列表、代码目录
+  - 自由的超参数与实验配置记录
+  - **支持的元数据类型**：标量指标、图像、音频、文本、...
+  - **支持的图表类型**：折线图、媒体图（图像、音频、文本）、...
+  - **自动记录**：控制台logging、GPU硬件、Git信息、Python解释器、Python库列表、代码目录
 
 **2. ⚡️全面的框架集成**: PyTorch、Tensorflow、PyTorch Lightning、🤗HuggingFace Transformers、Hydra、...
 
@@ -61,3 +63,13 @@ SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个跟�
 - Weights and Biases 是一个必须联网使用的闭源MLOps平台
 
 - SwanLab 不仅支持联网使用，也支持开源、免费、自托管的版本
+
+## 在线支持
+
+- **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**：反馈使用SwanLab时遇到的错误和问题
+
+- **电子邮件支持**：反馈关于使用SwanLab的问题
+    - 产品: zeyi.lin@swanhub.co
+    - 合作: shaohon_chen@115lab.club
+    
+- **[微信交流群](https://geektechstudio.feishu.cn/wiki/NIZ9wp5LRiSqQykizbGcVzUKnic?fromScene=spaceOverview)**：交流使用SwanLab的问题、分享最新的AI技术。
