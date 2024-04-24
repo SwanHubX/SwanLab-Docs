@@ -32,9 +32,9 @@ swanlab.log({"loss": loss})
 
 探索以下资源以了解SwanLab实验跟踪：
 
-- 阅读[快速开始](/zh/guide_cloud/quick-start)
+- 阅读[快速开始](/zh/guide_cloud/general/quick-start)
 - 探索本章以了解如何：
-  - [创建一个实验](/zh/guide_cloud/create-experiment)
+  - [创建一个实验](/zh/guide_cloud/experiment_track/create-experiment)
   - 配置实验
   - 记录实验数据
   - 查看实验结果

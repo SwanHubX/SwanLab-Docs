@@ -51,7 +51,7 @@ run = swanlab.init(
 swanlab.config={"epochs": 20, "learning_rate": 1e-4, "batch_size": 32, "model_type": "CNN"}
 ```
 
-有关如何配置实验的更多信息，请参阅[设置实验配置]()。
+有关如何配置实验的更多信息，请参阅[设置实验配置](/zh/guide_cloud/experiment_track/set-experiment-config.md)。
 
 <br>
 

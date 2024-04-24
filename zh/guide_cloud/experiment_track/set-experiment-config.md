@@ -99,4 +99,4 @@ swanlab.config.set["batch_size", 32]
 
 ### 用配置文件设置
 
-可以用json和yaml配置文件初始化 `config`，详情请查看[用配置文件创建实验](/zh/guide_cloud/create-experiment-by-configfile)。
+可以用json和yaml配置文件初始化 `config`，详情请查看[用配置文件创建实验](/zh/guide_cloud/experiment_track/create-experiment-by-configfile)。

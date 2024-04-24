@@ -12,7 +12,7 @@ login(
 
 ## 介绍
 
-登录SwanLab账号，以同步实验到云端。[API_KEY获取地址]()
+登录SwanLab账号，以同步实验到云端。[API_KEY获取地址](#)
 
 ```python
 import swanlab
