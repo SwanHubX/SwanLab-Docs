@@ -1,6 +1,7 @@
 import { defineConfig, type DefaultTheme} from 'vitepress'
 
 var base_path_guide_cloud = '/zh/guide_cloud'
+var base_path_examples = '/zh/examples'
 var base_path_api = '/zh/api'
 
 
@@ -27,6 +28,11 @@ export default defineConfig({
         text: '用户指南',
         link: base_path_guide_cloud + '/what-is-swanlab',
         activeMatch: '/zh/guide_cloud/',
+      },
+      { 
+        text: '案例',
+        link: base_path_examples + '/mnist',
+        activeMatch: '/zh/examples/',
       },
       { 
         text: 'API',
@@ -64,6 +70,7 @@ export default defineConfig({
     // 侧边栏配置
     sidebar: {
       '/zh/guide_cloud/':{base: '/zh/guide_cloud/', items: sidebarGuideCloud(),},
+      '/zh/examples/':{base: '/zh/examples/', items: sidebarExamples(),},
       '/zh/api/':{base: '/zh/api/', items: sidebarAPI(),},
     },
 
@@ -132,6 +139,23 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '在线支持', link: 'community/online-support'},
       { text: 'Github徽章', link: 'community/github-badge'},
       { text: '论文引用', link: 'community/paper-cite'},
+    ]
+  },]
+}
+
+function sidebarExamples(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: '入门',
+    // collapsed: false,
+    items: [
+      { text: 'MNIST手写体识别', link: 'mnist' },
+    ]
+  },
+  {
+    text: '计算机视觉',
+    // collapsed: false,
+    items: [
+      { text: 'placeholder', link: 'py-init' },
     ]
   },]
 }
