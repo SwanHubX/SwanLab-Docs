@@ -11,7 +11,8 @@ export default defineConfig({
   description: "SwanLab官方文档, 提供最全面的使用指南和API文档",
   lang: 'zh-CN',
   // 标签页logo
-  head: [['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }]],
+  head: [['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }],
+         ['link', { rel: 'icon', type:"image/png", href: '/icon.png' }]],
 
   // markdown: {
   //   lineNumbers: true
