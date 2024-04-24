@@ -40,6 +40,7 @@ SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个**跟
 - [快速开始](/zh/guide_cloud/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
 - [API文档](/zh/api/api-index.md): 完整的API文档
 - [在线支持](/zh/guide_cloud/online-support.md): 加入社区、反馈问题和联系我们
+- [自托管](/zh/guide_cloud/self_host/offline-board.md): 自托管（离线版本）使用方式教程
 
 ## 与熟悉产品的对比
 

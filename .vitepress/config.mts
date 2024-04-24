@@ -34,10 +34,10 @@ export default defineConfig({
         activeMatch: '/zh/api/',
         },
       { text: 'v0.2.4',  items: [
-        { text: '更新日志', link: base_path_guide_cloud + '/changelog' },
+        { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
       ] },
-      { text: 'SwanLab', link: 'https://swanlab.pro' },
+      { text: '官网', link: 'https://swanlab.pro' },
     ],
 
     // 最后更新于配置
@@ -85,13 +85,13 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '简介',
     // collapsed: false,
     items: [
-      { text: '什么是SwanLab？', link: 'general/what-is-swanlab' },
+      { text: '什么是SwanLab？', link: '/what-is-swanlab' },
       { text: '快速开始', link: 'general/quick-start' },
       { text: '更新日志', link: 'general/changelog' }
     ]
   },
   {
-    text: '实验跟踪',
+    text: '📚 实验跟踪',
     // collapsed: false,
     items: [
       { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
@@ -107,7 +107,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '自托管',
+    text: '💻 自托管',
     // collapsed: false,
     items: [
       { text: '离线看板', link: 'self_host/offline-board' },
@@ -115,7 +115,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '集成',
+    text: '⚡️ 集成',
     // collapsed: false,
     items: [
       { text: '添加SwanLab到任何库', link: 'integration/create-experiment' },
