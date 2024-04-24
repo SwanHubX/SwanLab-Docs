@@ -5,7 +5,7 @@
 
 ::: info 提示
 
-如果你想在本地或无网络环境下查看实验，请看[用户指南/本地](/zh/guide_local/quick-start)。
+如果你想在本地或无网络环境下查看实验，请看[自托管部分](/zh/guide_cloud/self_host/offline-board.md)。
 
 :::
 

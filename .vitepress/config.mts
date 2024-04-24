@@ -1,7 +1,6 @@
 import { defineConfig, type DefaultTheme} from 'vitepress'
 
 var base_path_guide_cloud = '/zh/guide_cloud'
-var base_path_guide_local = '/zh/guide_local'
 var base_path_api = '/zh/api'
 
 
@@ -30,18 +29,13 @@ export default defineConfig({
         activeMatch: '/zh/guide_cloud/',
       },
       { 
-        text: '自托管',
-        link: base_path_guide_local +  '/changelog',
-        activeMatch: '/zh/guide_local/',
-       },
-      { 
         text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
       { text: 'v0.2.4',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/changelog' },
-        { text: '参与贡献', link: '/' },
+        { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
       ] },
       { text: 'SwanLab', link: 'https://swanlab.pro' },
     ],
@@ -70,7 +64,6 @@ export default defineConfig({
     // 侧边栏配置
     sidebar: {
       '/zh/guide_cloud/':{base: '/zh/guide_cloud/', items: sidebarGuideCloud(),},
-      '/zh/guide_local/':{base: '/zh/guide_local/', items: sidebarGuideLocal(),},
       '/zh/api/':{base: '/zh/api/', items: sidebarAPI(),},
     },
 
@@ -92,90 +85,53 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '简介',
     // collapsed: false,
     items: [
-      { text: '什么是SwanLab？', link: 'what-is-swanlab' },
-      { text: '快速开始', link: 'quick-start' },
-      { text: '更新日志', link: 'changelog' }
+      { text: '什么是SwanLab？', link: 'general/what-is-swanlab' },
+      { text: '快速开始', link: 'general/quick-start' },
+      { text: '更新日志', link: 'general/changelog' }
     ]
   },
   {
-    text: 'AI实验跟踪',
+    text: '实验跟踪',
     // collapsed: false,
     items: [
-      { text: '什么是AI实验跟踪', link: 'what-is-experiment-track' },
-      { text: '创建一个实验', link: 'create-experiment' },
-      { text: '用配置文件创建实验', link: 'create-experiment-by-configfile' },
-      { text: '设置实验配置', link: 'set-experiment-config' },
-      { text: '记录实验指标', link: 'log-experiment-metric' },
-      { text: '记录多媒体数据', link: 'log-media' },
-      { text: '查看实验结果', link: 'view-result' },
-      { text: '结束一个实验', link: 'finish-experiment' },
-      { text: '限制与性能', link: 'limit-and-performance' },
+      { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
+      { text: '创建一个实验', link: 'experiment_track/create-experiment' },
+      { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
+      { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
+      { text: '记录实验指标', link: 'experiment_track/log-experiment-metric' },
+      { text: '记录多媒体数据', link: 'experiment_track/log-media' },
+      { text: '查看实验结果', link: 'experiment_track/view-result' },
+      { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+      { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'FAQ' },
+    ]
+  },
+  {
+    text: '自托管',
+    // collapsed: false,
+    items: [
+      { text: '离线看板', link: 'self_host/offline-board' },
+      { text: '远程访问教程', link: 'self_host/remote-view' },
     ]
   },
   {
     text: '集成',
     // collapsed: false,
     items: [
-      { text: '添加SwanLab到任何库', link: 'create-experiment' },
-      { text: 'PyTorch', link: 'integration-pytorch' },
-      { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
-      { text: 'HuggingFace Transformers', link: 'integration-huggingface-transformers' },
-      { text: 'Hydra', link: 'integration-hydra' },
+      { text: '添加SwanLab到任何库', link: 'integration/create-experiment' },
+      { text: 'PyTorch', link: 'integration/integration-pytorch' },
+      { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
+      { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
+      { text: 'Hydra', link: 'integration/integration-hydra' },
     ]
   },
   {
     text: '👥 社区',
     // collapsed: false,
     items: [
-      { text: '在线支持', link: 'online-support'},
-      { text: 'Github徽章', link: 'github-badge'},
-      { text: '论文引用', link: 'paper-cite'},
-    ]
-  },]
-}
-
-function sidebarGuideLocal(): DefaultTheme.SidebarItem[] {
-  return [{
-    text: '简介',
-    // collapsed: false,
-    items: [
-      { text: '什么是SwanLab？', link: 'what-is-swanlab' },
-      { text: '快速开始', link: 'quick-start' },
-      { text: '更新日志', link: 'changelog' }
-    ]
-  },
-  {
-    text: 'AI实验跟踪',
-    // collapsed: false,
-    items: [
-      { text: '什么是AI实验跟踪', link: 'what-is-experiment-track' },
-      { text: '创建一个实验', link: 'create-experiment' },
-      { text: '用配置文件创建实验', link: 'create-experiment-by-configfile' },
-      { text: '设置实验配置', link: 'create-experiment' },
-      { text: '记录实验指标', link: 'create-experiment' },
-      { text: '记录多媒体数据', link: 'create-experiment' },
-      { text: '查看实验结果', link: 'create-experiment' },
-      { text: '结束一个实验', link: 'create-experiment' },
-      { text: '限制与性能', link: 'create-experiment' },
-      { text: 'FAQ', link: 'create-experiment' },
-    ]
-  },
-  {
-    text: '集成',
-    // collapsed: false,
-    items: [
-      { text: '添加SwanLab到任何库', link: 'create-experiment' },
-      { text: 'Hydra', link: 'create-experiment' },
-      { text: 'PyTorch', link: 'create-experiment-by-configfile' },
-    ]
-  },
-  {
-    text: '关于我们',
-    // collapsed: false,
-    items: [
-      { text: '在线支持', link: '/create-experiment' },
-      { text: 'SwanLab团队', link: '/create-experiment' },
+      { text: '在线支持', link: 'community/online-support'},
+      { text: 'Github徽章', link: 'community/github-badge'},
+      { text: '论文引用', link: 'community/paper-cite'},
     ]
   },]
 }

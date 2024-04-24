@@ -1,6 +1,6 @@
 # SwanLab
 
-[官网](https://swanlab.pro) · [Github](https://github.com/swanhubx/swanlab) · [机器之心](https://mp.weixin.qq.com/s/_xQPs7plX9pEiMxEjql4kg) · [SwanHub开源社区](https://swanhub.co)
+[官网](https://swanlab.pro) · [Github](https://github.com/swanhubx/swanlab) · [机器之心](https://mp.weixin.qq.com/s/_xQPs7plX9pEiMxEjql4kg) · [SwanHub开源社区](https://swanhub.co) · [贡献指南](https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md)
 
 ![](/assets/swanlab-show.png)
 
@@ -71,5 +71,5 @@ SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个**跟
 - **电子邮件支持**：反馈关于使用SwanLab的问题
     - 产品: zeyi.lin@swanhub.co
     - 合作: shaohon_chen@115lab.club
-    
+
 - **[微信交流群](https://geektechstudio.feishu.cn/wiki/NIZ9wp5LRiSqQykizbGcVzUKnic?fromScene=spaceOverview)**：交流使用SwanLab的问题、分享最新的AI技术。
