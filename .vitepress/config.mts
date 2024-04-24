@@ -200,7 +200,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
-      ]}
+      ]},
+      { text: 'login', link: 'py-login' },
     ]
   },]
 }
