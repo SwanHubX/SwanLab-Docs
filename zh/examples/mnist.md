@@ -151,3 +151,7 @@ if __name__ == "__main__":
             swanlab.log({"val/accuracy": accuracy})
 
 ```
+
+## 效果演示
+
+![mnist](/assets/example-mnist.jpg)
