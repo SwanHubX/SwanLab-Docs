@@ -151,13 +151,14 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'MNIST手写体识别', link: 'mnist' },
     ]
   },
-  {
-    text: '计算机视觉',
-    // collapsed: false,
-    items: [
-      { text: 'placeholder', link: 'py-init' },
-    ]
-  },]
+  // {
+  //   text: '计算机视觉',
+  //   // collapsed: false,
+  //   items: [
+  //     { text: 'placeholder', link: 'py-init' },
+  //   ]
+  // },
+]
 }
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
