@@ -9,7 +9,7 @@ Hugging Face 的 [Transformers](https://github.com/huggingface/transformers) 是
 ## 1. 引入SwanLabCallback
 
 ```python
-from swanlab.intergration.huggingface import SwanLabCallback
+from swanlab.integration.huggingface import SwanLabCallback
 ```
 
 SwanLabCallback是适配于Transformers的日志记录类。
@@ -43,7 +43,7 @@ trainer.train()
 import evaluate
 import numpy as np
 import swanlab
-from swanlab.intergration.huggingface import SwanLabCallback
+from swanlab.integration.huggingface import SwanLabCallback
 from datasets import load_dataset
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, Trainer, TrainingArguments
 
