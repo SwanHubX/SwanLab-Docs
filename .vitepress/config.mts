@@ -43,6 +43,7 @@ export default defineConfig({
       { text: 'v0.3.0',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
+        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
       ] },
       { text: '官网', link: 'https://swanlab.pro' },
     ],
@@ -106,7 +107,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
       { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
-      { text: '记录实验指标', link: 'experiment_track/log-experiment-metric' },
+      { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
