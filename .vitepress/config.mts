@@ -45,7 +45,7 @@ export default defineConfig({
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
       ] },
-      { text: '官网', link: 'https://swanlab.pro' },
+      { text: '官网', link: 'https://dev101.swanlab.cn' },
     ],
 
     // 最后更新于配置
