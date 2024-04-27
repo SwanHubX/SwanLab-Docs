@@ -35,7 +35,7 @@ swanlab.log({"loss": loss})
 - 阅读[快速开始](/zh/guide_cloud/general/quick-start)
 - 探索本章以了解如何：
   - [创建一个实验](/zh/guide_cloud/experiment_track/create-experiment)
-  - 配置实验
-  - 记录实验数据
-  - 查看实验结果
+  - [配置实验](/zh/guide_cloud/experiment_track/set-experiment-config.md)
+  - [记录指标](/zh/guide_cloud/experiment_track/log-experiment-metric.md)
+  - [查看实验结果](/zh/guide_cloud/experiment_track/view-result.md)
 - 在[API文档](/zh/api/api-index)中探索SwanLab Python 库。

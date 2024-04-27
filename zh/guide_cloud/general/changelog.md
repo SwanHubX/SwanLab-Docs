@@ -8,7 +8,7 @@
 ## v0.3.0 云端版上线！ - 2024.5.1
 
 **🚀新增功能**
-- [云端版](https://swanlab.cn)发布
+- [云端版](https://dev101.swanlab.cn)发布
 - `swanlab.init`支持用配置文件初始化
 - “环境”增加对Apple M系列芯片的记录
 

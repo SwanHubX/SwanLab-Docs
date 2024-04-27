@@ -13,7 +13,7 @@
 
 在开始之前，请确保你创建一个帐户并安装 SwanLab：
 
-1. 在 [SwanLab注册URL](#) 免费注册账号，然后登录你的SwanLab账户。
+1. 在 [SwanLab官网](https://dev101.swanlab.cn) 免费注册账号，然后登录你的SwanLab账户。
 2. 使用 pip 在 Python3 环境的计算机上安装swanlab库
 
 打开命令行，输入：
@@ -32,14 +32,15 @@ pip install swanlab
 swanlab login
 ```
 
-出现如下提示时，输入您的[API Key](#)：
+出现如下提示时，复制粘贴您的[API Key](https://dev101.swanlab.cn/settings)：
 
 ```bash
-swanlab login
-···
+swanlab: Logging into swanlab cloud.
+swanlab: You can find your API key at: https://dev101.swanlab.cn/settings
+swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
-按下回车，完成登录。
+输入完成后，按下回车，完成登录。
 
 ## 3. 开启一个实验并跟踪超参数
 
