@@ -94,7 +94,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '简介',
     // collapsed: false,
     items: [
-      { text: '什么是SwanLab？', link: 'general/what-is-swanlab' },
+      { text: '欢迎使用SwanLab', link: 'general/what-is-swanlab' },
       { text: '快速开始', link: 'general/quick-start' },
       { text: '更新日志', link: 'general/changelog' }
     ]
