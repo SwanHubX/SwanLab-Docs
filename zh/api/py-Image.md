@@ -25,6 +25,8 @@ Image(
 
 对各种类型的图像数据做转换，以被`swanlab.log()`记录。
 
+![](/assets/media-image-1.jpg)
+
 ### 从numpy array创建
 
 记录单张图像：

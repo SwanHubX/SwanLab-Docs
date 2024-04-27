@@ -20,6 +20,8 @@ Audio(
 
 对各种类型的音频数据做转换，以被`swanlab.log()`记录。
 
+![](/assets/media-audio-1.jpg)
+
 ### 从numpy array创建
 
 记录单个音频：
