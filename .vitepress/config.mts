@@ -151,16 +151,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: '入门',
     // collapsed: false,
     items: [
+      { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
+      { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: '猫狗分类', link: 'cats_dogs_classification' },      
     ]
   },
-  // {
-  //   text: '计算机视觉',
-  //   // collapsed: false,
-  //   items: [
-  //     { text: 'placeholder', link: 'py-init' },
-  //   ]
-  // },
 ]
 }
 
