@@ -3,24 +3,29 @@
 ```python
 init(
     project: str = None,
+    workspace: str = None,
     experiment_name: str = None,
     description: str = None,
-    config: dict = None,
+    config: Union[dict, str] = None,
     logdir: str = None,
     suffix: str = "default",
-    log_level: str = None,
+    cloud: bool = True,
+    load: str = None,
+    **kwargs,
 )
 ```
 
 | 参数         | 描述 |
 |-------------|------|
-| project |(str)项目名。 |
+| project |(str)项目名，如果不指定则取运行目录的名称。|
+| workspace |(str)工作空间，默认将实验同步到你的个人空间下，如果要上传到组织，则填写组织的username。|
 | experiment_name | (str) 实验名称, 如果不指定则取"exp"。完整的实验名称由 `experiment_name+"_"+suffix` 构成。 |
-| description   | (str) 实验描述, 如果不指定默认为None                                   |
-| config       | (dict) 实验配置，在此处可以记录一些实验的超参数等信息。                   |
+| description   | (str) 实验描述, 如果不指定默认为None。                                   |
+| config       | (dict, str) 实验配置，在此处可以记录一些实验的超参数等信息。支持传入配置文件路径，支持yaml和json文件。                   |
 | logdir       | (str) 日志文件存储路径，默认为swanlog                                  |
-| suffix       | (str) experiment_name的后缀。完整的实验名称由`experiment_name`和`suffix`共同构成。默认值为"default"，代表默认的后缀规则为`'%b%d-%h-%m-%s' (example:'Feb03_14-45-37')` |
-| log_level    | (str) 打印日志等级。                                                |
+| suffix       | (str, None, bool) experiment_name的后缀。完整的实验名称由`experiment_name`和`suffix`共同构成。<br> 默认值为"default"，代表默认的后缀规则为`'%b%d-%h-%m-%s'`，例如:`Feb03_14-45-37`。<br>设置为`None`或`False`将不加后缀。<br>|
+| cloud       | (bool) 是否将实验上传到云端的开关，默认为`True`。如果要关闭云端上传，则设置为`False`|
+| load       | (str) 加载的配置文件路径，支持yaml和json文件。|
 
 ## 介绍
 
@@ -89,4 +94,12 @@ swanlab.init(
     }
 )
 
+```
+
+### 上传到组织
+
+```python
+swanlab.init(
+    workspace="[组织的username]"
+)
 ```

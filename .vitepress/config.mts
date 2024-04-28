@@ -40,11 +40,12 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.2.4',  items: [
+      { text: 'v0.3.0',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
+        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
       ] },
-      { text: '官网', link: 'https://swanlab.pro' },
+      { text: '官网', link: 'https://dev101.swanlab.cn' },
     ],
 
     // 最后更新于配置
@@ -93,8 +94,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '简介',
     // collapsed: false,
     items: [
-      { text: '什么是SwanLab？', link: 'general/what-is-swanlab' },
+      { text: '欢迎使用SwanLab', link: 'general/what-is-swanlab' },
       { text: '快速开始', link: 'general/quick-start' },
+      { text: '团队使用', link: 'general/organization' },
       { text: '更新日志', link: 'general/changelog' }
     ]
   },
@@ -106,10 +108,11 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
       { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
-      { text: '记录实验指标', link: 'experiment_track/log-experiment-metric' },
+      { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+      { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
@@ -126,7 +129,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '⚡️ 集成',
     // collapsed: false,
     items: [
-      { text: '添加SwanLab到任何库', link: 'integration/create-experiment' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
@@ -149,16 +151,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: '入门',
     // collapsed: false,
     items: [
+      { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
+      { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: '猫狗分类', link: 'cats_dogs_classification' },      
     ]
   },
-  {
-    text: '计算机视觉',
-    // collapsed: false,
-    items: [
-      { text: 'placeholder', link: 'py-init' },
-    ]
-  },]
+]
 }
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {

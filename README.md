@@ -28,9 +28,15 @@ npm add -D vitepress
 
 
 
-3. 开启预览，在项目根目录运行：
+3. 本地开发，在项目根目录运行：
 
 ```bash
 npm run docs:dev
 ```
 
+4. 打包与预览
+
+```bash
+npm run docs:build
+npm run docs:preview
+```

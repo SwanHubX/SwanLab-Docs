@@ -9,7 +9,7 @@
 ## 1. 引入SwanLabLogger
 
 ```python
-from swanlab.intergration.pytorch_lightning import SwanLabLogger
+from swanlab.integration.pytorch_lightning import SwanLabLogger
 ```
 
 SwanLabLogger是适配于PyTorch Lightning的日志记录类。
@@ -40,7 +40,7 @@ trainer.fit(...)
 ## 3. 完整案例代码
 
 ```python
-from swanlab.intergration.pytorch_lightning import SwanLabLogger
+from swanlab.integration.pytorch_lightning import SwanLabLogger
 
 import importlib.util
 import os

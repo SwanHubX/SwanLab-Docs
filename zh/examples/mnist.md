@@ -1,7 +1,38 @@
 # MNIST手写体识别
 
-```python
+:::info
+图像分类、机器学习入门、灰度图像
+:::
 
+## 概述
+
+MNIST手写体识别是深度学习最经典的入门任务之一，由 LeCun 等人提出。  
+该任务基于[MNIST数据集](https://paperswithcode.com/dataset/mnist)，研究者通过构建机器学习模型，来识别10个手写数字（0～9）。
+
+![mnist](/assets/mnist.jpg)
+
+本案例主要：
+- 使用`pytorch`进行CNN（卷积神经网络）的构建、模型训练与评估
+- 使用`swanlab`跟踪超参数、记录指标和可视化监控整个训练周期
+
+## 环境安装
+
+本案例基于`Python>=3.8`，请在您的计算机上安装好Python。  
+环境依赖：
+```
+torch
+torchvision
+swanlab
+```
+快速安装命令：
+```bash
+pip install torch torchvision swanlab
+```
+
+
+## 完整代码
+
+```python
 import os
 import torch
 from torch import nn, optim, utils
@@ -10,7 +41,7 @@ from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
 import swanlab
 
-
+# CNN网络构建
 class ConvNet(nn.Module):
     def __init__(self):
         super().__init__()
@@ -61,7 +92,7 @@ if __name__ == "__main__":
         experiment_name="ConvNet",
         description="Train ConvNet on MNIST dataset.",
         config={
-            "model": "resnet50",
+            "model": "CNN",
             "optim": "Adam",
             "lr": 0.001,
             "batch_size": 512,
@@ -124,3 +155,7 @@ if __name__ == "__main__":
             swanlab.log({"val/accuracy": accuracy})
 
 ```
+
+## 效果演示
+
+![mnist](/assets/example-mnist.jpg)

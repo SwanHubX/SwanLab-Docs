@@ -6,6 +6,8 @@ SwanLab 支持记录多媒体数据（图像、音频、文本等）以直观地
 
 `swanlab.Image` 支持记录多种图片类型，包括 numpy、PIL、Tensor、读取文件等。
 
+![](/assets/media-image-1.jpg)
+
 ::: warning
 建议每个 step 记录少于 50 个图像，以防止日志记录成为训练期间的耗时瓶颈，以及图像加载成为查看结果时的耗时瓶颈。
 :::
@@ -79,6 +81,8 @@ swanlab.log({"examples": image_list})
 关于图像的更多细节，可参考[API文档](/zh/api/py-Image)
 
 ## 音频
+
+![](/assets/media-audio-1.jpg)
 
 ### 记录 Array 型音频
 

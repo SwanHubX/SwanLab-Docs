@@ -13,7 +13,7 @@
 
 在开始之前，请确保你创建一个帐户并安装 SwanLab：
 
-1. 在 [SwanLab注册URL](#) 免费注册账号，然后登录你的SwanLab账户。
+1. 在 [SwanLab官网](https://dev101.swanlab.cn) 免费注册账号，然后登录你的SwanLab账户。
 2. 使用 pip 在 Python3 环境的计算机上安装swanlab库
 
 打开命令行，输入：
@@ -32,14 +32,15 @@ pip install swanlab
 swanlab login
 ```
 
-出现如下提示时，输入您的[API Key](#)：
+出现如下提示时，复制粘贴您的[API Key](https://dev101.swanlab.cn/settings)：
 
 ```bash
-swanlab login
-···
+swanlab: Logging into swanlab cloud.
+swanlab: You can find your API key at: https://dev101.swanlab.cn/settings
+swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
-按下回车，完成登录。
+输入完成后，按下回车，完成登录。
 
 ## 3. 开启一个实验并跟踪超参数
 
@@ -73,12 +74,9 @@ swanlab.log({"accuracy": acc, "loss": loss})
 
 我们将上面的步骤整合为下面所示的完整代码：
 
-```python
+```python (5,25)
 import swanlab
 import random
-
-# 登陆SwanLab
-swanlab.login()
 
 # 初始化SwanLab
 run = swanlab.init(
@@ -95,7 +93,7 @@ print(f"学习率为{run.config.learning_rate}")
 
 offset = random.random() / 5
 
-# 模拟一次训练过程
+# 模拟训练过程
 for epoch in range(2, run.config.epochs):
     acc = 1 - 2**-epoch - random.random() / epoch - offset
     loss = 2**-epoch + random.random() / epoch + offset
@@ -104,19 +102,26 @@ for epoch in range(2, run.config.epochs):
     swanlab.log({"accuracy": acc, "loss": loss})
 ```
 
-运行代码，访问[SwanLab网站](swanlab.pro），查看在每个训练步骤中，你使用SwanLab记录的指标（准确率和损失值）的改进情况。
+运行代码，访问[SwanLab](https://dev101.swanlab.cn)，查看在每个训练步骤中，你使用SwanLab记录的指标（准确率和损失值）的改进情况。
+
+![quick-start-1](/assets/quick-start-1.jpg)
+
+
+
 
 ## 下一步是什么
 
 1. 查看SwanLab如何[记录多媒体内容](/zh/guide_cloud/experiment_track/log-media)（图片、音频、文本、...）
-2. 查看如何通过SwanLab与团队协作
+1. 查看SwanLab记录[MNIST手写体识别](/zh/examples/mnist.md)的案例
+2. 查看与其他框架的[集成](/zh/guide_cloud/integration/integration-pytorch-lightning.md)
+3. 查看如何通过SwanLab与[团队协作](#)
 
 ## 常见问题
 
-### 在哪里可以找到我的API Key？
+### 1. 在哪里可以找到我的API Key？
 
-登陆SwanLab网站后，API Key将显示在[用户设置]页面上。
+登陆SwanLab网站后，API Key将显示在[用户设置](https://dev101.swanlab.cn/settings)页面上。
 
-### 我可以离线使用SwanLab吗？
+### 2. 我可以离线使用SwanLab吗？
 
 可以，具体流程请查看[自托管部分](/zh/guide_cloud/self_host/offline-board.md)。
