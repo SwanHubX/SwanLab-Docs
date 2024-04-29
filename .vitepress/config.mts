@@ -132,8 +132,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
-      { text: 'OpenAI', link: 'integration/integration-openai' },
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
+      { text: 'OpenAI', link: 'integration/integration-openai' },
+      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
       { text: 'Hydra', link: 'integration/integration-hydra' },
     ]
   },
