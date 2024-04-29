@@ -10,3 +10,9 @@
 <div align="center">
 <img src="/assets/feishu-QR-Code.png" width=300>
 </div>
+
+- **微信公众号**:
+
+<div align="center">
+<img src="/assets/wechat.jpg" width=300>
+</div>
