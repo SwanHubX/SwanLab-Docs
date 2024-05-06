@@ -2,8 +2,17 @@
 
 ::: warning 更新指南
 升级到最新版：`pip install -U swanlab`  
-升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.2.4`
+升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.1`
 ::: 
+
+## v0.3.1 - 2024.5.3
+
+**⚡️改进**
+- `swanlog`日志文件夹默认增加一个`.gitignore`
+
+**⚙️修复问题**
+- 修复`swanlab.init`的config不兼容Omegaconfig等类型的问题
+
 
 ## v0.3.0 云端版上线！ - 2024.5.1
 
