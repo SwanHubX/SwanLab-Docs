@@ -9,7 +9,7 @@ RUN echo '开始build'
 RUN pnpm run docs:build
 RUN echo '---build 完成---'
 
-FROM nginx:latest
+FROM nginx:alpine
 
 RUN echo '拷贝dist到 nginx目录'
 COPY --from=0 /app/.vitepress/dist /usr/share/nginx/html
