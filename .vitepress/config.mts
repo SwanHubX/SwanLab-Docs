@@ -129,6 +129,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '⚡️ 集成',
     // collapsed: false,
     items: [
+      { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },

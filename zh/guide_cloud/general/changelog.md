@@ -5,6 +5,10 @@
 升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.1`
 ::: 
 
+## v0.3.2 - 2024.5.xx
+
+...
+
 ## v0.3.1 - 2024.5.3
 
 **⚡️改进**
