@@ -4,6 +4,8 @@
 图像分类、机器学习入门、灰度图像
 :::
 
+[在线实验Demo](https://swanlab.cn/@ZeyiLin/MNIST-example/runs/4plp6w0qehoqpt0uq2tcy/chart)
+
 ## 概述
 
 MNIST手写体识别是深度学习最经典的入门任务之一，由 LeCun 等人提出。  
@@ -37,8 +39,10 @@ import os
 import torch
 from torch import nn, optim, utils
 import torch.nn.functional as F
+import torchvision
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
+from torchvision.models import ResNet18_Weights
 import swanlab
 
 # CNN网络构建
@@ -82,78 +86,113 @@ def log_images(loader, num_images=16):
         if images_logged >= num_images:
             break
     swanlab.log({"MNIST-Preview": logged_images})
+    
 
+def train(model, device, train_dataloader, optimizer, criterion, epoch, num_epochs):
+    model.train()
+    # 1. 循环调用train_dataloader，每次取出1个batch_size的图像和标签
+    for iter, (inputs, labels) in enumerate(train_dataloader):
+        inputs, labels = inputs.to(device), labels.to(device)
+        optimizer.zero_grad()
+        # 2. 传入到resnet18模型中得到预测结果
+        outputs = model(inputs)
+        # 3. 将结果和标签传入损失函数中计算交叉熵损失
+        loss = criterion(outputs, labels)
+        # 4. 根据损失计算反向传播
+        loss.backward()
+        # 5. 优化器执行模型参数更新
+        optimizer.step()
+        print('Epoch [{}/{}], Iteration [{}/{}], Loss: {:.4f}'.format(epoch, num_epochs, iter + 1, len(train_dataloader),
+                                                                      loss.item()))
+        # 6. 每20次迭代，用SwanLab记录一下loss的变化
+        if iter % 20 == 0:
+            swanlab.log({"train/loss": loss.item()})
+
+def test(model, device, val_dataloader, epoch):
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        # 1. 循环调用val_dataloader，每次取出1个batch_size的图像和标签
+        for inputs, labels in val_dataloader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            # 2. 传入到resnet18模型中得到预测结果
+            outputs = model(inputs)
+            # 3. 获得预测的数字
+            _, predicted = torch.max(outputs, 1)
+            total += labels.size(0)
+            # 4. 计算与标签一致的预测结果的数量
+            correct += (predicted == labels).sum().item()
+    
+        # 5. 得到最终的测试准确率
+        accuracy = correct / total
+        # 6. 用SwanLab记录一下准确率的变化
+        swanlab.log({"val/accuracy": accuracy}, step=epoch)
+    
 
 if __name__ == "__main__":
+
+    #检测是否支持mps
+    try:
+        use_mps = torch.backends.mps.is_available()
+    except AttributeError:
+        use_mps = False
+
+    #检测是否支持cuda
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif use_mps:
+        device = "mps"
+    else:
+        device = "cpu"
 
     # 初始化swanlab
     run = swanlab.init(
         project="MNIST-example",
-        experiment_name="ConvNet",
-        description="Train ConvNet on MNIST dataset.",
+        experiment_name="PlainCNN",
         config={
-            "model": "CNN",
+            "model": "ResNet18",
             "optim": "Adam",
-            "lr": 0.001,
-            "batch_size": 512,
+            "lr": 1e-4,
+            "batch_size": 256,
             "num_epochs": 10,
-            "train_dataset_num": 55000,
-            "val_dataset_num": 5000,
+            "device": device,
         },
     )
 
-    # 设置训练机、验证集和测试集
+    # 设置MNIST训练集和验证集
     dataset = MNIST(os.getcwd(), train=True, download=True, transform=ToTensor())
-    train_dataset, val_dataset = utils.data.random_split(
-        dataset, [run.config.train_dataset_num, run.config.val_dataset_num]
-    )
+    train_dataset, val_dataset = utils.data.random_split(dataset, [55000, 5000])
 
-    train_loader = utils.data.DataLoader(train_dataset, batch_size=run.config.batch_size, shuffle=True)
-    val_loader = utils.data.DataLoader(val_dataset, batch_size=1, shuffle=False)
+    train_dataloader = utils.data.DataLoader(train_dataset, batch_size=run.config.batch_size, shuffle=True)
+    val_dataloader = utils.data.DataLoader(val_dataset, batch_size=8, shuffle=False)
+    
+    # （可选）看一下数据集的前16张图像
+    log_images(train_dataloader, 16)
 
-    # 初始化模型、损失函数和优化器
+    # 初始化模型
     model = ConvNet()
+    model.to(torch.device(device))
+
+    # 打印模型
+    print(model)
+
+    # 定义损失函数和优化器
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=run.config.lr)
 
-    # （可选）看一下数据集的前16张图像
-    log_images(train_loader, 16)
+    # 开始训练和测试循环
+    for epoch in range(1, run.config.num_epochs+1):
+        swanlab.log({"train/epoch": epoch}, step=epoch)
+        train(model, device, train_dataloader, optimizer, criterion, epoch, run.config.num_epochs)
+        if epoch % 2 == 0: 
+            test(model, device, val_dataloader, epoch)
 
-    # 开始训练
-    for epoch in range(1, run.config.num_epochs):
-        swanlab.log({"train/epoch": epoch})
-        # 训练循环
-        for iter, batch in enumerate(train_loader):
-            x, y = batch
-            optimizer.zero_grad()
-            output = model(x)
-            loss = criterion(output, y)
-            loss.backward()
-            optimizer.step()
-
-            print(
-                f"Epoch [{epoch}/{run.config.num_epochs}], Iteration [{iter + 1}/{len(train_loader)}], Loss: {loss.item()}"
-            )
-
-            if iter % 20 == 0:
-                swanlab.log({"train/loss": loss.item()}, step=(epoch - 1) * len(train_loader) + iter)
-
-        # 每4个epoch验证一次
-        if epoch % 2 == 0:
-            model.eval()
-            correct = 0
-            total = 0
-            with torch.no_grad():
-                for batch in val_loader:
-                    x, y = batch
-                    output = model(x)
-                    _, predicted = torch.max(output, 1)
-                    total += y.size(0)
-                    correct += (predicted == y).sum().item()
-
-            accuracy = correct / total
-            swanlab.log({"val/accuracy": accuracy})
-
+    # 保存模型
+    # 如果不存在checkpoint文件夹，则自动创建一个
+    if not os.path.exists("checkpoint"):
+        os.makedirs("checkpoint")
+    torch.save(model.state_dict(), 'checkpoint/latest_checkpoint.pth')
 ```
 
 ## 效果演示

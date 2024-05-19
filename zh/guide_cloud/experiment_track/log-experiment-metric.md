@@ -19,20 +19,24 @@ for epoch in range(num_epochs):
 
 在 `swanlab.log` 记录时，会根据指标名，将`{指标名: 指标}`字典汇总到一个统一位置存储。
 
+⚠️需要注意的是，`swanlab.log({key: value})`中的value必须是`int` / `float` / `BaseType`这三种类型（如果传入的是`str`类型，会先尝试转为`float`，如果转换失败就会报错），其中`BaseType`类型主要是多媒体数据，详情请看[记录多媒体数据](/zh/guide_cloud/experiment_track/log-media.md)。
+
 在每次记录时，会为该次记录赋予一个 `step`。在默认情况下，`step` 为0开始，并在你每一次在同一个指标名下记录时，`step` 等于该指标名历史记录的最大 `step` + 1，例如：
 
 ```python
 import swanlab
 swanlab.init()
 
+...
+
 swanlab.log({"loss": loss, "acc": acc})  
 # 此次记录中，loss的step为0, acc的step为0
 
 swanlab.log({"loss": loss, "iter": iter})  
-# 此次记录中，loss的step为1, acc的step为0, iter的step为0
+# 此次记录中，loss的step为1, iter的step为0, acc的step为0
 
 swanlab.log({"loss": loss, "iter": iter})  
-# 此次记录中，loss的step为2, acc的step为0, iter的step为1
+# 此次记录中，loss的step为2, iter的step为1, acc的step为0
 ```
 
 ## 指标分组

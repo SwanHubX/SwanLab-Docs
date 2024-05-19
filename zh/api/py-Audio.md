@@ -5,7 +5,7 @@
 ```python
 Audio(
     data_or_path: Union[str, np.ndarray, List["Audio"]],
-    sample_rate: int = None,
+    sample_rate: int = 44100,
     caption: str = None,
 ) -> None
 ```
@@ -13,7 +13,7 @@ Audio(
 | 参数          | 描述                                                                                                     |
 |-------------|--------------------------------------------------------------------------------------------------------|
 | data_or_path | (Union[str, np.ndarray, List["Audio"]]) 接收音频文件路径、numpy数组。Audio类将判断接收的数据类型做相应的转换。 |
-| sample_rate | (int) 音频的采样率。当传入音频数据的原始numpy数组时必须传入该参数。                                             |
+| sample_rate | (int) 音频的采样率，默认为44100。                                             |
 | caption     | (str) 音频的标签。用于在实验看板中展示音频时进行标记。                                                      |
 
 ## 介绍
@@ -35,7 +35,7 @@ run = swanlab.init()
 # 创建一个numpy array类型的音频
 white_noise = np.random.randn(2, 100000)
 # 传入swanlab.Audio，设置采样率
-audio = swanlab.Audio(white_noise, sample_rate=44100, caption="white_noise")
+audio = swanlab.Audio(white_noise, caption="white_noise")
 
 run.log({"examples": audio})
 ```
@@ -51,8 +51,8 @@ run = swanlab.init()
 # 创建一个列表
 examples = []
 for i in range(3):
-    white_noise = np.random.randn(2, 100000)
-    audio = swanlab.Audio(white_noise, sample_rate=44100, caption="audio_{i}")
+    white_noise = np.random.randn(100000)
+    audio = swanlab.Audio(white_noise, caption="audio_{i}")
     # 列表中添加swanlab.Audio类型对象
     examples.append(audio)
 

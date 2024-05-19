@@ -8,12 +8,52 @@
 
 ## 方式一：命令行转换
 
-```
-swanlab convert [TFEVENT_LOGDIR]
+```bash
+swanlab convert [TFEVENT_LOGDIR] -t tensorboard
 ```
 
-## 方式二：代码内
+这里的`[TFEVENT_LOGDIR]`是指你先前用Tensorboard记录实验时，生成的日志文件路径。
+
+SwanLab Converter将会自动检测文件路径及其子目录下的`tfevent`文件（默认子目录深度为3），并为每个`tfevent`文件生成一个SwanLab实验。
+
+## 方式二：代码内转换
 
 ```python
-from swanlab.convert import TFBConverter
+from swanlab.converter import TFBConverter
+
+tfb_converter = TFBConverter(convert_dir="[TFEVENT_LOGDIR]")
+tfb_converter.run()
+```
+
+效果与命令行转换一致。
+
+## 参数列表
+
+| 参数 | 对应CLI参数       | 描述                  | 
+| ---- | ---------- | --------------------- | 
+| convert_dir    | -      | Tfevent文件路径       | 
+| project    | -p, --project      | SwanLab项目名       |
+| workspace  | -w, --workspace      | SwanLab工作空间名 |
+| config    | 无      | SwanLab超参数配置       | 
+| cloud    | --cloud      | 是否使用云端版，默认为True       | 
+| logdir    | -l, --logdir      | SwanLab日志文件保存路径       | 
+
+例子：
+
+```python
+from swanlab.converter import TFBConverter
+
+tfb_converter = TFBConverter(
+    convert_dir="./runs",
+    project="Tensorboard-Converter",
+    workspace="SwanLab",
+    cloud=False,
+    logdir="./logs",
+    )
+tfb_converter.run()
+```
+
+与之作用相同的CLI：
+```bash
+swanlab convert ./runs -t tensorboard -p Tensorboard-Converter -w SwanLab --cloud false -l ./logs
 ```

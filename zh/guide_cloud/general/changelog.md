@@ -5,9 +5,24 @@
 升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.1`
 ::: 
 
-## v0.3.2 - 2024.5.xx
+## v0.3.2 - 2024.5.17
 
-...
+**👥集成**
+- 与Tensorboard集成，支持将`Tensorboard`日志文件转换为`SwanLab`实验，[指引](/zh/guide_cloud/integration/integration-tensorboard.md)
+
+**🚀新增功能**
+- 支持下载折线图为PNG图像
+- SwanLab实验可以被嵌入到在线文档中了（飞书/Notion等支持嵌入网页的在线文档）
+- 表格视图支持导出CSV
+- 表格视图支持仅看指标
+
+**⚡️改进**
+- 优化了折线图与表格视图的数值显示
+
+**⚙️修复问题**
+- 修复了在Windows系统下，`swanlab.config`载入`hydra`配置文件时，config表格的显示Bug
+- 解决SwanLab在jupyter Notebook中的登录问题
+
 
 ## v0.3.1 - 2024.5.3
 
