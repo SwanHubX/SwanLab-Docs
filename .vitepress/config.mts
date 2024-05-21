@@ -137,6 +137,8 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'OpenAI', link: 'integration/integration-openai' },
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
       { text: 'Hydra', link: 'integration/integration-hydra' },
+      { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
+      
     ]
   },
   {
