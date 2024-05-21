@@ -107,7 +107,6 @@ test_loader = utils.data.DataLoader(test_dataset)
 swanlab_logger = SwanLabLogger(
     project="swanlab_example",
     experiment_name="example_experiment",
-    cloud=False,
 )
 
 trainer = pl.Trainer(limit_train_batches=100, max_epochs=5, logger=swanlab_logger)

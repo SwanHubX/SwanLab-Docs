@@ -80,7 +80,7 @@ training_args = TrainingArguments(
 )
 
 # 实例化SwanLabCallback
-swanlab_callback = SwanLabCallback(experiment_name="TransformersTest", cloud=False)
+swanlab_callback = SwanLabCallback(experiment_name="TransformersTest")
 
 trainer = Trainer(
     model=model,
