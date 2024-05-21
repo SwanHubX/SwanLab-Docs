@@ -17,12 +17,13 @@
 
 ```python
 # 1. 创建1个SwanLab实验
-swanlab.init(organization="my-organization", project="my-project-name")
+swanlab.init(project="my-project-name")
 
 # 2. 存储模型的输入或超参数
 swanlab.config.learning_rate = 0.01
 
 # 这里写模型的训练代码
+...
 
 # 3. 记录随时间变化的指标以可视化表现
 swanlab.log({"loss": loss})
