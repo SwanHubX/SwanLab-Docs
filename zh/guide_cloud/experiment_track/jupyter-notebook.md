@@ -15,6 +15,9 @@ ps: `-qqq`是用来控制命令执行时的输出信息量的，可选。
 import swanlab
 
 swanlab.init()
+...
+# 在Notebook中，需要显式关闭实验
+swanlab.finish()
 ```
 
 在用`swanlab.init`初始化实验时，打印信息的最后会出现一个“Display SwanLab Dashboard”按钮：

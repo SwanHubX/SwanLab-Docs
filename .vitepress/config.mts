@@ -40,7 +40,7 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.2',  items: [
+      { text: 'v0.3.3',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
@@ -176,6 +176,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
       { text: 'swanlab login', link: 'cli-swanlab-login' },
+      { text: 'swanlab convert', link: 'cli-swanlab-convert' },
       { text: '其他', link: 'cli-swanlab-other' },
     ]
   },
@@ -191,6 +192,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Text', link: 'py-Text' },
       ]},
       { text: 'login', link: 'py-login' },
+      { text: 'integration', link: 'py-integration' },
+      { text: 'converter', link: 'py-converter' },
     ]
   },]
 }
