@@ -9,12 +9,12 @@
 ## 方式一：命令行转换
 
 ```bash
-swanlab convert [TFEVENT_LOGDIR] -t tensorboard
+swanlab convert -t tensorboard -tb_logdir [TFEVENT_LOGDIR]
 ```
 
 这里的`[TFEVENT_LOGDIR]`是指你先前用Tensorboard记录实验时，生成的日志文件路径。
 
-SwanLab Converter将会自动检测文件路径及其子目录下的`tfevent`文件（默认子目录深度为3），并为每个`tfevent`文件生成一个SwanLab实验。
+SwanLab Converter将会自动检测文件路径及其子目录下的`tfevent`文件（默认子目录深度为3），并为每个`tfevent`文件创建一个SwanLab实验。
 
 ## 方式二：代码内转换
 
@@ -34,7 +34,6 @@ tfb_converter.run()
 | convert_dir    | -      | Tfevent文件路径       | 
 | project    | -p, --project      | SwanLab项目名       |
 | workspace  | -w, --workspace      | SwanLab工作空间名 |
-| config    | 无      | SwanLab超参数配置       | 
 | cloud    | --cloud      | 是否使用云端版，默认为True       | 
 | logdir    | -l, --logdir      | SwanLab日志文件保存路径       | 
 
@@ -47,7 +46,6 @@ tfb_converter = TFBConverter(
     convert_dir="./runs",
     project="Tensorboard-Converter",
     workspace="SwanLab",
-    cloud=False,
     logdir="./logs",
     )
 tfb_converter.run()
@@ -55,5 +53,7 @@ tfb_converter.run()
 
 与之作用相同的CLI：
 ```bash
-swanlab convert ./runs -t tensorboard -p Tensorboard-Converter -w SwanLab --cloud false -l ./logs
+swanlab convert -t tensorboard --tb_logdir ./runs -p Tensorboard-Converter -w SwanLab -l ./logs
 ```
+
+执行上面的脚本，将会在`SwanLab`空间下，创建一个名为`Tensorboard-Converter`的项目，将`./runs`目录下tfevent文件创建为一个个swanlab实验，并将swanlab运行时产生的日志保存在`./logs`目录下。
