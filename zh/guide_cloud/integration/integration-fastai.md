@@ -9,9 +9,11 @@
 ```python
 from swanlab.integration.fastai import SwanLabCallback
 ```
-SwanLabCallback是适配于fastai的日志记录类。  
-SwanLabCallback可以定义的参数有：
-- project、experiment_name、description等与`swanlab.init`效果一致的参数
+**SwanLabCallback**是适配于fastai的日志记录类。  
+
+**SwanLabCallback**可以定义的参数有：
+- project、experiment_name、description 等与 swanlab.init 效果一致的参数, 用于SwanLab项目的初始化。
+- 你也可以在外部通过`swanlab.init`创建项目，集成会将实验记录到你在外部创建的项目中。
 
 ## 2.传入训练器
 
