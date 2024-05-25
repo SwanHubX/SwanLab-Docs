@@ -5,6 +5,17 @@
 升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.3`
 ::: 
 
+## v0.3.4 - 2024.5.27
+
+**🚀新增功能**
+- `swanlab.init`增加参数`mode`，支持新模式`disabled`
+
+**⚡️改进**
+- 优化ultralytics集成代码
+
+**👥集成**
+- 与Stable Baseline3集成，[指引](/zh/guide_cloud/integration/integration-sb3.md)
+
 ## v0.3.3 - 2024.5.22
 
 **👥集成**
