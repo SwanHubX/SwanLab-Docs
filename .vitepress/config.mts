@@ -141,7 +141,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
       { text: 'Hydra', link: 'integration/integration-hydra' },
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
-      { text: 'Stable-baseline3', link: 'integration/integration-sb3' },
+      { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
     ]
   },
   {
