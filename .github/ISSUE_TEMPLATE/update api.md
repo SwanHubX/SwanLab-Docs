@@ -1,6 +1,6 @@
 ---
 name: Update API
-about: Look for some help or ask question
+about: Update swanlab python/cli api
 title: '[API] '
 assignees: ''
 ---
