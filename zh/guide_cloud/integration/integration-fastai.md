@@ -30,7 +30,7 @@ learn.fit_one_cycle(5, cbs=SwanLabCallback)
 
 ## 3.案例-宠物分类
 
-```python
+```python (2,16)
 from fastai.vision.all import *
 from swanlab.integration.fastai import SwanLabCallback
 

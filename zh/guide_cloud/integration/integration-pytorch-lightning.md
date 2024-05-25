@@ -39,7 +39,7 @@ trainer.fit(...)
 
 ## 3. 完整案例代码
 
-```python
+```python (1,65,70)
 from swanlab.integration.pytorch_lightning import SwanLabLogger
 
 import importlib.util

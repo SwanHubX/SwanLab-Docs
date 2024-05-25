@@ -20,7 +20,8 @@ SwanLabCallback可以定义的参数有：
 
 ## 2. 传入Trainer
 
-```python
+```python (1,7,12)
+from swanlab.integration.huggingface import SwanLabCallback
 from transformers import Trainer, TrainingArguments
 
 ...
@@ -39,7 +40,7 @@ trainer.train()
 
 ## 3. 完整案例代码
 
-```python
+```python (4,41,50)
 import evaluate
 import numpy as np
 import swanlab
