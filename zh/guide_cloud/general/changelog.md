@@ -9,6 +9,7 @@
 
 **🚀新增功能**
 - `swanlab.init`增加参数`mode`，支持新模式`disabled`
+- 支持批量删除实验
 
 **⚡️改进**
 - 优化ultralytics集成代码
