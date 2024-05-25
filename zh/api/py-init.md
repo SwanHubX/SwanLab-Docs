@@ -9,7 +9,7 @@ init(
     config: Union[dict, str] = None,
     logdir: str = None,
     suffix: str = "default",
-    cloud: bool = True,
+    mode: str = "cloud",
     load: str = None,
     **kwargs,
 )
@@ -24,7 +24,7 @@ init(
 | config       | (dict, str) 实验配置，在此处可以记录一些实验的超参数等信息。支持传入配置文件路径，支持yaml和json文件。                   |
 | logdir       | (str) 日志文件存储路径，默认为swanlog                                  |
 | suffix       | (str, None, bool) experiment_name的后缀。完整的实验名称由`experiment_name`和`suffix`共同构成。<br> 默认值为"default"，代表默认的后缀规则为`'%b%d-%h-%m-%s'`，例如:`Feb03_14-45-37`。<br>设置为`None`或`False`将不加后缀。<br>|
-| cloud       | (bool) 是否将实验上传到云端的开关，默认为`True`。如果要关闭云端上传，则设置为`False`|
+| mode       | (str) 设置swanlab实验创建的模式，可选"cloud"、"local"、"disabled"，默认设置为"cloud"。<br>`cloud`：将实验上传到云端。<br>`local`：不上传到云端，但会记录实验到本地。<br>`disabled`：不上传也不记录。|
 | load       | (str) 加载的配置文件路径，支持yaml和json文件。|
 
 ## 介绍
@@ -103,3 +103,7 @@ swanlab.init(
     workspace="[组织的username]"
 )
 ```
+
+## 过期参数
+
+- `cloud`：在v0.3.4被`mode`参数取代。参数仍然可用，且会覆盖掉`mode`的设置。
