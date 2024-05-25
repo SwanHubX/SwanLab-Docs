@@ -163,7 +163,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
-      { text: '猫狗分类', link: 'cats_dogs_classification' },      
+      { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
+      { text: 'BERT文本分类', link: 'bert' },  
     ]
   },
 ]
