@@ -8,3 +8,4 @@ SwanLab与外部项目的集成API。
 - [swanlab.integration.fastai](/zh/guide_cloud/integration/integration-fastai.md)
 - [swanlab.integration.openai](/zh/guide_cloud/integration/integration-openai.md)
 - [swanlab.integration.zhipuai](/zh/guide_cloud/integration/integration-zhipuai.md)
+- [swanlab.integration.sb3](/zh/guide_cloud/integration/integration-sb3.md)

@@ -114,7 +114,7 @@ for epoch in range(2, run.config.epochs):
 1. 查看SwanLab如何[记录多媒体内容](/zh/guide_cloud/experiment_track/log-media)（图片、音频、文本、...）
 1. 查看SwanLab记录[MNIST手写体识别](/zh/examples/mnist.md)的案例
 2. 查看与其他框架的[集成](/zh/guide_cloud/integration/integration-pytorch-lightning.md)
-3. 查看如何通过SwanLab与[团队协作](#)
+3. 查看如何通过SwanLab与[团队协作](/zh/guide_cloud/general/organization.md)
 
 ## 常见问题
 
