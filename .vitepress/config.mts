@@ -40,7 +40,7 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.4',  items: [
+      { text: 'v0.3.6',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
@@ -165,6 +165,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'BERT文本分类', link: 'bert' },  
+      { text: 'Yolo目标检测', link: 'yolo' },  
     ]
   },
 ]
