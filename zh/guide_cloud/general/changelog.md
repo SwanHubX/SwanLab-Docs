@@ -5,6 +5,14 @@
 升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.3`
 ::: 
 
+
+## v0.3.6 - 2024.28
+
+**问题修复**
+
+- 修复了部分logging日志无法上传的问题
+- 修复了`swanlab login`无法登陆的问题
+
 ## v0.3.4 - 2024.5.27
 
 **🚀新增功能**
