@@ -7,6 +7,14 @@
 执行了`swanlab.finish()`之后，再次执行`swanlab.init()`就会创建新的实验；  
 如果不执行`swanlab.finish()`的情况下，再次执行`swanlab.init()`，将无视此次执行。
 
+## 如何在训练时关闭swanlab记录（Debug调试）？
+
+将`swanlab.init`的`mode`参数设置为disabled，就可以不创建实验以及不写入数据。
+
+```python
+swanlab.init(mode='disabled')
+```
+
 
 ## 本地的训练已经结束，但SwanLab UI上仍然在运行中，要怎么改变状态？
 
@@ -22,3 +30,11 @@
 ![details](/assets/faq-chart-details.png)
 
 双击区域后复原。
+
+## 如何取消实验的后缀名？
+
+```python
+swanlab.init(suffix=None)
+```
+
+ps: 要注意的是，目前同一个项目下，SwanLab的实验名是不允许重复的。

@@ -38,6 +38,8 @@ if __name__ == "__main__":
 
 ## 3.多卡训练/DDP训练
 
+> swanlab>=0.3.7
+
 在Ultralytics多卡训练的场景下，由于启动训练的方式与单卡完全不同，所以需要用一种不同的方式接入SwanLab回调。
 
 这是一个ultralytics开启DDP训练的样例代码：
