@@ -30,8 +30,60 @@ if __name__ == "__main__":
     add_swanlab_callback(model)
 
     model.train(
-        data="./coco.yaml",
-        epochs=50, 
+        data="./coco128.yaml",
+        epochs=3, 
         imgsz=320,
     )
 ```
+
+## 3.多卡训练/DDP训练
+
+在Ultralytics多卡训练的场景下，由于启动训练的方式与单卡完全不同，所以需要用一种不同的方式接入SwanLab回调。
+
+这是一个ultralytics开启DDP训练的样例代码：
+
+```python
+from ultralytics import YOLO
+
+if __name__ == "__main__":
+    model = YOLO("yolov8n.pt")
+
+    model.train(
+        data="./coco128.yaml",
+        epochs=3, 
+        imgsz=320,
+        # 开启DDP
+        device=[0,1],
+    )
+```
+
+我们需要修改ultralytics的源码，去到`ultralytics/utils/callbacks/base.py`，找到`add_integration_callbacks`函数，添加下面的三行代码：
+
+```python (15,16,18)
+def add_integration_callbacks(instance):
+    ...
+    
+    # Load training callbacks
+    if "Trainer" in instance.__class__.__name__:
+        from .clearml import callbacks as clear_cb
+        from .comet import callbacks as comet_cb
+        from .dvc import callbacks as dvc_cb
+        from .mlflow import callbacks as mlflow_cb
+        from .neptune import callbacks as neptune_cb
+        from .raytune import callbacks as tune_cb
+        from .tensorboard import callbacks as tb_cb
+        from .wb import callbacks as wb_cb
+
+        from swanlab.integration.ultralytics import return_swanlab_callback
+        sw_cb = return_swanlab_callback()
+
+        callbacks_list.extend([..., sw_cb])
+```
+
+然后运行，就可以在ddp下正常跟踪实验了。
+
+
+:::warning ps
+1. 写入源码之后，之后运行就不需要在训练脚本中增加`add_swanlab_callback`了。
+2. 项目名由model.train()的project参数定义，实验名由name参数定义。
+:::

@@ -5,8 +5,17 @@
 升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.3`
 ::: 
 
+## v0.3.7 - 2024.5.30
 
-## v0.3.6 - 2024.28
+**⚡️改进**
+- 改进了与ultralytics在ddp场景下的集成
+
+**问题修复**
+
+- 修复了当log的value为`inf`会导致线程崩溃的问题
+
+
+## v0.3.6 - 2024.5.28
 
 **问题修复**
 
