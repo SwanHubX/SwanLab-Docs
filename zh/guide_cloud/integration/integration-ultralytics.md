@@ -6,7 +6,11 @@
 
 你可以使用Ultralytics快速进行计算机视觉模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
-## 1.引入add_swanlab_callback
+下面介绍两种引入SwanLab的方式：  
+1. `add_swanlab_callback`：无需修改源码，适用于单卡训练场景
+2. `return_swanlab_callback`：需要修改源码，适用于单卡以及多卡DDP训练场景
+
+## 1.1 引入add_swanlab_callback
 
 ```python
 from swanlab.integration.ultralytics import add_swanlab_callback
@@ -14,7 +18,7 @@ from swanlab.integration.ultralytics import add_swanlab_callback
 
 `add_swanlab_callback`的作用是为Ultralytics模型添加回调函数，以在模型训练的各个生命周期执行SwanLab记录。
 
-## 2.代码案例
+## 1.2 代码案例
 
 下面是使用yolov8n模型在coco数据集上的训练，只需将model传入`add_swanlab_callback`函数，即可完成与SwanLab的集成。
 
@@ -36,7 +40,19 @@ if __name__ == "__main__":
     )
 ```
 
-## 3.多卡训练/DDP训练
+如果需要自定义SwanLab的项目、实验名等参数，则可以在`add_swanlab_callback`中添加：
+
+```python
+add_swanlab_callback(
+    model,
+    project="ultralytics",
+    experiment_name="yolov8n",
+    description="yolov8n在coco128数据集上的训练。",
+    mode="local",
+    )
+```
+
+## 2.1 多卡训练/DDP训练
 
 > swanlab>=0.3.7
 
@@ -84,8 +100,39 @@ def add_integration_callbacks(instance):
 
 然后运行，就可以在ddp下正常跟踪实验了。
 
+如果需要自定义SwanLab的项目、实验名等参数，则可以在`return_swanlab_callback`中添加：
+
+```python
+return_swanlab_callback(
+    model,
+    project="ultralytics",
+    experiment_name="yolov8n",
+    description="yolov8n在coco128数据集上的训练。",
+    mode="local",
+    )
+```
 
 :::warning ps
 1. 写入源码之后，之后运行就不需要在训练脚本中增加`add_swanlab_callback`了。
 2. 项目名由model.train()的project参数定义，实验名由name参数定义。
 :::
+
+## 2.2 代码案例
+
+```python
+from ultralytics import YOLO
+
+if __name__ == "__main__":
+    model = YOLO("yolov8n.pt")
+
+    model.train(
+        data="./coco128.yaml",
+        epochs=3, 
+        imgsz=320,
+        # 开启DDP
+        device=[0,1,2,3],
+        # 可以通过project参数设置SwanLab的project，name参数设置SwanLab的experiment_name
+        project="Ultralytics",
+        name="yolov8n"
+    )
+```
