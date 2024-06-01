@@ -2,17 +2,18 @@
 
 ::: warning 更新指南
 升级到最新版：`pip install -U swanlab`  
-升级到指定版本：`pip install swanlab==version`，如`pip install swanlab==0.3.3`
 ::: 
 
-## v0.3.7 - 2024.5.30
+## v0.3.7 - 2024.5.31
 
 **⚡️改进**
 - 改进了与ultralytics在ddp场景下的集成
+- swanlab.init时增加最新版本的提示
 
 **问题修复**
 
 - 修复了当log的value为`inf`会导致线程崩溃的问题
+- 修复了训练时间过长时，部分图片上传会失败的问题 
 
 
 ## v0.3.6 - 2024.5.28
