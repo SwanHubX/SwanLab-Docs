@@ -1,6 +1,6 @@
 # swanlab-docs
 
-本仓库托管了SwanLab的官方文档，基于[vitepress](https://vitepress.dev/zh/guide/getting-started)。
+本仓库托管了SwanLab的[官方文档](https://docs.swanlab.cn)，基于[vitepress](https://vitepress.dev/zh/guide/getting-started)。
 
 
 
