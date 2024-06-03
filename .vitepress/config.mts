@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/zh/guide_cloud'
 var base_path_examples = '/zh/examples'
 var base_path_api = '/zh/api'
+
 // 谷歌分析ID
 const GTAG = 'G-3DJ621D31F'
 
@@ -18,12 +19,15 @@ export default defineConfig({
     ['link', { rel: 'icon', type:"image/png", href: '/icon.png' }],
     [
       'script',
-      { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GTAG}` }
+      { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GTAG}`}
     ],
     [
       'script',
       {},
-      `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', ${GTAG});`
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GTAG}');`
     ]
   ],
 
