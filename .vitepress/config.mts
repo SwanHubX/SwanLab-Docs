@@ -3,6 +3,8 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/zh/guide_cloud'
 var base_path_examples = '/zh/examples'
 var base_path_api = '/zh/api'
+// 谷歌分析ID
+const GTAG = 'G-3DJ621D31F'
 
 
 // https://vitepress.dev/reference/site-config
@@ -11,8 +13,19 @@ export default defineConfig({
   description: "SwanLab官方文档, 提供最全面的使用指南和API文档",
   lang: 'zh-CN',
   // 标签页logo
-  head: [['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }],
-         ['link', { rel: 'icon', type:"image/png", href: '/icon.png' }]],
+  head: [
+    ['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }],
+    ['link', { rel: 'icon', type:"image/png", href: '/icon.png' }],
+    [
+      'script',
+      { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GTAG}` }
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', ${GTAG});`
+    ]
+  ],
 
   // markdown: {
   //   lineNumbers: true
