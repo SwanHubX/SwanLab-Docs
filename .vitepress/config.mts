@@ -184,6 +184,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'BERT文本分类', link: 'bert' },  
       { text: 'Yolo目标检测', link: 'yolo' },  
+      { text: 'Qwen大模型指令微调', link: 'qwen-1.5-7b_finetune' },  
     ]
   },
 ]
