@@ -1,10 +1,12 @@
 # 🤗HuggingFace Accelerate
 
-🤗HuggingFace 的 [Accelerate](https://huggingface.co/docs/accelerate/index) 是一个简化并优化深度学习模型训练与推理的开源库。它提供了高效的分布式训练和推理的工具，使开发者能够更轻松地在不同硬件设备上部署和加速模型。通过简单的几行代码改动，就可以轻松将现有的训练代码集成进torch_xla 和 torch.distributed这类平台，而无需为复杂的分布式计算架构烦恼，从而提升工作效率和模型性能。
+HuggingFace 的 [accelerate](https://huggingface.co/docs/accelerate/index) 是一个简化和优化深度学习模型训练与推理的开源库。
 
-![hf-transformers-image](/assets/ig-huggingface-transformers.png)
+> 🚀在几乎任何设备和分布式配置上启动、训练和使用PyTorch模型的简单方法，支持自动混合精度(包括fp8)，以及易于配置的FSDP和DeepSpeed
 
-你可以使用Transformers快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
+它提供了高效的分布式训练和推理的工具，使开发者能够更轻松地在不同硬件设备上部署和加速模型。通过简单的几行代码改动，就可以轻松将现有的训练代码集成进 `torch_xla` 和 `torch.distributed` 这类平台，而无需为复杂的分布式计算架构烦恼，从而提升工作效率和模型性能。
+
+你可以使用`accelerate`快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
 ## 1. 引入
 
@@ -12,20 +14,17 @@
 from swanlab.integration.accelerate import SwanLabTracker
 ```
 
-**SwanLabTracker**是适配于 Accelerate 的日志记录类。
+## 2. 在初始化accelerate时指定日志记录器
 
-**SwanLabTracker**可以定义的参数包括project_name、logging_dir 等与 swanlab.init 效果一致的参数, 用于SwanLab项目的初始化。
-
-## 在初始化accelerate时指定日志记录器
-
-```python (1,7,12)
+```python (1,7,9,12)
 from swanlab.integration.accelerate import SwanLabTracker
 from accelerate import Accelerator
 
 ...
 
-# 在初始化accelerate时指定日志记录器
+# 创建SwanLab日志记录器
 tracker = SwanLabTracker("YOUR_SMART_PROJECT_NAME")
+# 传入Accelerator
 accelerator = Accelerator(log_with=tracker)
 
 # 初始化所有日志记录器
@@ -35,30 +34,25 @@ accelerator.init_trackers("YOUR_SMART_PROJECT_NAME", config=config)
 ...
 ```
 
-虽然上面的代码两次次设定了项目名，实际上只有第一个项目名设置才起了作用
+- 虽然上面的代码两次设定了项目名，实际上只有第一个项目名设置才起了作用
 
-显式调用init_trackers来初始化所有日志记录其是accelerate的机制，第二次设置的项目名是当有多个日志记录器时初始化内置的日志记录器时才会用到。
+- 显式调用`init_trackers`来初始化所有日志记录是`accelerate`的机制，第二次设置的项目名是当有多个日志记录器时,初始化内置的日志记录器的情况下才会用到。
 
 ## 3. 完整案例代码
 
-下面提供一个使用accelerate进行cifar10分类并且使用SwanLab进行日志跟踪的案例
+下面是一个使用accelerate进行cifar10分类，并使用SwanLab进行日志跟踪的案例：
 
-```python (1,7,12)
+```python (10,45,46,47,71,89)
+import torch
 import torch.utils
 import torch.utils.data
 import torch.utils.data.dataloader
-from tutils import open_dev_mode
-import swanlab
-from swanlab.integration.accelerate import SwanLabTracker
-
-swanlab.login(open_dev_mode())
-
-import torch
-from torchvision.models import resnet18, ResNet18_Weights
 import torchvision
-
+from torchvision.models import resnet18, ResNet18_Weights
 from accelerate import Accelerator
 from accelerate.logging import get_logger
+import swanlab
+from swanlab.integration.accelerate import SwanLabTracker
 
 
 def main():
