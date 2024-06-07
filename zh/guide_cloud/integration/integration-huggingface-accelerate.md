@@ -120,18 +120,19 @@ def main():
         # eval model
         if accelerator.is_local_main_process:
             print(f"begin epoch {ep} evaluating...")
-        total_acc_num = 0
-        for stp, (inputs, targets) in enumerate(my_testing_dataloader):
-            predictions = my_model(inputs)
-            predictions = torch.argmax(predictions, dim=-1)
-            # Gather all predictions and targets
-            all_predictions, all_targets = accelerator.gather_for_metrics((predictions, targets))
-            acc_num = (all_predictions.long() == all_targets.long()).sum()
-            total_acc_num += acc_num
-            if accelerator.is_local_main_process:
-                print(f"eval epoch {ep} [{stp}/{len(my_testing_dataloader)}] | val acc {acc_num/len(all_targets)}")
+        with torch.no_grad():
+            total_acc_num = 0
+            for stp, (inputs, targets) in enumerate(my_testing_dataloader):
+                predictions = my_model(inputs)
+                predictions = torch.argmax(predictions, dim=-1)
+                # Gather all predictions and targets
+                all_predictions, all_targets = accelerator.gather_for_metrics((predictions, targets))
+                acc_num = (all_predictions.long() == all_targets.long()).sum()
+                total_acc_num += acc_num
+                if accelerator.is_local_main_process:
+                    print(f"eval epoch {ep} [{stp}/{len(my_testing_dataloader)}] | val acc {acc_num/len(all_targets)}")
 
-        accelerator.log({"eval acc": total_acc_num / len(my_testing_dataloader.dataset)})
+            accelerator.log({"eval acc": total_acc_num / len(my_testing_dataloader.dataset)})
 
     accelerator.wait_for_everyone()
     accelerator.save_model(my_model, "cifar_cls.pth")
