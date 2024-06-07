@@ -187,6 +187,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'BERT文本分类', link: 'bert' },  
       { text: 'Yolo目标检测', link: 'yolo' },  
+      { text: 'LSTM股票预测', link: 'lstm_stock'},
     ]
   },
 ]
