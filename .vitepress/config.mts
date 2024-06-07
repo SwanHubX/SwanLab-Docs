@@ -183,10 +183,28 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
+    ]
+  },
+  {
+    text: '计算机视觉',
+    // collapsed: false,
+    items: [
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
-      { text: 'BERT文本分类', link: 'bert' },  
       { text: 'Yolo目标检测', link: 'yolo' },  
+    ]
+  },
+  {
+    text: '自然语言处理',
+    // collapsed: false,
+    items: [  
+      { text: 'BERT文本分类', link: 'bert' },  
+    ]
+  },
+  {
+    text: '时间序列',
+    // collapsed: false,
+    items: [
       { text: 'LSTM股票预测', link: 'lstm_stock'},
     ]
   },
