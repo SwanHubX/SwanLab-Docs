@@ -157,6 +157,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
+      { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
