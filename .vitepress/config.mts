@@ -192,7 +192,6 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'Yolo目标检测', link: 'yolo' },  
-      { text: 'Qwen大模型指令微调', link: 'qwen-1.5-7b_finetune' },  
     ]
   },
   {
@@ -200,6 +199,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [  
       { text: 'BERT文本分类', link: 'bert' },  
+      { text: 'Qwen指令微调', link: 'qwen_finetune' },  
     ]
   },
   {
