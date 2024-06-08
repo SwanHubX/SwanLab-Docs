@@ -219,6 +219,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
       { text: 'swanlab login', link: 'cli-swanlab-login' },
+      { text: 'swanlab logout', link: 'cli-swanlab-logout' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
       { text: '其他', link: 'cli-swanlab-other' },
     ]

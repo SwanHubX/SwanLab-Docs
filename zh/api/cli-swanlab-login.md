@@ -30,8 +30,8 @@ swanlab login --relogin
 
 这会让你输入一个新的API Key以重新登录。
 
-## 删除本地存储的账号信息
+## 退出登录
 
 ```bash
-rm -rf ~/.swanlab
+swanlab logout
 ```
