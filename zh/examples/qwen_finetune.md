@@ -1,0 +1,259 @@
+# Qwen1.5指令微调
+
+:::info
+文本分类，大语言模型，大模型微调
+:::
+
+[实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart)
+
+## 概述
+[Qwen1.5](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)是通义千问团队的开源大语言模型，由阿里云通义实验室研发。以Qwen-1.5作为基座大模型，通过指令微调的方式实现高准确率的文本分类，是学习**大语言模型微调**的入门任务。
+
+![](/assets/example-qwen-1.png)
+
+指令微调是一种通过在由（指令，输出）对组成的数据集上进一步训练LLMs的过程。 其中，指令代表模型的人类指令，输出代表遵循指令的期望输出。 这个过程有助于弥合LLMs的下一个词预测目标与用户让LLMs遵循人类指令的目标之间的差距。
+
+
+
+在这个任务中我们会使用[Qwen-1.5-7b](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)模型在[zh_cls_fudan_news](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary)数据集上进行指令微调任务，同时使用SwanLab进行监控和可视化。
+
+
+## 环境安装
+
+本案例基于`Python>=3.10`，请在您的计算机上安装好Python。  
+
+环境依赖:  
+```txt
+swanlab
+modelscope
+transformers
+datasets
+peft
+accelerat
+pandas
+```
+
+
+一键安装命令：
+
+```bash 
+pip install swanlab modelscope transformers datasets peft pandas
+```
+
+> 本案例测试于modelscope==1.14.0、transformers==4.41.2、datasets==2.18.0、peft==0.11.1、accelerate==0.30.1、swanlab==0.3.8
+
+## 数据集介绍
+
+本案例使用的是[zh_cls_fudan-news](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary)数据集，该数据集主要被用于训练文本分类模型。
+
+zh_cls_fudan-news由几千条数据，每条数据包含text、category、output三列：
+- text 是训练语料，内容是书籍或新闻的文本内容
+- category 是text的多个备选类型组成的列表
+- output 则是text唯一真实的类型
+
+![](/assets/example-qwen-2.png)
+
+数据集例子如下：
+```
+"""
+[PROMPT]Text: 第四届全国大企业足球赛复赛结束新华社郑州５月３日电（实习生田兆运）上海大隆机器厂队昨天在洛阳进行的第四届牡丹杯全国大企业足球赛复赛中，以５：４力克成都冶金实验厂队，进入前四名。沪蓉之战，双方势均力敌，９０分钟不分胜负。最后，双方互射点球，沪队才以一球优势取胜。复赛的其它３场比赛，青海山川机床铸造厂队３：０击败东道主洛阳矿山机器厂队，青岛铸造机械厂队３：１战胜石家庄第一印染厂队，武汉肉联厂队１：０险胜天津市第二冶金机械厂队。在今天进行的决定九至十二名的两场比赛中，包钢无缝钢管厂队和河南平顶山矿务局一矿队分别击败河南平顶山锦纶帘子布厂队和江苏盐城无线电总厂队。４日将进行两场半决赛，由青海山川机床铸造厂队和青岛铸造机械厂队分别与武汉肉联厂队和上海大隆机器厂队交锋。本届比赛将于６日结束。（完）
+Category: Sports, Politics
+Output:[OUTPUT]Sports
+"""
+
+```
+
+我们的训练任务，便是希望微调后的大模型能够根据Text和Category组成的提示词，预测出正确的Output。
+
+## 准备工作
+
+在开始训练之前，请先确保环境已安装完成，并保证你有一张 **显存>=16GB** 的GPU。
+
+然后，将数据集下载到本地目录下。下载方式是前往[zh_cls_fudan-news - 魔搭社区](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/files) ，将`train.jsonl`和`test.jsonl`下载到本地根目录下即可：
+
+![](/assets/example-qwen-3.png)
+
+
+## 完整代码
+开始训练时的目录结构：
+
+```txt
+|--- train.py
+|--- train.jsonl
+|--- test.jsonl
+```
+
+train.py:
+
+```python
+import json
+import pandas as pd
+import torch
+from datasets import Dataset
+from modelscope import snapshot_download, AutoTokenizer
+from swanlab.integration.huggingface import SwanLabCallback
+from peft import LoraConfig, TaskType, get_peft_model
+from transformers import AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForSeq2Seq
+import os
+import swanlab
+
+
+def dataset_jsonl_transfer(origin_path, new_path):
+    """
+    将原始数据集转换为大模型微调所需数据格式的新数据集
+    """
+    messages = []
+
+    # 读取旧的JSONL文件
+    with open(origin_path, "r") as file:
+        for line in file:
+            # 解析每一行的json数据
+            data = json.loads(line)
+            context = data["text"]
+            catagory = data["category"]
+            label = data["output"]
+            message = {
+                "instruction": "你是一个文本分类领域的专家，你会接收到一段文本和几个潜在的分类选项，请输出文本内容的正确类型",
+                "input": f"文本:{context},类型选型:{catagory}",
+                "output": label,
+            }
+            messages.append(message)
+
+    # 保存重构后的JSONL文件
+    with open(new_path, "w", encoding="utf-8") as file:
+        for message in messages:
+            file.write(json.dumps(message, ensure_ascii=False) + "\n")
+            
+            
+def process_func(example):
+    """
+    将数据集进行预处理
+    """
+    MAX_LENGTH = 384 
+    input_ids, attention_mask, labels = [], [], []
+    instruction = tokenizer(
+        f"<|im_start|>system\n你是一个文本分类领域的专家，你会接收到一段文本和几个潜在的分类选项，请输出文本内容的正确类型<|im_end|>\n<|im_start|>user\n{example['input']}<|im_end|>\n<|im_start|>assistant\n",
+        add_special_tokens=False,
+    )
+    response = tokenizer(f"{example['output']}", add_special_tokens=False)
+    input_ids = instruction["input_ids"] + response["input_ids"] + [tokenizer.pad_token_id]
+    attention_mask = (
+        instruction["attention_mask"] + response["attention_mask"] + [1]
+    )
+    labels = [-100] * len(instruction["input_ids"]) + response["input_ids"] + [tokenizer.pad_token_id]
+    if len(input_ids) > MAX_LENGTH:  # 做一个截断
+        input_ids = input_ids[:MAX_LENGTH]
+        attention_mask = attention_mask[:MAX_LENGTH]
+        labels = labels[:MAX_LENGTH]
+    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}   
+
+
+def predict(messages, model, tokenizer):
+    device = "cuda"
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True
+    )
+    model_inputs = tokenizer([text], return_tensors="pt").to(device)
+
+    generated_ids = model.generate(
+        model_inputs.input_ids,
+        max_new_tokens=512
+    )
+    generated_ids = [
+        output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+    ]
+    
+    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+    
+    print(response)
+     
+    return response
+    
+# 在modelscope上下载Qwen1.5-7B模型到本地目录下
+model_dir = snapshot_download("qwen/Qwen1.5-7B-Chat", cache_dir="./", revision="master")
+
+# Transformers加载模型权重
+tokenizer = AutoTokenizer.from_pretrained("./qwen/Qwen1___5-7B-Chat/", use_fast=False, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("./qwen/Qwen1___5-7B-Chat/", device_map="auto", torch_dtype=torch.bfloat16)
+model.enable_input_require_grads()  # 开启梯度检查点时，要执行该方法
+
+# 加载、处理数据集和测试集
+train_dataset_path = "train.jsonl"
+test_dataset_path = "test.jsonl"
+
+train_jsonl_new_path = "new_train.jsonl"
+test_jsonl_new_path = "new_test.jsonl"
+
+if not os.path.exists(train_jsonl_new_path):
+    dataset_jsonl_transfer(train_dataset_path, train_jsonl_new_path)
+if not os.path.exists(test_jsonl_new_path):
+    dataset_jsonl_transfer(test_dataset_path, test_jsonl_new_path)
+
+# 得到训练集
+train_df = pd.read_json(train_jsonl_new_path, lines=True)
+train_ds = Dataset.from_pandas(train_df)
+train_dataset = train_ds.map(process_func, remove_columns=train_ds.column_names)
+
+config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+    inference_mode=False,  # 训练模式
+    r=8,  # Lora 秩
+    lora_alpha=32,  # Lora alaph，具体作用参见 Lora 原理
+    lora_dropout=0.1,  # Dropout 比例
+)
+
+model = get_peft_model(model, config)
+
+args = TrainingArguments(
+    output_dir="./output/Qwen1.5",
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=4,
+    logging_steps=10,
+    num_train_epochs=2,
+    save_steps=100,
+    learning_rate=1e-4,
+    save_on_each_node=True,
+    gradient_checkpointing=True,
+    report_to="none",
+)
+
+swanlab_callback = SwanLabCallback(project="Qwen-fintune", experiment_name="Qwen1.5-7B-Chat")
+
+trainer = Trainer(
+    model=model,
+    args=args,
+    train_dataset=train_dataset,
+    data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
+    callbacks=[swanlab_callback],
+)
+
+trainer.train()
+
+# 用测试集的前10条，测试模型
+test_df = pd.read_json(test_jsonl_new_path, lines=True)[:10]
+
+test_text_list = []
+for index, row in test_df.iterrows():
+    instruction = row['instruction']
+    input_value = row['input']
+    
+    messages = [
+        {"role": "system", "content": f"{instruction}"},
+        {"role": "user", "content": f"{input_value}"}
+    ]
+
+    response = predict(messages, model, tokenizer)
+    messages.append({"role": "assistant", "content": f"{response}"})
+    result_text = f"{messages[0]}\n\n{messages[1]}\n\n{messages[2]}"
+    test_text_list.append(swanlab.Text(result_text, caption=response))
+    
+swanlab.log({"Prediction": test_text_list})
+swanlab.finish()
+```
+
+## 效果演示
+
+![](/assets/example-qwen-4.png)
