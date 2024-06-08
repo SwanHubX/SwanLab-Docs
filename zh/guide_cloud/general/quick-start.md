@@ -3,26 +3,25 @@
 
 安装 SwanLab 并在几分钟内开始跟踪你的人工智能实验。
 
-::: info 提示
-
-如果你想在本地或无网络环境下查看实验，请看[自托管部分](/zh/guide_cloud/self_host/offline-board.md)。
-
-:::
-
 ## 1. 创建账号并安装SwanLab
 
-在开始之前，请确保你创建一个帐户并安装 SwanLab：
+在开始之前，请确保你创建好了一个SwanLab账号，并安装了我们的Python库。
 
-1. 在 [SwanLab官网](https://dev101.swanlab.cn) 免费注册账号，然后登录你的SwanLab账户。
-2. 使用 pip 在 Python3 环境的计算机上安装swanlab库
+1. **在 [SwanLab官网](https://swanlab.cn) 免费注册账号，然后登录你的SwanLab账号**
 
-打开命令行，输入：
+![swanlab login](/assets/login.png)
+
+2. **使用 [pip](https://pip.pypa.io/en/stable/) 在Python3环境的计算机上安装swanlab库**
+
+打开命令行（Windows系统推荐使用PowerShell），输入：
 
 ```bash
 pip install swanlab
 ```
 
-## 2. 登录到SwanLab
+按下回车，等待片刻完成安装。
+
+## 2. 在编程环境上登录SwanLab
 
 下一步，你需要在你的编程环境上登录SwanLab。
 
@@ -32,7 +31,7 @@ pip install swanlab
 swanlab login
 ```
 
-出现如下提示时，复制粘贴您的[API Key](https://dev101.swanlab.cn/settings)：
+出现如下提示时：
 
 ```bash
 swanlab: Logging into swanlab cloud.
@@ -40,7 +39,7 @@ swanlab: You can find your API key at: https://dev101.swanlab.cn/settings
 swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
-输入完成后，按下回车，完成登录。
+在[用户设置](https://swanlab.cn/settings)页面复制您的 **API Key**，粘贴后按下回车，即可完成登录。
 
 ## 3. 开启一个实验并跟踪超参数
 

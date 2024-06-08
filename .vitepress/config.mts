@@ -57,11 +57,12 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.8',  items: [
+      { text: 'v0.3.9',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
       ] },
+      { text: '在线交流', link: '/zh/guide_cloud/community/online-support'},
       { text: '官网', link: 'https://dev101.swanlab.cn' },
     ],
 
@@ -148,6 +149,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Argparse', link:'integration/integration-argparse' },
       { text: 'Fastai', link: 'integration/integration-fastai' },
+      { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
       { text: 'Hydra', link: 'integration/integration-hydra' },
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
@@ -155,6 +157,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
+      { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
@@ -180,11 +183,30 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
+    ]
+  },
+  {
+    text: '计算机视觉',
+    // collapsed: false,
+    items: [
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
-      { text: 'BERT文本分类', link: 'bert' },  
       { text: 'Yolo目标检测', link: 'yolo' },  
       { text: 'Qwen大模型指令微调', link: 'qwen-1.5-7b_finetune' },  
+    ]
+  },
+  {
+    text: '自然语言处理',
+    // collapsed: false,
+    items: [  
+      { text: 'BERT文本分类', link: 'bert' },  
+    ]
+  },
+  {
+    text: '时间序列',
+    // collapsed: false,
+    items: [
+      { text: 'LSTM股票预测', link: 'lstm_stock'},
     ]
   },
 ]

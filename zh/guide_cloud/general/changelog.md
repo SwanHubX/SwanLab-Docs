@@ -4,6 +4,21 @@
 升级到最新版：`pip install -U swanlab`  
 ::: 
 
+## v0.3.9 - 2024.6.9
+
+**🚀新增功能**
+- `swanlab.log`增加参数`section`
+- `swanlab logout`：支持在终端退出SwanLab账号
+
+**👥集成**
+- 增加与HuggingFace Accelerate的集成，[文档](/zh/guide_cloud/integration/integration-huggingface-accelerate.md)
+
+**⚡️改进**
+- 改进了媒体文件上传的稳定性
+
+**问题修复**
+- 修复了nvml库的兼容性问题
+
 ## v0.3.8 - 2024.5.31
 
 **⚡️改进**

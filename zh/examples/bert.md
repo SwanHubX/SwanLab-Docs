@@ -4,9 +4,7 @@
 自然语言处理、文本分类、机器学习入门
 :::
 
-[在线Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [知乎](https://zhuanlan.zhihu.com/p/699441531) | [美团外卖分类](https://zhuanlan.zhihu.com/p/701460910)
-
-
+[在线Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [知乎](https://zhuanlan.zhihu.com/p/699441531)  | [美团外卖评论分类](https://zhuanlan.zhihu.com/p/701460910)
 
 ## 概述
 
