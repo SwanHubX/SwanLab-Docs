@@ -4,10 +4,16 @@
 文本分类，大语言模型，大模型微调
 :::
 
-[知乎](https://zhuanlan.zhihu.com/p/701370317) ｜[竞赛地址](https://www.modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary)
+[知乎](https://zhuanlan.zhihu.com/p/701370317) ｜[竞赛地址](https://www.modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary) | [实验过程](https://swanlab.cn/@KashiwaByte/hf-visualization/runs/7hy42f6o66d5ibtsnlcjw/overview)
 
 ## 概述
-Qwen1.5是通义千问开源模型的1.5版本，以Qwen-1.5作为基座大模型，通过指令微调的方式实现高准确率的文本分类是学习大语言模型微调的入门级任务。
+Qwen1.5是通义千问开源模型的1.5版本，研发团队是阿里云。
+
+指令微调是一种通过在由（指令，输出）对组成的数据集上进一步训练LLMs的过程。 其中，指令代表模型的人类指令，输出代表遵循指令的期望输出。 这个过程有助于弥合LLMs的下一个词预测目标与用户让LLMs遵循人类指令的目标之间的差距。
+
+以Qwen-1.5作为基座大模型，通过指令微调的方式实现高准确率的文本分类是学习大语言模型微调的入门级任务。
+
+在这个任务中我们会使用Qwen-1.5-7b模型在zh_cls_fudan_news数据集上进行指令微调任务，同时使用SwanLab进行监控和可视化。
 
 ![Qwencompetition](/assets/Qwencompetition.png)
 
@@ -30,13 +36,14 @@ Qwen1.5是通义千问开源模型的1.5版本，以Qwen-1.5作为基座大模�
 
 本案例基于`Python>=3.10`，请在您的计算机上安装好Python。  
 环境依赖
+本文的代码测试于如下版本的开源库
 ```
-swanlab
-modelscope
-transformers
-datasets
-peft
-accelerate
+swanlab==0.3.8
+modelscope==1.14.0
+transformers==4.41.2
+datasets==2.18.0
+peft==0.11.1
+accelerate==0.30.1
 ```
 
 
@@ -51,15 +58,38 @@ pip install swanlab modelscope transformers datasets peft
 
 ## 数据集下载
 
-本案例首先需要下载名为`train.jsonl`的数据集，下载地址为[百度云](https://pan.baidu.com/s/1a6lDSiHST-cIP2-bQlwRJQ?pwd=90j1 )，大家可以下载后放置到代码同级目录下使用。
+本案例首先需要下载名为`zh_cls_fudan-news`的数据集，该数据集包含几千条的新闻与书籍文本、文本类型选项、文本正确类型。主要用于文本分类任务。
+
+数据集例子如下：
+```
+"""
+[PROMPT]Text: 第四届全国大企业足球赛复赛结束新华社郑州５月３日电（实习生田兆运）上海大隆机器厂队昨天在洛阳进行的第四届牡丹杯全国大企业足球赛复赛中，以５：４力克成都冶金实验厂队，进入前四名。沪蓉之战，双方势均力敌，９０分钟不分胜负。最后，双方互射点球，沪队才以一球优势取胜。复赛的其它３场比赛，青海山川机床铸造厂队３：０击败东道主洛阳矿山机器厂队，青岛铸造机械厂队３：１战胜石家庄第一印染厂队，武汉肉联厂队１：０险胜天津市第二冶金机械厂队。在今天进行的决定九至十二名的两场比赛中，包钢无缝钢管厂队和河南平顶山矿务局一矿队分别击败河南平顶山锦纶帘子布厂队和江苏盐城无线电总厂队。４日将进行两场半决赛，由青海山川机床铸造厂队和青岛铸造机械厂队分别与武汉肉联厂队和上海大隆机器厂队交锋。本届比赛将于６日结束。（完）
+Category: Sports, Politics
+Output:[OUTPUT]Sports
+"""
+
+```
+
+该数据集的下载地址为[魔搭社区](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary)
+或者
+[百度云](https://pan.baidu.com/s/1a6lDSiHST-cIP2-bQlwRJQ?pwd=90j1 )，大家可以下载后放置到代码同级目录下使用。
 
 
 ## 完整代码
+以下是完整代码的文件结构
+![image.png](https://kashiwa-pic.oss-cn-beijing.aliyuncs.com/20240608121049.png)
 
 
 ```python
+import os
 import csv
 import json
+import pandas as pd
+import torch
+from datasets import Dataset
+from modelscope import snapshot_download, AutoModel, AutoTokenizer
+from swanlab.integration.huggingface import SwanLabCallback
+from peft import LoraConfig, TaskType, get_peft_model
 
 
 jsonl_file = 'news_train.jsonl'
@@ -86,8 +116,7 @@ with open(jsonl_file, 'w', encoding='utf-8') as file:
 
 
 
-from datasets import Dataset
-import pandas as pd
+
 
 # 将jsonl文件转换为CSV文件
 df = pd.read_json('./news_train.jsonl',lines = True)
@@ -116,11 +145,7 @@ def process_func(example):
 tokenized_id = ds.map(process_func, remove_columns=ds.column_names)
 
 
-import torch
 
-from modelscope import snapshot_download, AutoModel, AutoTokenizer
-
-import os
 
 model_dir = snapshot_download('qwen/Qwen1.5-7B-Chat', cache_dir='./', revision='master')
 
@@ -130,8 +155,6 @@ model = AutoModelForCausalLM.from_pretrained('./qwen/Qwen1___5-7B-Chat/', device
 
 model.enable_input_require_grads() # 开启梯度检查点时，要执行该方法
 
-
-from peft import LoraConfig, TaskType, get_peft_model
 
 
 config = LoraConfig(
@@ -167,7 +190,7 @@ args = TrainingArguments(
 )
 
 
-from swanlab.integration.huggingface import SwanLabCallback
+
 
 swanlab_callback = SwanLabCallback(project="hf-visualization")
 
