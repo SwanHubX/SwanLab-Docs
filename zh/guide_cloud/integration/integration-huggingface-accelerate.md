@@ -6,6 +6,8 @@ HuggingFace 的 [accelerate](https://huggingface.co/docs/accelerate/index) 是�
 
 它提供了高效的分布式训练和推理的工具，使开发者能够更轻松地在不同硬件设备上部署和加速模型。通过简单的几行代码改动，就可以轻松将现有的训练代码集成进 `torch_xla` 和 `torch.distributed` 这类平台，而无需为复杂的分布式计算架构烦恼，从而提升工作效率和模型性能。
 
+![hf-accelerate-image](/assets/ig-huggingface-accelerate.png)
+
 你可以使用`accelerate`快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
 ## 1. 引入
