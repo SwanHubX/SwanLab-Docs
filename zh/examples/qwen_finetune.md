@@ -4,7 +4,7 @@
 文本分类，大语言模型，大模型微调
 :::
 
-[实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart)
+[实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart) | [Qwen2指令微调教程](https://zhuanlan.zhihu.com/p/702491999)
 
 ## 概述
 [Qwen1.5](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)是通义千问团队的开源大语言模型，由阿里云通义实验室研发。以Qwen-1.5作为基座大模型，通过指令微调的方式实现高准确率的文本分类，是学习**大语言模型微调**的入门任务。
