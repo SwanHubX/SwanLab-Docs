@@ -14,7 +14,9 @@ MMEngine 为 OpenMMLab 算法库实现了下一代训练架构，为 OpenMMLab �
 
 SwanLab将专为MMEngine设计的`SwanlabVisBackend`集成到MMEngine中，可用于记录训练、评估指标、记录实验配置、记录图像等。
 
-## 1. 引入SwanlabVisBackend
+理论上使用mmengine的框架都可以使用如下方法引入SwanLab，包括mmdetection，mmsegmentation等，不过xtuner项目由于其没有完全兼容mmengine需要使用其他方法。mmengine有两种引入SwanLab进行实验可视化跟踪的方法。
+
+## 1.config文件引入SwanlabVisBackend
 
 将如下内容添加到mm系列框架的任意config文件中, 其中`init_kwargs`中填入的参数字典与`swanlab.init`的规则一致:
 
@@ -30,8 +32,8 @@ vis_backends = [
         type="SwanlabVisBackend",
         init_kwargs={ # swanlab.init 参数
             "project": "swanlab-mmengine",
-            "experiment_name": "faster-rcnn",  # 实验名称
-            "description": "faster-rcnn r50 fpn 1x coco",  # 实验的描述信息
+            "experiment_name": "Your exp",  # 实验名称
+            "description": "Note whatever you want",  # 实验的描述信息
         },
     ),
 ]
@@ -43,7 +45,7 @@ visualizer = dict(
 )
 ```
 
-## 2.传入visualizer，开始训练
+## 2.训练脚本传入visualizer，开始训练
 
 :::info
 如果用官方自带的训练脚本，那么这一步已经默认做了，无需做改动。
