@@ -30,7 +30,6 @@ vis_backends = [
         type="SwanlabVisBackend",
         init_kwargs={ # swanlab.init 参数
             "project": "swanlab-mmengine",
-            "project": "MMDetection",  # 项目名称
             "experiment_name": "faster-rcnn",  # 实验名称
             "description": "faster-rcnn r50 fpn 1x coco",  # 实验的描述信息
         },
