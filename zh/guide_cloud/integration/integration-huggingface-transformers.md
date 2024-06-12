@@ -106,3 +106,27 @@ trainer.train()
 指标记录：
 
 ![ig-hf-transformers-gui-2](/assets/ig-hf-transformers-gui-2.png)
+
+
+## 5. 拓展：增加更多回调
+
+试想一个场景，你希望在每个epoch结束时，让模型推理测试样例，并用swanlab记录推理的结果，那么你可以创建一个继承自`SwanLabCallback`的新类，增加或重构生命周期函数。比如：
+
+```python
+class NLPSwanLabCallback(SwanLabCallback):    
+    def on_epoch_end(self, args, state, control, **kwargs):
+        test_text_list = ["example1", "example2"]
+        log_text_list = []
+        for text in test_text_list:
+            result = model(text)
+            log_text_list.append(swanlab.Text(result))
+            
+        swanlab.log({"Prediction": test_text_list}, step=state.global_step)
+```
+
+上面是一个在NLP任务下的新回调类，增加了`on_epoch_end`函数，它会在`transformers`训练的每个epoch结束时执行。
+
+查看全部的Transformers生命周期回调函数：[链接](https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_callback.py#L311)
+
+
+

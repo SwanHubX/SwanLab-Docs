@@ -57,13 +57,13 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.9',  items: [
+      { text: 'v0.3.10',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
       ] },
       { text: '在线交流', link: '/zh/guide_cloud/community/online-support'},
-      { text: '官网', link: 'https://dev101.swanlab.cn' },
+      { text: '官网', link: 'https://swanlab.cn' },
     ],
 
     // 最后更新于配置
