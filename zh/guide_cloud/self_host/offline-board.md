@@ -28,11 +28,13 @@ swanlab.init(
 打开终端，使用下面的指令，开启一个SwanLab仪表板:
 
 ```bash
-swanlab watch -l ./logs
+swanlab watch ./logs
 ```
+
+> 谐音：用swanlab看 ./logs 里的文件
 
 运行完成后，将启动一个后端服务，SwanLab会给你1个本地的URL链接（默认是http://127.0.0.1:5092）
 
 访问该链接，就可以在浏览器用离线看板查看实验了。
 
-[设置端口号和IP](/zh/api/cli-swanlab-watch.md#设置ip和端口号)
+[如何设置端口号和IP](/zh/api/cli-swanlab-watch.md#设置ip和端口号)
