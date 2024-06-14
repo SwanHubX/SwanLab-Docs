@@ -20,6 +20,8 @@ SwanLab将专为MMEngine设计的`SwanlabVisBackend`集成到MMEngine中，可�
 可以参考[mmengine15分钟教程](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html)将自己的训练代码适配mmengine
 :::
 
+确保你安装了SwanLab，或者使用`pip install -U swanlab`安装最新版。
+
 如果你按照官方案例使用了mmengine作为你的训练框架。只需在训练脚本中进行如下改动：
 1.
 2. 在初始化`visualizer`时加入SwanLabVis
@@ -75,6 +77,8 @@ swanlab_vis_backend = SwanlabVisBackend(
     }
 )
 ```
+
+参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)注册并获得SwanLab的在线跟踪key，并使用`swanlab login`。当然你也可以使用[本地面板](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)来离线查看训练结果。
 
 ## 使用方法二：config文件引入SwanlabVisBackend
 
