@@ -142,7 +142,7 @@ SwanLab Version: 0.3.1
 
 按照[MMEngine官方教程](https://mmengine.readthedocs.io/zh-cn/latest/get_started/installation.html)安装MMEngine。
 
-这里将安装环境的命令抄录下来，强烈建议按照官方文档安装，以CUDA12.1为例。
+这里将安装环境的命令抄录下来，强烈建议按照官方文档安装，以环境为python3.11，CUDA12.1为例。
 
 ```sh
 # with cuda12.1 or you can find torch version you want at pytorch.org
@@ -248,3 +248,9 @@ runner = Runner(
 runner.train()
 
 ```
+
+可以在[公开训练图表](https://swanlab.cn/@ShaohonChen/cifar10_with_resnet50/runs/f8znz8vj06huv6rm7j5a8/chart)查看到上脚本的训练结果。
+
+<div align="center">
+<img src="/assets/integration-mmegine-train.png" width=600>
+</div>
