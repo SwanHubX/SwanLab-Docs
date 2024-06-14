@@ -78,7 +78,7 @@ swanlab_vis_backend = SwanlabVisBackend(
 )
 ```
 
-参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)注册并获得SwanLab的在线跟踪key，并使用`swanlab login`。当然你也可以使用[离线看板](https://docs.swanlab.cn/zh/guide_cloud/self_host/offline-board.html)来离线查看训练结果。
+参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)注册并[获得SwanLab的在线跟踪key](https://swanlab.cn/settings/overview)，并使用`swanlab login`完成跟踪配置。当然你也可以使用[离线看板](https://docs.swanlab.cn/zh/guide_cloud/self_host/offline-board.html)来离线查看训练结果。wanLab作为VisBackend
 
 ## 使用方法二：config文件引入SwanlabVisBackend
 

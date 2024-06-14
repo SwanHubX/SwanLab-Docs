@@ -1,4 +1,4 @@
-# mmsegmentation
+# MMSegmentation
 
 [MMSegmentation](https://github.com/open-mmlab/mmengine) 是一个由 [OpenMMLab](https://openmmlab.com/) 社区开发的深度学习训练框架，基于 PyTorch 构建，旨在为研究人员和开发人员提供便捷高效的图像分割解决方案。
 
@@ -49,3 +49,5 @@ visualizer = dict(
 ```
 
 参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)注册并[获得SwanLab的在线跟踪key](https://swanlab.cn/settings/overview)，并使用`swanlab login`完成跟踪配置。当然你也可以使用[离线看板](https://docs.swanlab.cn/zh/guide_cloud/self_host/offline-board.html)来离线查看训练结果。wanLab作为VisBackend
+
+有关其他引入方法和更灵活的配置，可以参考[MMEngine接入SwanLab](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html)
