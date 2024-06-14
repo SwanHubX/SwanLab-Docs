@@ -153,6 +153,8 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
       { text: 'Hydra', link: 'integration/integration-hydra' },
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
+      { text: 'MMDetection', link: 'integration/integration-mmdetection' },
+      { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
       { text: 'OpenAI', link: 'integration/integration-openai' },
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
@@ -163,6 +165,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
+      { text: 'Xtuner', link: 'integration/integration-xtuner'},
     ]
   },
   {
