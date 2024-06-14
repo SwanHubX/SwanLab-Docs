@@ -6,6 +6,8 @@
 
 [在线实验Demo](https://swanlab.cn/@ZeyiLin/MNIST-example/runs/4plp6w0qehoqpt0uq2tcy/chart)
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1Au8aXxU2o0QNWSzGXGsTdHggighXQMNu?usp=sharing)
+
 ## 概述
 
 MNIST手写体识别是深度学习最经典的入门任务之一，由 LeCun 等人提出。  
@@ -42,7 +44,6 @@ import torch.nn.functional as F
 import torchvision
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
-from torchvision.models import ResNet18_Weights
 import swanlab
 
 # CNN网络构建
