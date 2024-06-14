@@ -16,7 +16,7 @@ MMSegmentation 提供详细的文档和示例，帮助用户快速上手，并�
 
 可以通过修改MMSegmentation的配置文件来使用SwanLab作为实验记录工具。
 
-## 在配置文件中指定S
+## 在配置文件中指定
 
 确保你安装了SwanLab，或者使用`pip install -U swanlab`安装最新版。
 
