@@ -165,8 +165,8 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
-      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
       { text: 'Xtuner', link: 'integration/integration-xtuner'},
+      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
     ]
   },
   {

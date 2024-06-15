@@ -14,7 +14,7 @@
 
 确保你安装了SwanLab，或者使用`pip install -U swanlab`安装最新版。
 
-将如下内容添加到所使用的mmsegmentation的config文件中, 其中`init_kwargs`中填入的参数字典与`swanlab.init`的规则一致:
+将如下内容添加到所使用的mmpretrain的config文件中, 其中`init_kwargs`中填入的参数字典与`swanlab.init`的规则一致:
 
 ```python
 ...
@@ -42,6 +42,4 @@ visualizer = dict(
 ...
 ```
 
-参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)注册并[获得SwanLab的在线跟踪key](https://swanlab.cn/settings/overview)，并使用`swanlab login`完成跟踪配置。当然你也可以使用[离线看板](https://docs.swanlab.cn/zh/guide_cloud/self_host/offline-board.html)来离线查看训练结果。wanLab作为VisBackend
-
-有关其他引入方法和更灵活的配置，可以参考[MMEngine接入SwanLab](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html)
+> 有关其他引入方法和更灵活的配置，可以参考[MMEngine接入SwanLab](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html)

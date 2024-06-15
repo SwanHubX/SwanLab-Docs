@@ -10,9 +10,24 @@ MMEngine 为 OpenMMLab 算法库实现了下一代训练架构，为 OpenMMLab �
 
 SwanLab将专为MMEngine设计的`SwanlabVisBackend`集成到MMEngine中，可用于记录训练、评估指标、记录实验配置、记录图像等。
 
+::: warning MM生态的其他集成
+
+- [MMPretrain](/zh/guide_cloud/integration/integration-mmpretrain.md)
+- [MMDetection](/zh/guide_cloud/integration/integration-mmdetection.md)
+- [MMSegmentation](/zh/guide_cloud/integration/integration-mmsegmentation.md)
+- [XTuner](/zh/guide_cloud/integration/integration-xtuner.md)
+
+:::
+
 ## MMEngine系列框架兼容性说明
 
-理论上使用mmengine的框架都可以使用如下方法引入SwanLab，包括[mmdetection](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmdetection.html)，[mmsegmentation](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmsegmentation.html)等，以及[自己基于mmengine实现的训练框架](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html)，可以在[OpenMMLab官方GitHub账号](https://github.com/open-mmlab)下查看有哪些优秀框架，不过[Xtuner](https://github.com/InternLM/xtuner)项目由于其没有完全兼容mmengine需要做一点点改动，可以前往[SwanLab的Xtuner集成](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-xtuner.html)查看如何在Xtuner中使用SwanLab。mmengine有两种引入SwanLab进行实验可视化跟踪的方法。
+使用mmengine的框架都可以使用如下方法引入SwanLab，比如MM官方框架 [mmdetection](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmdetection.html)，[mmsegmentation](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmsegmentation.html)等，以及[自己基于mmengine实现的训练框架](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html)。
+
+> 可以在[OpenMMLab官方GitHub账号](https://github.com/open-mmlab)下查看有哪些优秀框架。
+
+部分框架比如[Xtuner](https://github.com/InternLM/xtuner)项目，其没有完全兼容mmengine，需要做一些简单改动，可以前往[SwanLab的Xtuner集成](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-xtuner.html)查看如何在Xtuner中使用SwanLab。
+
+mmengine有两种引入SwanLab进行实验可视化跟踪的方法：
 
 ## 使用方法一：训练脚本传入visualizer，开始训练
 
@@ -23,11 +38,10 @@ SwanLab将专为MMEngine设计的`SwanlabVisBackend`集成到MMEngine中，可�
 确保你安装了SwanLab，或者使用`pip install -U swanlab`安装最新版。
 
 如果你按照官方案例使用了mmengine作为你的训练框架。只需在训练脚本中进行如下改动：
-1.
-2. 在初始化`visualizer`时加入SwanLabVis
-3. 初始化`runner`传入`visualizer`即可：
+1. 在初始化`visualizer`时加入SwanlabVisBackend
+2. 初始化`runner`传入`visualizer`即可：
 
-```python
+```python (10,20)
 from mmengine.visualization import Visualizer
 from mmengine.runner import Runner
 
@@ -54,11 +68,13 @@ runner = Runner(
 runner.train()
 ```
 
-如果希望像平常使用swanlab那样指定实验名等信息，可以在实例化SwanlabVisBackend时在init_kwargs中指定参数，具体参考[init api](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py#L71)，不过不像使用`swanlab.init`那样直接作为参数传入，而是需要构建字典，下面列举了两者的不同：
+如果希望像平常使用swanlab那样指定实验名等信息，可以在实例化SwanlabVisBackend时在init_kwargs中指定参数，具体参考[init api](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py#L71)，不过不像使用`swanlab.init`那样直接作为参数传入，而是需要构建字典。
 
-直接使用`swanlab.init`
+下面列举了两者在交互上的不同：
 
-```pyhton
+直接使用`swanlab.init`:
+
+```python
 run = swanlab.init(
     project="cat-dog-classification",
     experiment_name="Resnet50",
@@ -66,7 +82,7 @@ run = swanlab.init(
 )
 ```
 
-使用`SwanlabVisBackend`，需要以字典的形式传入`init`的参数
+使用`SwanlabVisBackend`，则是以字典的形式传入`init`的参数:
 
 ```python
 swanlab_vis_backend = SwanlabVisBackend(
@@ -77,8 +93,6 @@ swanlab_vis_backend = SwanlabVisBackend(
     }
 )
 ```
-
-参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)注册并[获得SwanLab的在线跟踪key](https://swanlab.cn/settings/overview)，并使用`swanlab login`完成跟踪配置。当然你也可以使用[离线看板](https://docs.swanlab.cn/zh/guide_cloud/self_host/offline-board.html)来离线查看训练结果。wanLab作为VisBackend
 
 ## 使用方法二：config文件引入SwanlabVisBackend
 
@@ -130,11 +144,11 @@ print(custom_vis)
 
 ```
 
-如果看到终端打印蕾丝如下信息，则表示成功引入了swanlab作为Visual Backend：
+如果看到终端打印出类似如下信息，则表示成功引入了swanlab：
 
-```txt
+```console
 MMEngine Version: 0.10.4
-SwanLab Version: 0.3.1
+SwanLab Version: 0.3.11
 <mmengine.visualization.visualizer.Visualizer object at 0x7f7cf15b1e20>
 ```
 
