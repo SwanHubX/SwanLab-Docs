@@ -4,7 +4,7 @@
 
 ```python
 Audio(
-    data_or_path: Union[str, np.ndarray, List["Audio"]],
+    data_or_path: Union[str, np.ndarray],
     sample_rate: int = 44100,
     caption: str = None,
 ) -> None
@@ -12,7 +12,7 @@ Audio(
 
 | 参数          | 描述                                                                                                     |
 |-------------|--------------------------------------------------------------------------------------------------------|
-| data_or_path | (Union[str, np.ndarray, List["Audio"]]) 接收音频文件路径、numpy数组。Audio类将判断接收的数据类型做相应的转换。 |
+| data_or_path | (Union[str, np.ndarray]) 接收音频文件路径、numpy数组。Audio类将判断接收的数据类型做相应的转换。 |
 | sample_rate | (int) 音频的采样率，默认为44100。                                             |
 | caption     | (str) 音频的标签。用于在实验看板中展示音频时进行标记。                                                      |
 

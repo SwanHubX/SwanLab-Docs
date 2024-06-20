@@ -4,7 +4,7 @@
 
 ```python
 Image(
-    data_or_path: Union[str, np.ndarray, PILImage.Image, List["Image"]],
+    data_or_path: Union[str, np.ndarray, PILImage.Image],
     mode: str = "RGB",
     caption: str = None,
     file_type: str = None,
@@ -14,7 +14,7 @@ Image(
 
 | 参数        | 描述                                                                                                                                                                   |
 |-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| data_or_path | (Union[str, np.ndarray, PILImage.Image, List["Image"]]) 接收图像文件路径、numpy数组、或者PIL图像。Image类将判断接收的数据类型做相应的转换。                                      |
+| data_or_path | (Union[str, np.ndarray, PILImage.Image]) 接收图像文件路径、numpy数组、或者PIL图像。Image类将判断接收的数据类型做相应的转换。                                      |
 | mode      | (str) 图像的 PIL 模式。最常见的是 "L"、"RGB"、"RGBA"。完整解释请参阅：[Pillow mode](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)                         |
 | caption   | (str) 图像的标签。用于在实验看板中展示图像时进行标记。                                                                                                                 |
 | file_type | (str) 设置图片的格式，可选['png', 'jpg', 'jpeg', 'bmp']，默认为'png'                                                                                                   |

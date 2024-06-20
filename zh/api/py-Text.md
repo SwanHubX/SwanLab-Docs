@@ -4,14 +4,14 @@
 
 ```python
 Text(
-    data: Union[str, List["Text"]],
+    data: Union[str],
     caption: str = None,
 ) -> None
 ```
 
 | 参数    | 描述                                                              |
 |-------|-----------------------------------------------------------------|
-| data  | (Union[str, List["Text"]]) 接收字符串。                                      |
+| data  | (Union[str]) 接收字符串。                                      |
 | caption | (str) 文本的标签。用于在实验看板中对data进行标记。                     |
 
 ## 介绍

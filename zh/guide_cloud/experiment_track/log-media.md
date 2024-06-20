@@ -1,10 +1,10 @@
 # 记录多媒体数据
 
-SwanLab 支持记录多媒体数据（图像、音频、文本等）以直观地探索你的实验结果并实现模型主观评估。
+SwanLab 支持记录多媒体数据（图像、音频、文本等）以直观地探索你的实验结果，实现模型的主观评估。
 
 ## 图片
 
-`swanlab.Image` 支持记录多种图片类型，包括 numpy、PIL、Tensor、读取文件等。
+`swanlab.Image` 支持记录多种图片类型，包括 numpy、PIL、Tensor、读取文件等。[API文档](/zh/api/py-Image)。
 
 ![](/assets/media-image-1.jpg)
 
@@ -14,10 +14,12 @@ SwanLab 支持记录多媒体数据（图像、音频、文本等）以直观地
 
 ### 记录 Array 型图片
 
-直接将 Array 传入 `swanlab.Image`，将自动根据类型做相应处理。
+Array型包括numpy和tensor。直接将 Array 传入 `swanlab.Image`，它将根据类型自动做相应处理：
 
-- 如果是 `numpy.ndarray`：SwanLab 使用 pillow (PIL) 转换 array 。
-- 如果是 `tensor`：SwanLab 使用 `torchvision` 的 `make_grid` 做转换以及自动做 normalization，然后使用 pillow 转换为 png。
+- 如果是 `numpy.ndarray`：SwanLab 会使用 pillow (PIL) 对其进行读取 。
+- 如果是 `tensor`：SwanLab 会使用 `torchvision` 的 `make_grid`函数做转换，然后使用 pillow 对其进行读取。
+
+示例代码：
 
 ```python
 image = swanlab.Image(image_array, caption="左图: 输入, 右图: 输出")
@@ -82,6 +84,8 @@ swanlab.log({"examples": image_list})
 
 ## 音频
 
+[API文档](/zh/api/py-Audio)
+
 ![](/assets/media-audio-1.jpg)
 
 ### 记录 Array 型音频
@@ -91,14 +95,43 @@ audio = swanlab.Audio(np_array, sample_rate=44100, caption="white_noise")
 swanlab.log({"white_noise": audio})
 ```
 
-### 记录文件音频
+### 记录音频文件
 
 ```python
 swanlab.log({"white_noise": swanlab.Audio("white_noise.wav")})
 ```
 
+### 单步记录多个音频
+
+```python
+examples = []
+for i in range(3):
+    white_noise = np.random.randn(100000)
+    audio = swanlab.Audio(white_noise, caption="audio_{i}")
+    # 列表中添加swanlab.Audio类型对象
+    examples.append(audio)
+
+run.log({"examples": examples})
+```
+
 ## 文本
+
+[API文档](/zh/api/py-Text)
+
+### 记录字符串
 
 ```python
 swanlab.log({"text": swanlab.Text("A example text.")})
+```
+
+### 单步记录多个文本
+
+```python
+# 创建一个空列表
+image_list = []
+for i in range(3):
+    text = swanlab.Text("A example text.", caption=f"{i}")
+    text_list.append(text)
+
+swanlab.log({"examples": text_list})
 ```
