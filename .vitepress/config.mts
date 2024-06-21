@@ -162,6 +162,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
       { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
+      { text: 'Swift', link: 'integration/integration-swift' },
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
