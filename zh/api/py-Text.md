@@ -26,7 +26,7 @@ Text(
 import swanlab
 
 swanlab.init()
-text = swanlab.Text("a awesome text.")
+text = swanlab.Text("an awesome text.")
 swanlab.log({"examples": text})
 ```
 
@@ -39,7 +39,7 @@ swanlab.init()
 
 examples = []
 for i in range(3):
-    text = swanlab.Text("a awesome text.")
+    text = swanlab.Text("an awesome text.")
     examples.append(text)
 
 swanlab.log({"examples": examples})
