@@ -4,6 +4,21 @@
 升级到最新版：`pip install -U swanlab`  
 ::: 
 
+## v0.3.13 - 2024.6.27
+
+**🚀新增功能**
+- 新增支持修改实验颜色
+
+**⚡️改进**
+- 优化了在Google CoLab、Jupyter Notebook下的一些问题
+- 优化了错误日志收集与打印
+
+**问题修复**
+- 修复了Windows系统下运行的一些问题
+- 修复了在Hydra等框架上的终端打印问题
+- 修复了了在mmengine集成中SwanlabVisBackend的save_dir不能为None的问题
+
+
 ## v0.3.11 - 2024.6.14
 
 **🚀新增功能**
