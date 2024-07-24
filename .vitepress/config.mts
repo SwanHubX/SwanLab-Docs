@@ -204,7 +204,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [  
       { text: 'BERT文本分类', link: 'bert' },  
-      { text: 'Qwen指令微调', link: 'qwen_finetune' },  
+      { text: 'Qwen微调案例', link: 'qwen_finetune' },  
     ]
   },
   {
