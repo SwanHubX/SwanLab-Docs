@@ -1,21 +1,21 @@
-# Qwen1.5指令微调
+# Qwen1.5微调案例
 
 :::info
 文本分类，大语言模型，大模型微调
 :::
 
-[实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart) | [Qwen2指令微调教程](https://zhuanlan.zhihu.com/p/702491999)
+[实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart) | [Qwen2微调教程](https://zhuanlan.zhihu.com/p/702491999)
 
 ## 概述
-[Qwen1.5](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)是通义千问团队的开源大语言模型，由阿里云通义实验室研发。以Qwen-1.5作为基座大模型，通过指令微调的方式实现高准确率的文本分类，是学习**大语言模型微调**的入门任务。
+[Qwen1.5](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)是通义千问团队的开源大语言模型，由阿里云通义实验室研发。以Qwen-1.5作为基座大模型，通过任务微调的方式实现高准确率的文本分类，是学习**大语言模型微调**的入门任务。
 
 ![](/assets/example-qwen-1.png)
 
-指令微调是一种通过在由（指令，输出）对组成的数据集上进一步训练LLMs的过程。 其中，指令代表模型的人类指令，输出代表遵循指令的期望输出。 这个过程有助于弥合LLMs的下一个词预测目标与用户让LLMs遵循人类指令的目标之间的差距。
+微调是一种通过在由（输入，输出）对组成的数据集上进一步训练LLMs的过程。这个过程有助于让LLM在特定的下游任务上表现的更为主出色。
 
 
 
-在这个任务中我们会使用[Qwen-1.5-7b](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)模型在[zh_cls_fudan_news](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary)数据集上进行指令微调任务，同时使用SwanLab进行监控和可视化。
+在这个任务中我们会使用[Qwen-1.5-7b](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)模型在[zh_cls_fudan_news](https://modelscope.cn/datasets/swift/zh_cls_fudan-news)数据集上进行指令微调任务，同时使用SwanLab进行监控和可视化。
 
 
 ## 环境安装
@@ -44,7 +44,7 @@ pip install swanlab modelscope transformers datasets peft pandas
 
 ## 数据集介绍
 
-本案例使用的是[zh_cls_fudan-news](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/summary)数据集，该数据集主要被用于训练文本分类模型。
+本案例使用的是[zh_cls_fudan-news](https://modelscope.cn/datasets/swift/zh_cls_fudan-news)数据集，该数据集主要被用于训练文本分类模型。
 
 zh_cls_fudan-news由几千条数据，每条数据包含text、category、output三列：
 - text 是训练语料，内容是书籍或新闻的文本内容
@@ -69,7 +69,7 @@ Output:[OUTPUT]Sports
 
 在开始训练之前，请先确保环境已安装完成，并保证你有一张 **显存>=16GB** 的GPU。
 
-然后，将数据集下载到本地目录下。下载方式是前往[zh_cls_fudan-news - 魔搭社区](https://modelscope.cn/datasets/huangjintao/zh_cls_fudan-news/files) ，将`train.jsonl`和`test.jsonl`下载到本地根目录下即可：
+然后，将数据集下载到本地目录下。下载方式是前往[zh_cls_fudan-news - 魔搭社区](https://modelscope.cn/datasets/swift/zh_cls_fudan-news/files) ，将`train.jsonl`和`test.jsonl`下载到本地根目录下即可：
 
 ![](/assets/example-qwen-3.png)
 
