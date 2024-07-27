@@ -57,7 +57,7 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.14',  items: [
+      { text: 'v0.3.15',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
@@ -160,6 +160,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
+      { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
       { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
       { text: 'Swift', link: 'integration/integration-swift' },
