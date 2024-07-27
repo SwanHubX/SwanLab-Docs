@@ -4,11 +4,13 @@
 
 你可以使用`torchtune`快速进行LLM微调，同时使用SwanLab进行实验跟踪与可视化。
 
-## 1. 引入SwanLabLogger
+## 1. 修改配置文件，引入SwanLabLogger
 
-我们以使用`torchtune`微调Google的`gemma-2b`模型为例。torchtune在微调一个模型时，需要训练者先准备一个配置文件，如[2B_qlora_single_device.yaml](https://github.com/pytorch/torchtune/blob/main/recipes/configs/gemma/2B_qlora_single_device.yaml)。
+我们以使用`torchtune`微调Google的`gemma-2b`模型为例。
 
-编辑这个配置文件，找到下面的代码段：
+torchtune在微调一个模型时，需要训练者先准备一个配置文件，如用QLoRA微调Gemma-2b模型：[2B_qlora_single_device.yaml](https://github.com/pytorch/torchtune/blob/main/recipes/configs/gemma/2B_qlora_single_device.yaml)。
+
+下载后，编辑这个配置文件。我们在文件中找到下面的代码段：
 
 ```yaml
 # Logging
@@ -28,9 +30,7 @@ metric_logger:
   log_dir: ${output_dir}
 ```
 
-`swanlab.integration.torchtune.SwanLabLogger`是适配于PyTorch torchtune的日志记录类。与`SwanLabLogger`一同可定义的参数有：
-
-- project、experiment_name、description、mode 等与 swanlab.init 效果一致的参数, 用于SwanLab项目的初始化。
+其中，`_component_`对应的`swanlab.integration.torchtune.SwanLabLogger`是适配于PyTorch torchtune的日志记录类。而`project`、`experiment_name`等则是创建SwanLab项目传入的参数，支持传入的参数与[swanlab.init](http://localhost:5173/zh/api/py-init.html)规则一致。
 
 
 ## 2. 开始训练
