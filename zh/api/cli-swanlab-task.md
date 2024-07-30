@@ -48,7 +48,7 @@ swanlab task launch -e <待运行的python脚本>
 
 接下来SwanLab将会提示你是否将本地目录下的代码打包并上传到GPU服务器上（如下图），输入Y确认。
 
-![launch-upload](../../assets/launch-upload.png)
+![launch-upload](../../assets/task-upload.png)
 
 **SwanLab Task**将会自动将本地代码打包，上传到GPU服务器，并启动训练。
 
@@ -60,15 +60,29 @@ swanlab task launch -e <待运行的python脚本>
 swanlab task list
 ```
 
-这将在端口中开启一个表格（如下图）,其中`Status`栏表示当前已开启的实验代码
+这将在端口中开启一个表格（如下图），最上面的一个为当前开启的实验。其中*Status*表示当前实验的状态，*PREPARE*表示该实验正在部署（其他状态可参考[swanlab task list](#swanlab-task-list)章节）。
 
-![task-list](.)
+![task-list-prepare](../../assets/task-prepare.png)
 
-也可以在[swanlab.cn](https://swanlab.cn)中查看到开始的实验
+当开始训练时（*Status*切换为*RUNNING*），可点击*URL*中的链接在[swanlab.cn](https://swanlab.cn)中查看到开始的实验。
 
 ![launch-exp](.)
 
-点击进入到Environments->System Hardwork，即可看到当前云上的服务器硬件
+:::info
+仅当代码中包含使用`swanlab`进行在线实验指标跟踪时，才会自动获取和显示URL。
+
+使用`swanlab`进行训练指标跟踪可参考[创建一个实验](../guide_cloud/experiment_track/create-experiment.md)
+:::
+
+可以通过在线看中查看到跟踪的实验指标
+
+![launch-remote-exp](.)
+
+点击Logs即可查看到云端的终端输出信息
+
+![launch-remote-logs](.)
+
+在swanlab云端实验看板界面（如下图）点击Environments->System Hardwork，即可看到当前云上的服务器硬件
 
 ![launch-remote-device](.)
 
@@ -78,7 +92,7 @@ swanlab task list
 
 **SwanLab Task**功能目标是帮助AI研究者轻松高效的利用起多个不同的本地GPU服务>器，并且方便的规划自己的训练任务。因此**SwanLab Task**功能专注于解决怎么让用户更方便的将训练快速部署到GPU服务器上。
 
-![launch对比](../../assets/launch-compare.png)
+![launch对比](../../assets/task-compare.png)
 
 通常使用远程GPU服务器完成训练需要进行三个步骤（见上图左）：
 
@@ -136,7 +150,7 @@ swanlab task list
 
 看板中的任务有三种状态：
 
-* **QUEUE**：远程GPU繁忙，正在排队中
+* **QUEUING**：远程GPU繁忙，正在排队中
 * **PREPARE**：正在部署远程环境
 * **RUNNING**：正在运行训练
 * **COMPLETED**：已经完成的任务
