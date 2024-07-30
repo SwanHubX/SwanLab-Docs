@@ -66,8 +66,6 @@ swanlab task list
 
 当开始训练时（*Status*切换为*RUNNING*），可点击*URL*中的链接在[swanlab.cn](https://swanlab.cn)中查看到开始的实验。
 
-![launch-exp](.)
-
 :::info
 仅当代码中包含使用`swanlab`进行在线实验指标跟踪时，才会自动获取和显示URL。
 
@@ -76,15 +74,15 @@ swanlab task list
 
 可以通过在线看中查看到跟踪的实验指标
 
-![launch-remote-exp](.)
+![launch-remote-exp](../../assets/task-remote-exp.png)
 
 点击Logs即可查看到云端的终端输出信息
 
-![launch-remote-logs](.)
+![launch-remote-logs](../../assets/task-remote-log.png)
 
 在swanlab云端实验看板界面（如下图）点击Environments->System Hardwork，即可看到当前云上的服务器硬件
 
-![launch-remote-device](.)
+![launch-remote-device](../../assets/task-remote-device.png)
 
 关于调试、终止正在进行的实验等命令参考[SwanLab Task命令](#swanlab-task命令)
 
@@ -138,7 +136,7 @@ swanlab task list
 
 打印出已完成运行或者正在运行的实验（默认打印最新的10条）效果如下：
 
-![task-list](.)
+![task-list](../../assets/task-list.png)
 
 其中：
 
@@ -164,11 +162,31 @@ swanlab task list
 swanlab task search <TASK_ID>
 ```
 
-该命令用于查看CRASHED的任务的报错原因。其中`TASK_ID`可通过[swanlab task list](#swanlab-task-list)查看。
+该命令用于。其中`TASK_ID`可通过[swanlab task list](#swanlab-task-list)查看，返回信息包含实验的开启结束时间，以及集群类型，执行环境等。
 
-命令使用效果如下：
+```bash
+Task Info
+Task Name: Task_Jul31_02-44-38
+Python Version: python3.10
+Entry File: train.py
+Status: ✅ COMPLETED
+Combo: RTX3090-1
+Created At: 2024-07-30 18:44:40
+Started At: 2024-07-30 18:45:02
+Finished At: 2024-07-30 18:52:49
+```
 
-![task-error](.)
+该命令也可以用于查看执行失败的任务（执行状态CRASHED的任务）报错信息。例如当我在[入门章节](#swanlab-task三分钟快速入门教程)的测试代码中中故意增加报错代码
+
+![error-code](../../assets/task-error-code.png)
+
+对启动的该任务使用`swanlab task search <TASK_ID>`命令后，效果如下：
+
+![task-search](../../assets/task-search-error.png)
+
+当然，也可以在该实验对应的[swanlab在线实验看板](https://swanlab.cn)中的log下查看报错信息：
+
+![remote-error-log](../../assets/task-remote-error-log.png)
 
 ## SwanLab Agent安装（开发中）
 
