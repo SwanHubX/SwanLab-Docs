@@ -1,14 +1,16 @@
-# Swanlab Launch使用文档（测试功能）
+# SwanLab Task使用文档（测试功能）
 
 <div style="border:1px solid red; padding: 10px; background-color: #ffcccc;">
   <strong>警告：</strong> 目前该功能正在测试，请充分阅读下文档中的<strong>功能测试说明</strong>章节再使用该功能
 </div>
 
-## SwanLab Launch三分钟快速入门教程
+## SwanLab Task三分钟快速入门教程
 
-本教程将以一个简单的一元二次函数回归任务来帮助读者了解如何使用**SwanLab Launch**功能。
+本教程将以一个简单的一元二次函数回归任务来帮助读者了解如何使用**SwanLab Task**功能。
 
-**前置步骤，登录和获取key：**注册并登录[SwanLab](http://swanlab.cn/)，获取[API Key](https://swanlab.cn/settings/overview)
+### 前置步骤，登录和获取key
+
+注册并登录[SwanLab](http://swanlab.cn/)，获取[API Key](https://swanlab.cn/settings/overview)
 
 在本地安装swanlab（确保版本号为0.3.15及以上版本）
 
@@ -23,7 +25,9 @@ python -c "import swanlab;print(swanlab.__version__)"
 # 0.3.15
 ```
 
-**第一步，准备代码：**使用已经准备好的开源案例，使用git下载[SwanLab Launch测试代码](https://github.com/SwanHubX/SwanLabLaunchExample.git)，并进入到项目的根目录下：
+### 第一步，准备代码
+
+使用已经准备好的开源案例，使用git下载[SwanLab Task测试代码](https://github.com/SwanHubX/SwanLabLaunchExample.git)，并进入到项目的根目录下
 
 ```bash
 # 下载项目
@@ -32,9 +36,11 @@ git clone https://github.com/SwanHubX/SwanLabLaunchExample.git
 cd SwanLabLaunchExample
 ```
 
-如果无法使用[Github](https://github.com)，可以在附录中找到完整的代码。
+如果无法使用[Github](https://github.com)，可以在[附录](#训练案例代码)中找到完整的代码。
 
-**第二步，云上运行代码：**使用**SwanLab Launch**功能执行训练的入口函数，命令如下
+### 第二步，云上运行代码
+
+使用**SwanLab Task**功能执行训练的入口函数，命令如下
 
 ```bash
 swanlab task launch -e <待运行的python脚本>
@@ -44,9 +50,11 @@ swanlab task launch -e <待运行的python脚本>
 
 ![launch-upload](../../assets/launch-upload.png)
 
-**SwanLab Launch**将会自动将本地代码打包，上传到GPU服务器，并启动训练。
+**SwanLab Task**将会自动将本地代码打包，上传到GPU服务器，并启动训练。
 
-**第三步，查看实验：**可以使用如下命令查看已开启的实验
+### 第三步，查看实验
+
+可以使用如下命令查看已开启的实验
 
 ```bash
 swanlab task list
@@ -54,19 +62,21 @@ swanlab task list
 
 这将在端口中开启一个表格（如下图）,其中`Status`栏表示当前已开启的实验代码
 
-![task-list]()
+![task-list](.)
 
 也可以在[swanlab.cn](https://swanlab.cn)中查看到开始的实验
 
-![launch-exp]()
+![launch-exp](.)
 
 点击进入到Environments->System Hardwork，即可看到当前云上的服务器硬件
 
-![launch-remote-device]()
+![launch-remote-device](.)
+
+关于调试、终止正在进行的实验等命令参考[SwanLab Task命令](#swanlab-task命令)
 
 ## 设计理念
 
-**SwanLab Launch**功能目标是帮助AI研究者轻松高效的利用起多个不同的本地GPU服务>器，并且方便的规划自己的训练任务。因此**SwanLab Launch**专注于解决怎么让用户更方便的将训练快速部署到GPU服务器上。
+**SwanLab Task**功能目标是帮助AI研究者轻松高效的利用起多个不同的本地GPU服务>器，并且方便的规划自己的训练任务。因此**SwanLab Task**功能专注于解决怎么让用户更方便的将训练快速部署到GPU服务器上。
 
 ![launch对比](../../assets/launch-compare.png)
 
@@ -84,7 +94,7 @@ swanlab task list
 * 多节点实验需要在多个服务器上重复这些动作
 * ...
 
-使用**SwanLab Launch**功能只需要做如下几个操作（见上图右）：
+使用**SwanLab Task**功能只需要做如下几个操作（见上图右）：
 
 1. GPU服务器后台运行**SwanLab Agent**
 2. 在本地完成实验脚本撰写和制定环境依赖
@@ -92,15 +102,65 @@ swanlab task list
 
 SwanLab会自动完成本地代码打包上传、GPU服务器安装环境、根据GPU服务器的显卡空闲情况分配对应的GPU卡训练等工作。让研究人员不用去做烦琐的环境配置、查看服务器空闲情况等，可以专注于训练本身。
 
-## SwanLab Launch命令
+## SwanLab Task命令
 
-创建一个新文件夹并将数据集、训练代码放到当前文件夹中。也可以选择从现有项目、或者从[GitHub](https://github.com/)、[SwanHub](http://swanhub.co/)、[HuggingFace](https://huggingface.co/)中clone一个项目。
+:::warning
+由于该功能尚在迭代，CLI命令和接口可能会随时变动。可以通过`swanlab task --help`来查看最新的命令。
+:::
+
+### swanlab task launch
+
+```bash
+swanlab task launch -e <启动训练的入口python脚本>
+```
+
+将文件夹下的任务打包、上传至远程GPU服务器，并且执行入口训练函数
+
+### swanlab task list
+
+```bash
+swanlab task list
+```
+
+打印出已完成运行或者正在运行的实验（默认打印最新的10条）效果如下：
+
+![task-list](.)
+
+其中：
+
+* **TASK ID**：任务的唯一标识
+* **Task Name**：任务名称
+* **URL**：swanlab在线实验日志跟踪的链接（仅实验脚本中设置了`swanlab.init`并且开启了云端同步实验数据）
+* **Started Time**：实验开始部署时间
+* **Finished Time**：实验完成时间
+
+看板中的任务有三种状态：
+
+* **QUEUE**：远程GPU繁忙，正在排队中
+* **PREPARE**：正在部署远程环境
+* **RUNNING**：正在运行训练
+* **COMPLETED**：已经完成的任务
+* **CRASHED**：环境部署失败或者代码错误
+
+使用`ctrl+c`退出看板
+
+### swanlab task search
+
+```bash
+swanlab task search <TASK_ID>
+```
+
+该命令用于查看CRASHED的任务的报错原因。其中`TASK_ID`可通过[swanlab task list](#swanlab-task-list)查看。
+
+命令使用效果如下：
+
+![task-error](.)
 
 ## SwanLab Agent安装（开发中）
 
 <span style="color: red;">（等待补充）</span>
 
->目前该功能正在开发和测试，为了方便使用，SwanLab提供了云端免费的测试算力使用。可以直接通过`SwanLab Launch`使用云端算力运行和部署
+>目前该功能正在开发和测试，为了方便使用，SwanLab提供了云端免费的测试算力使用。可以直接通过`SwanLab Task`使用云端算力运行和部署
 
 ## 工作过程和原理
 
@@ -112,11 +172,11 @@ SwanLab会自动完成本地代码打包上传、GPU服务器安装环境、根�
 强烈建议在使用本功能前[点击链接](s)加入到测试群当中，我们将会在群中第一时间回复解决可能遇到的问题。
 :::
 
-**SwanLab Launch**功能涉及将所需运行的代码和数据集上传到公有云服务器当中，我们尽力保障您的数据安全，但测试阶段仍有可能出现数据泄漏、丢失等风险，**请勿将重要数据上传至测试功能当中**。
+**SwanLab Task**功能涉及将所需运行的代码和数据集上传到公有云服务器当中，我们尽力保障您的数据安全，但测试阶段仍有可能出现数据泄漏、丢失等风险，**请勿将重要数据上传至测试功能当中**。
 
-**SwanLab Launch**功能的迭代依赖于社区用户的积极反馈，如果您遇到任何问题，欢迎积极联系我们。可以通过[Github Issue](https://github.com/SwanHubX/SwanLab/issues)，联系邮箱[zeyi.lin@swanhub.co](zeyi.lin@swanhub.co)和加入到[微信测试群](s)当中与我们直接交流。
+**SwanLab Task**功能的迭代依赖于社区用户的积极反馈，如果您遇到任何问题，欢迎积极联系我们。可以通过[Github Issue](https://github.com/SwanHubX/SwanLab/issues)，联系邮箱[zeyi.lin@swanhub.co](zeyi.lin@swanhub.co)和加入到[微信测试群](s)当中与我们直接交流。
 
-为了方便测试的顺利进行，**SwanLab Launch**为参与测试的用户提供了免费的测试运行服务器，我们尽力满足每一位用户的测试和算力需求，但是由于团队资源有限和功能迭代，仍可能出现训练任务排队、训练被迫终止等情况。
+为了方便测试的顺利进行，**SwanLab Task**为参与测试的用户提供了免费的测试运行服务器，我们尽力满足每一位用户的测试和算力需求，但是由于团队资源有限和功能迭代，仍可能出现训练任务排队、训练被迫终止等情况。
 
 ## 致谢
 
