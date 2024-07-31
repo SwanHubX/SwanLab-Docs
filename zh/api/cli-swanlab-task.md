@@ -4,6 +4,18 @@
   <strong>警告：</strong> 目前该功能正在测试，请充分阅读下文档中的<strong>功能测试说明</strong>章节再使用该功能
 </div>
 
+``` bash
+swanlab task [OPTIONS]
+```
+
+| 选项 | 描述 |
+| --- | --- |
+| `launch -e <py file>` | 使用云端GPU服务器运行训练 |
+| `list` | 查看开始的训练任务状态 |
+| `search <task id>` | 查看某一特定任务的运行情况 |
+
+详细使用方法请查[SwanLab Task命令](#swanlab-task命令)
+
 ## SwanLab Task三分钟快速入门教程
 
 本教程将以一个简单的一元二次函数回归任务来帮助读者了解如何使用**SwanLab Task**功能。
