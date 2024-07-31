@@ -39,11 +39,11 @@ python -c "import swanlab;print(swanlab.__version__)"
 
 ### 第一步，准备代码
 
-使用已经准备好的开源案例，使用git下载[SwanLab Task测试代码](https://github.com/SwanHubX/SwanLabLaunchExample.git)，并进入到项目的根目录下
+使用已经准备好的开源案例，使用git下载[SwanLab Task测试代码](https://github.com/SwanHubX/SwanLab-LaunchExample.git)，并进入到项目的根目录下
 
 ```bash
 # 下载项目
-git clone https://github.com/SwanHubX/SwanLabLaunchExample.git
+git clone https://github.com/SwanHubX/SwanLab-LaunchExample.git
 # 进入项目根目录
 cd SwanLabLaunchExample
 ```
