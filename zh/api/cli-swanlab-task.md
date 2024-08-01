@@ -1,7 +1,9 @@
-# SwanLab Task使用文档（测试功能）
+# SwanLab Task使用文档（Beta功能）
+
+<br>
 
 <div style="border:1px solid red; padding: 10px; background-color: #ffcccc;">
-  <strong>警告：</strong> 目前该功能正在测试，请充分阅读下文档中的<strong>功能测试说明</strong>章节再使用该功能
+  <strong>警告：</strong> 目前该功能正在内测中，请充分阅读下文档中的<strong>功能测试说明</strong>章节再使用该功能
 </div>
 
 ``` bash
@@ -33,7 +35,7 @@ pip install -U swanlab
 可以通过如下命令查看swanlab版本号
 
 ```bash
-python -c "import swanlab;print(swanlab.__version__)"
+swanlab -v
 # 0.3.15
 ```
 
@@ -45,24 +47,35 @@ python -c "import swanlab;print(swanlab.__version__)"
 # 下载项目
 git clone https://github.com/SwanHubX/SwanLab-LaunchExample.git
 # 进入项目根目录
-cd SwanLabLaunchExample
+cd SwanLab-LaunchExample
 ```
 
 如果无法使用[Github](https://github.com)，可以在[附录](#训练案例代码)中找到完整的代码。
 
 ### 第二步，云上运行代码
 
-使用**SwanLab Task**功能执行训练的入口函数，命令如下
+使用`swanlab task launch`执行训练的入口函数，命令如下：
 
 ```bash
 swanlab task launch -e <待运行的python脚本>
 ```
 
-接下来SwanLab将会提示你是否将本地目录下的代码打包并上传到GPU服务器上（如下图），输入Y确认。
+接下来SwanLab将会提示你是否将本地目录下的代码打包并上传到GPU服务器上（如下图），输入`y`确认。
 
 ![launch-upload](../../assets/task-upload.png)
 
 **SwanLab Task**将会自动将本地代码打包，上传到GPU服务器，并启动训练。
+
+---
+
+如果想跳过确认步骤，则在命令中添加`-y`参数：
+
+```bash
+swanlab task launch -y -e <待运行的python脚本>
+```
+
+这样将会直接执行打包上传操作。
+
 
 ### 第三步，查看实验
 
