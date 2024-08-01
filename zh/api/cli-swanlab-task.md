@@ -3,7 +3,14 @@
 <br>
 
 <div style="border:1px solid red; padding: 10px; background-color: #ffcccc;">
-  <strong>警告：</strong> 目前该功能正在内测中，请充分阅读下文档中的<strong>功能测试说明</strong>章节再使用该功能
+  <strong>警告：</strong> 目前该功能正在内测中，请充分阅读下文档中的 <strong>功能测试说明</strong> 章节再使用该功能。 
+  <br> 
+  <strong>内测的一些限制：</strong>
+  <br> 
+  1. 最大任务时长为4小时
+  <br> 
+  2. 内测的更多信息请联系 zeyi.lin@swanhub.co
+  <br> 
 </div>
 
 ``` bash
