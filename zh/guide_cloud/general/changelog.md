@@ -2,7 +2,23 @@
 
 ::: warning 更新指南
 升级到最新版：`pip install -U swanlab`  
+Github: https://github.com/SwanHubX/SwanLab
 ::: 
+
+## v0.3.16 - 2024.7.31
+
+**🚀新增功能**
+- （内测）新增任务式训练`swanlab task`功能
+- 新增与`torchtune`的集成，[文档](/zh/guide_cloud/integration/integration-pytorch-torchtune)
+
+**优化**
+- `swanlab.init`增加参数`public`，可用于设置创建的新项目的可见性，默认为`False`
+- 用`swanlab.init`创建的项目默认可见性改为私有
+- 新增了`swanlab.config`对`dataclass`类型的支持
+
+**问题修复**
+- 修复了在conda-forge环境下import swanlab会提示缺乏依赖库的问题
+
 
 ## v0.3.14 - 2024.7.20
 
