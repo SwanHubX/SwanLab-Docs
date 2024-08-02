@@ -178,6 +178,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '在线支持', link: 'community/online-support'},
       { text: 'Github徽章', link: 'community/github-badge'},
       { text: '论文引用', link: 'community/paper-cite'},
+      { text: '贡献者', link: 'community/contributor'},
     ]
   },]
 }
