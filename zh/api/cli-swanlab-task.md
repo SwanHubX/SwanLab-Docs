@@ -113,7 +113,7 @@ swanlab task list
 
 ## 设计理念
 
-**SwanLab Task**功能目标是帮助AI研究者轻松高效的利用起多个不同的本地GPU服务>器，并且方便的规划自己的训练任务。因此**SwanLab Task**功能专注于解决怎么让用户更方便的将训练快速部署到GPU服务器上。
+**SwanLab Task**功能目标是帮助AI研究者轻松高效的利用起多个不同的本地GPU服务器，并且方便的规划自己的训练任务。因此**SwanLab Task**功能专注于解决怎么让用户更方便的将训练快速部署到GPU服务器上。
 
 ![launch对比](../../assets/task-compare.png)
 
