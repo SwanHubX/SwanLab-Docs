@@ -359,7 +359,7 @@ print("GENERATE:", pipe("人工智能", num_return_sequences=1)[0]["generated_te
 确保swanlab版本为0.3.19
 :::
 
-预训练LLM对于GPU的算力和显存要求非常高，本文推荐使用[SwanLab Launch](../api/cli-swanlab-task.md)利用云上GPU进行预训练。
+预训练LLM对于GPU的算力和显存要求非常高，本文推荐使用[SwanLab Launch](../api/cli-swanlab-remote-gpu.md)利用云上GPU进行预训练。
 
 首先使用`swanlab upload -n WIKI_CN WIKI_CN`命令上传数据集
 
