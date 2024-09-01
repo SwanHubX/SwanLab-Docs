@@ -3,7 +3,7 @@
 ::: danger
 <strong>警告：</strong> 目前该功能正在内测中，请充分阅读下文档中的 <strong>功能测试说明</strong> 章节再使用该功能。**内测的一些限制：**
 1. 最大任务时长为4小时
-2. 内测的更多信息请联系 <contact@swanlab.cn>
+2. 内测的更多信息请联系 <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(产品经理邮箱)
 :::
 
 ``` bash
