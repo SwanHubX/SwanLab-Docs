@@ -3,7 +3,7 @@
 ::: danger
 <strong>警告：</strong> 目前该功能正在内测中，请充分阅读下文档中的 <strong>功能测试说明</strong> 章节再使用该功能。**内测的一些限制：**
 1. 最大任务时长为4小时
-2. 内测的更多信息请联系 zeyi.lin@swanhub.co
+2. 内测的更多信息请联系 <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(产品经理邮箱)
 :::
 
 ``` bash
@@ -231,7 +231,7 @@ Finished At: 2024-07-30 18:52:49
 
 **SwanLab Task**功能涉及将所需运行的代码和数据集上传到公有云服务器当中，我们尽力保障您的数据安全，但测试阶段仍有可能出现数据泄漏、丢失等风险，**请勿将重要数据上传至测试功能当中**。
 
-**SwanLab Task**功能的迭代依赖于社区用户的积极反馈，如果您遇到任何问题，欢迎积极联系我们。可以通过[Github Issue](https://github.com/SwanHubX/SwanLab/issues)，联系邮箱 zeyi.lin@swanhub.co 加入到[微信测试群](https://geektechstudio.feishu.cn/wiki/Te1EwcLbrimD7Zk1fsrcCovanyg)当中与我们直接交流。
+**SwanLab Task**功能的迭代依赖于社区用户的积极反馈，如果您遇到任何问题，欢迎积极联系我们。可以通过[Github Issue](https://github.com/SwanHubX/SwanLab/issues)，联系邮箱 <contact@swanlab.cn> 加入到[微信测试群](https://geektechstudio.feishu.cn/wiki/Te1EwcLbrimD7Zk1fsrcCovanyg)当中与我们直接交流。
 
 为了方便测试的顺利进行，**SwanLab Task**为参与测试的用户提供了免费的测试运行服务器，我们尽力满足每一位用户的测试和算力需求，但是由于团队资源有限和功能迭代，仍可能出现训练任务排队、训练被迫终止等情况。
 
