@@ -43,6 +43,10 @@ export default defineConfig({
     // 导航栏配置
     nav: [
       { 
+        text: '算力活动',
+        link: 'https://swanlab.cn/notice?utm_source=docs'
+      },
+      { 
         text: '用户指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
         activeMatch: '/zh/guide_cloud/',
