@@ -5,6 +5,17 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.3.19 - 2024.9.2
+
+**🚀新增功能**
+- （内测）新增任务式训练`swanlab task`的网盘存储功能
+
+**优化**
+- 【环境】增加对CPU品牌的记录
+
+**问题修复**
+- 修复了在Win命令行下`swanlab login`容易出现误操作引发的问题
+
 
 ## v0.3.17 - 2024.8.18
 
