@@ -233,7 +233,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
-      { text: '(内测中) swanlab task', link: 'cli-swanlab-task' },
+      { text: '(内测中) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
       { text: '其他', link: 'cli-swanlab-other' },
     ]
   },
