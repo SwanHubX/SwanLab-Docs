@@ -183,7 +183,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Github徽章', link: 'community/github-badge'},
       { text: '论文引用', link: 'community/paper-cite'},
       { text: '贡献代码', link: 'community/contributing-code'},
-      { text: '贡献文档', link: '../../README'},
+      { text: '贡献官方文档', link: 'community/contributing-docs'},
       { text: '贡献者', link: 'community/contributor'},
     ]
   },]
