@@ -20,7 +20,7 @@ hero:
     #   link: /zh/guide_cloud/general/quick-start.md
     - theme: alt
       text: GitHub
-      link: https://github.com/swanhubx/swanlab
+      link: https://github.com/SwanHubX/SwanLab-Docs
   image:
     src: /page.png
     alt: VitePress
