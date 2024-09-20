@@ -19,7 +19,7 @@ hero:
     #   text: 快速开始
     #   link: /zh/guide_cloud/general/quick-start.md
     - theme: alt
-      text: GitHub
+      text: 文档GitHub
       link: https://github.com/SwanHubX/SwanLab-Docs
   image:
     src: /page.png
