@@ -1,4 +1,4 @@
-# swanlab-docs
+# 为SwanLab官方文档做贡献
 
 为项目贡献的方式不仅仅是贡献代码，包括维护文档、在issue和群中答疑、提交bug等都是为swanlab项目贡献的方式！
 
