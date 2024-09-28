@@ -162,6 +162,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
       { text: 'OpenAI', link: 'integration/integration-openai' },
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
+      { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
       { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
