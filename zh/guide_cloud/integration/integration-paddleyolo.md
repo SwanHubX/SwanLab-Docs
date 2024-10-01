@@ -23,7 +23,7 @@ class SwanLabCallback(Callback):
                          'Use: `pip install swanlab`.')
             raise e
 
-        self.swanlab_params = {k.lstrip("swanlab_"): v for k, v in model.cfg.items() if k.startswith("swanlab_")}
+        self.swanlab_params = {k[8:]: v for k, v in model.cfg.items() if k.startswith("swanlab_")}
 
         self._run = None
         if dist.get_world_size() < 2 or dist.get_rank() == 0:
