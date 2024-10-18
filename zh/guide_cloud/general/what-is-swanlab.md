@@ -1,10 +1,14 @@
 # 欢迎使用SwanLab
 
-[官网](https://dev101.swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [贡献指南](https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md) · [SwanHub开源社区](https://swanhub.co)
+[官网](https://dev101.swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [贡献指南](https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md) · [SwanHub开源社区](https://swanhub.co) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview)
 
 <!-- ![](/assets/swanlab-show.png) -->
 
 ![alt text](/assets/product-swanlab-1.png)
+
+::: warning 👋 我们刚刚上线了VSCode插件，欢迎试用！
+在VSCode插件商城搜索“SwanLab”即可安装。
+:::
 
 SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个**跟踪、比较、和协作**实验的平台，旨在加速AI研发团队100倍的研发效率。
 
