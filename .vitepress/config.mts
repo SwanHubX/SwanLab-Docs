@@ -43,10 +43,6 @@ export default defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: '算力活动',
-        link: 'https://swanlab.cn/notice?utm_source=docs'
-      },
-      { 
         text: '用户指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
         activeMatch: '/zh/guide_cloud/',
@@ -61,7 +57,7 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.21',  items: [
+      { text: 'v0.3.22',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
