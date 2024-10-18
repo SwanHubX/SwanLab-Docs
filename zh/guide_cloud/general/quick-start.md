@@ -7,11 +7,9 @@
 
 在开始之前，请确保你创建好了一个SwanLab账号，并安装了我们的Python库。
 
-1. **在 [SwanLab官网](https://swanlab.cn) 免费注册账号，然后登录你的SwanLab账号**
+1. 在 [SwanLab官网](https://swanlab.cn) 免费注册账号，然后登录你的SwanLab账号
 
-![swanlab login](/assets/login.png)
-
-2. **使用 [pip](https://pip.pypa.io/en/stable/) 在Python3环境的计算机上安装swanlab库**
+2. 使用 [pip](https://pip.pypa.io/en/stable/) 在Python3环境的计算机上安装swanlab库
 
 打开命令行（Windows系统推荐使用PowerShell），输入：
 
@@ -35,11 +33,15 @@ swanlab login
 
 ```bash
 swanlab: Logging into swanlab cloud.
-swanlab: You can find your API key at: https://dev101.swanlab.cn/settings
+swanlab: You can find your API key at: https://swanlab.cn/settings
 swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
 在[用户设置](https://swanlab.cn/settings)页面复制您的 **API Key**，粘贴后按下回车，即可完成登录。
+
+> 如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：  
+> import swanlab  
+> swanlab.login(api_key="你的API Key")
 
 ## 3. 开启一个实验并跟踪超参数
 
