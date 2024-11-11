@@ -3,15 +3,14 @@
 
 安装 SwanLab 并在几分钟内开始跟踪你的人工智能实验。
 
-## 1. 创建账号并安装SwanLab
+![quick-start-1](/assets/quick-start.png)
 
-在开始之前，请确保你创建好了一个SwanLab账号，并安装了我们的Python库。
 
-1. 在 [SwanLab官网](https://swanlab.cn) 免费注册账号，然后登录你的SwanLab账号
+## 1. 安装SwanLab
 
-2. 使用 [pip](https://pip.pypa.io/en/stable/) 在Python3环境的计算机上安装swanlab库
+使用 [pip](https://pip.pypa.io/en/stable/) 在Python3环境的计算机上安装swanlab库。
 
-打开命令行（Windows系统推荐使用PowerShell），输入：
+打开命令行，输入：
 
 ```bash
 pip install swanlab
@@ -19,9 +18,12 @@ pip install swanlab
 
 按下回车，等待片刻完成安装。
 
-## 2. 在编程环境上登录SwanLab
+> 如果遇到安装速度慢的问题，可以指定清华源安装：  
+> `pip install swanlab -i https://pypi.tuna.tsinghua.edu.cn/simple`
 
-下一步，你需要在你的编程环境上登录SwanLab。
+## 2. 登录账号
+
+> 如果你还没有SwanLab账号，请在 [官网](https://swanlab.cn) 免费注册。
 
 打开命令行，输入：
 
@@ -29,7 +31,7 @@ pip install swanlab
 swanlab login
 ```
 
-出现如下提示时：
+当你看到如下提示时：
 
 ```bash
 swanlab: Logging into swanlab cloud.
@@ -37,17 +39,20 @@ swanlab: You can find your API key at: https://swanlab.cn/settings
 swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
-在[用户设置](https://swanlab.cn/settings)页面复制您的 **API Key**，粘贴后按下回车，即可完成登录。
+在[用户设置](https://swanlab.cn/settings)页面复制您的 **API Key**，粘贴后按下回车，即可完成登录。之后无需再次登录。
 
 > 如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：  
 > import swanlab  
 > swanlab.login(api_key="你的API Key")
+
 
 ## 3. 开启一个实验并跟踪超参数
 
 在Python脚本中，我们用`swanlab.init`创建一个SwanLab实验，并向`config`参数传递将一个包含超参数键值对的字典：
 
 ```python
+import swanlab
+
 run = swanlab.init(
     # 设置项目
     project="my-project",
@@ -103,7 +108,7 @@ for epoch in range(2, run.config.epochs):
     swanlab.log({"accuracy": acc, "loss": loss})
 ```
 
-运行代码，访问[SwanLab](https://dev101.swanlab.cn)，查看在每个训练步骤中，你使用SwanLab记录的指标（准确率和损失值）的改进情况。
+运行代码，访问[SwanLab](https://swanlab.cn)，查看在每个训练步骤中，你使用SwanLab记录的指标（准确率和损失值）的改进情况。
 
 ![quick-start-1](/assets/quick-start-1.jpg)
 
@@ -121,7 +126,7 @@ for epoch in range(2, run.config.epochs):
 
 ### 1. 在哪里可以找到我的API Key？
 
-登陆SwanLab网站后，API Key将显示在[用户设置](https://dev101.swanlab.cn/settings)页面上。
+登陆SwanLab网站后，API Key将显示在[用户设置](https://swanlab.cn/settings)页面上。
 
 ### 2. 我可以离线使用SwanLab吗？
 

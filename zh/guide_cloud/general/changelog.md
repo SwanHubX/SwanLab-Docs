@@ -6,6 +6,14 @@ Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
 
+## v0.3.25 - 2024.11.11
+
+**🚀新增功能**
+- 🎉[VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview)已上线
+- 新增与Keras框架的集成
+- 新增`run.public`方法，支持获取实验的项目名、实验名、链接等信息，[#732](https://github.com/SwanHubX/SwanLab/pull/732)
+
+
 ## v0.3.22 - 2024.10.18
 
 **🚀新增功能**

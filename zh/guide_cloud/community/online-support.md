@@ -2,8 +2,13 @@
 
 ## 社群
 
-- **[微信交流群](https://geektechstudio.feishu.cn/wiki/NIZ9wp5LRiSqQykizbGcVzUKnic?fromScene=spaceOverview)**：交流使用SwanLab的问题、分享最新的AI技术。
-- **飞书群**: 我们的日常工作交流在飞书上，飞书群的回复会更及时。用飞书App扫描下方二维码即可：
+- **微信交流群**：交流使用SwanLab的问题、分享最新的AI技术。
+
+<div align="center">
+<img src="/assets/wechat-QR-Code.png" width=300>
+</div>
+
+- **飞书群**：我们的日常工作交流在飞书上，飞书群的回复会更及时。用飞书App扫描下方二维码即可：
 
 <div align="center">
 <img src="/assets/feishu-QR-Code.png" width=300>

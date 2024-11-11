@@ -1,5 +1,10 @@
 # FAQ
 
+## 登录时，API Key为什么输入不进去？
+
+见此回答：[链接](https://www.zhihu.com/question/720308649/answer/25076837539)
+
+
 ## 如何从一个脚本启动多个实验？
 
 在多次创建实验之间增加`swanlab.finish()`即可。
@@ -37,4 +42,5 @@ swanlab.init(mode='disabled')
 swanlab.init(suffix=None)
 ```
 
-ps: 要注意的是，目前同一个项目下，SwanLab的实验名是不允许重复的。
+ps: 在0.3.22版本以后，不再自动为实验名添加后缀。
+
