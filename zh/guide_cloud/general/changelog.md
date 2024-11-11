@@ -6,7 +6,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
 
-## v0.3.24 - 2024.11.11
+## v0.3.25 - 2024.11.11
 
 **🚀新增功能**
 - 🎉[VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview)已上线

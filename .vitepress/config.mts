@@ -57,7 +57,7 @@ export default defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/zh/api/',
         },
-      { text: 'v0.3.24',  items: [
+      { text: 'v0.3.25',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
@@ -152,6 +152,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
       { text: 'Hydra', link: 'integration/integration-hydra' },
+      { text: 'Keras', link: 'integration/integration-keras' },
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
       { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration/integration-mmdetection' },
