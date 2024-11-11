@@ -37,4 +37,4 @@ swanlab.init(mode='disabled')
 swanlab.init(suffix=None)
 ```
 
-ps: 要注意的是，目前同一个项目下，SwanLab的实验名是不允许重复的。
+ps: 在0.3.22版本以后，不再自动为实验名添加后缀。
