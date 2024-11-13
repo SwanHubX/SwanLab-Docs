@@ -217,6 +217,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: '音频',
+    // collapsed: false,
+    items: [
+      { text: '音频分类', link: 'audio_classification' },
+    ]
+  },
+  {
     text: '时间序列',
     // collapsed: false,
     items: [
