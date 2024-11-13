@@ -132,6 +132,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
+      { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
