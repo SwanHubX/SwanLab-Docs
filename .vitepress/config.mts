@@ -132,6 +132,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
+      { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
@@ -159,6 +160,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
       { text: 'OpenAI', link: 'integration/integration-openai' },
       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
+      { text: 'PaddleDetection', link: 'integration/integration-paddledetection' },
       { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
       { text: 'PyTorch', link: 'integration/integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
@@ -212,6 +214,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'BERT文本分类', link: 'bert' },  
       { text: 'Qwen微调案例', link: 'qwen_finetune' },  
       { text: 'LLM预训练', link: 'pretrain_llm' },  
+    ]
+  },
+  {
+    text: '音频',
+    // collapsed: false,
+    items: [
+      { text: '音频分类', link: 'audio_classification' },
     ]
   },
   {
