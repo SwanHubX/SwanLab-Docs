@@ -185,6 +185,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '贡献代码', link: 'community/contributing-code'},
       { text: '贡献官方文档', link: 'community/contributing-docs'},
       { text: '贡献者', link: 'community/contributor'},
+      { text: '关于我们', link: 'community/emotion-machine'},
     ]
   },]
 }
