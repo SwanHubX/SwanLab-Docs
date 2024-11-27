@@ -5,6 +5,13 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.3.27 - 2024.11.26
+
+**🚀新增功能**
+- 新增华为昇腾NPU显卡检测
+- 新增与青云基石智算(Coreshub)的集成
+
+
 ## 新UI上线！
 
 ![alt text](/assets/new-homepage.png)
