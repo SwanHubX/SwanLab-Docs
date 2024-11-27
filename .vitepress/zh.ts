@@ -1,14 +1,19 @@
 import { defineConfig, type DefaultTheme} from 'vitepress'
 
-var base_path_guide_cloud = '/zh/guide_cloud'
-var base_path_examples = '/zh/examples'
-var base_path_api = '/zh/api'
+var base_path_guide_cloud = '/guide_cloud'
+var base_path_examples = '/examples'
+var base_path_api = '/api'
 
 // https://vitepress.dev/reference/site-config
 export const zh = defineConfig({
   title: "SwanLab官方文档",
   description: "SwanLab官方文档, 提供最全面的使用指南和API文档",
   lang: 'zh-CN',
+
+  head: [
+    ['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }],
+    ['link', { rel: 'icon', type:"image/png", href: '/icon.png' }],
+  ],
 
   // markdown: {
   //   lineNumbers: true
@@ -24,24 +29,24 @@ export const zh = defineConfig({
       { 
         text: '用户指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
-        activeMatch: '/zh/guide_cloud/',
+        activeMatch: 'h/guide_cloud/',
       },
       { 
         text: '案例',
         link: base_path_examples + '/mnist',
-        activeMatch: '/zh/examples/',
+        activeMatch: 'h/examples/',
       },
       { 
         text: 'API',
         link: base_path_api + '/api-index',
-        activeMatch: '/zh/api/',
+        activeMatch: 'h/api/',
         },
       { text: 'v0.3.27',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ] },
-      { text: '在线交流', link: '/zh/guide_cloud/community/online-support'},
+      { text: '在线交流', link: 'h/guide_cloud/community/online-support'},
       { text: '官网', link: 'https://swanlab.cn' },
     ],
 
@@ -53,6 +58,8 @@ export const zh = defineConfig({
         timeStyle: 'medium'
       },
     },
+
+    langMenuLabel: '多语言',
 
     // 编辑此页配置
     editLink: {
@@ -68,9 +75,9 @@ export const zh = defineConfig({
 
     // 侧边栏配置
     sidebar: {
-      '/zh/guide_cloud/':{base: '/zh/guide_cloud/', items: sidebarGuideCloud(),},
-      '/zh/examples/':{base: '/zh/examples/', items: sidebarExamples(),},
-      '/zh/api/':{base: '/zh/api/', items: sidebarAPI(),},
+      '/guide_cloud/':{base: '/guide_cloud/', items: sidebarGuideCloud(),},
+      '/examples/':{base: '/examples/', items: sidebarExamples(),},
+      '/api/':{base: '/api/', items: sidebarAPI(),},
     },
 
     // 页脚配置

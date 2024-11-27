@@ -10,6 +10,10 @@ export const en = defineConfig({
   description: "SwanLab Official Documentation, providing the most comprehensive user guide and API documentation",
   lang: 'en-US',
 
+  head: [
+    ['link', { rel: 'icon', type:"image/svg+xml", href: '/icon.svg' }],
+    ['link', { rel: 'icon', type:"image/png", href: '/icon.png' }],
+  ],
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
