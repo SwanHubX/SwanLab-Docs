@@ -36,7 +36,7 @@ swanlab: You can find your API key at: https://swanlab.cn/settings
 swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
-Copy your API Key from the [user settings]((https://swanlab.cn/settings)) page, paste it and press Enter to complete the login. You don't need to log in again after that.
+Copy your API Key from the [user settings](https://swanlab.cn/settings) page, paste it and press Enter to complete the login. You don't need to log in again after that.
 
 
 > If your computer does not support the `swanlab login` method, you can also log in using a Python script:
