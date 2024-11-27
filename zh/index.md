@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: 访问文档
-      link: /zh/guide_cloud/general/what-is-swanlab.md
+      link: /guide_cloud/general/what-is-swanlab.md
     - theme: brand
       text: 官网
       link: https://dev101.swanlab.cn
@@ -29,22 +29,22 @@ features:
   - icon: 🚢
     title: 快速开始
     details: 安装 SwanLab 并在几分钟内开始跟踪你的人工智能实验。
-    link: /zh/guide_cloud/general/quick-start.md
+    link: /guide_cloud/general/quick-start.md
   
   - icon: 📚
     title: 案例
     details: SwanLab官方案例合集，更好地理解SwanLab在人工智能pipeline中扮演的角色和作用。
-    link: /zh/examples/mnist
+    link: /examples/mnist
   
   - icon: 🤗
     title: 集成
     details: 与HuggingFace Transformers、PyTorch Lightning、Hydra等主流框架的集成文档。
-    link: /zh/guide_cloud/integration/integration-pytorch-lightning.md
+    link: /guide_cloud/integration/integration-pytorch-lightning.md
 
   - icon: ⚡️
     title: API文档
     details: Python库和CLI的完整API文档
-    link: zh/api/api-index
+    link: /api/api-index
 
 ---
 
