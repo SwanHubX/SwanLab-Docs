@@ -1,0 +1,98 @@
+# Welcome to SwanLab
+
+[Official Website](https://dev101.swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [Contribution Guide
+](https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md) · [SwanHub](https://swanhub.co) · [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview)
+
+<!-- ![](/assets/swanlab-show.png) -->
+
+![alt text](/assets/product-swanlab-1.png)
+
+::: warning 👋 We've just launched our VS Code extension, try it out!
+Search "SwanLab" in the VS Code Extension Marketplace to install.
+:::
+
+SwanLab is an open-source, lightweight AI experiment tracking tool that provides a platform for tracking, comparing, and collaborating on experiments, designed to accelerate the R&D efficiency of AI R&D teams by 100 times.
+
+It provides a user-friendly API and a beautiful interface, combined with hyperparameter tracking, metric logging, online collaboration, experiment link sharing, real-time message notification and other functions, allowing you to quickly track ML experiments, visualize the process, and share with peers.
+
+With SwanLab, researchers can accumulate their training experience, seamlessly communicate and collaborate with collaborators, and machine learning engineers can develop production-ready models faster.
+
+
+## Why SwanLab?
+
+Unlike software engineering, artificial intelligence is an experimental discipline. Generating inspiration, rapid experimentation, and validating ideas are the main themes of AI research. Recording the experimental process and inspiration, just like chemists recording experimental manuscripts, is the core of every AI researcher and research organization to form accumulation and increase acceleration.
+
+Previous experimental recording methods involved staring at the output printed by the terminal in front of the computer, copying and pasting log files (or TFEvent files). Rough logs created obstacles to the emergence of inspiration, and offline log files made it difficult for researchers to form a synergy.
+
+In contrast, SwanLab provides a cloud-based AI experiment tracking solution that focuses on the training process, providing functions such as training visualization, experiment tracking, hyperparameter recording, log recording, and multi-person collaboration. Researchers can easily find iterative inspiration through intuitive visual charts and break down communication barriers through the sharing of online links and organization-based multi-person collaborative training.
+
+> Previous AI research and open-source efforts focused more on results, while we emphasize the process. <br>
+> Many community users leverage SwanLab to achieve process transparency.<br>
+> Lin Zeyi, SwanLab Co-founder
+
+More importantly, SwanLab is open source, built by a group of machine learning engineers who love open source and the community. We provide a fully self-hosted version that can ensure your data security and privacy.
+
+We hope that the above information and this guide can help you understand this product, and we believe that SwanLab can help you.
+
+
+## What can SwanLab do?
+
+![alt text](/assets/how-to-do-swanlab.png)
+
+**1. 📊Experiment metrics and hyperparameter tracking**: Minimal code embedded in your machine learning pipeline to track and record key training metrics
+ - Free hyperparameter and experiment configuration recording
+- **Supported metadata types**: scalar metrics, images, audio, text, etc.
+- **Supported chart types**: line chart, media chart (image, audio, text), etc.
+- **Automatic recording**: console logging, GPU hardware, Git information, Python interpreter, Python library list, code directory
+2. **⚡️Comprehensive framework integration**: PyTorch, PyTorch Lightning, 🤗HuggingFace Transformers, MMEngine, Ultralytics and other mainstream frameworks
+3. **📦Organize experiments**: Centralized dashboard, quickly manage multiple projects and experiments, and get a quick overview of the overall training through a holistic view
+4. **🆚Compare results**: Compare hyperparameters and results of different experiments through online forms and comparison charts to explore iterative inspiration
+5. **👥Online collaboration**: You can conduct collaborative training with your team, supporting real-time synchronization of experiments under one project. You can view your team's training records online and express your opinions and suggestions based on the results.
+6. **✉️Share results**: Copy and send persistent URLs to share each experiment, easily send it to partners, or embed it in online notes.
+7. **💻Support self-hosting**: Support for offline use, the self-hosted community edition can also view dashboards and manage experiments.
+
+
+## Where to start
+
+- [Quick Start](/zh/guide_cloud/general/quick-start.md): SwanLab introductory tutorial, master experiment tracking in five minutes!
+- [API documentation](/zh/api/api-index.md): Complete API documentation
+- [Online support](/zh/guide_cloud/community/online-support.md): Join the community, provide feedback and contact us
+- [Self-hosting](/zh/guide_cloud/self_host/offline-board.md): Self-hosting (offline version) usage tutorial
+- [Cases](/zh/examples/mnist.md): View cases of SwanLab with various deep learning tasks
+
+## Comparison with familiar products
+
+### Tensorboard vs SwanLab
+
+- **☁️Team Collaboration**：
+  For cross-team machine learning projects, SwanLab streamlines collaboration by making it easy to manage group training projects, share experiment links, and facilitate communication and discussions. In contrast, TensorBoard is primarily designed for individual use, making multi-user collaboration and experiment sharing more challenging.
+
+- **👥Team Collaboration**：
+  For cross-team machine learning projects, SwanLab streamlines collaboration by making it easy to manage group training projects, share experiment links, and facilitate communication and discussions. In contrast, TensorBoard is primarily designed for individual use, making multi-user collaboration and experiment sharing more challenging.
+
+- **💻Persistent, centralized dashboard**：
+  No matter where you train your model, whether on your local computer, in a lab cluster, or in a public cloud GPU instance, your results will be logged to the same centralized dashboard. Using TensorBoard, on the other hand, requires time to copy and manage TFEvent files from different machines. 
+
+- **💪Enhanced Table Functionality**: SwanLab provides powerful tables that enable you to view, search, and filter results from multiple experiments effortlessly. This allows easy access to thousands of model versions and helps you quickly identify the best performing models for various tasks. In comparison, TensorBoard is less suited for handling large projects.
+
+
+### W&B vs SwanLab
+
+- Weights and Biases is a closed-source MLOps platform that must be used online
+- SwanLab supports not only online use, but also open-source, free, and self-hosted versions
+
+
+## Online Support
+
+- **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**：Report errors and issues encountered while using SwanLab
+
+- **Email Support**: Feedback regarding issues with SwanLab
+  - Product: <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(Product Manager Email)
+
+- **WeChat Group and Lark Group**: See [Online Support](/zh/guide_cloud/community/online-support.md)
+
+- **WeChat Official Account**:
+
+<div align="center">
+<img src="/assets/wechat.jpg" width=300>
+</div>
