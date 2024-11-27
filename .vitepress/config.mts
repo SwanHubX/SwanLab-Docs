@@ -60,7 +60,7 @@ export default defineConfig({
       { text: 'v0.3.27',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
-        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcnyBlK8OMD0eweoFcc2SvWKc'}
+        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ] },
       { text: '在线交流', link: '/zh/guide_cloud/community/online-support'},
       { text: '官网', link: 'https://swanlab.cn' },
