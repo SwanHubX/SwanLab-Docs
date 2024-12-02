@@ -84,11 +84,6 @@ export const zh = defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/swanhubx/swanlab' }
     ],
-
-    // 搜索配置
-    search: {
-      provider: 'local'
-    }
   }
 })
 

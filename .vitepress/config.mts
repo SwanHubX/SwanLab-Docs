@@ -7,6 +7,12 @@ export default defineConfig({
     'zh/:rest*': ':rest*'
   },
 
+  themeConfig:{
+    search: {
+      provider: 'local'
+    }
+  },
+
   locales: {
     root: { label: '简体中文', ...zh },
     en: { label: 'English', ...en },
