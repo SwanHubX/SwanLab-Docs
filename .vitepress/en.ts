@@ -48,7 +48,7 @@ export const en = defineConfig({
 
     // 最后更新于配置
     lastUpdated: {
-      text: '更新于',
+      text: 'Updated at',
       formatOptions: {
         dateStyle: 'full',
         timeStyle: 'medium'
@@ -58,12 +58,12 @@ export const en = defineConfig({
     // 编辑此页配置
     editLink: {
       pattern: 'https://github.com/swanhubx/swanlab-docs/edit/main/:path',
-      text: '在GitHub编辑此页面'
+      text: 'Edit this page on GitHub'
     },
 
     // 侧边栏配置
     outline: {
-      label: '本页目录',
+      label: 'On this page',
       level: 'deep',
     },
 
@@ -98,27 +98,28 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Changelog', link: 'general/changelog' }
     ]
   },
+  {
+    text: '📚 Experiment Track',
+    // collapsed: false,
+    items: [
+      { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track' },
+      { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
+      { text: 'Create by config file', link: 'experiment_track/create-experiment-by-configfile' },
+      { text: 'Set config', link: 'experiment_track/set-experiment-config' },
+      { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
+      { text: 'Log media metric', link: 'experiment_track/log-media' },
+      { text: 'View result', link: 'experiment_track/view-result' },
+      { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
+      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
+      { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
+      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+      { text: 'FAQ', link: 'experiment_track/FAQ' },
+    ]
+  },
 ]
 }
 
-//   {
-//     text: '📚 实验跟踪',
-//     // collapsed: false,
-//     items: [
-//       { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
-//       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
-//       { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
-//       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
-//       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
-//       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
-//       { text: '查看实验结果', link: 'experiment_track/view-result' },
-//       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
-//       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
-//       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
-//       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
-//       { text: 'FAQ', link: 'experiment_track/FAQ' },
-//     ]
-//   },
+
 //   {
 //     text: '💻 自托管',
 //     // collapsed: false,
