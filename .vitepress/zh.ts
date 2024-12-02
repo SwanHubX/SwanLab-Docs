@@ -187,6 +187,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'Yolo目标检测', link: 'yolo' },  
+      { text: 'QwenVL多模态大模型微调', link: 'qwen_vl_coco'},
     ]
   },
   {
