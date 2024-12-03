@@ -27,20 +27,20 @@ export const en = defineConfig({
         link: base_path_guide_cloud + '/general/what-is-swanlab',
         activeMatch: '/en/guide_cloud/',
       },
-    //   { 
-    //     text: '案例',
-    //     link: base_path_examples + '/mnist',
-    //     activeMatch: '/en/examples/',
-    //   },
-    //   { 
-    //     text: 'API',
-    //     link: base_path_api + '/api-index',
-    //     activeMatch: '/en/api/',
-    //     },
+      { 
+        text: 'Example',
+        link: base_path_examples + '/mnist',
+        activeMatch: '/en/examples/',
+      },
+      { 
+        text: 'API',
+        link: base_path_api + '/api-index',
+        activeMatch: '/en/api/',
+        },
       { text: 'v0.3.27',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
-        // { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
-        // { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
+        { text: 'Contribution', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
+        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ] },
     //   { text: '在线交流', link: '/en/guide_cloud/community/online-support'},
       { text: 'Website', link: 'https://swanlab.cn' },
@@ -70,8 +70,8 @@ export const en = defineConfig({
     // 侧边栏配置
     sidebar: {
       '/en/guide_cloud/':{base: '/en/guide_cloud/', items: sidebarGuideCloud(),},
-    //   '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
-    //   '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
+      '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
+      '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
     },
 
     // 页脚配置
@@ -155,98 +155,94 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
     ]
   },
-]
+  {
+    text: '👥 Community',
+    // collapsed: false,
+    items: [
+      { text: 'Online support', link: 'community/online-support'},
+      { text: 'Github badge', link: 'community/github-badge'},
+      { text: 'Paper citation', link: 'community/paper-cite'},
+      { text: 'Contributing code', link: 'community/contributing-code'},
+      { text: 'Contributing docs', link: 'community/contributing-docs'},
+      { text: 'Contributor', link: 'community/contributor'},
+      { text: 'About us', link: 'community/emotion-machine'},
+    ]
+  },]
 }
 
 
 
+function sidebarExamples(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: 'Quick Start',
+    // collapsed: false,
+    items: [
+      { text: 'Hello_World', link: 'hello_world' },
+      { text: 'MNIST Handwriting Recognition', link: 'mnist' },
+    ]
+  },
+  {
+    text: 'Computer Vision',
+    // collapsed: false,
+    items: [
+      { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },    
+      { text: 'Yolo Object Detection', link: 'yolo' },  
+    ]
+  },
+  {
+    text: 'NLP',
+    // collapsed: false,
+    items: [  
+      { text: 'BERT Text Classification', link: 'bert' },  
+      { text: 'Qwen Finetune Case', link: 'qwen_finetune' },  
+      { text: 'LLM Pretraining', link: 'pretrain_llm' },  
+    ]
+  },
+  {
+    text: 'Audio',
+    // collapsed: false,
+    items: [
+      { text: 'Audio Classification', link: 'audio_classification' },
+    ]
+  },
+  {
+    text: 'Time Series',
+    // collapsed: false,
+    items: [
+      { text: 'LSTM Stock Prediction', link: 'lstm_stock'},
+    ]
+  },
+]
+}
 
-//   {
-//     text: '👥 社区',
-//     // collapsed: false,
-//     items: [
-//       { text: '在线支持', link: 'community/online-support'},
-//       { text: 'Github徽章', link: 'community/github-badge'},
-//       { text: '论文引用', link: 'community/paper-cite'},
-//       { text: '贡献代码', link: 'community/contributing-code'},
-//       { text: '贡献官方文档', link: 'community/contributing-docs'},
-//       { text: '贡献者', link: 'community/contributor'},
-//       { text: '关于我们', link: 'community/emotion-machine'},
-//     ]
-//   },]
-// }
-
-// function sidebarExamples(): DefaultTheme.SidebarItem[] {
-//   return [{
-//     text: '入门',
-//     // collapsed: false,
-//     items: [
-//       { text: 'Hello_World', link: 'hello_world' },
-//       { text: 'MNIST手写体识别', link: 'mnist' },
-//     ]
-//   },
-//   {
-//     text: '计算机视觉',
-//     // collapsed: false,
-//     items: [
-//       { text: 'FashionMNIST', link: 'fashionmnist' },
-//       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
-//       { text: 'Yolo目标检测', link: 'yolo' },  
-//     ]
-//   },
-//   {
-//     text: '自然语言处理',
-//     // collapsed: false,
-//     items: [  
-//       { text: 'BERT文本分类', link: 'bert' },  
-//       { text: 'Qwen微调案例', link: 'qwen_finetune' },  
-//       { text: 'LLM预训练', link: 'pretrain_llm' },  
-//     ]
-//   },
-//   {
-//     text: '音频',
-//     // collapsed: false,
-//     items: [
-//       { text: '音频分类', link: 'audio_classification' },
-//     ]
-//   },
-//   {
-//     text: '时间序列',
-//     // collapsed: false,
-//     items: [
-//       { text: 'LSTM股票预测', link: 'lstm_stock'},
-//     ]
-//   },
-// ]
-// }
-
-// function sidebarAPI(): DefaultTheme.SidebarItem[] {
-//   return [{
-//     text: 'CLI',
-//     // collapsed: false,
-//     items: [
-//       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
-//       { text: 'swanlab login', link: 'cli-swanlab-login' },
-//       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
-//       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
-//       { text: '(内测中) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
-//       { text: '其他', link: 'cli-swanlab-other' },
-//     ]
-//   },
-//   {
-//     text: 'Python SDK',
-//     // collapsed: false,
-//     items: [
-//       { text: 'init', link: 'py-init' },
-//       { text: 'log', link: 'py-log' },
-//       { text: '多媒体数据', items: [
-//         { text: 'Image', link: 'py-Image' },
-//         { text: 'Audio', link: 'py-Audio' },
-//         { text: 'Text', link: 'py-Text' },
-//       ]},
-//       { text: 'login', link: 'py-login' },
-//       { text: 'integration', link: 'py-integration' },
-//       { text: 'converter', link: 'py-converter' },
-//     ]
-//   },]
-// }
+function sidebarAPI(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: 'CLI',
+    // collapsed: false,
+    items: [
+      { text: 'swanlab watch', link: 'cli-swanlab-watch' },
+      { text: 'swanlab login', link: 'cli-swanlab-login' },
+      { text: 'swanlab logout', link: 'cli-swanlab-logout' },
+      { text: 'swanlab convert', link: 'cli-swanlab-convert' },
+      { text: '(Beta) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
+      { text: 'Other', link: 'cli-swanlab-other' },
+    ]
+  },
+  {
+    text: 'Python SDK',
+    // collapsed: false,
+    items: [
+      { text: 'init', link: 'py-init' },
+      { text: 'log', link: 'py-log' },
+      { text: 'Media data', items: [
+        { text: 'Image', link: 'py-Image' },
+        { text: 'Audio', link: 'py-Audio' },
+        { text: 'Text', link: 'py-Text' },
+      ]},
+      { text: 'login', link: 'py-login' },
+      { text: 'integration', link: 'py-integration' },
+      { text: 'converter', link: 'py-converter' },
+    ]
+  },]
+}
