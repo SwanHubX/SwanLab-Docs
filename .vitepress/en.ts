@@ -116,49 +116,51 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
+  {
+    text: '💻 Self-hosted',
+    // collapsed: false,
+    items: [
+      { text: 'Offline board', link: 'self_host/offline-board' },
+      { text: 'Remote access tutorial', link: 'self_host/remote-view' },
+    ]
+  },
+  {
+    text: '⚡️ Integration',
+    // collapsed: false,
+    items: [
+      { text: 'Argparse', link:'integration/integration-argparse' },
+      { text: 'Fastai', link: 'integration/integration-fastai' },
+      { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
+      { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
+      { text: 'Hydra', link: 'integration/integration-hydra' },
+      { text: 'Keras', link: 'integration/integration-keras' },
+      { text: 'MMEngine', link: 'integration/integration-mmengine' },
+      { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
+      { text: 'MMDetection', link: 'integration/integration-mmdetection' },
+      { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
+      { text: 'OpenAI', link: 'integration/integration-openai' },
+      { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
+      { text: 'PaddleDetection', link: 'integration/integration-paddledetection' },
+      { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
+      { text: 'PyTorch', link: 'integration/integration-pytorch' },
+      { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
+      { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
+      { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
+      { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
+      { text: 'Swift', link: 'integration/integration-swift' },
+      { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
+      { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
+      { text: 'Weights & Biases', link: 'integration/integration-wandb'},
+      { text: 'Xtuner', link: 'integration/integration-xtuner'},
+      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
+    ]
+  },
 ]
 }
 
 
-//   {
-//     text: '💻 自托管',
-//     // collapsed: false,
-//     items: [
-//       { text: '离线看板', link: 'self_host/offline-board' },
-//       { text: '远程访问教程', link: 'self_host/remote-view' },
-//     ]
-//   },
-//   {
-//     text: '⚡️ 集成',
-//     // collapsed: false,
-//     items: [
-//       { text: 'Argparse', link:'integration/integration-argparse' },
-//       { text: 'Fastai', link: 'integration/integration-fastai' },
-//       { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
-//       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
-//       { text: 'Hydra', link: 'integration/integration-hydra' },
-//       { text: 'Keras', link: 'integration/integration-keras' },
-//       { text: 'MMEngine', link: 'integration/integration-mmengine' },
-//       { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
-//       { text: 'MMDetection', link: 'integration/integration-mmdetection' },
-//       { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
-//       { text: 'OpenAI', link: 'integration/integration-openai' },
-//       { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
-//       { text: 'PaddleDetection', link: 'integration/integration-paddledetection' },
-//       { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
-//       { text: 'PyTorch', link: 'integration/integration-pytorch' },
-//       { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
-//       { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
-//       { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
-//       { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
-//       { text: 'Swift', link: 'integration/integration-swift' },
-//       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
-//       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
-//       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
-//       { text: 'Xtuner', link: 'integration/integration-xtuner'},
-//       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
-//     ]
-//   },
+
+
 //   {
 //     text: '👥 社区',
 //     // collapsed: false,
