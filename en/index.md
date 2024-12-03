@@ -16,7 +16,7 @@ hero:
       text: Website
       link: https://dev101.swanlab.cn
     # - theme: alt
-    #   text: 快速开始
+    #   text: Quick Start
     #   link: /en/guide_cloud/general/quick-start.md
     - theme: alt
       text: Docs GitHub
@@ -31,20 +31,20 @@ features:
     details: Install SwanLab and start tracking your AI experiments in minutes.
     link: /en/guide_cloud/general/quick-start.md
   
-  # - icon: 📚
-  #   title: 案例
-  #   details: SwanLab官方案例合集，更好地理解SwanLab在人工智能pipeline中扮演的角色和作用。
-  #   link: /en/examples/mnist
+  - icon: 📚
+    title: Examples
+    details: SwanLab official examples, better understand the role and function of SwanLab in the AI pipeline.
+    link: /en/examples/mnist
   
-  # - icon: 🤗
-  #   title: 集成
-  #   details: 与HuggingFace Transformers、PyTorch Lightning、Hydra等主流框架的集成文档。
-  #   link: /en/guide_cloud/integration/integration-pytorch-lightning.md
+  - icon: 🤗
+    title: Integration
+    details: Integration documentation with HuggingFace Transformers, PyTorch Lightning, Hydra, etc.
+    link: /en/guide_cloud/integration/integration-pytorch-lightning.md
 
-  # - icon: ⚡️
-  #   title: API文档
-  #   details: Python库和CLI的完整API文档
-  #   link: en/api/api-index
+  - icon: ⚡️
+    title: API Docs
+    details: Complete API documentation for the Python library and CLI.
+    link: en/api/api-index
 
 ---
 
