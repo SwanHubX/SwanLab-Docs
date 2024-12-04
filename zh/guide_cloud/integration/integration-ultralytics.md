@@ -1,5 +1,7 @@
 # Ultralytics
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1RAT2vSrvET4wEDd9syeDrgz0KBUDQAR1?usp=sharing)
+
 [Ultralytics](https://github.com/ultralytics/ultralytics) YOLOv8 是一款尖端、最先进的 （SOTA） 模型，它建立在以前 YOLO 版本的成功基础上，并引入了新功能和改进，以进一步提高性能和灵活性。YOLOv8 设计为快速、准确且易于使用，使其成为各种对象检测和跟踪、实例分割、图像分类和姿态估计任务的绝佳选择。
 
 ![ultralytics](/assets/ig-ultralytics.png)

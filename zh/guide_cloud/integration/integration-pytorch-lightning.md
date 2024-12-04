@@ -1,5 +1,7 @@
 # PyTorch Lightning
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1g1s86qobSvIuaFVxzDgzyZ-B4VzdTCym?usp=sharing)
+
 [PyTorch Lightning](https://github.com/Lightning-AI/pytorch-lightning)是一个开源的机器学习库，它建立在 PyTorch 之上，旨在帮助研究人员和开发者更加方便地进行深度学习模型的研发。Lightning 的设计理念是将模型训练中的繁琐代码（如设备管理、分布式训练等）与研究代码（模型架构、数据处理等）分离，从而使研究人员可以专注于研究本身，而不是底层的工程细节。
 
 ![pytorch-lightning-image](/assets/ig-pytorch-lightning.png)

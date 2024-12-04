@@ -1,5 +1,7 @@
 # PyTorch
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1RWsrY_1bS8ECzaHvYtLb_1eBkkdzekR3?usp=sharing)
+
 Among academic researchers, [PyTorch](https://pytorch.org/) is the most popular Python deep learning framework.
 
 ![PyTorch](/assets/ig-pytorch.png)

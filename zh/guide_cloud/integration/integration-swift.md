@@ -1,5 +1,7 @@
 # Modelscope Swift
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1eAxKyTiLXLcQw7EOQngjV2csf5UdNQY4?usp=sharing)
+
 [Modelscope魔搭社区](https://modelscope.cn/) 的 [Swift](https://github.com/modelscope/swift) 是一个集模型训练、微调、推理、部署于一体的框架。
 
 SWIFT支持250+ LLM和35+ MLLM（多模态大模型）的训练、推理、评测和部署。开发者可以直接将Swift应用到自己的Research和生产环境中，实现模型训练评测到应用的完整链路。Swift除支持了PEFT提供的轻量训练方案外，也提供了一个完整的Adapters库以支持最新的训练技术，如NEFTune、LoRA+、LLaMA-PRO等，这个适配器库可以脱离训练脚本直接使用在自己的自定流程中。

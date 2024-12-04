@@ -1,5 +1,7 @@
 # Stable-Baseline3
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1JfU4oCKCS7FQE_AXqZ3k9Bt1vmK-6pMO?usp=sharing)
+
 Stable Baselines3 (SB3) is an open-source reinforcement learning library built on the PyTorch framework. It is the successor to the Stable Baselines project, aiming to provide a set of reliable and well-tested RL algorithm implementations for research and application. Stable Baselines3 is primarily used in fields such as robotics control, game AI, autonomous driving, and financial trading.
 
 ![sb3](/assets/ig-sb3.png)

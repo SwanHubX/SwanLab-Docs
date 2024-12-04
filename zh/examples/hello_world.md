@@ -1,5 +1,7 @@
 # Hello World
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1RWsrY_1bS8ECzaHvYtLb_1eBkkdzekR3?usp=sharing)
+
 这是一个入门案例，是一个最简的深度学习训练模拟。
 
 ## 环境准备

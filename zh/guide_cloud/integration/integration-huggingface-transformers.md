@@ -1,5 +1,7 @@
 # 🤗HuggingFace Transformers
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1iYwrAM4ToCWt5p5hlrrkHlQqBIav_r2E?usp=sharing)
+
 Hugging Face 的 [Transformers](https://github.com/huggingface/transformers) 是一个非常流行的开源库，它提供了大量预训练的模型，主要用于自然语言处理（NLP）任务。这个库的目标是使最新的模型能够易于使用，并支持多种框架，如 TensorFlow 和 PyTorch。
 
 ![hf-transformers-image](/assets/ig-huggingface-transformers.png)

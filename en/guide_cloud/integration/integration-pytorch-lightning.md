@@ -1,5 +1,7 @@
 # PyTorch Lightning
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1g1s86qobSvIuaFVxzDgzyZ-B4VzdTCym?usp=sharing)
+
 [PyTorch Lightning](https://github.com/Lightning-AI/pytorch-lightning) is an open-source machine learning library built on top of PyTorch, designed to help researchers and developers more conveniently develop deep learning models. The design philosophy of Lightning is to separate the tedious code in model training (such as device management, distributed training, etc.) from the research code (model architecture, data processing, etc.), so that researchers can focus on the research itself rather than the underlying engineering details.
 
 ![pytorch-lightning-image](/assets/ig-pytorch-lightning.png)

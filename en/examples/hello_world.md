@@ -1,5 +1,7 @@
 # Hello World
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1RWsrY_1bS8ECzaHvYtLb_1eBkkdzekR3?usp=sharing)
+
 This is an introductory case, a minimal simulation of deep learning training.
 
 ## Environment Setup

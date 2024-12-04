@@ -1,5 +1,7 @@
 # Modelscope Swift
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1eAxKyTiLXLcQw7EOQngjV2csf5UdNQY4?usp=sharing)
+
 [Modelscope](https://modelscope.cn/) [Swift](https://github.com/modelscope/swift) is a framework that integrates model training, fine-tuning, inference, and deployment.
 
 SWIFT supports the training, inference, evaluation, and deployment of over 250 LLMs and 35+ MLLMs (multimodal large models). Developers can directly apply Swift to their research and production environments, achieving a complete pipeline from model training and evaluation to application. In addition to supporting lightweight training solutions provided by PEFT, Swift also offers a comprehensive Adapters library to support the latest training techniques such as NEFTune, LoRA+, LLaMA-PRO, etc. This adapter library can be used directly in custom workflows without relying on training scripts.

@@ -1,5 +1,8 @@
 # Stable-Baseline3
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1JfU4oCKCS7FQE_AXqZ3k9Bt1vmK-6pMO?usp=sharing)
+
+
 Stable Baselines3 (SB3) 是一个强化学习的开源库，基于 PyTorch 框架构建。它是 Stable Baselines 项目的继任者，旨在提供一组可靠且经过良好测试的RL算法实现，便于研究和应用。StableBaseline3主要被应用于机器人控制、游戏AI、自动驾驶、金融交易等领域。
 
 ![sb3](/assets/ig-sb3.png)

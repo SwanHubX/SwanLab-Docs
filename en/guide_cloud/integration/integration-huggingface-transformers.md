@@ -1,5 +1,7 @@
 # 🤗HuggingFace Transformers
 
+[![](/assets/colab.svg)](https://colab.research.google.com/drive/1iYwrAM4ToCWt5p5hlrrkHlQqBIav_r2E?usp=sharing)
+
 Hugging Face's [Transformers](https://github.com/huggingface/transformers) is a very popular open-source library that provides a large number of pre-trained models, primarily for natural language processing (NLP) tasks. The goal of this library is to make the latest models easy to use and support multiple frameworks such as TensorFlow and PyTorch.
 
 ![hf-transformers-image](/assets/ig-huggingface-transformers.png)
