@@ -188,6 +188,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },    
       { text: 'Yolo Object Detection', link: 'yolo' },  
+      { text: 'QwenVL Finetune Case', link: 'qwen_vl_coco' },
     ]
   },
   {
