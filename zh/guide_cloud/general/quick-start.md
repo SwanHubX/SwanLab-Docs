@@ -18,8 +18,8 @@ pip install swanlab
 
 按下回车，等待片刻完成安装。
 
-> 如果遇到安装速度慢的问题，可以指定清华源安装：  
-> `pip install swanlab -i https://pypi.tuna.tsinghua.edu.cn/simple`
+> 如果遇到安装速度慢的问题，可以指定国内源安装：  
+> `pip install swanlab -i https://mirrors.cernet.edu.cn/pypi/web/simple`
 
 ## 2. 登录账号
 
