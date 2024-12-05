@@ -42,7 +42,7 @@ export const en = defineConfig({
         { text: 'Contribution', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ] },
-    //   { text: '在线交流', link: '/en/guide_cloud/community/online-support'},
+      { text: 'Contact Us', link: '/en/guide_cloud/community/online-support'},
       { text: 'Website', link: 'https://swanlab.cn' },
     ],
 
