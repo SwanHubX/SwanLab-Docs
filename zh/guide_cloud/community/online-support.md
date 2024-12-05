@@ -18,7 +18,8 @@
 - **微信公众号**:
 
 <div align="center">
-<img src="/assets/wechat.jpg" width=300>
+<img src="/assets/wechat_public_account.jpg" width=300>
+
 </div>
 
 ## Github与邮件

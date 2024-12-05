@@ -94,5 +94,5 @@ We hope that the above information and this guide can help you understand this p
 - **WeChat Official Account**:
 
 <div align="center">
-<img src="/assets/wechat.jpg" width=300>
+<img src="/assets/wechat_public_account.jpg" width=300>
 </div>

@@ -98,5 +98,5 @@ SwanLab是一款开源、轻量级的AI实验跟踪工具，提供了一个**跟
 - **微信公众号**:
 
 <div align="center">
-<img src="/assets/wechat.jpg" width=300>
+<img src="/assets/wechat_public_account.jpg" width=300>
 </div>
