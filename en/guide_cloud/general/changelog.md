@@ -5,6 +5,19 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.3.28 - 2024.12.6
+
+> 🍥Announcement: Hardware monitoring feature coming soon!
+
+**🚀New Features**
+- Added integration with LightGBM
+- Added integration with XGBoost
+
+**Improvements**
+- Increased line length limit for log recording
+- Improved performance in preparation for version 0.4.0
+
+
 ## v0.3.27 - 2024.11.26
 
 **🚀New Features**
