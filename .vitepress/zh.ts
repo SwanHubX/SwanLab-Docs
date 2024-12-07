@@ -135,6 +135,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
       { text: 'Hydra', link: 'integration/integration-hydra' },
       { text: 'Keras', link: 'integration/integration-keras' },
+      { text: 'Ascend & MindSpore', link: 'integration/integration-ascend.md' },
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
       { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration/integration-mmdetection' },
