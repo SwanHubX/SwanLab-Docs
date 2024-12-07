@@ -129,7 +129,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '⚡️ 集成',
     // collapsed: false,
     items: [
-      { text: 'Ascend & MindSpore', link: 'integration/integration-ascend.md' },
+      { text: 'Ascend NPU & MindSpore', link: 'integration/integration-ascend.md' },
       { text: 'Argparse', link:'integration/integration-argparse' },
       { text: 'Fastai', link: 'integration/integration-fastai' },
       { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
