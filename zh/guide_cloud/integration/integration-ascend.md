@@ -4,7 +4,7 @@ SwanLab支持[Ascend系列显卡](https://www.hiascend.com/)的硬件检测和[m
 
 SwanLab实验记录Ascend NPU信息截图：
 
-![device](/assets/guide_cloud/integration/ascend/device.png)
+![device](/assets/guide_cloud/integration/ascend/device_mask.png)
 
 ## 简介
 
@@ -81,7 +81,7 @@ npu-smi info
 
 可以看到如下信息的话就表示驱动已经安装完成了。
 
-![npu-smi](/assets/guide_cloud/integration/ascend/a.png)
+![npu-smi](/assets/guide_cloud/integration/ascend/a_mask.png)
 
 #### 安装MindSpore
 
