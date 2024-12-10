@@ -71,11 +71,11 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 
 ![bert模型环境](./openMind/bert.png)
 
-```
-openmind
-torch
-transformers
-swanlab
+```bash
+pip install openmind
+pip install torch
+pip install transformers
+pip install swanlab
 ```
 
 ### 数据集处理
@@ -89,7 +89,7 @@ OmDataset.load_dataset()方法目前支持下载的数据集格式如下：
 * 下载python脚本加载魔乐社区数据集
 * 下载python脚本加载三方站点数据集
 
-```
+```python
 from openmind import OmDataset
 from openmind import AutoTokenizer
  
@@ -133,7 +133,7 @@ small_eval_dataset = tokenized_datasets["validation"].shuffle(seed=42)
 
 和transformers使用差不多，分别加载模型和分词器
 
-```
+```python
 from openmind import AutoTokenizer
 from openmind import AutoModelForSequenceClassification  ## 做分类任务
  
@@ -149,7 +149,7 @@ model = AutoModelForSequenceClassification.from_pretrained("PyTorch-NPU/bert_bas
 
 创建一个TrainingArguments类，其中包含可以调整的所有超参数以及不同的训练选项。
 
-```
+```python
 from openmind import TrainingArguments
  
 ### 参数初始化
@@ -167,7 +167,7 @@ training_args = TrainingArguments(logging_steps=1,
 
 Trainer在训练过程中不会自动评估模型性能，需要向Trainer传递一个函数来计算和展示指标。
 
-```
+```python
 import numpy as np
 from openmind import metrics
  
@@ -190,7 +190,7 @@ swanlab支持记录openMind Library。能够在线/离线查看训练日志。Sw
 
 > 如果提示登录swanlab，可以在[官网完成注册](https://swanlab.cn)后，使用[获取API KEY](https://swanlab.cn/settings)找到对应的登陆密钥并粘贴，这样将能够使用**云上看版**随时查看训练过程与结果。
 
-```
+```python
 from openmind import Trainer
 from swanlab.integration.transformers import SwanLabCallback
  
@@ -228,7 +228,7 @@ trainer.save_model(final_save_path)
 
 ### 全过程代码
 
-```
+```python
 from openmind import OmDataset
 from openmind import AutoTokenizer
 from openmind import AutoModelForSequenceClassification
@@ -318,7 +318,7 @@ trainer.save_model(final_save_path)
 
 这里使用HF Transformers实现同样的训练过程，使用NVIDIA-A100卡来跑了一次做个对比，A100对应的代码如下：
 
-```
+```python
 from datasets import load_dataset
 from transformers import AutoTokenizer
 from transformers import AutoModelForSequenceClassification
