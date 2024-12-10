@@ -2,7 +2,7 @@
 
 ## 简介
 
-魔乐社区（[Modelers.cn](https://modelers.cn)）是一个为人工智能开发者及爱好者打造的社区，提供工具链、数据集、模型和应用等AI领域生产要素的托管及展示服务和支撑系统。目前，魔乐社区已支持openMind Library。该工具通过简单的API接口，帮助开发者完成模型预训练、微调、推理等流程。同时，openMind Library原生兼容PyTorch 和 MindSpore 等主流框架，原生支持昇腾NPU处理器。openMind Library可以和PEFT、DeepSpeed等三方库配合使用，来提升模型微调效率。
+魔乐社区（[Modelers.cn](https://modelers.cn)）是一个为人工智能开发者及爱好者打造的社区，提供工具链、数据集、模型和应用等AI领域生产要素的托管及展示服务和支撑系统。目前，魔乐社区已支持openMind Library。该工具通过简单的API接口，帮助开发者完成模型预训练、微调、推理等流程。同时，openMind Library原生兼容PyTorch和 MindSpore等主流框架，原生支持昇腾NPU处理器。openMind Library可以和PEFT、DeepSpeed等三方库配合使用，来提升模型微调效率。
 
 友情链接：
 
@@ -185,7 +185,7 @@ def compute_metrics(eval_pred):
 
 swanlab支持记录openMind Library。能够在线/离线查看训练日志。SwanLab支持openMind Library通过callback调用，调用代码可参考后文。
 
-![SwanLab可视化工具](./openMind/juzhong.png)
+![SwanLab可视化工具](./openMind/modelers&swanlab%20V2.png)
 关于SwanLab的使用方法可以参考[SwanLab官方文档-快速开始](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
 
 > 如果提示登录swanlab，可以在[官网完成注册](https://swanlab.cn)后，使用[获取API KEY](https://swanlab.cn/settings)找到对应的登陆密钥并粘贴，这样将能够使用**云上看版**随时查看训练过程与结果。
@@ -316,8 +316,6 @@ trainer.save_model(final_save_path)
 
 ---
 
-## 3、结果展示
-
 这里使用HF Transformers实现同样的训练过程，使用NVIDIA-A100卡来跑了一次做个对比，A100对应的代码如下：
 
 ```
@@ -404,6 +402,8 @@ output_dir="./output/A100"
 final_save_path = join(output_dir)
 trainer.save_model(final_save_path)
 ```
+
+## 3、结果展示
 
 下面是各项对比，
 
