@@ -198,6 +198,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'BERT文本分类', link: 'bert' },  
       { text: 'Qwen微调案例', link: 'qwen_finetune' },  
       { text: 'LLM预训练', link: 'pretrain_llm' },  
+      { text: 'openMind大模型微调', link: 'openMind' },  
     ]
   },
   {
