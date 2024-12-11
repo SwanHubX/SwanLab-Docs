@@ -2,7 +2,7 @@
 
 ## 简介
 
-魔乐社区（[Modelers.cn](https://modelers.cn)）是一个为人工智能开发者及爱好者打造的社区，提供工具链、数据集、模型和应用等AI领域生产要素的托管及展示服务和支撑系统。目前，魔乐社区已支持openMind Library。该工具通过简单的API接口，帮助开发者完成模型预训练、微调、推理等流程。同时，openMind Library原生兼容PyTorch和 MindSpore等主流框架，原生支持昇腾NPU处理器。openMind Library可以和PEFT、DeepSpeed等三方库配合使用，来提升模型微调效率。
+魔乐社区（[Modelers.cn](https://modelers.cn)）是一个为人工智能开发者及爱好者打造的社区，提供工具链、数据集、模型和应用等AI领域生产要素的托管及展示服务和支撑系统。目前，魔乐社区已支持openMind Library。该工具通过简单的API接口，帮助开发者完成模型预训练、微调、推理等流程。同时，openMind Library原生兼容PyTorch 和 MindSpore 等主流框架，原生支持昇腾NPU处理器。openMind Library可以和PEFT、DeepSpeed等三方库配合使用，来提升模型微调效率。
 
 友情链接：
 
@@ -39,6 +39,20 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 #### 直接安装openMind环境
 
 如果是昇腾AI卡系列的话，配置环境前需要先安装驱动等设备，具体可以参考[软件安装-CANN商用版8.0.RC3开发文档-昇腾社区](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)。
+
+**驱动安装&验证**
+
+首先得确定有NPU卡和NPU相关驱动，驱动是8.0.RC3.beta1，如果没安装可以参考上面软件安装的链接查看。
+
+安装好后的验证方法是运行下面的命令，该命令作用与nvidia-smi类似，这里是查看NPU的状态和性能
+
+```bash
+npu-smi info
+```
+
+可以看到如下信息的话就表示驱动已经安装完成了，左侧是安装成功后运行代码后的结果，右侧是每一部分的含义
+
+![npu-smi info](./openMind/npu-info.png)
 
 然后安装好驱动了之后就可以配置环境了，本次微调代码使用pytorch框架，openMind中自带了基于pytorch框架的各类函数，因此正常安装openMind就行。
 
@@ -467,7 +481,7 @@ trainer.save_model(final_save_path)
 
 ## 3、结果展示
 
-下面是各项对比，
+下面是Ascend NPU与A100实验对比：
 
 首先是实验时间，此次实验epoch=3，
 
@@ -475,13 +489,13 @@ trainer.save_model(final_save_path)
 
 看样子昇腾卡比A100稍微快点
 
-然后是显存消耗，其中两个观察NPU/GPU的代码如下：
+然后是显存消耗，其中两个监测NPU/GPU状态的代码如下：
 
-```
-NPU：
+```bash
+# NPU：
 watch -n 1 npu-smi info
  
-GPU：
+# GPU：
 nvtop
 ```
 
