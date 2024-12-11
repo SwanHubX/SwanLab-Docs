@@ -6,6 +6,7 @@
 
 <div align="center">
 <img src="/assets/wechat-QR-Code.png" width=300>
+
 </div>
 
 - **飞书群**：我们的日常工作交流在飞书上，飞书群的回复会更及时。用飞书App扫描下方二维码即可：
