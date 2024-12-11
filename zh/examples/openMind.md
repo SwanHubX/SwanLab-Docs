@@ -36,6 +36,8 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 
 ### 环境配置
 
+#### 直接安装openMind环境
+
 如果是昇腾AI卡系列的话，配置环境前需要先安装驱动等设备，具体可以参考[软件安装-CANN商用版8.0.RC3开发文档-昇腾社区](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)。
 
 **驱动安装&验证**
@@ -44,7 +46,7 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 
 安装好后的验证方法是运行下面的命令，该命令作用与nvidia-smi类似，这里是查看NPU的状态和性能
 
-```
+```bash
 npu-smi info
 ```
 
@@ -54,11 +56,28 @@ npu-smi info
 
 然后安装好驱动了之后就可以配置环境了，本次微调代码使用pytorch框架，openMind中自带了基于pytorch框架的各类函数，因此正常安装openMind就行。
 
+安装命令如下：
+
+```bash
+ 
+# 下载PyTorch安装包
+wget https://download.pytorch.org/whl/cpu/torch-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# 下载torch_npu插件包
+wget https://gitee.com/ascend/pytorch/releases/download/v6.0.rc3-pytorch2.4.0/torch_npu-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# 安装命令
+pip3 install torch-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+pip3 install torch_npu-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# 安装openMind Library
+pip install openmind[pt]
+# 安装SwanLab
+pip install swanlab
+```
+
 > 注意以下几点：
 >
 > 1、可以使用镜像源来安装环境，不然会很浪费时间，可以使用清华源：
 >
-> ```
+> ```bash
 > pip install -i https://pypi.tuna.tsinghua.edu.cn/simple name
 > ```
 >
@@ -66,7 +85,7 @@ npu-smi info
 > ![魔乐社区模型](./openMind/models.png)
 > 3、配置环境的时候，按照openmind官方文档说可以同时存在两个框架，使用的时候分别设置就行，但是实际使用的时候只能存在一个框架，一旦设置了两个框架，使用的时候无论如何设置都会报错说openmind不知道使用哪个框架，所以最好在环境里只安装一个
 >
-> ```
+> ```bash
 > >>>import openmind
 > Traceback (most recent call last):
 >   File "<stdin>", line 1, in <module>
@@ -81,16 +100,57 @@ npu-smi info
 > RuntimeError: Multiple frameworks detected, including: pt, ms.
 > ```
 
-然后直接安装环境，下图表示的有些模型测试会直接给出镜像环境，可以直接使用，也可以手动安装环境
+#### docker环境安装（推荐）
+
+openMind官方库也提供了模型的docker环境。
+
+推荐通过点击模型测试部分（下图红框）找到docker的链接，通过docker来拉起拉起环境。下面介绍docker环境的搭建教程。
 
 ![bert模型环境](./openMind/bert.png)
 
-### 别忘了安装SwanLab 😃
+首先得确定有NPU卡和NPU相关驱动，驱动是**8.0.RC3.beta1**，如果没安装可以参考[CANN官方安装教程](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)
 
+完成安装后检测方法是运行
+
+```bash
+npu-smi info
 ```
-pip install openmind
-pip install torch
-pip install transformers
+
+可以看到如下信息的话就表示驱动已经安装完成了。
+
+![npu-smi](./openmind/a_mask.png)
+
+接下来使用如下命令创建一个装好openmind环境的容器，这样可以省去大量安装环境的时间：
+
+```bash
+docker run \
+    --name openmind \
+    --device /dev/davinci0 \    # 指定NPU 0号设备
+    --device /dev/davinci_manager \
+    --device /dev/devmm_svm \
+    --device /dev/hisi_hdc \
+    -v /usr/local/dcmi:/usr/local/dcmi \
+    -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+    -v /usr/local/Ascend/driver/lib64/:/usr/local/Ascend/driver/lib64/ \
+    -v /etc/ascend_install.info:/etc/ascend_install.info \
+    -v /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info \
+    -tid registry.modelers.cn/base_image/openmind:openeuler-python3.10-cann8.0.rc3.beta1-pytorch2.1.0-openmind0.9.1 bash
+```
+
+这将在后台开启一个名为openmind容器。使用如下命令可进入到容器当中
+
+```bash
+ docker exec -it openmind bash
+```
+
+出现如下界面即表示进入到容器当中
+
+![indocker](./openMind/indocker.png)
+
+最后在docker中运行如下命令安装swanlab即可完成环境安装。
+
+```bash
+# 安装swanlab命令
 pip install swanlab
 ```
 
@@ -105,7 +165,7 @@ OmDataset.load_dataset()方法目前支持下载的数据集格式如下：
 * 下载python脚本加载魔乐社区数据集
 * 下载python脚本加载三方站点数据集
 
-```
+```python
 from openmind import OmDataset
 from openmind import AutoTokenizer
  
@@ -149,7 +209,7 @@ small_eval_dataset = tokenized_datasets["validation"].shuffle(seed=42)
 
 和transformers使用差不多，分别加载模型和分词器
 
-```
+```python
 from openmind import AutoTokenizer
 from openmind import AutoModelForSequenceClassification  ## 做分类任务
  
@@ -165,7 +225,7 @@ model = AutoModelForSequenceClassification.from_pretrained("PyTorch-NPU/bert_bas
 
 创建一个TrainingArguments类，其中包含可以调整的所有超参数以及不同的训练选项。
 
-```
+```python
 from openmind import TrainingArguments
  
 ### 参数初始化
@@ -183,7 +243,7 @@ training_args = TrainingArguments(logging_steps=1,
 
 Trainer在训练过程中不会自动评估模型性能，需要向Trainer传递一个函数来计算和展示指标。
 
-```
+```python
 import numpy as np
 from openmind import metrics
  
@@ -201,12 +261,12 @@ def compute_metrics(eval_pred):
 
 swanlab支持记录openMind Library。能够在线/离线查看训练日志。SwanLab支持openMind Library通过callback调用，调用代码可参考后文。
 
-![SwanLab可视化工具](./openMind/juzhong.png)
+![SwanLab可视化工具](./openMind/modelers&swanlab%20V2.png)
 关于SwanLab的使用方法可以参考[SwanLab官方文档-快速开始](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
 
 > 如果提示登录swanlab，可以在[官网完成注册](https://swanlab.cn)后，使用[获取API KEY](https://swanlab.cn/settings)找到对应的登陆密钥并粘贴，这样将能够使用**云上看版**随时查看训练过程与结果。
 
-```
+```python
 from openmind import Trainer
 from swanlab.integration.transformers import SwanLabCallback
  
@@ -244,7 +304,7 @@ trainer.save_model(final_save_path)
 
 ### 全过程代码
 
-```
+```python
 from openmind import OmDataset
 from openmind import AutoTokenizer
 from openmind import AutoModelForSequenceClassification
@@ -332,11 +392,9 @@ trainer.save_model(final_save_path)
 
 ---
 
-## 3、结果展示
-
 这里使用HF Transformers实现同样的训练过程，使用NVIDIA-A100卡来跑了一次做个对比，A100对应的代码如下：
 
-```
+```python
 from datasets import load_dataset
 from transformers import AutoTokenizer
 from transformers import AutoModelForSequenceClassification
@@ -421,7 +479,9 @@ final_save_path = join(output_dir)
 trainer.save_model(final_save_path)
 ```
 
-下面是各项对比，
+## 3、结果展示
+
+下面是Ascend NPU与A100实验对比：
 
 首先是实验时间，此次实验epoch=3，
 
@@ -431,11 +491,11 @@ trainer.save_model(final_save_path)
 
 然后是显存消耗，其中两个监测NPU/GPU状态的代码如下：
 
-```
-NPU：
+```bash
+# NPU：
 watch -n 1 npu-smi info
  
-GPU：
+# GPU：
 nvtop
 ```
 
