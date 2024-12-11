@@ -67,14 +67,55 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 > RuntimeError: Multiple frameworks detected, including: pt, ms.
 > ```
 
-然后直接安装环境
+openMind官方库也提供了模型的docker环境。
+
+推荐通过点击模型测试部分（下图红框）找到docker的链接，通过docker来拉起拉起环境。下面介绍docker环境的搭建教程。
 
 ![bert模型环境](./openMind/bert.png)
 
+首先得确定有NPU卡和NPU相关驱动，驱动是**8.0.RC3.beta1**，如果没安装可以参考[CANN官方安装教程](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)
+
+完成安装后检测方法是运行
+
 ```bash
-pip install openmind
-pip install torch
-pip install transformers
+npu-smi info
+```
+
+可以看到如下信息的话就表示驱动已经安装完成了。
+
+![npu-smi](./openmind/a_mask.png)
+
+接下来使用如下命令创建一个装好openmind环境的容器，这样可以省去大量安装环境的时间：
+
+```bash
+docker run \
+    --name openmind \
+    --device /dev/davinci0 \    # 指定NPU 0号设备
+    --device /dev/davinci_manager \
+    --device /dev/devmm_svm \
+    --device /dev/hisi_hdc \
+    -v /usr/local/dcmi:/usr/local/dcmi \
+    -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+    -v /usr/local/Ascend/driver/lib64/:/usr/local/Ascend/driver/lib64/ \
+    -v /etc/ascend_install.info:/etc/ascend_install.info \
+    -v /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info \
+    -tid registry.modelers.cn/base_image/openmind:openeuler-python3.10-cann8.0.rc3.beta1-pytorch2.1.0-openmind0.9.1 bash
+```
+
+这将在后台开启一个名为openmind容器。使用如下命令可进入到容器当中
+
+```bash
+ docker exec -it openmind bash
+```
+
+出现如下界面即表示进入到容器当中
+
+![indocker](./openMind/indocker.png)
+
+最后在docker中运行如下命令安装swanlab即可完成环境安装。
+
+```bash
+# 安装swanlab命令
 pip install swanlab
 ```
 
