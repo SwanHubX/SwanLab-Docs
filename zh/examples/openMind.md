@@ -36,9 +36,28 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 
 ### 环境配置
 
+#### 直接安装openMind环境
+
 如果是昇腾AI卡系列的话，配置环境前需要先安装驱动等设备，具体可以参考[软件安装-CANN商用版8.0.RC3开发文档-昇腾社区](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)。
 
 然后安装好驱动了之后就可以配置环境了，本次微调代码使用pytorch框架，openMind中自带了基于pytorch框架的各类函数，因此正常安装openMind就行。
+
+安装命令如下：
+
+```bash
+ 
+# 下载PyTorch安装包
+wget https://download.pytorch.org/whl/cpu/torch-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# 下载torch_npu插件包
+wget https://gitee.com/ascend/pytorch/releases/download/v6.0.rc3-pytorch2.4.0/torch_npu-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# 安装命令
+pip3 install torch-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+pip3 install torch_npu-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+# 安装openMind Library
+pip install openmind[pt]
+# 安装SwanLab
+pip install swanlab
+```
 
 > 注意以下几点：
 >
@@ -66,6 +85,8 @@ openMind Library是一个深度学习开发套件，通过简单易用的API支�
 >     raise RuntimeError(replace_invalid_characters(error_msg))
 > RuntimeError: Multiple frameworks detected, including: pt, ms.
 > ```
+
+#### docker环境安装（推荐）
 
 openMind官方库也提供了模型的docker环境。
 
