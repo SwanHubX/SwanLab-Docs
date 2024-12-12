@@ -17,12 +17,12 @@
 1、[openMind Library](https://modelers.cn/docs/zh/openmind-library/0.9.1/overview.html)--->[Huggingface Transformers](https://huggingface.co/docs/transformers/index)
 
 openMind Library类似于transformers的大模型封装工具，其中就有AutoModelForSequenceClassification、AutoModelForCausalLM等等模型加载工具以及像TrainingArguments参数配置工具等等，原理基本一样，不过对NPU适配更友好些。
-![openmind vs transformers](./openMind/openmind_transformers.png)
+![openmind vs transformers](/zh/examples/openMind/openmind_transformers.png)
 
 2、[魔乐社区](https://modelers.cn/)--->[HuggingFace](https://huggingface.co/)
 
 魔乐社区类似于huggingface这种模型托管社区，里面除了torch的模型还有使用MindSpore实现的模型。transformers可以直接从huggingface获取模型或者数据集，openMind也是一样的，可以从魔乐社区获取模型和数据集。
-![魔乐社区 vs huggingface](./openMind/mole.png)
+![魔乐社区 vs huggingface](/zh/examples/openMind/mole.png)
 
 ---
 
@@ -52,7 +52,7 @@ npu-smi info
 
 可以看到如下信息的话就表示驱动已经安装完成了，左侧是安装成功后运行代码后的结果，右侧是每一部分的含义
 
-![npu-smi info](./openMind/npu-info.png)
+![npu-smi info](/zh/examples/openMind/npu-info.png)
 
 然后安装好驱动了之后就可以配置环境了，本次微调代码使用pytorch框架，openMind中自带了基于pytorch框架的各类函数，因此正常安装openMind就行。
 
@@ -82,7 +82,7 @@ pip install swanlab
 > ```
 >
 > 2、魔乐社区中有两个框架的分类，如果是pytorch就只能选择pytorch框架，同理如果是mindspore就只能选择mindspore框架
-> ![魔乐社区模型](./openMind/models.png)
+> ![魔乐社区模型](/zh/examples/openMind/models.png)
 > 3、配置环境的时候，按照openmind官方文档说可以同时存在两个框架，使用的时候分别设置就行，但是实际使用的时候只能存在一个框架，一旦设置了两个框架，使用的时候无论如何设置都会报错说openmind不知道使用哪个框架，所以最好在环境里只安装一个
 >
 > ```bash
@@ -106,7 +106,7 @@ openMind官方库也提供了模型的docker环境。
 
 推荐通过点击模型测试部分（下图红框）找到docker的链接，通过docker来拉起拉起环境。下面介绍docker环境的搭建教程。
 
-![bert模型环境](./openMind/bert.png)
+![bert模型环境](/zh/examples/openMind/bert.png)
 
 首先得确定有NPU卡和NPU相关驱动，驱动是**8.0.RC3.beta1**，如果没安装可以参考[CANN官方安装教程](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)
 
@@ -118,7 +118,7 @@ npu-smi info
 
 可以看到如下信息的话就表示驱动已经安装完成了。
 
-![npu-smi](./openmind/a_mask.png)
+![npu-smi](/zh/examples/openMind/a_mask.png)
 
 接下来使用如下命令创建一个装好openmind环境的容器，这样可以省去大量安装环境的时间：
 
@@ -145,7 +145,7 @@ docker run \
 
 出现如下界面即表示进入到容器当中
 
-![indocker](./openMind/indocker.png)
+![indocker](/zh/examples/openMind/indocker.png)
 
 最后在docker中运行如下命令安装swanlab即可完成环境安装。
 
@@ -261,7 +261,7 @@ def compute_metrics(eval_pred):
 
 swanlab支持记录openMind Library。能够在线/离线查看训练日志。SwanLab支持openMind Library通过callback调用，调用代码可参考后文。
 
-![SwanLab可视化工具](./openMind/modelers&swanlab%20V2.png)
+![SwanLab可视化工具](/zh/examples/openMind/modelers&swanlab%20V2.png)
 关于SwanLab的使用方法可以参考[SwanLab官方文档-快速开始](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
 
 > 如果提示登录swanlab，可以在[官网完成注册](https://swanlab.cn)后，使用[获取API KEY](https://swanlab.cn/settings)找到对应的登陆密钥并粘贴，这样将能够使用**云上看版**随时查看训练过程与结果。
@@ -485,7 +485,7 @@ trainer.save_model(final_save_path)
 
 首先是实验时间，此次实验epoch=3，
 
-![时间对比](./openMind/time.png)
+![时间对比](/zh/examples/openMind/time.png)
 
 看样子昇腾卡比A100稍微快点
 
@@ -499,12 +499,12 @@ watch -n 1 npu-smi info
 nvtop
 ```
 
-![显存对比](./openMind/xiancun.png)
+![显存对比](/zh/examples/openMind/xiancun.png)
 
 显存消耗差不多
 
 最后是loss等参数的变化
 
-![loss对比](./openMind/loss.png)
+![loss对比](/zh/examples/openMind/loss.png)
 
 感觉A100上运行的结果震荡比较明显，昇腾卡震荡比较少。
