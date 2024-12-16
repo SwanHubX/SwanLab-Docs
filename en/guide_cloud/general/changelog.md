@@ -5,6 +5,20 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+
+## v0.4.0 - 2024.12.15
+
+🎉The long-awaited hardware monitoring feature (cloud version) is now available, supporting system-level monitoring of **CPU, NPU, and GPU**:
+
+- **CPU**: Utilization, Thread Count
+- **Memory**: Utilization, Process Utilization, Available Memory
+- **Nvidia GPU**: Utilization, Memory Allocation, Temperature, Power Consumption
+- **Ascend NPU**: Utilization, HBM Allocation, Temperature
+
+More monitoring features are on the way!
+
+by Cunyue
+
 ## v0.3.28 - 2024.12.6
 
 > 🍥Announcement: Hardware monitoring feature coming soon!
