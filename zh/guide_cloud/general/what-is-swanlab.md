@@ -1,5 +1,10 @@
 # 欢迎使用SwanLab
 
+> 2024.12.16  
+> 更新：为了更好地发展SwanLab，我们正在将云端版的域名进行备案迁移。 
+> 在备案期间swanlab.cn将会访问异常，大概2～10个工作日内会备案迁移完成。 
+> 在此期间python部分实验跟踪和记录不受影响，网页端访问：https://swanlab.115.zone 即可，感谢大家！ 
+
 [官网](https://dev101.swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [贡献指南](https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md) · [SwanHub开源社区](https://swanhub.co) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview)
 
 <!-- ![](/assets/swanlab-show.png) -->
