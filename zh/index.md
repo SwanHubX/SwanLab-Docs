@@ -26,25 +26,25 @@ hero:
     alt: VitePress
 
 features:
-  - icon: 🚢
-    title: 快速开始
-    details: 安装 SwanLab 并在几分钟内开始跟踪你的人工智能实验。
-    link: /guide_cloud/general/quick-start.md
+  - icon: ⚠️
+    title: 重要通知
+    details: 关于swanlab域名迁移导致的无法访问解决方法！！！
+    link: /warning/domain-migrate.md
   
-  - icon: 📚
-    title: 案例
-    details: SwanLab官方案例合集，更好地理解SwanLab在人工智能pipeline中扮演的角色和作用。
-    link: /examples/mnist
+  - icon: ⚠️
+    title: 重要通知
+    details: 关于swanlab域名迁移导致的无法访问解决方法！！！
+    link: /warning/domain-migrate.md
   
-  - icon: 🤗
-    title: 集成
-    details: 与HuggingFace Transformers、PyTorch Lightning、Hydra等主流框架的集成文档。
-    link: /guide_cloud/integration/integration-pytorch-lightning.md
+  - icon: ⚠️
+    title: 重要通知
+    details: 关于swanlab域名迁移导致的无法访问解决方法！！！
+    link: /warning/domain-migrate.md
 
-  - icon: ⚡️
-    title: API文档
-    details: Python库和CLI的完整API文档
-    link: /api/api-index
+  - icon: ⚠️
+    title: 重要通知
+    details: 关于swanlab域名迁移导致的无法访问解决方法！！！
+    link: /warning/domain-migrate.md
 
 ---
 
