@@ -27,22 +27,22 @@ hero:
 
 features:
   - icon: ⚠️
-    title: 重要通知
+    title: 关于网站无法访问的解决方法
     details: 关于swanlab域名迁移导致的无法访问解决方法！！！
     link: /warning/domain-migrate.md
   
   - icon: ⚠️
-    title: 重要通知
+    title: 关于网站无法访问的解决方法
     details: 关于swanlab域名迁移导致的无法访问解决方法！！！
     link: /warning/domain-migrate.md
   
   - icon: ⚠️
-    title: 重要通知
+    title: 关于网站无法访问的解决方法
     details: 关于swanlab域名迁移导致的无法访问解决方法！！！
     link: /warning/domain-migrate.md
 
   - icon: ⚠️
-    title: 重要通知
+    title: 关于网站无法访问的解决方法
     details: 关于swanlab域名迁移导致的无法访问解决方法！！！
     link: /warning/domain-migrate.md
 
