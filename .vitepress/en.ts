@@ -95,7 +95,8 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'What is SwanLab', link: 'general/what-is-swanlab' },
       { text: 'Quick Start', link: 'general/quick-start' },
       { text: 'Team Usage', link: 'general/organization' },
-      { text: 'Changelog', link: 'general/changelog' }
+      { text: 'Changelog', link: 'general/changelog' },
+      { text: '🔥 Mobile SwanLab', link: 'general/app' },
     ]
   },
   {
