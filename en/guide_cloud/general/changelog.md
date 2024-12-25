@@ -6,6 +6,17 @@ Github: https://github.com/SwanHubX/SwanLab
 :::
 
 
+
+## v0.4.2 - 2024.12.24
+
+**🚀New Features**
+- Added password login
+- Added project settings page
+
+**Improvements**
+- Fixed warning issues when running hardware monitoring on some devices
+
+
 ## v0.4.0 - 2024.12.15
 
 🎉The long-awaited hardware monitoring feature (cloud version) is now available, supporting system-level monitoring of **CPU, NPU, and GPU**:

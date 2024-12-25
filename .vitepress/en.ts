@@ -37,7 +37,7 @@ export const en = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'v0.4.0',  items: [
+      { text: 'v0.4.2',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Contribution', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
