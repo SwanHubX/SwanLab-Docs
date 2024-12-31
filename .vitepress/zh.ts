@@ -138,6 +138,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Hydra', link: 'integration/integration-hydra' },
       { text: 'Keras', link: 'integration/integration-keras' },
       { text: 'LightGBM', link: 'integration/integration-lightgbm'},
+      { text: 'LLaMA Factory', link: 'integration/integration-llama-factory'},
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
       { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration/integration-mmdetection' },

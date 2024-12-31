@@ -135,6 +135,8 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
       { text: 'Hydra', link: 'integration/integration-hydra' },
       { text: 'Keras', link: 'integration/integration-keras' },
+      { text: 'LightGBM', link: 'integration/integration-lightgbm'},
+      { text: 'LLaMA Factory', link: 'integration/integration-llama-factory'},
       { text: 'MMEngine', link: 'integration/integration-mmengine' },
       { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration/integration-mmdetection' },
@@ -152,6 +154,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
+      { text: 'XGBoost', link: 'integration/integration-xgboost'},
       { text: 'Xtuner', link: 'integration/integration-xtuner'},
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
     ]
