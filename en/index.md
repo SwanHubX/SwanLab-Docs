@@ -14,10 +14,7 @@ hero:
       link: /en/guide_cloud/general/what-is-swanlab.md
     - theme: brand
       text: Website
-      link: https://dev101.swanlab.cn
-    # - theme: alt
-    #   text: Quick Start
-    #   link: /en/guide_cloud/general/quick-start.md
+      link: https://swanlab.cn
     - theme: alt
       text: Docs GitHub
       link: https://github.com/SwanHubX/SwanLab-Docs
