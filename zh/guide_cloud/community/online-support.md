@@ -1,5 +1,12 @@
 # 在线支持
 
+## 社交媒体
+- **微信公众号**:
+
+<div align="center">
+<img src="/assets/wechat_public_account.jpg" width=300>
+</div>
+
 ## 社群
 
 - **微信交流群**：交流使用SwanLab的问题、分享最新的AI技术。
@@ -15,13 +22,6 @@
 <img src="/assets/feishu-QR-Code.png" width=300>
 </div>
 
-## 社交媒体
-- **微信公众号**:
-
-<div align="center">
-<img src="/assets/wechat_public_account.jpg" width=300>
-
-</div>
 
 ## Github与邮件
 - **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**：反馈使用SwanLab时遇到的错误和问题

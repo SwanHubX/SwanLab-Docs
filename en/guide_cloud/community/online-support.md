@@ -1,5 +1,12 @@
 # Online Support
 
+## Social Media
+- **WeChat Official Account**:
+
+<div align="center">
+<img src="/assets/wechat_public_account.jpg" width=300>
+</div>
+
 ## Community
 
 - **WeChat Group**: Discuss SwanLab usage issues and share the latest AI technologies.
@@ -12,13 +19,6 @@
 
 <div align="center">
 <img src="/assets/feishu-QR-Code.png" width=300>
-</div>
-
-## Social Media
-- **WeChat Official Account**:
-
-<div align="center">
-<img src="/assets/wechat_public_account.jpg" width=300>
 </div>
 
 ## GitHub and Email
