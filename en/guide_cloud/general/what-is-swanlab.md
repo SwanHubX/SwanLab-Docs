@@ -1,15 +1,10 @@
 # Welcome to SwanLab
 
-[Official Website](https://dev101.swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [Contribution Guide
-](https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md) · [SwanHub](https://swanhub.co) · [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview)
+[SwanLab.cn](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [Quick Start](/en/guide_cloud/general/quick-start.md)
 
 <!-- ![](/assets/swanlab-show.png) -->
 
 ![alt text](/assets/product-swanlab-1.png)
-
-::: warning 👋 We've just launched our VS Code extension, try it out!
-Search "SwanLab" in the VS Code Extension Marketplace to install.
-:::
 
 SwanLab is an open-source, lightweight AI experiment tracking tool that provides a platform for tracking, comparing, and collaborating on experiments, designed to accelerate the R&D efficiency of AI R&D teams by 100 times.
 
@@ -37,8 +32,6 @@ We hope that the above information and this guide can help you understand this p
 
 ## What can SwanLab do?
 
-![alt text](/assets/how-to-do-swanlab.png)
-
 **1. 📊Experiment metrics and hyperparameter tracking**: Minimal code embedded in your machine learning pipeline to track and record key training metrics
  - Free hyperparameter and experiment configuration recording
 - **Supported metadata types**: scalar metrics, images, audio, text, etc.
@@ -54,11 +47,11 @@ We hope that the above information and this guide can help you understand this p
 
 ## Where to start
 
-- [Quick Start](/zh/guide_cloud/general/quick-start.md): SwanLab introductory tutorial, master experiment tracking in five minutes!
-- [API documentation](/zh/api/api-index.md): Complete API documentation
-- [Online support](/zh/guide_cloud/community/online-support.md): Join the community, provide feedback and contact us
-- [Self-hosting](/zh/guide_cloud/self_host/offline-board.md): Self-hosting (offline version) usage tutorial
-- [Cases](/zh/examples/mnist.md): View cases of SwanLab with various deep learning tasks
+- [Quick Start](/en/guide_cloud/general/quick-start.md): SwanLab introductory tutorial, master experiment tracking in five minutes!
+- [API documentation](/en/api/api-index.md): Complete API documentation
+- [Online support](/en/guide_cloud/community/online-support.md): Join the community, provide feedback and contact us
+- [Self-hosting](/en/guide_cloud/self_host/offline-board.md): Self-hosting (offline version) usage tutorial
+- [Cases](/en/examples/mnist.md): View cases of SwanLab with various deep learning tasks
 
 ## Comparison with familiar products
 
@@ -89,7 +82,7 @@ We hope that the above information and this guide can help you understand this p
 - **Email Support**: Feedback regarding issues with SwanLab
   - Product: <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(Product Manager Email)
 
-- **WeChat Group and Lark Group**: See [Online Support](/zh/guide_cloud/community/online-support.md)
+- **WeChat Group and Lark Group**: See [Online Support](/en/guide_cloud/community/online-support.md)
 
 - **WeChat Official Account**:
 
