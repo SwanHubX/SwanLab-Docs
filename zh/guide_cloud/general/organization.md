@@ -8,7 +8,7 @@
 
 ## 创建组织
 
-在主页的左下方，点击“创建新的组织”按钮，填写组织名，即可完成组织创建。
+在主页的左上方，点击“创建组织”按钮，填写组织名，即可完成组织创建。
 
 <div align="center">
 <img src="/assets/organization-create.jpg" width="400">
