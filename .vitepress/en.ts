@@ -18,7 +18,10 @@ export const en = defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     // 左上角logo
-    logo: '/icon_docs.svg',
+    logo: {
+      light: '/icon_docs.svg',
+      dark: '/icon_docs_dark.svg'
+    },
     siteTitle: false,
 
     // 导航栏配置
