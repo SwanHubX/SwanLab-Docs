@@ -2,8 +2,24 @@
     --vp-c-brand-1: #107d8b;
     --vp-layout-max-width: 1440px;
     --vp-sidebar-bg-color: var(--vp-c-bg-alt);
+    /* --vp-sidebar-width: 300px; */
+    /* --vp-layout-max-width: 100%; */
+    /* --vp-sidebar-padding-left: 0px; */
+    /* --vp-c-gutter: transparent; */
 }
 
 .dark {
     --vp-c-brand-1: #2e9dac;
+}
+
+/* .VPSidebar {
+    padding-left: 32px !important;
+}
+
+.VPDoc.has-aside .content-container {
+    max-width: 820px !important;
+} */
+
+.title {
+    border-bottom: transparent !important;
 }
