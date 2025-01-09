@@ -47,7 +47,9 @@ export const zh = defineConfig({
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ] },
       { text: '在线交流', link: '/guide_cloud/community/online-support'},
-      { text: '官网', link: 'https://swanlab.cn' },
+      {
+        component: 'HeaderButton',
+      }
     ],
 
     // 最后更新于配置
