@@ -66,3 +66,11 @@ features:
   }
 }
 </style>
+
+
+<!-- 分割线 -->
+<div style="text-align: center; margin-top: 120px; padding: 10px; color: #666; font-size: 14px;">
+  <div style="border-top: 1px solid #e0e0e0; margin: 20px 0;"></div>
+  <p style="margin: 0 0;">Emotion Machine (Beijing) Technology Co., Ltd.</p>
+  <p style="margin: 0 0;">Copyright © 2024 SwanLab</p>
+</div>

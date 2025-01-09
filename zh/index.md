@@ -66,3 +66,10 @@ features:
   }
 }
 </style>
+
+<!-- 分割线 -->
+<div style="text-align: center; margin-top: 120px; padding: 10px; color: #666; font-size: 14px;">
+  <div style="border-top: 1px solid #e0e0e0; margin: 20px 0;"></div>
+  <p style="margin: 0 0;">情感机器（北京）科技有限公司</p>
+  <p style="margin: 0 0;"><a href="https://beian.miit.gov.cn/" target="_blank" style="color: #666; text-decoration: none;">京ICP备2024101706号-1</a> · 版权所有 ©2024 SwanLab</p>
+</div>
