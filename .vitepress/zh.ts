@@ -33,21 +33,21 @@ export const zh = defineConfig({
         activeMatch: '/guide_cloud/',
       },
       { 
-        text: '案例',
+        text: '实战案例',
         link: base_path_examples + '/mnist',
         activeMatch: '/examples/',
       },
       { 
-        text: 'API',
+        text: 'API文档',
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
         },
+      { text: '交流群', link: '/guide_cloud/community/online-support'},
       { text: 'v0.4.2',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ] },
-      { text: '在线交流', link: '/guide_cloud/community/online-support'},
       {
         component: 'HeaderButton',
       }
