@@ -11,14 +11,10 @@
       type: String,
       default: '官网'
     },
-    url: {
-      type: String,
-      default: 'https://swanlab.cn'
-    }
   })
 
   function goToWebsite() {
-    window.open(url, '_blank')
+    window.open('https://swanlab.cn', '_blank')
   }
   </script>
   
