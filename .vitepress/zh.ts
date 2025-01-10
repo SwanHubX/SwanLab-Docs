@@ -237,7 +237,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
-      { text: '(内测中) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
+      // { text: '(内测中) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
       { text: '其他', link: 'cli-swanlab-other' },
     ]
   },
@@ -256,5 +256,16 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
     ]
-  },]
+  },
+  {
+    text: '其他',
+    // collapsed: false,
+    items: [
+      { text: '环境变量', link: 'environment-variable' },
+    ]
+  }
+
+
+
+]
 }
