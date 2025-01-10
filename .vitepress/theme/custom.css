@@ -23,3 +23,11 @@
 .title {
     border-bottom: transparent !important;
 }
+
+/* 调整搜索框位置 */
+div.VPNavBarSearch.search {
+    padding: 0px;
+    margin-left: auto;
+    margin-right: 20px;
+    flex-grow: 0;
+}

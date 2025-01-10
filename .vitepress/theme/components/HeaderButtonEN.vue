@@ -48,4 +48,14 @@
     width: 14px;
     height: 14px;
   }
+
+    /* 黑夜模式样式 */
+    :root.dark .header-button {
+    background-color: #dddddd;
+    color: black;
+  }
+
+  :root.dark .header-button:hover {
+    background-color: #e0e0e0;
+  }
   </style>
