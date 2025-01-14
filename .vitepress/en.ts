@@ -164,6 +164,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'XGBoost', link: 'integration/integration-xgboost'},
       { text: 'Xtuner', link: 'integration/integration-xtuner'},
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
+      { text: 'Add SwanLab into Your Lib', link: 'integration/integration-any-library'},
     ]
   },
   {
