@@ -136,7 +136,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '⚡️ 集成',
     // collapsed: false,
     items: [
-      { text: '将SwanLab集成到你的库', link: 'integration/integration-any-library' },
       { text: 'Argparse', link:'integration/integration-argparse' },
       { text: 'Ascend NPU & MindSpore', link: 'integration/integration-ascend.md' },
       { text: 'Fastai', link: 'integration/integration-fastai' },
@@ -166,6 +165,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'XGBoost', link: 'integration/integration-xgboost'},
       { text: 'Xtuner', link: 'integration/integration-xtuner'},
       { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
+      { text: '将SwanLab集成到你的库', link: 'integration/integration-any-library' },
     ]
   },
   {
