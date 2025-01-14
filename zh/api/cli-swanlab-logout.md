@@ -1,4 +1,4 @@
-# swanlab 
+# swanlab logout
 
 ```bash
 swanlab logout
