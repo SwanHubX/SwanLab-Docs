@@ -12,7 +12,7 @@ swanlab login [OPTIONS]
 
 Log in to your SwanLab account to synchronize experiments to the cloud.
 
-After running the following command, if it's your first login, you will be prompted to fill in your [API_KEY](#):
+After running the following command, if it's your first login, you will be prompted to fill in your [API_KEY](https://swanlab.cn/settings):
 
 ```bash
 swanlab login

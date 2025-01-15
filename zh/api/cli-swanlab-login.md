@@ -12,7 +12,7 @@ swanlab login [OPTIONS]
 
 登录SwanLab账号，以同步实验到云端。
 
-执行下面的命令后，如果第一次登录，会让你填写[API_KEY](#)：
+执行下面的命令后，如果第一次登录，会让你填写[API_KEY](https://swanlab.cn/settings)：
 
 ```bash
 swanlab login
