@@ -53,7 +53,7 @@ The dictionary you pass in `config` will be saved and used for subsequent experi
 swanlab.config={"epochs": 20, "learning_rate": 1e-4, "batch_size": 32, "model_type": "CNN"}
 ```
 
-For more information on how to configure experiments, see [Set Experiment Configuration](/zh/guide_cloud/experiment_track/set-experiment-config.md).
+For more information on how to configure experiments, see [Set Experiment Configuration](/guide_cloud/experiment_track/set-experiment-config.md).
 
 <br>
 
