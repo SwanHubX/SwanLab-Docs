@@ -67,11 +67,11 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 
 ## 从哪里开始
 
-- [快速开始](/zh/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
-- [API文档](/zh/api/api-index.md): 完整的API文档
-- [在线支持](/zh/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
-- [自托管](/zh/guide_cloud/self_host/offline-board.md): 自托管（离线版本）使用方式教程
-- [案例](/zh/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
+- [快速开始](/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
+- [API文档](/api/api-index.md): 完整的API文档
+- [在线支持](/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
+- [自托管](/guide_cloud/self_host/offline-board.md): 自托管（离线版本）使用方式教程
+- [案例](/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
 
 ## 与熟悉产品的对比
 
@@ -103,7 +103,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - **电子邮件支持**：反馈关于使用SwanLab的问题
   - 产品: <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(产品经理邮箱)
 
-- **微信群与飞书群**: 见[在线支持](/zh/guide_cloud/community/online-support.md)
+- **微信群与飞书群**: 见[在线支持](/guide_cloud/community/online-support.md)
 
 - **微信公众号**:
 

@@ -117,7 +117,7 @@ Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of th
 ## What's next
 
 1. See how SwanLab records multimedia content (images, audio, text,...)
-2. See how SwanLab records the [MNIST handwritten recognition](/zh/examples/mnist.md) case
+2. See how SwanLab records the [MNIST handwritten recognition](/en/examples/mnist.md) case
 3. See integration with other frameworks
 4. See how to collaborate with your team through SwanLab
 

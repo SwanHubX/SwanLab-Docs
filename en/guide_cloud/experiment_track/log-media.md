@@ -4,7 +4,7 @@ SwanLab supports logging media data (images, audio, text, etc.) to visually expl
 
 ## 1. Images
 
-`swanlab.Image` supports logging various image types, including numpy, PIL, Tensor, file reading, etc. [API Documentation](/zh/api/py-Image).
+`swanlab.Image` supports logging various image types, including numpy, PIL, Tensor, file reading, etc. [API Documentation](/api/py-Image).
 
 ![](/assets/media-image-1.jpg)
 
