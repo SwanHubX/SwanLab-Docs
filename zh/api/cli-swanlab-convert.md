@@ -25,8 +25,8 @@ swanlab convert [OPTIONS]
 
 ### Tensorboard
 
-[集成-Tensorboard](/zh/guide_cloud/integration/integration-tensorboard.md)
+[集成-Tensorboard](/guide_cloud/integration/integration-tensorboard.md)
 
 ### Weights & Biases
 
-[集成-Weights & Biases](/zh/guide_cloud/integration/integration-wandb.md)
+[集成-Weights & Biases](/guide_cloud/integration/integration-wandb.md)

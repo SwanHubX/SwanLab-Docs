@@ -78,7 +78,7 @@ by Cunyue
 
 **🚀New Features**
 - 🎉Benchmark Community Beta version is now live: https://swanlab.cn/benchmarks
-- Added integration with PaddleYolo, [Documentation](/zh/guide_cloud/integration/integration-paddleyolo.md)
+- Added integration with PaddleYolo, [Documentation](/en/guide_cloud/integration/integration-paddleyolo.md)
 
 **Bug Fixes**
 - Fixed sqlite parallel read/write errors during multiple parallel experiment submissions, [#715](https://github.com/SwanHubX/SwanLab/issues/715)
@@ -87,13 +87,13 @@ by Cunyue
 ## v0.3.21 - 2024.9.26
 
 **🚀New Features**
-- [Organization creation](/zh/guide_cloud/general/organization.md) is now fully open, with a limit of 15 people per organization
+- [Organization creation](/en/guide_cloud/general/organization.md) is now fully open, with a limit of 15 people per organization
 - Experiment names now support "duplicates" with a new experiment naming system
 
 ## v0.3.19 - 2024.9.2
 
 **🚀New Features**
-- (Beta) Added cloud storage functionality for task-based training `swanlab task`, [Documentation](/zh/api/cli-swanlab-remote-gpu.html)
+- (Beta) Added cloud storage functionality for task-based training `swanlab task`, [Documentation](/en/api/cli-swanlab-remote-gpu.html)
 
 **Improvements**
 - [Environment] Added CPU brand recording
@@ -113,7 +113,7 @@ by Cunyue
 
 **🚀New Features**
 - (Beta) Added task-based training `swanlab task` functionality
-- Added integration with `torchtune`, [Documentation](/zh/guide_cloud/integration/integration-pytorch-torchtune)
+- Added integration with `torchtune`, [Documentation](/en/guide_cloud/integration/integration-pytorch-torchtune)
 
 **Improvements**
 - Added `public` parameter to `swanlab.init` to set new project visibility, defaults to `False`
@@ -169,7 +169,7 @@ by Cunyue
 - `swanlab logout`: Support logging out of SwanLab account in terminal
 
 **👥Integration**
-- Added integration with HuggingFace Accelerate, [Documentation](/zh/guide_cloud/integration/integration-huggingface-accelerate.md)
+- Added integration with HuggingFace Accelerate, [Documentation](/en/guide_cloud/integration/integration-huggingface-accelerate.md)
 
 **⚡️Improvements**
 - Improved media file upload stability
@@ -205,19 +205,19 @@ by Cunyue
 - Optimized ultralytics integration code
 
 **👥Integration**
-- Integration with Stable Baseline3, [Guide](/zh/guide_cloud/integration/integration-sb3.md)
+- Integration with Stable Baseline3, [Guide](/en/guide_cloud/integration/integration-sb3.md)
 
 ## v0.3.3 - 2024.5.22
 
 **👥Integration**
-- Integration with Weights & Biases, supporting wandb project conversion to `SwanLab` projects, [Guide](/zh/guide_cloud/integration/integration-wandb.md)
-- Integration with Ultralytics, [Guide](/zh/guide_cloud/integration/integration-ultralytics.md)
-- Integration with fastai, [Guide](/zh/guide_cloud/integration/integration-fastai.md)
+- Integration with Weights & Biases, supporting wandb project conversion to `SwanLab` projects, [Guide](/en/guide_cloud/integration/integration-wandb.md)
+- Integration with Ultralytics, [Guide](/en/guide_cloud/integration/integration-ultralytics.md)
+- Integration with fastai, [Guide](/en/guide_cloud/integration/integration-fastai.md)
 
 ## v0.3.2 - 2024.5.17
 
 **👥Integration**
-- Integration with Tensorboard, supporting conversion of `Tensorboard` log files to `SwanLab` experiments, [Guide](/zh/guide_cloud/integration/integration-tensorboard.md)
+- Integration with Tensorboard, supporting conversion of `Tensorboard` log files to `SwanLab` experiments, [Guide](/en/guide_cloud/integration/integration-tensorboard.md)
 
 **🚀New Features**
 - Support for downloading line charts as PNG images
@@ -243,15 +243,15 @@ by Cunyue
 ## v0.3.0 Cloud Version Launch! - 2024.5.1
 
 **🚀New Features**
-- Released [Cloud Version](https://dev101.swanlab.cn)
+- Released [Cloud Version](https://swanlab.cn)
 - `swanlab.init` supports initialization with config files
 - "Environment" now records Apple M series chips
 
 **👥Integration**
-- Integration with 🤗HuggingFace Transformers, [Guide](/zh/guide_cloud/integration/integration-huggingface-transformers.md)
-- Integration with PyTorch Lightning, [Guide](/zh/guide_cloud/integration/integration-pytorch-lightning.md)
+- Integration with 🤗HuggingFace Transformers, [Guide](/en/guide_cloud/integration/integration-huggingface-transformers.md)
+- Integration with PyTorch Lightning, [Guide](/en/guide_cloud/integration/integration-pytorch-lightning.md)
 - Integration with Jupyter Notebook
-- Integration with Hydra, [Guide](/zh/guide_cloud/integration/integration-hydra.md)
+- Integration with Hydra, [Guide](/en/guide_cloud/integration/integration-hydra.md)
 
 **⚡️Improvements**
 - Optimized line chart rendering for large datasets

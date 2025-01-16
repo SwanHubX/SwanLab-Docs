@@ -37,4 +37,4 @@ After running, a backend service will be started, and SwanLab will provide you w
 
 Access this link to view experiments in the browser using the offline dashboard.
 
-[How to Set IP and Port Number](/zh/api/cli-swanlab-watch.md#设置ip和端口号)
+[How to Set IP and Port Number](/en/api/cli-swanlab-watch.md)

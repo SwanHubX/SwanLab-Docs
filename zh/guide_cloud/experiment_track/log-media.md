@@ -4,7 +4,7 @@ SwanLab 支持记录媒体数据（图像、音频、文本等）以直观地探
 
 ## 1.图像
 
-`swanlab.Image` 支持记录多种图像类型，包括 numpy、PIL、Tensor、读取文件等。[API文档](/zh/api/py-Image)。
+`swanlab.Image` 支持记录多种图像类型，包括 numpy、PIL、Tensor、读取文件等。[API文档](/api/py-Image)。
 
 ![](/assets/media-image-1.jpg)
 
@@ -76,11 +76,11 @@ for i in range(3):
 swanlab.log({"examples": image_list})
 ```
 
-关于图像的更多细节，可参考[API文档](/zh/api/py-Image)
+关于图像的更多细节，可参考[API文档](/api/py-Image)
 
 ## 2. 音频
 
-[API文档](/zh/api/py-Audio)
+[API文档](/api/py-Audio)
 
 ![](/assets/media-audio-1.jpg)
 
@@ -112,7 +112,7 @@ run.log({"examples": examples})
 
 ## 3. 文本
 
-[API文档](/zh/api/py-Text)
+[API文档](/api/py-Text)
 
 ### 3.1 记录字符串
 

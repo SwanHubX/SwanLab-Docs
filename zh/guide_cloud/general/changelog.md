@@ -81,7 +81,7 @@ by Cunyue
 
 **🚀新增功能**
 - 🎉基线社区Beta版本已上线：https://swanlab.cn/benchmarks
-- 新增与PaddleYolo的集成，[文档](/zh/guide_cloud/integration/integration-paddleyolo.md)
+- 新增与PaddleYolo的集成，[文档](/guide_cloud/integration/integration-paddleyolo.md)
 
 **修复问题**
 - 修复了在多组并行实验提交时，出现sqlite并行读写报错的问题，[#715](https://github.com/SwanHubX/SwanLab/issues/715)

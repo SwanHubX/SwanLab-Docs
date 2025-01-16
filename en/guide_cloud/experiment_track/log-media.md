@@ -76,11 +76,11 @@ for i in range(3):
 swanlab.log({"examples": image_list})
 ```
 
-For more details about images, refer to the [API Documentation](/zh/api/py-Image).
+For more details about images, refer to the [API Documentation](/en/api/py-Image).
 
 ## 2. Audio
 
-[API Documentation](/zh/api/py-Audio)
+[API Documentation](/en/api/py-Audio)
 
 ![](/assets/media-audio-1.jpg)
 
@@ -112,7 +112,7 @@ run.log({"examples": examples})
 
 ## 3. Text
 
-[API Documentation](/zh/api/py-Text)
+[API Documentation](/en/api/py-Text)
 
 ### 3.1 Log Strings
 

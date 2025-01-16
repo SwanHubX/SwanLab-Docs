@@ -352,7 +352,7 @@ Inference results are as follows:
 Ensure the swanlab version is 0.3.19
 :::
 
-Pretraining LLMs requires significant GPU compute power and memory. This article recommends using [SwanLab Launch](/zh/api/cli-swanlab-remote-gpu) to leverage cloud GPUs for pretraining.
+Pretraining LLMs requires significant GPU compute power and memory. This article recommends using [SwanLab Launch](/en/api/cli-swanlab-remote-gpu) to leverage cloud GPUs for pretraining.
 
 First, upload the dataset using the `swanlab upload -n WIKI_CN WIKI_CN` command:
 
@@ -366,7 +366,7 @@ You can also use `swanlab task list` to view the uploaded dataset ID:
 
 ![show_id](/assets/examples/pretrain_llm/show_id.png)
 
-Refer to the [SwanLab Launch official documentation](/zh/api/cli-swanlab-remote-gpu) to create a `swanlab.yaml` file locally and enter the following information:
+Refer to the [SwanLab Launch official documentation](/en/api/cli-swanlab-remote-gpu) to create a `swanlab.yaml` file locally and enter the following information:
 
 ```yaml
 apiVersion: swanlab/v1

@@ -47,4 +47,4 @@ visualizer = dict(
     )])
 ```
 
-For other integration methods with the MM series and more flexible configurations, please refer to [MMEngine Integration with SwanLab](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html).
+For other integration methods with the MM series and more flexible configurations, please refer to [MMEngine Integration with SwanLab](https://docs.swanlab.cn/en/guide_cloud/integration/integration-mmengine.html).

@@ -53,7 +53,7 @@ run = swanlab.init(
 swanlab.config={"epochs": 20, "learning_rate": 1e-4, "batch_size": 32, "model_type": "CNN"}
 ```
 
-有关如何配置实验的更多信息，请参阅[设置实验配置](/zh/guide_cloud/experiment_track/set-experiment-config.md)。
+有关如何配置实验的更多信息，请参阅[设置实验配置](/guide_cloud/experiment_track/set-experiment-config.md)。
 
 <br>
 
@@ -114,7 +114,7 @@ for epoch in range(swanlab.config.epochs):
 
 使用SwanLab仪表盘作为管理和可视化人工智能模型结果的一站式节点。  
 可以可视化丰富的交互式图表，例如折线图、图像图表、音频图表等。  
-有关如何查看实验更多信息，请参阅[查看实验结果](/zh/guide_cloud/experiment_track/view-result.md)。
+有关如何查看实验更多信息，请参阅[查看实验结果](/guide_cloud/experiment_track/view-result.md)。
 
 ![](/assets/example-mnist.jpg)
 
@@ -144,4 +144,4 @@ swanlab.init(
 )
 ```
 
-关于创建SwanLab实验时更多可用参数的信息，请参阅API文档中的[swanlab.init](/zh/api/py-init.md)文档。
+关于创建SwanLab实验时更多可用参数的信息，请参阅API文档中的[swanlab.init](/api/py-init.md)文档。

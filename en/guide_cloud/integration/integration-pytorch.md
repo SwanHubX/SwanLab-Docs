@@ -10,8 +10,8 @@ You can use PyTorch to train deep learning models while using SwanLab for experi
 
 ::: warning Integration with Other PyTorch Ecosystems
 
-- [Lightning](/zh/guide_cloud/integration/integration-pytorch-lightning.md)
-- [Torchtune](/zh/guide_cloud/integration/integration-pytorch-torchtune.md)
+- [Lightning](/en/guide_cloud/integration/integration-pytorch-lightning.md)
+- [Torchtune](/en/guide_cloud/integration/integration-pytorch-torchtune.md)
 
 :::
 

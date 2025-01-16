@@ -40,10 +40,10 @@ swanlab.log({"loss": loss})
 
 Explore the following resources to learn about SwanLab experiment tracking:
 
-- Read the [Quick Start](/zh/guide_cloud/general/quick-start)
+- Read the [Quick Start](/en/guide_cloud/general/quick-start)
 - Explore this chapter to learn how to:
-  - [Create an Experiment](/zh/guide_cloud/experiment_track/create-experiment)
-  - [Configure an Experiment](/zh/guide_cloud/experiment_track/set-experiment-config.md)
-  - [Log Metrics](/zh/guide_cloud/experiment_track/log-experiment-metric.md)
-  - [View Experiment Results](/zh/guide_cloud/experiment_track/view-result.md)
-- Explore the SwanLab Python library in the [API Documentation](/zh/api/api-index).
+  - [Create an Experiment](/en/guide_cloud/experiment_track/create-experiment)
+  - [Configure an Experiment](/en/guide_cloud/experiment_track/set-experiment-config.md)
+  - [Log Metrics](/en/guide_cloud/experiment_track/log-experiment-metric.md)
+  - [View Experiment Results](/en/guide_cloud/experiment_track/view-result.md)
+  - Explore the SwanLab Python library in the [API Documentation](/en/api/api-index).
