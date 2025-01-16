@@ -1,46 +1,42 @@
 # FAQ
 
-## 登录时，API Key为什么输入不进去？
+## Why can't I input the API Key during login?
 
-见此回答：[链接](https://www.zhihu.com/question/720308649/answer/25076837539)
+Refer to this answer: [Link](https://www.zhihu.com/question/720308649/answer/25076837539)
 
+## How to start multiple experiments from a single script?
 
-## 如何从一个脚本启动多个实验？
+Add `swanlab.finish()` between multiple experiment creations.
 
-在多次创建实验之间增加`swanlab.finish()`即可。
+After executing `swanlab.finish()`, executing `swanlab.init()` again will create a new experiment.  
+If `swanlab.finish()` is not executed, subsequent `swanlab.init()` calls will be ignored.
 
-执行了`swanlab.finish()`之后，再次执行`swanlab.init()`就会创建新的实验；  
-如果不执行`swanlab.finish()`的情况下，再次执行`swanlab.init()`，将无视此次执行。
+## How to disable SwanLab logging during training (for debugging)?
 
-## 如何在训练时关闭swanlab记录（Debug调试）？
-
-将`swanlab.init`的`mode`参数设置为disabled，就可以不创建实验以及不写入数据。
+Set the `mode` parameter of `swanlab.init` to 'disabled' to prevent experiment creation and data logging.
 
 ```python
 swanlab.init(mode='disabled')
 ```
 
+## The local training has ended, but the experiment is still shown as running on the SwanLab UI. How to change the status?
 
-## 本地的训练已经结束，但SwanLab UI上仍然在运行中，要怎么改变状态？
-
-点击实验名旁边的终止按钮，会将实验状态从“进行中”转为“中断”，并停止接收数据的上传。
+Click the stop button next to the experiment name to change the status from "Running" to "Interrupted" and stop receiving data uploads.
 
 ![stop](/assets/stop.png)
 
+## How to view local details of the line chart?
 
-## 如何查看折线图的局部细节？
-
-放大折线图，长按鼠标划过目标的区域，即可放大查看该区域。
+Zoom in on the line chart by holding down the mouse and dragging over the target area to magnify that region.
 
 ![details](/assets/faq-chart-details.png)
 
-双击区域后复原。
+Double-click the area to restore the original view.
 
-## 如何取消实验的后缀名？
+## How to remove the suffix from the experiment name?
 
 ```python
 swanlab.init(suffix=None)
 ```
 
-ps: 在0.3.22版本以后，不再自动为实验名添加后缀。
-
+Note: Starting from version 0.3.22, the suffix is no longer automatically added to the experiment name.

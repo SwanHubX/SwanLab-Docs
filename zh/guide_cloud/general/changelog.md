@@ -90,13 +90,13 @@ by Cunyue
 ## v0.3.21 - 2024.9.26
 
 **🚀新增功能**
-- [组织创建](/zh/guide_cloud/general/organization.md)已全面开放，每个组织上限为15人。
+- [组织创建](/guide_cloud/general/organization.md)已全面开放，每个组织上限为15人。
 - 实验名现已支持「重名」，并使用新的一套新建实验名体系。
 
 ## v0.3.19 - 2024.9.2
 
 **🚀新增功能**
-- （内测）新增任务式训练`swanlab task`的网盘存储功能，[文档](/zh/api/cli-swanlab-remote-gpu.html)
+- （内测）新增任务式训练`swanlab task`的网盘存储功能，[文档](/api/cli-swanlab-remote-gpu.html)
 
 **优化**
 - 【环境】增加对CPU品牌的记录
@@ -118,7 +118,7 @@ by Cunyue
 
 **🚀新增功能**
 - （内测）新增任务式训练`swanlab task`功能
-- 新增与`torchtune`的集成，[文档](/zh/guide_cloud/integration/integration-pytorch-torchtune)
+- 新增与`torchtune`的集成，[文档](/guide_cloud/integration/integration-pytorch-torchtune)
 
 **优化**
 - `swanlab.init`增加参数`public`，可用于设置创建的新项目的可见性，默认为`False`
@@ -178,7 +178,7 @@ by Cunyue
 - `swanlab logout`：支持在终端退出SwanLab账号
 
 **👥集成**
-- 增加与HuggingFace Accelerate的集成，[文档](/zh/guide_cloud/integration/integration-huggingface-accelerate.md)
+- 增加与HuggingFace Accelerate的集成，[文档](/guide_cloud/integration/integration-huggingface-accelerate.md)
 
 **⚡️改进**
 - 改进了媒体文件上传的稳定性
@@ -217,19 +217,19 @@ by Cunyue
 - 优化ultralytics集成代码
 
 **👥集成**
-- 与Stable Baseline3集成，[指引](/zh/guide_cloud/integration/integration-sb3.md)
+- 与Stable Baseline3集成，[指引](/guide_cloud/integration/integration-sb3.md)
 
 ## v0.3.3 - 2024.5.22
 
 **👥集成**
-- 与Weights & Biases集成，支持将wandb项目转换为`SwanLab`项目，[指引](/zh/guide_cloud/integration/integration-wandb.md)
-- 与Ultralytics集成，[指引](/zh/guide_cloud/integration/integration-ultralytics.md)
-- 与fastai集成，[指引](/zh/guide_cloud/integration/integration-fastai.md)
+- 与Weights & Biases集成，支持将wandb项目转换为`SwanLab`项目，[指引](/guide_cloud/integration/integration-wandb.md)
+- 与Ultralytics集成，[指引](/guide_cloud/integration/integration-ultralytics.md)
+- 与fastai集成，[指引](/guide_cloud/integration/integration-fastai.md)
 
 ## v0.3.2 - 2024.5.17
 
 **👥集成**
-- 与Tensorboard集成，支持将`Tensorboard`日志文件转换为`SwanLab`实验，[指引](/zh/guide_cloud/integration/integration-tensorboard.md)
+- 与Tensorboard集成，支持将`Tensorboard`日志文件转换为`SwanLab`实验，[指引](/guide_cloud/integration/integration-tensorboard.md)
 
 **🚀新增功能**
 - 支持下载折线图为PNG图像
@@ -257,15 +257,15 @@ by Cunyue
 ## v0.3.0 云端版上线！ - 2024.5.1
 
 **🚀新增功能**
-- [云端版](https://dev101.swanlab.cn)发布
+- [云端版](https://swanlab.cn)发布
 - `swanlab.init`支持用配置文件初始化
 - “环境”增加对Apple M系列芯片的记录
 
 **👥集成**
-- 与🤗HuggingFace Transformers集成，[指引](/zh/guide_cloud/integration/integration-huggingface-transformers.md)
-- 与PyTorch Lightning集成，[指引](/zh/guide_cloud/integration/integration-pytorch-lightning.md)
+- 与🤗HuggingFace Transformers集成，[指引](/guide_cloud/integration/integration-huggingface-transformers.md)
+- 与PyTorch Lightning集成，[指引](/guide_cloud/integration/integration-pytorch-lightning.md)
 - 与Jupyter Notebook集成
-- 与Hydra集成，[指引](/zh/guide_cloud/integration/integration-hydra.md)
+- 与Hydra集成，[指引](/guide_cloud/integration/integration-hydra.md)
 
 **⚡️改进**
 - 优化折线图在大数据量时的渲染表现

@@ -37,4 +37,4 @@ swanlab watch ./logs
 
 访问该链接，就可以在浏览器用离线看板查看实验了。
 
-[如何设置端口号和IP](/zh/api/cli-swanlab-watch.md#设置ip和端口号)
+[如何设置端口号和IP](/api/cli-swanlab-watch.md#设置ip和端口号)

@@ -53,7 +53,7 @@ The dictionary you pass in `config` will be saved and used for subsequent experi
 swanlab.config={"epochs": 20, "learning_rate": 1e-4, "batch_size": 32, "model_type": "CNN"}
 ```
 
-For more information on how to configure experiments, see [Set Experiment Configuration](/guide_cloud/experiment_track/set-experiment-config.md).
+For more information on how to configure experiments, see [Set Experiment Configuration](/en/guide_cloud/experiment_track/set-experiment-config.md).
 
 <br>
 
@@ -115,7 +115,7 @@ for epoch in range(swanlab.config.epochs):
 
 Use the SwanLab dashboard as a one-stop node for managing and visualizing AI model results.  
 You can visualize rich interactive charts, such as line charts, image charts, audio charts, etc.  
-For more information on how to view experiments, see [View Experiment Results](/zh/guide_cloud/experiment_track/view-result.md).
+For more information on how to view experiments, see [View Experiment Results](/en/guide_cloud/experiment_track/view-result.md).
 
 ![](/assets/example-mnist.jpg)
 
@@ -144,4 +144,4 @@ swanlab.init(
 )
 ```
 
-For more information on available parameters when creating a SwanLab experiment, see the [swanlab.init](/zh/api/py-init.md) documentation in the API documentation.
+For more information on available parameters when creating a SwanLab experiment, see the [swanlab.init](/en/api/py-init.md) documentation in the API documentation.
