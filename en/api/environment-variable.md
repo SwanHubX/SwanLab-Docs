@@ -1,49 +1,32 @@
 # Environment Variables
 
-[⚙️Full Environment Variables -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)
+[⚙️Complete Environment Variables 1 -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)、[⚙️Complete Environment Variables 2 -> Github](https://github.com/SwanHubX/SwanLab-Toolkit/blob/main/swankit/env.py)
 
 ## Global Configuration
 
-### `SWANLAB_FOLDER`
-- **Description**: The path where the SwanLab global folder is saved, defaulting to the `.swanlab` folder in the user's home directory.
-- **Environment Variable**: `SWANLAB_FOLDER`
-
-### `SWANLOG_FOLDER`
-- **Description**: The path where SwanLab parsed log files are saved, defaulting to the `swanlog` folder in the current running directory.
-- **Environment Variable**: `SWANLOG_FOLDER`
-
-### `SWANLAB_MODE`
-- **Description**: The parsing mode of SwanLab, involving callbacks registered by the operator. Currently, there are three modes: `local`, `cloud`, and `disabled`, with the default being `cloud`. **Note: Case sensitive**.
-- **Environment Variable**: `SWANLAB_MODE`
+| Environment Variable | Description | Default Value |
+| --- | --- | --- |
+| `SWANLAB_SAVE_DIR` | Path where SwanLab global folder is saved | `.swanlab` folder in the user's home directory |
+| `SWANLAB_LOG_DIR` | Path where SwanLab parsed log files are saved | `swanlog` folder in the current working directory |
+| `SWANLAB_MODE` | SwanLab's parsing mode, which involves callbacks registered by the operator. Currently, there are three modes: `local`, `cloud`, and `disabled`. **Note: Case-sensitive** | `cloud` |
 
 ## Service Configuration
 
-### `SWANBOARD_PROT`
-- **Description**: The port for the CLI offline dashboard `swanboard` service.
-- **Environment Variable**: `SWANLAB_BOARD_PORT`
-
-### `SWANBOARD_HOST`
-- **Description**: The address for the CLI offline dashboard `swanboard` service.
-- **Environment Variable**: `SWANLAB_BOARD_HOST`
-
-### `SWANLAB_WEB_HOST`
-- **Description**: The web address for the SwanLab cloud environment.
-- **Environment Variable**: `SWANLAB_WEB_HOST`
-
-### `API_HOST`
-- **Description**: The API address for the SwanLab cloud environment.
-- **Environment Variable**: `SWANLAB_API_HOST`
+| Environment Variable | Description | 
+| --- | --- |
+| `SWANLAB_BOARD_PORT` | Port for the CLI offline dashboard `swanboard` service |
+| `SWANLAB_BOARD_HOST` | Address for the CLI offline dashboard `swanboard` service |
+| `SWANLAB_WEB_HOST` | Web address for the SwanLab cloud environment |
+| `SWANLAB_API_HOST` | API address for the SwanLab cloud environment |
 
 ## Login Authentication
 
-### `SWANLAB_API_KEY`
-- **Description**: The cloud API Key. During login, this environment variable is checked first. If it does not exist, it checks whether the user is already logged in. If not logged in, the login process is initiated.
-  - If a string is passed to the `login` interface, this environment variable is invalid.
-  - If the user is already logged in, this environment variable takes precedence over locally stored login information.
-- **Environment Variable**: `SWANLAB_API_KEY`
+| Environment Variable | Description |
+| --- | --- | 
+| `SWANLAB_API_KEY` | Cloud API Key. During login, this environment variable is checked first. If it doesn't exist, the system checks if the user is already logged in. If not, the login process is initiated.<br>- If a string is passed to the `login` interface, this environment variable is ignored.<br>- If the user is already logged in, this environment variable takes precedence over locally stored login information. |
 
 ## Others
 
-### `SWANLAB_WEBHOOK`
-- **Description**: Webhook address. If this environment variable exists, SwanLab will call this address to send a message upon successful initialization.
-- **Environment Variable**: `SWANLAB_WEBHOOK`
+| Environment Variable | Description |
+| --- | --- |
+| `SWANLAB_WEBHOOK` | Webhook address.<br> When SwanLab initialization is complete, if this environment variable exists, it will be called to send a message. |
