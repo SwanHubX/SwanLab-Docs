@@ -4,13 +4,83 @@
 
 ![wandb](/assets/ig-wandb.png)
 
-你可以使用swanlab convert将Wandb上已存在的项目转换成SwanLab项目。
+**你可以用两种方式将Wandb上的项目同步到SwanLab：**
+
+1. **同步跟踪**：如果你现在的项目使用了wandb进行实验跟踪，你可以使用`swanlab.sync_wandb()`命令，在运行训练脚本时同步记录指标到SwanLab。
+2. **转换已存在的项目**：如果你想要将wandb上的项目复制到SwanLab，你可以使用`swanlab convert`，将Wandb上已存在的项目转换成SwanLab项目。
 
 ::: info
 在当前版本暂仅支持转换标量图表。
 :::
 
-## 找到你的projecy、entity和runid
+[[toc]]
+
+
+## 1. 同步跟踪
+
+### 1.1 添加sync_wandb命令
+
+在你的代码执行`wandb.init()`之前的任何位置，添加一行`swanlab.sync()`命令，即可在训练时同步wandb的指标到SwanLab。
+
+```python
+import swanlab
+
+swanlab.sync_wandb()
+
+...
+
+wandb.init()
+```
+
+在上述这种代码写法中，`wandb.init()`的同时会初始化swanlab，项目名、实验名和配置和`wandb.init()`中的`project`、`name`、`config`一致，因此你不需要再手动初始化swanlab。
+
+### 1.2 另一种写法
+
+另一种用法是先手动初始化swanlab，再运行wandb的代码。
+
+```python
+import swanlab
+
+swanlab.init(...)
+swanlab.sync_wandb()
+
+...
+
+wandb.init()
+```
+
+在这种写法中，项目名、实验名、配置和`swanlab.init()`中的`project`、`experiment_name`、`config`一致，而后续`wandb.init()`中的`project`、`name`会被忽略，`config`会更新进`swanlab.config`中。
+
+### 1.3 测试代码
+
+```python
+import wandb
+import random
+import swanlab
+
+swanlab.sync_wandb()
+# swanlab.init(project="sync_wandb")
+
+wandb.init(
+  project="test",
+  config={"a": 1, "b": 2},
+  name="test",
+  )
+
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+  acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+  loss = 2 ** -epoch + random.random() / epoch + offset
+
+  wandb.log({"acc": acc, "loss": loss})
+```
+
+![alt text](/assets/ig-wandb-4.png)
+
+## 2. 转换已存在的项目
+
+### 2.1 找到你在wandb.ai上的projecy、entity和runid
 
 projecy、entity和runid是转换所需要的（runid是可选的）。  
 project和entity的位置：
@@ -20,7 +90,7 @@ runid的位置：
 
 ![alt text](/assets/ig-wandb-3.png)
 
-## 方式一：命令行转换
+### 2.2 方式一：命令行转换
 
 首先，需要确保当前环境下，你已登录了wandb，并有权限访问目标项目。
 
@@ -39,7 +109,7 @@ swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_EN
 
 如果不填写`--wb-runid`，则会将指定项目下的全部Run进行转换；如果填写，则只转换指定的Run。
 
-## 方式二：代码内转换
+### 2.3 方式二：代码内转换
 
 ```python
 from swanlab.converter import WandbConverter

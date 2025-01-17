@@ -8,7 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.3 - 2025.1.17
 
 **🚀新增功能**
-- 新增`swanlab.sync_wandb()`：支持使用Weights&Biases跟踪实验时，同步指标到SwanLab
+- 新增`swanlab.sync_wandb()`：支持使用Weights&Biases跟踪实验时，同步指标到SwanLab，[文档](/guide_cloud/integration/integration-wandb.md)
 - 新增在使用框架集成时，配置项将记录所使用的框架
 
 **优化**

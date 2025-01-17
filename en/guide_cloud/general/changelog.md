@@ -8,7 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.3 - 2025.1.17
 
 **🚀 New Features**
-- Added `swanlab.sync_wandb()`: Supports synchronizing metrics to SwanLab when using Weights&Biases for experiment tracking.
+- Added `swanlab.sync_wandb()`: Supports synchronizing metrics to SwanLab when using Weights&Biases for experiment tracking. [Docs](/en/guide_cloud/integration/integration-wandb.md)
 - Added framework integration: Configuration items will now record the framework being used.
 
 **Optimizations**
