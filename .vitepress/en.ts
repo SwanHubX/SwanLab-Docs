@@ -256,6 +256,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
+      { text: 'sync_wandb', link: 'py-sync-wandb' },
     ]
   },
   {
