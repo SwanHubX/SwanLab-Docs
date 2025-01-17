@@ -5,6 +5,20 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.4.3 - 2025.1.17
+
+**🚀 New Features**
+- Added `swanlab.sync_wandb()`: Supports synchronizing metrics to SwanLab when using Weights&Biases for experiment tracking.
+- Added framework integration: Configuration items will now record the framework being used.
+
+**Optimizations**
+- Improved table view interactions, adding row and column dragging, filtering, and sorting interactions.
+- Significantly optimized workspace loading performance.
+- Significantly optimized log rendering performance.
+- Improved the interaction when executing `swanlab.init()` on a non-logged-in computer.
+- Fixed several known issues.
+
+
 ## New Year's Day Update
 
 **🚀 New Features**
@@ -239,21 +253,3 @@ by Cunyue
 
 **⚙️Bug Fixes**
 - Fixed compatibility issues with Omegaconfig and similar types in `swanlab.init` config
-
-## v0.3.0 Cloud Version Launch! - 2024.5.1
-
-**🚀New Features**
-- Released [Cloud Version](https://swanlab.cn)
-- `swanlab.init` supports initialization with config files
-- "Environment" now records Apple M series chips
-
-**👥Integration**
-- Integration with 🤗HuggingFace Transformers, [Guide](/en/guide_cloud/integration/integration-huggingface-transformers.md)
-- Integration with PyTorch Lightning, [Guide](/en/guide_cloud/integration/integration-pytorch-lightning.md)
-- Integration with Jupyter Notebook
-- Integration with Hydra, [Guide](/en/guide_cloud/integration/integration-hydra.md)
-
-**⚡️Improvements**
-- Optimized line chart rendering for large datasets
-- Improved performance in Jupyter
-- Fixed numerous issues from previous versions
