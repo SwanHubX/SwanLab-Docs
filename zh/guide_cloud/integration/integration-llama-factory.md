@@ -1,5 +1,9 @@
 # LLaMA Factory
 
+[[toc]]
+
+## 0. 前言
+
 ![](/zh/guide_cloud/integration/llama_factory/0.png)
 
 我们非常高兴地宣布**SwanLab**与**LLaMA Factory**建立合作伙伴关系，致力于为中国训练者提供优质、高效的大模型训练体验。
@@ -20,13 +24,9 @@ LLaMA Factory 是一个用于微调大语言模型 (LLM) 的开源工具包，�
 > SwanLab开源仓库：https://github.com/SwanHubX/SwanLab  
 > 实验过程：https://swanlab.cn/@ZeyiLin/llamafactory/runs/y79f9ri9jr1mkoh24a7g8/chart
 
-<br>
-
-## 使用案例
-
 我们将以使用LLaMA Factory + SwanLab可视化微调Qwen2.5为案例。
 
-### 1. 安装环境
+## 1. 安装环境
 
 首先，你需要确保你拥有Python3.8以上环境与Git工具，然后克隆仓库：
 
@@ -43,7 +43,7 @@ pip install -e ".[torch,metrics,swanlab]"
 
 > 如果你是昇腾NPU用户，可以访问：https://github.com/hiyouga/LLaMA-Factory/blob/main/README\_zh.md#%E5%AE%89%E8%A3%85-llama-factory 查看昇腾NPU版安装教程。
 
-### 2. 使用LLaMA Board开启训练
+## 2. 使用LLaMA Board开启训练
 
 LLaMA Board是基于Gradio的可视化微调界面，你可以通过下面的代码启动LLaMA Board：
 
@@ -91,7 +91,7 @@ export USE_OPENMIND_HUB=1 # Windows 使用 `set USE_OPENMIND_HUB=1`
 
 
 
-### 3. 使用命令行开启训练
+## 3. 使用命令行开启训练
 
 LLaMA Factory还支持通过yaml配置文件，在命令行中进行微调。
 
@@ -121,3 +121,17 @@ llamafactory-cli train examples/train_lora/qwen2vl_lora_sft.yaml
 ***
 
 致敬 LLaMA Factory 团队，感谢他们为开源社区提供了这么一个优秀的模型训练工具。随着我们的继续合作，敬请期待SwanLab工具为大模型训练师提供更深入、强大的实验跟踪功能。
+
+## 4.附录：支持的参数
+
+```yaml
+# swanlab
+use_swanlab: true
+swanlab_project: your_project_name
+swanlab_run_name: your_experiment_name
+swanlab_workspace: your_workspace
+swanlab_mode: your_mode
+swanlab_api_key: your_api_key
+```
+
+> 更多可见：[LLaMA Factory - Github](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%AE%89%E8%A3%85-llama-factory) 中的`SwanLabArguments`类。
