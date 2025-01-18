@@ -190,16 +190,17 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
+      { text: 'FashionMNIST', link: 'fashionmnist' },
     ]
   },
   {
     text: '计算机视觉',
     // collapsed: false,
     items: [
-      { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'Yolo目标检测', link: 'yolo' },  
       { text: 'QwenVL多模态大模型微调', link: 'qwen_vl_coco'},
+      { text: 'Stable Diffusion文生图微调', link: 'stable_diffusion'},
     ]
   },
   {

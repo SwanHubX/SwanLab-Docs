@@ -191,16 +191,17 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST Handwriting Recognition', link: 'mnist' },
+      { text: 'FashionMNIST', link: 'fashionmnist' },
     ]
   },
   {
     text: 'Computer Vision',
     // collapsed: false,
     items: [
-      { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },    
       { text: 'Yolo Object Detection', link: 'yolo' },  
-      { text: 'QwenVL Finetune Case', link: 'qwen_vl_coco' },
+      { text: 'QwenVL Finetune', link: 'qwen_vl_coco' },
+      { text: 'Stable Diffusion Finetune', link: 'stable_diffusion' },
     ]
   },
   {
