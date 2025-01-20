@@ -12,6 +12,8 @@
 - [Image](/en/api/py-Image.md)
 - [Audio](/en/api/py-Audio.md)
 - [Text](/en/api/py-Text.md)
+- [convert](/en/api/py-converter.md)
+- [sync_wandb](/en/api/py-sync-wandb.md)
 
 ## Other
 - [Environment Variables](/en/api/environment-variable.md)
