@@ -5,6 +5,14 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.4.5 - 2025.1.22
+
+**🚀新增功能**
+- 新增`swanlab.sync_tensorboardX()`和`swanlab.sync_tensorboard_torch()`：支持使用TensorboardX或PyTorch.utils.tensorboard跟踪实验时，同步指标到SwanLab
+
+**优化**
+- 优化了`sync_wandb()`的代码兼容性
+
 ## v0.4.3 - 2025.1.17
 
 **🚀新增功能**
