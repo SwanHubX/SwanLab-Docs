@@ -4,9 +4,121 @@
 
 ![TensorBoard](/assets/ig-tensorboard.png)
 
-你可以使用`swanlab convert`将Tensorboard生成的Tfevent文件转换成SwanLab实验。
+**你可以用两种方式将使用Tensorboard跟踪的项目同步到SwanLab：**
 
-## 方式一：命令行转换
+- **同步跟踪**：如果你现在的项目使用了Tensorboard进行实验跟踪，你可以使用`swanlab.sync_tensorboardX()`或`swanlab.sync_tensorboard_torch()`命令，在运行训练脚本时同步记录指标到SwanLab。
+- **转换已存在的项目**：如果你想要将Tensorboard上的项目复制到SwanLab，你可以使用`swanlab convert`，将存放TFevent文件的目录转换成SwanLab项目。
+
+::: info
+在当前版本暂仅支持转换标量和图像图表。
+:::
+
+[[toc]]
+
+## 1. 同步跟踪
+
+### 1.1 TensorboardX: 添加sync_tensorboardX命令
+
+如果你使用的是TensorboardX，可以在代码执行`tensorboardX.SummaryWriter()`之前的任何位置，添加一行`swanlab.sync_tensorboardX()`命令，即可在训练时同步记录指标到SwanLab。
+
+```python
+import swanlab
+from tensorboardX import SummaryWriter
+
+swanlab.sync_tensorboardX()
+
+writer = SummaryWriter(log_dir='./runs')
+```
+
+### 1.2 PyTorch: 添加sync_tensorboard_torch命令
+
+如果你使用的是PyTorch自带的tensorboard，那么可以在代码执行`torch.utils.tensorboard.SummaryWriter()`之前的任何位置，添加一行`swanlab.sync_tensorboard_torch()`命令，即可在训练时同步记录指标到SwanLab。
+
+```python
+import swanlab
+import torch
+
+swanlab.sync_tensorboard_torch()
+
+writer = torch.utils.tensorboard.SummaryWriter(log_dir='./runs')
+```
+
+### 1.3 另一种写法
+
+你也可以先手动初始化swanlab，再运行tensorboard的代码。
+
+::: code-group
+
+```python [TensorboardX]
+import swanlab
+from tensorboardX import SummaryWriter
+
+swanlab.init(...)
+swanlab.sync_tensorboardX()
+
+...
+
+writer = SummaryWriter(log_dir='./runs')
+```
+
+```python [PyTorch]
+import swanlab
+from torch.utils.tensorboard import SummaryWriter
+
+swanlab.init(...)
+swanlab.sync_tensorboard_torch()
+
+...
+
+writer = SummaryWriter(log_dir='./runs')
+```
+:::
+
+### 1.4 测试代码
+
+::: code-group
+
+```python [TensorboardX]
+import swanlab
+from tensorboardX import SummaryWriter
+
+swanlab.sync_tensorboardX()
+
+writer = SummaryWriter(log_dir='./runs')
+
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+  acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+  loss = 2 ** -epoch + random.random() / epoch + offset
+
+  writer.add_scalar("acc", acc, epoch)
+  writer.add_scalar("loss", loss, epoch)
+```
+
+```python [PyTorch]
+import swanlab
+from torch.utils.tensorboard import SummaryWriter
+
+swanlab.sync_tensorboard_torch()
+
+writer = SummaryWriter(log_dir='./runs')
+
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+  acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+  loss = 2 ** -epoch + random.random() / epoch + offset
+
+  writer.add_scalar("acc", acc, epoch)
+  writer.add_scalar("loss", loss, epoch)
+```
+
+:::
+
+## 2. 转换已存在的项目
+
+### 2.1 方式一：命令行转换
 
 ```bash
 swanlab convert -t tensorboard -tb_logdir [TFEVENT_LOGDIR]
@@ -16,7 +128,7 @@ swanlab convert -t tensorboard -tb_logdir [TFEVENT_LOGDIR]
 
 SwanLab Converter将会自动检测文件路径及其子目录下的`tfevent`文件（默认子目录深度为3），并为每个`tfevent`文件创建一个SwanLab实验。
 
-## 方式二：代码内转换
+### 2.2 方式二：代码内转换
 
 ```python
 from swanlab.converter import TFBConverter
@@ -27,7 +139,7 @@ tfb_converter.run()
 
 效果与命令行转换一致。
 
-## 参数列表
+### 2.3 参数列表
 
 | 参数 | 对应CLI参数       | 描述                  | 
 | ---- | ---------- | --------------------- | 
