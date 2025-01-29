@@ -121,7 +121,7 @@ for epoch in range(2, epochs):
 ### 2.1 方式一：命令行转换
 
 ```bash
-swanlab convert -t tensorboard -tb_logdir [TFEVENT_LOGDIR]
+swanlab convert -t tensorboard --tb_logdir [TFEVENT_LOGDIR]
 ```
 
 这里的`[TFEVENT_LOGDIR]`是指你先前用Tensorboard记录实验时，生成的日志文件路径。
