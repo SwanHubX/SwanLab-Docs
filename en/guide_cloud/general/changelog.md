@@ -5,6 +5,24 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.4.6 - 2025.2.3
+
+**🚀New Features**
+- `swanlab.log` supports nested dictionary input
+
+**Optimizations**
+- Optimized distributed training optimization in PyTorch Lightning framework
+
+
+## v0.4.5 - 2025.1.22
+
+**🚀New Features**
+- Added `swanlab.sync_tensorboardX()` and `swanlab.sync_tensorboard_torch()`: Supports synchronizing metrics to SwanLab when using TensorboardX or PyTorch.utils.tensorboard for experiment tracking. [Docs](/en/guide_cloud/integration/integration-tensorboard.md)
+
+**Optimizations**
+- Optimized the code compatibility of `sync_wandb()`
+
+
 ## v0.4.3 - 2025.1.17
 
 **🚀 New Features**

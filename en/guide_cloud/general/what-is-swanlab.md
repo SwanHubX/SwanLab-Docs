@@ -6,6 +6,11 @@
 
 ![alt text](/assets/product-swanlab-1.png)
 
+::: warning 👋 We are developing a self-hosted version
+Expected to be released in March 2025, supporting Docker deployment, with the same features as the cloud version
+:::
+
+
 SwanLab is an open-source, lightweight AI experiment tracking tool that provides a platform for tracking, comparing, and collaborating on experiments, designed to accelerate the R&D efficiency of AI R&D teams by 100 times.
 
 It provides a user-friendly API and a beautiful interface, combined with hyperparameter tracking, metric logging, online collaboration, experiment link sharing, real-time message notification and other functions, allowing you to quickly track ML experiments, visualize the process, and share with peers.

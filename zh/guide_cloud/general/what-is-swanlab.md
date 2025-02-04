@@ -6,8 +6,8 @@
 
 <!-- ![alt text](/assets/product-swanlab-1.png) -->
 
-::: warning 👋 我们刚刚上线了密码登录功能
-在设置-密码与安全性，完成密码设置后，即可使用密码登录。
+::: warning 👋 我们正在开发私有化部署版
+预计25年3月份与大家见面，支持Docker部署，功能与云端版一致
 :::
 
 ![alt text](/assets/product-swanlab-1.png)

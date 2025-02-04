@@ -5,6 +5,15 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.4.6 - 2025.2.3
+
+**🚀新增功能**
+- `swanlab.log`支持了嵌套字典传入
+
+**优化**
+- 优化了在PyTorch Lightning框架下的分布式训练优化
+
+
 ## v0.4.5 - 2025.1.22
 
 **🚀新增功能**
