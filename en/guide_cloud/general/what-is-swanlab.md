@@ -1,6 +1,7 @@
 # Welcome to SwanLab
 
-[SwanLab.cn](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [Quick Start](/en/guide_cloud/general/quick-start.md)
+[SwanLab.cn](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [Quick Start](/en/guide_cloud/general/quick-start.md) · [Sync Wandb](/en/guide_cloud/integration/integration-wandb.md#_1-synchronized-tracking)
+
 
 <!-- ![](/assets/swanlab-show.png) -->
 
