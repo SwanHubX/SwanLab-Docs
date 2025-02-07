@@ -214,6 +214,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: '强化学习',
+    // collapsed: false,
+    items: [
+      { text: 'DQN推车倒立摆', link: 'dqn_cartpole' },
+    ]
+  },
+  {
     text: '音频',
     // collapsed: false,
     items: [

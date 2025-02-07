@@ -205,6 +205,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: 'Reinforcement Learning',
+    // collapsed: false,
+    items: [
+      { text: 'DQN CartPole', link: 'dqn_cartpole' },
+    ]
+  },
+  {
     text: 'NLP',
     // collapsed: false,
     items: [  
