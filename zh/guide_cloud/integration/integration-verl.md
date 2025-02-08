@@ -1,6 +1,6 @@
 # verl
 
-[verl](https://github.com/volcengine/verl) 是一个灵活、高效且可用于生产环境的强化学习（RL）训练框架，专为大型语言模型（LLMs）的后训练设计。它由字节跳动火山引擎团队开源，是 HybridFlow 论文的开源实现。
+[verl](https://github.com/volcengine/verl) 是一个灵活、高效且可用于生产环境的强化学习（RL）训练框架，专为大型语言模型（LLMs）的后训练设计。它由字节跳动火山引擎团队开源，是 [HybridFlow](https://arxiv.org/abs/2409.19256) 论文的开源实现。
 
 <div style="text-align: center;">
     <img src="./verl/verl_logo.svg" alt="verl_logo" style="width: 70%;">
@@ -16,7 +16,7 @@
 
 4. **与流行的 HuggingFace 模型轻松集成**：verl 能够方便地与 HuggingFace 模型进行集成。
 
-**verl 具有以下优势，使其运行速度快：**
+**verl 也具有以下优势，使其运行速度快：**
 
 1. **最先进的吞吐量**：通过无缝集成现有的 SOTA LLM 训练和推理框架，verl 实现了高生成和训练吞吐量。
 
@@ -102,11 +102,11 @@ export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cl
 
 ## 查看训练日志
 
-完成登陆后会显示如下登陆信息
+完成登陆后会显示如下登陆信息：
 
 ![track](./verl/track.png)
 
-运行进程，即可在[SwanLab官网](https://swanlab.cn)上查看训练日志
+运行进程，即可在[SwanLab官网](https://swanlab.cn)上查看训练日志：
 
 ![remote](./verl/remote.png)
 
