@@ -8,6 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.6 - 2025.2.3
 
 **🚀New Features**
+- Added integration with LLM reinforcement learning framework [verl](https://github.com/volcengine/verl), [Docs](/en/guide_cloud/integration/integration-verl.md)
 - `swanlab.log` supports nested dictionary input
 
 **Optimizations**

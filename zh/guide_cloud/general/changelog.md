@@ -8,6 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.6 - 2025.2.3
 
 **🚀新增功能**
+- 新增与LLM强化学习框架[verl](https://github.com/volcengine/verl)的集成，[文档](/guide_cloud/integration/integration-verl.md)
 - `swanlab.log`支持了嵌套字典传入
 
 **优化**
