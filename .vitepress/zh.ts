@@ -50,10 +50,8 @@ export const zh = defineConfig({
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
-      ] },
-      {
-        component: 'HeaderButton',
-      }
+      ]
+      },
     ],
 
     // 最后更新于配置
@@ -161,6 +159,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Swift', link: 'integration/integration-swift' },
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
+      { text: 'verl', link: 'integration/integration-verl' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
       { text: 'XGBoost', link: 'integration/integration-xgboost'},
       { text: 'Xtuner', link: 'integration/integration-xtuner'},
