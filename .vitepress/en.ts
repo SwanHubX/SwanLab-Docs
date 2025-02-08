@@ -48,9 +48,6 @@ export const en = defineConfig({
       ] },
       { text: 'Contact Us', link: '/en/guide_cloud/community/online-support'},
       // { text: 'Website', link: 'https://swanlab.cn' },
-      {
-        component: 'HeaderButtonEN',
-      }
     ],
 
     // 最后更新于配置
@@ -160,6 +157,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Swift', link: 'integration/integration-swift' },
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
+      { text: 'verl', link: 'integration/integration-verl' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
       { text: 'XGBoost', link: 'integration/integration-xgboost'},
       { text: 'Xtuner', link: 'integration/integration-xtuner'},
