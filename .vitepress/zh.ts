@@ -52,6 +52,10 @@ export const zh = defineConfig({
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
       ]
       },
+      {
+        component: 'HeaderButton',
+      }
+
     ],
 
     // 最后更新于配置
