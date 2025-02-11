@@ -20,6 +20,16 @@
 swanlab.init(mode='disabled')
 ```
 
+## 在同一台机器上，有多个人都在使用SwanLab，应该如何配置？
+
+`swanlab.login`登录完成之后，会在该机器上生成一个配置文件记录登录信息，以便下次不用重复登录。但如果有多人使用这一台机器的话，则需要小心日志传递到对方账号上。
+
+**推荐的配置方式有两种：**
+
+**方式一**：在代码开头加上`swanlab.login(api_key='你的API Key')`
+
+**方式二**：在运行代码前，设置环境变量`SWANLAB_API_KEY="你的API Key"`
+
 
 ## 本地的训练已经结束，但SwanLab UI上仍然在运行中，要怎么改变状态？
 
@@ -36,11 +46,11 @@ swanlab.init(mode='disabled')
 
 双击区域后复原。
 
-## 如何取消实验的后缀名？
 
-```python
-swanlab.init(suffix=None)
-```
+## 内部指标名
 
-ps: 在0.3.22版本以后，不再自动为实验名添加后缀。
+指标名称是指`swanlab.log()`传入字典的key部分。有一部分key在内部被SwanLab用于传递系统硬件指标，所以不太建议使用。
 
+内部指标包括：
+
+- `__swanlab__.xxx`
