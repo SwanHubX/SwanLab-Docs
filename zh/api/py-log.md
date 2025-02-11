@@ -13,6 +13,7 @@ log(
 |--------|------------------------------------------|
 | data   | (Dict[str, DataType]) 必须。传入一个键值对字典，key为指标名，value为指标值。value支持int、float、可被float()转换的类型、或任何`BaseType`类型。 |
 | step   | (int) 可选，该参数设置了data的步数。如不设置step，则将以0开始，后续每1次step累加1。 |
+| print_to_console | (bool) 可选，默认值为False。当设置为True时，会将data的key和value以字典的形式打印到终端。 |
 
 ## 介绍
 

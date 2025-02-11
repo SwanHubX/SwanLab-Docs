@@ -13,6 +13,7 @@ log(
 |-----------|-------------|
 | data      | (Dict[str, DataType]) Required. Pass in a dictionary of key-value pairs, where the key is the metric name and the value is the metric value. The value supports int, float, types that can be converted by float(), or any `BaseType` type. |
 | step      | (int) Optional. This parameter sets the step number for the data. If step is not set, it will start from 0 and increment by 1 for each subsequent step. |
+| print_to_console | (bool) Optional, default is False. When set to True, the key and value of data will be printed to the terminal in dictionary format. |`
 
 ## Introduction
 
