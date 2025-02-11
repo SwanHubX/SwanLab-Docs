@@ -5,6 +5,13 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.4.7 - 2025.2.11
+
+**🚀新增功能**
+- `swanlab.log`支持了参数`print_to_console`，开启后可以将`swanlab.log`的`key`、`value`以字典的形式打印到终端
+- `swanlab.init`支持了对`name`、`notes`参数的适配，等价于`experiment_name`和`description`
+
+
 ## v0.4.6 - 2025.2.3
 
 **🚀新增功能**
