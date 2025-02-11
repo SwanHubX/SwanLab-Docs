@@ -81,6 +81,54 @@ We hope that the above information and this guide can help you understand this p
 - SwanLab supports not only online use, but also open-source, free, and self-hosted versions
 
 
+## Training Framework Integration
+
+Use your favorite framework with SwanLab!  
+Below is a list of frameworks we have integrated, please submit [Issue](https://github.com/swanhubx/swanlab/issues) to feedback the framework you want to integrate.
+
+**Basic Frameworks**
+- [PyTorch](/guide_cloud/integration/integration-pytorch.html)
+- [MindSpore](/guide_cloud/integration/integration-ascend.html)
+- [Keras](/guide_cloud/integration/integration-keras.html)
+
+**Specialized/Fine-tuned Frameworks**
+- [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
+- [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
+- [OpenMind](/guide_cloud/integration/integration-openmind.html)
+- [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
+- [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
+- [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
+- [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.html)
+- [XTuner](/guide_cloud/integration/integration-xtuner.html)
+- [MMEngine](/guide_cloud/integration/integration-mmengine.html)
+- [FastAI](/guide_cloud/integration/integration-fastai.html)
+- [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
+- [XGBoost](/guide_cloud/integration/integration-xgboost.html)
+
+
+**Computer Vision**
+- [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
+- [MMDetection](/guide_cloud/integration/integration-mmdetection.html)
+- [MMSegmentation](/guide_cloud/integration/integration-mmsegmentation.html)
+- [PaddleDetection](/guide_cloud/integration/integration-paddledetection.html)
+- [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
+
+**Reinforcement Learning**
+- [Stable Baseline3](/guide_cloud/integration/integration-sb3.html)
+- [veRL](/guide_cloud/integration/integration-verl.html)
+- [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
+
+**Others:**
+- [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
+- [Weights&Biases](/guide_cloud/integration/integration-wandb.html)
+- [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [Hydra](/guide_cloud/integration/integration-hydra.html)
+- [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)
+- [OpenAI](/guide_cloud/integration/integration-openai.html)
+- [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)
+
+[更多集成](/guide_cloud/integration/integration-pytorch-lightning.html)
+
 ## Online Support
 
 - **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**：Report errors and issues encountered while using SwanLab
