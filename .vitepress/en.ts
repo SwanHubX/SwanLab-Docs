@@ -83,6 +83,7 @@ export const en = defineConfig({
 
     // 页脚配置
     socialLinks: [
+      { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
       { icon: 'github', link: 'https://github.com/swanhubx/swanlab' }
     ],
 
