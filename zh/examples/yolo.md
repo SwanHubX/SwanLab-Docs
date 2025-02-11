@@ -4,7 +4,7 @@
 目标检测、计算机视觉
 :::
 
-[在线Demo](https://swanlab.cn/@ZeyiLin/ultratest/runs/yux7vclmsmmsar9ear7u5/chart) | [YOLO猫狗检测教程](https://zhuanlan.zhihu.com/p/700347880)
+[在线Demo](https://swanlab.cn/@ZeyiLin/ultratest/runs/yux7vclmsmmsar9ear7u5/chart) | [YOLO猫狗检测教程](https://zhuanlan.zhihu.com/p/702525559)
 
 ## 概述
 
