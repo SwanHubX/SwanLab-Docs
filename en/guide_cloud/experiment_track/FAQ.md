@@ -25,6 +25,16 @@ Click the stop button next to the experiment name to change the status from "Run
 
 ![stop](/assets/stop.png)
 
+## On the same machine, multiple people are using SwanLab. How should it be configured?
+
+After completing the login with `swanlab.login`, a configuration file will be generated on the machine to record the login information, so that there is no need to log in again next time. However, if multiple people are using the same machine, care must be taken to avoid logs being transmitted to someone else's account.
+
+**There are two recommended configuration methods:**
+
+**Method 1:** Add `swanlab.login(api_key='Your API Key')` at the beginning of the code.
+
+**Method 2:** Before running the code, set the environment variable `SWANLAB_API_KEY="Your API Key"`.
+
 ## How to view local details of the line chart?
 
 Zoom in on the line chart by holding down the mouse and dragging over the target area to magnify that region.
@@ -33,10 +43,10 @@ Zoom in on the line chart by holding down the mouse and dragging over the target
 
 Double-click the area to restore the original view.
 
-## How to remove the suffix from the experiment name?
+## Internal Metric Names
 
-```python
-swanlab.init(suffix=None)
-```
+Metric names refer to the key part of the dictionary passed into `swanlab.log()`. Some keys are internally used by SwanLab to transmit system hardware metrics, so it is not recommended to use them.
 
-Note: Starting from version 0.3.22, the suffix is no longer automatically added to the experiment name.
+Internal metrics include:
+
+- `__swanlab__.xxx`
