@@ -119,6 +119,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
+      { text: '系统硬件监控（支持昇腾）', link: 'experiment_track/system-monitor' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },

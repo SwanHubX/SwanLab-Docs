@@ -87,47 +87,47 @@ Use your favorite framework with SwanLab!
 Below is a list of frameworks we have integrated, please submit [Issue](https://github.com/swanhubx/swanlab/issues) to feedback the framework you want to integrate.
 
 **Basic Frameworks**
-- [PyTorch](/guide_cloud/integration/integration-pytorch.html)
-- [MindSpore](/guide_cloud/integration/integration-ascend.html)
-- [Keras](/guide_cloud/integration/integration-keras.html)
+- [PyTorch](/en/guide_cloud/integration/integration-pytorch.html)
+- [MindSpore](/en/guide_cloud/integration/integration-ascend.html)
+- [Keras](/en/guide_cloud/integration/integration-keras.html)
 
 **Specialized/Fine-tuned Frameworks**
-- [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
-- [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
-- [OpenMind](/guide_cloud/integration/integration-openmind.html)
-- [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
-- [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
-- [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
-- [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.html)
-- [XTuner](/guide_cloud/integration/integration-xtuner.html)
-- [MMEngine](/guide_cloud/integration/integration-mmengine.html)
-- [FastAI](/guide_cloud/integration/integration-fastai.html)
-- [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
-- [XGBoost](/guide_cloud/integration/integration-xgboost.html)
+- [PyTorch Lightning](/en/guide_cloud/integration/integration-pytorch-lightning.html)
+- [HuggingFace Transformers](/en/guide_cloud/integration/integration-huggingface-transformers.html)
+- [OpenMind](/en/guide_cloud/integration/integration-openmind.html)
+- [LLaMA Factory](/en/guide_cloud/integration/integration-llama-factory.html)
+- [Modelscope Swift](/en/guide_cloud/integration/integration-swift.html)
+- [Sentence Transformers](/en/guide_cloud/integration/integration-sentence-transformers.html)
+- [Torchtune](/en/guide_cloud/integration/integration-pytorch-torchtune.html)
+- [XTuner](/en/guide_cloud/integration/integration-xtuner.html)
+- [MMEngine](/en/guide_cloud/integration/integration-mmengine.html)
+- [FastAI](/en/guide_cloud/integration/integration-fastai.html)
+- [LightGBM](/en/guide_cloud/integration/integration-lightgbm.html)
+- [XGBoost](/en/guide_cloud/integration/integration-xgboost.html)
 
 
 **Computer Vision**
-- [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
-- [MMDetection](/guide_cloud/integration/integration-mmdetection.html)
-- [MMSegmentation](/guide_cloud/integration/integration-mmsegmentation.html)
-- [PaddleDetection](/guide_cloud/integration/integration-paddledetection.html)
-- [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
+- [Ultralytics](/en/guide_cloud/integration/integration-ultralytics.html)
+- [MMDetection](/en/guide_cloud/integration/integration-mmdetection.html)
+- [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation.html)
+- [PaddleDetection](/en/guide_cloud/integration/integration-paddledetection.html)
+- [PaddleYOLO](/en/guide_cloud/integration/integration-paddleyolo.html)
 
 **Reinforcement Learning**
-- [Stable Baseline3](/guide_cloud/integration/integration-sb3.html)
-- [veRL](/guide_cloud/integration/integration-verl.html)
-- [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
+- [Stable Baseline3](/en/guide_cloud/integration/integration-sb3.html)
+- [veRL](/en/guide_cloud/integration/integration-verl.html)
+- [HuggingFace trl](/en/guide_cloud/integration/integration-huggingface-trl.html)
 
 **Others:**
-- [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
-- [Weights&Biases](/guide_cloud/integration/integration-wandb.html)
-- [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
-- [Hydra](/guide_cloud/integration/integration-hydra.html)
-- [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)
-- [OpenAI](/guide_cloud/integration/integration-openai.html)
-- [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)
+- [Tensorboard](/en/guide_cloud/integration/integration-tensorboard.html)
+- [Weights&Biases](/en/guide_cloud/integration/integration-wandb.html)
+- [HuggingFace Accelerate](/en/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [Hydra](/en/guide_cloud/integration/integration-hydra.html)
+- [Omegaconf](/en/guide_cloud/integration/integration-omegaconf.html)
+- [OpenAI](/en/guide_cloud/integration/integration-openai.html)
+- [ZhipuAI](/en/guide_cloud/integration/integration-zhipuai.html)
 
-[更多集成](/guide_cloud/integration/integration-pytorch-lightning.html)
+[更多集成](/en/guide_cloud/integration/integration-pytorch-lightning.html)
 
 ## Online Support
 
