@@ -1,93 +1,93 @@
 # Ascend NPU & MindSpore
 
-SwanLab支持[Ascend系列显卡](https://www.hiascend.com/)的硬件检测和[mindspore](https://www.mindspore.cn/)项目的训练跟踪。（计划20241215硬件监控上线）
+SwanLab supports hardware detection for the [Ascend series GPUs](https://www.hiascend.com/) and training tracking for [MindSpore](https://www.mindspore.cn/) projects. (Hardware monitoring is planned to be available by December 15, 2024.)
 
-SwanLab实验记录Ascend NPU信息截图：
+SwanLab experiment recording Ascend NPU information screenshot:
 
 ![device](/assets/guide_cloud/integration/ascend/device_mask.png)
 
-## 简介
+## Introduction
 
-本案例使用实现的IMDB数据集情感分类任务。并使用SwanLab跟踪模型训练进展。
+This case implements an IMDB dataset sentiment classification task and uses SwanLab to track model training progress.
 
-## 任务介绍
+## Task Overview
 
-IMDB情感分类任务是一种自然语言处理任务，旨在分析IMDB（Internet Movie Database）电影评论中的文本内容，以判断评论的情感倾向，通常分为正面（Positive）和负面（Negative）两类。该任务广泛用于研究情感分析技术，尤其是在监督学习和深度学习领域。
+The IMDB sentiment classification task is a natural language processing task aimed at analyzing the text content of IMDB (Internet Movie Database) movie reviews to determine the sentiment tendency of the reviews, typically classified into positive (Positive) and negative (Negative) categories. This task is widely used in sentiment analysis research, especially in supervised learning and deep learning fields.
 
-数据集中通常包含预处理好的评论文本及其对应的情感标签，每条评论均标注为正面或负面。如下图：
+The dataset usually contains preprocessed review texts and their corresponding sentiment labels, with each review labeled as either positive or negative. As shown below:
 
 ![data_image](/assets/guide_cloud/integration/ascend/data_image.png)
 
-LSTM（Long Short-Term Memory）是一种改进的循环神经网络，专为处理和预测序列数据中的长距离依赖而设计。与传统RNN相比，LSTM通过引入**记忆单元**和**门机制**，能够有效缓解梯度消失和梯度爆炸问题，使其在长序列数据的建模中表现优异。使用LSTM能轻松完成IMDB的语言情感分类任务。关于LSTM的具体原理建议参考[大神博客](https://blog.csdn.net/zhaojc1995/article/details/80572098)
+LSTM (Long Short-Term Memory) is an improved recurrent neural network designed to handle and predict long-term dependencies in sequential data. Compared to traditional RNNs, LSTM introduces **memory cells** and **gate mechanisms**, effectively mitigating the vanishing and exploding gradient problems, making it perform well in modeling long-sequence data. Using LSTM, the IMDB sentiment classification task can be easily accomplished. For detailed principles of LSTM, it is recommended to refer to [this expert blog](https://blog.csdn.net/zhaojc1995/article/details/80572098).
 
 ![lstm](/assets/guide_cloud/integration/ascend/lstm.png)
 
-本代码参考[MindSpore官方文档](https://www.mindspore.cn/tutorials/zh-CN/r2.4.1/nlp/sentiment_analysis.html#%E6%95%B0%E6%8D%AE%E9%9B%86%E9%A2%84%E5%A4%84%E7%90%86)，进行整理并简化了部分实现.
+This code is based on the [MindSpore official documentation](https://www.mindspore.cn/tutorials/zh-CN/r2.4.1/nlp/sentiment_analysis.html#%E6%95%B0%E6%8D%AE%E9%9B%86%E9%A2%84%E5%A4%84%E7%90%86), with some implementations simplified and organized.
 
-## 环境安装
+## Environment Setup
 
-### 克隆项目
+### Clone the Project
 
-附上[github项目链接](https://github.com/ShaohonChen/mindspore_imdb_train.git)和下载命令
+Attached is the [GitHub project link](https://github.com/ShaohonChen/mindspore_imdb_train.git) and the download command:
 
 ```bash
 git clone https://github.com/ShaohonChen/mindspore_imdb_train.git
 ```
 
-如果访问不了github可在本博客后文找到[代码章节](#代码章节)
+If GitHub is inaccessible, you can find the [code section](#code-section) later in this blog.
 
-推荐还是用github ;)
+It is recommended to use GitHub ;)
 
-### CPU环境安装
+### CPU Environment Setup
 
-可以在CPU环境下安装MindSpore，虽然看起来没有Pytorch那么好用，但实际上文档还是写的很细的，真的很细，看得出华为工程师的严谨orz。配合sheng腾卡使用的话是非常有潜力的框架（MAC死活打不出sheng字）。
+You can install MindSpore in a CPU environment. Although it may not seem as user-friendly as PyTorch, the documentation is very detailed, reflecting the rigor of Huawei engineers. When used with Ascend GPUs, it is a very promising framework (MAC can't type the word "sheng" for some reason).
 
-官方安装文档[link](https://www.mindspore.cn/install/)
+Official installation documentation [link](https://www.mindspore.cn/install/).
 
-也可以直接使用如下命令安装：
+Alternatively, you can use the following command to install:
 
 ```bash
 pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.4.1/MindSpore/unified/x86_64/mindspore-2.4.1-cp311-cp311-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-验证安装成功命令：
+Command to verify successful installation:
 
 ```bash
 python -c "import mindspore;mindspore.set_context(device_target='CPU');mindspore.run_check()"
 ```
 
-如果输出如下信息说明MindSpore安装成功了：
+If the following information is output, MindSpore has been successfully installed:
 
 ```bash
 MindSpore version: 2.4.1
 The result of multiplication calculation is correct, MindSpore has been installed on platform [CPU] successfully!
 ```
 
-### 华为Ascend NPU显卡环境安装
+### Huawei Ascend NPU GPU Environment Setup
 
-由于华为Ascend环境安装较为复杂，建议参考[MindSpore安装教程和踩坑记录](///)教程完成MindSpore环境安装。下面简述MindSpore安装过程
+Due to the complexity of the Huawei Ascend environment setup, it is recommended to refer to the [MindSpore Installation Tutorial and Pitfall Record](///) to complete the MindSpore environment setup. Below is a brief overview of the MindSpore installation process.
 
->本博客写的时间是2024年12月6日，安装的版本是**MindSpore2.4.1**，因为感觉MindSpore变动会比较大特意记录一下时间和版本。
+> This blog was written on December 6, 2024, and the installed version is **MindSpore 2.4.1**. Given the rapid changes in MindSpore, the time and version are specifically noted.
 
-#### 驱动安装&验证
+#### Driver Installation & Verification
 
-首先得确定有NPU卡和NPU相关驱动，驱动是**8.0.RC3.beta1**，如果没安装可以参考[CANN官方安装教程](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit)
+First, ensure that the NPU card and NPU-related drivers are installed. The driver version is **8.0.RC3.beta1**. If not installed, refer to the [CANN Official Installation Tutorial](https://www.hiascend.com/document/detail/zh/canncommercial/80RC3/softwareinst/instg/instg_0000.html?Mode=PmIns&OS=Ubuntu&Software=cannToolKit).
 
-完成安装后检测方法是运行
+After installation, the detection method is to run:
 
 ```bash
 npu-smi info
 ```
 
-可以看到如下信息的话就表示驱动已经安装完成了。
+If the following information is displayed, the driver installation is complete.
 
 ![npu-smi](/assets/guide_cloud/integration/ascend/a_mask.png)
 
-#### 安装MindSpore
+#### Install MindSpore
 
-个人比较推荐使用conda安装，这样环境比较好管理，自动安装的依赖项也比较多
+It is recommended to use conda for installation, as it is easier to manage environments and automatically installs more dependencies.
 
-首先需要安装前置依赖的包：
+First, install the prerequisite packages:
 
 ```bash
 pip install sympy
@@ -96,7 +96,7 @@ pip install /usr/local/Ascend/ascend-toolkit/latest/lib64/te-*-py3-none-any.whl
 pip install /usr/local/Ascend/ascend-toolkit/latest/lib64/hccl-*-py3-none-any.whl
 ```
 
-如果本地下载比较慢可以使用带国内源版本的命令
+If the local download is slow, you can use the following commands with domestic mirrors:
 
 ```bash
 pip install sympy -i https://mirrors.cernet.edu.cn/pypi/web/simple
@@ -105,130 +105,130 @@ pip install /usr/local/Ascend/ascend-toolkit/latest/lib64/te-*-py3-none-any.whl 
 pip install /usr/local/Ascend/ascend-toolkit/latest/lib64/hccl-*-py3-none-any.whl  -i https://mirrors.cernet.edu.cn/pypi/web/simple
 ```
 
-conda安装MindSpore方法如下：
+Conda installation method for MindSpore:
 
 ```bash
 conda install mindspore=2.4.1 -c mindspore -c conda-forge
 ```
 
-因为某些众所周知的原因，有时候conda源会失效，反应出来就是conda安装mindspore时会进度一直为0%，如下图：
+Due to certain well-known reasons, the conda source may sometimes fail, resulting in the conda installation of MindSpore being stuck at 0% progress, as shown below:
 
 ![condainstallfailed](/assets/guide_cloud/integration/ascend/b.png)
 
-可以使用如下方法指定国内源：
+You can use the following method to specify a domestic mirror:
 
 ```bash
 conda install mindspore=2.4.1 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/MindSpore/ -c conda-forge
 ```
 
-pip安装MindSpore命令如下：
+Pip installation command for MindSpore:
 
 ```bash
 pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.4.1/MindSpore/unified/aarch64/mindspore-2.4.1-cp311-cp311-linux_aarch64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-安装完成后可以使用如下命令进行测试
+After installation, you can use the following command to test:
 
 ```bash
 python -c "import mindspore;mindspore.set_context(device_target='Ascend');mindspore.run_check()"
 ```
 
-如果这步出现报错可以参考本文后面[环境安装疑难杂症](#环境安装疑难杂症)章节
+If an error occurs at this step, refer to the [Environment Installation Troubleshooting](#environment-installation-troubleshooting) section later in this document.
 
-出现版本号信息和计算验证便意味着安装成功
+If the version information and calculation verification are displayed, the installation is successful.
 
 ```bash
 MindSpore version:  2.4.1
 The result of multiplication calculation is correct, MindSpore has been installed on platform [Ascend] successfully!
 ```
 
-也附上官方安装教程链接[mindspore官方安装教程](https://www.mindspore.cn/install)，注意本教程使用的是[Mindspore 2.4.1](https://www.mindspore.cn/versions#2.4.1)，建议环境与本教程保持一致。
+Also attached is the official installation tutorial link [MindSpore Official Installation Tutorial](https://www.mindspore.cn/install). Note that this tutorial uses [MindSpore 2.4.1](https://www.mindspore.cn/versions#2.4.1), and it is recommended to keep the environment consistent with this tutorial.
 
-此外本教程使用[SwanLab](https://swanlab.cn)进行训练过程跟踪，SwanLab支持对Ascend系列NPU进行硬件识别和跟踪。
+Additionally, this tutorial uses [SwanLab](https://swanlab.cn) for training process tracking. SwanLab supports hardware identification and tracking for the Ascend series NPUs.
 
-### 记得安装SwanLab ;)
+### Don't Forget to Install SwanLab ;)
 
-安装方法：
+Installation method:
 
 ```bash
 pip install swanlab
 ```
 
-## 数据集&词编码文件准备
+## Dataset & Word Encoding File Preparation
 
-### 数据集准备
+### Dataset Preparation
 
-Linux使用如下命令完成下载+解压
+Use the following command to download and extract the dataset on Linux:
 
 ```bash
 wget -P ./data/ https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
 tar -xzvf data/aclImdb_v1.tar.gz -C data/
 ```
 
-如果下载太慢可以使用[华为云提供的国内链接](https://mindspore-website.obs.myhuaweicloud.com/notebook/datasets/aclImdb_v1.tar.gz)下载。并且在`./data/`目录下解压。
+If the download is too slow, you can use the [Huawei Cloud provided domestic link](https://mindspore-website.obs.myhuaweicloud.com/notebook/datasets/aclImdb_v1.tar.gz) to download. Extract it in the `./data/` directory.
 
-> 如果解压不了tar.gz推荐安装[7zip解压器](https://www.7-zip.org/)，开源且通用的解压器
+> If you can't extract tar.gz, it is recommended to install the [7zip extractor](https://www.7-zip.org/), an open-source and universal extractor.
 
-### 词编码器准备
+### Word Encoder Preparation
 
-使用如下命令下载+解压词编码器文件
+Use the following command to download and extract the word encoder file:
 
 ```bash
 wget -P ./embedding/ https://nlp.stanford.edu/data/glove.6B.zip
 unzip embedding/glove.6B.zip -d embedding/
 ```
 
-如果下载太慢可以使用[华为云提供的国内链接](https://mindspore-website.obs.myhuaweicloud.com/notebook/datasets/glove.6B.zip)下载。并且在`./embedding/`目录下解压。
+If the download is too slow, you can use the [Huawei Cloud provided domestic link](https://mindspore-website.obs.myhuaweicloud.com/notebook/datasets/glove.6B.zip) to download. Extract it in the `./embedding/` directory.
 
-## 开始训练
+## Start Training
 
-使用如下命令开始训练
+Use the following command to start training:
 
 ```
 python train.py
 ```
 
-可是这
+However, this
 
-> 如果提示登录swanlab，可以参考[如何登录SwanLab](https://docs.swanlab.cn/guide_cloud/general/quick-start.html#_2-%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7)，这样将能够使用**云上看版**随时查看训练过程与结果。
+> If prompted to log in to SwanLab, refer to [How to Log in to SwanLab](https://docs.swanlab.cn/guide_cloud/general/quick-start.html#_2-%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7), which will allow you to use the **cloud dashboard** to view the training process and results in real-time.
 
-完成设置便可以在云上实时看到训练进展，我的实验记录可参考[完整实验记录](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/charts)
+After setup, you can view the training progress in real-time on the cloud. My experiment record can be referenced at [Complete Experiment Record](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/charts).
 
 ![log_img](/assets/guide_cloud/integration/ascend/log_img.png)
 
-并且附上其他脚本与在线实验记录：
+Also attached are other scripts and online experiment records:
 
-| 内容  | 训练命令  | 实验log  |
+| Content  | Training Command  | Experiment Log  |
 |--------|--------|--------|
-| 基线 | `python train.py configs/baseline.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/qhl47nxl23tc4oycr6pmg/chart) |
-| CPU运行 | `python train.py configs/baseline.json CPU` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/s60wuicmwaitxe2v401ry/chart) |
-| 双层LSTM | `python train.py configs/two_layer.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/ydrgxvnqhjfrimzdj3oh4/chart) |
-| 小batch数 | `python train.py configs/small_batch.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/uovjgenfzcnxrl9gup900/chart) |
-| 隐藏层加大 | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/eki6pa1him482w4jcc7gn/chart) |
-| 学习率加大 | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/if3o10o6nf3am87f4ou62/chart) |
+| Baseline | `python train.py configs/baseline.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/qhl47nxl23tc4oycr6pmg/chart) |
+| CPU Run | `python train.py configs/baseline.json CPU` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/s60wuicmwaitxe2v401ry/chart) |
+| Two-Layer LSTM | `python train.py configs/two_layer.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/ydrgxvnqhjfrimzdj3oh4/chart) |
+| Small Batch Size | `python train.py configs/small_batch.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/uovjgenfzcnxrl9gup900/chart) |
+| Larger Hidden Layer | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/eki6pa1him482w4jcc7gn/chart) |
+| Larger Learning Rate | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/if3o10o6nf3am87f4ou62/chart) |
 
-相关超参数和最终结果可在[图标视图查看](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/overview)
+Related hyperparameters and final results can be viewed in the [Chart View](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/overview).
 
 ![log_table](/assets/guide_cloud/integration/ascend/log_table.png)
 
-> PS: 观察了下日志，发现还是训练量不足，应该增大些训练量（40-50epoch比较合适）
+> PS: After observing the logs, it seems that the training volume is insufficient. It is recommended to increase the training volume (40-50 epochs would be more appropriate).
 
-## 代码章节
+## Code Section
 
-如果访问不了github也提供一段测试代码，不过就是没法使用其他超参数了T_T
+If GitHub is inaccessible, a test code snippet is provided below, although it cannot use other hyperparameters T_T.
 
 ```python
-# 读取训练参数+初始化日志记录
+# Read training parameters + initialize log recording
 import os
 import sys
 import json
 import mindspore as ms
 import swanlab
 
-# ms.set_context(device_target="CPU") # 使用CPU
-ms.set_context(device_target="Ascend")  # 使用NPU
+# ms.set_context(device_target="CPU") # Use CPU
+ms.set_context(device_target="Ascend")  # Use NPU
 
-args={  # 超参数
+args={  # Hyperparameters
     "hidden_size": 256,
     "output_size": 1,
     "num_layers": 2,
@@ -242,7 +242,7 @@ exp_name = "baseline"
 swanlab.init(project="Ascend_IMDB_CLS", experiment_name=exp_name, config=args)
 
 
-# 构造数据集
+# Construct dataset
 import mindspore.dataset as ds
 
 
@@ -276,7 +276,7 @@ imdb_test = ds.GeneratorDataset(
     IMDBData(imdb_path, "test"), column_names=["text", "label"], shuffle=False
 )
 
-# 构造embedding词表
+# Construct embedding vocabulary
 import numpy as np
 
 
@@ -288,7 +288,7 @@ def load_glove(glove_path):
             word, embedding = glove.split(maxsplit=1)
             tokens.append(word)
             embeddings.append(np.fromstring(embedding, dtype=np.float32, sep=" "))
-    # 添加 <unk>, <pad> 两个特殊占位符对应的embedding
+    # Add <unk>, <pad> two special placeholders corresponding embedding
     embeddings.append(np.random.rand(100))
     embeddings.append(np.zeros((100,), np.float32))
 
@@ -302,7 +302,7 @@ def load_glove(glove_path):
 vocab, embeddings = load_glove("./embedding")
 print(f"VOCAB SIZE: {len(vocab.vocab())}")
 
-# 数据预处理
+# Data preprocessing
 import mindspore as ms
 
 lookup_op = ds.text.Lookup(vocab, unknown_token="<unk>")
@@ -325,7 +325,7 @@ imdb_train = imdb_train.batch(args["batch_size"], drop_remainder=True)
 imdb_valid = imdb_valid.batch(args["batch_size"], drop_remainder=True)
 
 
-# LSTM分类器实现
+# LSTM classifier implementation
 import math
 import mindspore as ms
 import mindspore.nn as nn
@@ -494,15 +494,12 @@ def predict_sentiment(model, vocab, sentence):
 
 predict_sentiment(model, vocab, "This film is great")
 predict_sentiment(model, vocab, "This film is terrible")
-
 ```
 
-## 疑难杂症
+## Troubleshooting
 
-### 可能出现的问题一：MindSpore和CANN版本不对应
-
-务必确保MindSpore版本和驱动一致，否则会出现如下报错：
-
+### Possible Problem 1: Incompatible MindSpore and CANN Versions
+Ensure that the MindSpore version is consistent with the driver version. Otherwise, the following error will occur:
 ```bash
 [WARNING] ME(1049852:281473041023008,MainProcess):2024-12-06-12:23:11.112.000 [mindspore/run_check/_check_version.py:357] MindSpore version 2.3.1 and Ascend AI software package (Ascend Data Center Solution)version 7.5 does not match, the version of software package expect one of ['7.2', '7.3']. Please refer to the match info on: https://www.mindspore.cn/install
 /home/huawei/miniconda3/envs/mindspore231/lib/python3.10/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
@@ -533,13 +530,10 @@ predict_sentiment(model, vocab, "This film is terrible")
 MindSpore version:  2.3.1
 Segmentation fault (core dumped)
 ```
+Solution: Install the correct version. For MindSpore 2.4.1, install the **8.0.RC3.beta1** driver.
 
-解决方法：装对版本即可解决。对于MindSpore2.4.1，安装**8.0.RC3.beta1**驱动
-
-### 可能出现的问题二：少装了前置的包
-
-这里面
-
+### Possible Problem 2: Missing Prerequisite Packages
+The following error may occur:
 ```bash
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:360] CheckFailed: cannot import name 'version' from 'te' (unknown location)
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:361] MindSpore relies on whl packages of "te" and "hccl" in the "latest" folder of the Ascend AI software package (Ascend Data Center Solution). Please check whether they are installed correctly or not, refer to the match info on: https://www.mindspore.cn/install
@@ -555,10 +549,8 @@ Python runtime state: finalizing (tstate=0x00000000008aceb0)
 Aborted (core dumped)
 ```
 
-### 可能出现的问题三：pip安装阶段报错opc-tool 0.1.0 requires attrs, which is not installed
-
-若出现如下报错（之前安装的时候有概率pip会报如下错误）：
-
+### Possible Problem 3: Error in pip Installation Stage - opc-tool 0.1.0 requires attrs, which is not installed
+If the following error occurs (there is a probability that pip may report the following error during previous installations):
 ```bash
 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 auto-tune 0.1.0 requires decorator, which is not installed.
@@ -576,17 +568,13 @@ te 0.4.0 requires psutil, which is not installed.
 te 0.4.0 requires scipy, which is not installed.
 te 0.4.0 requires tornado, which is not installed.
 ```
-
-尝试使用如下命令解决：
-
+Try to solve it using the following command:
 ```bash
 pip install attrs cloudpickle decorator jinja2 ml-dtypes psutil scipy tornado absl-py
 ```
 
-### 可能出现的问题四：在测试或者实际训练的时候出现KeyError: 'op_debug_dir'
-
-出现如下情况大概率是没有运行环境变量命令。
-
+### Possible Problem 4: KeyError: 'op_debug_dir' Occurs During Testing or Actual Training
+The following situation is likely to occur when the environment variable command has not been run.
 ```bash
 Traceback (most recent call last):
   File "/home/huawei/miniconda3/envs/mindspore241/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
@@ -600,25 +588,20 @@ Traceback (most recent call last):
        ~~~~~~~~^^^^^^^^^^^^^^^^
 KeyError: 'op_debug_dir'
 ```
-
-解决方法：使用如下命令设置环境变量
-
+Solution: Set the environment variables using the following commands
 ```bash
 # control log level. 0-DEBUG, 1-INFO, 2-WARNING, 3-ERROR, 4-CRITICAL, default level is WARNING.
 export GLOG_v=2
 
 # environment variables
-LOCAL_ASCEND=/usr/local/Ascend # 设置为软件包的实际安装路径
+LOCAL_ASCEND=/usr/local/Ascend # Set to the actual installation path of the software package
 
 # set environmet variables using script provided by CANN, swap "ascend-toolkit" with "nnae" if you are using CANN-nnae package instead
 source ${LOCAL_ASCEND}/ascend-toolkit/set_env.sh
 ```
-
-使用conda的时候发现似乎每次都要运行一次如上命令。如果想要永久解决这个问题，可以使用如下命令解决：
-
+When using conda, it seems that the above commands need to be run every time. If you want to solve this problem permanently, you can use the following commands:
 ```bash
-export LOCAL_ASCEND=/usr/local/Ascend # 设置为软件包的实际安装路径
+export LOCAL_ASCEND=/usr/local/Ascend # Set to the actual installation path of the software package
 echo "source ${LOCAL_ASCEND}/ascend-toolkit/set_env.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
-

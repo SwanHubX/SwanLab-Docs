@@ -109,7 +109,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 **专有/微调框架**
 - [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
 - [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
-- [OpenMind](/guide_cloud/integration/integration-openmind.html)
+- [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
 - [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
 - [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
 - [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)

@@ -94,7 +94,7 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 **Specialized/Fine-tuned Frameworks**
 - [PyTorch Lightning](/en/guide_cloud/integration/integration-pytorch-lightning.html)
 - [HuggingFace Transformers](/en/guide_cloud/integration/integration-huggingface-transformers.html)
-- [OpenMind](/en/guide_cloud/integration/integration-openmind.html)
+- [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
 - [LLaMA Factory](/en/guide_cloud/integration/integration-llama-factory.html)
 - [Modelscope Swift](/en/guide_cloud/integration/integration-swift.html)
 - [Sentence Transformers](/en/guide_cloud/integration/integration-sentence-transformers.html)

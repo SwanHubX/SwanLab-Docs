@@ -139,6 +139,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Argparse', link:'integration/integration-argparse' },
+      { text: 'Ascend NPU & MindSpore', link:'integration/integration-ascend' },
       { text: 'Fastai', link: 'integration/integration-fastai' },
       { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
       { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
