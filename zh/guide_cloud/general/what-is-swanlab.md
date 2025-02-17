@@ -10,6 +10,15 @@
 预计25年3月份与大家见面，支持Docker部署，功能与云端版一致
 :::
 
+::: info 🏁 GDC2025 DeepSeek-Qwen 模型蒸馏极限挑战赛
+**比赛时间：** 2025.2.16-2025.2.23<br>
+
+欢迎您关注由 **魔搭社区 x SwanLab** 平台联合举办的 DeepSeek-Qwen 模型蒸馏极限挑战赛！<br>
+本赛事将作为 **2025全球开发者先锋大会（GDC）** 的活动之一，欢迎具备大模型训练/微调实战经验的独立开发者前来挑战！<br>
+
+🔥 详细报名规则：[报名链接](https://mp.weixin.qq.com/s/t8yInvb6bPLMbSsMcQgPKA)
+:::
+
 ![alt text](/assets/product-swanlab-1.png)
 
 

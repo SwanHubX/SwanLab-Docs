@@ -6,6 +6,14 @@ Github: https://github.com/SwanHubX/SwanLab
 :::
 
 
+## v0.4.8 - 2025.2.16
+
+**🚀 New Features**
+- Added `Add Group` and `Move Chart to Another Group` functions
+
+**Optimizations**
+- Fixed some issues with the SDK
+
 ## v0.4.7 - 2025.2.11
 
 **🚀 New Features**
