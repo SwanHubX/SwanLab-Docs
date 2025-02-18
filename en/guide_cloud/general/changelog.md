@@ -9,6 +9,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.8 - 2025.2.16
 
 **🚀 New Features**
+- Added integration with Modelscope Swift, [Docs](/en/guide_cloud/integration/integration-swift.md)
 - Added `Add Group` and `Move Chart to Another Group` functions
 
 **Optimizations**
