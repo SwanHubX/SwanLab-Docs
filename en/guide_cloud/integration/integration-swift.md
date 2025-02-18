@@ -104,7 +104,7 @@ Start WebUI:
 swift web-ui
 ```
 
-After starting, the browser will automatically open, displaying the fine-tuning interface (or visit http://localhost:7860/ ):
+After starting, the browser will automatically open, displaying the fine-tuning interface (or visit `http://localhost:7860/` ):
 
 ![ig-swift-2](./swift/dashboard-2.png)
 

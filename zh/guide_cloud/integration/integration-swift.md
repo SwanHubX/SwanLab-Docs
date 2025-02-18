@@ -104,7 +104,7 @@ Swift不仅支持CLI微调，还为开发者提供非常方便的**WebUI（网�
 swift web-ui
 ```
 
-启动后，会自动打开浏览器，显示微调界面（或者访问 http://localhost:7860/ ）：
+启动后，会自动打开浏览器，显示微调界面（或者访问 `http://localhost:7860/` ）：
 
 ![ig-swift-2](./swift/dashboard-2.png)
 
