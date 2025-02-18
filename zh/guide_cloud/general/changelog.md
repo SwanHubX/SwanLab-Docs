@@ -8,6 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.8 - 2025.2.16
 
 **🚀新增功能**
+- 新增了和Modelscope Swift的集成，[文档](/guide_cloud/integration/integration-swift.md)
 - 新增了`添加分组`和`移动图表到其他分组`功能
 
 **优化**
