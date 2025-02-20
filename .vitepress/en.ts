@@ -164,6 +164,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
       { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
       { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
+      { text: 'Unsloth', link: 'integration/integration-unsloth' },
       { text: 'Verl', link: 'integration/integration-verl' },
       { text: 'Weights & Biases', link: 'integration/integration-wandb'},
       { text: 'XGBoost', link: 'integration/integration-xgboost'},
