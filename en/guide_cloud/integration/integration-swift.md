@@ -19,14 +19,10 @@ You can use Swift for rapid model training while utilizing SwanLab for experimen
 
 ## 0. Install ms-swift and swanlab
 
-> Currently, ms-swift has not released the latest package (version 3.1.0 at the time of writing), so installation from source is required.
-
-Install ms-swift from source:
+Install ms-swift (version >= 3.1.1):
 
 ```bash
-git clone https://github.com/modelscope/swift.git
-cd swift
-pip install -e .
+pip install ms-swift
 ```
 
 Install swanlab:

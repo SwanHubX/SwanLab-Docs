@@ -19,14 +19,10 @@ ms-swift 支持使用 vLLM 和 LMDeploy 加速推理、评估和部署模块，�
 
 ## 0. 安装ms-swift和swanlab
 
-> 目前ms-swift还未release最新的包（本文写作时版本为3.1.0），所以需要使用源码安装。
-
-源码安装ms-swift：
+安装ms-swift（>=3.1.1）：
 
 ```bash
-git clone https://github.com/modelscope/swift.git
-cd swift
-pip install -e .
+pip install ms-swift
 ```
 
 安装swanlab：
