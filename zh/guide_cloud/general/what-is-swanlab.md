@@ -2,21 +2,8 @@
 
 [官网](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
 
-<!-- ![](/assets/swanlab-show.png) -->
-
-<!-- ![alt text](/assets/product-swanlab-1.png) -->
-
 ::: warning 👋 我们正在开发私有化部署版
 预计25年3月份与大家见面，支持Docker部署，功能与云端版一致
-:::
-
-::: info 🏁 GDC2025 DeepSeek-Qwen 模型蒸馏极限挑战赛
-**比赛时间：** 2025.2.16-2025.2.23<br>
-
-欢迎您关注由 **魔搭社区 x SwanLab** 平台联合举办的 DeepSeek-Qwen 模型蒸馏极限挑战赛！<br>
-本赛事将作为 **2025全球开发者先锋大会（GDC）** 的活动之一，欢迎具备大模型训练/微调实战经验的独立开发者前来挑战！<br>
-
-🔥 详细报名规则：[报名链接](https://mp.weixin.qq.com/s/t8yInvb6bPLMbSsMcQgPKA)
 :::
 
 ![alt text](/assets/product-swanlab-1.png)
@@ -141,6 +128,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [Stable Baseline3](/guide_cloud/integration/integration-sb3.html)
 - [veRL](/guide_cloud/integration/integration-verl.html)
 - [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
+- [EasyR1](/guide_cloud/integration/integration-easyr1.html)
 
 **其他框架：**
 - [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
