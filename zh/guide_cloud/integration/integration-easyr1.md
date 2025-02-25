@@ -36,7 +36,7 @@ bash examples/run_qwen2_5_7b_math_swanlab.sh
 
 ![](./easyr1/qwen_math.png)
 
-当然，这里我们可以剖析一下，由于EasyR1是原始 veRL 项目的一个干净分叉，所以继承了[veRL与SwanLab的集成](/zh/guide_cloud/integration/integration-verl.md)。所以这里我们来看`run_qwen2_5_7b_math_swanlab.sh`文件：
+当然，这里我们可以剖析一下，由于EasyR1是原始 veRL 项目的一个干净分叉，所以继承了[veRL与SwanLab的集成](/guide_cloud/integration/integration-verl.md)。所以这里我们来看`run_qwen2_5_7b_math_swanlab.sh`文件：
 
 ```sh {10}
 set -x

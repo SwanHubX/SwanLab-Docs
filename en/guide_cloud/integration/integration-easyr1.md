@@ -36,7 +36,7 @@ bash examples/run_qwen2_5_7b_math_swanlab.sh
 
 ![](./easyr1/qwen_math.png)
 
-Of course, we can analyze that since EasyR1 is a clean fork of the original veRL project, it inherits the [integration of veRL and SwanLab](/zh/guide_cloud/integration/integration-verl.md). Now let's take a look at the `run_qwen2_5_7b_math_swanlab.sh` file:
+Of course, we can analyze that since EasyR1 is a clean fork of the original veRL project, it inherits the [integration of veRL and SwanLab](/en/guide_cloud/integration/integration-verl.md). Now let's take a look at the `run_qwen2_5_7b_math_swanlab.sh` file:
 
 ```sh {10}
 set -x
