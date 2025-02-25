@@ -1,6 +1,6 @@
 # 欢迎使用SwanLab 
 
-[官网](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
+[官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
 
 ::: warning 👋 我们正在开发私有化部署版
 预计25年3月份与大家见面，支持Docker部署，功能与云端版一致

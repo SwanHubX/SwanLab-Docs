@@ -33,7 +33,12 @@ export const zh = defineConfig({
       { 
         text: '用户指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
-        activeMatch: '/guide_cloud/',
+        // activeMatch: '/guide_cloud/',
+      },
+      {
+        text: '框架集成',
+        link: base_path_guide_cloud + '/integration/integration-huggingface-transformers',
+        activeMatch: '/guide_cloud/integration/',
       },
       { 
         text: '实战案例',
@@ -85,6 +90,7 @@ export const zh = defineConfig({
     sidebar: {
       '/guide_cloud/':{base: '/guide_cloud/', items: sidebarGuideCloud(),},
       '/examples/':{base: '/examples/', items: sidebarExamples(),},
+      '/guide_cloud/integration/':{base: '/guide_cloud/integration/', items: sidebarIntegration(),},
       '/api/':{base: '/api/', items: sidebarAPI(),},
     },
 
@@ -98,7 +104,8 @@ export const zh = defineConfig({
 
 
 function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
-  return [{
+  return [
+    {
     text: '简介',
     // collapsed: false,
     items: [
@@ -137,46 +144,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '⚡️ 集成',
-    // collapsed: false,
-    items: [
-      { text: 'Argparse', link:'integration/integration-argparse' },
-      { text: 'Ascend NPU & MindSpore', link: 'integration/integration-ascend.md' },
-      { text: 'EasyR1', link: 'integration/integration-easyr1' },
-      { text: 'Fastai', link: 'integration/integration-fastai' },
-      { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
-      { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
-      { text: 'HuggingFace Trl', link: 'integration/integration-huggingface-trl' },
-      { text: 'Hydra', link: 'integration/integration-hydra' },
-      { text: 'Keras', link: 'integration/integration-keras' },
-      { text: 'LightGBM', link: 'integration/integration-lightgbm'},
-      { text: 'LLaMA Factory', link: 'integration/integration-llama-factory'},
-      { text: 'MMEngine', link: 'integration/integration-mmengine' },
-      { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
-      { text: 'MMDetection', link: 'integration/integration-mmdetection' },
-      { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
-      { text: 'Modelscope Swift', link: 'integration/integration-swift' },
-      { text: 'OpenAI', link: 'integration/integration-openai' },
-      { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
-      { text: 'PaddleDetection', link: 'integration/integration-paddledetection' },
-      { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
-      { text: 'PyTorch', link: 'integration/integration-pytorch' },
-      { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
-      { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
-      { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
-      { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
-      { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
-      { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
-      { text: 'Unsloth', link: 'integration/integration-unsloth' },
-      { text: 'Verl', link: 'integration/integration-verl' },
-      { text: 'Weights & Biases', link: 'integration/integration-wandb'},
-      { text: 'XGBoost', link: 'integration/integration-xgboost'},
-      { text: 'Xtuner', link: 'integration/integration-xtuner'},
-      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
-      { text: '将SwanLab集成到你的库', link: 'integration/integration-any-library' },
-    ]
-  },
-  {
     text: '👥 社区',
     // collapsed: false,
     items: [
@@ -189,6 +156,69 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },]
 }
+
+function sidebarIntegration(): DefaultTheme.SidebarItem[] {
+  return [
+  { text: '将SwanLab集成到你的库', link: 'integration-any-library' },
+  {
+    text: 'A-G',
+    // collapsed: false,
+    items: [
+      { text: 'Argparse', link:'integration-argparse' },
+      { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
+      { text: 'EasyR1', link: 'integration-easyr1' },
+      { text: 'Fastai', link: 'integration-fastai' },
+    ]
+  },
+  {
+    text: 'H-N',
+    // collapsed: false,
+    items: [
+      { text: 'HuggingFace Accelerate', link: 'integration-huggingface-accelerate' },
+      { text: 'HuggingFace Transformers', link: 'integration-huggingface-transformers' },
+      { text: 'HuggingFace Trl', link: 'integration-huggingface-trl' },
+      { text: 'Hydra', link: 'integration-hydra' },
+      { text: 'Keras', link: 'integration-keras' },
+      { text: 'LightGBM', link: 'integration-lightgbm'},
+      { text: 'LLaMA Factory', link: 'integration-llama-factory'},
+      { text: 'MMEngine', link: 'integration-mmengine' },
+      { text: 'MMPretrain', link: 'integration-mmpretrain' },
+      { text: 'MMDetection', link: 'integration-mmdetection' },
+      { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
+      { text: 'Modelscope Swift', link: 'integration-swift' },
+    ]
+  },
+  {
+    text: 'O-T',
+    // collapsed: false,
+    items: [
+      { text: 'OpenAI', link: 'integration-openai' },
+      { text: 'Omegaconf', link: 'integration-omegaconf' },
+      { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
+      { text: 'PyTorch', link: 'integration-pytorch' },
+      { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
+      { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
+      { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
+      { text: 'Stable Baseline3', link: 'integration-sb3' },
+      { text: 'Tensorboard', link: 'integration-tensorboard'},
+    ]
+  },
+  {
+    text: 'U-Z',
+    // collapsed: false,
+    items: [
+      { text: 'Ultralytics', link: 'integration-ultralytics' },
+      { text: 'Unsloth', link: 'integration-unsloth' },
+      { text: 'Verl', link: 'integration-verl' },
+      { text: 'Weights & Biases', link: 'integration-wandb'},
+      { text: 'XGBoost', link: 'integration-xgboost'},
+      { text: 'Xtuner', link: 'integration-xtuner'},
+      { text: 'ZhipuAI', link: 'integration-zhipuai'},
+    ]
+  }]
+}
+
 
 function sidebarExamples(): DefaultTheme.SidebarItem[] {
   return [{
@@ -281,8 +311,5 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: '环境变量', link: 'environment-variable' },
     ]
   }
-
-
-
 ]
 }
