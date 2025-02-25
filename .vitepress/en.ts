@@ -183,7 +183,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Paper citation', link: 'community/paper-cite'},
       { text: 'Contributing code', link: 'community/contributing-code'},
       { text: 'Contributing docs', link: 'community/contributing-docs'},
-      { text: 'Contributor', link: 'community/contributor'},
       { text: 'About us', link: 'community/emotion-machine'},
     ]
   },]
