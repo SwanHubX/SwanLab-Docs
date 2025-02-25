@@ -50,3 +50,17 @@ Metric names refer to the key part of the dictionary passed into `swanlab.log()`
 Internal metrics include:
 
 - `__swanlab__.xxx`
+
+## Experiment Status Rules
+
+An experiment can be in one of three states: Completed, Running, or Crashed.
+
+- **Completed**: The training process has ended naturally, or `swanlab.finish()` was manually executed.  
+- **Running**: The training process is ongoing, and `swanlab.finish()` has not been executed.  
+- **Crashed**: The training process was abnormally terminated due to bugs, machine shutdown, `Ctrl+C`, etc.  
+
+Some users may encounter the following situation: Why does my training process seem to be ongoing, but the SwanLab chart shows it as crashed?  
+
+This is because SwanLab has a hidden rule for determining crashes. If no logs (including automatically collected system metrics) are uploaded within 15 minutes, the experiment is marked as crashed. This is to prevent the experiment from remaining in the "Running" state indefinitely if the training process is unexpectedly killed and cannot trigger the status upload logic in the SwanLab SDK.  
+
+Therefore, if your machine experiences network issues for more than 15 minutes, the experiment status will be displayed as "Crashed."
