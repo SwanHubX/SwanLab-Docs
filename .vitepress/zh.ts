@@ -298,6 +298,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
       ]},
+      { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },

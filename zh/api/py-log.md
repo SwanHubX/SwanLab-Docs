@@ -6,6 +6,7 @@
 log(
     data: Dict[str, DataType],
     step: int = None,
+    print_to_console: bool = False,
 )
 ```
 
@@ -26,6 +27,20 @@ swanlab.log({"acc": 0.9, "loss":0.1462})
 ```
 
 除了标量以外，`swanlab.log`支持记录多媒体数据，包括图像、音频、文本等，并在UI上有很好的显示效果。
+
+## 打印传入的字典
+
+`swanlab.log`支持打印传入的`data`的`key`和`value`到终端，默认情况下不打印。要开启打印的话，需要设置`print_to_console=True`。
+
+```python
+swanlab.log({"acc": 0.9, "loss":0.1462}, print_to_console=True)
+```
+
+当然，你也可以用这种方式打印：
+
+```python
+print(swanlab.log({"acc": 0.9, "loss":0.1462}))
+```
 
 ## 更多用法
 
