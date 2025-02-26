@@ -28,6 +28,8 @@ init(
 | mode          | (str) Sets the mode for creating the SwanLab experiment. Options include "cloud", "local", "disabled". Defaults to "cloud". <br> `cloud`: Uploads the experiment to the cloud. <br> `local`: Does not upload to the cloud but records the experiment locally. <br> `disabled`: Does not upload or record. |
 | load          | (str) Path to the configuration file to load. Supports yaml and json files. |
 | public        | (bool) Sets the visibility of the SwanLab project created directly by code. Defaults to False, i.e., private. |
+| name       | (str) The same as `experiment_name`. |
+| notes       | (str) The same as `description`. |
 
 ## Introduction
 

@@ -28,6 +28,8 @@ init(
 | mode       | (str) 设置swanlab实验创建的模式，可选"cloud"、"local"、"disabled"，默认设置为"cloud"。<br>`cloud`：将实验上传到云端。<br>`local`：不上传到云端，但会记录实验到本地。<br>`disabled`：不上传也不记录。|
 | load       | (str) 加载的配置文件路径，支持yaml和json文件。|
 | public       | (bool) 设置使用代码直接创建SwanLab项目的可见性，默认为False即私有。|
+| name       | (str) 与experiment_name效果一致，优先级低于experiment_name。|
+| notes       | (str) 与description效果一致，优先级低于description。|
 
 ## 介绍
 
