@@ -30,3 +30,21 @@ For example, if you want to get the experiment's URL, you can do this:
 ```python
 print(run.public.cloud.experiment_url)
 ```
+
+## get_url
+
+Get the URL of the experiment.
+
+```python
+run = swanlab.init()
+print(run.get_url())
+```
+
+## get_project_url
+
+Get the URL of the project.
+
+```python
+run = swanlab.init()
+print(run.get_project_url())
+```

@@ -6,6 +6,16 @@ Github: https://github.com/SwanHubX/SwanLab
 :::
 
 
+## v0.4.9 - 2025.2.28
+
+**🚀 New Features**
+- Added `Move Experiment` function
+- Added `update_config` method to some integration Callback classes
+- `run` now supports `get_url()` and `get_project_url()` methods to get experiment and project URLs
+
+**Optimizations**
+- Fixed some issues on Linux systems
+
 ## v0.4.8 - 2025.2.16
 
 **🚀 New Features**
