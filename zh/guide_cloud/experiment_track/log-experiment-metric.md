@@ -70,6 +70,20 @@ for iter, (data, ground_truth) in enumerate(train_dataloader):
 
 需要注意的是，同一个指标名不允许出现2个相同的step的数据，一旦出现，SwanLab将保留先记录的数据，抛弃后记录的数据。
 
+## 打印指标
+
+也许你希望在训练循环中打印指标，可以通过 `print_to_console` 参数控制是否将指标打印到控制台（以`dict`的形式）：
+
+```python
+swanlab.log({"acc": acc}, print_to_console=True)
+```
+
+或者：
+
+```python
+print(swanlab.log({"acc": acc}))
+```
+
 ## 自动记录环境信息
 
 SwanLab在实验期间自动记录以下信息：
