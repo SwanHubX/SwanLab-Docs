@@ -70,6 +70,20 @@ for iter, (data, ground_truth) in enumerate(train_dataloader):
 
 It is important to note that the same metric name is not allowed to have two identical step data. Once this happens, SwanLab will keep the first recorded data and discard the later recorded data.
 
+## Print Metrics
+
+You might want to print metrics during the training loop. You can control whether to print the metrics to the console (in the form of a `dict`) using the `print_to_console` parameter:
+
+```python
+swanlab.log({"acc": acc}, print_to_console=True)
+```
+
+Alternatively:
+
+```python
+print(swanlab.log({"acc": acc}))
+```
+
 ## Automatically Log Environment Information
 
 SwanLab automatically logs the following information during the experiment:
