@@ -1,5 +1,7 @@
 # 从零预训练一个自己的大模型
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)
+
 大语言模型（Large Language Model，简称LLM），指使用大量文本数据训练的深度学习模型，可以生成自然语言文本或理解语言文本的含义。
 
 ![llm](/assets/examples/pretrain_llm/llm.png)

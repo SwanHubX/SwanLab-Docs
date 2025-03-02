@@ -4,6 +4,8 @@
 时间序列、量化交易、时序模型
 :::
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/Google-Stock-Prediction/runs/0c2ci59aje4rb54r2z4y5/chart)
+
 [在线Demo](https://swanlab.cn/@ZeyiLin/Google-Stock-Prediction/runs/0c2ci59aje4rb54r2z4y5/chart) | [知乎教程](https://zhuanlan.zhihu.com/p/702114810)
 
 ## 概述

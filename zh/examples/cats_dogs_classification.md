@@ -4,6 +4,8 @@
 图像分类、机器学习入门、RGB图像、自定义数据集
 :::
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
+
 [知乎](https://zhuanlan.zhihu.com/p/676430630)
 
 猫狗分类是计算机视觉最基础的任务之一——如果说完成MNIST手写体识别是实现CV的“Hello World”，那猫狗分类就是旅程的下一站～。这篇文章我将带大家使用SwanLab、PyTorch、Gradio三个开源工具，完成从数据集准备、代码编写、可视化训练到构建Demo网页的全过程。

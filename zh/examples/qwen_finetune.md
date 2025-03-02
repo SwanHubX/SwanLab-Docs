@@ -4,6 +4,9 @@
 文本分类，大语言模型，大模型微调
 :::
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart)
+
+
 [实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart) | [Qwen2微调教程](https://zhuanlan.zhihu.com/p/702491999)
 
 ## 概述
