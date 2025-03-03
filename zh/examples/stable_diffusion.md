@@ -1,8 +1,8 @@
 # Stable Diffusion文生图微调
 
-[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/664kdc104y0v90i8221hf/chart)
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
 
-[知乎教程](https://zhuanlan.zhihu.com/p/703921817) | [在线Demo](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/664kdc104y0v90i8221hf/chart)
+[知乎教程](https://zhuanlan.zhihu.com/p/703921817) | [在线Demo](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
 
 [Stable Diffusion 1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5/tree/main)（SD1.5）是由Stability AI在2022年8月22日开源的文生图模型，是SD最经典也是社区最活跃的模型之一。
 
@@ -230,7 +230,7 @@ image.save("result.png")
 ## 相关链接
 
 - 代码：[Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
-- 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)
+- 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
 - 模型：[runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - 数据集：[lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
