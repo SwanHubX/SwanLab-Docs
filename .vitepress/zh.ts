@@ -50,7 +50,6 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
         },
-      { text: '交流群', link: '/guide_cloud/community/online-support'},
       { text: 'v0.4.9',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
@@ -108,6 +107,7 @@ export const zh = defineConfig({
 
     // 页脚配置
     socialLinks: [
+      { icon: 'wechat', link: '/guide_cloud/community/online-support' },
       { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
       { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
     ],
