@@ -1,8 +1,13 @@
 # Weights & Biases
 
-[Weights & Biases](https://github.com/wandb/wandb) (Wandb) 是一个用于机器学习和深度学习项目的实验跟踪、模型优化和协作平台。W&B 提供了强大的工具来记录和可视化实验结果，帮助数据科学家和研究人员更好地管理和分享他们的工作。
+Weights & Biases (Wandb) 是一个用于机器学习和深度学习项目的实验跟踪、模型优化和协作平台。W&B 提供了强大的工具来记录和可视化实验结果，帮助数据科学家和研究人员更好地管理和分享他们的工作。
 
 ![wandb](/assets/ig-wandb.png)
+
+:::warning 其他工具的同步教程
+
+- [TensorBoard](/zh/guide_cloud/integration/integration-tensorboard.md)
+:::
 
 **你可以用两种方式将Wandb上的项目同步到SwanLab：**
 

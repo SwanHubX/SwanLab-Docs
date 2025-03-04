@@ -4,6 +4,11 @@
 
 ![TensorBoard](/assets/ig-tensorboard.png)
 
+:::warning 其他工具的同步教程
+
+- [Wandb](/zh/guide_cloud/integration/integration-wandb.md)
+:::
+
 **你可以用两种方式将使用Tensorboard跟踪的项目同步到SwanLab：**
 
 - **同步跟踪**：如果你现在的项目使用了Tensorboard进行实验跟踪，你可以使用`swanlab.sync_tensorboardX()`或`swanlab.sync_tensorboard_torch()`命令，在运行训练脚本时同步记录指标到SwanLab。
