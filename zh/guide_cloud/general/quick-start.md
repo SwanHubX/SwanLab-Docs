@@ -3,7 +3,7 @@
 
 安装 SwanLab 并在几分钟内开始跟踪你的人工智能实验。
 
-![quick-start-1](/assets/quick-start.png)
+![quick-start-1](./quick_start/quick-start.png)
 
 
 ## 1. 安装SwanLab
@@ -110,7 +110,7 @@ for epoch in range(2, run.config.epochs):
 
 运行代码，访问[SwanLab](https://swanlab.cn)，查看在每个训练步骤中，你使用SwanLab记录的指标（准确率和损失值）的改进情况。
 
-![quick-start-1](/assets/quick-start-1.jpg)
+![quick-start-1](./quick_start/line-chart.png)
 
 
 

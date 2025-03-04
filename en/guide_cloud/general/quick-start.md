@@ -3,8 +3,7 @@
 
 Install SwanLab and start tracking your AI experiments in minutes
 
-![quick-start-1](/assets/quick-start.png)
-
+![quick-start-1](./quick_start/quick-start.png)
 
 ## 1. Install SwanLab
 
@@ -111,7 +110,7 @@ for epoch in range(2, run.config.epochs):
 Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of the metrics (accuracy and loss value) you recorded using SwanLab in each training step.
 
 
-![quick-start-1](/assets/quick-start-1.jpg)
+![quick-start-1](./quick_start/line-chart.png)
 
 
 ## What's next
