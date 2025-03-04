@@ -12,6 +12,7 @@
 - [Image](/api/py-Image.md)
 - [Audio](/api/py-Audio.md)
 - [Text](/api/py-Text.md)
+- [run](/api/py-run.md)
 - [convert](/api/py-converter.md)
 - [sync_wandb](/api/py-sync-wandb.md)
 
