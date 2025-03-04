@@ -1,5 +1,7 @@
 # swanlab-docs
 
+[![](./assets/readme-1.png)](https://docs.swanlab.cn)
+
 为项目贡献的方式不仅仅是贡献代码，包括维护文档、在issue和群中答疑、提交bug等都是为swanlab项目贡献的方式！
 
 我们在[github仓库](https://github.com/SwanHubX/SwanLab-Docs)中托管了SwanLab的[官方文档](https://docs.swanlab.cn)，基于[vitepress](https://vitepress.dev/zh/guide/getting-started)。
@@ -14,6 +16,7 @@
 
 ```bash
 git clone https://github.com/SwanHubX/SwanLab-Docs
+cd SwanLab-Docs
 ```
 
 2. 安装依赖环境
@@ -24,6 +27,7 @@ git clone https://github.com/SwanHubX/SwanLab-Docs
 
 ```bash
 npm add -D vitepress
+npm install
 ```
 
 ### 本地运行文档
