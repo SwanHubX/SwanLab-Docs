@@ -7,6 +7,7 @@
 :::warning 其他工具的同步教程
 
 - [Wandb](/zh/guide_cloud/integration/integration-wandb.md)
+- [MLFlow](/zh/guide_cloud/integration/integration-mlflow.md)
 :::
 
 **你可以用两种方式将使用Tensorboard跟踪的项目同步到SwanLab：**
@@ -128,6 +129,15 @@ for epoch in range(2, epochs):
 ```bash
 swanlab convert -t tensorboard --tb_logdir [TFEVENT_LOGDIR]
 ```
+
+支持的参数如下：
+
+- `-t`: 转换类型，可选wandb、tensorboard和mlflow。
+- `-p`: SwanLab项目名。
+- `-w`: SwanLab工作空间名。
+- `--cloud`: (bool) 是否上传模式为"cloud"，默认为True
+- `-l`: logdir路径。
+- `--tb_logdir`: Tensorboard日志文件路径。
 
 这里的`[TFEVENT_LOGDIR]`是指你先前用Tensorboard记录实验时，生成的日志文件路径。
 

@@ -7,6 +7,7 @@ Weights & Biases (Wandb) 是一个用于机器学习和深度学习项目的实�
 :::warning 其他工具的同步教程
 
 - [TensorBoard](/zh/guide_cloud/integration/integration-tensorboard.md)
+- [MLFlow](/zh/guide_cloud/integration/integration-mlflow.md)
 :::
 
 **你可以用两种方式将Wandb上的项目同步到SwanLab：**
@@ -108,6 +109,10 @@ swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_EN
 支持的参数如下：
 
 - `-t`: 转换类型，可选wandb与tensorboard。
+- `-p`: SwanLab项目名。
+- `-w`: SwanLab工作空间名。
+- `--cloud`: (bool) 是否上传模式为"cloud"，默认为True
+- `-l`: logdir路径。
 - `--wb-project`：待转换的wandb项目名。
 - `--wb-entity`：wandb项目所在的空间名。
 - `--wb-runid`: wandb Run（项目下的某一个实验）的id。
@@ -123,4 +128,12 @@ wb_converter = WandbConverter()
 # wb_runid可选
 wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 ```
+
 效果与命令行转换一致。
+
+`WandbConverter`支持的参数：
+
+- `project`: SwanLab项目名。
+- `workspace`: SwanLab工作空间名。
+- `cloud`: (bool) 是否上传模式为"cloud"，默认为True。
+- `logdir`: wandb Run（项目下的某一个实验）的id。

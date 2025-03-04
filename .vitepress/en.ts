@@ -177,6 +177,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Keras', link: 'integration-keras' },
       { text: 'LightGBM', link: 'integration-lightgbm'},
       { text: 'LLaMA Factory', link: 'integration-llama-factory'},
+      { text: 'MLFlow', link: 'integration-mlflow'},
       { text: 'MMEngine', link: 'integration-mmengine' },
       { text: 'MMPretrain', link: 'integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration-mmdetection' },
