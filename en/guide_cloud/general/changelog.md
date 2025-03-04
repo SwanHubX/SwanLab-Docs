@@ -9,11 +9,12 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **🚀 New Features**
 
-• Added integration with [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio).
-• Added support for converting **MLFlow** experiments to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md).
-• Introduced **Project Descriptions**, allowing you to add short notes to your projects.
+• Added integration with [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio).  
+• Added support for converting **MLFlow** experiments to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md).  
+• Introduced **Project Descriptions**, allowing you to add short notes to your projects.  
 
 **Improvements**
+
 • Fixed an issue where CPU model information could not be correctly recorded on OpenEuler systems.
 
 
