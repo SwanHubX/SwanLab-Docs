@@ -6,7 +6,7 @@
 
 ![](/zh/guide_cloud/integration/llama_factory/0.png)
 
-我们非常高兴地宣布**SwanLab**与**LLaMA Factory**建立合作伙伴关系，致力于为中国训练者提供优质、高效的大模型训练体验。
+我们非常高兴地宣布**SwanLab**与[LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory)建立合作伙伴关系，致力于为中国训练者提供优质、高效的大模型训练体验。
 
 现在你使用新版本的LLaMA Factory启动训练前，可以在WebUI的「SwanLab configurations」（中文：SwanLab参数设置）卡片中勾选「Use SwanLab」，就可以通过SwanLab强大的训练看板进行这一次大模型微调的跟踪、记录与可视化。
 
@@ -31,7 +31,7 @@ LLaMA Factory 是一个用于微调大语言模型 (LLM) 的开源工具包，�
 首先，你需要确保你拥有Python3.8以上环境与Git工具，然后克隆仓库：
 
 ```shellscript
-git clone https://github.com/hiyouga/LLaMA-Factory
+git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory
 ```
 
 安装相关环境：
@@ -41,7 +41,7 @@ cd LLaMA-Factory
 pip install -e ".[torch,metrics,swanlab]"
 ```
 
-> 如果你是昇腾NPU用户，可以访问：https://github.com/hiyouga/LLaMA-Factory/blob/main/README\_zh.md#%E5%AE%89%E8%A3%85-llama-factory 查看昇腾NPU版安装教程。
+> 如果你是昇腾NPU用户，可以访问：[华为NPU适配](https://llamafactory.readthedocs.io/zh-cn/latest/advanced/npu.html) 查看昇腾NPU版安装教程。
 
 ## 2. 使用LLaMA Board开启训练
 
