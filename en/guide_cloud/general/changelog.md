@@ -5,6 +5,17 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.4.10 - 2025.3.4
+
+**🚀 New Features**
+
+• Added integration with [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio).
+• Added support for converting **MLFlow** experiments to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md).
+• Introduced **Project Descriptions**, allowing you to add short notes to your projects.
+
+**Improvements**
+• Fixed an issue where CPU model information could not be correctly recorded on OpenEuler systems.
+
 
 ## v0.4.9 - 2025.2.28
 

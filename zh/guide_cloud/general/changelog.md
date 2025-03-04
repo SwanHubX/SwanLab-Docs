@@ -5,6 +5,16 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.4.10 - 2025.3.4
+
+**🚀新增功能**
+- 新增了和[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)的集成
+- 新增支持转换 **MLFlow** 实验到 SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
+- 新增**项目描述**，支持给你的项目记一些简短的笔记
+
+**优化**
+- 修复了在OpenEuler系统上无法正确记录CPU型号的问题
+
 ## v0.4.9 - 2025.2.28
 
 **🚀新增功能**
