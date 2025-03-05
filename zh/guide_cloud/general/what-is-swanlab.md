@@ -133,6 +133,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 **其他框架：**
 - [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
 - [Weights&Biases](/guide_cloud/integration/integration-wandb.html)
+- [MLFlow](/guide_cloud/integration/integration-mlflow.html)
 - [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
 - [Hydra](/guide_cloud/integration/integration-hydra.html)
 - [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)

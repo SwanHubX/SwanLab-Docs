@@ -6,8 +6,8 @@
 
 :::warning 其他工具的同步教程
 
-- [TensorBoard](/zh/guide_cloud/integration/integration-tensorboard.md)
-- [Weights & Biases](/zh/guide_cloud/integration/integration-wandb.md)
+- [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)
+- [Weights & Biases](/guide_cloud/integration/integration-wandb.md)
 :::
 
 **你可以用将MLflow上的项目转换到SwanLab：**
