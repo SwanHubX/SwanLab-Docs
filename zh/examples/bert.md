@@ -48,7 +48,7 @@ IMDB数据集的1是positive，0是negative。
 import torch
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import swanlab
 
 def predict(text, model, tokenizer, CLASS_NAME):

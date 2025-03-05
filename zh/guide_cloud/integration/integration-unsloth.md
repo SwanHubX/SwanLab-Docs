@@ -26,7 +26,7 @@ SwanLabCallback可以定义的参数有：
 ## 2. 传入Trainer
 
 ```python {1,7,12}
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from trl import GRPOTrainer
 
 ...

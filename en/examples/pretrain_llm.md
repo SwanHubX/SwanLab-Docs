@@ -145,7 +145,7 @@ print(args)
 Use the built-in training from Transformers and integrate SwanLab for visualization and logging:
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 trainer = transformers.Trainer(
     model=model,
     tokenizer=tokenizer,
@@ -188,7 +188,7 @@ Project directory structure:
 import datasets
 import transformers
 import swanlab
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import modelscope
 
 def main():

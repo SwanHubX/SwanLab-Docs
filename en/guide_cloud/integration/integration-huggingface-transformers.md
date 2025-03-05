@@ -11,7 +11,7 @@ You can use Transformers to quickly train models while using SwanLab for experim
 ## 1. Import SwanLabCallback
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 ```
 
 **SwanLabCallback** is a logging class adapted for Transformers.
@@ -24,7 +24,7 @@ from swanlab.integration.huggingface import SwanLabCallback
 ## 2. Pass to Trainer
 
 ```python (1,7,12)
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from transformers import Trainer, TrainingArguments
 
 ...
@@ -47,7 +47,7 @@ trainer.train()
 import evaluate
 import numpy as np
 import swanlab
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from datasets import load_dataset
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, Trainer, TrainingArguments
 

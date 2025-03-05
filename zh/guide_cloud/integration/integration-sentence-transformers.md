@@ -9,7 +9,7 @@
 ## 1. 引入SwanLabCallback
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 ```
 
 **SwanLabCallback**是适配于HuggingFace系列工具（Transformers等）的日志记录类。
@@ -22,7 +22,7 @@ from swanlab.integration.huggingface import SwanLabCallback
 ## 2. 传入Trainer
 
 ```python (1,7,12)
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from sentence_transformers import SentenceTransformer, SentenceTransformerTrainer
 
 ...
@@ -45,7 +45,7 @@ trainer.train()
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer, SentenceTransformerTrainer
 from sentence_transformers.losses import MultipleNegativesRankingLoss
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 
 model = SentenceTransformer("bert-base-uncased")
 

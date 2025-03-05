@@ -149,7 +149,7 @@ print(args)
 使用transformers自带的train开始训练，并且引入swanlab作为可视化日志记录
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 trainer = transformers.Trainer(
     model=model,
     tokenizer=tokenizer,
@@ -196,7 +196,7 @@ swanlab login
 import datasets
 import transformers
 import swanlab
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import modelscope
 
 def main():

@@ -11,7 +11,7 @@ Hugging Face 的 [Transformers](https://github.com/huggingface/transformers) 是
 ## 1. 引入SwanLabCallback
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 ```
 
 **SwanLabCallback**是适配于Transformers的日志记录类。
@@ -24,7 +24,7 @@ from swanlab.integration.huggingface import SwanLabCallback
 ## 2. 传入Trainer
 
 ```python (1,7,12)
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from transformers import Trainer, TrainingArguments
 
 ...
@@ -47,7 +47,7 @@ trainer.train()
 import evaluate
 import numpy as np
 import swanlab
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from datasets import load_dataset
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, Trainer, TrainingArguments
 

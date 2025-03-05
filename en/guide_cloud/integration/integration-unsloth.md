@@ -24,7 +24,7 @@ The parameters that can be defined for SwanLabCallback include:
 ## 2. Passing to Trainer
 
 ```python {1,7,12}
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from trl import GRPOTrainer
 
 ...
