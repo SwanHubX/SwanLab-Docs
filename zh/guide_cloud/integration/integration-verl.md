@@ -55,10 +55,11 @@ pip install -U swanlab
 
 **完整的测试命令如下：**
 
-```bash {20}
+```bash
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  data.train_files=$HOME/data/gsm8k/train.parquet \
  data.val_files=$HOME/data/gsm8k/test.parquet \
+ trainer.logger=['console','swanlab'] \  # [!code ++]
  data.train_batch_size=256 \
  data.val_batch_size=1312 \
  data.max_prompt_length=512 \
@@ -75,7 +76,6 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  critic.model.path=Qwen/Qwen2.5-0.5B-Instruct \
  critic.ppo_micro_batch_size_per_gpu=4 \
  algorithm.kl_ctrl.kl_coef=0.001 \
- trainer.logger=['console','swanlab'] \
  +trainer.val_before_train=False \
  trainer.default_hdfs_dir=null \
  trainer.n_gpus_per_node=1 \

@@ -38,7 +38,7 @@ bash examples/run_qwen2_5_7b_math_swanlab.sh
 
 当然，这里我们可以剖析一下，由于EasyR1是原始 veRL 项目的一个干净分叉，所以继承了[veRL与SwanLab的集成](/guide_cloud/integration/integration-verl.md)。所以这里我们来看`run_qwen2_5_7b_math_swanlab.sh`文件：
 
-```sh {10}
+```sh
 set -x
 
 export VLLM_ATTENTION_BACKEND=XFORMERS
@@ -48,7 +48,7 @@ MODEL_PATH=Qwen/Qwen2.5-7B-Instruct  # replace it with your local file path
 python3 -m verl.trainer.main \
     config=examples/grpo_example.yaml \
     worker.actor.model.model_path=${MODEL_PATH} \
-    trainer.logger=['console','swanlab'] \
+    trainer.logger=['console','swanlab'] \  # [!code ++]
     trainer.n_gpus_per_node=4
 ```
 

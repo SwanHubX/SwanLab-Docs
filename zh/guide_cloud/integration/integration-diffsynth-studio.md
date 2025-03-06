@@ -64,11 +64,11 @@ modelscope download --model=AI-ModelScope/sdxl-vae-fp16-fix --local_dir models/k
 
 如果你需要离线记录，可以添加`--swanlab_mode "local"`。
 
-```bash {3,4}
+```bash
 CUDA_VISIBLE_DEVICES="0" python examples/train/kolors/train_kolors_lora.py \
 ...
---use_swanlab \
---swanlab_mode "cloud"
+--use_swanlab \  # [!code ++]
+--swanlab_mode "cloud"  # [!code ++]
 ```
 
 ## 开启训练
