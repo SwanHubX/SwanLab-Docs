@@ -5,6 +5,13 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.4.11 - 2025.3.5
+
+**Improvements**
+
+- Fixed the issue of W&B format conversion errors in some versions
+- Fixed some interaction issues
+
 ## v0.4.10 - 2025.3.4
 
 **🚀 New Features**
