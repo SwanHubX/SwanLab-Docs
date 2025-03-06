@@ -8,7 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.4.10 - 2025.3.4
 
 **🚀新增功能**
-- 新增了和[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)的集成
+- 新增了和[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)的集成, [文档](/guide_cloud/integration/integration-diffsynth-studio.md)
 - 新增支持转换 **MLFlow** 实验到 SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
 - 新增**项目描述**，支持给你的项目记一些简短的笔记
 
