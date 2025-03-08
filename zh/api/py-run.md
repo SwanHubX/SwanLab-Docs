@@ -30,20 +30,3 @@ print(run.public.json())
 ```python
 print(run.public.cloud.experiment_url)
 ```
-
-## get_url
-
-获取实验的URL。
-
-```python
-run = swanlab.init()
-print(run.get_url())
-```
-
-## get_project_url
-
-获取项目的URL。
-
-```python
-run = swanlab.init()
-print(run.get_project_url())

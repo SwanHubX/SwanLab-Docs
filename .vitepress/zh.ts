@@ -317,6 +317,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
       { text: 'sync_wandb', link: 'py-sync-wandb' },
+      { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+      { text: '其他', link: 'py-other' },
     ]
   },
   {
