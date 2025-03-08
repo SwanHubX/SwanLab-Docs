@@ -64,3 +64,11 @@ Some users may encounter the following situation: Why does my training process s
 This is because SwanLab has a hidden rule for determining crashes. If no logs (including automatically collected system metrics) are uploaded within 15 minutes, the experiment is marked as crashed. This is to prevent the experiment from remaining in the "Running" state indefinitely if the training process is unexpectedly killed and cannot trigger the status upload logic in the SwanLab SDK.  
 
 Therefore, if your machine experiences network issues for more than 15 minutes, the experiment status will be displayed as "Crashed."
+
+## Command Line Logging and Truncation
+
+SwanLab records the standard output stream of the process after `swanlab.init()` is called, which can be viewed in the "Logs" tab of the experiment.
+
+If a line of command-line output is too long, it will be truncated. The current limit is 500 characters.
+
+If you wish to remove this restriction, you can modify the `MAX_UPLOAD_LEN` parameter in `swanlab/log/console.py` in the SwanLab package source code. This will ensure that the corresponding command-line output is stored in the `swanlog` log file, and the offline dashboard will display it accordingly. However, this change will not affect the rules of the cloud version.
