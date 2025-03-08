@@ -4,7 +4,7 @@
 
 DiffSynth Studio 支持多种扩散模型，包括 Wan-Video、StepVideo、HunyuanVideo、CogVideoX、FLUX、ExVideo、Kolors、Stable Diffusion 3 等。
 
-![](./diffsynth/logo.png)
+![](./diffsynth/logo.jpg)
 
 你可以使用DiffSynth Studio快速进行Diffusion模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
@@ -20,6 +20,7 @@ git clone https://github.com/modelscope/DiffSynth-Studio.git
 cd DiffSynth-Studio
 pip install -e .
 pip install swanlab
+pip install lightning lightning_fabric
 ```
 
 **2. 准备数据集**
@@ -47,6 +48,8 @@ file_name,text
 03.jpg,一只小狗
 04.jpg,一只小狗
 ```
+
+> 这里有一份整理好格式的火影忍者数据集，[百度云](https://pan.baidu.com/s/1kPvkTV6gy2xWFRpyXRX0Yw?pwd=2p6h)，供参考与测试
 
 **3. 准备模型**
 

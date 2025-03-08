@@ -4,7 +4,7 @@
 
 DiffSynth Studio supports various diffusion models, including Wan-Video, StepVideo, HunyuanVideo, CogVideoX, FLUX, ExVideo, Kolors, Stable Diffusion 3, and more.
 
-![](./diffsynth/logo.png)
+![](./diffsynth/logo.jpg)
 
 You can use DiffSynth Studio to quickly train Diffusion models while using SwanLab for experiment tracking and visualization.
 
@@ -19,6 +19,7 @@ git clone https://github.com/modelscope/DiffSynth-Studio.git
 cd DiffSynth-Studio
 pip install -e .
 pip install swanlab
+pip install lightning lightning_fabric
 ```
 
 **2. Prepare the Dataset**
@@ -46,6 +47,8 @@ file_name,text
 03.jpg,A small dog
 04.jpg,A small dog
 ```
+
+> Here is a well-formatted Naruto dataset, [Baidu Cloud](https://pan.baidu.com/s/1kPvkTV6gy2xWFRpyXRX0Yw?pwd=2p6h), for reference and testing.
 
 **3. Prepare the Model**
 
