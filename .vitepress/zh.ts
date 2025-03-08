@@ -58,6 +58,9 @@ export const zh = defineConfig({
       },
       {
         component: 'HeaderButton',
+      },
+      {
+        component: 'HeaderGithubButton',
       }
 
     ],
@@ -109,7 +112,7 @@ export const zh = defineConfig({
     socialLinks: [
       { icon: 'wechat', link: '/guide_cloud/community/online-support.html' },
       { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
-      { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
+      // { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
     ],
   }
 })
