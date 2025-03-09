@@ -55,7 +55,7 @@ export const en = defineConfig({
         component: 'HeaderButtonEN',
       },
       {
-        component: 'HeaderGithubButtonEN',
+        component: 'HeaderGithubButton',
       }
       // { text: 'Website', link: 'https://swanlab.cn' },
     ],
@@ -90,10 +90,10 @@ export const en = defineConfig({
     },
 
     // 页脚配置
-    // socialLinks: [
-      // { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
-      // { icon: 'github', link: 'https://github.com/swanhubx/swanlab' }
-    // ],
+    socialLinks: [
+      { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
+      { icon: 'wechat', link: '/en/guide_cloud/community/online-support.html' },
+    ],
 
     // 搜索配置
     search: {

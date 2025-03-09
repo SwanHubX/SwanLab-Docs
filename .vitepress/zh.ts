@@ -110,8 +110,8 @@ export const zh = defineConfig({
 
     // 页脚配置
     socialLinks: [
-      { icon: 'wechat', link: '/guide_cloud/community/online-support.html' },
       { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
+      { icon: 'wechat', link: '/guide_cloud/community/online-support.html' },
       // { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
     ],
   }
