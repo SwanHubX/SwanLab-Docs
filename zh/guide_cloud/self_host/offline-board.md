@@ -1,10 +1,19 @@
 # 离线看板
 
-SwanLab支持在不联网的情况下跟踪实验，以及访问你的实验记录。
+SwanLab支持在不联网的情况下跟踪实验，以及使用一个轻量的离线web看版，访问你的实验记录。
+
+
+## 安装
+
+使用离线看板，需要安装`swanlab`的`dashboard`扩展：
+
+```bash
+pip install swanlab[dashboard]
+```
 
 ## 离线实验跟踪
 
-在`swanlab.init`中设置`logir`和`mode`这两个参数，即可离线跟踪实验：
+在`swanlab.init`中设置`logdir`和`mode`这两个参数，即可离线跟踪实验：
 
 ```python
 ...

@@ -151,13 +151,19 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '💻 自托管',
+    text: '🚀 自托管',
     // collapsed: false,
     items: [
-      { text: 'Docker版', link: 'self_host/self-hosted' },
-      { text: '离线看板', link: 'self_host/offline-board' },
-      { text: '远程访问教程', link: 'self_host/remote-view' },
+      { text: 'Docker部署', link: 'self_host/docker-deploy' },
     ]
+  },
+  {
+      text: '💻 离线看板',
+      collapsed: true,
+      items: [
+        { text: '使用离线看板', link: 'self_host/offline-board' },
+        { text: '远程访问离线看板', link: 'self_host/remote-view' },
+      ]
   },
   {
     text: '👥 社区',
