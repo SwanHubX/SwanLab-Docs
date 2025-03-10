@@ -5,6 +5,11 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.4.12 - 2025.3.8
+
+**优化**
+- 修复了一些问题
+
 ## v0.4.11 - 2025.3.5
 
 **优化**

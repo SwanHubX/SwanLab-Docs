@@ -50,7 +50,7 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
         },
-      { text: 'v0.4.11',  items: [
+      { text: 'v0.4.12',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -154,6 +154,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '💻 自托管',
     // collapsed: false,
     items: [
+      { text: 'Docker版', link: 'self_host/self-hosted' },
       { text: '离线看板', link: 'self_host/offline-board' },
       { text: '远程访问教程', link: 'self_host/remote-view' },
     ]

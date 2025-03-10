@@ -5,6 +5,11 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.4.12 - 2025.3.8
+
+**Optimizations**
+- Fixed some issues
+
 ## v0.4.11 - 2025.3.5
 
 **Improvements**
