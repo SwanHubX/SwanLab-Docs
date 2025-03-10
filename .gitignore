@@ -3,3 +3,4 @@ node_modules
 /.vitepress/dist
 /.vitepress/cache
 .idea
+1.py
