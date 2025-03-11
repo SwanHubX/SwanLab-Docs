@@ -2,6 +2,8 @@
 
 To deploy SwanLab Community Edition privately, follow the installation steps below.
 
+![logo](./docker-deploy/swanlab-docker.jpg)
+
 ## Prerequisites
 
 > Before installing SwanLab, ensure your machine meets the following minimum system requirements:

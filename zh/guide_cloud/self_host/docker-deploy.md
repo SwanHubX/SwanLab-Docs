@@ -2,6 +2,8 @@
 
 如果你想要使用SwanLab私有化部署（社区版），请按照下面的流程进行安装。
 
+![logo](./docker-deploy/swanlab-docker.jpg)
+
 ## 先决条件
 
 > 在安装 SwanLab 之前，请确保您的机器满足以下最低系统要求：
