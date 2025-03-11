@@ -144,7 +144,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
-      { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
@@ -152,6 +151,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
+      { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
@@ -178,9 +178,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: '在线支持', link: 'community/online-support'},
       { text: 'Github徽章', link: 'community/github-badge'},
-      { text: '论文引用', link: 'community/paper-cite'},
-      { text: '贡献代码', link: 'community/contributing-code'},
-      { text: '贡献官方文档', link: 'community/contributing-docs'},
+      // { text: '论文引用', link: 'community/paper-cite'},
+      // { text: '贡献代码', link: 'community/contributing-code'},
+      // { text: '贡献官方文档', link: 'community/contributing-docs'},
       { text: '关于我们', link: 'community/emotion-machine'},
     ]
   },]
@@ -333,8 +333,14 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
-      { text: 'sync_wandb', link: 'py-sync-wandb' },
-      { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+      {
+        text: '同步其他工具',
+        items: [
+          { text: 'sync_wandb', link: 'py-sync-wandb' },
+          { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+          { text: 'sync_mlflow', link: 'py-sync-mlflow' },
+        ]
+      },
       { text: 'register_callback', link: 'py-register-callback' },
       { text: '其他', link: 'py-other' },
     ]
