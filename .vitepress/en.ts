@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/en/guide_cloud'
 var base_path_examples = '/en/examples'
 var base_path_api = '/en/api'
+var base_path_plugin = '/en/plugin'
 
 // https://vitepress.dev/reference/site-config
 export const en = defineConfig({
@@ -27,7 +28,7 @@ export const en = defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: 'User Guide',
+        text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
       },
       {
@@ -45,7 +46,7 @@ export const en = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'Contact Us', link: '/en/guide_cloud/community/online-support'},
+      { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
       { text: 'v0.5.0',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
@@ -87,6 +88,7 @@ export const en = defineConfig({
       '/en/guide_cloud/integration/':{base: '/en/guide_cloud/integration/', items: sidebarIntegration(),},
       '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
       '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
+      '/en/plugin/':{base: '/en/plugin/', items: sidebarPlugin(),},
     },
 
     // 页脚配置
@@ -322,5 +324,31 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'Environment Variables', link: 'environment-variable' },
     ]
   }
+]
+}
+
+function sidebarPlugin(): DefaultTheme.SidebarItem[] {
+  return [
+  {
+    text: '🔧 Make your custom plugin',
+    link: 'custom-plugin',
+  },
+  {
+    text: '✈️ Notification',
+    // collapsed: false,
+    items: [
+      { text: 'Email', link: 'notification-email' },
+      { text: 'Lark', link: 'notification-lark' },
+      { text: 'Dingtalk', link: 'notification-dingtalk' },
+      { text: 'Wechat', link: 'notification-wxwork' },
+    ]
+  },
+  {
+    text: '📝 Writer',
+    // collapsed: false,
+    items: [
+      { text: 'CSV Table', link: 'writer-csv' },
+    ]
+  },
 ]
 }

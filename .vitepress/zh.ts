@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/guide_cloud'
 var base_path_examples = '/examples'
 var base_path_api = '/api'
+var base_path_plugin = '/plugin'
 
 // https://vitepress.dev/reference/site-config
 export const zh = defineConfig({
@@ -50,6 +51,11 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
         },
+      {
+        text: '插件',
+        link: base_path_plugin + '/plugin-index',
+        activeMatch: '/plugin/',
+      },
       { text: 'v0.5.0',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
@@ -106,6 +112,7 @@ export const zh = defineConfig({
       '/examples/':{base: '/examples/', items: sidebarExamples(),},
       '/guide_cloud/integration/':{base: '/guide_cloud/integration/', items: sidebarIntegration(),},
       '/api/':{base: '/api/', items: sidebarAPI(),},
+      '/plugin/':{base: '/plugin/', items: sidebarPlugin(),},
     },
 
     // 页脚配置
@@ -339,5 +346,31 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: '环境变量', link: 'environment-variable' },
     ]
   }
+]
+}
+
+function sidebarPlugin(): DefaultTheme.SidebarItem[] {
+  return [
+  {
+    text: '🔧 制作自定义插件',
+    link: 'custom-plugin',
+  },
+  {
+    text: '✈️ 通知类',
+    // collapsed: false,
+    items: [
+      { text: '邮件', link: 'notification-email' },
+      { text: '飞书', link: 'notification-lark' },
+      { text: '钉钉', link: 'notification-dingtalk' },
+      { text: '企业微信', link: 'notification-wxwork' },
+    ]
+  },
+  {
+    text: '📝 记录类',
+    // collapsed: false,
+    items: [
+      { text: 'CSV表格', link: 'writer-csv' },
+    ]
+  },
 ]
 }
