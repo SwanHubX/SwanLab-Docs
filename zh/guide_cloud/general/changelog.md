@@ -16,6 +16,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 新增`swanlab.register_callback()`，支持在`init`外部注册回调函数，[文档](/api/py-register-callback.html)
 - `swanlab.login()`升级，新增`host`、`web_host`、`save`参数，适配了私有化部署服务的特性，同时支持不将用户登录凭证写入本地，以适应共用服务器场景。[文档](/zh/api/py-login.md)
 - `swanlab login`升级，新增`host`、`web_host`、`api-key`参数，[文档](/zh/api/cli-swanlab-login.md)
+- 新增支持使用`swanlab.sync_mlflow()`将MLFlow项目同步到SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
 
 **🤔优化**
 - 我们大幅优化了sdk架构，提升了sdk在大量metric场景下的性能
