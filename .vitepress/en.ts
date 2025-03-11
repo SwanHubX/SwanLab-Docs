@@ -46,7 +46,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Contact Us', link: '/en/guide_cloud/community/online-support'},
-      { text: 'v0.4.12',  items: [
+      { text: 'v0.5.0',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
