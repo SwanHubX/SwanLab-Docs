@@ -328,6 +328,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'converter', link: 'py-converter' },
       { text: 'sync_wandb', link: 'py-sync-wandb' },
       { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+      { text: 'register_callback', link: 'py-register-callback' },
       { text: '其他', link: 'py-other' },
     ]
   },
