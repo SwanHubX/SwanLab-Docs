@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/en/guide_cloud'
 var base_path_examples = '/en/examples'
 var base_path_api = '/en/api'
+var base_path_plugin = '/en/plugin'
 
 // https://vitepress.dev/reference/site-config
 export const en = defineConfig({
@@ -27,7 +28,7 @@ export const en = defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: 'User Guide',
+        text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
       },
       {
@@ -45,8 +46,8 @@ export const en = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'Contact Us', link: '/en/guide_cloud/community/online-support'},
-      { text: 'v0.4.11',  items: [
+      { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
+      { text: 'v0.5.0',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -87,6 +88,7 @@ export const en = defineConfig({
       '/en/guide_cloud/integration/':{base: '/en/guide_cloud/integration/', items: sidebarIntegration(),},
       '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
       '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
+      '/en/plugin/':{base: '/en/plugin/', items: sidebarPlugin(),},
     },
 
     // 页脚配置
@@ -121,13 +123,13 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track' },
       { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
-      { text: 'Create by config file', link: 'experiment_track/create-experiment-by-configfile' },
       { text: 'Set config', link: 'experiment_track/set-experiment-config' },
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
       { text: 'Log media metric', link: 'experiment_track/log-media' },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
+      { text: 'Email Notifications', link: 'experiment_track/send-notification' },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
@@ -135,8 +137,15 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '💻 Self-hosted',
+    text: '🚀 Self-hosted',
     // collapsed: false,
+    items: [
+      { text: 'Docker deployment', link: 'self_host/docker-deploy' },
+    ]
+  },
+  {
+    text: '💻 Offline board',
+    collapsed: true,
     items: [
       { text: 'Offline board', link: 'self_host/offline-board' },
       { text: 'Remote access tutorial', link: 'self_host/remote-view' },
@@ -304,6 +313,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'converter', link: 'py-converter' },
       { text: 'sync_wandb', link: 'py-sync-wandb' },
       { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+      { text: 'sync_mlflow', link: 'py-sync-mlflow' },
+      { text: 'register_callback', link: 'py-register-callback' },
       { text: 'Other', link: 'py-other' },
     ]
   },
@@ -314,5 +325,31 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'Environment Variables', link: 'environment-variable' },
     ]
   }
+]
+}
+
+function sidebarPlugin(): DefaultTheme.SidebarItem[] {
+  return [
+  {
+    text: '🔧 Make your custom plugin',
+    link: 'custom-plugin',
+  },
+  {
+    text: '✈️ Notification',
+    // collapsed: false,
+    items: [
+      { text: 'Email', link: 'notification-email' },
+      { text: 'Lark', link: 'notification-lark' },
+      { text: 'Dingtalk', link: 'notification-dingtalk' },
+      { text: 'Wechat', link: 'notification-wxwork' },
+    ]
+  },
+  {
+    text: '📝 Writer',
+    // collapsed: false,
+    items: [
+      { text: 'CSV Table', link: 'writer-csv' },
+    ]
+  },
 ]
 }

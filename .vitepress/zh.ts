@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/guide_cloud'
 var base_path_examples = '/examples'
 var base_path_api = '/api'
+var base_path_plugin = '/plugin'
 
 // https://vitepress.dev/reference/site-config
 export const zh = defineConfig({
@@ -31,7 +32,7 @@ export const zh = defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: '用户指南',
+        text: '指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
         // activeMatch: '/guide_cloud/',
       },
@@ -50,7 +51,12 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
         },
-      { text: 'v0.4.11',  items: [
+      {
+        text: '插件',
+        link: base_path_plugin + '/plugin-index',
+        activeMatch: '/plugin/',
+      },
+      { text: 'v0.5.0',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -106,6 +112,7 @@ export const zh = defineConfig({
       '/examples/':{base: '/examples/', items: sidebarExamples(),},
       '/guide_cloud/integration/':{base: '/guide_cloud/integration/', items: sidebarIntegration(),},
       '/api/':{base: '/api/', items: sidebarAPI(),},
+      '/plugin/':{base: '/plugin/', items: sidebarPlugin(),},
     },
 
     // 页脚配置
@@ -137,13 +144,13 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
-      { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
       { text: '系统硬件监控（支持昇腾）', link: 'experiment_track/system-monitor' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+      { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
@@ -151,12 +158,19 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '💻 自托管',
+    text: '🚀 自托管',
     // collapsed: false,
     items: [
-      { text: '离线看板', link: 'self_host/offline-board' },
-      { text: '远程访问教程', link: 'self_host/remote-view' },
+      { text: 'Docker部署', link: 'self_host/docker-deploy' },
     ]
+  },
+  {
+      text: '💻 离线看板',
+      collapsed: true,
+      items: [
+        { text: '使用离线看板', link: 'self_host/offline-board' },
+        { text: '远程访问离线看板', link: 'self_host/remote-view' },
+      ]
   },
   {
     text: '👥 社区',
@@ -164,9 +178,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: '在线支持', link: 'community/online-support'},
       { text: 'Github徽章', link: 'community/github-badge'},
-      { text: '论文引用', link: 'community/paper-cite'},
-      { text: '贡献代码', link: 'community/contributing-code'},
-      { text: '贡献官方文档', link: 'community/contributing-docs'},
+      // { text: '论文引用', link: 'community/paper-cite'},
+      // { text: '贡献代码', link: 'community/contributing-code'},
+      // { text: '贡献官方文档', link: 'community/contributing-docs'},
       { text: '关于我们', link: 'community/emotion-machine'},
     ]
   },]
@@ -319,8 +333,15 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
-      { text: 'sync_wandb', link: 'py-sync-wandb' },
-      { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+      {
+        text: '同步其他工具',
+        items: [
+          { text: 'sync_wandb', link: 'py-sync-wandb' },
+          { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+          { text: 'sync_mlflow', link: 'py-sync-mlflow' },
+        ]
+      },
+      { text: 'register_callback', link: 'py-register-callback' },
       { text: '其他', link: 'py-other' },
     ]
   },
@@ -331,5 +352,31 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: '环境变量', link: 'environment-variable' },
     ]
   }
+]
+}
+
+function sidebarPlugin(): DefaultTheme.SidebarItem[] {
+  return [
+  {
+    text: '🔧 制作自定义插件',
+    link: 'custom-plugin',
+  },
+  {
+    text: '✈️ 通知类',
+    // collapsed: false,
+    items: [
+      { text: '邮件', link: 'notification-email' },
+      { text: '飞书', link: 'notification-lark' },
+      { text: '钉钉', link: 'notification-dingtalk' },
+      { text: '企业微信', link: 'notification-wxwork' },
+    ]
+  },
+  {
+    text: '📝 记录类',
+    // collapsed: false,
+    items: [
+      { text: 'CSV表格', link: 'writer-csv' },
+    ]
+  },
 ]
 }

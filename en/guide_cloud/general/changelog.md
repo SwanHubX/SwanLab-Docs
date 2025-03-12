@@ -5,6 +5,34 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.0 - 2025.3.12
+
+![logo](../self_host/docker-deploy/swanlab-docker.jpg)
+
+**🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/guide_cloud/self_host/docker-deploy.md)
+
+**🚀 New Features**
+- Added the `callbacks` parameter to `swanlab.init`, allowing the registration of callback functions during initialization to support various custom plugin classes.
+- Introduced `swanlab.register_callback()`, enabling the registration of callback functions outside of `init`. [Documentation](/api/py-register-callback.html)
+- Upgraded `swanlab.login()` with new parameters `host`, `web_host`, and `save`, adapting to the characteristics of self-hosted deployment services and supporting the option to not write user login credentials locally for shared server scenarios. [Documentation](/zh/api/py-login.md)
+- Upgraded `swanlab login` with new parameters `host`, `web_host`, and `api-key`. [Documentation](/zh/api/cli-swanlab-login.md)
+- Added support for using `swanlab.sync_mlflow()` to synchronize MLFlow projects to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md)
+
+**🤔 Optimizations**
+- We have significantly optimized the SDK architecture, improving its performance in scenarios with a large number of metrics.
+- The experiment sidebar is now resizable!
+- Added a "Git Code" button to the top-right corner of the experiment page, allowing one-click navigation to the corresponding repository.
+
+**🔌 Plugins**:
+- Added **notification plugins**, supporting notifications via **email, Feishu, DingTalk, and WeCom** when training ends.
+- Added **logging plugins**, supporting the writing of metadata, configurations, and metrics to **local CSV files** during training.
+
+
+## v0.4.12 - 2025.3.8
+
+**Optimizations**
+- Fixed some issues
+
 ## v0.4.11 - 2025.3.5
 
 **Improvements**

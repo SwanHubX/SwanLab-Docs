@@ -4,3 +4,4 @@
 
 - [swanlab.converter.TFBConverter](/guide_cloud/integration/integration-tensorboard)
 - [swanlab.converter.WandbConverter](/guide_cloud/integration/integration-wandb)
+- [swanlab.converter.MLFlowConverter](/guide_cloud/integration/integration-mlflow)

@@ -5,6 +5,35 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.5.0 - 2025.3.12
+
+![logo](../self_host/docker-deploy/swanlab-docker.jpg)
+
+**🎉🎉SwanLab私有化部署（社区版）现已重磅发布！！**[部署文档](/guide_cloud/self_host/docker-deploy.md)
+
+**🚀新增功能**
+- `swanlab.init`新增参数`callbacks`，支持在初始化时注册回调函数，以支持各式各样的自定义插件类
+- 新增`swanlab.register_callback()`，支持在`init`外部注册回调函数，[文档](/api/py-register-callback.html)
+- `swanlab.login()`升级，新增`host`、`web_host`、`save`参数，适配了私有化部署服务的特性，同时支持不将用户登录凭证写入本地，以适应共用服务器场景。[文档](/zh/api/py-login.md)
+- `swanlab login`升级，新增`host`、`web_host`、`api-key`参数，[文档](/zh/api/cli-swanlab-login.md)
+- 新增支持使用`swanlab.sync_mlflow()`将MLFlow项目同步到SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
+
+**🤔优化**
+- 我们大幅优化了sdk架构，提升了sdk在大量metric场景下的性能
+- 实验侧边栏可以拉伸了！
+- 实验页面右上角增加了「Git代码」按钮，一键跳转到对应的仓库
+
+**🔌插件**：
+- 新增**通知类插件**，支持在训练结束时使用**邮件、飞书、钉钉、企业微信**进行通知
+- 新增**记录类插件**，支持在训练过程中将元数据、配置、指标写入到**本地CSV文件**
+
+
+
+## v0.4.12 - 2025.3.8
+
+**优化**
+- 修复了一些问题
+
 ## v0.4.11 - 2025.3.5
 
 **优化**

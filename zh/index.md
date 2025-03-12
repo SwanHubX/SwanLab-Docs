@@ -6,42 +6,46 @@ titleTemplate: 先进的AI团队协作与模型创新引擎
 
 hero:
   name: SwanLab
-  text: 先进的机器学习<br>团队协作创新引擎
-  tagline: 一站式实验跟踪与训练可视化工具
+  text: 开源、现代化设计<br>训练跟踪与可视化工具
+  tagline: 深度学习训练跟踪与可视化工具，同时支持云端/离线使用，适配30+主流AI训练框架
   actions:
     - theme: brand
-      text: 访问文档
+      text: 使用指南
       link: /guide_cloud/general/what-is-swanlab.md
     - theme: brand
       text: 官网
       link: https://swanlab.cn
     - theme: alt
-      text: 文档GitHub
-      link: https://github.com/SwanHubX/SwanLab-Docs
+      text: GitHub
+      link: https://github.com/SwanHubX/SwanLab
   image:
     src: /page.png
     alt: VitePress
 
 features:
-  - icon: 🚢
-    title: 快速开始
+  - title: 🚢 快速开始
     details: 安装SwanLab，并在几分钟内掌握如何跟踪你的机器学习实验。
     link: /guide_cloud/general/quick-start.md
+
+  - title: 🤗 框架集成
+    details: 与HuggingFace Transformers、PyTorch Lightning、Hydra等主流框架的集成文档。
+    link: /guide_cloud/integration/integration-huggingface-transformers.md
   
-  - icon: 📚
-    title: 案例
+  - title: 📚 实战案例
     details: SwanLab官方案例合集，更好地理解SwanLab在人工智能pipeline中扮演的角色和作用。
     link: /examples/mnist
   
-  - icon: 🤗
-    title: 集成
-    details: 与HuggingFace Transformers、PyTorch Lightning、Hydra等主流框架的集成文档。
-    link: /guide_cloud/integration/integration-huggingface-transformers.md
-
-  - icon: ⚡️
-    title: API文档
-    details: Python库和CLI的完整API文档
+  - title: ⚡️ API文档
+    details: Python库与命令行的完整API文档
     link: /api/api-index
+
+  - title: 🔌 插件
+    details: 扩展SwanLab的功能
+    link: /plugin/plugin-index.md
+  
+  - title: 💻 私有化部署
+    details: 离线查看实验结果，支持Docker部署
+    link: /guide_cloud/self_host/docker-deploy.md
 
 ---
 

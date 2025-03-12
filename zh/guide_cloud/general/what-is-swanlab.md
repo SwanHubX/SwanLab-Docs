@@ -2,12 +2,11 @@
 
 [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
 
-::: warning 👋 我们正在开发私有化部署版
-预计25年3月份与大家见面，支持Docker部署，功能与云端版一致
+::: warning 🎉 私有化部署版正式上线！
+私有化部署版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/guide_cloud/self_host/docker-deploy.md)
 :::
 
 ![alt text](/assets/product-swanlab-1.png)
-
 
 
 SwanLab 是一款**开源、轻量**的 AI 模型训练跟踪与可视化工具，提供了一个**跟踪、记录、比较、和协作实验**的平台。
@@ -66,7 +65,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [快速开始](/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
 - [API文档](/api/api-index.md): 完整的API文档
 - [在线支持](/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
-- [自托管](/guide_cloud/self_host/offline-board.md): 自托管（离线版本）使用方式教程
+- [自托管](/guide_cloud/self_host/docker-deploy.md): 自托管（私有化部署）使用方式教程
 - [案例](/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
 
 ## 与熟悉产品的对比
