@@ -9,6 +9,7 @@ To deploy SwanLab Community Edition privately, follow the installation steps bel
 > Before installing SwanLab, ensure your machine meets the following minimum system requirements:
 > - CPU >= 2 cores
 > - Memory >= 4GB
+> - Storage space >= 20GB
 
 SwanLab Community Edition requires **Docker Compose** for installation and deployment. Refer to the table below to select the correct Docker and Compose versions based on your operating system.
 
@@ -33,6 +34,8 @@ cd self-hosted
 
 ## 2. One-Click Installation
 
+> If you are using Windows, please enable WSL2 for installation.
+
 The default installation script is located at `docker/install.sh`. Execute it to install all required containers and perform initial configurations.
 
 ```bash
@@ -40,7 +43,7 @@ cd ./docker
 ./install.sh
 ```
 
-The default script uses Tencent Cloud's image registry, ensuring fast download speeds in China.
+The default script link uses a mirror source in China, so the download speed in China is very fast!
 
 If you prefer to use [DockerHub](https://hub.docker.com/) as the image registry, run the following script:
 
