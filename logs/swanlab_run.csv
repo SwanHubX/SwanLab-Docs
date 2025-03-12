@@ -1,2 +1,0 @@
-project,exp_name,description,datetime,run_id,workspace,logdir,url,config/learning_rate,config/architecture,config/dataset,config/epochs,config/batch_size,acc,loss2
-my-awesome-project,ox-3,,2025-03-11 22:41:19,run-20250311_224118-8f7c44d2,,/Users/zeyilin/Desktop/Coding/SwanLab-Docs/swanlog,http://dev001.xuan.pub/@kites/my-awesome-project/runs/1emjuaxbixtq118mwj9a2,0.02,CNN,CIFAR-100,10,128,0.7550490388241047,0.28941072355529096
