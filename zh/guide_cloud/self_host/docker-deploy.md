@@ -57,13 +57,13 @@ cd ./docker
 
 SwanLab社区版默认会使用`8000`端口，如果你使用的是默认配置，那么可以直接访问：`http://localhost:8000`，就可以访问到SwanLab社区版。
 
-> 也有可能社区版部署在了其他端口，请打开 Docker Desktop，找到`traefik`容器旁边的port映射，比如`64703:80⁠`，那么你应该访问`http://localhost:64703`。
+> 也有可能社区版部署在了其他端口，请打开 Docker Desktop，找到`traefik`容器旁边的port映射，比如`64703:80`，那么你应该访问`http://localhost:64703`。
 
 ![](./docker-deploy/create-account.png)
 
-现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个。
+现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个，位置在 「设置」-「账户与许可证」。
 
-> 占位图-公有云版设置-申请License
+![](./docker-deploy/apply-license.png)
 
 拿到License后，回到激活页面，填写用户名、密码、确认密码和License，点击激活即可完成创建。
 

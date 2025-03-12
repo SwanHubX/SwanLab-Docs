@@ -61,7 +61,7 @@ SwanLab Community Edition uses port `8000` by default. If using the default conf
 
 Now, activate your primary account. Activation requires 1 License, which can be obtained for free from the [SwanLab Official Website](https://swanlab.cn) for personal use.
 
-> Placeholder Image - Public Cloud Edition Setup - Apply for License
+![](./docker-deploy/apply-license.png)
 
 Once you have the License, return to the activation page, enter your username, password, confirm password, and License, then click "Activate" to complete the setup.
 
