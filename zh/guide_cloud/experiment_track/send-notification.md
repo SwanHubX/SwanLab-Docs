@@ -4,7 +4,7 @@ SwanLab支持通过邮件或第三方通知的方式，在实验结束/发生错
 
 ![](../../plugin/notification-email/logo.jpg)
 
-- [邮件通知](/zh/plugin/notification-email.md)
-- [飞书通知](/zh/plugin/notification-lark.md)
-- [钉钉通知](/zh/plugin/notification-dingtalk.md)
-- [企业微信通知](/zh/plugin/notification-wxwork.md)
+- [邮件通知](/plugin/notification-email.md)
+- [飞书通知](/plugin/notification-lark.md)
+- [钉钉通知](/plugin/notification-dingtalk.md)
+- [企业微信通知](/plugin/notification-wxwork.md)
