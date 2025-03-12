@@ -1,13 +1,14 @@
-# 插件一览
+# Plugin Overview
 
-## ✈️ 通知类
+- [Custom Plugin](/en/plugin/custom-plugin.md)
 
-- [邮件](notification-email)
-- [飞书](notification-lark)
-- [钉钉](notification-dingtalk)
-- [企业微信](notification-wxwork)
+## ✈️ Notification Plugins
 
+- [Email](/en/plugin/notification-email.md)
+- [Lark](/en/plugin/notification-lark.md)
+- [DingTalk](/en/plugin/notification-dingtalk.md)
+- [WeChat Work](/en/plugin/notification-wxwork.md)
 
-## 📝 记录类
+## 📝 Logging Plugins
 
-- [CSV表格](writer-csv)
+- [CSV Writer](/en/plugin/writer-csv.md)    

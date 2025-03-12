@@ -1,5 +1,7 @@
 # 插件一览
 
+- [自定义插件](custom-plugin)
+
 ## ✈️ 通知类
 
 - [邮件](notification-email)
