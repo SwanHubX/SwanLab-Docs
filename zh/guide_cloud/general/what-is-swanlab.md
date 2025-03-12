@@ -65,7 +65,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [快速开始](/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
 - [API文档](/api/api-index.md): 完整的API文档
 - [在线支持](/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
-- [自托管](/guide_cloud/self_host/offline-board.md): 自托管（离线版本）使用方式教程
+- [自托管](/guide_cloud/self_host/docker-deploy.md): 自托管（私有化部署）使用方式教程
 - [案例](/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
 
 ## 与熟悉产品的对比

@@ -56,7 +56,7 @@ We hope that the above information and this guide can help you understand this p
 - [Quick Start](/en/guide_cloud/general/quick-start.md): SwanLab introductory tutorial, master experiment tracking in five minutes!
 - [API documentation](/en/api/api-index.md): Complete API documentation
 - [Online support](/en/guide_cloud/community/online-support.md): Join the community, provide feedback and contact us
-- [Self-hosting](/en/guide_cloud/self_host/offline-board.md): Self-hosting (offline version) usage tutorial
+- [Self-hosting](/en/guide_cloud/self_host/docker-deploy.md): Self-hosting (private deployment) usage tutorial
 - [Cases](/en/examples/mnist.md): View cases of SwanLab with various deep learning tasks
 
 ## Comparison with familiar products

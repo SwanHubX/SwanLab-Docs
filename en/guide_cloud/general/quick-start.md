@@ -126,4 +126,4 @@ Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of th
 After logging in to the SwanLab website, the API Key will be displayed on the [user settings](https://swanlab.cn/settings) page.
 
 ### 2. Can I use SwanLab offline?
-Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/offline-board.md) section for the specific process.
+Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/docker-deploy.md) section for the specific process.
