@@ -32,7 +32,7 @@ export const zh = defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: '用户指南',
+        text: '指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
         // activeMatch: '/guide_cloud/',
       },
