@@ -6,8 +6,8 @@ titleTemplate: 先进的AI团队协作与模型创新引擎
 
 hero:
   name: SwanLab
-  text: 先进的机器学习<br>团队协作创新引擎
-  tagline: 一站式实验跟踪与训练可视化工具
+  text: 开源、现代化设计<br>训练跟踪与可视化工具
+  tagline: 深度学习训练跟踪与可视化工具，同时支持云端/离线使用，适配30+主流AI训练框架
   actions:
     - theme: brand
       text: 使用指南
