@@ -16,8 +16,8 @@ hero:
       text: 官网
       link: https://swanlab.cn
     - theme: alt
-      text: 文档GitHub
-      link: https://github.com/SwanHubX/SwanLab-Docs
+      text: GitHub
+      link: https://github.com/SwanHubX/SwanLab
   image:
     src: /page.png
     alt: VitePress
