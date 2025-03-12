@@ -69,7 +69,7 @@ This is particularly useful for notifying you when certain metrics reach specifi
 ```python
 if accuracy > 0.95:
     # Send a custom email
-    swan_email.send_email(
+    email_callback.send_email(
         subject="SwanLab | Accuracy > 0.95",  # Email subject
         content=f"Current Accuracy: {accuracy}",  # Email content
     )

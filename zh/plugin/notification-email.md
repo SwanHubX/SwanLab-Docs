@@ -75,7 +75,7 @@ swanlab.init(callbacks=[email_callback])
 ```python 
 if accuracy > 0.95:
     # 自定义场景发送邮件
-    swan_email.send_email(
+    email_callback.send_email(
         subject="SwanLab | Accuracy > 0.95",  # 邮件标题
         content=f"Current Accuracy: {accuracy}",  # 邮件内容
     )
