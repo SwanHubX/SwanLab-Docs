@@ -55,7 +55,7 @@ cd ./docker
 
 ## 3. 激活主账号
 
-SwanLab社区版默认会使用`8000`端口，如果你使用的是默认配置，那么可以直接访问：http://localhost:8000，就可以访问到SwanLab社区版。
+SwanLab社区版默认会使用`8000`端口，如果你使用的是默认配置，那么可以直接访问：`http://localhost:8000`，就可以访问到SwanLab社区版。
 
 > 也有可能社区版部署在了其他端口，请打开 Docker Desktop，找到`traefik`容器旁边的port映射，比如`64703:80⁠`，那么你应该访问`http://localhost:64703`。
 

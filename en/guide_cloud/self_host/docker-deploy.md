@@ -53,7 +53,7 @@ If you prefer to use [DockerHub](https://hub.docker.com/) as the image registry,
 
 ## 3. Activate the Primary Account
 
-SwanLab Community Edition uses port `8000` by default. If using the default configuration, access it at: http://localhost:8000.
+SwanLab Community Edition uses port `8000` by default. If using the default configuration, access it at: `http://localhost:8000`.
 
 > If the community edition is deployed on a different port, open Docker Desktop, locate the port mapping for the `traefik` container (e.g., `64703:80`), and access `http://localhost:64703`.
 
