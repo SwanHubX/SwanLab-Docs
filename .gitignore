@@ -5,3 +5,4 @@ node_modules
 .idea
 1.py
 2.py
+logs/

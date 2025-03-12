@@ -62,6 +62,8 @@ swanlab.init(callbacks=[lark_callback])
 
 This way, when training completes or an error occurs (triggering `swanlab.finish()`), you will receive a Lark notification.
 
+<img src="./notification-lark/show.png" width="600"/>
+
 ## Custom Notifications
 
 You can also use the `send_msg` method of the `LarkCallback` object to send custom Lark messages.

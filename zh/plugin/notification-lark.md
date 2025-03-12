@@ -63,7 +63,7 @@ swanlab.init(callbacks=[lark_callback])
 
 这样，当训练完成/发生错误时（触发`swanlab.finish()`），你将会收到飞书信息通知。
 
-
+<img src="./notification-lark/show.png" width="600"/>
 
 ## 自由提醒
 
