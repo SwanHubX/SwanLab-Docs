@@ -11,7 +11,7 @@
 > - 内存 >= 4GB
 > - 存储空间 >= 20GB
 
-SwanLab 私有化部署版，需要使用 **Docker Compose** 进行安装与部署，请根据你的操作系统，对表下面的表格选择正确的Docker及compose版本。
+SwanLab 私有化部署版，需要使用 **Docker Compose** 进行安装与部署（暂不支持K8S部署），请根据你的操作系统，对表下面的表格选择正确的Docker及compose版本。
 
 **如果你已经安装了Docker，请跳过这一步。**
 

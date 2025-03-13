@@ -154,7 +154,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
-      { text: 'FAQ', link: 'experiment_track/FAQ' },
+      { text: '常见问题', link: 'experiment_track/FAQ' },
     ]
   },
   {
@@ -162,11 +162,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker部署', link: 'self_host/docker-deploy' },
+      { text: '常见问题', link: 'self_host/faq' },
     ]
   },
   {
       text: '💻 离线看板',
-      collapsed: true,
+      // collapsed: true,
       items: [
         { text: '使用离线看板', link: 'self_host/offline-board' },
         { text: '远程访问离线看板', link: 'self_host/remote-view' },

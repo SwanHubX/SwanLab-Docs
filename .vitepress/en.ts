@@ -141,11 +141,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker deployment', link: 'self_host/docker-deploy' },
+      { text: 'FAQ', link: 'self_host/faq' },
     ]
   },
   {
     text: '💻 Offline board',
-    collapsed: true,
+    // collapsed: true,
     items: [
       { text: 'Offline board', link: 'self_host/offline-board' },
       { text: 'Remote access tutorial', link: 'self_host/remote-view' },
