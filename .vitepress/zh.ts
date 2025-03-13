@@ -170,6 +170,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       items: [
         { text: '使用离线看板', link: 'self_host/offline-board' },
         { text: '远程访问离线看板', link: 'self_host/remote-view' },
+        { text: '内网计算节点访问SwanLab', link: 'self_host/ssh-portforwarding' },
       ]
   },
   {

@@ -149,6 +149,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Offline board', link: 'self_host/offline-board' },
       { text: 'Remote access tutorial', link: 'self_host/remote-view' },
+      { text: 'Access SwanLab on internal computing nodes', link: 'self_host/ssh-portforwarding' },
     ]
   },
   {
