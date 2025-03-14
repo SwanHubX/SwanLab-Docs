@@ -7,7 +7,7 @@ titleTemplate: Advanced AI Team Collaboration and Model Innovation Engine
 hero:
   name: SwanLab
   text: Track and Visualize Your AI Experiments
-  tagline: One-stop Experiment Tracking and Training Visualization Tool
+  tagline: A deep learning training tracking and visualization tool that supports both cloud and offline use, compatible with over 30 mainstream AI training frameworks.
   actions:
     - theme: brand
       text: Documentation
@@ -16,32 +16,36 @@ hero:
       text: Website
       link: https://swanlab.cn
     - theme: alt
-      text: Docs GitHub
-      link: https://github.com/SwanHubX/SwanLab-Docs
+      text: GitHub
+      link: https://github.com/SwanHubX/SwanLab
   image:
     src: /page.png
     alt: VitePress
 
 features:
-  - icon: 🚢
-    title: Quick Start
+  - title: 🚢 Quick Start
     details: Install SwanLab and start tracking your AI experiments in minutes.
     link: /en/guide_cloud/general/quick-start.md
   
-  - icon: 📚
-    title: Examples
+  - title: 📚 Examples
     details: SwanLab official examples, better understand the role and function of SwanLab in the AI pipeline.
     link: /en/examples/mnist
   
-  - icon: 🤗
-    title: Integration
+  - title: 🤗 Integration
     details: Integration documentation with HuggingFace Transformers, PyTorch Lightning, Hydra, etc.
     link: /en/guide_cloud/integration/integration-pytorch-lightning.md
 
-  - icon: ⚡️
-    title: API Docs
+  - title: ⚡️ API Docs
     details: Complete API documentation for the Python library and CLI.
     link: en/api/api-index
+
+  - title: 🔌 Plugin
+    details: Extend the functionality of SwanLab.
+    link: /en/plugin/plugin-index.md
+
+  - title: 💻 Self-hosted
+    details: Docker deployment and enterprise version.
+    link: /en/guide_cloud/self_host/docker-deploy.md
 
 ---
 
