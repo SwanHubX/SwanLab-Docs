@@ -37,9 +37,15 @@ export const zh = defineConfig({
         // activeMatch: '/guide_cloud/',
       },
       {
-        text: '框架集成',
-        link: base_path_guide_cloud + '/integration/integration-huggingface-transformers',
-        activeMatch: '/guide_cloud/integration/',
+        text: '框架集成',  items: [
+          { text: '全部30+框架', link: base_path_guide_cloud + '/integration'},
+          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
+          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
+          { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
+          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+          { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+        ]
       },
       { 
         text: '实战案例',

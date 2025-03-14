@@ -32,9 +32,15 @@ export const en = defineConfig({
         link: base_path_guide_cloud + '/general/what-is-swanlab',
       },
       {
-        text: 'Integration',
-        link: base_path_guide_cloud + '/integration/integration-huggingface-transformers',
-        activeMatch: '/en/guide_cloud/integration/',
+        text: 'Integration',  items: [
+          { text: 'All 30+ Frameworks', link: base_path_guide_cloud + '/integration'},
+          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
+          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
+          { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
+          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+          { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+        ]
       },
       { 
         text: 'Example',
