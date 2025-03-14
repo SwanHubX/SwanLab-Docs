@@ -55,11 +55,11 @@ pip install -U swanlab
 
 **完整的测试命令如下：**
 
-```bash
+```bash {4}
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  data.train_files=$HOME/data/gsm8k/train.parquet \
  data.val_files=$HOME/data/gsm8k/test.parquet \
- trainer.logger=['console','swanlab'] \  # [!code ++]
+ trainer.logger=['console','swanlab'] \
  data.train_batch_size=256 \
  data.val_batch_size=1312 \
  data.max_prompt_length=512 \

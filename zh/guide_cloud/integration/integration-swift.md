@@ -74,8 +74,8 @@ swift sft \
     --dataloader_num_workers 4 \
     --model_author swift \
     --model_name swift-robot \
-    --report_to swanlab \  # [!code ++]
-    --swanlab_project swift-robot  # [!code ++]
+    --report_to swanlab \
+    --swanlab_project swift-robot
 ```
 
 运行指令后，就可以在SwanLab看到训练过程：
