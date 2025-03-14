@@ -9,7 +9,15 @@ export default defineConfig({
 
   themeConfig:{
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索文档',
+            buttonAriaLabel: '搜索文档'
+          }
+        }
+      }
     }
   },
 
