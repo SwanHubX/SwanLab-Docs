@@ -2,7 +2,7 @@
 
 通常，在算力集群中计算节点无法连接到互联网，外部开发机也必须通过跳板机才能连接到计算节点。如果无法连接到公网那就无法将数据上传到 SwanLab 云端。但是跳板机作为“中间人”角色，可以连接到互联网，那么就可以利用跳板机来实现代理计算节点连接到公网环境。
 
-<img src="./docker-deploy/cluster-network.png" alt="cluster-network" style="zoom:30%;" />
+<img src="./ssh-portforwarding/cluster-network.png" alt="cluster-network" style="zoom:30%;" />
 
 我们可以通过使用SSH代理转发来实现让计算节点也能连接上 [SwanLab Cloud](https://swanlab.cn/)。
 

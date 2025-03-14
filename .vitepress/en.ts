@@ -133,6 +133,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+      { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
@@ -149,7 +150,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Offline board', link: 'self_host/offline-board' },
       { text: 'Remote access tutorial', link: 'self_host/remote-view' },
-      { text: 'Access SwanLab on internal computing nodes', link: 'self_host/ssh-portforwarding' },
     ]
   },
   {

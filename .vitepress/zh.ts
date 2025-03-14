@@ -154,6 +154,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+      { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
@@ -170,7 +171,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       items: [
         { text: '使用离线看板', link: 'self_host/offline-board' },
         { text: '远程访问离线看板', link: 'self_host/remote-view' },
-        { text: '内网计算节点访问SwanLab', link: 'self_host/ssh-portforwarding' },
       ]
   },
   {

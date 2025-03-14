@@ -2,7 +2,7 @@
 
 Typically, computing nodes in a computing cluster cannot connect to the internet, and external development machines must connect to computing nodes through a jump server. If you cannot connect to the public network, you won't be able to upload data to SwanLab Cloud. However, since the jump server acts as an "intermediary" that can connect to the internet, we can utilize it to proxy the computing nodes' connection to the public network environment.
 
-<img src="./docker-deploy/cluster-network_en.png" alt="cluster-network" style="zoom:30%;" />
+<img src="./ssh-portforwarding/cluster-network_en.png" alt="cluster-network" style="zoom:30%;" />
 
 We can use SSH proxy forwarding to enable computing nodes to connect to [SwanLab Cloud](https://swanlab.cn/).
 
