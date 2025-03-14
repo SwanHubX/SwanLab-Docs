@@ -39,7 +39,12 @@ Once configured successfully, you can happily use SwanLab Cloud version 🥳.
 
 Note that the SSH connection must not be disconnected, and closing the terminal session will cause the connection to drop. You can use [tmux](https://github.com/tmux/tmux/wiki) to keep the SSH connection command running in the background.
 
-New terminal sessions require reconfiguring environment variables. Of course, you can write the above environment variable export commands into the `.bashrc` file to automatically set the environment variables each time a new terminal session is opened.
+New terminal sessions require reconfiguring environment variables. Of course, you can write the above environment variable export commands into the `.bashrc` file to automatically set the environment variables each time a new terminal session is opened. For example:
+```bash
+echo "export http_proxy=socks5://127.0.0.1:{port}" >> ~/.bashrc
+echo "export https_proxy=socks5://127.0.0.1:{port}" >> ~/.bashrc
+```
+> Note Replace '{port}' with the port you set
 
 ## Working Principle
 

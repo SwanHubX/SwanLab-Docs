@@ -39,7 +39,12 @@ curl ipinfo.io
 
 注意SSH连接不能断开，关闭终端会话会导致连接断开，那么可以使用 [tmux](https://github.com/tmux/tmux/wiki) 将SSH连接命令放置在后台。
 
-新开终端会话必须重新配置环境变量，当然可以将上述导入环境变量的命令写入 `.bashrc` 文件中实现每次开启新终端会话时自动写入环境变量。
+新开终端会话必须重新配置环境变量，当然可以将上述导入环境变量的命令写入 `.bashrc` 文件中实现每次开启新终端会话时自动写入环境变量。例如：
+```bash
+echo "export http_proxy=socks5://127.0.0.1:{port}" >> ~/.bashrc
+echo "export https_proxy=socks5://127.0.0.1:{port}" >> ~/.bashrc
+```
+> 注意将 `{port}` 替换为自己设置的端口
 
 ## 实现原理
 
