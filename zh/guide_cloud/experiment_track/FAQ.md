@@ -26,7 +26,7 @@ swanlab.init(mode='disabled')
 
 **推荐的配置方式有两种：**
 
-**方式一**：在代码开头加上`swanlab.login(api_key='你的API Key')`
+**方式一(推荐)**：在代码开头加上`swanlab.login(api_key='你的API Key')`，这样不会将登录配置文件写入到本地，[文档](/api/py-login)
 
 **方式二**：在运行代码前，设置环境变量`SWANLAB_API_KEY="你的API Key"`
 

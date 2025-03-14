@@ -11,5 +11,6 @@ export default {
       app.component('HeaderButton', HeaderButton)
       app.component('HeaderButtonEN', HeaderButtonEN)
       app.component('HeaderGithubButton', HeaderGithubButton)
+      DefaultTheme.enhanceApp({ app })
     }
 }
