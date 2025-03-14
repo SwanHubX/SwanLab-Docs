@@ -27,7 +27,7 @@
 /* 调整搜索框位置 */
 div.VPNavBarSearch.search {
     padding: 0px;
-    margin-left: auto;
+    margin-left: 20px;
     margin-right: 20px;
-    flex-grow: 0;
+    flex-grow: 1;
 }
