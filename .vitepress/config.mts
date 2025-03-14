@@ -21,6 +21,12 @@ export default defineConfig({
     }
   },
 
+  markdown: {
+    image: {
+      lazyLoading: true
+    }
+  },
+
   locales: {
     root: { label: '简体中文', ...zh },
     en: { label: 'English', ...en },
