@@ -154,7 +154,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+      { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
       { text: '常见问题', link: 'experiment_track/FAQ' },
+
     ]
   },
   {
