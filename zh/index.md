@@ -164,7 +164,6 @@ features:
   max-width: 1200px;
   margin: 60px auto 0;
   padding: 0 24px;
-  border-top: none;
 }
 
 .featured-articles h2 {
