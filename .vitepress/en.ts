@@ -27,7 +27,7 @@ export const en = defineConfig({
 
     // 导航栏配置
     nav: [
-      { 
+      {
         text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
       },
@@ -42,12 +42,12 @@ export const en = defineConfig({
           { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
         ]
       },
-      { 
+      {
         text: 'Example',
         link: base_path_examples + '/mnist',
         activeMatch: '/en/examples/',
       },
-      { 
+      {
         text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
@@ -103,10 +103,6 @@ export const en = defineConfig({
       { icon: 'wechat', link: '/en/guide_cloud/community/online-support.html' },
     ],
 
-    // 搜索配置
-    search: {
-      provider: 'local'
-    }
   }
 })
 
@@ -253,8 +249,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: 'Computer Vision',
     // collapsed: false,
     items: [
-      { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },    
-      { text: 'Yolo Object Detection', link: 'yolo' },  
+      { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },
+      { text: 'Yolo Object Detection', link: 'yolo' },
       { text: 'QwenVL Finetune', link: 'qwen_vl_coco' },
       { text: 'Stable Diffusion Finetune', link: 'stable_diffusion' },
     ]
@@ -269,10 +265,10 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   {
     text: 'NLP',
     // collapsed: false,
-    items: [  
-      { text: 'BERT Text Classification', link: 'bert' },  
-      { text: 'Qwen Finetune Case', link: 'qwen_finetune' },  
-      { text: 'LLM Pretraining', link: 'pretrain_llm' },  
+    items: [
+      { text: 'BERT Text Classification', link: 'bert' },
+      { text: 'Qwen Finetune Case', link: 'qwen_finetune' },
+      { text: 'LLM Pretraining', link: 'pretrain_llm' },
     ]
   },
   {
