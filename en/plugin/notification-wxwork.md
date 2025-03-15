@@ -1,5 +1,6 @@
 # WXWork Notification
 
+![](./notification-wxwork/logo.jpg)
 
 If you wish to receive immediate [WXWork]((https://work.weixin.qq.com/)) notifications upon training completion or errors, the Lark Notification plugin is highly recommended.
 

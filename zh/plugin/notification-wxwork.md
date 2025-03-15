@@ -1,5 +1,6 @@
 # 企业微信
 
+![](./notification-wxwork/logo.jpg)
 
 如果你希望在训练完成/发生错误时，第一时间发送[企业微信](https://work.weixin.qq.com/)信息通知你，那么非常推荐你使用企业微信通知插件。
 
