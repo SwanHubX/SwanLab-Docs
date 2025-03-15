@@ -199,8 +199,7 @@ by Cunyue
 ## v0.3.19 - 2024.9.2
 
 **🚀New Features**
-- (Beta) Added cloud storage functionality for task-based training `swanlab task`, [Documentation](/en/api/cli-swanlab-remote-gpu.html)
-
+- (Beta) Added cloud storage functionality for task-based training `swanlab task`
 **Improvements**
 - [Environment] Added CPU brand recording
 

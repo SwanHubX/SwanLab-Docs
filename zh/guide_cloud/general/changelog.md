@@ -198,7 +198,7 @@ by Cunyue
 ## v0.3.19 - 2024.9.2
 
 **🚀新增功能**
-- （内测）新增任务式训练`swanlab task`的网盘存储功能，[文档](/api/cli-swanlab-remote-gpu.html)
+- （内测）新增任务式训练`swanlab task`的网盘存储功能
 
 **优化**
 - 【环境】增加对CPU品牌的记录
