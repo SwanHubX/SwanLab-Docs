@@ -6,3 +6,4 @@ node_modules
 1.py
 2.py
 logs/
+push_hook.sh
