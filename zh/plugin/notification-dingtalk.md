@@ -71,7 +71,7 @@ swanlab.init(callbacks=[dingtalk_callback])
 
 ```python 
 if accuracy > 0.95:
-    # 自定义场景发送邮件
+    # 自定义场景发送消息
     dingtalk_callback.send_msg(
         content=f"Current Accuracy: {accuracy}",  # 通知内容
     )

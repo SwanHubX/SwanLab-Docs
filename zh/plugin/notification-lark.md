@@ -73,7 +73,7 @@ swanlab.init(callbacks=[lark_callback])
 
 ```python 
 if accuracy > 0.95:
-    # 自定义场景发送邮件
+    # 自定义场景发送消息
     lark_callback.send_msg(
         content=f"Current Accuracy: {accuracy}",  # 通知内容
     )
