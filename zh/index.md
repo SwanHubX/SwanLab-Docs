@@ -57,7 +57,7 @@ features:
     <div class="article-card">
       <a href="/guide_cloud/integration/integration-huggingface-transformers" class="article-link">
         <div class="article-cover">
-          <img src="/assets/swanlab-love-hf.jpg" alt="文章1封面">
+          <img src="/assets/swanlab-love-hf.jpg" alt="SwanLab与HuggingFace Transformers的集成">
         </div>
         <h3>SwanLab与HuggingFace Transformers的集成</h3>
       </a>
@@ -66,7 +66,7 @@ features:
     <div class="article-card">
       <a href="/examples/pretrain_llm" class="article-link">
         <div class="article-cover">
-          <img src="/assets/examples/pretrain_llm/llm.png" alt="文章2封面">
+          <img src="/assets/examples/pretrain_llm/llm.png" alt="从零预训练一个自己的大模型">
         </div>
         <h3>从零预训练一个自己的大模型</h3>
       </a>
@@ -75,12 +75,45 @@ features:
     <div class="article-card">
       <a href="/plugin/notification-email" class="article-link">
         <div class="article-cover">
-          <img src="/zh/plugin/notification-email/logo.jpg" alt="文章3封面">
+          <img src="/zh/plugin/notification-email/logo.jpg" alt="SwanLab邮件通知插件：掌握进度更及时">
         </div>
         <h3>SwanLab邮件通知插件：掌握进度更及时</h3>
       </a>
       <p>深入了解SwanLab的插件生态，快速接入你的邮件、飞书、钉钉、企业微信等IM系统，让掌握进度快人一步</p>
     </div>
+  </div>
+</div>
+
+<!-- 精选文章部分 -->
+<div class="featured-articles" style="margin: 30px auto 0;">
+  <div class="article-container">
+    <div class="article-card">
+      <a href="/guide_cloud/integration/integration-llama-factory" class="article-link">
+        <div class="article-cover">
+          <img src="/zh/guide_cloud/integration/llama_factory/0.png" alt="SwanLab与LLaMA Factory的集成">
+        </div>
+        <h3>SwanLab与LLaMA Factory的集成</h3>
+      </a>
+      <p>了解如何在LLaMA Factory训练流程中无缝集成SwanLab，实现高效的实验跟踪。</p>
+    </div>
+    <div class="article-card">
+      <a href="/examples/stable_diffusion" class="article-link">
+        <div class="article-cover">
+          <img src="/zh/examples/images/stable_diffusion/01.png" alt="Stable Diffusion文生图训练实战">
+        </div>
+        <h3>Stable Diffusion文生图训练实战</h3>
+      </a>
+      <p>本文介绍如何从零到一训练一个Stable Diffusion火影忍者模型。</p>
+    </div>
+          <div class="article-card">
+        <a href="/plugin/notification-lark" class="article-link">
+          <div class="article-cover">
+            <img src="/zh/plugin/notification-lark/logo.jpg" alt="SwanLab飞书通知插件：训练信息流转更高效">
+          </div>
+          <h3>SwanLab飞书通知插件：训练信息流转更高效</h3>
+        </a>
+        <p>深入了解SwanLab的插件生态，快速接入你的邮件、飞书、钉钉、企业微信等IM系统，让掌握进度快人一步</p>
+      </div>
   </div>
 </div>
 
