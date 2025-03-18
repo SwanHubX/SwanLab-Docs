@@ -123,3 +123,16 @@ swanlab watch
 更多详细可以参考[SwanLab离线看板模式](https://docs.swanlab.cn/guide_cloud/self_host/offline-board.html)
 
 服务器设置端口号可以查看[离线看板端口号](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7)
+
+## 每轮评估时记录生成文本
+
+如果你希望在每轮评估（val）时将生成的文本记录到SwanLab中，只需在命令行钟增加一行`val_generations_to_log_to_wandb=1`即可：
+
+```bash {5}
+PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+ data.train_files=$HOME/data/gsm8k/train.parquet \
+ data.val_files=$HOME/data/gsm8k/test.parquet \
+ trainer.logger=['console','swanlab'] \
+ val_generations_to_log_to_wandb=1 \
+ ...
+```

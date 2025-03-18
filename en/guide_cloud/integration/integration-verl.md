@@ -121,3 +121,17 @@ swanlab watch
 For more details, refer to [SwanLab Offline Dashboard Mode](https://docs.swanlab.cn/guide_cloud/self_host/offline-board.html).
 
 To set the port number on the server, refer to [Offline Dashboard Port Number](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7).
+
+
+## Record Generated Text During Each Evaluation Round
+
+If you wish to log the generated text to SwanLab during each evaluation round (`val`), simply add the line `val_generations_to_log_to_wandb=1` in the command:
+
+```bash {5}
+PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+ data.train_files=$HOME/data/gsm8k/train.parquet \
+ data.val_files=$HOME/data/gsm8k/test.parquet \
+ trainer.logger=['console','swanlab'] \
+ val_generations_to_log_to_wandb=1 \
+ ...
+```
