@@ -43,6 +43,7 @@ export const zh = defineConfig({
           { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
           { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
           { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
           { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
           { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
         ]

@@ -39,6 +39,7 @@ export const en = defineConfig({
           { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
           { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
           { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
           { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
         ]
       },
