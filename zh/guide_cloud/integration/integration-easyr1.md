@@ -38,7 +38,7 @@ bash examples/run_qwen2_5_7b_math_swanlab.sh
 
 当然，这里我们可以剖析一下，由于EasyR1是原始 veRL 项目的一个干净分叉，所以继承了[veRL与SwanLab的集成](/guide_cloud/integration/integration-verl.md)。所以这里我们来看`run_qwen2_5_7b_math_swanlab.sh`文件：
 
-```sh
+```sh {10}
 set -x
 
 export VLLM_ATTENTION_BACKEND=XFORMERS
@@ -48,7 +48,7 @@ MODEL_PATH=Qwen/Qwen2.5-7B-Instruct  # replace it with your local file path
 python3 -m verl.trainer.main \
     config=examples/grpo_example.yaml \
     worker.actor.model.model_path=${MODEL_PATH} \
-    trainer.logger=['console','swanlab'] \  # [!code ++]
+    trainer.logger=['console','swanlab'] \
     trainer.n_gpus_per_node=4
 ```
 
@@ -61,6 +61,21 @@ python3 -m verl.trainer.main \
 ```bash
 bash examples/run_qwen2_5_vl_7b_geo_swanlab.sh
 ```
+
+## 4. 每轮评估时记录生成文本
+
+如果你希望在每轮评估（val）时将生成的文本记录到SwanLab中，只需在命令行钟增加一行`val_generations_to_log=1`即可：
+
+```bash {6}
+python3 -m verl.trainer.main \
+    config=examples/grpo_example.yaml \
+    worker.actor.model.model_path=${MODEL_PATH} \
+    trainer.logger=['console','swanlab'] \
+    trainer.n_gpus_per_node=4 \
+    val_generations_to_log=1
+```
+
+
 
 ## 写在最后
 

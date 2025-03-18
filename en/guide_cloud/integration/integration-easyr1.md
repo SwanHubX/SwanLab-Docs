@@ -62,6 +62,19 @@ In the `EasyR1` directory, execute the following command to train the Qwen2.5-VL
 bash examples/run_qwen2_5_vl_7b_geo_swanlab.sh
 ```
 
+## 4. Record Generated Text During Each Evaluation Round
+
+If you want to log the generated text to SwanLab during each evaluation round (`val`), simply add the line `val_generations_to_log=1` in the command:
+
+```bash {6}
+python3 -m verl.trainer.main \
+    config=examples/grpo_example.yaml \
+    worker.actor.model.model_path=${MODEL_PATH} \
+    trainer.logger=['console','swanlab'] \
+    trainer.n_gpus_per_node=4 \
+    val_generations_to_log=1
+```
+
 ## Final Remarks
 
 EasyR1 is a new open-source project by [hiyouga](https://github.com/hiyouga), the author of [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory]), a reinforcement learning framework for multimodal large models. We thank [hiyouga](https://github.com/hiyouga) for his contributions to the global open-source ecosystem, and SwanLab will continue to accompany AI developers.
