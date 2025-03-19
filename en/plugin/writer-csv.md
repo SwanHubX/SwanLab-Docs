@@ -73,3 +73,7 @@ for epoch in range(2, epochs):
 # [Optional] Finish training, which is necessary in notebook environments
 swanlab.finish()
 ```
+
+## Register plugins externally
+
+<!--@include: ./shared-snippet.md-->

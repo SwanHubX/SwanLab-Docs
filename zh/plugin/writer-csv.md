@@ -75,3 +75,7 @@ for epoch in range(2, epochs):
 # [可选] 完成训练，这在notebook环境中是必要的
 swanlab.finish()
 ```
+
+## 外部注册插件
+
+<!--@include: ./shared-snippet.md-->
