@@ -80,6 +80,10 @@ if accuracy > 0.95:
     )
 ```
 
+## Register plugins externally
+
+<!--@include: ./shared-snippet.md-->
+
 
 ## Limitations
 

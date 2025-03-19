@@ -77,6 +77,10 @@ if accuracy > 0.95:
     )
 ```
 
+## Register plugins externally
+
+<!--@include: ./shared-snippet.md-->
+
 ## Limitations
 
 • The training completion/error notifications of the DingTalk notification plugin use the `on_stop` lifecycle callback of `SwanKitCallback`. Therefore, if your process is abruptly `killed` or the training machine shuts down unexpectedly, the `on_stop` callback will not be triggered, resulting in no DingTalk notification being sent.

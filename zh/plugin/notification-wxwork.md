@@ -72,6 +72,10 @@ if accuracy > 0.95:
     )
 ```
 
+## 外部注册插件
+
+<!--@include: ./shared-snippet.md-->
+
 
 ## 限制
 
