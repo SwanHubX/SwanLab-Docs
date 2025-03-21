@@ -9,7 +9,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **🚀 New Features**
 
-* Added `swanlab.Object3D` to support recording 3D point clouds.
+* Added `swanlab.Object3D` to support recording 3D point clouds. [Docs](/en/api/py-object3d)
 * Hardware monitoring now supports recording GPU memory (MB), disk utilization, and network upload and download.
 
 **🤔 Optimizations**
