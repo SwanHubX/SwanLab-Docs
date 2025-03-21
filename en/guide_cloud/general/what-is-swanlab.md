@@ -10,8 +10,6 @@ The Self-Hosted Edition allows you to enjoy functionalities comparable to the pu
 
 ![alt text](/assets/product-swanlab-1.png)
 
-
-
 SwanLab is an open-source, lightweight AI experiment tracking tool that provides a platform for tracking, comparing, and collaborating on experiments, designed to accelerate the R&D efficiency of AI R&D teams by 100 times.
 
 It provides a user-friendly API and a beautiful interface, combined with hyperparameter tracking, metric logging, online collaboration, experiment link sharing, real-time message notification and other functions, allowing you to quickly track ML experiments, visualize the process, and share with peers.
@@ -40,8 +38,8 @@ We hope that the above information and this guide can help you understand this p
 
 **1. 📊Experiment metrics and hyperparameter tracking**: Minimal code embedded in your machine learning pipeline to track and record key training metrics
  - Free hyperparameter and experiment configuration recording
-- **Supported metadata types**: scalar metrics, images, audio, text, etc.
-- **Supported chart types**: line chart, media chart (image, audio, text), etc.
+- **Supported metadata types**: scalar metrics, images, audio, text, 3D point cloud, etc.
+- **Supported chart types**: line chart, media chart (image, audio, text, 3D point cloud), etc.
 - **Automatic recording**: console logging, GPU hardware, Git information, Python interpreter, Python library list, code directory
 2. **⚡️Comprehensive framework integration**: PyTorch, PyTorch Lightning, 🤗HuggingFace Transformers, MMEngine, Ultralytics and other mainstream frameworks
 3. **📦Organize experiments**: Centralized dashboard, quickly manage multiple projects and experiments, and get a quick overview of the overall training through a holistic view

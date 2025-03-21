@@ -134,6 +134,12 @@ swanlab.log({"examples": text_list})
 
 ![alt text](/assets/log-media-text.png)
 
+## 4. 3D点云
+
+![](/zh/api/py-object3d/demo.png)
+
+请参考此文档：[API-Oject3D](/api/py-object3d)
+
 
 ## Q&A
 
