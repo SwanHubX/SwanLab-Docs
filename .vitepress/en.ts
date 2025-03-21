@@ -316,6 +316,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Object3D', link: 'py-object3d' },
       ]},
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
