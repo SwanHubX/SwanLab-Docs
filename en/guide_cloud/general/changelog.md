@@ -5,6 +5,18 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.3 - 2025.3.20
+
+**🚀 New Features**
+
+* Added `swanlab.Object3D` to support recording 3D point clouds.
+* Hardware monitoring now supports recording GPU memory (MB), disk utilization, and network upload and download.
+
+**🤔 Optimizations**
+
+* Fixed several issues.
+
+
 ## v0.5.0 - 2025.3.12
 
 ![logo](../self_host/docker-deploy/swanlab-docker.jpg)
