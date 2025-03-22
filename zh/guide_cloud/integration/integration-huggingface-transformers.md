@@ -224,3 +224,7 @@ class NLPSwanLabCallback(SwanLabCallback):
 上面是一个在NLP任务下的新回调类，增加了`on_epoch_end`函数，它会在`transformers`训练的每个epoch结束时执行。
 
 查看全部的Transformers生命周期回调函数：[链接](https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_callback.py#L311)
+
+## 5. 环境变量
+
+参考：[HuggingFace Docs: transformers.integrations.SwanLabCallback](https://huggingface.co/docs/transformers/main/en/main_classes/callback#transformers.integrations.SwanLabCallback)

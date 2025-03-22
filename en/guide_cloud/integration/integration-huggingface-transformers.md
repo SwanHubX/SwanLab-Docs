@@ -224,3 +224,7 @@ class NLPSwanLabCallback(SwanLabCallback):
 The above is a new callback class for NLP tasks, adding the `on_epoch_end` function, which will execute at the end of each epoch during `transformers` training.
 
 View all Transformers lifecycle callback functions: [Link](https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_callback.py#L311)
+
+## 5. Environment
+
+Reference: [HuggingFace Docs: transformers.integrations.SwanLabCallback](https://huggingface.co/docs/transformers/main/en/main_classes/callback#transformers.integrations.SwanLabCallback)

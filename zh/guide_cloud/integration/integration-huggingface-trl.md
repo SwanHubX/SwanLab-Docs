@@ -164,3 +164,7 @@ trainer.train()
 ```
 
 DPO、GRPO、PPO等同理，只需要将`SwanLabCallback`传入对应的`Trainer`即可。
+
+## 5. 环境变量
+
+参考：[HuggingFace Docs: transformers.integrations.SwanLabCallback](https://huggingface.co/docs/transformers/main/en/main_classes/callback#transformers.integrations.SwanLabCallback)

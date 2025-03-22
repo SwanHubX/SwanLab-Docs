@@ -164,3 +164,7 @@ trainer.train()
 ```
 
 The same applies to DPO, GRPO, PPO, etc. Simply pass `SwanLabCallback` to the corresponding `Trainer`.
+
+## 5. Environment
+
+Reference: [HuggingFace Docs: transformers.integrations.SwanLabCallback](https://huggingface.co/docs/transformers/main/en/main_classes/callback#transformers.integrations.SwanLabCallback)
