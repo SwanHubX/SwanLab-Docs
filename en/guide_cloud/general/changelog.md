@@ -9,6 +9,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **🚀 New Features**
 
+- SwanLab has officially joined the **🤗HuggingFace ecosystem**! Starting from Transformers version 4.50.0, SwanLab is officially integrated as an experiment tracking tool. Simply add `report_to="swanlab"` in `TrainingArguments` to start tracking your training.
 * Added `swanlab.Object3D` to support recording 3D point clouds. [Docs](/en/api/py-object3d)
 * Hardware monitoring now supports recording GPU memory (MB), disk utilization, and network upload and download.
 

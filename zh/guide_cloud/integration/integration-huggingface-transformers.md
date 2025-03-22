@@ -8,7 +8,102 @@ Hugging Face 的 [Transformers](https://github.com/huggingface/transformers) 是
 
 你可以使用Transformers快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
-## 1. 引入SwanLabCallback
+> `transformers>=4.50.0` 的版本，已官方集成了SwanLab  
+> 如果你的版本低于4.50.0，请使用[SwanLabCallback集成](#swanlabcallback集成)。
+
+## 一行代码完成集成
+
+只需要在你的训练代码中，找到`TrainingArguments`部分，添加`report_to="swanlab"`参数，即可完成集成。
+
+```python
+from transformers import TrainingArguments, Trainer
+
+args = TrainingArguments(
+    ...,
+    report_to="swanlab" # [!code ++]
+)
+
+trainer = Trainer(..., args=args)
+```
+
+## 自定义项目名
+
+默认下，项目名会使用你运行代码的`目录名`。
+
+如果你想自定义项目名，可以设置`SWANLAB_PROJECT`环境变量：
+
+::: code-group
+
+```python
+import os
+os.environ["SWANLAB_PROJECT"]="qwen2-sft"
+```
+
+```bash [Command Line（Linux/MacOS）]
+export SWANLAB_PROJECT="qwen2-sft"
+```
+
+```bash [Command Line（Windows）]
+set SWANLAB_PROJECT="qwen2-sft"
+```
+
+:::
+
+## 案例代码：Bert文本分类
+
+```python
+import evaluate
+import numpy as np
+from datasets import load_dataset
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, Trainer, TrainingArguments
+
+
+def tokenize_function(examples):
+    return tokenizer(examples["text"], padding="max_length", truncation=True)
+
+
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
+
+
+dataset = load_dataset("yelp_review_full")
+
+tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+
+tokenized_datasets = dataset.map(tokenize_function, batched=True)
+
+small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(1000))
+small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(1000))
+
+metric = evaluate.load("accuracy")
+
+model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=5)
+
+training_args = TrainingArguments(
+    output_dir="test_trainer",
+    num_train_epochs=3,
+    logging_steps=50,
+    report_to="swanlab", # [!code ++]
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=small_train_dataset,
+    eval_dataset=small_eval_dataset,
+    compute_metrics=compute_metrics,
+)
+
+trainer.train()
+```
+
+## SwanLabCallback集成
+
+如果你使用的是`Transformers<4.50.0`的版本，或者你希望更灵活地控制SwanLab的行为，则可以使用SwanLabCallback集成。
+
+### 1. 引入SwanLabCallback
 
 ```python
 from swanlab.integration.transformers import SwanLabCallback
@@ -21,7 +116,7 @@ from swanlab.integration.transformers import SwanLabCallback
 - project、experiment_name、description 等与 swanlab.init 效果一致的参数, 用于SwanLab项目的初始化。
 - 你也可以在外部通过`swanlab.init`创建项目，集成会将实验记录到你在外部创建的项目中。
 
-## 2. 传入Trainer
+### 2. 传入Trainer
 
 ```python (1,7,12)
 from swanlab.integration.transformers import SwanLabCallback
@@ -41,7 +136,7 @@ trainer = Trainer(
 trainer.train()
 ```
 
-## 3. 完整案例代码
+### 3. 完整案例代码
 
 ```python (4,41,50)
 import evaluate
@@ -99,7 +194,7 @@ trainer = Trainer(
 trainer.train()
 ```
 
-## 4. GUI效果展示
+### 4. GUI效果展示
 
 超参数自动记录：
 
@@ -110,7 +205,7 @@ trainer.train()
 ![ig-hf-transformers-gui-2](/assets/ig-hf-transformers-gui-2.png)
 
 
-## 5. 拓展：增加更多回调
+### 5. 拓展：增加更多回调
 
 试想一个场景，你希望在每个epoch结束时，让模型推理测试样例，并用swanlab记录推理的结果，那么你可以创建一个继承自`SwanLabCallback`的新类，增加或重构生命周期函数。比如：
 

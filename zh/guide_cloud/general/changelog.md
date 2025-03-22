@@ -8,6 +8,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.5.3 - 2025.3.20
 
 **🚀新增功能**
+- SwanLab已正式加入 **🤗HuggingFace生态**！Transformers 4.50.0版本开始 正式将SwanLab集成为实验跟踪工具，在TrainingArguments中加入`report_to="swanlab"`即可开始跟踪训练。
 - 新增了`swanlab.Object3D`，支持记录三维点云，[文档](/api/py-object3d)
 - 硬件监控支持了 GPU显存（MB）、磁盘利用率、网络上下行 的记录
 
