@@ -9,9 +9,9 @@ Hugging Face's [Transformers](https://github.com/huggingface/transformers) is a 
 You can use Transformers for rapid model training while utilizing SwanLab for experiment tracking and visualization.
 
 > For versions `transformers>=4.50.0`, SwanLab is officially integrated.  
-> If your version is below 4.50.0, please use [SwanLabCallback Integration](#swanlabcallback-integration).
+> If your version is below 4.50.0, please use [SwanLabCallback Integration](#_4-swanlabcallback-integration).
 
-## One-Line Integration
+## 1. One-Line Integration
 
 Simply locate the `TrainingArguments` section in your training code and add the `report_to="swanlab"` parameter to complete the integration.
 
@@ -26,7 +26,7 @@ args = TrainingArguments(
 trainer = Trainer(..., args=args)
 ```
 
-## Custom Project Name
+## 2. Custom Project Name
 
 By default, the project name will be the `directory name` from which you run the code.
 
@@ -49,7 +49,7 @@ set SWANLAB_PROJECT="qwen2-sft"
 
 :::
 
-## Example Code: Bert Text Classification
+## 3. Example Code: Bert Text Classification
 
 ```python
 import evaluate
@@ -99,11 +99,11 @@ trainer = Trainer(
 trainer.train()
 ```
 
-## SwanLabCallback Integration
+## 4. SwanLabCallback Integration
 
 If you are using a version of `Transformers<4.50.0` or wish to have more flexible control over SwanLab's behavior, you can use the SwanLabCallback integration.
 
-### 1. Import SwanLabCallback
+### 4.1 Import SwanLabCallback
 
 ```python
 from swanlab.integration.transformers import SwanLabCallback
@@ -116,7 +116,7 @@ from swanlab.integration.transformers import SwanLabCallback
 - project, experiment_name, description, etc., which have the same effect as swanlab.init, used for initializing the SwanLab project.
 - You can also create a project externally via `swanlab.init`, and the integration will log the experiment to the project you created externally.
 
-### 2. Pass to Trainer
+### 4.2 Pass to Trainer
 
 ```python (1,7,12)
 from swanlab.integration.transformers import SwanLabCallback
@@ -136,7 +136,7 @@ trainer = Trainer(
 trainer.train()
 ```
 
-### 3. Complete Example Code
+### 4.3 Complete Example Code
 
 ```python (4,41,50)
 import evaluate
@@ -194,7 +194,7 @@ trainer = Trainer(
 trainer.train()
 ```
 
-### 4. GUI Effect Display
+### 4.4 GUI Effect Display
 
 Automatically recorded hyperparameters:
 
@@ -205,7 +205,7 @@ Metrics recording:
 ![ig-hf-transformers-gui-2](/assets/ig-hf-transformers-gui-2.png)
 
 
-### 5. Extension: Adding More Callbacks
+### 4.5 Extension: Adding More Callbacks
 
 Imagine a scenario where you want the model to infer test samples at the end of each epoch and log the inference results with swanlab. You can create a new class inheriting from `SwanLabCallback` and add or override lifecycle functions. For example:
 
