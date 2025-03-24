@@ -2,7 +2,7 @@
 
 :::info Note
 
-This API is intended for **Offline Dashboard Mode** in Swanlab. It provides access to project, experiment, and chart data for frontend rendering and interaction.
+This API is intended for **Offline Dashboard Mode** in Swanlab. It provides access to project, experiment, and chart data for data analysis.
 
 :::
 
