@@ -181,6 +181,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       items: [
         { text: '使用离线看板', link: 'self_host/offline-board' },
         { text: '远程访问离线看板', link: 'self_host/remote-view' },
+        { text: '离线看板接口文档', link: 'self_host/offline-board-api' },
       ]
   },
   {

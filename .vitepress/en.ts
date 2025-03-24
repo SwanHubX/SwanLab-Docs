@@ -159,6 +159,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Offline board', link: 'self_host/offline-board' },
       { text: 'Remote access tutorial', link: 'self_host/remote-view' },
+      { text: 'Offline board API', link: 'self_host/offline-board-api' },
     ]
   },
   {
