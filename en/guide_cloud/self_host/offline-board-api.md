@@ -187,3 +187,123 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
   - `create_time`: Timestamp when the data was recorded.
   - `_last`: Indicates whether this is the last data point (`true` for last entry only).
 
+---
+
+## Endpoint 5: Get Recent Log Output
+
+- **URL**: `/api/v1/experiment/<experiment_id>/recent_log`
+- **Method**: `GET`
+- **Example**: `/api/v1/experiment/1/recent_log`
+- **Description**: Retrieve the latest log output of the specified experiment, including both Swanlab logs and user-defined output.
+
+### Response Example
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "recent": ["swanlab:", "{'loss':"],
+    "logs": [
+      "swanlab: Tracking run with swanlab version 0.5.2",
+      "swanlab: Run data will be saved locally in /data/project/...",
+      "{'loss': 1.6858, 'grad_norm': ..., 'epoch': 0.02, ...}",
+      "..."
+    ]
+  }
+}
+```
+
+### Field Descriptions
+
+- `recent`: Latest log snippets, usually for quick preview.
+- `logs`: Full list of log outputs, including system logs and experiment runtime output.
+
+---
+
+## Endpoint 6: Get Experiment Status
+
+- **URL**: `/api/v1/experiment/<experiment_id>/status`
+- **Method**: `GET`
+- **Example**: `/api/v1/experiment/1/status`
+- **Description**: Retrieve the current status, update time, and chart layout of the specified experiment.
+
+### Response Example
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "status": 0,
+    "update_time": "2025-03-21T04:58:06.387487+00:00",
+    "finish_time": null,
+    "charts": {
+      "charts": [
+        {
+          "id": 1,
+          "name": "train/loss",
+          "type": "line",
+          "reference": "step",
+          "status": 0,
+          "source": ["train/loss"],
+          "multi": false,
+          "source_map": {"train/loss": 1}
+        },
+        ...
+      ],
+      "namespaces": [
+        {
+          "id": 1,
+          "name": "train",
+          "opened": 1,
+          "charts": [1, 3, 5, 7, 9, 11]
+        }
+      ]
+    }
+  }
+}
+```
+
+### Field Descriptions
+
+- `status`: Current experiment status. (e.g., `0` for running)
+- `update_time`: Timestamp of the latest update.
+- `finish_time`: Timestamp of completion, or `null` if unfinished.
+- `charts`: Chart structure under the experiment.
+  - `charts`: List of chart definitions (same as in `/chart` endpoint).
+  - `namespaces`: Chart categories and layout groups.
+
+---
+
+## Endpoint 7: Get Experiment Summary Metrics
+
+- **URL**: `/api/v1/experiment/<experiment_id>/summary`
+- **Method**: `GET`
+- **Example**: `/api/v1/experiment/1/summary`
+- **Description**: Retrieve a summary of the latest values for key metrics in the specified experiment.
+
+### Response Example
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "summaries": [
+      { "key": "train/loss", "value": 1.1845 },
+      { "key": "train/grad_norm", "value": 1.0172306299209595 },
+      { "key": "train/learning_rate", "value": 0.000037463413651718303 },
+      { "key": "train/epoch", "value": 3.288 },
+      { "key": "train/num_input_tokens_seen", "value": 597776 },
+      { "key": "train/global_step", "value": 207 }
+    ]
+  }
+}
+```
+
+### Field Descriptions
+
+- `summaries`: List of key metrics and their most recent values.
+  - `key`: Metric name (e.g., `train/loss`).
+  - `value`: Current latest value of the metric.

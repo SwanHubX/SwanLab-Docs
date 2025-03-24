@@ -187,4 +187,146 @@
   - `create_time`：记录时间。
   - `_last`：是否为最后一个数据点（仅最后一条为 true）。
 
+---
 
+## 接口 5：获取实验最新日志
+
+- **URL**：`/api/v1/experiment/<experiment_id>/recent_log`
+- **方法**：`GET`
+- **示例**：`/api/v1/experiment/1/recent_log`
+- **接口说明**：获取指定实验最新的日志输出。包括 Swanlab 自身日志信息和用户自定义的输出。
+
+### 响应示例
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "recent": [
+      "swanlab:",
+      "{'loss':"
+    ],
+    "logs": [
+      "swanlab: Tracking run with swanlab version 0.5.2",
+      "swanlab: Run data will be saved locally in /data/project/...",
+      "{'loss': 1.6858, 'grad_norm': ..., 'epoch': 0.02, ...}",
+      "..."
+    ]
+  }
+}
+```
+
+### 字段说明
+
+- `recent`：最新日志段落，通常用于快速预览。
+- `logs`：日志输出列表，包含 swanlab 系统日志和运行中的配置、输出数据。
+
+---
+
+## 接口 6：获取实验状态信息
+
+- **URL**：`/api/v1/experiment/<experiment_id>/status`
+- **方法**：`GET`
+- **示例**：`/api/v1/experiment/1/status`
+- **接口说明**：获取指定实验的最新状态、更新时间、图表结构等信息。
+
+### 响应示例
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "status": 0,
+    "update_time": "2025-03-21T04:58:06.387487+00:00",
+    "finish_time": null,
+    "charts": {
+      "charts": [
+        {
+          "id": 1,
+          "name": "train/loss",
+          "type": "line",
+          "reference": "step",
+          "status": 0,
+          "source": ["train/loss"],
+          "multi": false,
+          "source_map": {"train/loss": 1}
+        },
+        {
+          "id": 3,
+          "name": "train/grad_norm",
+          "type": "line",
+          "reference": "step",
+          "status": 0,
+          "source": ["train/grad_norm"],
+          "multi": false,
+          "source_map": {"train/grad_norm": 1}
+        },
+        {
+          "id": 5,
+          "name": "train/learning_rate",
+          "type": "line",
+          "reference": "step",
+          "status": 0,
+          "source": ["train/learning_rate"],
+          "multi": false,
+          "source_map": {"train/learning_rate": 1}
+        },
+        ...
+      ],
+      "namespaces": [
+        {
+          "id": 1,
+          "name": "train",
+          "opened": 1,
+          "charts": [1, 3, 5, 7, 9, 11]
+        }
+      ]
+    }
+  }
+}
+```
+
+### 字段说明
+
+- `status`：实验当前状态，整型（如 0 表示运行中）。
+- `update_time`：实验状态最近更新时间。
+- `finish_time`：实验完成时间，未完成为 `null`。
+- `charts`：实验中的图表结构信息。
+  - `charts`：图表定义数组，字段与 `/chart` 接口一致。
+  - `namespaces`：图表命名空间，标识图表分类与分组。
+
+---
+
+## 接口 7：获取实验指标汇总
+
+- **URL**：`/api/v1/experiment/<experiment_id>/summary`
+- **方法**：`GET`
+- **示例**：`/api/v1/experiment/1/summary`
+- **接口说明**：获取指定实验在当前状态下的各项关键指标的最新值汇总。
+
+### 响应示例
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "summaries": [
+      { "key": "train/loss", "value": 1.1845 },
+      { "key": "train/grad_norm", "value": 1.0172306299209595 },
+      { "key": "train/learning_rate", "value": 0.000037463413651718303 },
+      { "key": "train/epoch", "value": 3.288 },
+      { "key": "train/num_input_tokens_seen", "value": 597776 },
+      { "key": "train/global_step", "value": 207 }
+    ]
+  }
+}
+```
+
+### 字段说明
+
+- `summaries`：包含多个指标的汇总值，每项包括：
+  - `key`：指标名称（如 `train/loss`）。
+  - `value`：该指标当前最新值。
