@@ -42,7 +42,7 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 使用Discord通知插件的方法非常简单，只需要初始化1个`DiscordCallback`对象：
 
 ```python
-from swanlab.plugin.notification import WXWorkCallback
+from swanlab.plugin.notification import DiscordCallback
 
 discord_callback = DiscordCallback(
     webhook_url='https://discord.com/api/webhooks/xxxxx/xxx', 

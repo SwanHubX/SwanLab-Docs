@@ -42,7 +42,7 @@ SwanLab plugins are open-source. You can view the [Github source code](https://g
 Using the Discord notification plugin is straightforward. Simply initialize a `DiscordCallback` object:
 
 ```python
-from swanlab.plugin.notification import WXWorkCallback
+from swanlab.plugin.notification import DiscordCallback
 
 discord_callback = DiscordCallback(
     webhook_url='https://discord.com/api/webhooks/xxxxx/xxx', 
