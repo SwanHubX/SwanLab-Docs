@@ -1,8 +1,8 @@
 # Slack
 
-
-
 If you wish to receive immediate [Slack](https://slack.com) notifications upon training completion or errors, the Slack Notification plugin is highly recommended.
+
+![slack-logo](./notification-slack/logo.jpg)
 
 :::warning Improve the Plugin
 SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!

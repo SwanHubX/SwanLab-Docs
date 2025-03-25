@@ -1,8 +1,8 @@
 # Discord
 
-
-
 If you wish to receive immediate [Discord](https://discord.com/) notifications upon training completion or errors, the Discord Notification plugin is highly recommended.
+
+![](./notification-discord/logo.jpg)
 
 :::warning Improve the Plugin
 SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
