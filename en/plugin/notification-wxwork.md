@@ -2,7 +2,7 @@
 
 ![](./notification-wxwork/logo.jpg)
 
-If you wish to receive immediate [WXWork]((https://work.weixin.qq.com/)) notifications upon training completion or errors, the WXWork Notification plugin is highly recommended.
+If you wish to receive immediate [WXWork](https://work.weixin.qq.com/) notifications upon training completion or errors, the WXWork Notification plugin is highly recommended.
 
 :::warning Improve the Plugin
 SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
