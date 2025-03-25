@@ -1,39 +1,49 @@
-# View Experiment Results
+# Viewing Experiment Results  
 
-Use the SwanLab dashboard to manage and visualize AI model training results in one place.
+Leverage SwanLab's powerful experiment dashboard to manage and visualize AI model training results in one place.  
 
-## ☁️ Cloud Synchronization, Freeing Productivity
+[[toc]]  
 
-No matter where you train your models—your own computer, a server cluster in the lab, or an instance in the cloud—we can collect and aggregate your training data, allowing you to access your training progress anytime, anywhere.
+## Cloud Synchronization  
 
-You also don't need to spend time taking screenshots of terminal outputs or pasting them into Excel, nor do you need to manage Tensorboard files from different computers. SwanLab makes it easy.
+No matter where you train your model—**your local machine, a lab server cluster, or cloud instances**—we seamlessly collect and consolidate your training data. Access progress anytime, anywhere, even on your phone.  
 
-## Table View
+No more manually screenshotting terminal outputs or copying data into Excel. Forget about managing TensorBoard files across different machines—SwanLab handles it all effortlessly.  
 
-Compare each training experiment through the table view to see which hyperparameters have changed.  
-The table view defaults to sorting data in the order of `[Experiment Name]-[System Data]-[Configuration]-[Metrics]`.
+![](./view-result/cloud.jpg)  
 
-![view-result](/assets/view-result-1.jpg)
+## 📱 Mobile Experiment Monitoring  
 
-## Chart Comparison
+Ever had an experiment running while you're away from your computer—working out, commuting, or just waking up—and desperately wanted to check its progress? Your phone + SwanLab is the perfect solution. [Learn more](../general/app.md)  
 
-The **Chart Comparison View** allows you to integrate charts from each experiment to generate a multi-experiment comparison chart view.  
-In the multi-experiment chart, you can clearly compare the changes and performance differences of different experiments under the same metric.
+![](../general/app/android.png)  
 
-![chart-comparison](/assets/chart-comparison.jpg)
+## Table View  
 
-## Logging
+Compare training experiments in table view to track hyperparameter changes.  
+By default, data is sorted by: `[Experiment Name] - [Metadata] - [Configuration] - [Metrics]`.  
 
-From the start to the end of the experiment, SwanLab records terminal outputs from `swanlab.init` to the end of the experiment and logs them in the experiment's "Logs" tab, where you can view, copy, and download them at any time. We also support searching for key information.
+![view-result](/assets/view-result-1.jpg)  
 
-![logging](/assets/logging.jpg)
+## Chart Comparison View  
 
-## Environment
+The **Chart Comparison View** consolidates experiment charts into a unified multi-experiment visualization.  
+Easily compare how different experiments perform on the same metric, identifying trends and variations at a glance.  
 
-After the experiment starts, SwanLab records the training-related environment parameters, including:
+![chart-comparison](/assets/chart-comparison.jpg)  
 
-- **Basic Data**: Running time, hostname, operating system, Python version, Python interpreter, running directory, command line, Git repository URL, Git branch, Git commit, log file directory, SwanLab version
-- **System Hardware**: Number of CPU cores, memory size, number of GPUs, GPU model, GPU memory
-- **Python Libraries**: All Python libraries in the running environment
+## Logs  
+
+From `swanlab.init` to experiment completion, SwanLab records all terminal output in the **Logs** tab—viewable, copyable, and downloadable anytime. Search functionality helps pinpoint critical details.  
+
+![logging](/assets/logging.jpg)  
+
+## Environment  
+
+SwanLab automatically logs training environment details, including:  
+
+- **Basic Info**: Runtime, hostname, OS, Python version, interpreter path, working directory, command line, Git repo URL, branch, commit, log directory, SwanLab version  
+- **System Hardware**: CPU cores, memory size, GPU count, GPU model, VRAM  
+- **Python Dependencies**: All installed Python packages in the runtime environment  
 
 ![environment](/assets/environment.jpg)

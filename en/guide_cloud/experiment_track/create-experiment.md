@@ -3,7 +3,7 @@
 Using the SwanLab Python SDK to track AI experiments, you can then view the results in an interactive dashboard.  
 This section will introduce how to create a SwanLab experiment.
 
-![](/assets/create-a-exp-1.jpg)
+![](./create-experiment/overview.jpg)
 
 ## How to Create a SwanLab Experiment?
 
@@ -117,7 +117,7 @@ Use the SwanLab dashboard as a one-stop node for managing and visualizing AI mod
 You can visualize rich interactive charts, such as line charts, image charts, audio charts, etc.  
 For more information on how to view experiments, see [View Experiment Results](/en/guide_cloud/experiment_track/view-result.md).
 
-![](/assets/example-mnist.jpg)
+![](./create-experiment/show.jpg)
 
 ## Best Practices
 
