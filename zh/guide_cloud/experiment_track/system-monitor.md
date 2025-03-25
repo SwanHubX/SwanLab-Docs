@@ -42,27 +42,13 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 > 在多卡机器上，每个GPU的资源情况都会单独记录，最终在图表中展示多条图线。
 
-**GPU 内存使用率** GPU Memory Allocated (%)
-
-表示此GPU的显存占用百分比。
-
-**GPU内存使用量** GPU Memory Allocated (MB)
-
-表示此GPU的显存占用量，以MB为单位。
-
-该指标对应图表的纵坐标上限为所有GPU中的最大总显存。
-
-**GPU利用率** GPU Utilization (%)
-
-表示此GPU的计算资源占用百分比。
-
-**GPU温度** GPU Temperature (℃)
-
-表示此GPU的温度，以摄氏度为单位。
-
-**GPU功耗** GPU Power Usage (W)
-
-表示此GPU的功耗，以瓦特为单位。
+| 指标 | 描述 |  
+|--------|------------|  
+| GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
+| GPU Memory Allocated (MB) | **GPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
+| GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
+| GPU Power Usage (W) | **GPU 功耗**，表示此GPU的功耗，以瓦特为单位。|
 
 <br>
 
@@ -70,61 +56,40 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 > 在多卡机器上，每个NPU的资源情况都会单独记录，最终在图表中展示多条图线。
 
-**NPU利用率** NPU Utilization (%)
-
-表示此NPU的计算资源占用百分比。
-
-**NPU内存使用率** NPU Memory Allocated (%)
-
-表示此NPU的显存占用百分比。
-
-**NPU温度** NPU Temperature (℃)
-
-表示此NPU的温度，以摄氏度为单位。
+| 指标 | 描述 |  
+|--------|------------|  
+| NPU Utilization (%) | **NPU 利用率**，表示此NPU的计算资源占用百分比。|
+| NPU Memory Allocated (%) | **NPU 显存使用率**，表示此NPU的显存占用百分比。|
+| NPU Temperature (℃) | **NPU 温度**，表示此NPU的温度，以摄氏度为单位。|
 
 <br>
 
 ### 3. CPU
 
-**CPU利用率** CPU Utilization (%)
-
-表示此CPU的计算资源占用百分比。
-
-**CPU线程数** Process CPU Threads
-
-表示当前运行的实验所使用的CPU总线程数。
+| 指标 | 描述 |  
+|--------|------------|  
+| CPU Utilization (%) | **CPU 利用率**，表示此CPU的计算资源占用百分比。|
+| Process CPU Threads | **CPU 线程数**，表示当前运行的实验所使用的CPU总线程数。|
 
 <br>
 
 ### 4. 内存
 
-**系统内存使用率** System Memory Utilization (%)
-
-表示当前系统的内存占用百分比。
-
-**进程占用内存** Process Memory In Use (non-swap) (MB)
-
-当前进程实际占用的物理内存量（不包含交换区），直观反映实验运行时的内存消耗。
-
-****进程分配内存**** Process Memory Utilization (MB)
-
-表示当前进程分配的内存量（包含交换区），不一定是实际使用的内存量。
-
-**进程可用内存** Process Memory Available （non-swap） (MB)
-
-表示当前进程可用的物理内存量（不包含交换区），即当前进程可以使用的内存量。
+| 指标 | 描述 |  
+|--------|------------|  
+| System Memory Utilization (%) | **系统内存使用率**，表示当前系统的内存占用百分比。|
+| Process Memory In Use (non-swap) (MB) | **进程占用内存**，当前进程实际占用的物理内存量（不包含交换区），直观反映实验运行时的内存消耗。|
+| Process Memory Utilization (MB) | **进程分配内存**，当前进程分配的内存量（包含交换区），不一定是实际使用的内存量。|
+| Process Memory Available （non-swap） (MB) | **进程可用内存**，当前进程可用的物理内存量（不包含交换区），即当前进程可以使用的内存量。|
 
 <br>
 
 ### 5. 硬盘
 
-**硬盘I/O** Disk IO Utilization (MB)
-
-表示硬盘的读写速度，以MB/s为单位。读速率和写速率会在图表中作为两条图线，分开展示。
-
-**硬盘使用情况** Disk Utilization (%)
-
-表示当前系统盘的使用率，以百分比为单位。
+| 指标 | 描述 |  
+|--------|------------|  
+| Disk IO Utilization (MB) | **硬盘I/O**，表示硬盘的读写速度，以MB/s为单位。读速率和写速率会在图表中作为两条图线，分开展示。|
+| Disk Utilization (%) | **硬盘使用情况**，表示当前系统盘的使用率，以百分比为单位。|
 
 在Linux平台，取根目录`/`的使用率；若操作系统为Windows，则取系统盘（通常是`C:`）的使用率。
 
@@ -132,6 +97,8 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 ### 6. 网络
 
-**网络I/O** Network Traffic (KB)
+| 指标 | 描述 |  
+|--------|------------|  
+| Network Traffic (KB) | **网络I/O**，表示网络的读写速度，以KB/s为单位。接收速率和发送速率会在图表中作为两条图线，分开展示。|
 
-表示网络的读写速度，以KB/s为单位。接收速率和发送速率会在图表中作为两条图线，分开展示。
+> 表示网络的读写速度，以KB/s为单位。接收速率和发送速率会在图表中作为两条图线，分开展示。
