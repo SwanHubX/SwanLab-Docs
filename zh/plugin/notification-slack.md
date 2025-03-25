@@ -1,8 +1,8 @@
 # Slack
 
-
-
 如果你希望在训练完成/发生错误时，第一时间发送[Slack](https://slack.com)信息通知你，那么非常推荐你使用Slack通知插件。
+
+![](./notification-slack/logo.jpg)
 
 :::warning 改进插件
 SwanLab插件均为开源代码，你可以在[Github源代码](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py)中查看，欢迎提交你的建议和PR！
