@@ -18,9 +18,6 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 :::
 
 
-
-<img src="./notification-slack/x" width="400"/>
-
 1. 前往 [Slack-API](https://api.slack.com/apps) 页面，点击 **「Create an App」**
 
 <img src="./notification-slack/slack-create-app.png" width="400"/>
@@ -30,9 +27,26 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 <img src="./notification-slack/from-scratch.png" width="400"/>
 
-3. 填写 **「App Name」** ，并选择用于通知的 workspace
+3. 填写 **「App Name」** ，并选择用于通知的 workspace，点击右下角的 **「Create App」**
 
 <img src="./notification-slack/name-app.png" width="400"/>
+
+4. 进入 App 配置菜单后，点击左侧的 **「Incoming Webhooks」**，并开启 **「Activate Incoming Webhooks」** 按钮；
+
+<img src="./notification-slack/slack-webhook-option.png" width="400"/>
+
+5. 在页面下方，点击 **「Add New Webhook to Workspace」**，将APP添加到工作区的频道中；
+
+
+<img src="./notification-slack/add-new-webhook-workspace.png" width="400"/>
+
+6. 在跳转的应用请求页面中，选择好APP要发送消息的频道，点击 **「允许」**
+
+<img src="./notification-slack/allow-channel.png" width="400"/>
+
+7.最后返回 APP 配置页面，复制APP的 Webhook URL
+
+<img src="./notification-slack/copy-url.png" width="500"/>
 
 
 ## 基本用法
