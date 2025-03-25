@@ -353,7 +353,9 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
       { text: 'Email', link: 'notification-email' },
       { text: 'Lark', link: 'notification-lark' },
       { text: 'Dingtalk', link: 'notification-dingtalk' },
-      { text: 'Wechat', link: 'notification-wxwork' },
+      { text: 'WXWork', link: 'notification-wxwork' },
+      { text: 'Discord', link: 'notification-discord' },
+      { text: 'Slack', link: 'notification-slack' },
     ]
   },
   {

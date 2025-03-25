@@ -2,7 +2,7 @@
 
 ![](./notification-wxwork/logo.jpg)
 
-If you wish to receive immediate [WXWork](https://work.weixin.qq.com/) notifications upon training completion or errors, the Lark Notification plugin is highly recommended.
+If you wish to receive immediate [WXWork]((https://work.weixin.qq.com/)) notifications upon training completion or errors, the WXWork Notification plugin is highly recommended.
 
 :::warning Improve the Plugin
 SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
@@ -13,7 +13,7 @@ SwanLab plugins are open-source. You can view the [Github source code](https://g
 
 ## Preparation
 
-::: info 参考文档
+::: info Reference
 - [WXWork-Group Robot Configuration Instruction](https://developer.work.weixin.qq.com/document/path/91770)
 :::
 
@@ -74,9 +74,9 @@ This is particularly useful for notifying you when certain metrics reach specifi
 
 ```python 
 if accuracy > 0.95:
-    # 自定义场景发送消息
+    # custom messages
     wxwork_callback.send_msg(
-        content=f"Current Accuracy: {accuracy}",  # 通知内容
+        content=f"Current Accuracy: {accuracy}",  
     )
 ```
 
