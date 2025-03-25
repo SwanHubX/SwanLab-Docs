@@ -1,49 +1,67 @@
-# Experiment Tracking
+# What is Experiment Tracking  
 
-**Experiment Tracking** refers to the process of recording metadata (hyperparameters, configurations) and metrics (loss, accuracy...) for each experiment during the development of machine learning models, and organizing and presenting this information. It can be understood as recording various key information of experiments when conducting machine learning experiments.
+**Experiment tracking** refers to the process of recording **hyperparameters, metrics, hardware, environment, logs**, and other data for each experiment from start to finish during machine learning model development, and **organizing** and **presenting** this data in a UI interface. The purpose of experiment tracking is to help researchers more effectively **manage** and **analyze** experimental results, enabling better understanding of model performance variations and, ultimately, optimizing the model development process.  
 
-The purpose of experiment tracking is to help researchers manage and analyze experimental results more effectively, in order to better understand changes in model performance and optimize the model development process. Its functions include:
+::: warning 🤔 Simple Terms  
+The role of experiment tracking can be understood as recording key information during machine learning experiments to **"provide ammunition"** for subsequent model evolution.  
+:::  
 
-1. **Details and Reproducibility**: Recording experimental details and facilitating the repetition of experiments.
-2. **Comparison**: Comparing results of different experiments to analyze which changes led to performance improvements.
-3. **Team Collaboration**: Facilitating the sharing and comparison of experimental results among team members, thereby improving collaboration efficiency.
+![](./what-is-experiment-track/overview.jpg)  
 
-![](/assets/swanlab-overview.png)
+Closely related to **experiment tracking** are **visualization**, **reproducibility**, **experiment comparison**, and **team collaboration**.  
 
-**SwanLab** helps you track machine learning experiments with just a few lines of code and view and compare results in an interactive dashboard. The figure above shows an example dashboard where you can view and compare metrics from multiple experiments and analyze the key elements that lead to performance changes.
+1. **📊 Visualization**: Visualizing experiment tracking data through a UI interface allows trainers to **intuitively observe each step** of the experiment, **analyze metric trends**, and determine which **changes** led to improvements in model performance, thereby **enhancing overall model iteration efficiency**.  
 
-## How Does SwanLab Perform Experiment Tracking?
+![](./what-is-experiment-track/visualization.jpg)  
 
-With SwanLab, you can track machine learning experiments with a few lines of code. The tracking process is as follows:
+<br>  
 
-1. Create a SwanLab experiment.
-2. Store hyperparameter dictionaries (such as learning rate or model type) in your configuration (swanlab.config).
-3. Record metrics (swanlab.log) over time in the training loop, such as accuracy and loss.
+2. **♻️ Reproducibility**: Experiments often require **extensive trials** to progress from functional to usable to state-of-the-art (SOTA), and some excellent results may emerge in the early or middle stages. Without experiment tracking and visualization, trainers may struggle to recall these results, leading to the **loss or vague recollection** of valuable experimental outcomes. SwanLab's experiment tracking and visualization features enable trainers to **review** these results at any time, significantly improving reproducibility and overall efficiency.  
 
-The following pseudocode demonstrates a common **SwanLab experiment tracking workflow**:
+![](./what-is-experiment-track/card.jpg)  
 
-```python
-# 1. Create a SwanLab experiment
-swanlab.init(project="my-project-name")
+<br>  
 
-# 2. Store model inputs or hyperparameters
-swanlab.config.learning_rate = 0.01
+3. **🆚 Experiment Comparison**: Trainers can **easily compare** multiple sets of experimental results using SwanLab, analyze which changes led to performance improvements, and **quickly identify the optimal training strategy**.  
 
-# Write your model training code here
-...
+![](./what-is-experiment-track/table.jpg)  
 
-# 3. Record metrics over time to visualize performance
-swanlab.log({"loss": loss})
-```
+<br>  
 
-## How to Get Started?
+4. **👥 Team Collaboration**: Through SwanLab's **experiment sharing, team spaces, and multi-user collaboration** features, seamlessly share training progress and insights, break down information silos among team members, and **improve team collaboration efficiency**.  
 
-Explore the following resources to learn about SwanLab experiment tracking:
+## How Does SwanLab Perform Experiment Tracking?  
 
-- Read the [Quick Start](/en/guide_cloud/general/quick-start)
-- Explore this chapter to learn how to:
-  - [Create an Experiment](/en/guide_cloud/experiment_track/create-experiment)
-  - [Configure an Experiment](/en/guide_cloud/experiment_track/set-experiment-config.md)
-  - [Log Metrics](/en/guide_cloud/experiment_track/log-experiment-metric.md)
-  - [View Experiment Results](/en/guide_cloud/experiment_track/view-result.md)
-  - Explore the SwanLab Python library in the [API Documentation](/en/api/api-index).
+**SwanLab** enables you to track machine learning experiments with just a few lines of code and view and compare results in an interactive dashboard. The tracking process:  
+
+1. Create a SwanLab experiment.  
+2. Store hyperparameter dictionaries (e.g., learning rate or model type) in your configuration (`swanlab.config`).  
+3. Log metrics (e.g., accuracy `acc` and loss `loss`) over time during the training loop (`swanlab.log`).  
+
+The following pseudocode demonstrates a typical **SwanLab experiment tracking workflow**:  
+
+```python  
+# 1. Create a SwanLab experiment  
+swanlab.init(project="my-project-name")  
+
+# 2. Store model inputs or hyperparameters  
+swanlab.config.learning_rate = 0.01  
+
+# Model training code goes here  
+...  
+
+# 3. Log metrics over time to visualize performance  
+swanlab.log({"loss": loss})  
+```  
+
+## How to Get Started?  
+
+Explore the following resources to learn about SwanLab experiment tracking:  
+
+- Read the [Quick Start](/en/guide_cloud/general/quick-start) guide.  
+- Explore this chapter to learn how to:  
+  - [Create an experiment](/en/guide_cloud/experiment_track/create-experiment)  
+  - [Configure an experiment](/en/guide_cloud/experiment_track/set-experiment-config.md)  
+  - [Log metrics](/en/guide_cloud/experiment_track/log-experiment-metric.md)  
+  - [View experiment results](/en/guide_cloud/experiment_track/view-result.md)  
+- Explore the SwanLab Python library in the [API documentation](/en/api/api-index).
