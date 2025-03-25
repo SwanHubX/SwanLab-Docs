@@ -57,7 +57,7 @@ from swanlab.plugin.notification import SlackCallback
 
 slack_callback = SlackCallback(
     webhook_url='https://hooks.slack.com/services/xxxx/xxxx/xxxx', 
-    language='zh'
+    language='en'
 )
 ```
 

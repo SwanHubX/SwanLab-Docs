@@ -46,7 +46,7 @@ from swanlab.plugin.notification import DiscordCallback
 
 discord_callback = DiscordCallback(
     webhook_url='https://discord.com/api/webhooks/xxxxx/xxx', 
-    language='zh'
+    language='en'
 )
 ```
 

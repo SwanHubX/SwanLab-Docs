@@ -382,6 +382,8 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
       { text: '飞书', link: 'notification-lark' },
       { text: '钉钉', link: 'notification-dingtalk' },
       { text: '企业微信', link: 'notification-wxwork' },
+      { text: 'Discord', link: 'notification-discord' },
+      { text: 'Slack', link: 'notification-slack' },
     ]
   },
   {
