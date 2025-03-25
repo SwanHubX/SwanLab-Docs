@@ -198,11 +198,11 @@ trainer.train()
 
 超参数自动记录：
 
-![ig-hf-transformers-gui-1](/assets/ig-hf-transformers-gui-1.png)
+![ig-hf-transformers-gui-1](./huggingface_transformers/card.jpg)
 
 指标记录：
 
-![ig-hf-transformers-gui-2](/assets/ig-hf-transformers-gui-2.png)
+![ig-hf-transformers-gui-2](./huggingface_transformers/chart.jpg)
 
 
 ### 4.5 拓展：增加更多回调

@@ -198,11 +198,11 @@ trainer.train()
 
 Automatically recorded hyperparameters:
 
-![ig-hf-transformers-gui-1](/assets/ig-hf-transformers-gui-1.png)
+![ig-hf-transformers-gui-1](./huggingface_transformers/card.jpg)
 
 Metrics recording:
 
-![ig-hf-transformers-gui-2](/assets/ig-hf-transformers-gui-2.png)
+![ig-hf-transformers-gui-2](./huggingface_transformers/chart.jpg)
 
 
 ### 4.5 Extension: Adding More Callbacks
