@@ -40,6 +40,15 @@ wandb.init()
 
 在上述这种代码写法中，`wandb.init()`的同时会初始化swanlab，项目名、实验名和配置和`wandb.init()`中的`project`、`name`、`config`一致，因此你不需要再手动初始化swanlab。
 
+:::info
+
+**`sync_wandb`支持设置两个参数：**
+
+- `mode`: swanlab的记录模式，支持cloud、local和disabled三种模式。
+- `wandb_run`: 如果此参数设置为**False**，则不会将数据上传到wandb，等同于设置wandb.init(mode="offline")
+
+:::
+
 ### 1.2 另一种写法
 
 另一种用法是先手动初始化swanlab，再运行wandb的代码。

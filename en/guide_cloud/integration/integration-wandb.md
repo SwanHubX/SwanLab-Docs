@@ -33,6 +33,15 @@ wandb.init()
 
 In the above code, `wandb.init()` will simultaneously initialize swanlab, with the project name, experiment name, and configuration matching the `project`, `name`, and `config` in `wandb.init()`. Therefore, you do not need to manually initialize swanlab.
 
+:::info
+
+**`sync_wandb` supports two parameters:**
+
+- `mode`: The recording mode of swanlab, supports `cloud`, `local`, and `disabled`.
+- `wandb_run`: If this parameter is set to **False**, the data will not be uploaded to wandb, equivalent to setting `wandb.init(mode="offline")`.
+
+:::
+
 ### 1.2 Alternative Approach
 
 Another approach is to manually initialize swanlab first, then run the wandb code.
