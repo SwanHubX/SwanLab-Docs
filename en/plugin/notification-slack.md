@@ -9,7 +9,7 @@ SwanLab plugins are open-source. You can view the [Github source code](https://g
 :::
 [[toc]]
 
-## 准备工作
+## Preparation
 
 ::: info References
 - [Slack-Sending messages using incoming webhooks](https://api.slack.com/messaging/webhooks)
