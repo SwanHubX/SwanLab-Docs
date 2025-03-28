@@ -276,6 +276,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'DQN CartPole', link: 'dqn_cartpole' },
+      { text: 'GRPO LLM RL', link: 'qwen_grpo' },
     ]
   },
   {
