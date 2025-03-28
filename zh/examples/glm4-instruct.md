@@ -90,7 +90,9 @@ trainer.train() # 开始训练，流程和TRL一样
 
 后文将完整的介绍如何使用TRL包完成大模型的指令遵从功能。
 
+
 ## GLM4介绍+模型准备
+
 
 ![chatglm_history](images/glm4-instruct/chatglm_history.png)
 
