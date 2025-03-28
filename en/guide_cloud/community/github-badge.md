@@ -1,11 +1,21 @@
-# Github README Badge
+# Github README Badges
 
-If you enjoy using SwanLab in your work and studies, feel free to add the SwanLab badge to your README:
+If you enjoy using SwanLab in your work and studies, feel free to add SwanLab badges to your README:
 
-[![swanlab](https://img.shields.io/badge/powered%20by-SwanLab-438440)](https://github.com/swanhubx/swanlab)
+## Badges
 
-Copy the following code into your README.md file:
+[![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge2.svg)](https://swanlab.cn)
 
+[![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn)
+
+Copy the following code into your README.md file (choose one):
+
+```markdown
+[![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge2.svg)](your experiment url)
+[![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](your experiment url)
 ```
-[![swanlab](https://img.shields.io/badge/powered%20by-SwanLab-438440)](https://github.com/swanhubx/swanlab)
-```
+
+## More Design Resources
+
+- [Iconfont](https://www.iconfont.cn/search/index?searchType=icon&q=swanlab)
+- [Github](https://github.com/SwanHubX/assets)

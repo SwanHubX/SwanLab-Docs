@@ -3,8 +3,7 @@
 
 Install SwanLab and start tracking your AI experiments in minutes
 
-![quick-start-1](/assets/quick-start.png)
-
+![quick-start-1](./quick_start/quick-start.png)
 
 ## 1. Install SwanLab
 
@@ -111,7 +110,7 @@ for epoch in range(2, run.config.epochs):
 Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of the metrics (accuracy and loss value) you recorded using SwanLab in each training step.
 
 
-![quick-start-1](/assets/quick-start-1.jpg)
+![quick-start-1](./quick_start/line-chart.png)
 
 
 ## What's next
@@ -127,4 +126,4 @@ Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of th
 After logging in to the SwanLab website, the API Key will be displayed on the [user settings](https://swanlab.cn/settings) page.
 
 ### 2. Can I use SwanLab offline?
-Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/offline-board.md) section for the specific process.
+Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/docker-deploy.md) section for the specific process.

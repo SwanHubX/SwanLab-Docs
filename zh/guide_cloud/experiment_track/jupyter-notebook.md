@@ -2,6 +2,8 @@
 
 将 SwanLab 与 Jupyter 结合使用，无需离开Notebook即可获得交互式可视化效果。
 
+![](./jupyter-notebook/swanlab-love-jupyter.jpg)
+
 ## 在Notebook中安装SwanLab
 
 ```bash

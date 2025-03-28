@@ -2,7 +2,7 @@
 
 使用SwanLab Python库记录训练每一步（step）的指标与媒体数据。
 
-SwanLab用 `swanlab.log()` 在训练循环中收集指标名和数据（key-value）。从脚本收集的数据将保存到你本地目录下的一个名为 `swanlog` 的目录（目录名可以由 `swanlab.init` 的 `logdir` 参数设置），然后同步到SwanLab的云端服务器。
+SwanLab用 `swanlab.log()` 在训练循环中收集指标名和数据（key-value），然后同步到云端服务器。
 
 ## 记录标量指标
 
@@ -69,6 +69,20 @@ for iter, (data, ground_truth) in enumerate(train_dataloader):
 ```
 
 需要注意的是，同一个指标名不允许出现2个相同的step的数据，一旦出现，SwanLab将保留先记录的数据，抛弃后记录的数据。
+
+## 打印指标
+
+也许你希望在训练循环中打印指标，可以通过 `print_to_console` 参数控制是否将指标打印到控制台（以`dict`的形式）：
+
+```python
+swanlab.log({"acc": acc}, print_to_console=True)
+```
+
+或者：
+
+```python
+print(swanlab.log({"acc": acc}))
+```
 
 ## 自动记录环境信息
 

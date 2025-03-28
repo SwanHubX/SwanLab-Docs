@@ -1,5 +1,8 @@
 # DQN-CartPole
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/RL-All-In-One/runs/vjbnl6y3l99k0sqrd0f2s/chart)
+
+
 > 训练过程：[RL-All-In-One](https://swanlab.cn/@ZeyiLin/RL-All-In-One/runs/vjbnl6y3l99k0sqrd0f2s/chart)
 >
 > 代码：[Zeyi-Lin/SwanBook-RL](https://github.com/Zeyi-Lin/SwanBook-RL/blob/main/dqn-cartpole.py)

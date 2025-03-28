@@ -1,9 +1,10 @@
 # 创建一个实验
 
-使用 SwanLab Python SDK 跟踪人工智能实验，然后你可以在交互式仪表板中查看结果。  
-本节将介绍如何创建一个SwanLab实验。
+使用 **SwanLab Python SDK** 跟踪人工智能实验，然后你可以在 在线交互式仪表板 中查看结果。  
 
-![](/assets/create-a-exp-1.jpg)
+![](./create-experiment/overview.jpg)
+
+本节将介绍如何创建一个SwanLab实验。
 
 ## 如何创建一个SwanLab实验?
 
@@ -18,7 +19,7 @@
 下面的代码片段展示了如何创建一个名为 **cat-dog-classification** 的新SwanLab项目。并为其添加了：
 
 1. **project**：项目名。
-1. **experiment**：实验名。实验名为当前实验的标识，以帮助您识别此实验。  
+1. **experiment_name**：实验名。实验名为当前实验的标识，以帮助您识别此实验。  
 2. **description**：描述。描述是对实验的详细介绍。
 
 ```python
@@ -113,10 +114,10 @@ for epoch in range(swanlab.config.epochs):
 ### 可视化你的实验
 
 使用SwanLab仪表盘作为管理和可视化人工智能模型结果的一站式节点。  
-可以可视化丰富的交互式图表，例如折线图、图像图表、音频图表等。  
+可以可视化丰富的交互式图表，例如折线图、图像图表、音频图表、3D点云图表等。  
 有关如何查看实验更多信息，请参阅[查看实验结果](/guide_cloud/experiment_track/view-result.md)。
 
-![](/assets/example-mnist.jpg)
+![](./create-experiment/show.jpg)
 
 
 ## 最佳实践

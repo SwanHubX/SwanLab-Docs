@@ -1,6 +1,6 @@
 # 记录媒体数据
 
-SwanLab 支持记录媒体数据（图像、音频、文本等）以直观地探索你的实验结果，实现模型的主观评估。
+SwanLab 支持记录媒体数据（图像、音频、文本、三维点云等）以直观地探索你的实验结果，实现模型的主观评估。
 
 ## 1.图像
 
@@ -133,6 +133,12 @@ swanlab.log({"examples": text_list})
 ```
 
 ![alt text](/assets/log-media-text.png)
+
+## 4. 3D点云
+
+![](/zh/api/py-object3d/demo.png)
+
+请参考此文档：[API-Oject3D](/api/py-object3d)
 
 
 ## Q&A

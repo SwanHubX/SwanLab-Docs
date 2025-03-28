@@ -1,5 +1,7 @@
 # 从零预训练一个自己的大模型
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)
+
 大语言模型（Large Language Model，简称LLM），指使用大量文本数据训练的深度学习模型，可以生成自然语言文本或理解语言文本的含义。
 
 ![llm](/assets/examples/pretrain_llm/llm.png)
@@ -147,7 +149,7 @@ print(args)
 使用transformers自带的train开始训练，并且引入swanlab作为可视化日志记录
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 trainer = transformers.Trainer(
     model=model,
     tokenizer=tokenizer,
@@ -194,7 +196,7 @@ swanlab login
 import datasets
 import transformers
 import swanlab
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import modelscope
 
 def main():
@@ -353,59 +355,6 @@ print("GENERATE:", pipe("人工智能", num_return_sequences=1)[0]["generated_te
 （模型训练ing，可以在[https://swanlab.cn/@ShaohonChen/WikiLLM/overview](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)实时查看训练进展和推理效果）
 <!-- ![result]() -->
 
-## 使用SwanLab Launch用远程GPU进行训练
-
-::: info
-确保swanlab版本为0.3.19
-:::
-
-预训练LLM对于GPU的算力和显存要求非常高，本文推荐使用[SwanLab Launch](/api/cli-swanlab-remote-gpu)利用云上GPU进行预训练。
-
-首先使用`swanlab upload -n WIKI_CN WIKI_CN`命令上传数据集
-
-![upload](/assets/examples/pretrain_llm/launch_upload.png)
-
-上传完后会获得数据集的ID（如下图）
-
-![upload](/assets/examples/pretrain_llm/launch_upload2.png)
-
-也可以使用`swanlab task list`查看上传的数据集ID
-
-![show_id](/assets/examples/pretrain_llm/show_id.png)
-
-参考[SwanLab Launch官方文档](/api/cli-swanlab-remote-gpu)，本地创建`swanlab.yaml`文件并写入如下信息
-
-```yaml
-apiVersion: swanlab/v1
-kind: Folder
-metadata:
-  name: WikiLLM
-  desc: Pretrain LLM using wiki data
-spec:
-  python: "3.10"
-  entry: "pretrain.py"
-  volumes:
-    - name: "WIKI_CN"
-      id: "<替换为对应数据集的ID>"
-  exclude:
-    - "WIKI_CN"
-```
-
-使用如下命令开启远程训练：
-
-```bash
-swanlab launch -f swanlab.yaml
-```
-
-即可开启远程训练！可以在SwanLab上跟踪远程实验日志。
-
-![remote_log](/assets/examples/pretrain_llm/remote_log.png)
-
-可以看到该实验的硬件为远程的H800服务器，速度还是很快的，相比于A100大概能提升2-3倍的速度
-
-![remote_devices](/assets/examples/pretrain_llm/remote_devices.png)
-
-关于如何查看、终止远程实验，可参考[SwanLab Launch官方文档](/api/cli-swanlab-remote-gpu)
 
 ## 参考链接
 

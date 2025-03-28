@@ -145,7 +145,7 @@ print(args)
 Use the built-in training from Transformers and integrate SwanLab for visualization and logging:
 
 ```python
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 trainer = transformers.Trainer(
     model=model,
     tokenizer=tokenizer,
@@ -188,7 +188,7 @@ Project directory structure:
 import datasets
 import transformers
 import swanlab
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import modelscope
 
 def main():
@@ -345,53 +345,3 @@ Inference results are as follows:
 
 (The model is still training; you can check the training progress and inference results in real-time at [https://swanlab.cn/@ShaohonChen/WikiLLM/overview](https://swanlab.cn/@ShaohonChen/WikiLLM/overview))
 <!-- ![result]() -->
-
-## Using SwanLab Launch to Train on Remote GPUs
-
-::: info
-Ensure the swanlab version is 0.3.19
-:::
-
-Pretraining LLMs requires significant GPU compute power and memory. This article recommends using [SwanLab Launch](/en/api/cli-swanlab-remote-gpu) to leverage cloud GPUs for pretraining.
-
-First, upload the dataset using the `swanlab upload -n WIKI_CN WIKI_CN` command:
-
-![upload](/assets/examples/pretrain_llm/launch_upload.png)
-
-After uploading, you will receive the dataset ID (as shown below):
-
-![upload](/assets/examples/pretrain_llm/launch_upload2.png)
-
-You can also use `swanlab task list` to view the uploaded dataset ID:
-
-![show_id](/assets/examples/pretrain_llm/show_id.png)
-
-Refer to the [SwanLab Launch official documentation](/en/api/cli-swanlab-remote-gpu) to create a `swanlab.yaml` file locally and enter the following information:
-
-```yaml
-apiVersion: swanlab/v1
-kind: Folder
-metadata:
-  name: WikiLLM
-  desc: Pretrain LLM using wiki data
-spec:
-  python: "3.10"
-  entry: "pretrain.py"
-  volumes:
-    - name: "WIKI_CN"
-      id: "<replace with the corresponding dataset ID>"
-  exclude:
-    - "WIKI_CN"
-```
-
-Start remote training with the following command:
-
-```bash
-swanlab launch -f swanlab.yaml
-```
-
-This will start remote training! You can track the remote experiment logs on SwanLab.
-
-![remote_log](/assets/examples/pretrain_llm/remote_log.png)
-
-You can see that

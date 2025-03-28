@@ -4,7 +4,7 @@
 Object Detection, Computer Vision
 :::
 
-[Online Demo](https://swanlab.cn/@ZeyiLin/ultratest/runs/yux7vclmsmmsar9ear7u5/chart) | [YOLO Cat and Dog Detection Tutorial](https://zhuanlan.zhihu.com/p/700347880)
+[Online Demo](https://swanlab.cn/@ZeyiLin/ultratest/runs/yux7vclmsmmsar9ear7u5/chart) | [YOLO Cat and Dog Detection Tutorial](https://zhuanlan.zhihu.com/p/702525559)
 
 ## Overview
 

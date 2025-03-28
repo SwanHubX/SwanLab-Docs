@@ -1,6 +1,8 @@
 # Stable Diffusion文生图微调
 
-[知乎教程](https://zhuanlan.zhihu.com/p/703921817) | [在线Demo](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/664kdc104y0v90i8221hf/chart)
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
+
+[知乎教程](https://zhuanlan.zhihu.com/p/703921817) | [在线Demo](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
 
 [Stable Diffusion 1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5/tree/main)（SD1.5）是由Stability AI在2022年8月22日开源的文生图模型，是SD最经典也是社区最活跃的模型之一。
 
@@ -14,7 +16,7 @@
 在本文中，我们会使用[SD-1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5)模型在[火影忍者](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)数据集上做训练，同时使用[SwanLab](https://swanlab.cn)监控训练过程、评估模型效果。
 
 - 代码：[Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
-- 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)
+- 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr)
 - 模型：[runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - 数据集：[lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
@@ -43,7 +45,7 @@ transformers
 pip install swanlab diffusers datasets accelerate torchvision transformers
 ```
 
-> 本文的代码测试于diffusers==0.29.0、accelerate==0.30.1、datasets==2.18.0、transformers==4.41.2、swanlab==0.3.11，更多库版本可查看[SwanLab记录的Python环境](https://swanlab.cn/@ZeyiLin/Text2Image/runs/21flglg1lbnqo67a6f1kr/environment/requirements)。
+> 本文的代码测试于diffusers==0.29.0、accelerate==0.30.1、datasets==2.18.0、transformers==4.41.2、swanlab==0.3.11，更多库版本可查看[SwanLab记录的Python环境](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)。
 
 
 ## 2.准备数据集
@@ -228,7 +230,7 @@ image.save("result.png")
 ## 相关链接
 
 - 代码：[Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
-- 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)
+- 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
 - 模型：[runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - 数据集：[lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)

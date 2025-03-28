@@ -1,16 +1,14 @@
 # Welcome to SwanLab
 
-[SwanLab.cn](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [Quick Start](/en/guide_cloud/general/quick-start.md) · [Sync Wandb](/en/guide_cloud/integration/integration-wandb.md#_1-synchronized-tracking)
+[SwanLab.cn](https://swanlab.cn) · [Integration](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [Quick Start](/en/guide_cloud/general/quick-start.md) · [Sync Wandb](/en/guide_cloud/integration/integration-wandb.md#_1-synchronized-tracking)
 
 
-<!-- ![](/assets/swanlab-show.png) -->
-
-![alt text](/assets/product-swanlab-1.png)
-
-::: warning 👋 We are developing a self-hosted version
-Expected to be released in March 2025, supporting Docker deployment, with the same features as the cloud version
+::: warning 🎉 Self-Hosted Edition Officially Launched!
+The Self-Hosted Edition allows you to enjoy functionalities comparable to the public cloud version on your local environment. For deployment instructions, refer to [this document](/guide_cloud/self_host/docker-deploy.md).
 :::
 
+
+![alt text](/assets/product-swanlab-1.png)
 
 SwanLab is an open-source, lightweight AI experiment tracking tool that provides a platform for tracking, comparing, and collaborating on experiments, designed to accelerate the R&D efficiency of AI R&D teams by 100 times.
 
@@ -40,8 +38,8 @@ We hope that the above information and this guide can help you understand this p
 
 **1. 📊Experiment metrics and hyperparameter tracking**: Minimal code embedded in your machine learning pipeline to track and record key training metrics
  - Free hyperparameter and experiment configuration recording
-- **Supported metadata types**: scalar metrics, images, audio, text, etc.
-- **Supported chart types**: line chart, media chart (image, audio, text), etc.
+- **Supported metadata types**: scalar metrics, images, audio, text, 3D point cloud, etc.
+- **Supported chart types**: line chart, media chart (image, audio, text, 3D point cloud), etc.
 - **Automatic recording**: console logging, GPU hardware, Git information, Python interpreter, Python library list, code directory
 2. **⚡️Comprehensive framework integration**: PyTorch, PyTorch Lightning, 🤗HuggingFace Transformers, MMEngine, Ultralytics and other mainstream frameworks
 3. **📦Organize experiments**: Centralized dashboard, quickly manage multiple projects and experiments, and get a quick overview of the overall training through a holistic view
@@ -56,7 +54,7 @@ We hope that the above information and this guide can help you understand this p
 - [Quick Start](/en/guide_cloud/general/quick-start.md): SwanLab introductory tutorial, master experiment tracking in five minutes!
 - [API documentation](/en/api/api-index.md): Complete API documentation
 - [Online support](/en/guide_cloud/community/online-support.md): Join the community, provide feedback and contact us
-- [Self-hosting](/en/guide_cloud/self_host/offline-board.md): Self-hosting (offline version) usage tutorial
+- [Self-hosting](/en/guide_cloud/self_host/docker-deploy.md): Self-hosting (private deployment) usage tutorial
 - [Cases](/en/examples/mnist.md): View cases of SwanLab with various deep learning tasks
 
 ## Comparison with familiar products
@@ -80,6 +78,57 @@ We hope that the above information and this guide can help you understand this p
 - Weights and Biases is a closed-source MLOps platform that must be used online
 - SwanLab supports not only online use, but also open-source, free, and self-hosted versions
 
+
+## Training Framework Integration
+
+Use your favorite framework with SwanLab!  
+Below is a list of frameworks we have integrated, please submit [Issue](https://github.com/swanhubx/swanlab/issues) to feedback the framework you want to integrate.
+
+**Basic Frameworks**
+- [PyTorch](/en/guide_cloud/integration/integration-pytorch.html)
+- [MindSpore](/en/guide_cloud/integration/integration-ascend.html)
+- [Keras](/en/guide_cloud/integration/integration-keras.html)
+
+**Specialized/Fine-tuned Frameworks**
+- [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
+- [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
+- [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
+- [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
+- [DiffSynth-Studio](/guide_cloud/integration/integration-diffsynth-studio.html)
+- [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
+- [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
+- [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.html)
+- [XTuner](/guide_cloud/integration/integration-xtuner.html)
+- [MMEngine](/guide_cloud/integration/integration-mmengine.html)
+- [FastAI](/guide_cloud/integration/integration-fastai.html)
+- [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
+- [XGBoost](/guide_cloud/integration/integration-xgboost.html)
+
+
+**Computer Vision**
+- [Ultralytics](/en/guide_cloud/integration/integration-ultralytics.html)
+- [MMDetection](/en/guide_cloud/integration/integration-mmdetection.html)
+- [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation.html)
+- [PaddleDetection](/en/guide_cloud/integration/integration-paddledetection.html)
+- [PaddleYOLO](/en/guide_cloud/integration/integration-paddleyolo.html)
+
+**Reinforcement Learning**
+- [Stable Baseline3](/en/guide_cloud/integration/integration-sb3.html)
+- [veRL](/en/guide_cloud/integration/integration-verl.html)
+- [HuggingFace trl](/en/guide_cloud/integration/integration-huggingface-trl.html)
+- [EasyR1](/en/guide_cloud/integration/integration-easyr1.html)
+
+**Others:**
+- [Tensorboard](/en/guide_cloud/integration/integration-tensorboard.html)
+- [Weights&Biases](/en/guide_cloud/integration/integration-wandb.html)
+- [MLFlow](/en/guide_cloud/integration/integration-mlflow.html)
+- [HuggingFace Accelerate](/en/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [Hydra](/en/guide_cloud/integration/integration-hydra.html)
+- [Omegaconf](/en/guide_cloud/integration/integration-omegaconf.html)
+- [OpenAI](/en/guide_cloud/integration/integration-openai.html)
+- [ZhipuAI](/en/guide_cloud/integration/integration-zhipuai.html)
+
+[更多集成](/en/guide_cloud/integration/integration-pytorch-lightning.html)
 
 ## Online Support
 

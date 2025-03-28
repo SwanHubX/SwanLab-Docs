@@ -6,7 +6,7 @@
 
 ![](/zh/guide_cloud/integration/llama_factory/0.png)
 
-We are thrilled to announce the partnership between **SwanLab** and **LLaMA Factory**, dedicated to providing Chinese trainers with a high-quality and efficient large model training experience.
+We are thrilled to announce the partnership between **SwanLab** and [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory), dedicated to providing Chinese trainers with a high-quality and efficient large model training experience.
 
 Now, when you start training with the new version of LLaMA Factory, you can check the "Use SwanLab" option in the "SwanLab configurations" card in the WebUI to track, record, and visualize this large model fine-tuning through SwanLab's powerful training dashboard.
 
@@ -40,7 +40,7 @@ cd LLaMA-Factory
 pip install -e ".[torch,metrics,swanlab]"
 ```
 
-> If you are an Ascend NPU user, you can visit: https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%AE%89%E8%A3%85-llama-factory for the Ascend NPU version installation tutorial.
+> If you are an Ascend NPU user, you can visit: [Huawei NPU Adaptation](https://llamafactory.readthedocs.io/zh-cn/latest/advanced/npu.html) for the Ascend NPU version installation tutorial.
 
 ## 2. Start Training with LLaMA Board
 

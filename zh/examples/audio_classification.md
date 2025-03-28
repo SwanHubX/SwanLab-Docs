@@ -4,6 +4,8 @@
 音频分类、音频处理入门
 :::
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification-simple/charts)
+
 音频分类任务是指将音频信号按照其内容的类别归属进行划分。例如，区分一段音频是音乐、语音、环境声音（如鸟鸣、雨声、机器运转声）还是动物叫声等。其目的是通过自动分类的方式，高效地对大量音频数据进行组织、检索和理解。
 
 ![alt text](/assets/examples/audio_classification/example-audio-classification-1.png)

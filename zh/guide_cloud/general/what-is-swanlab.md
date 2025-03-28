@@ -1,17 +1,12 @@
 # 欢迎使用SwanLab 
 
-[官网](https://swanlab.cn) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
+[官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
 
-<!-- ![](/assets/swanlab-show.png) -->
-
-<!-- ![alt text](/assets/product-swanlab-1.png) -->
-
-::: warning 👋 我们正在开发私有化部署版
-预计25年3月份与大家见面，支持Docker部署，功能与云端版一致
+::: warning 🎉 私有化部署版正式上线！
+私有化部署版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/guide_cloud/self_host/docker-deploy.md)
 :::
 
 ![alt text](/assets/product-swanlab-1.png)
-
 
 
 SwanLab 是一款**开源、轻量**的 AI 模型训练跟踪与可视化工具，提供了一个**跟踪、记录、比较、和协作实验**的平台。
@@ -44,8 +39,8 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 
 - 支持**云端**使用（类似Weights & Biases），随时随地查看训练进展。[手机看实验的方法](https://docs.swanlab.cn/guide_cloud/general/app.html)
 - 支持**超参数记录**与表格展示
-- **支持的元数据类型**：标量指标、图像、音频、文本、...
-- **支持的图表类型**：折线图、媒体图（图像、音频、文本）、...
+- **支持的元数据类型**：标量指标、图像、音频、文本、3D点云...
+- **支持的图表类型**：折线图、媒体图（图像、音频、文本、3D点云）、...
 - **后台自动记录**：日志logging、硬件环境、Git 仓库、Python 环境、Python 库列表、项目运行目录
 
 **2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetetion、LightGBM、XGBoost、Keras、Tensorboard、Weights&Biases、OpenAI、Swift、XTuner、Stable Baseline3、Hydra 在内的 **30+** 框架
@@ -70,7 +65,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [快速开始](/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
 - [API文档](/api/api-index.md): 完整的API文档
 - [在线支持](/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
-- [自托管](/guide_cloud/self_host/offline-board.md): 自托管（离线版本）使用方式教程
+- [自托管](/guide_cloud/self_host/docker-deploy.md): 自托管（私有化部署）使用方式教程
 - [案例](/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
 
 ## 与熟悉产品的对比
@@ -95,6 +90,57 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - Weights and Biases 是一个必须联网使用的闭源MLOps平台
 
 - SwanLab 不仅支持联网使用，也支持开源、免费、自托管的版本
+
+## 训练框架集成
+
+将你最喜欢的框架与 SwanLab 结合使用！  
+下面是我们已集成的框架列表，欢迎提交 [Issue](https://github.com/swanhubx/swanlab/issues) 来反馈你想要集成的框架。
+
+**基础框架**
+- [PyTorch](/guide_cloud/integration/integration-pytorch.html)
+- [MindSpore](/guide_cloud/integration/integration-ascend.html)
+- [Keras](/guide_cloud/integration/integration-keras.html)
+
+**专有/微调框架**
+- [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
+- [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
+- [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
+- [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
+- [DiffSynth-Studio](/guide_cloud/integration/integration-diffsynth-studio.html)
+- [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
+- [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
+- [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.html)
+- [XTuner](/guide_cloud/integration/integration-xtuner.html)
+- [MMEngine](/guide_cloud/integration/integration-mmengine.html)
+- [FastAI](/guide_cloud/integration/integration-fastai.html)
+- [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
+- [XGBoost](/guide_cloud/integration/integration-xgboost.html)
+
+
+**计算机视觉**
+- [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
+- [MMDetection](/guide_cloud/integration/integration-mmdetection.html)
+- [MMSegmentation](/guide_cloud/integration/integration-mmsegmentation.html)
+- [PaddleDetection](/guide_cloud/integration/integration-paddledetection.html)
+- [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
+
+**强化学习**
+- [Stable Baseline3](/guide_cloud/integration/integration-sb3.html)
+- [veRL](/guide_cloud/integration/integration-verl.html)
+- [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
+- [EasyR1](/guide_cloud/integration/integration-easyr1.html)
+
+**其他框架：**
+- [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
+- [Weights&Biases](/guide_cloud/integration/integration-wandb.html)
+- [MLFlow](/guide_cloud/integration/integration-mlflow.html)
+- [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [Hydra](/guide_cloud/integration/integration-hydra.html)
+- [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)
+- [OpenAI](/guide_cloud/integration/integration-openai.html)
+- [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)
+
+[更多集成](/guide_cloud/integration/integration-pytorch-lightning.html)
 
 ## 在线支持
 

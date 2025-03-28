@@ -45,7 +45,7 @@ The IMDB dataset labels 1 as positive and 0 as negative.
 import torch
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import swanlab
 
 def predict(text, model, tokenizer, CLASS_NAME):

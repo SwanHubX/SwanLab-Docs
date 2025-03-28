@@ -2,6 +2,7 @@
 
 Combine SwanLab with Jupyter to get interactive visualizations without leaving the Notebook.
 
+![swanlab-love-jupyter](./jupyter-notebook/swanlab-love-jupyter.jpg)
 ## Install SwanLab in Notebook
 
 ```bash

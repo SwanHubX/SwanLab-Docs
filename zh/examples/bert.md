@@ -4,6 +4,8 @@
 自然语言处理、文本分类、机器学习入门
 :::
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/BERT/charts)
+
 [在线Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [知乎](https://zhuanlan.zhihu.com/p/699441531)  | [美团外卖评论分类](https://zhuanlan.zhihu.com/p/701460910)
 
 ## 概述
@@ -46,7 +48,7 @@ IMDB数据集的1是positive，0是negative。
 import torch
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 import swanlab
 
 def predict(text, model, tokenizer, CLASS_NAME):

@@ -4,7 +4,7 @@
 图像分类、机器学习入门、灰度图像
 :::
 
-[在线实验Demo](https://swanlab.cn/@ZeyiLin/MNIST-example/runs/4plp6w0qehoqpt0uq2tcy/chart)
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/MNIST-example/runs/4plp6w0qehoqpt0uq2tcy/chart)
 
 [![](/assets/colab.svg)](https://colab.research.google.com/drive/1Au8aXxU2o0QNWSzGXGsTdHggighXQMNu?usp=sharing)
 

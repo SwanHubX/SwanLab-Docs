@@ -6,7 +6,10 @@ swanlab login [OPTIONS]
 
 | 选项 | 描述 |
 | --- | --- |
-| `--relogin` | 重新登录。|
+| `-r`, `--relogin` | 重新登录。|
+| `-h`, `--host` | 指定SwanLab服务所在的主机。比如`http://localhost:8000`。|
+| `-k`, `--api-key` | 指定API Key。如果您不喜欢使用命令行来输入 API 密钥，这将允许自动登录。|
+| `-w`, `--web-host` | 指定SwanLab前端所在的Web主机。|
 
 ## 介绍
 
@@ -18,7 +21,16 @@ swanlab login [OPTIONS]
 swanlab login
 ```
 
-登录过一次后，凭证会保存到本地，无需再次通过`swanlab.login`或`swanlab login`登录。
+登录过一次后，凭证会保存到本地，并覆盖之前登录过的凭证，无需再次通过`swanlab.login`或`swanlab login`登录。
+
+> 如果你不希望凭证保存在本地，请在python脚本中使用[swanlab.login()](./py-login.md)进行登录。
+
+如果你的电脑不太适合命令行粘贴API Key（比如一些Windows CMD）的方式登录，可以使用：
+
+```bash
+swanlab login -k <api-key>
+```
+
 
 ## 重新登录
 
@@ -35,3 +47,10 @@ swanlab login --relogin
 ```bash
 swanlab logout
 ```
+
+## 登录到私有化服务
+
+```bash
+swanlab login --host <host>
+```
+

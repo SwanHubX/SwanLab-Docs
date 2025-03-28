@@ -621,3 +621,4 @@ export LOCAL_ASCEND=/usr/local/Ascend # 设置为软件包的实际安装路径
 echo "source ${LOCAL_ASCEND}/ascend-toolkit/set_env.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
+

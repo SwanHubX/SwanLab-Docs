@@ -7,41 +7,45 @@ titleTemplate: Advanced AI Team Collaboration and Model Innovation Engine
 hero:
   name: SwanLab
   text: Track and Visualize Your AI Experiments
-  tagline: One-stop Experiment Tracking and Training Visualization Tool
+  tagline: A deep learning training tracking and visualization tool that supports both cloud and offline use, compatible with over 30 mainstream AI training frameworks.
   actions:
-    - theme: brand
+    - theme: alt
       text: Documentation
       link: /en/guide_cloud/general/what-is-swanlab.md
-    - theme: brand
+    - theme: alt
       text: Website
       link: https://swanlab.cn
-    - theme: alt
-      text: Docs GitHub
-      link: https://github.com/SwanHubX/SwanLab-Docs
+    - theme: github
+      text: GitHub
+      link: https://github.com/SwanHubX/SwanLab
   image:
     src: /page.png
     alt: VitePress
 
 features:
-  - icon: 🚢
-    title: Quick Start
+  - title: 🚢 Quick Start
     details: Install SwanLab and start tracking your AI experiments in minutes.
     link: /en/guide_cloud/general/quick-start.md
   
-  - icon: 📚
-    title: Examples
+  - title: 📚 Examples
     details: SwanLab official examples, better understand the role and function of SwanLab in the AI pipeline.
     link: /en/examples/mnist
   
-  - icon: 🤗
-    title: Integration
+  - title: 🤗 Integration
     details: Integration documentation with HuggingFace Transformers, PyTorch Lightning, Hydra, etc.
     link: /en/guide_cloud/integration/integration-pytorch-lightning.md
 
-  - icon: ⚡️
-    title: API Docs
+  - title: ⚡️ API Docs
     details: Complete API documentation for the Python library and CLI.
     link: en/api/api-index
+
+  - title: 🔌 Plugin
+    details: Extend the functionality of SwanLab.
+    link: /en/plugin/plugin-index.md
+
+  - title: 💻 Self-hosted
+    details: Docker deployment and enterprise version.
+    link: /en/guide_cloud/self_host/docker-deploy.md
 
 ---
 
@@ -64,6 +68,60 @@ features:
   :root {
     --vp-home-hero-image-filter: blur(68px);
   }
+}
+
+/* 自定义主题按钮样式 */
+.VPButton.alt {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.VPButton.alt::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("/guide.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: var(--icon-filter, none);
+}
+
+/* 黑夜模式适配 */
+.dark .VPButton.alt::before {
+  --icon-filter: invert(1);
+}
+
+/* 为"立即使用"按钮设置不同的图标 */
+.VPButton.alt[href="https://swanlab.cn"]::before {
+  background-image: url("/icon_single.svg");
+}
+
+/* 自定义主题按钮样式 */
+.VPButton.github {
+  color: white;
+  background-color: #121826;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.VPButton.github::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("/github.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.VPButton.github:hover {
+  color: white;
+  background-color:rgb(39, 39, 39);
 }
 </style>
 

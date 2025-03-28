@@ -4,6 +4,9 @@
 文本分类，大语言模型，大模型微调
 :::
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart)
+
+
 [实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart) | [Qwen2微调教程](https://zhuanlan.zhihu.com/p/702491999)
 
 ## 概述
@@ -91,7 +94,7 @@ import pandas as pd
 import torch
 from datasets import Dataset
 from modelscope import snapshot_download, AutoTokenizer
-from swanlab.integration.huggingface import SwanLabCallback
+from swanlab.integration.transformers import SwanLabCallback
 from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForSeq2Seq
 import os

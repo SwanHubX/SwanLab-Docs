@@ -8,34 +8,36 @@ init(
     description: str = None,
     config: Union[dict, str] = None,
     logdir: str = None,
-    suffix: str = "default",
     mode: str = "cloud",
     load: str = None,
     public: bool = None,
+    callbacks: list = None,
     **kwargs,
 )
 ```
 
-| Parameter     | Description |
-|---------------|-------------|
-| project       | (str) Project name. If not specified, the name of the running directory is used. |
-| workspace     | (str) Workspace. By default, the experiment is synchronized to your personal space. If you want to upload to an organization, fill in the organization's username. |
-| experiment_name | (str) Experiment name. If not specified, it defaults to "exp". The full experiment name is composed of `experiment_name + "_" + suffix`. |
-| description   | (str) Experiment description. If not specified, it defaults to None. |
-| config        | (dict, str) Experiment configuration. You can record some hyperparameters and other information here. Supports passing in configuration file paths, supports yaml and json files. |
-| logdir        | (str) Log file storage path. Defaults to `swanlog`. |
-| suffix        | (str, None, bool) Suffix for `experiment_name`. The full experiment name is composed of `experiment_name` and `suffix`. <br> The default value is "default", which means the default suffix rule is `'%b%d-%h-%m-%s'`, for example: `Feb03_14-45-37`. <br> Setting it to `None` or `False` will not add a suffix. |
-| mode          | (str) Sets the mode for creating the SwanLab experiment. Options include "cloud", "local", "disabled". Defaults to "cloud". <br> `cloud`: Uploads the experiment to the cloud. <br> `local`: Does not upload to the cloud but records the experiment locally. <br> `disabled`: Does not upload or record. |
-| load          | (str) Path to the configuration file to load. Supports yaml and json files. |
-| public        | (bool) Sets the visibility of the SwanLab project created directly by code. Defaults to False, i.e., private. |
+| Parameter         | Description |
+|-------------------|-------------|
+| project           | (str) The name of the project. If not specified, the name of the current working directory will be used. |
+| workspace         | (str) The workspace. By default, experiments are synchronized to your personal space. If you want to upload to an organization, specify the organization's username. |
+| experiment_name   | (str) The name of the experiment. If not specified, it will default to a format like "swan-1" (animal name + sequence number). |
+| description       | (str) A description of the experiment. If not specified, it defaults to None. |
+| config            | (dict, str) Configuration for the experiment. You can record hyperparameters and other information here. Supports passing a configuration file path (yaml or json). |
+| logdir            | (str) The path to store offline dashboard log files. Defaults to `swanlog`. |
+| mode              | (str) Sets the mode for creating SwanLab experiments. Options are "cloud", "local", or "disabled". Default is "cloud".<br>`cloud`: Uploads the experiment to the cloud (public or private deployment).<br>`local`: Does not upload to the cloud but records experiment information locally.<br>`disabled`: Neither uploads nor records. |
+| load              | (str) The path to a configuration file to load. Supports yaml and json files. |
+| public            | (bool) Sets the visibility of the SwanLab project created directly via code. Default is False (private). |
+| callbacks         | (list) Sets experiment callback functions. Supports subclasses of `swankit.callback.SwanKitCallback`. |
+| name              | (str) Same effect as `experiment_name`. Lower priority than `experiment_name`. |
+| notes             | (str) Same effect as `description`. Lower priority than `description`. |
 
 ## Introduction
 
-- In the machine learning training process, we can add `swandb.init()` at the beginning of the training and testing scripts. SwanLab will track each step of the machine learning process.
+• In machine learning workflows, you can add `swandb.init()` at the beginning of training and testing scripts. SwanLab will track every step of the machine learning process.
 
-- `swanlab.init()` generates a new background process to record data into the experiment. By default, it also synchronizes the data to swanlab.pro so that you can see the visualization results online in real-time.
+• `swanlab.init()` spawns a new background process to log data to the experiment. By default, it also synchronizes the data to swanlab.cn, allowing you to view real-time visualizations online.
 
-- Before using `swanlab.log()` to record data, you need to call `swanlab.init()`:
+• Before using `swanlab.log()` to record data, you must call `swanlab.init()`:
 
 ```python
 import swanlab
@@ -44,7 +46,7 @@ swanlab.init()
 swanlab.log({"loss": 0.1846})
 ```
 
-- Calling `swanlab.init()` returns an object of type `SwanLabRun`, which can also perform `log` operations:
+• Calling `swanlab.init()` returns an object of type `SwanLabRun`, which can also perform `log` operations:
 
 ```python
 import swanlab
@@ -53,7 +55,7 @@ run = swanlab.init()
 run.log({"loss": 0.1846})
 ```
 
-- At the end of the script, we will automatically call `swanlab.finish` to end the SwanLab experiment. However, if `swanlab.init()` is called from a subprocess, such as in a Jupyter notebook, you must explicitly call `swanlab.finish` at the end of the subprocess.
+• At the end of the script, `swanlab.finish` will be automatically called to conclude the SwanLab experiment. However, if `swanlab.init()` is called from a subprocess (e.g., in a Jupyter notebook), you must explicitly call `swanlab.finish` at the end of the subprocess.
 
 ```python
 import swanlab
@@ -62,7 +64,7 @@ swanlab.init()
 swanlab.finish()
 ```
 
-## More Usage
+## Additional Usage
 
 ### Setting Project, Experiment Name, and Description
 
@@ -70,21 +72,24 @@ swanlab.finish()
 swanlab.init(
     project="cats-detection",
     experiment_name="YoloX-baseline",
-    description="Baseline experiment for the YoloX detection model, mainly used for subsequent comparisons.",
+    description="Baseline experiment for the YoloX detection model, primarily for subsequent comparisons.",
 )
 ```
 
 ### Setting the Log File Save Location
 
+> Only valid when mode="local"
+
 The following code demonstrates how to save log files to a custom directory:
 
 ```python
 swanlab.init(
-    logdir="path/to/my_custom_dir"
+    logdir="path/to/my_custom_dir",
+    mode="local",
 )
 ```
 
-### Adding Experiment-related Metadata to the Experiment Configuration
+### Adding Experiment Metadata to the Configuration
 
 ```python
 swanlab.init(
@@ -103,6 +108,20 @@ swanlab.init(
 )
 ```
 
+### Plugins
+
+For more information about plugins, refer to the [Plugins](/zh/plugin/plugin-index.md) documentation.
+
+```python
+from swanlab.plugin.notification import EmailCallback
+
+email_callback = EmailCallback(...)
+
+swanlab.init(
+    callbacks=[email_callback]
+)
+```
+
 ## Deprecated Parameters
 
-- `cloud`: Replaced by the `mode` parameter in v0.3.4. The parameter is still available but will override the `mode` setting.
+• `cloud`: Replaced by the `mode` parameter in v0.3.4. The parameter is still available and will override the `mode` setting.

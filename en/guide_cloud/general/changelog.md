@@ -5,6 +5,92 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.3 - 2025.3.20
+
+**🚀 New Features**
+
+- SwanLab has officially joined the **🤗HuggingFace ecosystem**! Starting from Transformers version 4.50.0, SwanLab is officially integrated as an experiment tracking tool. Simply add `report_to="swanlab"` in `TrainingArguments` to start tracking your training.
+* Added `swanlab.Object3D` to support recording 3D point clouds. [Docs](/en/api/py-object3d)
+* Hardware monitoring now supports recording GPU memory (MB), disk utilization, and network upload and download.
+
+**🤔 Optimizations**
+
+* Fixed several issues.
+
+
+## v0.5.0 - 2025.3.12
+
+![logo](../self_host/docker-deploy/swanlab-docker.jpg)
+
+**🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/guide_cloud/self_host/docker-deploy.md)
+
+**🚀 New Features**
+- Added the `callbacks` parameter to `swanlab.init`, allowing the registration of callback functions during initialization to support various custom plugin classes.
+- Introduced `swanlab.register_callback()`, enabling the registration of callback functions outside of `init`. [Documentation](/api/py-register-callback.html)
+- Upgraded `swanlab.login()` with new parameters `host`, `web_host`, and `save`, adapting to the characteristics of self-hosted deployment services and supporting the option to not write user login credentials locally for shared server scenarios. [Documentation](/zh/api/py-login.md)
+- Upgraded `swanlab login` with new parameters `host`, `web_host`, and `api-key`. [Documentation](/zh/api/cli-swanlab-login.md)
+- Added support for using `swanlab.sync_mlflow()` to synchronize MLFlow projects to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md)
+
+**🤔 Optimizations**
+- We have significantly optimized the SDK architecture, improving its performance in scenarios with a large number of metrics.
+- The experiment sidebar is now resizable!
+- Added a "Git Code" button to the top-right corner of the experiment page, allowing one-click navigation to the corresponding repository.
+
+**🔌 Plugins**:
+- Added **notification plugins**, supporting notifications via **email, Feishu, DingTalk, and WeCom** when training ends.
+- Added **logging plugins**, supporting the writing of metadata, configurations, and metrics to **local CSV files** during training.
+
+
+## v0.4.12 - 2025.3.8
+
+**Optimizations**
+- Fixed some issues
+
+## v0.4.11 - 2025.3.5
+
+**Improvements**
+
+- Fixed the issue of W&B format conversion errors in some versions
+- Fixed some interaction issues
+
+## v0.4.10 - 2025.3.4
+
+**🚀 New Features**
+
+• Added integration with [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), [Documentation](/en/guide_cloud/integration/integration-diffsynth-studio.md).  
+• Added support for converting **MLFlow** experiments to SwanLab. [Documentation](/en/guide_cloud/integration/integration-mlflow.md).  
+• Introduced **Project Descriptions**, allowing you to add short notes to your projects.  
+
+**Improvements**
+
+• Fixed an issue where CPU model information could not be correctly recorded on OpenEuler systems.
+
+
+## v0.4.9 - 2025.2.28
+
+**🚀 New Features**
+- Added `Move Experiment` function
+- Added `update_config` method to some integration Callback classes
+- `run` now supports `get_url()` and `get_project_url()` methods to get experiment and project URLs
+
+**Optimizations**
+- Fixed some issues on Linux systems
+
+## v0.4.8 - 2025.2.16
+
+**🚀 New Features**
+- Added integration with Modelscope Swift, [Docs](/en/guide_cloud/integration/integration-swift.md)
+- Added `Add Group` and `Move Chart to Another Group` functions
+
+**Optimizations**
+- Fixed some issues with the SDK
+
+## v0.4.7 - 2025.2.11
+
+**🚀 New Features**
+- `swanlab.log` now supports the `print_to_console` parameter. When enabled, the `key` and `value` of `swanlab.log` will be printed to the terminal in dictionary format.
+- `swanlab.init` now supports the `name` and `notes` parameters, which are equivalent to `experiment_name` and `description`, respectively.
+
 ## v0.4.6 - 2025.2.3
 
 **🚀New Features**
@@ -126,8 +212,7 @@ by Cunyue
 ## v0.3.19 - 2024.9.2
 
 **🚀New Features**
-- (Beta) Added cloud storage functionality for task-based training `swanlab task`, [Documentation](/en/api/cli-swanlab-remote-gpu.html)
-
+- (Beta) Added cloud storage functionality for task-based training `swanlab task`
 **Improvements**
 - [Environment] Added CPU brand recording
 

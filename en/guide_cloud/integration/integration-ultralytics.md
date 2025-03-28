@@ -4,7 +4,7 @@
 
 [Ultralytics](https://github.com/ultralytics/ultralytics) YOLOv8 is a cutting-edge, state-of-the-art (SOTA) model that builds on the success of previous YOLO versions and introduces new features and improvements to further enhance performance and flexibility. YOLOv8 is designed to be fast, accurate, and easy to use, making it an excellent choice for a variety of object detection and tracking, instance segmentation, image classification, and pose estimation tasks.
 
-![ultralytics](/assets/ig-ultralytics.png)
+![ultralytics](./ultralytics/logo.png)
 
 You can use Ultralytics to quickly train computer vision models while using SwanLab for experiment tracking and visualization.
 

@@ -5,6 +5,87 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.5.3 - 2025.3.20
+
+**🚀新增功能**
+- SwanLab已正式加入 **🤗HuggingFace生态**！Transformers 4.50.0版本开始 正式将SwanLab集成为实验跟踪工具，在TrainingArguments中加入`report_to="swanlab"`即可开始跟踪训练。
+- 新增了`swanlab.Object3D`，支持记录三维点云，[文档](/api/py-object3d)
+- 硬件监控支持了 GPU显存（MB）、磁盘利用率、网络上下行 的记录
+
+**优化**
+- 修复了一些问题
+
+## v0.5.0 - 2025.3.12
+
+![logo](../self_host/docker-deploy/swanlab-docker.jpg)
+
+**🎉🎉SwanLab私有化部署（社区版）现已重磅发布！！**[部署文档](/guide_cloud/self_host/docker-deploy.md)
+
+**🚀新增功能**
+- `swanlab.init`新增参数`callbacks`，支持在初始化时注册回调函数，以支持各式各样的自定义插件类
+- 新增`swanlab.register_callback()`，支持在`init`外部注册回调函数，[文档](/api/py-register-callback.html)
+- `swanlab.login()`升级，新增`host`、`web_host`、`save`参数，适配了私有化部署服务的特性，同时支持不将用户登录凭证写入本地，以适应共用服务器场景。[文档](/zh/api/py-login.md)
+- `swanlab login`升级，新增`host`、`web_host`、`api-key`参数，[文档](/zh/api/cli-swanlab-login.md)
+- 新增支持使用`swanlab.sync_mlflow()`将MLFlow项目同步到SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
+
+**🤔优化**
+- 我们大幅优化了sdk架构，提升了sdk在大量metric场景下的性能
+- 实验侧边栏可以拉伸了！
+- 实验页面右上角增加了「Git代码」按钮，一键跳转到对应的仓库
+
+**🔌插件**：
+- 新增**通知类插件**，支持在训练结束时使用**邮件、飞书、钉钉、企业微信**进行通知
+- 新增**记录类插件**，支持在训练过程中将元数据、配置、指标写入到**本地CSV文件**
+
+
+
+## v0.4.12 - 2025.3.8
+
+**优化**
+- 修复了一些问题
+
+## v0.4.11 - 2025.3.5
+
+**优化**
+- 修复了部分版本W&B格式转换报错的问题
+- 修复了一些交互问题
+
+## v0.4.10 - 2025.3.4
+
+**🚀新增功能**
+- 新增了和[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)的集成, [文档](/guide_cloud/integration/integration-diffsynth-studio.md)
+- 新增支持转换 **MLFlow** 实验到 SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
+- 新增**项目描述**，支持给你的项目记一些简短的笔记
+
+**优化**
+- 修复了在OpenEuler系统上无法正确记录CPU型号的问题
+
+## v0.4.9 - 2025.2.28
+
+**🚀新增功能**
+- 新增了`移动实验`功能
+- 对一些集成Callback类增加了`update_config`方法
+- `run`新增`get_url()`和`get_project_url()`方法，支持获取实验和项目的URL
+
+**优化**
+- 修复了在部分Linux系统上CPU品牌获取不到的问题
+
+## v0.4.8 - 2025.2.16
+
+**🚀新增功能**
+- 新增了和Modelscope Swift的集成，[文档](/guide_cloud/integration/integration-swift.md)
+- 新增了`添加分组`和`移动图表到其他分组`功能
+
+**优化**
+- 修复了sdk的一些问题
+
+## v0.4.7 - 2025.2.11
+
+**🚀新增功能**
+- `swanlab.log`支持了参数`print_to_console`，开启后可以将`swanlab.log`的`key`、`value`以字典的形式打印到终端
+- `swanlab.init`支持了对`name`、`notes`参数的适配，等价于`experiment_name`和`description`
+
+
 ## v0.4.6 - 2025.2.3
 
 **🚀新增功能**
@@ -127,7 +208,7 @@ by Cunyue
 ## v0.3.19 - 2024.9.2
 
 **🚀新增功能**
-- （内测）新增任务式训练`swanlab task`的网盘存储功能，[文档](/api/cli-swanlab-remote-gpu.html)
+- （内测）新增任务式训练`swanlab task`的网盘存储功能
 
 **优化**
 - 【环境】增加对CPU品牌的记录

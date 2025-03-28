@@ -1,6 +1,6 @@
 # Log Media Data
 
-SwanLab supports logging media data (images, audio, text, etc.) to visually explore your experimental results and achieve subjective evaluation of your models.
+SwanLab supports logging media data (images, audio, text, obejct3d, etc.) to visually explore your experimental results and achieve subjective evaluation of your models.
 
 ## 1. Images
 
@@ -133,6 +133,13 @@ swanlab.log({"examples": text_list})
 ```
 
 ![alt text](/assets/log-media-text.png)
+
+## 4. 3D Point Cloud
+
+![](/en/api/py-object3d/demo.png)
+
+👀Please refer to this document: [API-Oject3D](/en/api/py-object3d)
+
 
 ## Q&A
 

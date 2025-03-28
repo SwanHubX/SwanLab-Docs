@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/guide_cloud'
 var base_path_examples = '/examples'
 var base_path_api = '/api'
+var base_path_plugin = '/plugin'
 
 // https://vitepress.dev/reference/site-config
 export const zh = defineConfig({
@@ -31,9 +32,21 @@ export const zh = defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: '用户指南',
+        text: '指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
-        activeMatch: '/guide_cloud/',
+        // activeMatch: '/guide_cloud/',
+      },
+      {
+        text: '框架集成',  items: [
+          { text: '全部30+框架', link: base_path_guide_cloud + '/integration'},
+          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
+          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
+          { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
+          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
+          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+          { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+        ]
       },
       { 
         text: '实战案例',
@@ -45,13 +58,24 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
         },
-      { text: '交流群', link: '/guide_cloud/community/online-support'},
-      { text: 'v0.4.6',  items: [
+      {
+        text: '插件',
+        link: base_path_plugin + '/plugin-index',
+        activeMatch: '/plugin/',
+      },
+      { text: 'v0.5.3',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
-        { text: '参与贡献', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
-        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
+        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
+        { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ]
       },
+      {
+        component: 'HeaderButton',
+      },
+      {
+        component: 'HeaderGithubButton',
+      }
+
     ],
 
     // 最后更新于配置
@@ -63,6 +87,18 @@ export const zh = defineConfig({
       },
     },
 
+    // 丰富中文化配置
+    docFooter: {
+      prev: '上一页',
+      next: '下一页'
+    },
+
+    returnToTopLabel: '回到顶部',
+    sidebarMenuLabel: '菜单',
+    darkModeSwitchLabel: '主题',
+    lightModeSwitchTitle: '切换到浅色模式',
+    darkModeSwitchTitle: '切换到深色模式',
+    skipToContentLabel: '跳转到内容',
     langMenuLabel: '多语言',
 
     // 编辑此页配置
@@ -81,19 +117,24 @@ export const zh = defineConfig({
     sidebar: {
       '/guide_cloud/':{base: '/guide_cloud/', items: sidebarGuideCloud(),},
       '/examples/':{base: '/examples/', items: sidebarExamples(),},
+      '/guide_cloud/integration/':{base: '/guide_cloud/integration/', items: sidebarIntegration(),},
       '/api/':{base: '/api/', items: sidebarAPI(),},
+      '/plugin/':{base: '/plugin/', items: sidebarPlugin(),},
     },
 
     // 页脚配置
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/swanhubx/swanlab' }
+      { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
+      { icon: 'wechat', link: '/guide_cloud/community/online-support.html' },
+      // { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
     ],
   }
 })
 
 
 function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
-  return [{
+  return [
+    {
     text: '简介',
     // collapsed: false,
     items: [
@@ -110,62 +151,38 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
-      { text: '用配置文件创建实验', link: 'experiment_track/create-experiment-by-configfile' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
+      { text: '系统硬件监控（支持昇腾）', link: 'experiment_track/system-monitor' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+      { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
       { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
-      { text: 'FAQ', link: 'experiment_track/FAQ' },
+      { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+      { text: '常见问题', link: 'experiment_track/FAQ' },
+
     ]
   },
   {
-    text: '💻 自托管',
+    text: '🚀 自托管',
     // collapsed: false,
     items: [
-      { text: '离线看板', link: 'self_host/offline-board' },
-      { text: '远程访问教程', link: 'self_host/remote-view' },
+      { text: 'Docker部署', link: 'self_host/docker-deploy' },
+      { text: '团队/企业版', link: 'self_host/enterprise-version' },
+      { text: '常见问题', link: 'self_host/faq' },
     ]
   },
   {
-    text: '⚡️ 集成',
-    // collapsed: false,
-    items: [
-      { text: 'Argparse', link:'integration/integration-argparse' },
-      { text: 'Ascend NPU & MindSpore', link: 'integration/integration-ascend.md' },
-      { text: 'Fastai', link: 'integration/integration-fastai' },
-      { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
-      { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
-      { text: 'Hydra', link: 'integration/integration-hydra' },
-      { text: 'Keras', link: 'integration/integration-keras' },
-      { text: 'LightGBM', link: 'integration/integration-lightgbm'},
-      { text: 'LLaMA Factory', link: 'integration/integration-llama-factory'},
-      { text: 'MMEngine', link: 'integration/integration-mmengine' },
-      { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
-      { text: 'MMDetection', link: 'integration/integration-mmdetection' },
-      { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
-      { text: 'OpenAI', link: 'integration/integration-openai' },
-      { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
-      { text: 'PaddleDetection', link: 'integration/integration-paddledetection' },
-      { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
-      { text: 'PyTorch', link: 'integration/integration-pytorch' },
-      { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
-      { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
-      { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
-      { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
-      { text: 'Swift', link: 'integration/integration-swift' },
-      { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
-      { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
-      { text: 'verl', link: 'integration/integration-verl' },
-      { text: 'Weights & Biases', link: 'integration/integration-wandb'},
-      { text: 'XGBoost', link: 'integration/integration-xgboost'},
-      { text: 'Xtuner', link: 'integration/integration-xtuner'},
-      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
-      { text: '将SwanLab集成到你的库', link: 'integration/integration-any-library' },
-    ]
+      text: '💻 离线看板',
+      // collapsed: true,
+      items: [
+        { text: '使用离线看板', link: 'self_host/offline-board' },
+        { text: '远程访问离线看板', link: 'self_host/remote-view' },
+        { text: '离线看板接口文档', link: 'self_host/offline-board-api' },
+      ]
   },
   {
     text: '👥 社区',
@@ -173,14 +190,78 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     items: [
       { text: '在线支持', link: 'community/online-support'},
       { text: 'Github徽章', link: 'community/github-badge'},
-      { text: '论文引用', link: 'community/paper-cite'},
-      { text: '贡献代码', link: 'community/contributing-code'},
-      { text: '贡献官方文档', link: 'community/contributing-docs'},
-      { text: '贡献者', link: 'community/contributor'},
+      // { text: '论文引用', link: 'community/paper-cite'},
+      // { text: '贡献代码', link: 'community/contributing-code'},
+      // { text: '贡献官方文档', link: 'community/contributing-docs'},
       { text: '关于我们', link: 'community/emotion-machine'},
     ]
   },]
 }
+
+function sidebarIntegration(): DefaultTheme.SidebarItem[] {
+  return [
+  { text: '将SwanLab集成到你的库', link: 'integration-any-library' },
+  {
+    text: 'A-G',
+    // collapsed: false,
+    items: [
+      { text: 'Argparse', link:'integration-argparse' },
+      { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
+      { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
+      { text: 'EasyR1', link: 'integration-easyr1' },
+      { text: 'Fastai', link: 'integration-fastai' },
+    ]
+  },
+  {
+    text: 'H-N',
+    // collapsed: false,
+    items: [
+      { text: 'HuggingFace Accelerate', link: 'integration-huggingface-accelerate' },
+      { text: 'HuggingFace Transformers', link: 'integration-huggingface-transformers' },
+      { text: 'HuggingFace Trl', link: 'integration-huggingface-trl' },
+      { text: 'Hydra', link: 'integration-hydra' },
+      { text: 'Keras', link: 'integration-keras' },
+      { text: 'LightGBM', link: 'integration-lightgbm'},
+      { text: 'LLaMA Factory', link: 'integration-llama-factory'},
+      { text: 'MLFlow', link: 'integration-mlflow'},
+      { text: 'MMEngine', link: 'integration-mmengine' },
+      { text: 'MMPretrain', link: 'integration-mmpretrain' },
+      { text: 'MMDetection', link: 'integration-mmdetection' },
+      { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
+      { text: 'Modelscope Swift', link: 'integration-swift' },
+    ]
+  },
+  {
+    text: 'O-T',
+    // collapsed: false,
+    items: [
+      { text: 'OpenAI', link: 'integration-openai' },
+      { text: 'Omegaconf', link: 'integration-omegaconf' },
+      { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
+      { text: 'PyTorch', link: 'integration-pytorch' },
+      { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
+      { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
+      { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
+      { text: 'Stable Baseline3', link: 'integration-sb3' },
+      { text: 'Tensorboard', link: 'integration-tensorboard'},
+    ]
+  },
+  {
+    text: 'U-Z',
+    // collapsed: false,
+    items: [
+      { text: 'Ultralytics', link: 'integration-ultralytics' },
+      { text: 'Unsloth', link: 'integration-unsloth' },
+      { text: 'Verl', link: 'integration-verl' },
+      { text: 'Weights & Biases', link: 'integration-wandb'},
+      { text: 'XGBoost', link: 'integration-xgboost'},
+      { text: 'Xtuner', link: 'integration-xtuner'},
+      { text: 'ZhipuAI', link: 'integration-zhipuai'},
+    ]
+  }]
+}
+
 
 function sidebarExamples(): DefaultTheme.SidebarItem[] {
   return [{
@@ -260,11 +341,22 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Object3D', link: 'py-object3d' },
       ]},
+      { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
-      { text: 'sync_wandb', link: 'py-sync-wandb' },
+      {
+        text: '同步其他工具',
+        items: [
+          { text: 'sync_wandb', link: 'py-sync-wandb' },
+          { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+          { text: 'sync_mlflow', link: 'py-sync-mlflow' },
+        ]
+      },
+      { text: 'register_callback', link: 'py-register-callback' },
+      { text: '其他', link: 'py-other' },
     ]
   },
   {
@@ -274,8 +366,33 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: '环境变量', link: 'environment-variable' },
     ]
   }
+]
+}
 
-
-
+function sidebarPlugin(): DefaultTheme.SidebarItem[] {
+  return [
+  {
+    text: '🔧 制作自定义插件',
+    link: 'custom-plugin',
+  },
+  {
+    text: '✈️ 通知类',
+    // collapsed: false,
+    items: [
+      { text: '邮件', link: 'notification-email' },
+      { text: '飞书', link: 'notification-lark' },
+      { text: '钉钉', link: 'notification-dingtalk' },
+      { text: '企业微信', link: 'notification-wxwork' },
+      { text: 'Discord', link: 'notification-discord' },
+      { text: 'Slack', link: 'notification-slack' },
+    ]
+  },
+  {
+    text: '📝 记录类',
+    // collapsed: false,
+    items: [
+      { text: 'CSV表格', link: 'writer-csv' },
+    ]
+  },
 ]
 }

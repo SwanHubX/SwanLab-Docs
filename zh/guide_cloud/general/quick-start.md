@@ -3,7 +3,7 @@
 
 安装 SwanLab 并在几分钟内开始跟踪你的人工智能实验。
 
-![quick-start-1](/assets/quick-start.png)
+![quick-start-1](./quick_start/quick-start.png)
 
 
 ## 1. 安装SwanLab
@@ -39,12 +39,18 @@ swanlab: You can find your API key at: https://swanlab.cn/settings
 swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to quit:
 ```
 
-在[用户设置](https://swanlab.cn/settings)页面复制您的 **API Key**，粘贴后按下回车，即可完成登录。之后无需再次登录。
+在[用户设置](https://swanlab.cn/settings)页面复制您的 **API Key**，粘贴后按下回车（你不会看到粘贴后的API Key，请放心这是正常的），即可完成登录。之后无需再次登录。
 
-> 如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：  
-> import swanlab  
-> swanlab.login(api_key="你的API Key")
+::: info
 
+如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：
+
+```python
+import swanlab
+swanlab.login(api_key="你的API Key", save=True)
+```
+
+:::
 
 ## 3. 开启一个实验并跟踪超参数
 
@@ -110,7 +116,7 @@ for epoch in range(2, run.config.epochs):
 
 运行代码，访问[SwanLab](https://swanlab.cn)，查看在每个训练步骤中，你使用SwanLab记录的指标（准确率和损失值）的改进情况。
 
-![quick-start-1](/assets/quick-start-1.jpg)
+![quick-start-1](./quick_start/line-chart.png)
 
 
 
@@ -130,4 +136,4 @@ for epoch in range(2, run.config.epochs):
 
 ### 2. 我可以离线使用SwanLab吗？
 
-可以，具体流程请查看[自托管部分](/guide_cloud/self_host/offline-board.md)。
+可以，具体流程请查看[自托管部分](/guide_cloud/self_host/docker-deploy.md)。

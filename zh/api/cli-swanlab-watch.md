@@ -13,8 +13,8 @@ swanlab watch [OPTIONS]
 
 ## 介绍
 
-本地启动SwanLab实验看板。  
-在创建SwanLab实验时，会在本地目录下创建一个日志文件夹（默认名称为`swanlog`），使用`swanlab watch`可以本地离线打开实验看板，查看指标图表和配置。
+本地启动SwanLab[离线看板](/zh/guide_cloud/self_host/offline-board.md)。  
+在创建SwanLab实验时（并设置mode="local"），会在本地目录下创建一个日志文件夹（默认名称为`swanlog`），使用`swanlab watch`可以本地离线打开实验看板，查看指标图表和配置。
 
 ## 使用案例
 

@@ -1,40 +1,43 @@
 # swanlab-docs
 
-为项目贡献的方式不仅仅是贡献代码，包括维护文档、在issue和群中答疑、提交bug等都是为swanlab项目贡献的方式！
+This repository regroups documentation and information that is hosted on the SwanLab website.
 
-我们在[github仓库](https://github.com/SwanHubX/SwanLab-Docs)中托管了SwanLab的[官方文档](https://docs.swanlab.cn)，基于[vitepress](https://vitepress.dev/zh/guide/getting-started)。
+You can access the SwanLab documentation at [Document](https://docs.swanlab.cn). Powered by [vitepress](https://vitepress.dev/zh/guide/getting-started).
 
-### 如何为文档做贡献
 
-很简单！只需要克隆项目、增添或修改Markdown文件、提交他们，再创建一个PR就可以。
+### How to contribute to the docs
 
-### 环境安装
+It's very simple! Just clone the project, add or modify Markdown files, commit them, and then create a PR.
 
-1. 克隆本仓库
+### Previewing locally 
+
+**1. Clone this repository**
 
 ```bash
 git clone https://github.com/SwanHubX/SwanLab-Docs
+cd SwanLab-Docs
 ```
 
-2. 安装依赖环境
+**2. Install**
 
-需要提前安装nodejs和npm，详细方法请查询[node官方教程](https://nodejs.org/en/download/package-manager)
+You need to install nodejs and npm in advance. For detailed instructions, please refer to the [Node.js tutorial](https://nodejs.org/en/download/package-manager).
 
-使用如下命令安装其他依赖项目
+Use the following commands to install other dependencies:
 
 ```bash
 npm add -D vitepress
+npm install
 ```
 
-### 本地运行文档
+**3. Run**
 
-如果进行本地开发或者预览文档，可在项目根目录运行：
+If you are performing local development or previewing documents, you can run the following in the project root directory:
 
 ```bash
 npm run docs:dev
 ```
 
-如果要进行完整的编译打包，使用如下命令：
+If a complete compilation and packaging is required, use the following command:
 
 ```bash
 npm run docs:build

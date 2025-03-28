@@ -3,6 +3,7 @@ import { defineConfig, type DefaultTheme} from 'vitepress'
 var base_path_guide_cloud = '/en/guide_cloud'
 var base_path_examples = '/en/examples'
 var base_path_api = '/en/api'
+var base_path_plugin = '/en/plugin'
 
 // https://vitepress.dev/reference/site-config
 export const en = defineConfig({
@@ -27,9 +28,20 @@ export const en = defineConfig({
     // 导航栏配置
     nav: [
       { 
-        text: 'User Guide',
+        text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
-        activeMatch: '/en/guide_cloud/',
+      },
+      {
+        text: 'Integration',  items: [
+          { text: 'All 30+ Frameworks', link: base_path_guide_cloud + '/integration'},
+          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
+          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
+          { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
+          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
+          { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+        ]
       },
       { 
         text: 'Example',
@@ -41,12 +53,18 @@ export const en = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'v0.4.6',  items: [
+      { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
+      { text: 'v0.5.3',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
-        { text: 'Contribution', link: 'https://github.com/SwanHubX/SwanLab/blob/main/CONTRIBUTING.md' },
-        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'}
+        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
+        { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
-      { text: 'Contact Us', link: '/en/guide_cloud/community/online-support'},
+      {
+        component: 'HeaderButtonEN',
+      },
+      {
+        component: 'HeaderGithubButton',
+      }
       // { text: 'Website', link: 'https://swanlab.cn' },
     ],
 
@@ -74,13 +92,16 @@ export const en = defineConfig({
     // 侧边栏配置
     sidebar: {
       '/en/guide_cloud/':{base: '/en/guide_cloud/', items: sidebarGuideCloud(),},
+      '/en/guide_cloud/integration/':{base: '/en/guide_cloud/integration/', items: sidebarIntegration(),},
       '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
       '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
+      '/en/plugin/':{base: '/en/plugin/', items: sidebarPlugin(),},
     },
 
     // 页脚配置
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/swanhubx/swanlab' }
+      { icon: 'bilibili', link: 'https://space.bilibili.com/386591517' },
+      { icon: 'wechat', link: '/en/guide_cloud/community/online-support.html' },
     ],
 
     // 搜索配置
@@ -104,65 +125,41 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '📚 Experiment Track',
+    text: '📚 Experiment Tracking',
     // collapsed: false,
     items: [
       { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track' },
       { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
-      { text: 'Create by config file', link: 'experiment_track/create-experiment-by-configfile' },
       { text: 'Set config', link: 'experiment_track/set-experiment-config' },
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
       { text: 'Log media metric', link: 'experiment_track/log-media' },
+      { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
+      { text: 'Email Notifications', link: 'experiment_track/send-notification' },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+      { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
   {
-    text: '💻 Self-hosted',
+    text: '🚀 Self-hosted',
     // collapsed: false,
     items: [
-      { text: 'Offline board', link: 'self_host/offline-board' },
-      { text: 'Remote access tutorial', link: 'self_host/remote-view' },
+      { text: 'Docker deployment', link: 'self_host/docker-deploy' },
+      { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
+      { text: 'FAQ', link: 'self_host/faq' },
     ]
   },
   {
-    text: '⚡️ Integration',
-    // collapsed: false,
+    text: '💻 Offline board',
+    // collapsed: true,
     items: [
-      { text: 'Argparse', link:'integration/integration-argparse' },
-      { text: 'Fastai', link: 'integration/integration-fastai' },
-      { text: 'HuggingFace Accelerate', link: 'integration/integration-huggingface-accelerate' },
-      { text: 'HuggingFace Transformers', link: 'integration/integration-huggingface-transformers' },
-      { text: 'Hydra', link: 'integration/integration-hydra' },
-      { text: 'Keras', link: 'integration/integration-keras' },
-      { text: 'LightGBM', link: 'integration/integration-lightgbm'},
-      { text: 'LLaMA Factory', link: 'integration/integration-llama-factory'},
-      { text: 'MMEngine', link: 'integration/integration-mmengine' },
-      { text: 'MMPretrain', link: 'integration/integration-mmpretrain' },
-      { text: 'MMDetection', link: 'integration/integration-mmdetection' },
-      { text: 'MMSegmentation', link: 'integration/integration-mmsegmentation' },
-      { text: 'OpenAI', link: 'integration/integration-openai' },
-      { text: 'Omegaconf', link: 'integration/integration-omegaconf' },
-      { text: 'PaddleDetection', link: 'integration/integration-paddledetection' },
-      { text: 'PaddleYOLO', link: 'integration/integration-paddleyolo' },
-      { text: 'PyTorch', link: 'integration/integration-pytorch' },
-      { text: 'PyTorch Lightning', link: 'integration/integration-pytorch-lightning' },
-      { text: 'PyTorch torchtune', link: 'integration/integration-pytorch-torchtune' },
-      { text: 'Sentence Transformers', link: 'integration/integration-sentence-transformers'},
-      { text: 'Stable Baseline3', link: 'integration/integration-sb3' },
-      { text: 'Swift', link: 'integration/integration-swift' },
-      { text: 'Tensorboard', link: 'integration/integration-tensorboard'},
-      { text: 'Ultralytics', link: 'integration/integration-ultralytics' },
-      { text: 'verl', link: 'integration/integration-verl' },
-      { text: 'Weights & Biases', link: 'integration/integration-wandb'},
-      { text: 'XGBoost', link: 'integration/integration-xgboost'},
-      { text: 'Xtuner', link: 'integration/integration-xtuner'},
-      { text: 'ZhipuAI', link: 'integration/integration-zhipuai'},
-      { text: 'Add SwanLab into Your Lib', link: 'integration/integration-any-library'},
+      { text: 'Offline board', link: 'self_host/offline-board' },
+      { text: 'Remote access tutorial', link: 'self_host/remote-view' },
+      { text: 'Offline board API', link: 'self_host/offline-board-api' },
     ]
   },
   {
@@ -174,12 +171,74 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Paper citation', link: 'community/paper-cite'},
       { text: 'Contributing code', link: 'community/contributing-code'},
       { text: 'Contributing docs', link: 'community/contributing-docs'},
-      { text: 'Contributor', link: 'community/contributor'},
       { text: 'About us', link: 'community/emotion-machine'},
     ]
   },]
 }
 
+function sidebarIntegration(): DefaultTheme.SidebarItem[] {
+  return [
+  { text: 'Add SwanLab into Your Lib', link: 'integration-any-library' },
+  {
+    text: 'A-G',
+    // collapsed: false,
+    items: [
+      { text: 'Argparse', link:'integration-argparse' },
+      { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
+      { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
+      { text: 'EasyR1', link: 'integration-easyr1' },
+      { text: 'Fastai', link: 'integration-fastai' },
+    ]
+  },
+  {
+    text: 'H-N',
+    // collapsed: false,
+    items: [
+      { text: 'HuggingFace Accelerate', link: 'integration-huggingface-accelerate' },
+      { text: 'HuggingFace Transformers', link: 'integration-huggingface-transformers' },
+      { text: 'HuggingFace Trl', link: 'integration-huggingface-trl' },
+      { text: 'Hydra', link: 'integration-hydra' },
+      { text: 'Keras', link: 'integration-keras' },
+      { text: 'LightGBM', link: 'integration-lightgbm'},
+      { text: 'LLaMA Factory', link: 'integration-llama-factory'},
+      { text: 'MLFlow', link: 'integration-mlflow'},
+      { text: 'MMEngine', link: 'integration-mmengine' },
+      { text: 'MMPretrain', link: 'integration-mmpretrain' },
+      { text: 'MMDetection', link: 'integration-mmdetection' },
+      { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
+      { text: 'Modelscope Swift', link: 'integration-swift' },
+    ]
+  },
+  {
+    text: 'O-T',
+    // collapsed: false,
+    items: [
+      { text: 'OpenAI', link: 'integration-openai' },
+      { text: 'Omegaconf', link: 'integration-omegaconf' },
+      { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
+      { text: 'PyTorch', link: 'integration-pytorch' },
+      { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
+      { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
+      { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
+      { text: 'Stable Baseline3', link: 'integration-sb3' },
+      { text: 'Tensorboard', link: 'integration-tensorboard'},
+    ]
+  },
+  {
+    text: 'U-Z',
+    // collapsed: false,
+    items: [
+      { text: 'Ultralytics', link: 'integration-ultralytics' },
+      { text: 'Unsloth', link: 'integration-unsloth' },
+      { text: 'Verl', link: 'integration-verl' },
+      { text: 'Weights & Biases', link: 'integration-wandb'},
+      { text: 'XGBoost', link: 'integration-xgboost'},
+      { text: 'Xtuner', link: 'integration-xtuner'},
+      { text: 'ZhipuAI', link: 'integration-zhipuai'},
+    ]
+  }]
+}
 
 
 function sidebarExamples(): DefaultTheme.SidebarItem[] {
@@ -258,11 +317,17 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Object3D', link: 'py-object3d' },
       ]},
+      { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
       { text: 'sync_wandb', link: 'py-sync-wandb' },
+      { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
+      { text: 'sync_mlflow', link: 'py-sync-mlflow' },
+      { text: 'register_callback', link: 'py-register-callback' },
+      { text: 'Other', link: 'py-other' },
     ]
   },
   {
@@ -272,5 +337,33 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'Environment Variables', link: 'environment-variable' },
     ]
   }
+]
+}
+
+function sidebarPlugin(): DefaultTheme.SidebarItem[] {
+  return [
+  {
+    text: '🔧 Make your custom plugin',
+    link: 'custom-plugin',
+  },
+  {
+    text: '✈️ Notification',
+    // collapsed: false,
+    items: [
+      { text: 'Email', link: 'notification-email' },
+      { text: 'Lark', link: 'notification-lark' },
+      { text: 'Dingtalk', link: 'notification-dingtalk' },
+      { text: 'WXWork', link: 'notification-wxwork' },
+      { text: 'Discord', link: 'notification-discord' },
+      { text: 'Slack', link: 'notification-slack' },
+    ]
+  },
+  {
+    text: '📝 Writer',
+    // collapsed: false,
+    items: [
+      { text: 'CSV Table', link: 'writer-csv' },
+    ]
+  },
 ]
 }

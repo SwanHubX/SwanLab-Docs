@@ -1,8 +1,14 @@
 # Weights & Biases
 
-[Weights & Biases](https://github.com/wandb/wandb) (Wandb) 是一个用于机器学习和深度学习项目的实验跟踪、模型优化和协作平台。W&B 提供了强大的工具来记录和可视化实验结果，帮助数据科学家和研究人员更好地管理和分享他们的工作。
+Weights & Biases (Wandb) 是一个用于机器学习和深度学习项目的实验跟踪、模型优化和协作平台。W&B 提供了强大的工具来记录和可视化实验结果，帮助数据科学家和研究人员更好地管理和分享他们的工作。
 
 ![wandb](/assets/ig-wandb.png)
+
+:::warning 其他工具的同步教程
+
+- [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)
+- [MLFlow](/guide_cloud/integration/integration-mlflow.md)
+:::
 
 **你可以用两种方式将Wandb上的项目同步到SwanLab：**
 
@@ -33,6 +39,15 @@ wandb.init()
 ```
 
 在上述这种代码写法中，`wandb.init()`的同时会初始化swanlab，项目名、实验名和配置和`wandb.init()`中的`project`、`name`、`config`一致，因此你不需要再手动初始化swanlab。
+
+:::info
+
+**`sync_wandb`支持设置两个参数：**
+
+- `mode`: swanlab的记录模式，支持cloud、local和disabled三种模式。
+- `wandb_run`: 如果此参数设置为**False**，则不会将数据上传到wandb，等同于设置wandb.init(mode="offline")
+
+:::
 
 ### 1.2 另一种写法
 
@@ -103,6 +118,10 @@ swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_EN
 支持的参数如下：
 
 - `-t`: 转换类型，可选wandb与tensorboard。
+- `-p`: SwanLab项目名。
+- `-w`: SwanLab工作空间名。
+- `--cloud`: (bool) 是否上传模式为"cloud"，默认为True
+- `-l`: logdir路径。
 - `--wb-project`：待转换的wandb项目名。
 - `--wb-entity`：wandb项目所在的空间名。
 - `--wb-runid`: wandb Run（项目下的某一个实验）的id。
@@ -118,4 +137,12 @@ wb_converter = WandbConverter()
 # wb_runid可选
 wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 ```
+
 效果与命令行转换一致。
+
+`WandbConverter`支持的参数：
+
+- `project`: SwanLab项目名。
+- `workspace`: SwanLab工作空间名。
+- `cloud`: (bool) 是否上传模式为"cloud"，默认为True。
+- `logdir`: wandb Run（项目下的某一个实验）的id。
