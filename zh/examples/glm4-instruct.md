@@ -4,6 +4,8 @@
 
 ## 摘要
 
+![instruct](./images/glm4-instruct/instruct.png)
+
 本教程主要实现了一个大模型的指令遵从微调方法。为了便于实现，减少代码量，本文使用了🤗HuggingFace的TRL框架实现。该框架除了支持SFT外，对DPO、PPO、GRPO等流行的强化微调算法都有很好的支持。
 
 虽然使用框架能够极大的减少工作量，但是不可避免的为新手学习带来了困扰。因此本教程会尽量附上完整的文档引用来帮助读者进一步学习框架。诚然从使用pytorch实现微调过程能够极大的提升对过程的理解，社区也有相当多优秀的项目。但是笔者仍推荐大家多使用框架来完成训练，这样可以减少大量的时间来让大家更专注于创新。
@@ -20,7 +22,7 @@
 
 * [TRL包介绍+环境准备](#trl包介绍环境准备)
 
-* [ChatGLM4介绍+模型准备](#ChatGLM4介绍+模型准备)
+* [GLM4介绍+模型准备](#glm4介绍模型准备)
 
 * [数据集准备](#数据集准备)
 
@@ -88,7 +90,9 @@ trainer.train() # 开始训练，流程和TRL一样
 
 后文将完整的介绍如何使用TRL包完成大模型的指令遵从功能。
 
-## ChatGLM4介绍+模型准备
+
+## GLM4介绍+模型准备
+
 
 ![chatglm_history](images/glm4-instruct/chatglm_history.png)
 
@@ -555,7 +559,7 @@ pip install accelerate deepspeed
 接下来使用如下命令来开启多卡训练（默认8GPU，可更改num_processes参数为实际卡数）：
 
 ```bash
-accelerate launch --num_processes 8 --config_file configs/zero2.yaml train.py
+accelerate launch --num_processes 8 --config_file configs/zero2.yaml instruct_train.py
 ```
 
 关于zero2的详细设置在`configs/zero2.yaml`中。
