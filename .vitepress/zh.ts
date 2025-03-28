@@ -299,6 +299,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'DQN推车倒立摆', link: 'dqn_cartpole' },
+      { text: 'GRPO大模型强化学习', link: 'qwen_grpo' },
     ]
   },
   {
