@@ -16,6 +16,8 @@
 
 🎉 **SwanLab被官方集成进入了🤗HuggingFace Transformers：** 如果本地环境安装了SwanLab会默认开启！也可以通过`report_to="swanlab"`开启训练跟踪。
 
+![swanlabxhuggingface](./images/glm4-instruct/swanlabxhuggingface.png)
+
 ## 目录
 
 **目录：**
