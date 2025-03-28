@@ -262,19 +262,20 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: 'Reinforcement Learning',
-    // collapsed: false,
-    items: [
-      { text: 'DQN CartPole', link: 'dqn_cartpole' },
-    ]
-  },
-  {
     text: 'NLP',
     // collapsed: false,
     items: [  
       { text: 'BERT Text Classification', link: 'bert' },  
-      { text: 'Qwen Finetune Case', link: 'qwen_finetune' },  
       { text: 'LLM Pretraining', link: 'pretrain_llm' },  
+      { text: 'GLM4 Instruct Finetune', link: 'glm4-instruct'},
+      { text: 'Qwen Finetune Case', link: 'qwen_finetune' }
+    ]
+  },
+  {
+    text: 'Reinforcement Learning',
+    // collapsed: false,
+    items: [
+      { text: 'DQN CartPole', link: 'dqn_cartpole' },
     ]
   },
   {
