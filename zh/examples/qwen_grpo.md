@@ -381,32 +381,19 @@ trainer.save_model(training_args.output_dir)
 
 为了便于管理和配置分布式训练环境、强化学习（RL）训练的超参数，以及定义主训练函数 main，我们建议采用 YAML 格式的脚本文件来系统化地记录和维护这些关键参数，同时使用 Python 文件来实现 main 函数。
 
+```
 root/project/
-
-
-├──data/
-
-
-│   └──zouxuhong___countdown-tasks-3to4
-
-
-
-├──models/
-
-│   ├──Qwen
-
-│   │   └──Qwen2___5-3B-Instruct
-
-
-├──config/
-
-│   ├──2rtx4090.yaml
-
-│   └──grpo-qwen-2.5-3b-deepseek-r1-zero-countdown.yaml
-
-├──train_r1_grpo.py
-
-└──train_r1_grpo.sh
+├── data/
+│   └── zouxuhong___countdown-tasks-3to4/
+├── models/
+│   └── Qwen/
+│       └── Qwen2___5-3B-Instruct/
+├── config/
+│   ├── 2rtx4090.yaml
+│   └── grpo-qwen-2.5-3b-deepseek-r1-zero-countdown.yaml
+├── train_r1_grpo.py
+└── train_r1_grpo.sh
+```
 
 
 **1、Accelerate 配置文件，用于分布式训练（两张卡）。新建deepspeed_zero3.yaml，填入以下内容并保存**
@@ -1010,7 +997,7 @@ print(response)
 
 ## 实验结果演示
 
-由于训练时间较长，推荐使用tmux将训练任务hold住。可以在[SwanLab](https://swanlab.cn/@LiXinYu/Try_r1/runs/iunfsosyp8ryfanbjcv7g/chart)
+由于训练时间较长，推荐使用tmux将训练任务hold住。可以在[SwanLab](https://swanlab.cn/@LiXinYu/Try_r1/runs/iunfsosyp8ryfanbjcv7g/chart)中查看。
 
 ![swanlab观测结果](./grpo/swanlab-results.png)
 
