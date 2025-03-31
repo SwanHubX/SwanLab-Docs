@@ -4,7 +4,7 @@ During the tracking of experiments, SwanLab **automatically monitors** the hardw
 
 ![](./system-monitor/head.png)
 
-Currently, SwanLab supports monitoring hardware resources for two types of **AI computing chips** (**Huawei Ascend** and **NVIDIA**), covering metrics such as GPU utilization, VRAM usage, GPU temperature, and GPU power consumption.
+Currently, SwanLab supports monitoring hardware resources for three types of **AI computing chips** (**Huawei Ascend** 、**NVIDIA** 、**Cambricon**), covering metrics such as GPU utilization, VRAM usage, GPU temperature, and GPU power consumption.
 
 In addition, SwanLab also supports monitoring hardware resources such as **CPU**, **memory**, and **disk**.
 
@@ -42,6 +42,9 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 ---
 
 ### **1. GPU (NVIDIA)**  
+
+![](./system-monitor/nvidia.png)
+
 > *On multi-GPU machines, each GPU's metrics are recorded separately and displayed as individual lines in charts.*  
 
 | Metric | Description |  
@@ -55,6 +58,9 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 ---
 
 ### **2. NPU (Ascend)**  
+
+![](./system-monitor/ascend.png)
+
 > *On multi-NPU systems, each NPU's metrics are logged independently.*  
 
 | Metric | Description |  
@@ -65,7 +71,20 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 
 ---
 
-### **3. CPU**  
+### **3. MLU (Cambricon)**  
+
+![](./system-monitor/cambricon.png)
+
+> *On multi-NPU systems, each NPU's metrics are logged independently.*  
+
+| Metric | Description |  
+|--------|------------|  
+| **MLU Utilization (%)** | Compute workload percentage |  
+| **MLU Memory Allocated (%)** | MLU memory utilization percentage |  
+
+---
+
+### **4. CPU**  
 
 | Metric | Description |  
 |--------|------------|  
@@ -74,7 +93,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 
 ---
 
-### **4. Memory**  
+### **5. Memory**  
 
 | Metric | Description |  
 |--------|------------|  
@@ -85,7 +104,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 
 ---
 
-### **5. Disk**  
+### **6. Disk**  
 
 | Metric | Description |  
 |--------|------------|  
@@ -94,7 +113,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 
 ---
 
-### **6. Network**  
+### **7. Network**  
 
 | Metric | Description |  
 |--------|------------|  
