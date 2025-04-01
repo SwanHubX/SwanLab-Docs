@@ -5,7 +5,30 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.4 - 2025.3.31  
+
+**🚀 New Features**  
+• Added the `swanlab.Settings` method for more granular experiment behavior control, further enhancing openness  
+• Added hardware logging and resource monitoring for Cambricon MLU  
+• Added CANN version logging for Ascend NPU hardware records  
+• Added GPU architecture and CUDA core count logging for NVIDIA GPU hardware records  
+• NVIDIA GPU hardware monitoring now supports logging "GPU memory access time percentage"  
+• **"Profile"** page now displays your **"Organization"**  
+• **"Overview"** page now supports editing **"Project Description"** text  
+
+**🤔 Improvements**  
+• Fixed some issues with `sync_wandb`  
+• Fixed some issues with the `Object3D` class  
+• Optimized the styling of **"General"** settings  
+• Significantly improved project loading performance  
+
+**🔌 Plugins**  
+• Official plugins now include **Slack Notifications** and **Discord Notifications**, further integrating with the global ecosystem
+
+
 ## v0.5.3 - 2025.3.20
+
+![swanlab x huggingface](./changelog/hf.png)
 
 **🚀 New Features**
 

@@ -5,7 +5,30 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.5.4 - 2025.3.31
+
+**🚀新增功能**
+- 新增`swanlab.Settings`方法，支持更精细化的实验行为控制，进一步增强开放性
+- 支持了寒武纪MLU的硬件记录和资源监控
+- 昇腾NPU的硬件记录支持记录CANN版本
+- 英伟达GPU的硬件记录支持记录GPU架构和cuda核心数
+- 英伟达GPU的硬件监控支持记录“GPU 访问内存所花费的时间百分比”
+- 「个人主页」支持显示你所在的「组织」
+- 「概览」页支持编辑"项目描述"文本
+
+**🤔优化**
+- 修复了sync_wandb的一些问题
+- 修复了Obejct3D类的一些问题
+- 优化「常规」设置样式
+- 大幅优化了打开项目的性能
+
+**🔌插件**
+- 官方插件增加Slack通知、Discord通知，进一步打通海外生态
+
+
 ## v0.5.3 - 2025.3.20
+
+![swanlab x huggingface](./changelog/hf.png)
 
 **🚀新增功能**
 - SwanLab已正式加入 **🤗HuggingFace生态**！Transformers 4.50.0版本开始 正式将SwanLab集成为实验跟踪工具，在TrainingArguments中加入`report_to="swanlab"`即可开始跟踪训练。
