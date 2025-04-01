@@ -51,6 +51,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
 | GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
 | GPU Power Usage (W) | **GPU 功耗**，表示此GPU的功耗，以瓦特为单位。|
+| GPU Time Spent Accessing Memory (%) | **GPU 内存访问时间**，表示此GPU在执行任务时，花费在访问 GPU 内存（显存）上的时间百分比。|
 
 <br>
 

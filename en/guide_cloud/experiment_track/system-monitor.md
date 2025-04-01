@@ -54,6 +54,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—a
 | **GPU Utilization (%)** | Compute workload percentage |  
 | **GPU Temperature (°C)** | GPU temperature in Celsius |  
 | **GPU Power Usage (W)** | GPU power draw in watts |  
+| **GPU Time Spent Accessing Memory (%)** | Percentage of time spent accessing GPU memory during task execution |
 
 ---
 
