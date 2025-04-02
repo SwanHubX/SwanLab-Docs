@@ -54,4 +54,25 @@ new_settings = Settings(
 
 # 更新全局设置
 swanlab.merge_settings(new_settings)
+
+swanlab.init()
+...
+```
+
+### 记录 conda 环境信息
+
+```python
+import swanlab
+from swanlab import Settings
+
+# 创建新的设置对象
+new_settings = Settings(
+    conda_collect=True  # 默认不开启
+)
+
+# 更新全局设置
+swanlab.merge_settings(new_settings)
+
+swanlab.init()
+...
 ```
