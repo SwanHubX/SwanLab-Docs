@@ -2,6 +2,8 @@
 
 作者：情感机器实验室-陈少宏 邮箱：<shaohon_chen@115lab.club>
 
+[[toc]]
+
 ## 摘要
 
 ![instruct](./images/glm4-instruct/instruct.png)
@@ -17,22 +19,6 @@
 🎉 **SwanLab被官方集成进入了🤗HuggingFace Transformers：** 如果本地环境安装了SwanLab会默认开启！也可以通过`report_to="swanlab"`开启训练跟踪。
 
 ![swanlabxhuggingface](./images/glm4-instruct/swanlabxhuggingface.png)
-
-## 目录
-
-**目录：**
-
-* [TRL包介绍+环境准备](#trl包介绍环境准备)
-
-* [GLM4介绍+模型准备](#glm4介绍模型准备)
-
-* [数据集准备](#数据集准备)
-
-* [代码说明超参数调整](#代码说明超参数调整)
-
-* [启动训练效果评测](#启动训练效果评测)
-
-* [附件完整代码](#附件完整代码)
 
 **参考资料：**
 

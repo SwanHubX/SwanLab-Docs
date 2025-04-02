@@ -3,6 +3,8 @@
 Author: Emotional Machine Lab - Chen Shaohong  
 Email: <shaohon_chen@115lab.club>  
 
+[[toc]]
+
 ## Abstract  
 
 This tutorial primarily implements a fine-tuning method for large model instruction following. To simplify implementation and reduce code complexity, this article uses the 🤗HuggingFace TRL framework. In addition to supporting SFT, this framework provides excellent support for popular reinforcement fine-tuning algorithms such as DPO, PPO, and GRPO.  
@@ -14,17 +16,6 @@ Thus, this tutorial is recommended for readers with some familiarity with the �
 Note: Due to the relatively large size of the ChatGLM model, actual execution requires approximately >=16GB of GPU memory.  
 
 🎉 **SwanLab has been officially integrated into 🤗HuggingFace Transformers:** If SwanLab is installed locally, it will be enabled by default! It can also be activated via `report_to="swanlab"` for training tracking.  
-
-## Table of Contents  
-
-**Table of Contents:**  
-
-• [TRL Package Introduction + Environment Setup](#trl-package-introduction-environment-setup)  
-• [ChatGLM4 Introduction + Model Preparation](#chatglm4-introduction-model-preparation)  
-• [Dataset Preparation](#dataset-preparation)  
-• [Code Explanation + Hyperparameter Tuning](#code-explanation-hyperparameter-tuning)  
-• [Starting Training + Performance Evaluation](#starting-training-performance-evaluation)  
-• [Appendix: Complete Code](#appendix-complete-code)  
 
 **References:**  
 
