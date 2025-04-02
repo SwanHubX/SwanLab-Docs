@@ -338,6 +338,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'init', link: 'py-init' },
       { text: 'log', link: 'py-log' },
+      { text: 'settings', link: 'py-settings' },
       { text: '多媒体数据', items: [
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
