@@ -51,7 +51,7 @@ from swanlab.plugin.notification import LarkCallback
 
 lark_callback = LarkCallback(
     webhook_url="https://open.larkoffice.com/open-apis/bot/v2/hook/xxxx", 
-    secrets="xxxx",
+    secret="xxxx",
 )
 ```
 
