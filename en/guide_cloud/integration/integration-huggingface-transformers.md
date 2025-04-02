@@ -26,25 +26,31 @@ args = TrainingArguments(
 trainer = Trainer(..., args=args)
 ```
 
-## 2. Custom Project Name
+## 2. Custom Project Name / Experiment Name / Workspace
 
-By default, the project name will be the `directory name` from which you run the code.
+By default, the project name will be the `directory name` from which you run the code, the experiment name will be the `output_dir`.
 
-If you wish to customize the project name, you can set the `SWANLAB_PROJECT` environment variable:
+If you wish to customize the project name, experiment name, or workspace, you can set the `SWANLAB_PROJ_NAME`, `SWANLAB_EXP_NAME`, and `SWANLAB_WORKSPACE` environment variables:
 
 ::: code-group
 
 ```python
 import os
-os.environ["SWANLAB_PROJECT"]="qwen2-sft"
+os.environ["SWANLAB_PROJ_NAME"]="qwen2-sft"
+os.environ["SWANLAB_EXP_NAME"]="qwen2-sft-epoch16"
+os.environ["SWANLAB_WORKSPACE"]="EmotionMachine"
 ```
 
 ```bash [Command Line（Linux/MacOS）]
-export SWANLAB_PROJECT="qwen2-sft"
+export SWANLAB_PROJ_NAME="qwen2-sft"
+export SWANLAB_EXP_NAME="qwen2-sft-epoch16"
+export SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 ```bash [Command Line（Windows）]
-set SWANLAB_PROJECT="qwen2-sft"
+set SWANLAB_PROJ_NAME="qwen2-sft"
+set SWANLAB_EXP_NAME="qwen2-sft-epoch16"
+set SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 :::

@@ -26,25 +26,32 @@ args = TrainingArguments(
 trainer = Trainer(..., args=args)
 ```
 
-## 2. 自定义项目名
+## 2. 自定义项目/实验/工作空间
 
-默认下，项目名会使用你运行代码的`目录名`。
+默认下，项目名会使用你运行代码的`目录名`，实验名等于`output_dir`。
 
-如果你想自定义项目名，可以设置`SWANLAB_PROJECT`环境变量：
+如果你想自定义项目名、实验名或工作空间，可以设置`SWANLAB_PROJECT`、`SWANLAB_EXP_NAME`和`SWANLAB_WORKSPACE`环境变量：
 
 ::: code-group
 
 ```python
 import os
+
 os.environ["SWANLAB_PROJECT"]="qwen2-sft"
+os.environ["SWANLAB_EXP_NAME"]="qwen2-sft-epoch16"
+os.environ["SWANLAB_WORKSPACE"]="EmotionMachine"
 ```
 
 ```bash [Command Line（Linux/MacOS）]
 export SWANLAB_PROJECT="qwen2-sft"
+export SWANLAB_EXP_NAME="qwen2-sft-epoch16"
+export SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 ```bash [Command Line（Windows）]
 set SWANLAB_PROJECT="qwen2-sft"
+set SWANLAB_EXP_NAME="qwen2-sft-epoch16"
+set SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 :::
