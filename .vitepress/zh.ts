@@ -63,7 +63,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.5.4',  items: [
+      { text: 'v0.5.5',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },

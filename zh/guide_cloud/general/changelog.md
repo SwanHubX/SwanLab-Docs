@@ -5,6 +5,21 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.5.5 - 2025.4.7
+
+**🚀新增功能**
+- 新增`swanlab.Molecule`数据类型，支持生物化学分子可视化，为AlphaFold等AI4Science训练任务提供更好的训练体验
+- 实验表格，现在支持记忆你的排序、筛选、列拖拽了！
+- 支持了寒武纪MLU的温度和功率指标记录
+- 新增SWANLAB_PROJ、SWANLAB_WORKSPACE、SWANLAB_EXP_NAME三个环境变量
+- 环境中支持显示寒武纪MLU Logo
+
+**🌍生态**
+- 大模型评估框架[EvalScope](https://github.com/modelscope/evalscope) 已集成SwanLab！：https://github.com/modelscope/evalscope/pull/453
+
+**🤔优化**
+- 优化了网页加载性能
+
 ## v0.5.4 - 2025.3.31
 
 **🚀新增功能**

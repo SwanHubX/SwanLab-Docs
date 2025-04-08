@@ -5,6 +5,21 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.5 - 2025.4.7
+
+**🚀 New Features**
+- Added `swanlab.Molecule` data type to support biochemical molecular visualization, providing better training experience for AI4Science tasks like AlphaFold
+- Experiment tables now remember your sorting, filtering, and column dragging!
+- Added support for recording Cambricon MLU temperature and power metrics
+- Introduced three new environment variables: SWANLAB_PROJ, SWANLAB_WORKSPACE, and SWANLAB_EXP_NAME
+- Added Cambricon MLU logo display in environment information
+
+**🌍 Ecosystem**
+- Large model evaluation framework [EvalScope](https://github.com/modelscope/evalscope) has integrated SwanLab! See: https://github.com/modelscope/evalscope/pull/453
+
+**🛠 Improvements**
+- Optimized web page loading performance
+
 ## v0.5.4 - 2025.3.31  
 
 **🚀 New Features**  
