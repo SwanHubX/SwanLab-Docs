@@ -16,8 +16,6 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 
 ## 📹在线演示
 
-<video controls src="./what_is_swanlab/demo.mp4"></video>
-
 | [ResNet50 猫狗分类][demo-cats-dogs] | [Yolov8-COCO128 目标检测][demo-yolo] |
 | :--------: | :--------: |
 | [![][demo-cats-dogs-image]][demo-cats-dogs] | [![][demo-yolo-image]][demo-yolo] |
@@ -37,6 +35,10 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 | :--------: | :--------: |
 | [![][demo-easyr1-rl-image]][demo-easyr1-rl] | [![][demo-qwen2-grpo-image]][demo-qwen2-grpo] |
 | 使用EasyR1框架进行多模态LLM RL训练 | 基于Qwen2.5-0.5B模型在GSM8k数据集上进行GRPO训练 |
+
+视频Demo：
+
+<video controls src="./what_is_swanlab/demo.mp4"></video>
 
 ## SwanLab能做什么？
 
