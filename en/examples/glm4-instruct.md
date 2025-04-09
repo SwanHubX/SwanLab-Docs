@@ -1,5 +1,7 @@
 # Fine-tuning ChatGLM4 for Large Model Instruction Following (with Code and Test Scripts)  
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ShaohonChen/chatglm-finetune/)
+
 Author: Emotional Machine Lab - Chen Shaohong  
 Email: <shaohon_chen@115lab.club>  
 

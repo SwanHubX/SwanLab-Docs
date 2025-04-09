@@ -1,5 +1,7 @@
 # 使用ChatGLM4进行大模型指令遵从微调（附代码和测试脚本）
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ShaohonChen/chatglm-finetune/)
+
 作者：情感机器实验室-陈少宏 邮箱：<shaohon_chen@115lab.club>
 
 [[toc]]
