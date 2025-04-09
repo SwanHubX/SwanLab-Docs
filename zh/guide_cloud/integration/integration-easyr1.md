@@ -1,6 +1,8 @@
 # EasyR1
 
-[EasyR1](https://github.com/hiyouga/EasyR1) 是基于[veRL](https://github.com/volcengine/verl)的一个高效、可扩展、多模态强化学习LLM训练框架
+[EasyR1](https://github.com/hiyouga/EasyR1) 是基于[veRL](https://github.com/volcengine/verl)的一个高效、可扩展、多模态强化学习LLM训练框架。
+
+![](./easyr1/logo.png)
 
 EasyR1 受益于 veRL 的 HybridEngine 和 vLLM 0.7 的 SPMD mode，并适配了 Qwen2.5-VL 模型，在多模态几何题任务 Geometry3k 上通过 30 个 batch 的 GRPO 训练，即可提升 5% 验证集准确率。
 

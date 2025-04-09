@@ -187,6 +187,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
+      { text: 'EvalScope', link: 'integration-evalscope' },
       { text: 'Fastai', link: 'integration-fastai' },
     ]
   },
