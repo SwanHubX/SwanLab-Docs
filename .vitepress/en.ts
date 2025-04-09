@@ -321,6 +321,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
         { text: 'Object3D', link: 'py-object3d' },
+        { text: 'Molecule', link: 'py-molecule' },
       ]},
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
