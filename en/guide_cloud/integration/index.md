@@ -23,6 +23,8 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [LightGBM](/en/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/en/guide_cloud/integration/integration-xgboost.html)
 
+## Evaluation Frameworks
+- [EvalScope](/en/guide_cloud/integration/integration-evalscope.html)
 
 ## Computer Vision
 - [Ultralytics](/en/guide_cloud/integration/integration-ultralytics.html)

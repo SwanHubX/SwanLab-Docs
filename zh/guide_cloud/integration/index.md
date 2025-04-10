@@ -23,6 +23,8 @@
 - [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/guide_cloud/integration/integration-xgboost.html)
 
+## 评估框架
+- [EvalScope](/guide_cloud/integration/integration-evalscope.html)
 
 ## 计算机视觉
 - [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
