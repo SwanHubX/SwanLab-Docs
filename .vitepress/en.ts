@@ -269,6 +269,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'BERT Text Classification', link: 'bert' },  
       { text: 'LLM Pretraining', link: 'pretrain_llm' },  
       { text: 'GLM4 Instruct Finetune', link: 'glm4-instruct'},
+      { text: 'Qwen2 NER', link: 'ner'},
       { text: 'Qwen Finetune Case', link: 'qwen_finetune' }
     ]
   },
