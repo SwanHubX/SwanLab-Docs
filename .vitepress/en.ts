@@ -137,10 +137,10 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
-      { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
       { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+      { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },

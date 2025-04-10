@@ -154,14 +154,14 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
-      { text: '系统硬件监控（支持昇腾）', link: 'experiment_track/system-monitor' },
+      { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-      { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
-      { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+      { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+      { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '常见问题', link: 'experiment_track/FAQ' },
 
     ]
