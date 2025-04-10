@@ -1,4 +1,4 @@
-# 用Jupyter Notebook跟踪实验
+# 用 Notebook 跟踪实验
 
 将 SwanLab 与 Jupyter 结合使用，无需离开Notebook即可获得交互式可视化效果。
 

@@ -140,6 +140,12 @@ swanlab.log({"examples": text_list})
 
 请参考此文档：[API-Oject3D](/api/py-object3d)
 
+## 5. 生物化学分子
+
+![](/assets/molecule.gif)
+
+请参考此文档：[API-Molecule](/api/py-molecule)
+
 
 ## Q&A
 
