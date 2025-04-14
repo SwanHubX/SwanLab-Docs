@@ -41,7 +41,7 @@ args = TrainingArguments(
 
 默认下，项目名会使用你运行代码的`目录名`，实验名等于`output_dir`。
 
-如果你想自定义项目名、实验名或工作空间，可以设置`SWANLAB_PROJECT`和`SWANLAB_WORKSPACE`环境变量：
+如果你想自定义项目名或工作空间，可以设置`SWANLAB_PROJECT`和`SWANLAB_WORKSPACE`环境变量：
 
 ::: code-group
 
