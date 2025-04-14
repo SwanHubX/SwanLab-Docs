@@ -57,8 +57,8 @@ from transformers import TrainingArguments, Trainer
 
 args = TrainingArguments(
     ...,
-    report_to="swanlab"
-
+    report_to="swanlab",
+    run_name="great_try_1",
 )
 
 trainer = Trainer(..., args=args)
