@@ -48,3 +48,17 @@ Where:
 • `name` specifies the experiment name  
 
 To customize the project name, navigate to the `statistic_benchmark_metric_worker` function in `evalscope/perf/benchmark.py` and modify the `project` parameter in the SwanLab configuration section.  
+
+**Visualization Effect Example:**
+
+![](./evalscope/show.png)
+
+## Upload to Self-Hosted Version  
+
+If you wish to upload the evaluation results to a self-hosted version, you can first log in to the self-hosted version via the command line. For example, if your deployment address is `http://localhost:8000`, you can run:  
+
+```bash  
+swanlab login --host http://localhost:8000  
+```  
+
+After completing the login, run the `evalscope` command, and the evaluation results will be uploaded to the self-hosted version.

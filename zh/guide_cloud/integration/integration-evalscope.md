@@ -46,3 +46,17 @@ evalscope eval \
 
 其中`swanlab-api-key`是你的SwanLab API Key，`name`是实验名。  
 如果你希望设置自定义项目名，可以去往`EvalScope`源码的 `evalscope/perf/benchmark.py` 的 `statistic_benchmark_metric_worker`函数，找到swanlab部分，修改`project`参数。
+
+**可视化效果案例：**
+
+![](./evalscope/show.png)
+
+## 上传到私有化部署版
+
+如果你希望将评估结果上传到私有化部署版，可以先在命令行登录到私有化部署版。比如你的部署地址是`http://localhost:8000`，可以运行：
+
+```bash
+swanlab login --host http://localhost:8000
+```
+
+完成登录后，再运行`evalscope`的命令，就可以将评估结果上传到私有化部署版了。
