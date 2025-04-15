@@ -44,8 +44,6 @@ swanlab.init(mode='disabled')
 
 ![details](/assets/faq-chart-details.png)
 
-双击区域后复原。
-
 
 ## 内部指标名
 
@@ -71,8 +69,21 @@ swanlab.init(mode='disabled')
 
 ## 命令行记录与截断
 
-SwanLab会记录`swanlab.init()`之后进程中的标准输出流，可以在实验的「日志」选项卡查看。
+SwanLab会记录`swanlab.init()`之后进程中的标准输出流，可以在实验的「日志」选项卡查看。如果一行的命令行输出过长，会被截断，目前的默认限制是`1024`个字符，最大限制是`4096`个字符。
 
-如果一行的命令行输出过长，会被截断，目前的限制是500个字符。
+如果你想修改限制，可以使用下面的代码进行修改：
 
-如果你想解除限制，可以前往swanlab的包源码，对`swanlab/log/console.py`中的`MAX_UPLOAD_LEN`进行修改。这样在`swanlog`日志文件中会存储相应的命令行输出，且离线看板也会按此显示，但不会让云端版的规则产生改变。
+```python
+import swanlab
+
+# 创建新的设置对象，修改max_log_length参数
+new_settings = swanlab.Settings(
+    max_log_length=4096,
+)
+
+# 更新全局设置
+swanlab.merge_settings(new_settings)
+
+swanlab.init()
+...
+```
