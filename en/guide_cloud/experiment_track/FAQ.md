@@ -11,6 +11,22 @@ Add `swanlab.finish()` between multiple experiment creations.
 After executing `swanlab.finish()`, executing `swanlab.init()` again will create a new experiment.  
 If `swanlab.finish()` is not executed, subsequent `swanlab.init()` calls will be ignored.
 
+## How to Upload Data to a Self-Hosted SwanLab?
+
+There are two ways to achieve this:
+
+::: code-group
+
+```python [Method 1]
+swanlab.login(api_key='Your API Key', host='Your Self-Hosted Server Address')
+```
+
+```bash [Method 2]
+swanlab login --host Your_Self-Hosted_Server_Address --api-key Your_API_Key
+```
+
+After logging in, you can specify the data to be uploaded to your self-hosted SwanLab.
+
 ## How to disable SwanLab logging during training (for debugging)?
 
 Set the `mode` parameter of `swanlab.init` to 'disabled' to prevent experiment creation and data logging.
