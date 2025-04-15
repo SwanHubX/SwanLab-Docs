@@ -1,32 +1,23 @@
 # 系统硬件监控
 
-SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情况，并记录到 **「系统」图表** 当中。
+SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情况，并记录到 **「系统」图表** 当中。当前支持的硬件列表：
 
-![](./system-monitor/head.png)
-
-目前SwanLab已支持监控3款**AI计算芯片**（**华为昇腾**、**英伟达**、**寒武纪**）的硬件资源情况，涵盖显卡利用率、显存占用率、显卡温度、显卡功率等指标。
-
-除此之外，SwanLab还支持监控**CPU**、**内存**、**硬盘**等硬件资源情况。
-
----
-
-> 很开心，我们与昇腾计算团队合作，为训练师提供更多的国产算力使用体验。
-
-[昇腾NPU监控案例](https://swanlab.cn/@nexisato/EMO_baseline/runs/lg1ky9or15htzkek3vv2h/system)
-
-NPU监控图表：
-
-![](./system-monitor/system.png)
-
-AI芯片环境记录：
-
-![](./system-monitor/env.png)
-
+| 硬件 | 信息记录 | 资源监控 | 脚本 |
+| --- | --- | --- | --- |
+| 英伟达GPU | ✅ | ✅ | [nvidia.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/nvidia.py) |
+| 昇腾NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |
+| 寒武纪MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |
+| CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |
+| 内存 | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |
+| 硬盘 | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |
+| 网络 | ✅ | ✅ | [network.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/network.py) |
 
 
 ## 系统监控指标详解
 
-SwanLab 在当前实验运行的机器上自动监控硬件资源情况，并为每个指标生成图表，统一展示在 **「系统」图表** 选项卡中。
+SwanLab 支持在当前实验运行的机器上自动监控硬件资源情况，并为每个指标生成图表，统一展示在 **「系统」图表** 选项卡中。
+
+![](./system-monitor/head.png)
 
 **采集策略与频率**：SwanLab根据当前实验的持续运行时间，自动调整硬件数据采集的频率，以平衡数据粒度与系统性能，采集频率分为以下几档：
 
@@ -38,7 +29,7 @@ SwanLab 在当前实验运行的机器上自动监控硬件资源情况，并为
 
 SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬盘IO以及网络情况等多个与训练过程相关的指标。以下详细介绍每个部分的监控内容及其在图表展示中的意义。
 
-### 1. GPU（NVIDIA）
+## GPU（NVIDIA）
 
 ![](./system-monitor/nvidia.png)
 
@@ -55,7 +46,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 2. NPU（Ascend）
+## NPU（Ascend）
 
 ![](./system-monitor/ascend.png)
 
@@ -69,7 +60,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 3. MLU（寒武纪）
+## MLU（寒武纪）
 
 ![](./system-monitor/cambricon.png)
 
@@ -83,7 +74,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 4. CPU
+## CPU
 
 | 指标 | 描述 |  
 |--------|------------|  
@@ -92,7 +83,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 5. 内存
+## 内存
 
 | 指标 | 描述 |  
 |--------|------------|  
@@ -103,7 +94,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 6. 硬盘
+## 硬盘
 
 | 指标 | 描述 |  
 |--------|------------|  
@@ -114,7 +105,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 7. 网络
+## 网络
 
 | 指标 | 描述 |  
 |--------|------------|  
