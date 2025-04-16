@@ -258,6 +258,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },    
       { text: 'Yolo Object Detection', link: 'yolo' },  
+      { text: 'UNet Medical Image Segmentation', link: 'unet-medical-segmentation'},
       { text: 'QwenVL Finetune', link: 'qwen_vl_coco' },
       { text: 'Stable Diffusion Finetune', link: 'stable_diffusion' },
     ]

@@ -280,6 +280,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'Yolo目标检测', link: 'yolo' },  
+      { text: 'UNet医学影像分割', link: 'unet-medical-segmentation'},
       { text: 'QwenVL多模态大模型微调', link: 'qwen_vl_coco'},
       { text: 'Stable Diffusion文生图微调', link: 'stable_diffusion'},
     ]
