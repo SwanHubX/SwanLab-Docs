@@ -156,9 +156,7 @@ The model is saved as a `pth` file, requiring approximately 124 MB.
 
 ## 4. Experiment Tracking with SwanLab  
 
-[SwanLab](https://github.com/swanhubx/swanlab) is an open-source tool for training experiment tracking. Designed for AI researchers, SwanLab provides training visualization, automatic logging, hyperparameter recording, experiment comparison, and multi-user collaboration. With SwanLab, researchers can identify training issues through intuitive visualizations, compare multiple experiments for inspiration, and share results via online links to facilitate team collaboration.  
-
-<video controls src="../guide_cloud/general/what_is_swanlab/demo.mp4"></video>  
+[SwanLab](https://github.com/swanhubx/swanlab) is an open-source tool for training experiment tracking. Designed for AI researchers, SwanLab provides training visualization, automatic logging, hyperparameter recording, experiment comparison, and multi-user collaboration. With SwanLab, researchers can identify training issues through intuitive visualizations, compare multiple experiments for inspiration, and share results via online links to facilitate team collaboration.   
 
 For this training session, we configure SwanLab with the project name `Unet-Medical-Segmentation`, experiment name `bs32-epoch40`, and the following hyperparameters:  
 
