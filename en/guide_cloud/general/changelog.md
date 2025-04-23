@@ -5,6 +5,23 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+
+## v0.5.6 - 2025.4.23  
+
+**🚀 New Features**  
+
+- Line charts now support chart configuration, allowing customization of X/Y axis ranges, main title, and X/Y axis titles.  
+- Chart search now supports regular expressions.  
+- SwanLab private deployment edition now supports offline activation verification.  
+- Added support for Kunlunxin XPU environment logging and hardware monitoring.  
+- Improved pip environment logging compatibility for projects using `uv`.  
+- Environment logging now records Linux distributions (e.g., Ubuntu, CentOS, Kylin, etc.).  
+
+**🤔 Optimizations**  
+
+- Fixed issues with the sidebar's one-click experiment hiding feature.  
+
+
 ## v0.5.5 - 2025.4.7
 
 **🚀 New Features**
