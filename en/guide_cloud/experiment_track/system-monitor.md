@@ -1,121 +1,116 @@
-# System Hardware Monitoring (Supports Ascend)
+# System Hardware Monitoring  
 
-During the tracking of experiments, SwanLab **automatically monitors** the hardware resources of the machine and records them in the **"System" charts**.
+During experiment tracking, SwanLab automatically monitors machine hardware resources and records them in the System Charts. Currently supported hardware:  
 
-![](./system-monitor/head.png)
+| Hardware | Info Logging | Resource Monitoring | Script |  
+|----------|--------------|----------------------|--------|  
+| NVIDIA GPU | ✅ | ✅ | [nvidia.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/nvidia.py) |  
+| Ascend NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |  
+| Cambricon MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |  
+| Kunlunxin XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |  
+| CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |  
+| Memory | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |  
+| Disk | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |  
+| Network | ✅ | ✅ | [network.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/network.py) |  
 
-Currently, SwanLab supports monitoring hardware resources for three types of **AI computing chips** (**Huawei Ascend** 、**NVIDIA** 、**Cambricon**), covering metrics such as GPU utilization, VRAM usage, GPU temperature, and GPU power consumption.
+## System Monitoring Metrics  
 
-In addition, SwanLab also supports monitoring hardware resources such as **CPU**, **memory**, and **disk**.
+SwanLab automatically monitors hardware resources on the machine running the experiment and generates charts for each metric, displayed under the System Charts tab.  
 
----
+![](./system-monitor/head.png)  
 
-> We are thrilled to collaborate with the Ascend Computing team to offer trainers more opportunities to experience domestic computing power.
-
-[Ascend NPU Monitoring Example](https://swanlab.cn/@nexisato/EMO_baseline/runs/lg1ky9or15htzkek3vv2h/system)
-
-NPU Monitoring Charts:
-
-![](./system-monitor/system.png)
-
-AI Chip Environment Records:
-
-![](./system-monitor/env.png)
-
----
-
-## Detailed System Monitoring Metrics  
-
-SwanLab automatically monitors hardware resource utilization on the machine running the experiment and generates charts for each metric, collectively displayed in the **"System" charts** tab.  
-
-### **Sampling Strategy & Frequency**  
-SwanLab dynamically adjusts hardware data sampling frequency based on experiment duration to balance data granularity and system performance. Sampling frequencies are tiered as follows:  
+Sampling Strategy & Frequency: SwanLab dynamically adjusts hardware data collection frequency based on experiment duration to balance granularity and system performance. Sampling frequencies:  
 
 | Data Points Collected | Sampling Frequency |  
-|:---------------------:|:------------------:|  
-| 0~10                  | Every 10 seconds   |  
-| 10~50                 | Every 30 seconds   |  
-| 50+                   | Every 60 seconds   |  
+|-----------------------|--------------------|  
+| 0~10 | Every 10 seconds |  
+| 10~50 | Every 30 seconds |  
+| 50+ | Every 60 seconds |  
 
-SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics—all critical to the training process. Below is a detailed breakdown of each monitoring category and its visualization significance.  
+SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics relevant to training processes. Below are detailed descriptions of each component.  
 
----
+## GPU (NVIDIA)  
 
-### **1. GPU (NVIDIA)**  
+![](./system-monitor/nvidia.png)  
 
-![](./system-monitor/nvidia.png)
-
-> *On multi-GPU machines, each GPU's metrics are recorded separately and displayed as individual lines in charts.*  
+> On multi-GPU machines, each GPU's metrics are recorded separately, displayed as individual lines in charts.  
 
 | Metric | Description |  
-|--------|------------|  
-| **GPU Memory Allocated (%)** | Percentage of GPU VRAM utilization |  
-| **GPU Memory Allocated (MB)** | VRAM usage in MB (chart Y-axis capped at max VRAM across GPUs) |  
-| **GPU Utilization (%)** | Compute workload percentage |  
-| **GPU Temperature (°C)** | GPU temperature in Celsius |  
-| **GPU Power Usage (W)** | GPU power draw in watts |  
-| **GPU Time Spent Accessing Memory (%)** | Percentage of time spent accessing GPU memory during task execution |
+|-------------------------------|----------------------------------------------------------------|  
+| GPU Memory Allocated (%) | GPU memory utilization – Percentage of VRAM used. |  
+| GPU Memory Allocated (MB) | GPU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
+| GPU Utilization (%) | GPU utilization – Percentage of computational resources used. |  
+| GPU Temperature (℃) | GPU temperature in Celsius. |  
+| GPU Power Usage (W) | GPU power consumption in watts. |  
+| GPU Time Spent Accessing Memory (%) | Memory access time – Percentage of time spent accessing VRAM. |  
 
----
+## NPU (Ascend)  
 
-### **2. NPU (Ascend)**  
+![](./system-monitor/ascend.png)  
 
-![](./system-monitor/ascend.png)
-
-> *On multi-NPU systems, each NPU's metrics are logged independently.*  
+> On multi-NPU machines, each NPU's metrics are recorded separately.  
 
 | Metric | Description |  
-|--------|------------|  
-| **NPU Utilization (%)** | Compute workload percentage |  
-| **NPU Memory Allocated (%)** | NPU memory utilization percentage |  
-| **NPU Temperature (°C)** | NPU temperature in Celsius |  
+|-----------------------|------------------------------------------------|  
+| NPU Utilization (%) | NPU computational utilization. |  
+| NPU Memory Allocated (%) | NPU memory utilization. |  
+| NPU Temperature (℃) | NPU temperature in Celsius. |  
 
----
+## MLU (Cambricon)  
 
-### **3. MLU (Cambricon)**  
+![](./system-monitor/cambricon.png)  
 
-![](./system-monitor/cambricon.png)
-
-> *On multi-NPU systems, each NPU's metrics are logged independently.*  
+> On multi-MLU machines, each MLU's metrics are recorded separately.  
 
 | Metric | Description |  
-|--------|------------|  
-| **MLU Utilization (%)** | Compute workload percentage |  
-| **MLU Memory Allocated (%)** | MLU memory utilization percentage |  
+|-----------------------|------------------------------------------------|  
+| MLU Utilization (%) | MLU computational utilization. |  
+| MLU Memory Allocated (%) | MLU memory utilization. |  
+| MLU Temperature (℃) | MLU temperature in Celsius. |  
+| MLU Power (W) | MLU power draw in watts. |  
 
----
+## XPU (Kunlunxin)  
 
-### **4. CPU**  
+![](./system-monitor/kunlunxin.png)  
 
-| Metric | Description |  
-|--------|------------|  
-| **CPU Utilization (%)** | Total CPU workload percentage |  
-| **Process CPU Threads** | Number of threads used by the experiment |  
-
----
-
-### **5. Memory**  
+> On multi-XPU machines, each XPU's metrics are recorded separately.  
 
 | Metric | Description |  
-|--------|------------|  
-| **System Memory Utilization (%)** | Total system RAM usage percentage |  
-| **Process Memory In Use (non-swap, MB)** | Physical RAM actively used by the process (excludes swap) |  
-| **Process Memory Utilization (MB)** | Total memory allocated to the process (includes swap) |  
-| **Process Memory Available (non-swap, MB)** | Unused physical RAM available to the process |  
+|-----------------------|------------------------------------------------|  
+| XPU Utilization (%) | XPU computational utilization. |  
+| XPU Memory Allocated (%) | XPU memory utilization. |  
+| XPU Temperature (℃) | XPU temperature in Celsius. |  
+| XPU Power (W) | XPU power draw in watts. |  
 
----
-
-### **6. Disk**  
+## CPU  
 
 | Metric | Description |  
-|--------|------------|  
-| **Disk I/O Utilization (MB/s)** | Read/write speeds (separate lines for read vs. write) |  
-| **Disk Utilization (%)** | System disk usage percentage:<br>- Linux: Root partition (`/`)<br>- Windows: System drive (typically `C:`) |  
+|-----------------------|------------------------------------------------|  
+| CPU Utilization (%) | CPU computational utilization. |  
+| Process CPU Threads | Thread count used by the experiment. |  
 
----
-
-### **7. Network**  
+## Memory  
 
 | Metric | Description |  
-|--------|------------|  
-| **Network Traffic (KB/s)** | Data transfer rates (separate lines for receive vs. transmit) |  
+|-------------------------------------------|----------------------------------------------------------------|  
+| System Memory Utilization (%) | System-wide memory usage percentage. |  
+| Process Memory In Use (non-swap) (MB) | Physical memory (excluding swap) consumed by the process. |  
+| Process Memory Utilization (MB) | Allocated memory (including swap) for the process. |  
+| Process Memory Available (non-swap) (MB) | Available physical memory (excluding swap) for the process. |  
+
+## Disk  
+
+| Metric | Description |  
+|-----------------------|------------------------------------------------|  
+| Disk IO Utilization (MB) | Disk I/O throughput in MB/s (read/write shown separately). |  
+| Disk Utilization (%) | Disk usage percentage. |  
+
+On Linux, monitors root (`/`) usage; on Windows, monitors system drive (typically `C:`).  
+
+## Network  
+
+| Metric | Description |  
+|-----------------------|------------------------------------------------|  
+| Network Traffic (KB) | Network I/O throughput in KB/s (receive/transmit shown separately). |  
+
+> Network read/write speeds in KB/s, displayed as separate lines for receive/transmit rates.
