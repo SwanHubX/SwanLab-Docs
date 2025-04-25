@@ -272,6 +272,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: 'Cifar10图像分类', link: 'cifar10' },
     ]
   },
   {

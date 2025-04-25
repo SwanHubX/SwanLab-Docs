@@ -248,8 +248,9 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Hello_World', link: 'hello_world' },
-      { text: 'MNIST Handwriting Recognition', link: 'mnist' },
+      { text: 'MNIST', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: 'CIFAR10', link: 'cifar10' },
     ]
   },
   {
