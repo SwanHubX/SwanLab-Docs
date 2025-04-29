@@ -561,7 +561,7 @@ def main():
     print(f"Using device: {device}")  
     
     try:  
-        model_path = "/Users/zeyilin/Desktop/Coding/UNet-Medical/best_model.pth"  
+        model_path = "./best_model.pth"  
         print(f"Attempting to load model from: {model_path}")  
         model = load_model(model_path, device)  
         
