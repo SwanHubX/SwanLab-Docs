@@ -19,7 +19,7 @@ UNet是一种基于卷积神经网络（CNN）的医学影像分割模型，由R
 - 模型：UNet（Pytorch代码直接写）
 - 数据集：[brain-tumor-image-dataset-semantic-segmentation - Kagggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
-
+- 论文：[《U-Net: Convolutional Networks for Biomedical Image Segmentation》](https://arxiv.org/abs/1505.04597)
 
 ---
 
@@ -582,7 +582,7 @@ def main():
     
     try:
         # 加载模型
-        model_path = "/Users/zeyilin/Desktop/Coding/UNet-Medical/best_model.pth"  # 确保这个路径是正确的
+        model_path = "./best_model.pth"  # 确保这个路径是正确的
         print(f"Attempting to load model from: {model_path}")
         model = load_model(model_path, device)
         
@@ -635,3 +635,4 @@ if __name__ == '__main__':
 - 模型：UNet（Pytorch代码直接写）
 - 数据集：[brain-tumor-image-dataset-semantic-segmentation - Kagggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
+- 论文：[《U-Net: Convolutional Networks for Biomedical Image Segmentation》](https://arxiv.org/abs/1505.04597)
