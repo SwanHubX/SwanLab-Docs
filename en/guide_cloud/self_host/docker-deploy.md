@@ -61,6 +61,12 @@ SwanLab Community Edition uses port `8000` by default. If using the default conf
 
 Now, activate your primary account. Activation requires 1 License, which can be obtained for free from the [SwanLab Official Website](https://swanlab.cn) for personal use.
 
+:::warning Offline Verification
+
+In versions > `v1.1` of private deployment, it supports verifying the License in an offline environment.
+
+:::
+
 ![](./docker-deploy/apply-license.png)
 
 Once you have the License, return to the activation page, enter your username, password, confirm password, and License, then click "Activate" to complete the setup.
@@ -119,3 +125,18 @@ swanlab.finish()
 View the experiment on the web after running:
 
 ![](./docker-deploy/test-experiment.png)
+
+
+## Upgrade Version  
+
+If you want to upgrade your local self-hosted deployment to the latest version, use the following commands:  
+
+```bash  
+# Navigate to your previously deployed self-hosted project directory  
+cd ./docker  
+./upgrade.sh  
+```  
+
+Command-line output after a successful upgrade:  
+
+![](./docker-deploy/upgrade.png)
