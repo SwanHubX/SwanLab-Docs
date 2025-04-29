@@ -119,3 +119,18 @@ swanlab.finish()
 View the experiment on the web after running:
 
 ![](./docker-deploy/test-experiment.png)
+
+
+## Upgrade Version  
+
+If you want to upgrade your local self-hosted deployment to the latest version, use the following commands:  
+
+```bash  
+# Navigate to your previously deployed self-hosted project directory  
+cd ./docker  
+./upgrade.sh  
+```  
+
+Command-line output after a successful upgrade:  
+
+![](./docker-deploy/upgrade.png)

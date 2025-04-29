@@ -125,3 +125,16 @@ swanlab.finish()
 
 
 
+## 升级版本
+
+如果你想要将你本地的私有化部署版本升级到最新版，请使用下面的命令：
+
+```bash
+# 在你之前本地部署的 self-hosted 项目目录下
+cd ./docker
+./upgrade.sh
+```
+
+升级完成的命令行样式：
+
+![](./docker-deploy/upgrade.png)
