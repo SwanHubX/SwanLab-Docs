@@ -582,7 +582,7 @@ def main():
     
     try:
         # 加载模型
-        model_path = "/Users/zeyilin/Desktop/Coding/UNet-Medical/best_model.pth"  # 确保这个路径是正确的
+        model_path = "./best_model.pth"  # 确保这个路径是正确的
         print(f"Attempting to load model from: {model_path}")
         model = load_model(model_path, device)
         
