@@ -63,6 +63,12 @@ SwanLab社区版默认会使用`8000`端口，如果你使用的是默认配置�
 
 现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个，位置在 「设置」-「账户与许可证」。
 
+:::warning 离线验证
+
+在私有化部署 > `v1.1`的版本中，支持在离线环境下验证License。
+
+:::
+
 ![](./docker-deploy/apply-license.png)
 
 拿到License后，回到激活页面，填写用户名、密码、确认密码和License，点击激活即可完成创建。
