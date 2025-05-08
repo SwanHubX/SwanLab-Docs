@@ -63,3 +63,40 @@ print(my_api.list_workspaces())
     }
 ]
 ```
+
+### Get Experiment Status - `get_exp_status`
+
+Get the status of an experiment
+
+**Parameters**
+
+- `project`: `str` (Project name)
+- `exp_cuid`: `str` (Experiment ID)
+- `username`: `Optional[str]` (Workspace name, defaults to personal space)
+
+**Returns**
+
+Returns a dictionary containing the following fields:
+
+-  `state`: `str`, Experiment state, either `'FINISHED'` or `'RUNNING'`
+-  `finishedAt` `str`, Experiment completion time (if available), formatted as `'2024-11-23T12:28:04.286Z'`
+
+If the request fails, a dictionary with the following fields will be returned:
+
+-  `code` `int`, HTTP error code
+-  `message` `str`, Error message
+
+**Example**
+
+```python
+print(my_api.api.get_exp_state(project="test_project", exp_cuid="test_exp_cuid"))
+
+{
+	"state": "FINISHED",
+	"finishedAt": "2024-04-23T12:28:04.286Z",
+}
+Reequest failure:
+{
+	"state": "RUNNING"
+}
+```
