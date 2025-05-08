@@ -6,7 +6,7 @@ Currently, the SwanLab self-hosted version is available on the Tencent Cloud App
 
 ## Prerequisites
 
-1. First, you need a Tencent Cloud account and ensure that the account has permission to **install cloud applications**.
+1. First, you need a Tencent Cloud account and ensure that the account has **permission to install cloud applications**, reference: [Tencent Cloud App Purchase & Installation Instruction](https://cloud.tencent.com/document/product/1689/113848)
 
 2. In the [Tencent Cloud Console - VPC](https://console.cloud.tencent.com/vpc/vpc), create a default VPC to provide the target network for the cloud application.
 Currently supported regions are as follows:
@@ -34,12 +34,12 @@ check `I have read and agree to the "Tencent Cloud App Universal Product User Ag
 <img src="./tencentcloud-app/resource-option.png" width="800"/>
 
 The meaning of each cloud resource is as follows:
-- Target Network: The region where the cloud service is hosted. You can choose based on the region where the `VPC` was previously created.
-- Cloud Server Type: The cloud server instance configuration for hosting the `SwanLab` self-hosted version. The minimum optional configuration is:
-    - vCPU: ≥ 4 cores
-    - Memory: ≥ 8GB
-    - System Storage Space: Default 40GB
-- Data Disk Size: The hard disk size used by the `SwanLab` self-hosted version to record experimental data. The default is `100GB`, and the minimum is `40GB`.
+
+| Configuration | Description | Requirements |
+| ---- | ---- | ---- |
+| Target Network | The region where the cloud service is hosted | You can choose based on the region where the `VPC` was previously created |
+| Cloud Server Type | The cloud server instance configuration for hosting the `SwanLab` self-hosted version | Minimum configuration:<br>- vCPU: ≥ 4 cores<br>- Memory: ≥ 8GB<br>- System Storage Space: Default 40GB |
+| Data Disk Size | The hard disk size used by the `SwanLab` self-hosted version to record experimental data | Default is `100GB`, minimum is `40GB` |
 
 After configuring the cloud resources, click `Next: Confirm Resources`.
 
