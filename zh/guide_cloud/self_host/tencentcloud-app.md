@@ -1,6 +1,8 @@
-# 腾讯云应用
+# 腾讯云应用部署
 
 目前 SwanLab 自托管版本已上线腾讯云应用市场，欢迎各位训练师通过腾讯云开箱使用~
+
+![](./tencentcloud-app/head.png)
 
 - [SwanLab 腾讯云应用](https://app.cloud.tencent.com/detail/SPU_BHEEJEJCDD1984)
 

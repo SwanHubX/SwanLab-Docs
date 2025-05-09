@@ -54,7 +54,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.5.6',  items: [
+      { text: 'v0.5.7',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -149,7 +149,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker deployment', link: 'self_host/docker-deploy' },
-      { text: 'Tencent Cloud App', link: 'self_host/tencentcloud-app' },
+      { text: 'Tencent Cloud App deployment', link: 'self_host/tencentcloud-app' },
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
       { text: 'Version Table', link: 'self_host/version' },
       { text: 'FAQ', link: 'self_host/faq' },

@@ -1,6 +1,8 @@
-# Tencent Cloud App
+# Tencent Cloud App Deployment
 
 Currently, the SwanLab self-hosted version is available on the Tencent Cloud App Market. Trainers are welcome to use it out-of-the-box through Tencent Cloud~
+
+![](./tencentcloud-app/head.png)
 
 - [SwanLab Tencent Cloud App](https://app.cloud.tencent.com/detail/SPU_BHEEJEJCDD1984)
 
