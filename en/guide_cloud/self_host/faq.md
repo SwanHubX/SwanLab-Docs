@@ -30,14 +30,14 @@ If you need to modify the access port after the SwanLab service has been deploye
 
 Find the `swanlab/` directory at the location where the script was executed, run `cd swanlab/` to enter the `swanlab` directory, locate the corresponding `docker-compose.yaml` configuration file, and then modify the port `ports` for the `traefik` container as shown below:
 
-```diff
-  traefik:
-    <<: *common
-    image: ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0
-    container_name: swanlab-traefik
-    ports:
--      - "8000:80"
-+      - "80:80"
+```yaml
+traefik:
+  <<: *common
+  image: ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0
+  container_name: swanlab-traefik
+  ports:
+    - "8000:80" # [!code --]
+    - "80:80" # [!code ++]
 ```
 
 > The above changes the access port to `80`

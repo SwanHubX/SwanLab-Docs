@@ -30,14 +30,14 @@ SwanLab 自托管版本基于 [Docker](https://www.docker.com/) 部署，默认�
 
 在脚本执行的位置找到 `swanlab/` 目录，执行 `cd swanlab/` 后进入到 `swanlab` 目录下找到对应的 `docker-compose.yaml` 配置文件，然后修改 `traefik` 容器对应的端口 `ports`，如下所示：
 
-```diff
+```yaml
   traefik:
     <<: *common
     image: ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0
     container_name: swanlab-traefik
     ports:
--      - "8000:80"
-+ 		 - "80:80"
+      - "8000:80" # [!code --]
+      - "80:80" # [!code ++]
 ```
 
 > 上面将访问端口修改为了 `80`
