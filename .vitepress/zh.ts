@@ -63,7 +63,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.5.6',  items: [
+      { text: 'v0.5.7',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -171,6 +171,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker部署', link: 'self_host/docker-deploy' },
+      { text: '腾讯云应用部署', link: 'self_host/tencentcloud-app' },
       { text: '团队/企业版', link: 'self_host/enterprise-version' },
       { text: '版本对照表', link: 'self_host/version' },
       { text: '常见问题', link: 'self_host/faq' },
