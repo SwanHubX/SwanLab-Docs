@@ -36,7 +36,27 @@ Each API is implemented as a method of the `OpenApi` class, containing the follo
 
 ### Model Definitions
 
-#### ApiResponse {#def}
+When using Open API, some cloud resources, such as experiments and projects, are too complex to be a Python based data structure.
+
+Therefore, these resources are defined as objects in the SDK, supporting IDE auto-completion and type checking for easier manipulation.
+
+For example, to retrieve the start time of an experiment object, you can use:
+
+```python
+api_response: ApiResponse = my_api.get_experiment(project="project1", exp_cuid="cuid1")
+my_exp: Experiment = api_response.data
+created_time: str = my_exp.createdAt
+```
+
+Or, to retrieve the name of the workspace to which a project object belongs, you can use:
+
+```python
+api_response: ApiResponse = my_api.list_projects()
+my_project: Project = api_response.data[0]
+workspace_name: str = my_project.group["name"]
+```
+
+#### ApiResponse Model
 
 Each Open API method returns a `swanlab.api.openapi.types.ApiResponse` object, which contains the following fields:
 
@@ -46,7 +66,7 @@ Each Open API method returns a `swanlab.api.openapi.types.ApiResponse` object, w
 | `errmsg` | `str` | Error message, non-empty if the status code is not `2XX` |
 | `data` | `Any` | Specific data returned, as mentioned in the API descriptions below |
 
-#### Experiment {#def}
+#### Experiment Model
 
 The experiment object is of type `swanlab.api.openapi.types.Experiment`, containing the following fields:
 
@@ -62,7 +82,7 @@ The experiment object is of type `swanlab.api.openapi.types.Experiment`, contain
 | `user` | `Dict[str, str]` | Creator of the experiment, containing `username` and `name` |
 | `profile` | `dict` | Detailed configuration information of the experiment, including user-defined configurations and Python runtime environment, etc. |
 
-#### Project {#def}
+#### Project Model
 
 The project object is of type `swanlab.api.openapi.types.Project`, containing the following fields:
 
@@ -76,26 +96,6 @@ The project object is of type `swanlab.api.openapi.types.Project`, containing th
 | `updatedAt` | `str` | Time of project update, formatted as `2024-11-23T12:28:04.286Z` |
 | `group` | `Dict[str, str]` | Workspace information, containing `type`, `username`, and `name` |
 | `count` | `Dict[str, int]` | Project statistics, such as the number of experiments, number of collaborators, etc. |
-
-#### Model Operations
-
-The model objects can be manipulated similarly to regular dictionaries, and they support IDE type recognition and auto-completion.
-
-For example, to retrieve the start time of an experiment object, you can directly use:
-
-```python
-api_response: ApiResponse = my_api.get_experiment(project="project1", exp_cuid="cuid1")
-my_exp: Experiment = api_response.data
-created_time: str = my_exp.createdAt
-```
-
-Or, to retrieve the name of the workspace to which a project object belongs, you can use:
-
-```python
-api_response: ApiResponse = my_api.list_projects()
-my_project: Project = api_response.data[0]
-workspace_name: str = my_project.group["name"]
-```
 
 Below is a list of all available APIs.
 
@@ -226,7 +226,7 @@ Retrieve the information of an experiment.
 
 **Returns**
 
-`data` `(Experiment)`: Returns an [Experiment](#experiment-def) object containing detailed information about the experiment.
+`data` `(Experiment)`: Returns an [Experiment](#experiment-model) object containing detailed information about the experiment.
 
 **Example**
 
@@ -296,7 +296,7 @@ Retrieve the list of experiments in a specified project.
 
 **Returns**
 
-`data` `(List[Experiment])`: Returns a list of [Experiment](#experiment-def) objects.
+`data` `(List[Experiment])`: Returns a list of [Experiment](#experiment-model) objects.
 
 **Example**
 
@@ -355,7 +355,7 @@ Retrieve the list of projects in a specified workspace.
 
 **Returns**
 
-`data` `(List[Project])`: Returns a list of [Project](#project-def) objects.
+`data` `(List[Project])`: Returns a list of [Project](#project-model) objects.
 
 **Example**
 

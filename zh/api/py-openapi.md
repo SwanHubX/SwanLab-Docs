@@ -35,50 +35,9 @@ print(other_api.list_workspaces().data)
 
 ### 模型定义
 
-#### API 响应 `ApiResponse` {#def}
+在使用开放 API 时, 获取到的部分云端资源组成较为复杂, 如实验、项目等, 难以用简单的Python数据类型表示
 
-开放 API 方法返回`swanlab.api.openapi.types.ApiResponse`对象, 包含以下字段:
-
-| 字段 | 类型 |描述 |
-| --- | --- | --- |
-| `code` | `int` | HTTP 状态码 |
-| `errmsg` | `str` | 错误信息, 如果状态码不为`2XX`则非空 |
-| `data` | `Any` | 返回的具体数据, 下面API文档中提到的返回值即为该字段 |
-
-#### 实验 `Experiment` {#def}
-
-实验对象的类型为`swanlab.api.openapi.types.Experiment`, 包含以下字段:
-
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `cuid` | `str` | 实验CUID, 唯一标识符 |
-| `name` | `str` | 实验名 |
-| `description` | `str` | 实验描述 |
-| `state` | `str` | 实验状态, `FINISHED` 或 `RUNNING` |
-| `show` | `bool` | 显示状态 |
-| `createdAt` | `str` | 创建时间, 格式如 `2024-11-23T12:28:04.286Z` |
-| `finishedAt` | `str` | 完成时间, 格式如 `2024-11-23T12:28:04.286Z`, 若不存在则为 None |
-| `user` | `Dict[str, str]` | 实验创建者, 包含 `username` 与 `name` |
-| `profile` | `dict` | 详细包含了实验的所有配置信息, 如用户自定义配置与Python运行环境等 |
-
-#### 项目 `Project` {#def}
-
-项目对象的类型为`swanlab.api.openapi.types.Project`, 包含以下字段:
-
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `cuid` | `str` | 项目CUID, 唯一标识符 |
-| `name` | `str` | 项目名 |
-| `description` | `str` | 项目描述 |
-| `visibility` | `str` | 可见性, `PUBLIC` 或 `PRIVATE` |
-| `createdAt` | `str` | 创建时间, 格式如 `2024-11-23T12:28:04.286Z` |
-| `updatedAt` | `str` | 更新时间, 格式如 `2024-11-23T12:28:04.286Z` |
-| `group` | `Dict[str, str]` | 工作空间信息, 包含 `type`, `username`, `name` |
-| `count` | `Dict[str, int]` | 项目的统计信息, 如实验个数, 协作者数量等 |
-
-#### 模型操作
-
-实验/项目/API响应等对象的操作方法与普通字典类似, 且支持 IDE 的类型识别与自动补全
+因此, 这些资源在开放API的返回值中被定义为了对象, 支持 IDE 的自动补全与类型检查, 从而方便用户进行操作
 
 例如, 要获取一个实验对象的开始时间, 可以用:
 
@@ -95,6 +54,47 @@ api_response: ApiResponse = my_api.list_projects()
 my_project: Project = api_response.data[0]
 workspace_name: str = my_project.group["name"]
 ```
+
+#### API 响应 `ApiResponse`
+
+开放 API 方法返回`swanlab.api.openapi.types.ApiResponse`对象, 包含以下字段:
+
+| 字段 | 类型 |描述 |
+| --- | --- | --- |
+| `code` | `int` | HTTP 状态码 |
+| `errmsg` | `str` | 错误信息, 如果状态码不为`2XX`则非空 |
+| `data` | `Any` | 返回的具体数据, 下面API文档中提到的返回值即为该字段 |
+
+#### 实验模型 `Experiment`
+
+实验对象的类型为`swanlab.api.openapi.types.Experiment`, 包含以下字段:
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `cuid` | `str` | 实验CUID, 唯一标识符 |
+| `name` | `str` | 实验名 |
+| `description` | `str` | 实验描述 |
+| `state` | `str` | 实验状态, `FINISHED` 或 `RUNNING` |
+| `show` | `bool` | 显示状态 |
+| `createdAt` | `str` | 创建时间, 格式如 `2024-11-23T12:28:04.286Z` |
+| `finishedAt` | `str` | 完成时间, 格式如 `2024-11-23T12:28:04.286Z`, 若不存在则为 None |
+| `user` | `Dict[str, str]` | 实验创建者, 包含 `username` 与 `name` |
+| `profile` | `dict` | 详细包含了实验的所有配置信息, 如用户自定义配置与Python运行环境等 |
+
+#### 项目模型 `Project`
+
+项目对象的类型为`swanlab.api.openapi.types.Project`, 包含以下字段:
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `cuid` | `str` | 项目CUID, 唯一标识符 |
+| `name` | `str` | 项目名 |
+| `description` | `str` | 项目描述 |
+| `visibility` | `str` | 可见性, `PUBLIC` 或 `PRIVATE` |
+| `createdAt` | `str` | 创建时间, 格式如 `2024-11-23T12:28:04.286Z` |
+| `updatedAt` | `str` | 更新时间, 格式如 `2024-11-23T12:28:04.286Z` |
+| `group` | `Dict[str, str]` | 工作空间信息, 包含 `type`, `username`, `name` |
+| `count` | `Dict[str, int]` | 项目的统计信息, 如实验个数, 协作者数量等 |
 
 下面是所有可用的SwanLab 开放 API
 
@@ -225,7 +225,7 @@ my_api.get_exp_state(project="project1", exp_cuid="cuid2").data["state"]
 
 **返回值**
 
-`data` `(Experiment)`: 返回一个实验[(Experiment)](#实验-experiment-def)类型的对象, 包含实验的详细信息
+`data` `(Experiment)`: 返回一个实验[(Experiment)](#实验模型-experiment)类型的对象, 包含实验的详细信息
 
 **示例**
 
@@ -294,7 +294,7 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 
 **返回值**
 
-`data` `(List[Experiment])`: 包含实验[(Experiment)](#实验-experiment-def)对象的列表
+`data` `(List[Experiment])`: 包含实验[(Experiment)](#实验模型-experiment)对象的列表
 
 **示例**
 
@@ -352,7 +352,7 @@ my_api.list_project_exps(project="project1").data[0].name
 
 **返回值**
 
-`data` `(List[Project])`: 包含项目[(Project)](#项目-project-def)对象的列表
+`data` `(List[Project])`: 包含项目[(Project)](#项目模型-project)对象的列表
 
 **示例**
 
