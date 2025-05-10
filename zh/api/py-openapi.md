@@ -63,3 +63,40 @@ print(my_api.list_workspaces())
     }
 ]
 ```
+
+### 查询一个实验状态 `get_exp_status`
+
+获取实验状态
+
+**参数**
+
+- `project`: `str` (项目名)
+- `exp_cuid`: `str` (实验id)
+- `username`: `Optional[str]` (工作空间名, 默认为用户个人空间)
+
+**返回值**
+
+返回一个字典, 包含以下字段:
+
+- `state`: `str`, 实验状态, 为 'FINISHED' 或 'RUNNING'
+- `finishedAt` `str`, 实验完成时间（若有）, 格式如 '2024-11-23T12:28:04.286Z'
+
+若请求失败, 将返回包含以下字段的字典:
+
+- `code` `int`, HTTP 错误代码
+- `message` `str`, 错误信息
+
+**示例**
+
+```python
+print(my_api.api.get_exp_state(project="test_project", exp_cuid="test_exp_cuid"))
+
+{
+	"state": "FINISHED",
+	"finishedAt": "2024-04-23T12:28:04.286Z",
+}
+请求失败时:
+{
+	"state": "RUNNING"
+}
+```
