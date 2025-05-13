@@ -251,7 +251,7 @@ my_api.list_project_exps(project="project1").data[0].name
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `project` | `str` | 项目名 |
-| `exp_cuid` | `str` | 实验CUID, 唯一标识符 |
+| `exp_cuid` | `str` | 实验CUID, 唯一标识符，可通过`list_project_exps`获取，也可以在URL如`https://swanlab.cn/usename/projectname/runs/{exp_cuid}/chart`中获取 |
 | `username` | `str` | 工作空间名, 默认为用户个人空间 |
 
 **返回值**
