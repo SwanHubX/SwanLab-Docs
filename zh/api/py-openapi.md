@@ -1,10 +1,12 @@
 # swanlab.OpenApi
 
-基于 SwanLab 云端功能, 在 SDK 端提供访问 **开放 API（OpenAPI）** 的能力, 允许用户通过编程方式在本地环境中操作云端实验/项目/工作空间资源
+基于 SwanLab 云端功能, 在 SDK 端提供访问 **开放 API（OpenAPI）** 的能力, 允许用户通过编程方式在本地环境中操作云端 **实验/项目/工作空间** 资源。
+
+![](./py-openapi/logo.jpg)
 
 通过开放 API 的形式, 用户可以在本地编程环境中:
 
-- 获取个人信息、工作空间信息、项目列表等
+- 获取实验数据、个人信息、工作空间信息、项目列表等
 - 进行实验的自动管理（如查询、组织、元数据编辑等）
 - 更方便地与其他工具集成（如 CI/CD、实验调度等）
 
@@ -12,22 +14,30 @@
 
 ## 介绍
 
-要使用 SwanLab 的开放 API, 只需实例化一个 `OpenApi` 对象, 需要确保之前在本地使用`swanlab login`登录过, 或者在代码中使用`api_key`参数传入 API 密钥
+> 前置条件：需要在编程环境下登录过SwanLab账号。
+
+要使用 SwanLab 的开放 API, 只需实例化一个 `OpenApi` 对象。
 
 ```python
 from swanlab import OpenApi
 
-my_api = OpenApi() # 使用之前的登录信息
-print(my_api.list_workspaces().data)
+my_api = OpenApi() # 使用本地登录信息
+print(my_api.list_workspaces().data) # 获取当前用户的工作空间列表
+```
+
+如果你需要获取其他用户的数据：
+```python
+from swanlab import OpenApi
 
 other_api = OpenApi(api_key='other_api_key') # 使用另一个账户的api_key
 print(other_api.list_workspaces().data)
 ```
 
+
 具体来说, **OpenApi**的认证逻辑如下：
 
-1. 如果显式提供了`api_key`参数, 则优先使用该`api_key`进行身份认证, 可以在[这里](https://swanlab.cn/space/~/settings)查看自己的 API 密钥
-2. 否则, 遵循与`swanlab.login()`相同的认证逻辑
+1. 如果显式提供了`api_key`参数, 则优先使用该`api_key`进行身份认证, 可以在[这里](https://swanlab.cn/space/~/settings)查看自己的 API 密钥；
+2. 否则,使用本地的认证信息。
 
 ## OpenAPIs
 
@@ -96,13 +106,15 @@ workspace_name: str = my_project.group["name"]
 | `group` | `Dict[str, str]` | 工作空间信息, 包含 `type`, `username`, `name` |
 | `count` | `Dict[str, int]` | 项目的统计信息, 如实验个数, 协作者数量等 |
 
-下面是所有可用的SwanLab 开放 API
+下面是所有可用的SwanLab 开放 API:
 
-### 工作空间
+<br>
 
-#### 列出工作空间 - `list_workspaces`
+### WorkSpace
 
-获取当前用户的所有工作空间(组织)列表
+#### `list_workspaces`
+
+获取当前用户的所有工作空间(组织)列表。
 
 **返回值**
 
@@ -116,9 +128,12 @@ workspace_name: str = my_project.group["name"]
 
 **示例**
 
-获取工作区列表:
+::: code-group
 
-```python
+```python [获取工作区列表]
+from swanlab import OpenApi
+my_api = OpenApi()
+
 my_api.list_workspaces().data
 """
 [
@@ -136,152 +151,33 @@ my_api.list_workspaces().data
 """
 ```
 
-获取第一个工作区的名称:
+```python [获取第一个工作区名称]
+from swanlab import OpenApi
+my_api = OpenApi()
 
-```python
 my_api.list_workspaces().data[0]["name"]
 """
 "workspace1"
 """
 ```
 
-获取响应状态码:
+```python [获取响应状态码]
+from swanlab import OpenApi
+my_api = OpenApi()
 
-```python
 my_api.list_workspaces().code
 """
 200
 """
 ```
 
-### 实验
+:::
 
-#### 查询一个实验的状态 - `get_exp_state`
+<br>
 
-获取一个实验的运行状态
+### Experiment
 
-**方法参数**
-
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
-| `exp_cuid` | `str` | 实验CUID |
-| `username` | `str` | 工作空间名, 默认为用户个人空间 |
-
-**返回值**
-
-`data` `(Dict)`: 返回一个字典, 包含以下字段:
-
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `state` | `str` | 实验状态, 为 `FINISHED` 或 `RUNNING` |
-| `finishedAt` | `Optional[str]` | 若实验完成则非空, 格式如 `2024-11-23T12:28:04.286Z` |
-
-**示例**
-
-获取已完成实验的状态:
-
-```python
-my_api.get_exp_state(project="project1", exp_cuid="cuid1").data
-"""
-{
-    "state": "FINISHED",
-    "finishedAt": "2024-04-23T12:28:04.286Z"
-}
-"""
-```
-
-获取正在运行实验的状态:
-
-```python
-my_api.get_exp_state(project="project1", exp_cuid="cuid2").data
-"""
-{
-    "state": "RUNNING"
-}
-"""
-```
-
-获取正在某个实验的运行状态:
-
-```python
-my_api.get_exp_state(project="project1", exp_cuid="cuid2").data["state"]
-"""
-"RUNNING"
-"""
-```
-
-#### 获取一个实验的信息 - `get_experiment`
-
-获取一个实验的详细信息
-
-**方法参数**
-
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
-| `exp_cuid` | `str` | 实验CUID, 唯一标识符 |
-| `username` | `str` | 工作空间名, 默认为用户个人空间 |
-
-**返回值**
-
-`data` `(Experiment)`: 返回一个实验[(Experiment)](#实验模型-experiment)类型的对象, 包含实验的详细信息
-
-**示例**
-
-获取实验信息:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data
-"""
-{
-    "cuid": "cuid1",
-    "name": "experiment1",
-    "description": "This is a test experiment",
-    "state": "FINISHED",
-    "show": true,
-    "createdAt": "2024-11-23T12:28:04.286Z",
-    "finishedAt": "2024-11-25T15:56:48.123Z",
-    "user": {
-        "username": "kites-test3",
-        "name": "Kites Test"
-    },
-    "profile": {
-        "conda": "...",
-        "requirements": "...",
-        ...
-    }
-}
-"""
-```
-
-获取实验的 CUID:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.cuid
-"""
-"cuid1"
-"""
-```
-获取实验的状态:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.state
-"""
-"FINISHED"
-"""
-```
-
-获取实验的创建者用户名:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"]
-"""
-"kites-test3"
-"""
-```
-
-#### 获取项目下的实验列表 - `list_project_exps`
+#### `list_project_exps`
 
 获取指定项目下的所有实验列表
 
@@ -298,9 +194,9 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 
 **示例**
 
-获取实验列表:
+::: code-group
 
-```python
+```python [获取实验列表]
 my_api.list_project_exps(project="project1", page=1, size=10).data
 """
 [
@@ -328,18 +224,89 @@ my_api.list_project_exps(project="project1", page=1, size=10).data
 """
 ```
 
-获取第一个实验的名称:
+```python [获取第一个实验的CUID]
+my_api.list_project_exps(project="project1").data[0].cuid
+"""
+"cuid1"
+"""
+```
 
-```python
+```python [获取第一个实验的名称]
 my_api.list_project_exps(project="project1").data[0].name
 """
 "experiment1"
 """
 ```
 
-### 项目
+:::
 
-#### 获取项目列表 - `list_projects`
+<br>
+
+#### `get_experiment`
+
+获取一个实验的详细信息
+
+**方法参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `project` | `str` | 项目名 |
+| `exp_cuid` | `str` | 实验CUID, 唯一标识符 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+
+**返回值**
+
+`data` `(Experiment)`: 返回一个实验[(Experiment)](#实验模型-experiment)类型的对象, 包含实验的详细信息
+
+**示例**
+
+::: code-group
+
+```python [获取实验信息]
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data
+"""
+{
+    "cuid": "cuid1",
+    "name": "experiment1",
+    "description": "This is a test experiment",
+    "state": "FINISHED",
+    "show": true,
+    "createdAt": "2024-11-23T12:28:04.286Z",
+    "finishedAt": "2024-11-25T15:56:48.123Z",
+    "user": {
+        "username": "kites-test3",
+        "name": "Kites Test"
+    },
+    "profile": {
+        "conda": "...",
+        "requirements": "...",
+        ...
+    }
+}
+"""
+```
+
+```python [获取实验的状态]
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data.state
+"""
+"FINISHED"
+"""
+```
+
+```python [获取实验的创建者用户名]
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"]
+"""
+"kites-test3"
+"""
+```
+
+:::
+
+<br>
+
+### Project
+
+#### `list_projects`
 
 获取指定工作空间下的所有项目列表
 
@@ -356,9 +323,9 @@ my_api.list_project_exps(project="project1").data[0].name
 
 **示例**
 
-获取项目列表:
+::: code-group
 
-```python
+```python [获取项目列表]
 my_api.list_projects().data
 """
 [

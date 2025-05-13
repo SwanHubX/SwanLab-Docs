@@ -1,6 +1,8 @@
-# `swanlab.OpenApi`
+# swanlab.OpenApi
 
 Based on SwanLab's cloud capabilities, the SDK provides access to **Open API** functionality, allowing users to programmatically operate and retrieve resources related to experiments, projects, and workspaces in the cloud environment from their local environment.
+
+![](./py-openapi/logo.jpg)
 
 Through Open API, users can:
 
@@ -101,7 +103,7 @@ Below is a list of all available APIs.
 
 ### Workspaces
 
-#### List Workspaces - `list_workspaces`
+#### `list_workspaces`
 
 Retrieve the list of all workspaces (organizations) associated with the current user.
 
@@ -117,9 +119,9 @@ Retrieve the list of all workspaces (organizations) associated with the current 
 
 **Example**
 
-Retrieve the list of workspaces:
+::: code-group  
 
-```python
+```python [Retrieve the list of workspaces]
 my_api.list_workspaces().data
 """
 [
@@ -137,153 +139,25 @@ my_api.list_workspaces().data
 """
 ```
 
-Retrieve the `name` of the first workspace:
-
-```python
+```python [Retrieve the name of the first workspace]
 my_api.list_workspaces().data[0]["name"]
 """
 workspace1
 """
 ```
 
-Retrieve the `code` of the response:
-
-```python
+```python [Retrieve the response code]
 my_api.list_workspaces().code
 """
 200
 """
 ```
 
+:::
+
 ### Experiments
 
-#### Query Experiment State - `get_exp_state`
-
-Retrieve the state of an experiment.
-
-**Method Parameters**
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `project` | `str` | Project name |
-| `exp_cuid` | `str` | Experiment CUID |
-| `user` | `str` | Username of the workspace, defaults to the current user |
-
-**Returns**
-
-`data` `(Dict)`: A dictionary containing the experiment's state information:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `state` | `str` | Experiment status, such as `FINISHED`, `RUNNING` |
-| `finishedAt` | `Optional[str]` | The time the experiment finished, exists if the experiment is finished. Formatted as `2024-11-23T12:28:04.286Z`|
-
-**Example**
-
-Retrieve the state of a finished experiment:
-
-```python
-my_api.get_exp_state(project="project1", exp_cuid="cuid1").data
-"""
-{
-    "state": "FINISHED",
-    "finishedAt": "2024-04-23T12:28:04.286Z"
-}
-"""
-```
-
-Retrieve the state of a running experiment:
-
-```python
-my_api.get_exp_state(project="project1", exp_cuid="cuid2").data
-"""
-{
-    "state": "RUNNING"
-}
-"""
-```
-
-Retrieve the running status of an experiment:
-
-```python
-my_api.get_exp_state(project="project1", exp_cuid="cuid2").data["state"]
-"""
-RUNNING
-"""
-```
-
-#### Get Experiment Information - `get_experiment`
-
-Retrieve the information of an experiment.
-
-**Method Parameters**
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `project` | `str` | Project name |
-| `exp_cuid` | `str` | Unique identifier for the experiment |
-| `user` | `str` | Username of the workspace, defaults to the current user |
-
-**Returns**
-
-`data` `(Experiment)`: Returns an [Experiment](#experiment-model) object containing detailed information about the experiment.
-
-**Example**
-
-Retrieve the information of an experiment:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data
-"""
-{
-    "cuid": "cuid1",
-    "name": "experiment1",
-    "description": "This is a test experiment",
-    "state": "FINISHED",
-    "show": true,
-    "createdAt": "2024-11-23T12:28:04.286Z",
-    "finishedAt": null,
-    "user": {
-        "username": "kites-test3",
-        "name": "Kites Test"
-    },
-    "profile": {
-        "conda": "...",
-        "requirements": "...",
-        ...
-    }
-}
-"""
-```
-
-Retrieve the CUID of the experiment:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.cuid
-"""
-"cuid1"
-"""
-```
-
-Retrieve the status of the experiment:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.state
-"""
-FINISHED
-"""
-```
-
-Retrieve the username of the experiment creator:
-
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"]
-"""
-"kites-test3"
-"""
-```
-
-#### Get Experiments in a Project - `list_project_exps`
+#### `list_project_exps`
 
 Retrieve the list of experiments in a specified project.
 
@@ -300,10 +174,9 @@ Retrieve the list of experiments in a specified project.
 
 **Example**
 
-Retrieve the list of experiments:
+::: code-group
 
-```python
-
+```python [Retrieve the list of experiments]
 my_api.list_project_exps(project="project1", page=1, size=10).data
 """
 [
@@ -331,18 +204,87 @@ my_api.list_project_exps(project="project1", page=1, size=10).data
 """
 ```
 
-Retrieve the name of the first experiment:
-
-```python
+```python [Retrieve the name of the first experiment]
 my_api.list_project_exps(project="project1", page=1, size=10).data.items[0].name
 """
 "experiment1"
 """
 ```
 
+:::
+
+#### `get_experiment`
+
+Retrieve the information of an experiment.
+
+**Method Parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `project` | `str` | Project name |
+| `exp_cuid` | `str` | Unique identifier for the experiment |
+| `user` | `str` | Username of the workspace, defaults to the current user |
+
+**Returns**
+
+`data` `(Experiment)`: Returns an [Experiment](#experiment-model) object containing detailed information about the experiment.
+
+**Example**
+
+::: code-group
+
+```python [Retrieve the information of an experiment]
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data
+"""
+{
+    "cuid": "cuid1",
+    "name": "experiment1",
+    "description": "This is a test experiment",
+    "state": "FINISHED",
+    "show": true,
+    "createdAt": "2024-11-23T12:28:04.286Z",
+    "finishedAt": null,
+    "user": {
+        "username": "kites-test3",
+        "name": "Kites Test"
+    },
+    "profile": {
+        "conda": "...",
+        "requirements": "...",
+        ...
+    }
+}
+"""
+```
+
+```python [Retrieve the CUID of the experiment]
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data.cuid
+"""
+"cuid1"
+"""
+```
+
+Retrieve the status of the experiment:
+
+```python [Retrieve the status of the experiment]
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data.state
+"""
+FINISHED
+"""
+```
+
+```python
+my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"]
+"""
+"kites-test3"
+"""
+```
+
+:::
+
 ### Projects
 
-#### Get Projects of a Workspace - `list_projects`
+#### `list_projects`
 
 Retrieve the list of projects in a specified workspace.
 
@@ -359,9 +301,9 @@ Retrieve the list of projects in a specified workspace.
 
 **Example**
 
-Retrieve the list of projects:
+::: code-group
 
-```python
+```python [Retrieve the list of projects]
 my_api.list_projects().data
 """
 [
