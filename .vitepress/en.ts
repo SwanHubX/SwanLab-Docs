@@ -344,6 +344,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: 'Other',
     // collapsed: false,
     items: [
+      { text: 'OpenAPI', link: 'py-openapi' },
       { text: 'Environment Variables', link: 'environment-variable' },
     ]
   }

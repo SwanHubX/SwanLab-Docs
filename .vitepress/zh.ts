@@ -372,6 +372,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: '其他',
     // collapsed: false,
     items: [
+      { text: '开放接口', link: 'py-openapi' },
       { text: '环境变量', link: 'environment-variable' },
     ]
   }
