@@ -65,6 +65,14 @@ my_project: Project = api_response.data[0]
 workspace_name: str = my_project.group["name"]
 ```
 
+对于一个模型, 其属性可通过以下三种方式访问:
+
+- `my_exp.createdAt`
+- `my_exp["createdAt"]`
+- `my_exp.get("createdAt")`
+
+> Note: 模型可以通过字典风格访问, 但不是真正的字典, 可以通过`my_exp_dict: Dict = my_exp.model_dump()`获取此时模型对应的字典
+
 #### API 响应 `ApiResponse`
 
 开放 API 方法返回`swanlab.api.openapi.types.ApiResponse`对象, 包含以下字段:
@@ -304,6 +312,75 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 
 <br>
 
+#### `get_exp_summary`
+
+获取一个实验的概要信息, 包含实验跟踪指标的最终值和最大最小值, 以及其对应的步数
+
+**方法参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `project` | `str` | 项目名 |
+| `exp_cuid` | `str` | 实验CUID, 唯一标识符，可通过`list_project_exps`获取，也可以在URL如`https://swanlab.cn/usename/projectname/runs/{exp_cuid}/chart`中获取 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+
+**返回值**
+
+`data` `(Dict[str, Dict])`: 返回一个字典, 包含实验的概要信息
+
+字典中的每个键是一个指标名称, 值是一个结构如下的字典:
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `step` | `int` | 最后一个步数 |
+| `value` | `float` | 最后一个步数的指标值 |
+| `min` | `Dict[str, float]` | 最小值对应的步数和指标值 |
+| `max` | `Dict[str, float]` | 最大值对应的步数和指标值 |
+
+
+**示例**
+
+::: code-group
+
+```python [获取实验概要信息]
+my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data
+"""
+{
+    "loss": {
+        "step": 47,
+        "value": 0.1907215012216071,
+        "min": {
+            "step": 33,
+            "value": 0.1745886406861026
+        },
+        "max": {
+            "step": 0,
+            "value": 0.7108771095136294
+        }
+    },
+    ...
+}
+"""
+```
+
+
+```python [获取指标的最大值]
+my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["max"]["value"]
+"""
+0.7108771095136294
+"""
+```
+
+```python [获取指标最小值所在步]
+my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["min"]["step"]
+"""
+33
+"""
+```
+:::
+
+<br>
+
 ### Project
 
 #### `list_projects`
@@ -352,3 +429,5 @@ my_api.list_projects().data
 ]
 """
 ```
+
+:::
