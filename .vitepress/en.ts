@@ -54,7 +54,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.5.7',  items: [
+      { text: 'v0.5.8',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -219,6 +219,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'OpenAI', link: 'integration-openai' },
       { text: 'Omegaconf', link: 'integration-omegaconf' },
       { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleNLP', link: 'integration-paddlenlp' },
       { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
