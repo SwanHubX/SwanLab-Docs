@@ -241,6 +241,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'OpenAI', link: 'integration-openai' },
       { text: 'Omegaconf', link: 'integration-omegaconf' },
       { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleNLP', link: 'integration-paddlenlp' },
       { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
