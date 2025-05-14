@@ -197,7 +197,7 @@ my_api.list_workspaces().code
 ::: code-group
 
 ```python [获取实验列表]
-my_api.list_project_exps(project="project1", page=1, size=10).data
+my_api.list_project_exps(project="project1").data
 """
 [
     {

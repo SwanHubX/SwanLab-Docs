@@ -177,7 +177,7 @@ Retrieve the list of experiments in a specified project.
 ::: code-group
 
 ```python [Retrieve the list of experiments]
-my_api.list_project_exps(project="project1", page=1, size=10).data
+my_api.list_project_exps(project="project1").data
 """
 [
     {
@@ -205,7 +205,7 @@ my_api.list_project_exps(project="project1", page=1, size=10).data
 ```
 
 ```python [Retrieve the name of the first experiment]
-my_api.list_project_exps(project="project1", page=1, size=10).data.items[0].name
+my_api.list_project_exps(project="project1").data.items[0].name
 """
 "experiment1"
 """
