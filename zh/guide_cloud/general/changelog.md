@@ -5,6 +5,25 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.5.8 - 2025.5.13
+
+**🚀新增功能**
+
+- 新增**实验Tag**功能
+- 新增折线图 **Log Scale** 功能
+- 新增 **实验分组拖拽** 功能
+- 新增实验卡片中**配置**与**指标**表格下载功能
+- 新增[开放接口](/zh/api/py-openapi.md)，支持通过API获取SwanLab数据
+- 大幅优化了指标传输性能，提升上千指标的传输速度
+- 集成`paddlenlp`框架
+
+**🤔优化**
+- 优化了个人主页的一系列交互
+
+**生态**
+- 腾讯云云应用上架：[指引](/zh/guide_cloud/self_host/tencentcloud-app.md)
+
+
 ## v0.5.6 - 2025.4.23
 
 **🚀新增功能**

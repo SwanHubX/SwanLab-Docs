@@ -5,6 +5,25 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.8 - 2025.5.13  
+
+**🚀 New Features**  
+
+- Added Experimental Tag feature  
+- Added Log Scale feature for line charts  
+- Added Experiment Group Drag-and-Drop feature  
+- Added Configuration and Metrics table download functionality in experiment cards  
+- Added [Open API](/zh/api/py-openapi.md), supporting data retrieval from SwanLab via API  
+- Significantly optimized metric transmission performance, improving speed for handling thousands of metrics  
+- Integrated the `paddlenlp` framework  
+
+
+**🤔 Optimizations**  
+- Improved a series of interactions on the personal homepage  
+
+
+**🌍 Ecosystem**  
+- Listed on Tencent Cloud App Marketplace: [Guide](/zh/guide_cloud/self_host/tencentcloud-app.md)
 
 ## v0.5.6 - 2025.4.23  
 
