@@ -133,6 +133,6 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  data.train_files=$HOME/data/gsm8k/train.parquet \
  data.val_files=$HOME/data/gsm8k/test.parquet \
  trainer.logger=['console','swanlab'] \
- val_generations_to_log_to_wandb=1 \
+ +val_generations_to_log_to_wandb=1 \
  ...
 ```
