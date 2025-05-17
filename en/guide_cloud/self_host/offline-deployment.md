@@ -104,4 +104,74 @@ ccr.ccs.tencentyun.com/self-hosted/logrotate            v1                      
 
 ### 4. Install SwanLab
 
-Refer to [Docker Deployment](https://docs.swanlab.cn/guide_cloud/self_host/docker-deploy.html)
+First, use Git to clone the repository to your local directory:
+
+```bash
+$ git clone https://github.com/SwanHubX/self-hosted.git && cd self-hosted
+```
+
+Then execute the script `./docker/install.sh` for installation. When successfully installed, you will see the following banner:
+
+```bash
+$ ./docker/install.sh
+
+...
+   _____                    _           _
+  / ____|                  | |         | |
+ | (_____      ____ _ _ __ | |     __ _| |__
+  \___ \ \ /\ / / _` | '_ \| |    / _` | '_ \
+  ____) \ V  V / (_| | | | | |___| (_| | |_) |
+ |_____/ \_/\_/ \__,_|_| |_|______\__,_|_.__/
+
+ Self-Hosted Docker v1.1 - @SwanLab
+
+🎉 Wow, the installation is complete. Everything is perfect.
+🥰 Congratulations, self-hosted SwanLab can be accessed using {IP}:8000
+```
+
+> [!TIP]
+>
+> The default script uses image sources in China, so users in China don't need to worry about network issues.
+>
+> If you need to use [DockerHub](https://hub.docker.com/) as your image source, you can use the following script for installation:
+>
+> ```bash
+> $ ./docker/install-dockerhub.sh
+> ```
+
+After the script executes successfully, a `swanlab/` directory will be created in the current directory, with two files generated in the directory:
+
+- `docker-compose.yaml`: Configuration file for Docker Compose
+- `.env`: Corresponding key file that saves the initialization passwords for the database
+
+In the `swanlab` directory, execute `docker compose ps -a` to view the running status of all containers:
+
+```bash
+$ docker compose ps -a
+NAME                 IMAGE                                                                   COMMAND                  SERVICE          CREATED          STATUS                    PORTS
+swanlab-clickhouse   ccr.ccs.tencentyun.com/self-hosted/clickhouse:24.3                      "/entrypoint.sh"         clickhouse       22 minutes ago   Up 22 minutes (healthy)   8123/tcp, 9000/tcp, 9009/tcp
+swanlab-cloud        ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v1                     "/docker-entrypoint.…"   swanlab-cloud    22 minutes ago   Up 21 minutes             80/tcp
+swanlab-fluentbit    ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0                       "/fluent-bit/bin/flu…"   fluent-bit       22 minutes ago   Up 22 minutes             2020/tcp
+swanlab-house        ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v1                     "./app"                  swanlab-house    22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-logrotate    ccr.ccs.tencentyun.com/self-hosted/logrotate:v1                         "/sbin/tini -- /usr/…"   logrotate        22 minutes ago   Up 22 minutes
+swanlab-minio        ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z   "/usr/bin/docker-ent…"   minio            22 minutes ago   Up 22 minutes (healthy)   9000/tcp
+swanlab-next         ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v1                      "docker-entrypoint.s…"   swanlab-next     22 minutes ago   Up 21 minutes             3000/tcp
+swanlab-postgres     ccr.ccs.tencentyun.com/self-hosted/postgres:16.1                        "docker-entrypoint.s…"   postgres         22 minutes ago   Up 22 minutes (healthy)   5432/tcp
+swanlab-redis        ccr.ccs.tencentyun.com/self-hosted/redis-stack-server:7.2.0-v15         "/entrypoint.sh"         redis            22 minutes ago   Up 22 minutes (healthy)   6379/tcp
+swanlab-server       ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v1                    "docker-entrypoint.s…"   swanlab-server   22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-traefik      ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0                         "/entrypoint.sh trae…"   traefik          22 minutes ago   Up 22 minutes (healthy)   0.0.0.0:8000->80/tcp, [::]:8000->80/tcp
+```
+
+You can view the logs of each container by executing `docker compose logs <container_name>`.
+
+### 5. Access SwanLab
+
+After successful installation, you can open the website directly through http://localhost:8000 (default port is 8000). The first time you open it, you need to activate the main account. See [documentation](https://docs.swanlab.cn/en/guide_cloud/self_host/docker-deploy.html#_3-activate-the-primary-account) for the process.
+
+### 6. Upgrade SwanLab
+
+If you use the installation script for deployment, the latest version is installed by default, and you don't need to upgrade. The script for upgrading versions is:
+
+```bash
+$ ./docker/upgrade.sh
+```

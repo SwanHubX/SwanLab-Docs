@@ -104,4 +104,75 @@ ccr.ccs.tencentyun.com/self-hosted/logrotate            v1                      
 
 ### 4. 安装 SwanLab
 
-参考 [Docker 部署](https://docs.swanlab.cn/guide_cloud/self_host/docker-deploy.html)
+首先使用 Git 克隆仓库到本地目录：
+
+```bash
+$ git clone https://github.com/SwanHubX/self-hosted.git && cd self-hosted
+```
+
+然后执行脚本 `./docker/install.sh` 用于安装，安装成功会看到以下标志：
+
+```bash
+$ ./docker/install.sh
+
+...
+   _____                    _           _     
+  / ____|                  | |         | |    
+ | (_____      ____ _ _ __ | |     __ _| |__  
+  \___ \ \ /\ / / _` | '_ \| |    / _` | '_ \ 
+  ____) \ V  V / (_| | | | | |___| (_| | |_) |
+ |_____/ \_/\_/ \__,_|_| |_|______\__,_|_.__/ 
+                                              
+ Self-Hosted Docker v1.1 - @SwanLab
+
+🎉 Wow, the installation is complete. Everything is perfect.
+🥰 Congratulations, self-hosted SwanLab can be accessed using {IP}:8000
+```
+
+> [!TIP]
+>
+> 默认脚本使用的镜像源在中国，所以中国地区不需要担心网络问题
+>
+> 如果你需要使用 [DockerHub](https://hub.docker.com/) 作为镜像源，可以使用下面的脚本进行安装：
+>
+> ```bash
+> $ ./docker/install-dockerhub.sh
+> ```
+
+脚本执行成功后，将会在当前目录下创建一个 `swanlab/` 目录，并在目录下生成两个文件：
+
+- `docker-compose.yaml`：用于 Docker Compose 的配置文件
+- `.env`：对应的密钥文件，保存数据库对应的初始化密码
+
+在 `swanlab` 目录下执行 `docker compose ps -a` 可以查看所有容器的运行状态：
+
+```bash
+$ docker compose ps -a                                                                                                                                             
+NAME                 IMAGE                                                                   COMMAND                  SERVICE          CREATED          STATUS                    PORTS
+swanlab-clickhouse   ccr.ccs.tencentyun.com/self-hosted/clickhouse:24.3                      "/entrypoint.sh"         clickhouse       22 minutes ago   Up 22 minutes (healthy)   8123/tcp, 9000/tcp, 9009/tcp
+swanlab-cloud        ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v1                     "/docker-entrypoint.…"   swanlab-cloud    22 minutes ago   Up 21 minutes             80/tcp
+swanlab-fluentbit    ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0                       "/fluent-bit/bin/flu…"   fluent-bit       22 minutes ago   Up 22 minutes             2020/tcp
+swanlab-house        ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v1                     "./app"                  swanlab-house    22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-logrotate    ccr.ccs.tencentyun.com/self-hosted/logrotate:v1                         "/sbin/tini -- /usr/…"   logrotate        22 minutes ago   Up 22 minutes             
+swanlab-minio        ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z   "/usr/bin/docker-ent…"   minio            22 minutes ago   Up 22 minutes (healthy)   9000/tcp
+swanlab-next         ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v1                      "docker-entrypoint.s…"   swanlab-next     22 minutes ago   Up 21 minutes             3000/tcp
+swanlab-postgres     ccr.ccs.tencentyun.com/self-hosted/postgres:16.1                        "docker-entrypoint.s…"   postgres         22 minutes ago   Up 22 minutes (healthy)   5432/tcp
+swanlab-redis        ccr.ccs.tencentyun.com/self-hosted/redis-stack-server:7.2.0-v15         "/entrypoint.sh"         redis            22 minutes ago   Up 22 minutes (healthy)   6379/tcp
+swanlab-server       ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v1                    "docker-entrypoint.s…"   swanlab-server   22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-traefik      ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0                         "/entrypoint.sh trae…"   traefik          22 minutes ago   Up 22 minutes (healthy)   0.0.0.0:8000->80/tcp, [::]:8000->80/tcp
+```
+
+通过执行 `docker compose logs <container_name>` 可以查看每个容器的日志。
+
+### 5. 访问 SwanLab
+
+安装成功后，可以通过 http://localhost:8000 （默认端口为8000）直接打开网站。第一次打开需要激活主账户，流程见[文档](https://docs.swanlab.cn/guide_cloud/self_host/docker-deploy.html#_3-%E6%BF%80%E6%B4%BB%E4%B8%BB%E8%B4%A6%E5%8F%B7)。
+
+### 6. 升级 SwanLab
+
+如果你使用安装脚本部署则默认安装最新版本，不需要进行升级。升级版本的脚本为：
+
+```bash
+$ ./docker/upgrade.sh
+```
+
