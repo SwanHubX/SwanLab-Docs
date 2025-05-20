@@ -275,7 +275,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'LLM Pretraining', link: 'pretrain_llm' },  
       { text: 'GLM4 Instruct Finetune', link: 'glm4-instruct'},
       { text: 'Qwen2 NER', link: 'ner'},
-      { text: 'Qwen Finetune Case', link: 'qwen_finetune' }
+      { text: 'Qwen Finetune Case', link: 'qwen_finetune' },
+      { text: 'Qwen3 Medical', link: 'qwen3-medical' },
     ]
   },
   {

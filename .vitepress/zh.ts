@@ -298,7 +298,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'GLM4指令微调', link: 'glm4-instruct' },  
       { text: 'Qwen下游任务训练', link: 'qwen_finetune' }, 
       { text: 'NER命名实体识别', link: 'ner' },
-      { text: 'openMind大模型微调', link: 'openMind' },  
+      { text: 'Qwen3医学模型微调', link: 'qwen3-medical' },  
     ]
   },
   {
@@ -323,6 +323,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'LSTM股票预测', link: 'lstm_stock'},
     ]
   },
+  {
+    text: '其他',
+    collapsed: false,
+    items: [
+      { text: 'openMind大模型微调', link: 'openMind' },
+    ]
+  }
 ]
 }
 
