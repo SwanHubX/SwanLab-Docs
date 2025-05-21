@@ -15,17 +15,18 @@ Settings(
 )
 ```
 
-| 参数                   | 描述                                                                                       |
-| :--------------------- | :----------------------------------------------------------------------------------------- |
-| `metadata_collect`     | (StrictBool) 是否开启元数据采集。默认值为 `True`。                                         |
-| `collect_hardware`     | (StrictBool) 是否采集当前系统环境的硬件信息。默认值为 `True`。                             |
-| `collect_runtime`      | (StrictBool) 是否采集运行时信息。默认值为 `True`。                                         |
-| `requirements_collect` | (StrictBool) 是否采集 Python 环境信息 (`pip list`)。默认值为 `True`。                      |
-| `conda_collect`        | (StrictBool) 是否采集 Conda 环境信息。默认值为 `False`。                                   |
-| `hardware_monitor`     | (StrictBool) 是否开启硬件监控。如果 `metadata_collect` 关闭，则此项无效。默认值为 `True`。 |
-| `disk_io_dir`          | (DirectoryPath) 磁盘 IO 监控的路径。默认值为系统根目录 (`/` 或 `C:\`)。                    |
-| `upload_interval`      | (PositiveInt) 日志上传间隔（单位：秒）。默认值为 `1`。                                     |
-| `max_log_length`       | (int) 终端日志上传单行最大字符数（范围：500-4096）。默认值为 `1024`。                      |
+| 参数                     | 类型            | 描述                                                                              |
+|:-----------------------|:--------------|:--------------------------------------------------------------------------------|
+| `metadata_collect`     | StrictBool    | 是否开启元数据采集。默认值为 `True`。                                                          |
+| `collect_hardware`     | StrictBool    | 是否采集当前系统环境的硬件信息。默认值为 `True`。                                                    |
+| `collect_runtime`      | StrictBool    | 是否采集运行时信息。默认值为 `True`。                                                          |
+| `security_mask`        | StrictBool    | 是否自动隐藏隐私信息，如 api_key 等。开启后将在检测到隐私信息时，自动将其替换为加密字符（****）。默认值为 `True`。             |
+| `requirements_collect` | StrictBool    | 是否采集 Python 环境信息 (`pip list`)。默认值为 `True`。                                      |
+| `conda_collect`        | StrictBool    | 是否采集 Conda 环境信息。默认值为 `False`。                                                   |
+| `hardware_monitor`     | StrictBool    | 是否开启硬件监控。如果 `metadata_collect` 关闭，则此项无效。默认值为 `True`。                            |
+| `disk_io_dir`          | DirectoryPath | 磁盘 IO 监控的路径。默认值为系统根目录 (`/` 或 `C:\`)。                                            |
+| `upload_interval`      | PositiveInt   | 日志上传间隔（单位：秒）。默认值为 `1`。                                                          |
+| `max_log_length`       | int           | 终端日志上传单行最大字符数（范围：500-4096）。默认值为 `1024`。                                         |
 
 ## 介绍
 
