@@ -171,8 +171,8 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: "Docker部署", link: "self_host/docker-deploy" },
-      { text: "离线部署", link: "self_host/offline-deployment" },
       { text: "腾讯云应用部署", link: "self_host/tencentcloud-app" },
+      { text: "纯离线环境部署", link: "self_host/offline-deployment" },
       { text: '团队/企业版', link: 'self_host/enterprise-version' },
       { text: '版本对照表', link: 'self_host/version' },
       { text: '常见问题', link: 'self_host/faq' },

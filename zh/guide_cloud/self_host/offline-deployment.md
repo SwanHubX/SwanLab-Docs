@@ -1,8 +1,8 @@
-# 离线部署 SwanLab
+# 纯离线环境部署
 
 > [!NOTE] 
 >
-> 该教程适用于将 SwanLab 部署在无法联网的服务器上。
+> 该教程适用于将 SwanLab 私有化部署在无法联网的服务器上。
 
 ## 部署流程
 
@@ -102,15 +102,21 @@ ccr.ccs.tencentyun.com/self-hosted/postgres             16.1                    
 ccr.ccs.tencentyun.com/self-hosted/logrotate            v1                             e07b32a4bfda   6 years ago     45.6MB
 ```
 
-### 4. 安装 SwanLab
+### 4. 安装 SwanLab 服务
 
-首先使用 Git 克隆仓库到本地目录：
+在完成镜像载入之后，需要使用安装脚本完成服务安装并启动。
+
+首先在一台有网络的计算机上，使用 Git 克隆仓库到本地目录：
 
 ```bash
-$ git clone https://github.com/SwanHubX/self-hosted.git && cd self-hosted
+$ git clone https://github.com/SwanHubX/self-hosted.git
 ```
 
-然后执行脚本 `./docker/install.sh` 用于安装，安装成功会看到以下标志：
+然后，将 `self-hosted` 文件夹上传到目标服务器。
+
+---
+
+在目标服务器，进入 `self-hosted` 目录，执行脚本 `./docker/install.sh` 用于安装，安装成功会看到以下标志：
 
 ```bash
 $ ./docker/install.sh
@@ -170,9 +176,21 @@ swanlab-traefik      ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0            
 
 ### 6. 升级 SwanLab
 
-如果你使用安装脚本部署则默认安装最新版本，不需要进行升级。升级版本的脚本为：
+如果你希望升级私有化部署版，那么回到联网的机器上，同步github上最新的`self-hosted`仓库，然后执行升级脚本：
 
 ```bash
 $ ./docker/upgrade.sh
 ```
 
+将升级后的镜像导出到目标服务器，载入镜像以覆盖之前的镜像。
+
+同时，将新同步的`self-hosted` 文件夹也上传到目标服务器（⚠️注意：不要覆盖存储原先私有化部署数据的文件夹）。
+
+然后在离线机器上，进入`self-hosted`目录，执行`./docker/upgrade.sh`进行升级。
+
+```bash
+cd self-hosted
+./docker/upgrade.sh
+```
+
+脚本运行完成后即完成升级。
