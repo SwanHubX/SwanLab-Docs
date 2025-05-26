@@ -15,17 +15,18 @@ Settings(
 )
 ```
 
-| Parameter               | Description                                                                                       |
-| :--------------------- | :----------------------------------------------------------------------------------------- |
-| `metadata_collect`     | (StrictBool) Whether to enable metadata collection. Default is `True`.                                         |
-| `collect_hardware`     | (StrictBool) Whether to collect hardware information of the current system environment. Default is `True`.                             |
-| `collect_runtime`      | (StrictBool) Whether to collect runtime information. Default is `True`.                                         |
-| `requirements_collect` | (StrictBool) Whether to collect Python environment information (`pip list`). Default is `True`.                      |
-| `conda_collect`        | (StrictBool) Whether to collect Conda environment information. Default is `False`.                                   |
-| `hardware_monitor`     | (StrictBool) Whether to enable hardware monitoring. If `metadata_collect` is disabled, this setting is ineffective. Default is `True`. |
-| `disk_io_dir`          | (DirectoryPath) The path for disk I/O monitoring. Default is the system root directory (`/` or `C:\`).                    |
-| `upload_interval`      | (PositiveInt) Log upload interval (in seconds). Default is `1`.                                     |
-| `max_log_length`       | (int) Maximum characters per line for terminal log upload (range: 500-4096). Default is `1024`.                      |
+| Parameter              | Type          | Description                                                                                                                                                                                   |
+|:-----------------------|:--------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `metadata_collect`     | StrictBool    | Whether to enable metadata collection. Default is `True`.                                                                                                                                     |
+| `collect_hardware`     | StrictBool    | Whether to collect hardware information of the current system environment. Default is `True`.                                                                                                 |
+| `collect_runtime`      | StrictBool    | Whether to collect runtime information. Default is `True`.                                                                                                                                    |
+| `security_mask`        | StrictBool    | Whether to automatically mask privacy information, such as api_key, etc. When enabled, any detected privacy information will be replaced with encrypted characters (****). Default is `True`. |
+| `requirements_collect` | StrictBool    | Whether to collect Python environment information (`pip list`). Default is `True`.                                                                                                            |
+| `conda_collect`        | StrictBool    | Whether to collect Conda environment information. Default is `False`.                                                                                                                         |
+| `hardware_monitor`     | StrictBool    | Whether to enable hardware monitoring. If `metadata_collect` is disabled, this setting is ineffective. Default is `True`.                                                                     |
+| `disk_io_dir`          | DirectoryPath | The path for disk I/O monitoring. Default is the system root directory (`/` or `C:\`).                                                                                                        |
+| `upload_interval`      | PositiveInt   | Log upload interval (in seconds). Default is `1`.                                                                                                                                             |
+| `max_log_length`       | int           | Maximum characters per line for terminal log upload (range: 500-4096). Default is `1024`.                                                                                                     |
 
 ## Introduction
 
