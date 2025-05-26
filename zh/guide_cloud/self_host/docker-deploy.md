@@ -19,7 +19,7 @@ SwanLab 私有化部署版，需要使用 **Docker Compose** 进行安装与部�
 | 操作系统 | 软件 | 解释 |
 |----------|------|------|
 | macOS 10.14 或更高版本 | Docker Desktop | 将 Docker 虚拟机 (VM) 设置为至少使用 2 个虚拟 CPU (vCPU) 和 8 GB 初始内存。否则，安装可能会失败。有关更多信息，请参阅[Mac 版 Docker Desktop 安装指南](https://docs.docker.com/desktop/install/mac-install/)。 |
-| Windows（启用了WSL 2） | Docker Desktop | 我们建议将源代码和其他与 Linux 容器绑定的数据存储在 Linux 文件系统中，而不是 Windows 文件系统中。有关更多信息，请参阅[在 Windows 上使用 WSL 2 后端的 Docker Desktop 安装指南](https://docs.docker.com/desktop/setup/install/windows-install/#wsl-2-backend)。 |
+| Windows（启用了WSL 2） | Docker Desktop | 我们建议将源代码和其他与 Linux 容器绑定的数据存储在 Linux 文件系统中，而不是 Windows 文件系统中。有关更多信息，请参阅 [Windows上使用WSL安装Linux](https://learn.microsoft.com/zh-cn/windows/wsl/install) 与 [在 Windows 上使用 WSL 2 后端的 Docker Desktop 安装指南](https://docs.docker.com/desktop/setup/install/windows-install/#wsl-2-backend)。 |
 | Linux | Docker 19.03 或更高版本 Docker Compose 1.28 或更高版本 | 有关如何安装Docker和Docker Compose 的更多信息，请参阅[Docker 安装指南](https://docs.docker.com/engine/install/)和[Docker Compose 安装指南](https://docs.docker.com/compose/install/)。 |
 
 > 如果你还未安装Docker，可以运行我们提供的[安装脚本](https://docs.docker.com/desktop/install/mac-install/)。
@@ -35,8 +35,12 @@ cd self-hosted
 ```
 
 ## 2. 一键脚本安装
+> 如果你使用的是Windows系统，请确保已安装并开启 WSL2 和 Docker Desktop
+<img src="./docker-deploy/wsl-dockerinfo.png" width="600"/>
 
-> 如果你是Windows系统，请开启WSL2进行安装
+>在WSL2的文件系统中执行 `.sh` 安装脚本
+<img src="./docker-deploy/wsl-bash.png" width="600"/>
+
 
 默认的安装脚本在`docker/install.sh`，直接执行即可一键安装所有需要的容器以及执行初始化配置。
 
