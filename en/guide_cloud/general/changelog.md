@@ -5,6 +5,14 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.9 - 2025.5.25  
+
+**🚀 New Features**  
+- 📒 Logging now supports standard error streams, significantly improving the logging experience for frameworks like EvalScope/PyTorch Lightning  
+- 💻 Hardware monitoring now supports **Moore Threads** GPUs  
+- 🔐 Added security protection for command execution logs—API Keys will now be automatically hidden  
+- ⚙️ Settings now include "Default Workspace" and "Default Visibility" configurations, allowing you to specify under which organization new projects are created by default!
+
 ## v0.5.8 - 2025.5.13  
 
 **🚀 New Features**  
