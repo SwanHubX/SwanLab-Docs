@@ -6,12 +6,14 @@ Settings(
     metadata_collect: StrictBool = True,
     collect_hardware: StrictBool = True,
     collect_runtime: StrictBool = True,
+    security_mask: StrictBool = True,
     requirements_collect: StrictBool = True,
     conda_collect: StrictBool = False,
     hardware_monitor: StrictBool = True,
     disk_io_dir: DirectoryPath = Field(...),
     upload_interval: PositiveInt = 1,
     max_log_length: int = Field(ge=500, le=4096, default=1024),
+    log_proxy_type: Literal["all", "stdout", "stderr", "none"] = "all",
 )
 ```
 
@@ -27,7 +29,7 @@ Settings(
 | `disk_io_dir`          | DirectoryPath | The path for disk I/O monitoring. Default is the system root directory (`/` or `C:\`).                                                                                                        |
 | `upload_interval`      | PositiveInt   | Log upload interval (in seconds). Default is `1`.                                                                                                                                             |
 | `max_log_length`       | int           | Maximum characters per line for terminal log upload (range: 500-4096). Default is `1024`.                                                                                                     |
-
+| `log_proxy_type`       | Literal | The log proxy type determines which content is recorded in the experiment's log tab. The default value is `"all"`. `"stdout"` proxies only the standard output stream. `"stderr"` proxies only the standard error stream. `"all"` proxies both standard output and standard error streams. `"none"` disables log proxying. |
 ## Introduction
 
 - The `swanlab.Settings` class is used to manage SwanLab's global feature switches and settings.

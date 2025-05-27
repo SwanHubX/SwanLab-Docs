@@ -6,12 +6,14 @@ Settings(
     metadata_collect: StrictBool = True,
     collect_hardware: StrictBool = True,
     collect_runtime: StrictBool = True,
+    security_mask: StrictBool = True,
     requirements_collect: StrictBool = True,
     conda_collect: StrictBool = False,
     hardware_monitor: StrictBool = True,
     disk_io_dir: DirectoryPath = Field(...),
     upload_interval: PositiveInt = 1,
     max_log_length: int = Field(ge=500, le=4096, default=1024),
+    log_proxy_type: Literal["all", "stdout", "stderr", "none"] = "all",
 )
 ```
 
@@ -27,6 +29,7 @@ Settings(
 | `disk_io_dir`          | DirectoryPath | 磁盘 IO 监控的路径。默认值为系统根目录 (`/` 或 `C:\`)。                                            |
 | `upload_interval`      | PositiveInt   | 日志上传间隔（单位：秒）。默认值为 `1`。                                                          |
 | `max_log_length`       | int           | 终端日志上传单行最大字符数（范围：500-4096）。默认值为 `1024`。                                         |
+| `log_proxy_type`       | Literal | 日志代理类型，会影响实验的日志选项卡记录的内容。默认值为 `"all"`。"stdout" 表示只代理标准输出流，"stderr" 表示只代理标准错误流，"all" 表示代理标准输出流和标准错误流，"none" 表示不代理日志。|
 
 ## 介绍
 
