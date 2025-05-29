@@ -6,12 +6,14 @@ init(
     workspace: str = None,
     experiment_name: str = None,
     description: str = None,
+    tags: List[str] = None,
     config: Union[dict, str] = None,
     logdir: str = None,
     mode: str = "cloud",
     load: str = None,
     public: bool = None,
     callbacks: list = None,
+    settings: Settings = None,
     **kwargs,
 )
 ```
@@ -21,6 +23,7 @@ init(
 | project |(str)项目名，如果不指定则取运行目录的名称。|
 | workspace |(str)工作空间，默认将实验同步到你的个人空间下，如果要上传到组织，则填写组织的username。|
 | experiment_name | (str) 实验名称, 如果不指定则取"swan-1"这样的`动物名+序号`作为实验名。 |
+| tags       | (list) 实验标签。可以传入多个字符串组成的列表，标签会显示在实验顶部的标签栏。|
 | description   | (str) 实验描述, 如果不指定默认为None。                                   |
 | config       | (dict, str) 实验配置，在此处可以记录一些实验的超参数等信息。支持传入配置文件路径，支持yaml和json文件。                   |
 | logdir       | (str) 离线看板日志文件存储路径，默认为`swanlog `。                                 |
@@ -30,6 +33,7 @@ init(
 | callbacks       | (list) 设置实验回调函数，支持`swankit.callback.SwanKitCallback`的子类。|
 | name       | (str) 与experiment_name效果一致，优先级低于experiment_name。|
 | notes       | (str) 与description效果一致，优先级低于description。|
+| settings       | (dict) 实验配置。支持传入1个`swanlab.Settings`对象。|
 
 ## 介绍
 
@@ -77,6 +81,13 @@ swanlab.init(
 )
 ```
 
+### 设置标签
+
+```python
+swanlab.init(
+    tags=["yolo", "detection", "baseline"]
+)
+```
 
 ### 设置日志文件保存位置
 

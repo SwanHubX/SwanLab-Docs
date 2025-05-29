@@ -12,6 +12,7 @@ init(
     load: str = None,
     public: bool = None,
     callbacks: list = None,
+    settings: Settings = None,
     **kwargs,
 )
 ```
@@ -21,6 +22,7 @@ init(
 | project           | (str) The name of the project. If not specified, the name of the current working directory will be used. |
 | workspace         | (str) The workspace. By default, experiments are synchronized to your personal space. If you want to upload to an organization, specify the organization's username. |
 | experiment_name   | (str) The name of the experiment. If not specified, it will default to a format like "swan-1" (animal name + sequence number). |
+| tags              | (list) Tags for the experiment. Can pass a list of strings, and the tags will be displayed in the tag bar at the top of the experiment. |
 | description       | (str) A description of the experiment. If not specified, it defaults to None. |
 | config            | (dict, str) Configuration for the experiment. You can record hyperparameters and other information here. Supports passing a configuration file path (yaml or json). |
 | logdir            | (str) The path to store offline dashboard log files. Defaults to `swanlog`. |
@@ -30,7 +32,8 @@ init(
 | callbacks         | (list) Sets experiment callback functions. Supports subclasses of `swankit.callback.SwanKitCallback`. |
 | name              | (str) Same effect as `experiment_name`. Lower priority than `experiment_name`. |
 | notes             | (str) Same effect as `description`. Lower priority than `description`. |
-
+| tags              | (list) Tags for the experiment. |
+| settings          | (dict) Settings for the experiment. Supports passing a `swanlab.Settings` object. |
 ## Introduction
 
 • In machine learning workflows, you can add `swandb.init()` at the beginning of training and testing scripts. SwanLab will track every step of the machine learning process.
