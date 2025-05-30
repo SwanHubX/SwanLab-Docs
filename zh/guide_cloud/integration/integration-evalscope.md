@@ -36,7 +36,7 @@ pip install -e '.[all]'           # Install all backends (Native, OpenCompass, V
 如果你希望评估`Qwen2.5-0.5B-Instruct`在`gsm8k`和`arc`数据集上的表现，同时使用`SwanLab`观测性能，可以运行下面的命令：
 
 ```bash {5,6}
-evalscope eval \
+evalscope perf \
  --model Qwen/Qwen2.5-0.5B-Instruct \
  --datasets gsm8k arc \
  --limit 5 \
