@@ -126,13 +126,15 @@ swanlab watch
 
 ## 每轮评估时记录生成文本
 
-如果你希望在每轮评估（val）时将生成的文本记录到SwanLab中，只需在命令行钟增加一行`val_generations_to_log_to_wandb=1`即可：
+如果你希望在每轮评估（val）时将生成的文本记录到SwanLab中，只需在命令行钟增加一行`trainer.log_val_generations=1`即可：
 
 ```bash {5}
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  data.train_files=$HOME/data/gsm8k/train.parquet \
  data.val_files=$HOME/data/gsm8k/test.parquet \
  trainer.logger=['console','swanlab'] \
- val_generations_to_log_to_wandb=1 \
+ trainer.log_val_generations=1 \
  ...
 ```
+
+> 如果你希望每轮评估时生成多条结果，如10条，那么修改`trainer.log_val_generations=10`即可

@@ -49,7 +49,7 @@ from swanlab.plugin.notification import DingTalkCallback
 
 dingtalk_callback = DingTalkCallback(
     webhook_url="https://oapi.dingtalk.com/robot/xxxx", 
-    secrets="xxxx",
+    secret="xxxx",
 )
 ```
 

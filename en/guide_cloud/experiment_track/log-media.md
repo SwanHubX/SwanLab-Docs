@@ -140,6 +140,12 @@ swanlab.log({"examples": text_list})
 
 👀Please refer to this document: [API-Oject3D](/en/api/py-object3d)
 
+## 5. Molecules
+
+![](/assets/molecule.gif)
+
+Please refer to this document: [API-Molecule](/en/api/py-molecule)
+
 
 ## Q&A
 

@@ -18,7 +18,7 @@ SwanLab Community Edition requires **Docker Compose** for installation and deplo
 | Operating System | Software | Notes |
 |------------------|----------|-------|
 | macOS 10.14 or later | Docker Desktop | Configure the Docker VM to use at least 2 vCPUs and 8 GB of initial memory. Otherwise, installation may fail. For more details, refer to the [Docker Desktop for Mac Installation Guide](https://docs.docker.com/desktop/install/mac-install/). |
-| Windows (with WSL 2 enabled) | Docker Desktop | We recommend storing source code and other Linux container-bound data in the Linux filesystem rather than the Windows filesystem. For more details, refer to the [Docker Desktop for Windows with WSL 2 Backend Installation Guide](https://docs.docker.com/desktop/setup/install/windows-install/#wsl-2-backend). |
+| Windows (with WSL 2 enabled) | Docker Desktop | We recommend storing source code and other Linux container-bound data in the Linux filesystem rather than the Windows filesystem. For more details, refer to the [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install) and [Docker Desktop for Windows with WSL 2 Backend Installation Guide](https://docs.docker.com/desktop/setup/install/windows-install/#wsl-2-backend). |
 | Linux | Docker 19.03 or later, Docker Compose 1.28 or later | For installation instructions, refer to the [Docker Installation Guide](https://docs.docker.com/engine/install/) and [Docker Compose Installation Guide](https://docs.docker.com/compose/install/). |
 
 > If Docker is not installed, you can run the provided [installation script](https://docs.docker.com/desktop/install/mac-install/).
@@ -34,7 +34,11 @@ cd self-hosted
 
 ## 2. One-Click Installation
 
-> If you are using Windows, please enable WSL2 for installation.
+> If you are using Windows, please make sure you have installed and enabled WSL2 and Docker Desktop.
+<img src="./docker-deploy/wsl-dockerinfo.png" width="600"/>
+
+>Execute the `.sh` installation script in the WSL2 filesystem.
+<img src="./docker-deploy/wsl-bash.png" width="600"/>
 
 The default installation script is located at `docker/install.sh`. Execute it to install all required containers and perform initial configurations.
 
@@ -60,6 +64,12 @@ SwanLab Community Edition uses port `8000` by default. If using the default conf
 ![](./docker-deploy/create-account.png)
 
 Now, activate your primary account. Activation requires 1 License, which can be obtained for free from the [SwanLab Official Website](https://swanlab.cn) for personal use.
+
+:::warning Offline Verification
+
+In versions > `v1.1` of private deployment, it supports verifying the License in an offline environment.
+
+:::
 
 ![](./docker-deploy/apply-license.png)
 
@@ -119,3 +129,18 @@ swanlab.finish()
 View the experiment on the web after running:
 
 ![](./docker-deploy/test-experiment.png)
+
+
+## Upgrade Version  
+
+If you want to upgrade your local self-hosted deployment to the latest version, use the following commands:  
+
+```bash  
+# Navigate to your previously deployed self-hosted project directory  
+cd ./docker  
+./upgrade.sh  
+```  
+
+Command-line output after a successful upgrade:  
+
+![](./docker-deploy/upgrade.png)

@@ -19,6 +19,14 @@
 | `SWANLAB_WEB_HOST` | Web address for the SwanLab cloud environment |
 | `SWANLAB_API_HOST` | API address for the SwanLab cloud environment |
 
+## Experiment Configuration
+
+| Environment Variable | Description |
+| --- | --- |
+| `SWANLAB_PROJ_NAME` | Project name, equivalent to `swanlab.init(project_name="...")` |
+| `SWANLAB_WORKSPACE` | Workspace name, equivalent to `swanlab.init(workspace="...")` |
+| `SWANLAB_EXP_NAME` | Experiment name, equivalent to `swanlab.init(experiment_name="...")` |
+
 ## Login Authentication
 
 | Environment Variable | Description |

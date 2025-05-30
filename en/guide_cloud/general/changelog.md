@@ -5,7 +5,87 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.5.9 - 2025.5.25  
+
+**🚀 New Features**  
+- 📒 Logging now supports standard error streams, significantly improving the logging experience for frameworks like EvalScope/PyTorch Lightning  
+- 💻 Hardware monitoring now supports **Moore Threads** GPUs  
+- 🔐 Added security protection for command execution logs—API Keys will now be automatically hidden  
+- ⚙️ Settings now include "Default Workspace" and "Default Visibility" configurations, allowing you to specify under which organization new projects are created by default!
+
+## v0.5.8 - 2025.5.13  
+
+**🚀 New Features**  
+
+- Added Experimental Tag feature  
+- Added Log Scale feature for line charts  
+- Added Experiment Group Drag-and-Drop feature  
+- Added Configuration and Metrics table download functionality in experiment cards  
+- Added [Open API](/zh/api/py-openapi.md), supporting data retrieval from SwanLab via API  
+- Significantly optimized metric transmission performance, improving speed for handling thousands of metrics  
+- Integrated the `paddlenlp` framework  
+
+
+**🤔 Optimizations**  
+- Improved a series of interactions on the personal homepage  
+
+
+**🌍 Ecosystem**  
+- Listed on Tencent Cloud App Marketplace: [Guide](/zh/guide_cloud/self_host/tencentcloud-app.md)
+
+## v0.5.6 - 2025.4.23  
+
+**🚀 New Features**  
+- Line charts now support chart configuration, allowing customization of X/Y axis ranges, main title, and X/Y axis titles.  
+- Chart search now supports regular expressions.  
+- SwanLab private deployment edition now supports offline activation verification.  
+- Added support for Kunlunxin XPU environment logging and hardware monitoring.  
+- Improved pip environment logging compatibility for projects using `uv`.  
+- Environment logging now records Linux distributions (e.g., Ubuntu, CentOS, Kylin, etc.).  
+
+**🤔 Optimizations**  
+- Fixed issues with the sidebar's one-click experiment hiding feature.  
+
+
+## v0.5.5 - 2025.4.7
+
+**🚀 New Features**
+- Added `swanlab.Molecule` data type to support biochemical molecular visualization, providing better training experience for AI4Science tasks like AlphaFold
+- Experiment tables now remember your sorting, filtering, and column dragging!
+- Added support for recording Cambricon MLU temperature and power metrics
+- Introduced three new environment variables: SWANLAB_PROJ, SWANLAB_WORKSPACE, and SWANLAB_EXP_NAME
+- Added Cambricon MLU logo display in environment information
+
+**🌍 Ecosystem**
+- Large model evaluation framework [EvalScope](https://github.com/modelscope/evalscope) has integrated SwanLab! See: https://github.com/modelscope/evalscope/pull/453
+
+**🛠 Improvements**
+- Optimized web page loading performance
+
+## v0.5.4 - 2025.3.31  
+
+**🚀 New Features**  
+• Added the `swanlab.Settings` method for more granular experiment behavior control, further enhancing openness  
+• Added hardware logging and resource monitoring for Cambricon MLU  
+• Added CANN version logging for Ascend NPU hardware records  
+• Added GPU architecture and CUDA core count logging for NVIDIA GPU hardware records  
+• NVIDIA GPU hardware monitoring now supports logging "GPU memory access time percentage"  
+• **"Profile"** page now displays your **"Organization"**  
+• **"Overview"** page now supports editing **"Project Description"** text  
+
+**🤔 Improvements**  
+• Fixed some issues with `sync_wandb`  
+• Fixed some issues with the `Object3D` class  
+• Optimized the styling of **"General"** settings  
+• Significantly improved project loading performance  
+
+**🔌 Plugins**  
+• Official plugins now include **Slack Notifications** and **Discord Notifications**, further integrating with the global ecosystem
+
+
 ## v0.5.3 - 2025.3.20
+
+![swanlab x huggingface](./changelog/hf.png)
 
 **🚀 New Features**
 

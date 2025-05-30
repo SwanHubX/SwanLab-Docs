@@ -63,7 +63,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.5.3',  items: [
+      { text: 'v0.5.9',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -154,14 +154,14 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
       { text: '记录多媒体数据', link: 'experiment_track/log-media' },
-      { text: '系统硬件监控（支持昇腾）', link: 'experiment_track/system-monitor' },
+      { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-      { text: '用Jupyter Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
-      { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+      { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
       { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+      { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
       { text: '常见问题', link: 'experiment_track/FAQ' },
 
     ]
@@ -170,8 +170,11 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     text: '🚀 自托管',
     // collapsed: false,
     items: [
-      { text: 'Docker部署', link: 'self_host/docker-deploy' },
+      { text: "Docker部署", link: "self_host/docker-deploy" },
+      { text: "腾讯云应用部署", link: "self_host/tencentcloud-app" },
+      { text: "纯离线环境部署", link: "self_host/offline-deployment" },
       { text: '团队/企业版', link: 'self_host/enterprise-version' },
+      { text: '版本对照表', link: 'self_host/version' },
       { text: '常见问题', link: 'self_host/faq' },
     ]
   },
@@ -209,6 +212,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
+      { text: 'EvalScope', link: 'integration-evalscope' },
       { text: 'Fastai', link: 'integration-fastai' },
     ]
   },
@@ -238,6 +242,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'OpenAI', link: 'integration-openai' },
       { text: 'Omegaconf', link: 'integration-omegaconf' },
       { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleNLP', link: 'integration-paddlenlp' },
       { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
@@ -271,6 +276,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Hello_World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: 'Cifar10图像分类', link: 'cifar10' },
     ]
   },
   {
@@ -279,6 +285,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Resnet猫狗分类', link: 'cats_dogs_classification' },    
       { text: 'Yolo目标检测', link: 'yolo' },  
+      { text: 'UNet医学影像分割', link: 'unet-medical-segmentation'},
       { text: 'QwenVL多模态大模型微调', link: 'qwen_vl_coco'},
       { text: 'Stable Diffusion文生图微调', link: 'stable_diffusion'},
     ]
@@ -291,7 +298,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'LLM预训练', link: 'pretrain_llm' },  
       { text: 'GLM4指令微调', link: 'glm4-instruct' },  
       { text: 'Qwen下游任务训练', link: 'qwen_finetune' }, 
-      { text: 'openMind大模型微调', link: 'openMind' },  
+      { text: 'NER命名实体识别', link: 'ner' },
+      { text: 'Qwen3医学模型微调', link: 'qwen3-medical' },  
     ]
   },
   {
@@ -316,6 +324,13 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'LSTM股票预测', link: 'lstm_stock'},
     ]
   },
+  {
+    text: '其他',
+    collapsed: false,
+    items: [
+      { text: 'openMind大模型微调', link: 'openMind' },
+    ]
+  }
 ]
 }
 
@@ -338,11 +353,13 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'init', link: 'py-init' },
       { text: 'log', link: 'py-log' },
+      { text: 'Settings', link: 'py-settings' },
       { text: '多媒体数据', items: [
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
         { text: 'Object3D', link: 'py-object3d' },
+        { text: 'Molecule', link: 'py-molecule' },
       ]},
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
@@ -364,6 +381,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: '其他',
     // collapsed: false,
     items: [
+      { text: '开放接口', link: 'py-openapi' },
       { text: '环境变量', link: 'environment-variable' },
     ]
   }

@@ -15,6 +15,7 @@
 - [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
 - [DiffSynth-Studio](/guide_cloud/integration/integration-diffsynth-studio.html)
 - [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
+- [PaddleNLP](/guide_cloud/integration/integration-paddlenlp.html)
 - [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
 - [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.html)
 - [XTuner](/guide_cloud/integration/integration-xtuner.html)
@@ -23,6 +24,8 @@
 - [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/guide_cloud/integration/integration-xgboost.html)
 
+## 评估框架
+- [EvalScope](/guide_cloud/integration/integration-evalscope.html)
 
 ## 计算机视觉
 - [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)

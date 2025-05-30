@@ -26,25 +26,51 @@ args = TrainingArguments(
 trainer = Trainer(..., args=args)
 ```
 
-## 2. Custom Project Name
+If you want to set an experiment name to distinguish each training, you can set the `run_name` parameter:
 
-By default, the project name will be the `directory name` from which you run the code.
+```python
+args = TrainingArguments(
+    ...,
+    report_to="swanlab",
+    run_name="great_try_1", # [!code ++]
+)
+```
 
-If you wish to customize the project name, you can set the `SWANLAB_PROJECT` environment variable:
+## 2. Custom Project Name / Workspace
+
+By default, the project name will be the `directory name` from which you run the code, the experiment name will be the `output_dir`.
+
+If you wish to customize the project name or workspace, you can set the `SWANLAB_PROJ_NAME` and `SWANLAB_WORKSPACE` environment variables:
 
 ::: code-group
 
 ```python
-import os
-os.environ["SWANLAB_PROJECT"]="qwen2-sft"
+import os  # [!code ++]
+
+os.environ["SWANLAB_PROJ_NAME"]="qwen2-sft"  # [!code ++]
+os.environ["SWANLAB_WORKSPACE"]="EmotionMachine"  # [!code ++]
+
+...
+
+from transformers import TrainingArguments, Trainer
+
+args = TrainingArguments(
+    ...,
+    report_to="swanlab",
+    run_name="great_try_1",
+)
+
+trainer = Trainer(..., args=args)
 ```
 
 ```bash [Command Line（Linux/MacOS）]
-export SWANLAB_PROJECT="qwen2-sft"
+export SWANLAB_PROJ_NAME="qwen2-sft"
+export SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 ```bash [Command Line（Windows）]
-set SWANLAB_PROJECT="qwen2-sft"
+set SWANLAB_PROJ_NAME="qwen2-sft"
+set SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 :::

@@ -21,30 +21,57 @@ from transformers import TrainingArguments, Trainer
 args = TrainingArguments(
     ...,
     report_to="swanlab" # [!code ++]
+
 )
 
 trainer = Trainer(..., args=args)
 ```
 
-## 2. 自定义项目名
+如果你想要设定一下实验名，以区分每次训练，可以设置`run_name`参数：
 
-默认下，项目名会使用你运行代码的`目录名`。
+```python
+args = TrainingArguments(
+    ...,
+    report_to="swanlab",
+    run_name="great_try_1", # [!code ++]
+)
+```
 
-如果你想自定义项目名，可以设置`SWANLAB_PROJECT`环境变量：
+## 2. 自定义项目/工作空间
+
+默认下，项目名会使用你运行代码的`目录名`，实验名等于`output_dir`。
+
+如果你想自定义项目名或工作空间，可以设置`SWANLAB_PROJECT`和`SWANLAB_WORKSPACE`环境变量：
 
 ::: code-group
 
 ```python
-import os
-os.environ["SWANLAB_PROJECT"]="qwen2-sft"
+import os  # [!code ++]
+
+os.environ["SWANLAB_PROJECT"]="qwen2-sft"  # [!code ++]
+os.environ["SWANLAB_WORKSPACE"]="EmotionMachine"  # [!code ++]
+
+...
+
+from transformers import TrainingArguments, Trainer
+
+args = TrainingArguments(
+    ...,
+    report_to="swanlab",
+    run_name="great_try_1",
+)
+
+trainer = Trainer(..., args=args)
 ```
 
 ```bash [Command Line（Linux/MacOS）]
 export SWANLAB_PROJECT="qwen2-sft"
+export SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 ```bash [Command Line（Windows）]
 set SWANLAB_PROJECT="qwen2-sft"
+set SWANLAB_WORKSPACE="EmotionMachine"
 ```
 
 :::
@@ -86,6 +113,7 @@ training_args = TrainingArguments(
     num_train_epochs=3,
     logging_steps=50,
     report_to="swanlab", # [!code ++]
+    run_name="bert_train",
 )
 
 trainer = Trainer(

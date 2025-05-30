@@ -11,6 +11,22 @@ Add `swanlab.finish()` between multiple experiment creations.
 After executing `swanlab.finish()`, executing `swanlab.init()` again will create a new experiment.  
 If `swanlab.finish()` is not executed, subsequent `swanlab.init()` calls will be ignored.
 
+## How to Upload Data to a Self-Hosted SwanLab?
+
+There are two ways to achieve this:
+
+::: code-group
+
+```python [Method 1]
+swanlab.login(api_key='Your API Key', host='Your Self-Hosted Server Address')
+```
+
+```bash [Method 2]
+swanlab login --host Your_Self-Hosted_Server_Address --api-key Your_API_Key
+```
+
+After logging in, you can specify the data to be uploaded to your self-hosted SwanLab.
+
 ## How to disable SwanLab logging during training (for debugging)?
 
 Set the `mode` parameter of `swanlab.init` to 'disabled' to prevent experiment creation and data logging.
@@ -41,7 +57,6 @@ Zoom in on the line chart by holding down the mouse and dragging over the target
 
 ![details](/assets/faq-chart-details.png)
 
-Double-click the area to restore the original view.
 
 ## Internal Metric Names
 
@@ -65,10 +80,23 @@ This is because SwanLab has a hidden rule for determining crashes. If no logs (i
 
 Therefore, if your machine experiences network issues for more than 15 minutes, the experiment status will be displayed as "Crashed."
 
-## Command Line Logging and Truncation
+## Command Line Logging and Truncation  
 
-SwanLab records the standard output stream of the process after `swanlab.init()` is called, which can be viewed in the "Logs" tab of the experiment.
+SwanLab records the standard output stream in the process after `swanlab.init()`, which can be viewed in the "Logs" tab of the experiment. If a line of command-line output is too long, it will be truncated. The current default limit is `1024` characters, and the maximum limit is `4096` characters.  
 
-If a line of command-line output is too long, it will be truncated. The current limit is 500 characters.
+If you want to modify the limit, you can use the following code to adjust it:  
 
-If you wish to remove this restriction, you can modify the `MAX_UPLOAD_LEN` parameter in `swanlab/log/console.py` in the SwanLab package source code. This will ensure that the corresponding command-line output is stored in the `swanlog` log file, and the offline dashboard will display it accordingly. However, this change will not affect the rules of the cloud version.
+```python  
+import swanlab  
+
+# Create a new settings object and modify the max_log_length parameter  
+new_settings = swanlab.Settings(  
+    max_log_length=4096,  
+)  
+
+# Update global settings  
+swanlab.merge_settings(new_settings)  
+
+swanlab.init()  
+...  
+```

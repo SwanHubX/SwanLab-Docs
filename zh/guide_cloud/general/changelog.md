@@ -5,7 +5,87 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.5.9 - 2025.5.25
+
+**🚀新增功能**
+-  📒 日志记录支持了标准错误流，EvalScope / PyTorch Lightning等这些框架的日志记录体验大幅提升
+-  💻 硬件监控已支持 **摩尔线程** 显卡
+-  🔐 新增运行命令记录的安全防护功能，API Key将被自动隐藏
+-  ⚙️ 设置新增「默认空间」和「默认可见性」配置，可以指定你的项目默认创建在哪个组织下啦！
+
+## v0.5.8 - 2025.5.13
+
+**🚀新增功能**
+
+- 新增**实验Tag**功能
+- 新增折线图 **Log Scale** 功能
+- 新增 **实验分组拖拽** 功能
+- 新增实验卡片中**配置**与**指标**表格下载功能
+- 新增[开放接口](/zh/api/py-openapi.md)，支持通过API获取SwanLab数据
+- 大幅优化了指标传输性能，提升上千指标的传输速度
+- 集成`paddlenlp`框架
+
+**🤔优化**
+- 优化了个人主页的一系列交互
+
+**生态**
+- 腾讯云云应用上架：[指引](/zh/guide_cloud/self_host/tencentcloud-app.md)
+
+
+## v0.5.6 - 2025.4.23
+
+**🚀新增功能**
+
+- 折线图支持**图表配置**功能，本次更新支持配置图表的X、Y轴范围；主标题；X、Y轴标题
+- 图表搜索支持**正则表达式**
+- SwanLab私有化部署版，已支持离线激活验证
+- 支持**昆仑芯XPU**的环境记录与硬件监控
+- 适配对使用`uv`环境下的pip环境记录
+- 环境记录支持记录**Linux发行版**（如Ubuntu、CentOS、Kylin等）
+
+**🤔优化**
+- 修复了侧边栏一键隐藏实验的一些问题
+
+
+## v0.5.5 - 2025.4.7
+
+**🚀新增功能**
+- 新增`swanlab.Molecule`数据类型，支持生物化学分子可视化，为AlphaFold等AI4Science训练任务提供更好的训练体验
+- 实验表格，现在支持记忆你的排序、筛选、列拖拽了！
+- 支持了寒武纪MLU的温度和功率指标记录
+- 新增SWANLAB_PROJ、SWANLAB_WORKSPACE、SWANLAB_EXP_NAME三个环境变量
+- 环境中支持显示寒武纪MLU Logo
+
+**🌍生态**
+- 大模型评估框架[EvalScope](https://github.com/modelscope/evalscope) 已集成SwanLab！：https://github.com/modelscope/evalscope/pull/453
+
+**🤔优化**
+- 优化了网页加载性能
+
+## v0.5.4 - 2025.3.31
+
+**🚀新增功能**
+- 新增`swanlab.Settings`方法，支持更精细化的实验行为控制，进一步增强开放性
+- 支持了寒武纪MLU的硬件记录和资源监控
+- 昇腾NPU的硬件记录支持记录CANN版本
+- 英伟达GPU的硬件记录支持记录GPU架构和cuda核心数
+- 英伟达GPU的硬件监控支持记录“GPU 访问内存所花费的时间百分比”
+- 「个人主页」支持显示你所在的「组织」
+- 「概览」页支持编辑"项目描述"文本
+
+**🤔优化**
+- 修复了sync_wandb的一些问题
+- 修复了Obejct3D类的一些问题
+- 优化「常规」设置样式
+- 大幅优化了打开项目的性能
+
+**🔌插件**
+- 官方插件增加Slack通知、Discord通知，进一步打通海外生态
+
+
 ## v0.5.3 - 2025.3.20
+
+![swanlab x huggingface](./changelog/hf.png)
 
 **🚀新增功能**
 - SwanLab已正式加入 **🤗HuggingFace生态**！Transformers 4.50.0版本开始 正式将SwanLab集成为实验跟踪工具，在TrainingArguments中加入`report_to="swanlab"`即可开始跟踪训练。

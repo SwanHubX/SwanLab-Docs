@@ -15,6 +15,7 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [Modelscope Swift](/en/guide_cloud/integration/integration-swift.html)
 - [DiffSynth-Studio](/en/guide_cloud/integration/integration-diffsynth-studio.html)
 - [Sentence Transformers](/en/guide_cloud/integration/integration-sentence-transformers.html)
+- [PaddleNLP](/en/guide_cloud/integration/integration-paddlenlp.md)
 - [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
 - [Torchtune](/en/guide_cloud/integration/integration-pytorch-torchtune.html)
 - [XTuner](/en/guide_cloud/integration/integration-xtuner.html)
@@ -23,6 +24,8 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [LightGBM](/en/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/en/guide_cloud/integration/integration-xgboost.html)
 
+## Evaluation Frameworks
+- [EvalScope](/en/guide_cloud/integration/integration-evalscope.html)
 
 ## Computer Vision
 - [Ultralytics](/en/guide_cloud/integration/integration-ultralytics.html)

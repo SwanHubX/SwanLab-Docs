@@ -125,13 +125,15 @@ To set the port number on the server, refer to [Offline Dashboard Port Number](h
 
 ## Record Generated Text During Each Evaluation Round
 
-If you wish to log the generated text to SwanLab during each evaluation round (`val`), simply add the line `val_generations_to_log_to_wandb=1` in the command:
+If you wish to log the generated text to SwanLab during each evaluation round (`val`), simply add the line `trainer.log_val_generations=1` in the command:
 
 ```bash {5}
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  data.train_files=$HOME/data/gsm8k/train.parquet \
  data.val_files=$HOME/data/gsm8k/test.parquet \
  trainer.logger=['console','swanlab'] \
- val_generations_to_log_to_wandb=1 \
+ trainer.log_val_generations=1 \
  ...
 ```
+
+> If you want to generate multiple results per round of evaluation, such as 10 results, modify `trainer.log_val_generations=10` instead.

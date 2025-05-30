@@ -19,6 +19,14 @@
 | `SWANLAB_WEB_HOST` | SwanLab 云端环境的 Web 地址 |
 | `SWANLAB_API_HOST` | SwanLab 云端环境的 API 地址 |
 
+## 实验配置
+
+| 环境变量 | 描述 |
+| --- | --- |
+| `SWANLAB_PROJ_NAME` | 项目名称，效果等价于 `swanlab.init(project_name="...")` |
+| `SWANLAB_WORKSPACE` | 工作空间名称，效果等价于 `swanlab.init(workspace="...")` |
+| `SWANLAB_EXP_NAME` | 实验名称，效果等价于 `swanlab.init(experiment_name="...")` |
+
 ## 登录认证
 
 | 环境变量 | 描述 |

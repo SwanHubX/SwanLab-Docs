@@ -1,7 +1,11 @@
 # Fine-tuning ChatGLM4 for Large Model Instruction Following (with Code and Test Scripts)  
 
+[![](/assets/badge1.svg)](https://swanlab.cn/@ShaohonChen/chatglm-finetune/)
+
 Author: Emotional Machine Lab - Chen Shaohong  
 Email: <shaohon_chen@115lab.club>  
+
+[[toc]]
 
 ## Abstract  
 
@@ -14,17 +18,6 @@ Thus, this tutorial is recommended for readers with some familiarity with the �
 Note: Due to the relatively large size of the ChatGLM model, actual execution requires approximately >=16GB of GPU memory.  
 
 🎉 **SwanLab has been officially integrated into 🤗HuggingFace Transformers:** If SwanLab is installed locally, it will be enabled by default! It can also be activated via `report_to="swanlab"` for training tracking.  
-
-## Table of Contents  
-
-**Table of Contents:**  
-
-• [TRL Package Introduction + Environment Setup](#trl-package-introduction-environment-setup)  
-• [ChatGLM4 Introduction + Model Preparation](#chatglm4-introduction-model-preparation)  
-• [Dataset Preparation](#dataset-preparation)  
-• [Code Explanation + Hyperparameter Tuning](#code-explanation-hyperparameter-tuning)  
-• [Starting Training + Performance Evaluation](#starting-training-performance-evaluation)  
-• [Appendix: Complete Code](#appendix-complete-code)  
 
 **References:**  
 

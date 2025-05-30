@@ -1,32 +1,24 @@
-# 系统硬件监控（支持昇腾）
+# 系统硬件监控
 
-SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情况，并记录到 **「系统」图表** 当中。
+SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情况，并记录到 **「系统」图表** 当中。当前支持的硬件列表：
 
-![](./system-monitor/head.png)
+| 硬件 | 信息记录 | 资源监控 | 脚本 |
+| --- | --- | --- | --- |
+| 英伟达GPU | ✅ | ✅ | [nvidia.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/nvidia.py) |
+| 昇腾NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |
+| 寒武纪MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |
+| 昆仑芯XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |
+| CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |
+| 内存 | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |
+| 硬盘 | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |
+| 网络 | ✅ | ✅ | [network.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/network.py) |
 
-目前SwanLab已支持监控2款**AI计算芯片**（**华为昇腾**、**英伟达**）的硬件资源情况，涵盖显卡利用率、显存占用率、显卡温度、显卡功率等指标。
-
-除此之外，SwanLab还支持监控**CPU**、**内存**、**硬盘**等硬件资源情况。
-
----
-
-> 很开心，我们与昇腾计算团队合作，为训练师提供更多的国产算力使用体验。
-
-[昇腾NPU监控案例](https://swanlab.cn/@nexisato/EMO_baseline/runs/lg1ky9or15htzkek3vv2h/system)
-
-NPU监控图表：
-
-![](./system-monitor/system.png)
-
-AI芯片环境记录：
-
-![](./system-monitor/env.png)
-
----
 
 ## 系统监控指标详解
 
-SwanLab 在当前实验运行的机器上自动监控硬件资源情况，并为每个指标生成图表，统一展示在 **「系统」图表** 选项卡中。
+SwanLab 支持在当前实验运行的机器上自动监控硬件资源情况，并为每个指标生成图表，统一展示在 **「系统」图表** 选项卡中。
+
+![](./system-monitor/head.png)
 
 **采集策略与频率**：SwanLab根据当前实验的持续运行时间，自动调整硬件数据采集的频率，以平衡数据粒度与系统性能，采集频率分为以下几档：
 
@@ -38,7 +30,9 @@ SwanLab 在当前实验运行的机器上自动监控硬件资源情况，并为
 
 SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬盘IO以及网络情况等多个与训练过程相关的指标。以下详细介绍每个部分的监控内容及其在图表展示中的意义。
 
-### 1. GPU（NVIDIA）
+## GPU（NVIDIA）
+
+![](./system-monitor/nvidia.png)
 
 > 在多卡机器上，每个GPU的资源情况都会单独记录，最终在图表中展示多条图线。
 
@@ -49,10 +43,13 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
 | GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
 | GPU Power Usage (W) | **GPU 功耗**，表示此GPU的功耗，以瓦特为单位。|
+| GPU Time Spent Accessing Memory (%) | **GPU 内存访问时间**，表示此GPU在执行任务时，花费在访问 GPU 内存（显存）上的时间百分比。|
 
 <br>
 
-### 2. NPU（Ascend）
+## NPU（Ascend）
+
+![](./system-monitor/ascend.png)
 
 > 在多卡机器上，每个NPU的资源情况都会单独记录，最终在图表中展示多条图线。
 
@@ -64,7 +61,37 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 3. CPU
+## MLU（寒武纪）
+
+![](./system-monitor/cambricon.png)
+
+> 在多卡机器上，每个MLU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |  
+|--------|------------|  
+| MLU Utilization (%) | **MLU 利用率**，表示此MLU的计算资源占用百分比。|
+| MLU Memory Allocated (%) | **MLU 显存使用率**，表示此MLU的显存占用百分比。|
+| MLU Temperature (℃) | **MLU 温度**，表示此MLU的温度，以摄氏度为单位。|
+| MLU Power (W) | **MLU 功率**，表示此MLU的功率，以瓦特为单位。|
+
+<br>
+
+## XPU（昆仑芯）
+
+![](./system-monitor/kunlunxin.png)
+
+> 在多卡机器上，每个XPU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |  
+|--------|------------|  
+| XPU Utilization (%) | **XPU 利用率**，表示此XPU的计算资源占用百分比。|
+| XPU Memory Allocated (%) | **XPU 显存使用率**，表示此XPU的显存占用百分比。|
+| XPU Temperature (℃) | **XPU 温度**，表示此XPU的温度，以摄氏度为单位。|
+| XPU Power (W) | **XPU 功率**，表示此XPU的功率，以瓦特为单位。|
+
+<br>
+
+## CPU
 
 | 指标 | 描述 |  
 |--------|------------|  
@@ -73,7 +100,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 4. 内存
+## 内存
 
 | 指标 | 描述 |  
 |--------|------------|  
@@ -84,7 +111,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 5. 硬盘
+## 硬盘
 
 | 指标 | 描述 |  
 |--------|------------|  
@@ -95,7 +122,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 <br>
 
-### 6. 网络
+## 网络
 
 | 指标 | 描述 |  
 |--------|------------|  

@@ -54,7 +54,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.5.3',  items: [
+      { text: 'v0.5.9',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -137,10 +137,10 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
-      { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
       { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+      { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
   },
@@ -149,7 +149,10 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker deployment', link: 'self_host/docker-deploy' },
+      { text: 'Tencent Cloud App deployment', link: 'self_host/tencentcloud-app' },
+      { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
+      { text: 'Version Table', link: 'self_host/version' },
       { text: 'FAQ', link: 'self_host/faq' },
     ]
   },
@@ -187,6 +190,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
+      { text: 'EvalScope', link: 'integration-evalscope' },
       { text: 'Fastai', link: 'integration-fastai' },
     ]
   },
@@ -216,6 +220,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'OpenAI', link: 'integration-openai' },
       { text: 'Omegaconf', link: 'integration-omegaconf' },
       { text: 'PaddleDetection', link: 'integration-paddledetection' },
+      { text: 'PaddleNLP', link: 'integration-paddlenlp' },
       { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
@@ -247,8 +252,9 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Hello_World', link: 'hello_world' },
-      { text: 'MNIST Handwriting Recognition', link: 'mnist' },
+      { text: 'MNIST', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
+      { text: 'CIFAR10', link: 'cifar10' },
     ]
   },
   {
@@ -257,6 +263,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'Cats and Dogs Classification', link: 'cats_dogs_classification' },    
       { text: 'Yolo Object Detection', link: 'yolo' },  
+      { text: 'UNet Medical Image Segmentation', link: 'unet-medical-segmentation'},
       { text: 'QwenVL Finetune', link: 'qwen_vl_coco' },
       { text: 'Stable Diffusion Finetune', link: 'stable_diffusion' },
     ]
@@ -268,7 +275,9 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'BERT Text Classification', link: 'bert' },  
       { text: 'LLM Pretraining', link: 'pretrain_llm' },  
       { text: 'GLM4 Instruct Finetune', link: 'glm4-instruct'},
-      { text: 'Qwen Finetune Case', link: 'qwen_finetune' }
+      { text: 'Qwen2 NER', link: 'ner'},
+      { text: 'Qwen Finetune Case', link: 'qwen_finetune' },
+      { text: 'Qwen3 Medical', link: 'qwen3-medical' },
     ]
   },
   {
@@ -315,11 +324,13 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'init', link: 'py-init' },
       { text: 'log', link: 'py-log' },
+      { text: 'Settings', link: 'py-settings' },
       { text: 'Media data', items: [
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
         { text: 'Object3D', link: 'py-object3d' },
+        { text: 'Molecule', link: 'py-molecule' },
       ]},
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
@@ -336,6 +347,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: 'Other',
     // collapsed: false,
     items: [
+      { text: 'OpenAPI', link: 'py-openapi' },
       { text: 'Environment Variables', link: 'environment-variable' },
     ]
   }
