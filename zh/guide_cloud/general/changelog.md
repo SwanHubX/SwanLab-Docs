@@ -5,6 +5,15 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.6.0 - 2025.6.1
+
+**🚀新增功能**
+- 支持 **图表自由拖拽**
+- 支持ECharts自定义图表，增加包括柱状图、饼状图、直方图在内的20+图表类型
+- 💻 硬件监控已支持 **沐曦** 显卡
+- 集成 [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP) 框架
+
+
 ## v0.5.9 - 2025.5.25
 
 **🚀新增功能**

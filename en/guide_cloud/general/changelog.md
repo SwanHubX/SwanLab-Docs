@@ -5,6 +5,14 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.0 - 2025.6.1  
+
+**🚀 New Features**  
+- Added support for **free dragging of charts**  
+- Added ECharts custom charts, including 20+ chart types such as bar charts, pie charts, and histograms;  
+- 💻 Hardware monitoring now supports **MetaX** GPUs  
+- Integrated the [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP) framework;
+
 ## v0.5.9 - 2025.5.25  
 
 **🚀 New Features**  
