@@ -8,6 +8,8 @@ During experiment tracking, SwanLab automatically monitors machine hardware reso
 | Ascend NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |  
 | Cambricon MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |  
 | Kunlunxin XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |  
+| MooreThread GPU | ✅ | ✅ | [moorethread.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethread.py) |  
+| MetaX GPU | ✅ | ✅ | [metax.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/metax.py) |  
 | CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |  
 | Memory | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |  
 | Disk | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |  
@@ -29,6 +31,8 @@ Sampling Strategy & Frequency: SwanLab dynamically adjusts hardware data collect
 
 SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics relevant to training processes. Below are detailed descriptions of each component.  
 
+<br>
+
 ## GPU (NVIDIA)  
 
 ![](./system-monitor/nvidia.png)  
@@ -44,6 +48,8 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | GPU Power Usage (W) | GPU power consumption in watts. |  
 | GPU Time Spent Accessing Memory (%) | Memory access time – Percentage of time spent accessing VRAM. |  
 
+<br>
+
 ## NPU (Ascend)  
 
 ![](./system-monitor/ascend.png)  
@@ -55,6 +61,8 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | NPU Utilization (%) | NPU computational utilization. |  
 | NPU Memory Allocated (%) | NPU memory utilization. |  
 | NPU Temperature (℃) | NPU temperature in Celsius. |  
+
+<br>
 
 ## MLU (Cambricon)  
 
@@ -69,6 +77,8 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | MLU Temperature (℃) | MLU temperature in Celsius. |  
 | MLU Power (W) | MLU power draw in watts. |  
 
+<br>
+
 ## XPU (Kunlunxin)  
 
 ![](./system-monitor/kunlunxin.png)  
@@ -82,12 +92,46 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | XPU Temperature (℃) | XPU temperature in Celsius. |  
 | XPU Power (W) | XPU power draw in watts. |  
 
+<br>
+
+## GPU (MooreThread)
+
+![](./system-monitor/moorethread.png)
+
+> On multi-GPU machines, each GPU's metrics are recorded separately.
+
+| Metric | Description |  
+|-----------------------|------------------------------------------------|  
+| GPU Utilization (%) | GPU computational utilization. |  
+| GPU Memory Allocated (%) | GPU memory utilization. |  
+| GPU Temperature (℃) | GPU temperature in Celsius. |  
+| GPU Power (W) | GPU power draw in watts. |
+
+<br>
+
+## GPU (MetaX)
+
+![](./system-monitor/metax.png)
+
+> On multi-GPU machines, each GPU's metrics are recorded separately.
+
+| Metric | Description |  
+|-----------------------|------------------------------------------------|  
+| GPU Utilization (%) | GPU computational utilization. |  
+| GPU Memory Allocated (%) | GPU memory utilization. |  
+| GPU Temperature (℃) | GPU temperature in Celsius. |  
+| GPU Power (W) | GPU power draw in watts. |
+
+<br>
+
 ## CPU  
 
 | Metric | Description |  
 |-----------------------|------------------------------------------------|  
 | CPU Utilization (%) | CPU computational utilization. |  
 | Process CPU Threads | Thread count used by the experiment. |  
+
+<br>
 
 ## Memory  
 
@@ -98,6 +142,8 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Process Memory Utilization (MB) | Allocated memory (including swap) for the process. |  
 | Process Memory Available (non-swap) (MB) | Available physical memory (excluding swap) for the process. |  
 
+<br>
+
 ## Disk  
 
 | Metric | Description |  
@@ -106,6 +152,8 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Disk Utilization (%) | Disk usage percentage. |  
 
 On Linux, monitors root (`/`) usage; on Windows, monitors system drive (typically `C:`).  
+
+<br>
 
 ## Network  
 
