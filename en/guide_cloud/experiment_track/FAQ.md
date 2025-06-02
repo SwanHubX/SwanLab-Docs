@@ -100,3 +100,13 @@ swanlab.merge_settings(new_settings)
 swanlab.init()  
 ...  
 ```
+
+## How to enable experiment smoothing
+
+Find the "Settings" button in the upper right corner of the experiment page and click it:
+
+![](./faq/smooth_setting.png)
+
+In the menu pulled out on the right, find the "Smooth" option and slide the slider to enable smoothing:
+
+![](./faq/smooth_button.png)

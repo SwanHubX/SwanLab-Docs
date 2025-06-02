@@ -107,3 +107,13 @@ swanlab.merge_settings(new_settings)
 swanlab.init()
 ...
 ```
+
+## 如何开启实验平滑
+
+找到实验页面的右上角，点击「设置」按钮：
+
+![](./faq/smooth_setting.png)
+
+在右侧拉出的菜单中，找到「平滑」选项，拉动滑动条即可开启平滑：
+
+![](./faq/smooth_button.png)

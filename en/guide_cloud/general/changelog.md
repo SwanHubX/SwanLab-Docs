@@ -10,7 +10,7 @@ Github: https://github.com/SwanHubX/SwanLab
 **🚀 New Features**  
 - Added support for **free dragging of charts**  
 - Added ECharts custom charts, including 20+ chart types such as bar charts, pie charts, and histograms;  
-- 💻 Hardware monitoring now supports **MetaX** GPUs  
+- Hardware monitoring now supports **MetaX** GPUs  
 - Integrated the [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP) framework;
 
 ## v0.5.9 - 2025.5.25  
