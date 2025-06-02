@@ -134,6 +134,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
       { text: 'Log media metric', link: 'experiment_track/log-media' },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
+      { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
