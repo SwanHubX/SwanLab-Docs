@@ -330,6 +330,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Echarts', link: 'py-echarts' },
         { text: 'Object3D', link: 'py-object3d' },
         { text: 'Molecule', link: 'py-molecule' },
       ]},
