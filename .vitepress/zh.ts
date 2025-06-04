@@ -153,7 +153,10 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
-      { text: '记录多媒体数据', link: 'experiment_track/log-media' },
+      { text: '记录多维数据', items:[
+        { text: '媒体类型', link: 'experiment_track/log-media' },
+        { text: '自定义图表', link: 'experiment_track/log-custom-chart' },
+      ]},
       { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
       { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },

@@ -132,7 +132,10 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
       { text: 'Set config', link: 'experiment_track/set-experiment-config' },
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
-      { text: 'Log media metric', link: 'experiment_track/log-media' },
+      { text: 'Log media metric', items:[
+        { text: 'Log Media', link: 'experiment_track/log-media' },
+        { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
+      ]},
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
