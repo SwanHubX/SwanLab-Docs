@@ -8,6 +8,8 @@ SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情
 | 昇腾NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |
 | 寒武纪MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |
 | 昆仑芯XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |
+| 摩尔线程GPU | ✅ | ✅ | [moorethread.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethread.py) |
+| 沐曦GPU | ✅ | ✅ | [metax.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/metax.py) |
 | CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |
 | 内存 | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |
 | 硬盘 | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |
@@ -88,6 +90,36 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | XPU Memory Allocated (%) | **XPU 显存使用率**，表示此XPU的显存占用百分比。|
 | XPU Temperature (℃) | **XPU 温度**，表示此XPU的温度，以摄氏度为单位。|
 | XPU Power (W) | **XPU 功率**，表示此XPU的功率，以瓦特为单位。|
+
+<br>
+
+## GPU（摩尔线程）
+
+![](./system-monitor/moorethread.png)
+
+> 在多卡机器上，每个摩尔线程GPU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |  
+|--------|------------|  
+| GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
+| GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
+| GPU Power (W) | **GPU 功率**，表示此GPU的功率，以瓦特为单位。|
+
+<br>
+
+## GPU（沐曦）
+
+![](./system-monitor/metax.png)
+
+> 在多卡机器上，每个沐曦GPU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |     
+|--------|------------|  
+| GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
+| GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
+| GPU Power (W) | **GPU 功率**，表示此GPU的功率，以瓦特为单位。|
 
 <br>
 

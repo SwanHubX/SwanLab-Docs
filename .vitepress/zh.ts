@@ -63,7 +63,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.5.9',  items: [
+      { text: 'v0.6.0',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '贡献文档', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -153,8 +153,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '创建一个实验', link: 'experiment_track/create-experiment' },
       { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
       { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
-      { text: '记录多媒体数据', link: 'experiment_track/log-media' },
+      { text: '记录多维数据', items:[
+        { text: '媒体类型', link: 'experiment_track/log-media' },
+        { text: '自定义图表', link: 'experiment_track/log-custom-chart' },
+      ]},
       { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
+      { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
       { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
@@ -358,6 +362,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'ECharts', link: 'py-echarts' },
         { text: 'Object3D', link: 'py-object3d' },
         { text: 'Molecule', link: 'py-molecule' },
       ]},

@@ -54,7 +54,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.5.9',  items: [
+      { text: 'v0.6.0',  items: [
         { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
@@ -132,8 +132,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
       { text: 'Set config', link: 'experiment_track/set-experiment-config' },
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
-      { text: 'Log media metric', link: 'experiment_track/log-media' },
+      { text: 'Log media metric', items:[
+        { text: 'Log Media', link: 'experiment_track/log-media' },
+        { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
+      ]},
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
+      { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
@@ -329,6 +333,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Echarts', link: 'py-echarts' },
         { text: 'Object3D', link: 'py-object3d' },
         { text: 'Molecule', link: 'py-molecule' },
       ]},
