@@ -1,8 +1,37 @@
 # swanlab.Echarts
 
-SwanLab 兼容 [pyecharts](https://pyecharts.org/#/zh-cn/intro) 的 API，可以方便地记录 pyecharts 的图表到 SwanLab，以呈现丰富的图表展现形式。在线Demo点击下面的标签：
+SwanLab 兼容 [pyecharts](https://pyecharts.org/#/zh-cn/intro) 的 API，可以方便地记录 pyecharts 的图表到 SwanLab，以呈现丰富的图表展现形式。
+
+**在线Demo点击下面的标签：**
 
 [![](/assets/visualization_swanlab.svg)](https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/charts)
+
+## 折线图 line
+
+![line](./py-echarts/line-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="echarts-test")
+
+# 定义数据
+week_name_list = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+high_temperature = [11, 11, 15, 13, 12, 13, 10]
+low_temperature = [1, -2, 2, 5, 3, 2, 0]
+
+# 创建echarts line对象
+line = swanlab.echarts.Line()
+
+# 设置line的轴
+line.add_xaxis(week_name_list)
+# 设置line的数据
+line.add_yaxis("high_temperature", high_temperature)
+line.add_yaxis("low_temperature", low_temperature)
+
+# 记录到swanlab
+swanlab.log({"line": line})
+```
 
 ## 柱状图 bar
 
@@ -221,4 +250,57 @@ boxplot.add_yaxis("", boxplot.prepare_data(y_data))
 
 # 记录到swanlab
 swanlab.log({"boxplot": boxplot})
+```
+
+## 平行坐标系图 parallel
+
+![parallel](./py-echarts/parallel-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="echarts-test")
+
+# 定义数据
+parallel_axis = [
+    {"dim": 0, "name": "Price"},
+    {"dim": 1, "name": "Net Weight"},
+    {"dim": 2, "name": "Amount"},
+    {
+        "dim": 3,
+        "name": "Score",
+        "type": "category",
+        "data": ["Excellent", "Good", "OK", "Bad"],
+    },
+]
+
+data = [[12.99, 100, 82, "Good"], [9.99, 80, 77, "OK"], [20, 120, 60, "Excellent"]]
+
+# 创建echarts parallel对象
+parallel = swanlab.echarts.Parallel()
+
+# 设置parallel的轴
+parallel.add_schema(parallel_axis)
+# 设置parallel的数据
+parallel.add("data", data=data)
+
+# 记录到swanlab
+swanlab.log({"parallel": parallel})
+```
+
+## 仪表盘图 gauge
+
+![gauge](./py-echarts/gauge-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="swanlab-echarts-demo")
+
+# 创建echarts gauge对象
+gauge = swanlab.echarts.Gauge()
+gauge.add("", [("完成率", 66.6)])
+
+# 记录到swanlab
+swanlab.log({"gauge": gauge})
 ```

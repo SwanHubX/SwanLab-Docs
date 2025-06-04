@@ -4,6 +4,34 @@ SwanLab provides API compatibility with [pyecharts](https://pyecharts.org/#/en-u
 
 [![](/assets/visualization_swanlab.svg)](https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/charts)  
 
+## Line
+
+![line](./py-echarts/line-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="echarts-test")
+
+# Define data
+week_name_list = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+high_temperature = [11, 11, 15, 13, 12, 13, 10]
+low_temperature = [1, -2, 2, 5, 3, 2, 0]
+
+# Create echarts line object
+line = swanlab.echarts.Line()
+
+# Set line axis
+line.add_xaxis(week_name_list)
+# Set line data
+line.add_yaxis("high_temperature", high_temperature)
+line.add_yaxis("low_temperature", low_temperature)
+
+# Log to SwanLab
+swanlab.log({"line": line})
+```
+
+
 ## Bar Chart  
 
 ![bar](./py-echarts/bar-1.png)  
@@ -231,4 +259,57 @@ boxplot.add_yaxis("", boxplot.prepare_data(y_data))
 
 # Log to SwanLab  
 swanlab.log({"boxplot": boxplot})  
+```
+
+## Parallel
+
+![parallel](./py-echarts/parallel-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="echarts-test")
+
+# 定义数据
+parallel_axis = [
+    {"dim": 0, "name": "Price"},
+    {"dim": 1, "name": "Net Weight"},
+    {"dim": 2, "name": "Amount"},
+    {
+        "dim": 3,
+        "name": "Score",
+        "type": "category",
+        "data": ["Excellent", "Good", "OK", "Bad"],
+    },
+]
+
+data = [[12.99, 100, 82, "Good"], [9.99, 80, 77, "OK"], [20, 120, 60, "Excellent"]]
+
+# Create echarts parallel object
+parallel = swanlab.echarts.Parallel()
+
+# Set parallel axis
+parallel.add_schema(parallel_axis)
+# Set parallel data
+parallel.add("data", data=data)
+
+# Log to SwanLab
+swanlab.log({"parallel": parallel})
+```
+
+## Gauge
+
+![gauge](./py-echarts/gauge-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="swanlab-echarts-demo")
+
+# Create echarts gauge object
+gauge = swanlab.echarts.Gauge()
+gauge.add("", [("完成率", 66.6)])
+
+# Log to SwanLab
+swanlab.log({"gauge": gauge})
 ```
