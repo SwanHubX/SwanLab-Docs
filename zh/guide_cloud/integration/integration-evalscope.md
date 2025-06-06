@@ -8,7 +8,7 @@
 
 现在，你可以使用 EvalScope 评估LLM性能，同时使用SwanLab方便地跟踪、对比、可视化。
 
-[Demo](https://swanlab.cn/@ShaohonChen/perf_benchmark/charts)
+[Demo](https://swanlab.cn/@ShaohonChen/perf_benchmark/overview)
 
 ## 1. 准备工作
 
@@ -31,17 +31,22 @@ pip install -e '.[all]'           # Install all backends (Native, OpenCompass, V
 ```
 
 
-## 2. 评估Qwen模型表现
+## 2. Qwen模型推理性能压测
 
-如果你希望评估`Qwen2.5-0.5B-Instruct`在`gsm8k`和`arc`数据集上的表现，同时使用`SwanLab`观测性能，可以运行下面的命令：
+如果你希望评估`Qwen2.5-0.5B-Instruct`在[openqa格式默认数据集](https://www.modelscope.cn/datasets/AI-ModelScope/HC3-Chinese)上的表现，同时使用`SwanLab`观测性能，可以运行下面的命令：
 
 ```bash {5,6}
+export CUDA_VISIBLE_DEVICES=0
 evalscope perf \
  --model Qwen/Qwen2.5-0.5B-Instruct \
- --datasets gsm8k arc \
+ --dataset openqa \
+ --number 20 \
+ --parallel 2 \
  --limit 5 \
  --swanlab-api-key '你的API Key' \
- --name 'qwen2.5-gsm8k-arc'
+ --name 'qwen2.5-openqa' \
+ --temperature 0.9 \
+ --api local
 ```
 
 其中`swanlab-api-key`是你的SwanLab API Key，`name`是实验名。  
