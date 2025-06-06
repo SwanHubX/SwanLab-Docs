@@ -8,7 +8,7 @@ The framework accommodates multiple evaluation scenarios such as end-to-end RAG 
 
 Now you can use EvalScope to evaluate LLM performance while leveraging SwanLab for convenient tracking, comparison, and visualization.  
 
-[Demo](https://swanlab.cn/@ShaohonChen/perf_benchmark/charts)  
+[Demo](https://swanlab.cn/@ShaohonChen/perf_benchmark/overview)
 
 ## 1. Preparation  
 
@@ -30,17 +30,22 @@ pip install -e '.[app]'           # Install visualization dependencies
 pip install -e '.[all]'           # Install all backends (Native, OpenCompass, VLMEvalKit, RAGEval)  
 ```  
 
-## 2. Evaluating Qwen Model Performance  
+## 2. Evaluating Qwen Model Performance
 
-To evaluate the performance of `Qwen2.5-0.5B-Instruct` on the `gsm8k` and `arc` datasets while monitoring results via SwanLab, run the following command:  
+If you want to evaluate ` Qwen2.5-0.5B-Instruct ` on the [default data in openqa format](https://www.modelscope.cn/datasets/AI-ModelScope/HC3-Chinese) while monitoring results via SwanLab, run the following command: 
 
 ```bash  {5,6}
-evalscope eval \  
- --model Qwen/Qwen2.5-0.5B-Instruct \  
- --datasets gsm8k arc \  
- --limit 5 \  
- --swanlab-api-key 'your_api_key' \  
- --name 'qwen2.5-gsm8k-arc'  
+export CUDA_VISIBLE_DEVICES=0
+evalscope perf \
+ --model Qwen/Qwen2.5-0.5B-Instruct \
+ --dataset openqa \
+ --number 20 \
+ --parallel 2 \
+ --limit 5 \
+ --swanlab-api-key 'your API Key' \
+ --name 'qwen2.5-openqa' \
+ --temperature 0.9 \
+ --api local 
 ```  
 
 Where:  
