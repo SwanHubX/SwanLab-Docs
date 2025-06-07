@@ -5,6 +5,18 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.1 - 2025.6.5
+
+**🚀 New Features**  
+- Hovering over the table header now displays a shortened name  
+- Added the "Expand Subtable" feature in table view  
+- Hardware monitoring now supports Hygon DCU  
+- Hardware monitoring now supports retrieving power consumption information for Ascend NPUs  
+
+**🤔 Optimizations**  
+- Improved integration with the HuggingFace Accelerate framework  
+- Duplicate step log warnings are no longer printed by default
+
 ## v0.6.0 - 2025.6.1  
 
 **🚀 New Features**  

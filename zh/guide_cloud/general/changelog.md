@@ -5,6 +5,18 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.6.1 - 2025.6.5
+
+**🚀新增功能**
+- 鼠标放到表头，可以显示缩略的名称了
+- 表格视图增加「展开子表」功能
+- 硬件监控支持海光DCU
+- 硬件监控支持获取昇腾NPU的功耗信息
+
+**🤔优化**
+- 优化了HuggigngFace accelerate框架的集成
+- 默认不再打印重复step log warning
+
 ## v0.6.0 - 2025.6.1
 
 **🚀新增功能**
