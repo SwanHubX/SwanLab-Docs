@@ -5,6 +5,13 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.2 - 2025.6.9
+
+**🚀 New Features**
+- Added the `swanlab sync` command to support syncing local logs to SwanLab Cloud or private deployment  
+- Supports storing complete experiment log files locally
+
+
 ## v0.6.1 - 2025.6.5
 
 **🚀 New Features**  

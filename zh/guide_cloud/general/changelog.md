@@ -5,6 +5,12 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.6.2 - 2025.6.9
+
+**🚀新增功能**
+- 新增`swanlab sync`命令，支持将本地日志同步到SwanLab云端/私有化部署端
+- 支持在本地存储完整的实验日志文件
+
 ## v0.6.1 - 2025.6.5
 
 **🚀新增功能**
