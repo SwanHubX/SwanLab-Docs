@@ -318,7 +318,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
-      // { text: '(Beta) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
+      { text: 'swanlab sync', link: 'cli-swanlab-sync' },
       { text: 'Other', link: 'cli-swanlab-other' },
     ]
   },
