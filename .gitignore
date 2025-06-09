@@ -7,3 +7,4 @@ node_modules
 2.py
 logs/
 docker_push.sh
+playground/
