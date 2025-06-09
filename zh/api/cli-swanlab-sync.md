@@ -16,7 +16,7 @@ swanlab sync [options] [logdir]
 
 将本地日志，同步到SwanLab云端/私有化部署端。
 
-## 示例
+## 命令行示例
 
 找到你需要上传到云端的日志文件目录（默认是`swanlog`下的以`run-`开头的目录），然后执行命令：
 
@@ -32,3 +32,18 @@ swanlab sync ./swanlog/run-xxx
 看到下面的打印信息，则表示同步成功：
 
 ![swanlab sync](./cli-swanlab-sync/console.png)
+
+
+## Python代码示例
+
+```python
+import swanlab
+
+swanlab.login(api_key="你的API Key")
+
+swanlab.sync(
+    dir_path="./swanlog/run-xxx",
+    workspace="swanlab",
+    project_name="sync_test",
+)
+```

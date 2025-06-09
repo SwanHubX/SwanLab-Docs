@@ -15,7 +15,7 @@ swanlab sync [options] [logdir]
 
 Sync local logs to SwanLab cloud or private deployment.
 
-## Examples
+## Command Line Examples
 
 Locate the log directory you want to upload to the cloud (by default, it's the `run-` prefixed directory under `swanlog`), then execute the command:
 
@@ -31,3 +31,17 @@ If you want to sync to a different project, you can use the `-p` option to speci
 If you see the following output, it indicates a successful sync:
 
 ![swanlab sync](./cli-swanlab-sync/console.png)
+
+## Python Code Example
+
+```python
+import swanlab
+
+swanlab.login(api_key="Your API Key")
+
+swanlab.sync(
+    dir_path="./swanlog/run-xxx",
+    workspace="swanlab",
+    project_name="sync_test",
+)
+```
