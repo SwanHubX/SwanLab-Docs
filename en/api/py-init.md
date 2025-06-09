@@ -26,7 +26,7 @@ init(
 | description       | (str) A description of the experiment. If not specified, it defaults to None. |
 | config            | (dict, str) Configuration for the experiment. You can record hyperparameters and other information here. Supports passing a configuration file path (yaml or json). |
 | logdir            | (str) The path to store offline dashboard log files. Defaults to `swanlog`. |
-| mode              | (str) Sets the mode for creating SwanLab experiments. Options are "cloud", "local", or "disabled". Default is "cloud".<br>`cloud`: Uploads the experiment to the cloud (public or private deployment).<br>`local`: Does not upload to the cloud but records experiment information locally.<br>`disabled`: Neither uploads nor records. |
+| mode              | (str) Sets the mode for creating SwanLab experiments. Options are "cloud", "local", "offline", or "disabled". Default is "cloud".<br>`cloud`: Uploads the experiment to the cloud (public or private deployment).<br>`offline`: Only records experiment data locally.<br>`local`: Does not upload to the cloud but records experiment information locally.<br>`disabled`: Neither uploads nor records. |
 | load              | (str) The path to a configuration file to load. Supports yaml and json files. |
 | public            | (bool) Sets the visibility of the SwanLab project created directly via code. Default is False (private). |
 | callbacks         | (list) Sets experiment callback functions. Supports subclasses of `swankit.callback.SwanKitCallback`. |

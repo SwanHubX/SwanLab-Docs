@@ -27,7 +27,7 @@ init(
 | description   | (str) 实验描述, 如果不指定默认为None。                                   |
 | config       | (dict, str) 实验配置，在此处可以记录一些实验的超参数等信息。支持传入配置文件路径，支持yaml和json文件。                   |
 | logdir       | (str) 离线看板日志文件存储路径，默认为`swanlog `。                                 |
-| mode       | (str) 设置swanlab实验创建的模式，可选"cloud"、"local"、"disabled"，默认设置为"cloud"。<br>`cloud`：将实验上传到云端。（公有云和私有化部署）<br>`local`：不上传到云端，但会记录实验信息到本地。<br>`disabled`：不上传也不记录。|
+| mode       | (str) 设置swanlab实验创建的模式，可选"cloud"、"local"、"offline"、"disabled"，默认设置为"cloud"。<br>`cloud`：将实验上传到云端。（公有云和私有化部署）<br>`offline`：仅将实验数据保存到本地。<br>`local`：不上传到云端，但会记录实验数据和一些可被`swanlab watch`打开的数据到本地。<br>`disabled`：不上传也不记录。|
 | load       | (str) 加载的配置文件路径，支持yaml和json文件。|
 | public       | (bool) 设置使用代码直接创建SwanLab项目的可见性，默认为False即私有。|
 | callbacks       | (list) 设置实验回调函数，支持`swankit.callback.SwanKitCallback`的子类。|
