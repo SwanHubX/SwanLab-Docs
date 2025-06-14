@@ -5,6 +5,15 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.3 - 2025.6.12
+
+**🚀 New Features**
+- Added `swanlab.echarts.table` to support creating table charts
+- Added MB memory recording for Ascend NPU, MetaX, Hygon DCU, Cambricon MLU, and Kunlunxin XPU hardware monitoring
+- `swanlab sync` now supports uploading multiple log files at once
+- Added `Public/Private` filtering to workspaces
+- Added `Latest/Max/Min` switch module to table view
+
 ## v0.6.2 - 2025.6.9
 
 **🚀 New Features**
