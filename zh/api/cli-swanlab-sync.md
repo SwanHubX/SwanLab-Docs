@@ -47,3 +47,9 @@ swanlab.sync(
     project_name="sync_test",
 )
 ```
+
+## 批量上传
+
+```bash
+swanlab sync ./swanlog/run-*
+```

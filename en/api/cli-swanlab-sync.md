@@ -45,3 +45,9 @@ swanlab.sync(
     project_name="sync_test",
 )
 ```
+
+## Batch Upload
+
+```bash
+swanlab sync ./swanlog/run-*
+```
