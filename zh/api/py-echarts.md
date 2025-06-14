@@ -304,3 +304,35 @@ gauge.add("", [("完成率", 66.6)])
 # 记录到swanlab
 swanlab.log({"gauge": gauge})
 ```
+
+## 表格 table
+
+![table](./py-echarts/table-1.png)
+
+```python
+import swanlab
+
+swanlab.init(
+    project="echarts-test",
+)
+
+# 定义表头
+headers = ["NO", "Product", "Count"]
+# 定义数据
+rows = [
+    [2, "A", 259],
+    [3, "B", 123],
+    [4, "C", 300],
+    [5, "D", 290],
+    [6, "E", 1145],
+]
+
+# 创建echarts table对象
+table = swanlab.echarts.Table()
+
+# 添加数据
+table.add(headers, rows)
+
+# 记录到swanlab
+swanlab.log({"table": table})
+```

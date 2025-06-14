@@ -313,3 +313,33 @@ gauge.add("", [("完成率", 66.6)])
 # Log to SwanLab
 swanlab.log({"gauge": gauge})
 ```
+
+## Table
+
+![table](./py-echarts/table-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="echarts-test")
+
+# Define headers
+headers = ["NO", "Product", "Count"]
+# Define data
+rows = [
+    [2, "A", 259],
+    [3, "B", 123],
+    [4, "C", 300],
+    [5, "D", 290],
+    [6, "E", 1145],
+]
+
+# Create echarts table object
+table = swanlab.echarts.Table()
+
+# Add data
+table.add(headers, rows)
+
+# Log to SwanLab
+swanlab.log({"table": table})
+```
