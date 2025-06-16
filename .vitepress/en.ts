@@ -55,9 +55,11 @@ export const en = defineConfig({
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
       { text: 'v0.6.3',  items: [
-        { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
-        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
-        { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
+        { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
+        { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
+        { text: 'Join Us', link: 'https://geektechstudio.feishu.cn/wiki/I9VJwngzBigDt7kjIHgcPEYXnth' },
+        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
+        { text: 'Docs Github', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
       {
         component: 'HeaderButtonEN',
