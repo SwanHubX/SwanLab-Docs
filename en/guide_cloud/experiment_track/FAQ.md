@@ -110,3 +110,14 @@ Find the "Settings" button in the upper right corner of the experiment page and 
 In the menu pulled out on the right, find the "Smooth" option and slide the slider to enable smoothing:
 
 ![](./faq/smooth_button.png)
+
+
+## How to Change an Experiment's 'Crashed' Status
+
+On the experiment page, click the status label:
+
+![](./faq/exp_header_crash.png)
+
+In the pop-up window, select your desired status:
+
+![](./faq/exp_windows_finish.png)
