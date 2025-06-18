@@ -120,13 +120,32 @@ swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_EN
 - `-t`: 转换类型，可选wandb与tensorboard。
 - `-p`: SwanLab项目名。
 - `-w`: SwanLab工作空间名。
-- `--cloud`: (bool) 是否上传模式为"cloud"，默认为True
+- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
 - `-l`: logdir路径。
 - `--wb-project`：待转换的wandb项目名。
 - `--wb-entity`：wandb项目所在的空间名。
 - `--wb-runid`: wandb Run（项目下的某一个实验）的id。
 
 如果不填写`--wb-runid`，则会将指定项目下的全部Run进行转换；如果填写，则只转换指定的Run。
+
+---
+
+**异步转换方法（先将数据下载到本地，再上传到swanlab）**
+
+1. 数据下载到本地：
+
+```bash
+swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]
+```
+
+2. 上传到swanlab：
+
+```bash
+swanlab sync [日志文件夹路径]
+```
+
+[swanlab sync文档](/zh/api/cli-swanlab-sync.md)
+
 
 ### 2.3 方式二：代码内转换
 
@@ -144,5 +163,31 @@ wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
-- `cloud`: (bool) 是否上传模式为"cloud"，默认为True。
-- `logdir`: wandb Run（项目下的某一个实验）的id。
+- `mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `logdir`: logdir路径。
+
+`WandbConverter.run`支持的参数：
+
+- `wb_project`: wandb项目名。
+- `wb_entity`: wandb项目所在的空间名。
+- `wb_runid`: wandb Run（项目下的某一个实验）的id。
+
+**异步转换方法（先将数据下载到本地，再上传到swanlab）**
+
+1. 数据下载到本地：
+
+```python
+from swanlab.converter import WandbConverter
+
+wb_converter = WandbConverter(mode="offline")
+# wb_runid可选
+wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
+```
+
+2. 上传到swanlab：
+
+```bash
+swanlab sync [日志文件夹路径]
+```
+
+[swanlab sync文档](/zh/api/cli-swanlab-sync.md)

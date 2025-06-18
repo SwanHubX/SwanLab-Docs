@@ -1,129 +1,190 @@
 # Weights & Biases
 
-[Weights & Biases](https://github.com/wandb/wandb) (Wandb) is a platform for experiment tracking, model optimization, and collaboration in machine learning and deep learning projects. W&B provides powerful tools for recording and visualizing experimental results, helping data scientists and researchers better manage and share their work.
+Weights & Biases (Wandb) is a platform for experiment tracking, model optimization, and collaboration in machine learning and deep learning projects. W&B provides powerful tools to log and visualize experimental results, helping data scientists and researchers better manage and share their work.
 
-![wandb](/assets/ig-wandb.png)
+![wandb](/assets/ig-wandb.png)  
 
-**You can synchronize projects from Wandb to SwanLab in two ways:**
+:::warning Synchronization Tutorials for Other Tools  
 
-1. **Synchronized Tracking**: If your current project uses wandb for experiment tracking, you can use the `swanlab.sync_wandb()` command to synchronize metrics to SwanLab while running the training script.
-2. **Convert Existing Projects**: If you want to copy a project from wandb to SwanLab, you can use `swanlab convert` to convert an existing project on Wandb to a SwanLab project.
+- [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)  
+- [MLFlow](/guide_cloud/integration/integration-mlflow.md)  
+:::  
 
-::: info
-The current version only supports converting scalar charts.
-:::
+**You can sync Wandb projects to SwanLab in two ways:**  
 
-[[toc]]
+1. **Live Synchronization**: If your current project uses Wandb for experiment tracking, you can use the `swanlab.sync_wandb()` command to log metrics to SwanLab simultaneously while running the training script.  
+2. **Convert Existing Projects**: If you want to replicate a Wandb project on SwanLab, you can use `swanlab convert` to migrate an existing Wandb project to SwanLab.  
 
-## 1. Synchronized Tracking
+::: info  
+The current version only supports converting scalar charts.  
+:::  
 
-### 1.1 Add the `sync_wandb` Command
+[[toc]]  
 
-Add the `swanlab.sync_wandb()` command anywhere before `wandb.init()` in your code to synchronize wandb metrics to SwanLab during training.
+## 1. Live Synchronization  
 
-```python
-import swanlab
+### 1.1 Add the `sync_wandb` Command  
 
-swanlab.sync_wandb()
+Add the `swanlab.sync_wandb()` command anywhere in your code before `wandb.init()` to synchronize Wandb metrics to SwanLab during training.  
 
-...
+```python  
+import swanlab  
 
-wandb.init()
-```
+swanlab.sync_wandb()  
 
-In the above code, `wandb.init()` will simultaneously initialize swanlab, with the project name, experiment name, and configuration matching the `project`, `name`, and `config` in `wandb.init()`. Therefore, you do not need to manually initialize swanlab.
+...  
 
-:::info
+wandb.init()  
+```  
 
-**`sync_wandb` supports two parameters:**
+With this implementation, `wandb.init()` will simultaneously initialize SwanLab, using the same `project`, `name`, and `config` parameters from `wandb.init()`. Therefore, you don’t need to manually initialize SwanLab.  
 
-- `mode`: The recording mode of swanlab, supports `cloud`, `local`, and `disabled`.
-- `wandb_run`: If this parameter is set to **False**, the data will not be uploaded to wandb, equivalent to setting `wandb.init(mode="offline")`.
+:::info  
 
-:::
+**`sync_wandb` supports two parameters:**  
 
-### 1.2 Alternative Approach
+- `mode`: SwanLab logging mode, supporting `cloud`, `local`, and `disabled`.  
+- `wandb_run`: If set to **False**, data will not be uploaded to Wandb (equivalent to `wandb.init(mode="offline")`).  
 
-Another approach is to manually initialize swanlab first, then run the wandb code.
+:::  
 
-```python
-import swanlab
+### 1.2 Alternative Implementation  
 
-swanlab.init(...)
-swanlab.sync_wandb()
+Another approach is to manually initialize SwanLab first before running Wandb code.  
 
-...
+```python  
+import swanlab  
 
-wandb.init()
-```
+swanlab.init(...)  
+swanlab.sync_wandb()  
 
-In this approach, the project name, experiment name, and configuration will match the `project`, `experiment_name`, and `config` in `swanlab.init()`. The `project` and `name` in the subsequent `wandb.init()` will be ignored, and the `config` will be updated in `swanlab.config`.
+...  
 
-### 1.3 Test Code
+wandb.init()  
+```  
 
-```python
-import wandb
-import random
-import swanlab
+In this implementation, the project name, experiment name, and configuration will follow the `project`, `experiment_name`, and `config` parameters from `swanlab.init()`. Subsequent `wandb.init()` parameters for `project` and `name` will be ignored, while `config` will update `swanlab.config`.  
 
-swanlab.sync_wandb()
-# swanlab.init(project="sync_wandb")
+### 1.3 Test Code  
 
-wandb.init(
-  project="test",
-  config={"a": 1, "b": 2},
-  name="test",
-  )
+```python  
+import wandb  
+import random  
+import swanlab  
 
-epochs = 10
-offset = random.random() / 5
-for epoch in range(2, epochs):
-  acc = 1 - 2 ** -epoch - random.random() / epoch - offset
-  loss = 2 ** -epoch + random.random() / epoch + offset
+swanlab.sync_wandb()  
+# swanlab.init(project="sync_wandb")  
 
-  wandb.log({"acc": acc, "loss": loss})
-```
+wandb.init(  
+  project="test",  
+  config={"a": 1, "b": 2},  
+  name="test",  
+)  
 
-![alt text](/assets/ig-wandb-4.png)
+epochs = 10  
+offset = random.random() / 5  
+for epoch in range(2, epochs):  
+  acc = 1 - 2 ** -epoch - random.random() / epoch - offset  
+  loss = 2 ** -epoch + random.random() / epoch + offset  
 
-## 2. Convert Existing Projects
+  wandb.log({"acc": acc, "loss": loss})  
+```  
 
-### 2.1 Locate Your Project, Entity, and Run ID on wandb.ai
+![alt text](/assets/ig-wandb-4.png)  
 
-The project, entity, and run ID are required for conversion (run ID is optional).  
-The location of the project and entity:
-![alt text](/assets/ig-wandb-2.png)
+## 2. Convert Existing Projects  
 
-The location of the run ID:
+### 2.1 Locate Your `project`, `entity`, and `runid` on wandb.ai  
 
-![alt text](/assets/ig-wandb-3.png)
+The conversion requires `project`, `entity`, and optionally `runid`.  
+Locations of `project` and `entity`:  
+![alt text](/assets/ig-wandb-2.png)  
 
-### 2.2 Method 1: Command Line Conversion
+Location of `runid`:  
+![alt text](/assets/ig-wandb-3.png)  
 
-First, ensure that you are logged into wandb in the current environment and have access to the target project.
+### 2.2 Method 1: Command-Line Conversion  
 
-Conversion command:
+First, ensure you are logged into Wandb and have access to the target project.  
 
-```bash
-swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]
-```
+Conversion command:  
 
-Supported parameters:
+```bash  
+swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]  
+```  
 
-- `-t`: Conversion type, options are wandb and tensorboard.
-- `--wb-project`: The name of the wandb project to be converted.
-- `--wb-entity`: The space name where the wandb project is located.
-- `--wb-runid`: The ID of the wandb Run (a specific experiment under the project).
+Supported parameters:  
 
-If `--wb-runid` is not provided, all Runs under the specified project will be converted; if provided, only the specified Run will be converted.
+- `-t`: Conversion type (`wandb` or `tensorboard`).  
+- `-p`: SwanLab project name.  
+- `-w`: SwanLab workspace name.  
+- `--mode`: (str) Logging mode (default: `"cloud"`), options: `["cloud", "local", "offline", "disabled"]`.  
+- `-l`: Log directory path.  
+- `--wb-project`: Wandb project name to convert.  
+- `--wb-entity`: Wandb entity (username/team) where the project resides.  
+- `--wb-runid`: Wandb Run ID (specific experiment under the project).  
 
-### 2.3 Method 2: Conversion Within Code
+If `--wb-runid` is omitted, all Runs under the project will be converted. If specified, only the selected Run will be converted.  
 
-```python
-from swanlab.converter import WandbConverter
+---  
 
-wb_converter = WandbConverter()
-# wb_runid is optional
-wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
-```
-The effect is the same as command line conversion.
+**Asynchronous Conversion (Download Data Locally First, Then Upload to SwanLab)**  
+
+1. Download data locally:  
+
+```bash  
+swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]  
+```  
+
+2. Upload to SwanLab:  
+
+```bash  
+swanlab sync [LOG_DIRECTORY_PATH]  
+```  
+
+[SwanLab Sync Documentation](/en/api/cli-swanlab-sync.md)  
+
+### 2.3 Method 2: In-Code Conversion  
+
+```python  
+from swanlab.converter import WandbConverter  
+
+wb_converter = WandbConverter()  
+# wb_runid is optional  
+wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")  
+```  
+
+This achieves the same result as command-line conversion.  
+
+`WandbConverter` parameters:  
+
+- `project`: SwanLab project name.  
+- `workspace`: SwanLab workspace name.  
+- `mode`: (str) Logging mode (default: `"cloud"`), options: `["cloud", "local", "offline", "disabled"]`.  
+- `logdir`: Log directory path.  
+
+`WandbConverter.run` parameters:  
+
+- `wb_project`: Wandb project name.  
+- `wb_entity`: Wandb entity (username/team).  
+- `wb_runid`: Wandb Run ID (specific experiment).  
+
+**Asynchronous Conversion (Download Data Locally First, Then Upload to SwanLab)**  
+
+1. Download data locally:  
+
+```python  
+from swanlab.converter import WandbConverter  
+
+wb_converter = WandbConverter(mode="offline")  
+# wb_runid is optional  
+wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")  
+```  
+
+2. Upload to SwanLab:  
+
+```bash  
+swanlab sync [LOG_DIRECTORY_PATH]  
+```  
+
+[SwanLab Sync Documentation](/en/api/cli-swanlab-sync.md)
