@@ -5,6 +5,19 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+
+# v0.6.4 - 2025.6.18
+
+**🚀新增功能**
+- 新增与[AREAL](https://github.com/inclusionAI/AReaL)框架的集成，[PR](https://github.com/inclusionAI/AReaL/pull/98)
+- 支持鼠标Hover到侧边栏实验时，高亮相应曲线
+- 支持跨组对比折线图
+- 启用渐进式图表渲染，提高页面加载速度
+- 支持设置实验名裁剪规则
+
+**⚙️修复**
+- 修复了`local`模式下，日志文件无法正确`sync`和`watch`的问题
+
 ## v0.6.3 - 2025.6.12
 
 **🚀新增功能**

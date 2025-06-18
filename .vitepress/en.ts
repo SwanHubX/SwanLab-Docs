@@ -54,7 +54,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.6.3',  items: [
+      { text: 'v0.6.4',  items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
         { text: 'Join Us', link: 'https://geektechstudio.feishu.cn/wiki/I9VJwngzBigDt7kjIHgcPEYXnth' },

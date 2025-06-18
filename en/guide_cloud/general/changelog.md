@@ -5,6 +5,18 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.4 - 2025.6.18
+
+**🚀 New Features**
+- Added integration with [AREAL](https://github.com/inclusionAI/AReaL), [PR](https://github.com/inclusionAI/AReaL/pull/98)
+- Added support for highlighting corresponding curves when hovering over experiments in the sidebar
+- Added support for cross-group comparison line charts
+- Enabled progressive chart rendering to improve page loading speed
+- Added support for setting experiment name clipping rules
+
+**⚙️ Bug Fixes**
+- Fixed issues with `local` mode where log files could not be correctly `sync`ed and `watched`
+
 ## v0.6.3 - 2025.6.12
 
 **🚀 New Features**
