@@ -10,7 +10,9 @@ SwanLab 兼容 [pyecharts](https://pyecharts.org/#/zh-cn/intro) 的 API，可以
 
 ![line](./py-echarts/line-1.png)
 
-```python
+:::code-group
+
+```python [基础]
 import swanlab
 
 swanlab.init(project="echarts-test")
@@ -33,11 +35,46 @@ line.add_yaxis("low_temperature", low_temperature)
 swanlab.log({"line": line})
 ```
 
+```python [样式-设置不透明度]
+"""
+demo: 
+https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/runs/trptzejp9037cimxd786e/chart#eDczbzM0-blJ6R3dXSFU=
+"""
+
+import swanlab
+import pyecharts.options as opts
+
+swanlab.init(project="echarts-test")
+
+# 定义数据
+week_name_list = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+high_temperature = [11, 11, 15, 13, 12, 13, 10]
+low_temperature = [1, -2, 2, 5, 3, 2, 0]
+
+# 创建echarts line对象
+line = swanlab.echarts.Line()
+# 设置line的轴
+line.add_xaxis(week_name_list)
+# 设置line的数据
+line.add_yaxis("high_temperature", high_temperature)
+line.add_yaxis("low_temperature", low_temperature)
+
+# 设置不透明度为0.5
+line.set_series_opts(areastyle_opts=opts.AreaStyleOpts(opacity=0.5))
+
+# 记录到swanlab
+swanlab.log({"line_opacity": line})
+```
+:::
+
+
 ## 柱状图 bar
 
 ![bar](./py-echarts/bar-1.png)
 
-```python
+::: code-group
+
+```python [基础]
 import swanlab
 
 swanlab.init(project="echarts-test")
@@ -57,6 +94,36 @@ bar.add_yaxis("value", y)
 # 记录到swanlab
 swanlab.log({"bar": bar})
 ```
+
+```python [水平方向]
+"""
+demo:
+https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/runs/rtqyhofvc5080tpmdfxkz/chart#bGw5M2My-ZnRhOGRnWVE=
+"""
+import swanlab
+
+swanlab.init(project="echarts-test")
+
+# 定义数据
+x = ["a", "b", "c"]
+y = [1, 2, 3]
+
+# 创建echarts bar对象
+bar = swanlab.echarts.Bar()
+
+# 设置x轴数据
+bar.add_xaxis(x)
+# 设置y轴数据
+bar.add_yaxis("value", y)
+# 翻转
+bar.reversal_axis()
+
+# 记录到swanlab
+swanlab.log({"bar_horizontal": bar})
+```
+
+:::
+
 
 ## 饼状图 pie
 
@@ -136,13 +203,10 @@ swanlab.log({"heatmap": heatmap})
 ```
 
 ```python [设置颜色映射范围]
-# demo link: https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/runs/c1wm57rkfnwkyz7kaat8a/chart
 """
-heatmap.set_global_opts(
-    visualmap_opts=opts.VisualMapOpts(min_=0, max_=10, orient="horizontal"),
-)
-"""
-
+demo:
+https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/runs/c1wm57rkfnwkyz7kaat8a/chart#OWJ5bWJl-c2M5bDFFc2I=
+""""
 
 import swanlab
 from pyecharts import options as opts
