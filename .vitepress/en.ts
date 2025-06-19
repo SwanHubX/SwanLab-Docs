@@ -193,6 +193,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Argparse', link:'integration-argparse' },
+      { text: 'Areal', link: 'integration-areal' },
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
