@@ -85,6 +85,18 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  trainer.total_epochs=15 2>&1 | tee verl_demo.log
 ```
 
+:::info
+如果你需要设置项目和实验名，可以设置`trainer.project_name`和`trainer.experiment_name`。  
+如：
+```bash
+PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+ ...
+ trainer.project_name="verl_demo" \
+ trainer.experiment_name="ppo" \
+ ...
+```
+:::
+
 如果启动训练时你还未登陆SwanLab，会出现如下提示。
 
 ![select](./verl/select.png)

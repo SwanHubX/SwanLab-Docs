@@ -84,6 +84,18 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  trainer.total_epochs=15 2>&1 | tee verl_demo.log
 ```
 
+:::info
+If you need to set the project and experiment name, you can set `trainer.project_name` and `trainer.experiment_name`.  
+For example:
+```bash
+PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+ ...
+ trainer.project_name="verl_demo" \
+ trainer.experiment_name="ppo" \
+ ...
+```
+:::
+
 If you are not logged into SwanLab when starting the training, the following prompt will appear.
 
 ![select](verl/select.png)
