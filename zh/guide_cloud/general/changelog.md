@@ -6,7 +6,7 @@ Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
 
-# v0.6.4 - 2025.6.18
+## v0.6.4 - 2025.6.18
 
 **🚀新增功能**
 - 新增与[AREAL](https://github.com/inclusionAI/AReaL)框架的集成，[PR](https://github.com/inclusionAI/AReaL/pull/98)
