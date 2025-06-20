@@ -1,22 +1,72 @@
 # 🤗HuggingFace Accelerate
 
-HuggingFace's [accelerate](https://huggingface.co/docs/accelerate/index) is an open-source library that simplifies and optimizes the training and inference of deep learning models.
+HuggingFace's [accelerate](https://huggingface.co/docs/accelerate/index) is an open-source library designed to simplify and optimize the training and inference of deep learning models.
 
-> 🚀 A simple way to launch, train, and use PyTorch models on almost any device and distributed configuration, supporting automatic mixed precision (including fp8), as well as easy-to-configure FSDP and DeepSpeed.
+> 🚀 A straightforward way to launch, train, and use PyTorch models on almost any device and distributed configuration, with support for automatic mixed precision (including fp8), and easily configurable FSDP and DeepSpeed.
 
-It provides efficient tools for distributed training and inference, making it easier for developers to deploy and accelerate models on different hardware devices. With just a few lines of code changes, you can easily integrate existing training code into platforms like `torch_xla` and `torch.distributed` without worrying about complex distributed computing architectures, thereby improving work efficiency and model performance.
+It provides tools for efficient distributed training and inference, enabling developers to deploy and accelerate models across different hardware devices with ease. With just a few lines of code changes, existing training scripts can be seamlessly integrated into platforms like `torch_xla` and `torch.distributed`, eliminating the need to grapple with complex distributed computing architectures. This boosts productivity and enhances model performance.
 
-![hf-accelerate-image](/assets/ig-huggingface-accelerate.png)
+![hf-accelerate-image](./huggingface_accelerate/logo.png)
 
-You can use `accelerate` to quickly train models while using SwanLab for experiment tracking and visualization.
+You can use `accelerate` for rapid model training while leveraging SwanLab for experiment tracking and visualization.
 
-## 1. Import
+> Versions of `accelerate` >=1.8.0 officially support SwanLab integration.  
+> If your version is below 1.8.0, please use the **SwanLabTracker integration**.
 
-```python
+## 1. Integration in Two Lines of Code
+
+```python {4,9}
+from accelerate import Accelerator
+
+# Instruct the Accelerator object to use SwanLab for logging
+accelerator = Accelerator(log_with="swanlab")
+
+# Initialize your SwanLab experiment, passing SwanLab parameters and any configuration
+accelerator.init_trackers(
+    ...
+    init_kwargs={"swanlab": {"experiment_name": "hello_world"}}
+    )
+```
+
+::: warning Additional Notes
+1. The SwanLab project name is specified by the `project_name` parameter in `accelerator.init_trackers`.
+2. The `swanlab` dictionary passed to `init_kwargs` accepts key-value pairs identical to the arguments of `swanlab.init` (except for `project`).
+:::
+
+Minimal working example:
+
+```python {4,10}
+from accelerate import Accelerator
+
+# Tell the Accelerator object to log with swanlab
+accelerator = Accelerator(log_with="swanlab")
+
+# Initialise your swanlab experiment, passing swanlab parameters and any config information
+accelerator.init_trackers(
+    project_name="accelerator",
+    config={"dropout": 0.1, "learning_rate": 1e-2},
+    init_kwargs={"swanlab": {"experiment_name": "hello_world"}}
+    )
+
+for i in range(100):
+    # Log to swanlab by calling `accelerator.log`, `step` is optional
+    accelerator.log({"train_loss": 1.12, "valid_loss": 0.8}, step=i+1)
+
+# Make sure that the swanlab tracker finishes correctly
+accelerator.end_training()
+```
+
+## 2. SwanLabTracker Integration
+
+For versions of `accelerate` <1.8.0, use the `SwanLabTracker` integration.
+
+### 2.1 Import
+
+```bash
 from swanlab.integration.accelerate import SwanLabTracker
 ```
 
-## 2. Specify the Logger When Initializing Accelerate
+### 2.2 Specify the Logger During Accelerator Initialization
 
 ```python (1,7,9,12)
 from swanlab.integration.accelerate import SwanLabTracker
@@ -24,9 +74,9 @@ from accelerate import Accelerator
 
 ...
 
-# Create SwanLab logger
+# Create a SwanLab logger
 tracker = SwanLabTracker("YOUR_SMART_PROJECT_NAME")
-# Pass to Accelerator
+# Pass it to Accelerator
 accelerator = Accelerator(log_with=tracker)
 
 # Initialize all loggers
@@ -36,15 +86,14 @@ accelerator.init_trackers("YOUR_SMART_PROJECT_NAME", config=config)
 ...
 ```
 
-- Although the above code sets the project name twice, only the first project name setting takes effect.
+- Although the project name is set twice in the above code, only the first setting takes effect.  
+- Explicitly calling `init_trackers` to initialize all loggers is part of `accelerate`'s mechanism. The second project name setting is only relevant when multiple loggers are used, such as initializing built-in loggers.
 
-- Explicitly calling `init_trackers` to initialize all loggers is a mechanism of `accelerate`. The second project name setting is used when there are multiple loggers and the built-in logger needs to be initialized.
+### 2.3 Complete Example Code
 
-## 3. Complete Example Code
+Below is an example of using `accelerate` for CIFAR10 classification with SwanLab for logging:
 
-Below is an example of using accelerate for CIFAR10 classification and using SwanLab for logging tracking:
-
-```python (10,45,46,47,71,89)
+```python (10,45,46,47,71,90)
 import torch
 import torch.utils
 import torch.utils.data
@@ -58,7 +107,7 @@ from swanlab.integration.accelerate import SwanLabTracker
 
 
 def main():
-    # Hyperparameters
+    # hyperparameters
     config = {
         "num_epoch": 5,
         "batch_num": 16,
