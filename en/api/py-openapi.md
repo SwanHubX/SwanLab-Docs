@@ -330,6 +330,34 @@ my_api.get_experiment(project="project1", exp_id="cuid1").data.user["username"]
 
 <br>
 
+#### `delete_experiment`
+
+Delete an experiment.
+
+**Method Parameters**
+
+| Parameter  | Type   | Description                                                                                   |
+| ---        | ---    | ---                                                                                           |
+| `project`  | `str`  | Project name                                                                                  |
+| `exp_id`   | `str`  | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
+| `username` | `str`  | Username of the workspace, defaults to the current user                                       |
+
+**Returns**
+
+`data` `(dict)`: Empty dictionary, indicating the delete operation was successful
+
+**Example**
+
+::: code-group
+
+```python [Delete an experiment]
+my_api.delete_experiment(project="project1", exp_id="cuid1")
+```
+
+:::
+
+<br>
+
 #### `get_summary`
 
 Retrieve the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps.
@@ -449,3 +477,32 @@ my_api.list_projects().data
 ```
 
 :::
+
+<br>
+
+#### `delete_project`
+
+Delete a project.
+
+**Method Parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `project` | `str` | Project name |
+| `username` | `str` | Username of the workspace, defaults to the current user
+
+**Returns**
+
+`data` `(dict)`: Empty dictionary, indicating the delete operation was successful
+
+**Example**
+
+::: code-group
+
+```python [Delete a project]
+my_api.delete_project(project="project1")
+```
+
+:::
+
+<br>
