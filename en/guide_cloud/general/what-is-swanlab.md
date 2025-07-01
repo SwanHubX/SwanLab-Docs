@@ -117,6 +117,8 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [veRL](/en/guide_cloud/integration/integration-verl.html)
 - [HuggingFace trl](/en/guide_cloud/integration/integration-huggingface-trl.html)
 - [EasyR1](/en/guide_cloud/integration/integration-easyr1.html)
+- [AReaL](/en/guide_cloud/integration/integration-areal.html)
+- [ROLL](/en/guide_cloud/integration/integration-roll.html)
 
 **Others:**
 - [Tensorboard](/en/guide_cloud/integration/integration-tensorboard.html)

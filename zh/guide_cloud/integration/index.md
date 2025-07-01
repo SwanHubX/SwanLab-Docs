@@ -39,6 +39,8 @@
 - [veRL](/guide_cloud/integration/integration-verl.html)
 - [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
 - [EasyR1](/guide_cloud/integration/integration-easyr1.html)
+- [AReaL](/guide_cloud/integration/integration-areal.html)
+- [ROLL](/guide_cloud/integration/integration-roll.html)
 
 ## 其他框架
 - [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)

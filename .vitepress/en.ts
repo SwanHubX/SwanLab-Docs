@@ -232,6 +232,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
       { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
+      { text: 'ROLL', link: 'integration-roll' },
       { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration-sb3' },
       { text: 'Tensorboard', link: 'integration-tensorboard'},
