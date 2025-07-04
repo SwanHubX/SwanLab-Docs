@@ -7,6 +7,7 @@ To deploy SwanLab Community Edition privately, follow the installation steps bel
 ## Prerequisites
 
 > Before installing SwanLab, ensure your machine meets the following minimum system requirements:
+>
 > - CPU >= 2 cores
 > - Memory >= 4GB
 > - Storage space >= 20GB
@@ -15,13 +16,20 @@ SwanLab Community Edition requires **Docker Compose** for installation and deplo
 
 **If Docker is already installed, skip this step.**
 
-| Operating System | Software | Notes |
-|------------------|----------|-------|
-| macOS 10.14 or later | Docker Desktop | Configure the Docker VM to use at least 2 vCPUs and 8 GB of initial memory. Otherwise, installation may fail. For more details, refer to the [Docker Desktop for Mac Installation Guide](https://docs.docker.com/desktop/install/mac-install/). |
-| Windows (with WSL 2 enabled) | Docker Desktop | We recommend storing source code and other Linux container-bound data in the Linux filesystem rather than the Windows filesystem. For more details, refer to the [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install) and [Docker Desktop for Windows with WSL 2 Backend Installation Guide](https://docs.docker.com/desktop/setup/install/windows-install/#wsl-2-backend). |
-| Linux | Docker 19.03 or later, Docker Compose 1.28 or later | For installation instructions, refer to the [Docker Installation Guide](https://docs.docker.com/engine/install/) and [Docker Compose Installation Guide](https://docs.docker.com/compose/install/). |
+| Operating System             | Software                                            | Notes                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| macOS 10.14 or later         | Docker Desktop                                      | Configure the Docker VM to use at least 2 vCPUs and 8 GB of initial memory. Otherwise, installation may fail. For more details, refer to the [Docker Desktop for Mac Installation Guide](https://docs.docker.com/desktop/install/mac-install/).                                                                                                                                                                          |
+| Windows (with WSL 2 enabled) | Docker Desktop                                      | We recommend storing source code and other Linux container-bound data in the Linux filesystem rather than the Windows filesystem. For more details, refer to the [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install) and [Docker Desktop for Windows with WSL 2 Backend Installation Guide](https://docs.docker.com/desktop/setup/install/windows-install/#wsl-2-backend). |
+| Linux                        | Docker 19.03 or later, Docker Compose 1.28 or later | For installation instructions, refer to the [Docker Installation Guide](https://docs.docker.com/engine/install/) and [Docker Compose Installation Guide](https://docs.docker.com/compose/install/).                                                                                                                                                                                                                      |
 
 > If Docker is not installed, you can run the provided [installation script](https://docs.docker.com/desktop/install/mac-install/).
+
+## Port Configuration
+
+| Port | Configurable | Description                                                                                           |
+| ---- | ------------ | ----------------------------------------------------------------------------------------------------- |
+| 8000 | Yes          | Gateway service port. Handles external requests. For public deployments, consider setting it to `80`. |
+| 9000 | No           | MinIO signature port for object storage access. This port is fixed and cannot be changed.             |
 
 ## 1. Clone the Repository
 
@@ -35,10 +43,10 @@ cd self-hosted
 ## 2. One-Click Installation
 
 > If you are using Windows, please make sure you have installed and enabled WSL2 and Docker Desktop.
-<img src="./docker-deploy/wsl-dockerinfo.png" width="600"/>
+> <img src="./docker-deploy/wsl-dockerinfo.png" width="600"/>
 
->Execute the `.sh` installation script in the WSL2 filesystem.
-<img src="./docker-deploy/wsl-bash.png" width="600"/>
+> Execute the `.sh` installation script in the WSL2 filesystem.
+> <img src="./docker-deploy/wsl-bash.png" width="600"/>
 
 The default installation script is located at `docker/install.sh`. Execute it to install all required containers and perform initial configurations.
 
@@ -85,7 +93,7 @@ Log in using the Python SDK:
 swanlab login --host <IP Address>
 ```
 
-> If you have previously logged in and wish to re-login, use:  
+> If you have previously logged in and wish to re-login, use:
 > `swanlab login --host <IP Address> --relogin`.
 
 Press Enter, enter your API Key, and complete the login. Your SwanLab experiments will now be uploaded to your private SwanLab instance by default.
@@ -102,7 +110,7 @@ import random
 swanlab.init(
     # Set project name
     project="my-awesome-project",
-    
+
     # Set hyperparameters
     config={
         "learning_rate": 0.02,
@@ -130,17 +138,16 @@ View the experiment on the web after running:
 
 ![](./docker-deploy/test-experiment.png)
 
+## Upgrade Version
 
-## Upgrade Version  
+If you want to upgrade your local self-hosted deployment to the latest version, use the following commands:
 
-If you want to upgrade your local self-hosted deployment to the latest version, use the following commands:  
+```bash
+# Navigate to your previously deployed self-hosted project directory
+cd ./docker
+./upgrade.sh
+```
 
-```bash  
-# Navigate to your previously deployed self-hosted project directory  
-cd ./docker  
-./upgrade.sh  
-```  
-
-Command-line output after a successful upgrade:  
+Command-line output after a successful upgrade:
 
 ![](./docker-deploy/upgrade.png)
