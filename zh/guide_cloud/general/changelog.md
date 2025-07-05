@@ -6,6 +6,24 @@ Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
 
+## v0.6.5 - 2025.7.5
+
+**🚀新增功能**
+- 支持**resume断点续训**
+- 支持小折线图局部放大
+- 支持配置单个折线图平滑
+
+**⚙️优化**
+- 大幅改进了图像图表放大后的交互效果
+
+**🔌集成**
+- 🤗集成[accelerate](https://github.com/huggingface/accelerate)框架，[文档](/guide_cloud/integration/integration-huggingface-accelerate.md)增强分布式训练中的实验记录体验；
+- 集成[ROLL](https://github.com/alibaba/ROLL)框架，[文档](/guide_cloud/integration/integration-roll.md)增强分布式训练中的实验记录体验；
+- 集成[Ray](https://github.com/ray-project/ray)框架，[文档](/guide_cloud/integration/integration-ray.md)增强分布式训练中的实验记录体验；
+
+**🔌插件**
+- 新增`LogdirFileWriter`插件，支持将文件写入到日志文件夹
+
 ## v0.6.4 - 2025.6.18
 
 **🚀新增功能**

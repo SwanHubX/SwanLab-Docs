@@ -47,6 +47,7 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [Weights&Biases](/en/guide_cloud/integration/integration-wandb.html)
 - [MLFlow](/en/guide_cloud/integration/integration-mlflow.html)
 - [HuggingFace Accelerate](/en/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [Ray](/en/guide_cloud/integration/integration-ray.html)
 - [Hydra](/en/guide_cloud/integration/integration-hydra.html)
 - [Omegaconf](/en/guide_cloud/integration/integration-omegaconf.html)
 - [OpenAI](/en/guide_cloud/integration/integration-openai.html)

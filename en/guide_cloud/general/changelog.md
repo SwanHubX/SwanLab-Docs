@@ -5,6 +5,25 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.5 - 2025.7.5
+
+**🚀 New Features**
+- Added support for **resuming training from checkpoints (resume断点续训)**
+- Added support for **zooming in on small line charts**
+- Added support for configuring **individual chart smoothing**
+
+**⚙️ Improvements**
+- Significantly improved **interaction experience when zooming in on charts**
+
+**🔌 Integrations**
+- 🤗 Integrated with the [accelerate](https://github.com/huggingface/accelerate) framework. See the [documentation](/guide_cloud/integration/integration-huggingface-accelerate.md) to enhance experiment tracking in distributed training.
+- Integrated with the [ROLL](https://github.com/alibaba/ROLL) framework. See the [documentation](/guide_cloud/integration/integration-roll.md) to improve experiment logging during distributed training.
+- Integrated with the [Ray](https://github.com/ray-project/ray) framework. See the [documentation](/guide_cloud/integration/integration-ray.md) to enhance experiment tracking in distributed training environments.
+
+**🔌 Plugins**
+- Added a new `LogdirFileWriter` plugin, which supports writing files directly into the log directory.
+
+
 ## v0.6.4 - 2025.6.18
 
 **🚀 New Features**

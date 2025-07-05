@@ -47,6 +47,7 @@
 - [Weights&Biases](/guide_cloud/integration/integration-wandb.html)
 - [MLFlow](/guide_cloud/integration/integration-mlflow.html)
 - [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [Ray](/guide_cloud/integration/integration-ray.html)
 - [Hydra](/guide_cloud/integration/integration-hydra.html)
 - [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)
 - [OpenAI](/guide_cloud/integration/integration-openai.html)

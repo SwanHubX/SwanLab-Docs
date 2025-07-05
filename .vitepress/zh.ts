@@ -38,7 +38,7 @@ export const zh = defineConfig({
       },
       {
         text: '框架集成',  items: [
-          { text: '全部30+框架', link: base_path_guide_cloud + '/integration'},
+          { text: '全部40+框架', link: base_path_guide_cloud + '/integration'},
           { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
           { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
           { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
@@ -254,6 +254,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
       { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
+      { text: 'Ray', link: 'integration-ray' },
       { text: 'ROLL', link: 'integration-roll' },
       { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration-sb3' },
