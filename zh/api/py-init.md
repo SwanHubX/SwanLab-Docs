@@ -14,6 +14,9 @@ init(
     public: bool = None,
     callbacks: list = None,
     settings: Settings = None,
+    id: str = None,
+    resume: Union[Literal['must', 'allow', 'never'], bool] = None,
+    reinit: bool = None,
     **kwargs,
 )
 ```
@@ -34,6 +37,9 @@ init(
 | name       | (str) 与experiment_name效果一致，优先级低于experiment_name。|
 | notes       | (str) 与description效果一致，优先级低于description。|
 | settings       | (dict) 实验配置。支持传入1个`swanlab.Settings`对象。|
+| id       | (str) 上次实验的运行ID，用于恢复上次实验。ID必须为21位字符串。|
+| resume       | (str) 端点续训模式，可选True、False、"must"、"allow"、"never"，默认取None。<br>`True`： 效果同`resume="allow"`。<br>`False`：效果同`resume="never"`。<br>`must`：你必须传递 `id` 参数，并且实验必须存在。<br>`allow`：如果存在实验，则会resume该实验，否则将创建新的实验。<br>`never`：你不能传递 `id` 参数，将会创建一个新的实验。(即不开启resume的效果)|
+| reinit       | (bool) 是否重新创建实验，如果为True，则每次调用`swanlab.init()`时，会把上一次实验`finish`掉；默认取None。|
 
 ## 介绍
 
@@ -136,6 +142,58 @@ swanlab.init(
 )
 ```
 
+### 断点续训
+
+断点续训的意思是，如果你之前有一个状态为`完成`或`中断`的实验，需要补一些实验数据，那么你可以通过`resume`和`id`参数来恢复这个实验。
+
+```python
+swanlab.init(
+    resume=True,
+    id="14pk4qbyav4toobziszli",  # id必须为21位字符串
+)
+```
+
+实验id可以在实验的「环境」选项卡或URL中找到，必须为1个21位字符串。
+
+
+:::tip resume使用场景
+
+1. 之前的训练进程断了，基于checkpoint继续训练时，希望实验图表能和之前的swanlab实验续上，而非创建1个新swanlab实验
+2. 训练和评估分为了两个进程，但希望评估和训练记录在同一个swanlab实验中
+3. config中有一些参数填写有误，希望更新config参数
+
+:::
+
+:::warning ⚠️注意
+
+1. 由项目克隆产生的实验，不能被resume
+
+:::
+
+
+断点续训可以选择三种模式：
+
+1. `allow`：如果项目下存在`id`对应的实验，则会resume该实验，否则将创建新的实验。
+2. `must`：如果项目下存在`id`对应的实验，则会resume该实验，否则将报错
+3. `never`：不能传递 `id` 参数，将会创建一个新的实验。(即不开启resume的效果)
+
+::: info
+`resume=True` 效果同 `resume="allow"`。<br>
+`resume=False` 效果同 `resume="never"`。
+:::
+
+测试代码：
+
+```python
+import swanlab
+
+run = swanlab.init()
+swanlab.log({"loss": 2, "acc":0.4})
+run.finish()
+
+run = swanlab.init(resume=True, id=run.id)
+swanlab.log({"loss": 0.2, "acc": 0.9})
+```
 
 
 ## 过期参数
