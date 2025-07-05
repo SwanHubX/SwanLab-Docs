@@ -331,6 +331,32 @@ my_api.get_experiment(project="project1", exp_id="cuid1").data.user["username"]
 
 <br>
 
+#### `delete_experiment`
+
+删除一个实验
+
+**方法参数**
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `project` | `str` | 项目名 |
+| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+
+**返回值**
+`data` `(dict)`: 空字典, 仅表示删除操作成功
+
+**示例**
+
+::: code-group
+
+```python [删除实验]
+my_api.delete_experiment(project="project1", exp_id="cuid1")
+```
+
+:::
+
+<br>
+
 #### `get_summary`
 
 获取一个实验的概要信息, 包含实验跟踪指标的最终值和最大最小值, 以及其对应的步数
@@ -450,3 +476,30 @@ my_api.list_projects().data
 ```
 
 :::
+
+#### `delete_project`
+
+删除一个项目
+
+**方法参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `project` | `str` | 项目名 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+
+**返回值**
+
+`data` `(dict)`: 空字典, 仅表示删除操作成功
+
+**示例**
+
+::: code-group
+
+```python [删除项目]
+my_api.delete_project(project="project1")
+```
+
+:::
+
+<br>
