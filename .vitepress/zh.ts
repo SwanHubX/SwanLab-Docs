@@ -420,6 +420,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
     text: '📝 记录类',
     // collapsed: false,
     items: [
+      { text: '文件记录器', link: 'writer-filelogdir' },
       { text: 'CSV表格', link: 'writer-csv' },
     ]
   },

@@ -386,6 +386,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
     text: '📝 Writer',
     // collapsed: false,
     items: [
+      { text: 'File Logger', link: 'writer-filelogdir' },
       { text: 'CSV Table', link: 'writer-csv' },
     ]
   },
