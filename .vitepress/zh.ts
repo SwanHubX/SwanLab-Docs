@@ -179,10 +179,15 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: "Docker部署", link: "self_host/docker-deploy" },
-      { text: "腾讯云应用部署", link: "self_host/tencentcloud-app" },
       { text: "纯离线环境部署", link: "self_host/offline-deployment" },
       { text: '团队/企业版', link: 'self_host/enterprise-version' },
       { text: '版本对照表', link: 'self_host/version' },
+      { text: "第三方部署", 
+        collapsed: true,
+        items: [
+          { text: '阿里云计算巢', link: 'self_host/alibabacloud-computenest' },
+          { text: '腾讯云云应用', link: 'self_host/tencentcloud-app' },
+      ]},
       { text: '常见问题', link: 'self_host/faq' },
     ]
   },

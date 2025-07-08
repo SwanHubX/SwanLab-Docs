@@ -157,7 +157,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker deployment', link: 'self_host/docker-deploy' },
-      { text: 'Tencent Cloud App deployment', link: 'self_host/tencentcloud-app' },
       { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
       { text: 'Version Table', link: 'self_host/version' },
