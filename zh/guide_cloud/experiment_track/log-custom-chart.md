@@ -454,3 +454,43 @@ table.add(headers, rows)
 # 记录到swanlab
 swanlab.log({"table": table})
 ```
+
+## 树状图 tree
+
+![tree](./py-echarts/tree-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="swanlab-echarts-demo")
+
+# 构造数据
+data = [
+    {
+        "children": [
+            {"name": "B"},
+            {
+                "children": [{"children": [{"name": "I"}], "name": "E"}, {"name": "F"}],
+                "name": "C",
+            },
+            {
+                "children": [
+                    {"children": [{"name": "J"}, {"name": "K"}], "name": "G"},
+                    {"name": "H"},
+                ],
+                "name": "D",
+            },
+        ],
+        "name": "A",
+    }
+]
+
+# 创建echarts tree对象
+tree = swanlab.echarts.Tree()
+
+# 设置tree数据
+tree.add("tree", data=data)
+
+# 记录到swanlab
+swanlab.log({"tree": tree})
+```

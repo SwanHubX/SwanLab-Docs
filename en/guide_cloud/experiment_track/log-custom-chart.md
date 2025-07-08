@@ -380,3 +380,43 @@ table.add(headers, rows)
 # Log to SwanLab
 swanlab.log({"table": table})
 ```
+
+## Tree
+
+![tree](./py-echarts/tree-1.png)
+
+```python
+import swanlab
+
+swanlab.init(project="swanlab-echarts-demo")
+
+# Construct data
+data = [
+    {
+        "children": [
+            {"name": "B"},
+            {
+                "children": [{"children": [{"name": "I"}], "name": "E"}, {"name": "F"}],
+                "name": "C",
+            },
+            {
+                "children": [
+                    {"children": [{"name": "J"}, {"name": "K"}], "name": "G"},
+                    {"name": "H"},
+                ],
+                "name": "D",
+            },
+        ],
+        "name": "A",
+    }
+]
+
+# Create echarts tree object
+tree = swanlab.echarts.Tree()
+
+# Set tree data
+tree.add("tree", data=data)
+
+# Log to SwanLab
+swanlab.log({"tree": tree})
+```
