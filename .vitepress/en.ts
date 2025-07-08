@@ -142,6 +142,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
+      { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },

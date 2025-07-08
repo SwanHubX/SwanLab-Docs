@@ -163,6 +163,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
       { text: '查看实验结果', link: 'experiment_track/view-result' },
       { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+      { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
       { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
       { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
       { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
