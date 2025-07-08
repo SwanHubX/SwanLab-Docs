@@ -67,7 +67,7 @@ bar3d.set_global_opts(
 swanlab.log({"bar3d": bar3d})
 ```
 
-## 3D散点图
+## 3D散点图 scatter3d
 
 ![scatter3d](./py-echarts/scatter3d-1.png)
 
@@ -184,4 +184,127 @@ scatter3d.set_global_opts(
 
 # 记录到swanlab
 swanlab.log({"scatter3d": scatter3d})
+```
+
+## 3D折线图 line3d
+
+![line3d](./py-echarts/line3d-1.png)
+
+```python
+import math
+import swanlab
+import pyecharts.options as opts
+from pyecharts.faker import Faker
+
+
+swanlab.init(project="swanlab-echarts-3d-demo")
+
+# 构造数据
+data = []
+for t in range(0, 25000):
+    _t = t / 1000
+    x = (1 + 0.25 * math.cos(75 * _t)) * math.cos(_t)
+    y = (1 + 0.25 * math.cos(75 * _t)) * math.sin(_t)
+    z = _t + 2.0 * math.sin(75 * _t)
+    data.append([x, y, z])
+
+
+# 创建echarts line3d对象
+line3d = swanlab.echarts.Line3D()
+
+# 设置line3d数据
+line3d.add(
+    "line3d",
+    data,
+    xaxis3d_opts=opts.Axis3DOpts(Faker.clock, type_="value"),
+    yaxis3d_opts=opts.Axis3DOpts(Faker.week_en, type_="value"),
+    grid3d_opts=opts.Grid3DOpts(width=100, depth=100),
+)
+
+line3d.set_global_opts(
+        visualmap_opts=opts.VisualMapOpts(
+            max_=30, min_=0, range_color=Faker.visual_color
+        ),
+    )
+
+# 记录到swanlab
+swanlab.log({"line3d": line3d})
+```
+
+## 3D曲面图 3d_surface
+
+![3d_surface](./py-echarts/surface3d-1.png)
+
+```python
+import math
+import swanlab
+import pyecharts.options as opts
+from typing import Union
+
+swanlab.init(project="swanlab-echarts-3d-demo")
+
+# 构造数据
+def float_range(start: int, end: int, step: Union[int, float], round_number: int = 2):
+    """
+    浮点数 range
+    :param start: 起始值
+    :param end: 结束值
+    :param step: 步长
+    :param round_number: 精度
+    :return: 返回一个 list
+    """
+    temp = []
+    while True:
+        if start < end:
+            temp.append(round(start, round_number))
+            start += step
+        else:
+            break
+    return temp
+
+
+def surface3d_data():
+    for t0 in float_range(-3, 3, 0.05):
+        y = t0
+        for t1 in float_range(-3, 3, 0.05):
+            x = t1
+            z = math.sin(x**2 + y**2) * x / 3.14
+            yield [x, y, z]
+
+
+# 创建echarts surface3d对象
+surface3d = swanlab.echarts.Surface3D()
+
+# 设置surface3d数据
+surface3d.add(
+    "surface3d",
+    data=list(surface3d_data()),
+    xaxis3d_opts=opts.Axis3DOpts(type_="value"),
+    yaxis3d_opts=opts.Axis3DOpts(type_="value"),
+    grid3d_opts=opts.Grid3DOpts(width=100, height=40, depth=100),
+)
+
+surface3d.set_global_opts(
+        visualmap_opts=opts.VisualMapOpts(
+            dimension=2,
+            max_=1,
+            min_=-1,
+            range_color=[
+                "#313695",
+                "#4575b4",
+                "#74add1",
+                "#abd9e9",
+                "#e0f3f8",
+                "#ffffbf",
+                "#fee090",
+                "#fdae61",
+                "#f46d43",
+                "#d73027",
+                "#a50026",
+            ],
+        )
+    )
+
+# 记录到swanlab
+swanlab.log({"surface3d": surface3d})
 ```
