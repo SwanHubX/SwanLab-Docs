@@ -55,8 +55,9 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 
 ![swanlab-echarts](./what_is_swanlab/echarts.png)
 
-
 - **后台自动记录**：日志logging、硬件环境、Git 仓库、Python 环境、Python 库列表、项目运行目录
+- **断点续训记录**：支持在训练完成/中断后，补充新的指标数据到同个实验中
+
 
 **2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetetion、LightGBM、XGBoost、Keras、Tensorboard、Weights&Biases、OpenAI、Swift、XTuner、Stable Baseline3、Hydra 在内的 **40+** 框架
 
