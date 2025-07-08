@@ -121,3 +121,7 @@ On the experiment page, click the status label:
 In the pop-up window, select your desired status:
 
 ![](./faq/exp_windows_finish.png)
+
+## How to enable resume training?
+
+Refer to the documentation: [resume](/en/api/py-init#resume-training)
