@@ -24,6 +24,11 @@ Github: https://github.com/SwanHubX/SwanLab
 **🔌插件**
 - 新增`LogdirFileWriter`插件，支持将文件写入到日志文件夹
 
+
+**生态**
+- 阿里云计算巢服务上架：[指引](/zh/guide_cloud/self_host/alibabacloud-computenest.md)
+
+
 ## v0.6.4 - 2025.6.18
 
 **🚀新增功能**
