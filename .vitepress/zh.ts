@@ -158,6 +158,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: '记录多维数据', items:[
         { text: '媒体类型', link: 'experiment_track/log-media' },
         { text: '自定义图表', link: 'experiment_track/log-custom-chart' },
+        { text: '自定义3D图表', link: 'experiment_track/log-custom-3dchart' },
       ]},
       { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
       { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
