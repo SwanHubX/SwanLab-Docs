@@ -494,3 +494,46 @@ tree.add("tree", data=data)
 # 记录到swanlab
 swanlab.log({"tree": tree})
 ```
+
+## 桑基图 sankey
+
+![sankey](./py-echarts/sankey-1.png)
+
+```python
+import swanlab
+from pyecharts import options as opts
+
+swanlab.init(project="swanlab-echarts-demo")
+
+# 构造数据
+nodes = [
+    {"name": "category1"},
+    {"name": "category2"},
+    {"name": "category3"},
+    {"name": "category4"},
+    {"name": "category5"},
+    {"name": "category6"},
+]
+
+links = [
+    {"source": "category1", "target": "category2", "value": 10},
+    {"source": "category2", "target": "category3", "value": 15},
+    {"source": "category3", "target": "category4", "value": 20},
+    {"source": "category5", "target": "category6", "value": 25},
+]
+
+# 创建echarts sankey对象
+sankey = swanlab.echarts.Sankey()
+
+# 设置sankey数据
+sankey.add(
+    "sankey",
+    nodes=nodes,
+    links=links,
+    linestyle_opt=opts.LineStyleOpts(opacity=0.2, curve=0.5, color="source"),
+    label_opts=opts.LabelOpts(position="right"),
+)
+
+# 记录到swanlab
+swanlab.log({"sankey": sankey})
+```
