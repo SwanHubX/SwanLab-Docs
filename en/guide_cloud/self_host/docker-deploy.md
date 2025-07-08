@@ -24,12 +24,18 @@ SwanLab Community Edition requires **Docker Compose** for installation and deplo
 
 > If Docker is not installed, you can run the provided [installation script](https://docs.docker.com/desktop/install/mac-install/).
 
-## Port Configuration
+---
+
+**Port Configuration**
+
+If you deploy SwanLab on a server and want to remotely access and view experiment records, ensure that the server opens the following two ports:
 
 | Port | Configurable | Description                                                                                           |
 | ---- | ------------ | ----------------------------------------------------------------------------------------------------- |
 | 8000 | Yes          | Gateway service port. Handles external requests. For public deployments, consider setting it to `80`. |
 | 9000 | No           | MinIO signature port for object storage access. This port is fixed and cannot be changed.             |
+
+> Since the gateway service port (default `8000`) can be modified before and after deployment, please ensure that you have opened the final modified port.
 
 ## 1. Clone the Repository
 
