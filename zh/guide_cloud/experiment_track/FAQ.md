@@ -128,3 +128,7 @@ swanlab.init()
 在弹窗中，选择你想要的状态：
 
 ![](./faq/exp_windows_finish.png)
+
+## 如何开启断点续训？
+
+参考文档：[resume](/api/py-init#断点续训)

@@ -137,11 +137,13 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Log media metric', items:[
         { text: 'Log Media', link: 'experiment_track/log-media' },
         { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
+        { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart' },
       ]},
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
+      { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },

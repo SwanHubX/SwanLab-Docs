@@ -26,6 +26,8 @@
 | `SWANLAB_PROJ_NAME` | Project name, equivalent to `swanlab.init(project_name="...")` |
 | `SWANLAB_WORKSPACE` | Workspace name, equivalent to `swanlab.init(workspace="...")` |
 | `SWANLAB_EXP_NAME` | Experiment name, equivalent to `swanlab.init(experiment_name="...")` |
+| `SWANLAB_RUN_ID` | Experiment run ID, equivalent to `swanlab.init(id="...")` |
+| `SWANLAB_RESUME` | Whether to resume training, equivalent to `swanlab.init(resume=...)`, possible values: `True`, `False`, `must`, `allow`, `never` |
 
 ## Login Authentication
 

@@ -43,3 +43,14 @@ traefik:
 > The above changes the access port to `80`
 
 After making the changes, execute `docker compose up -d` to restart the container. Once restarted, you can access it via `http://{ip}:80`
+
+
+## What to Do When Uploading Media Files Results in an Error  
+
+When you use `swanlab.log` to record media files (such as images or audio) and encounter an error like:  
+
+```bash  
+swanlab: Upload error: An error occurred (InvalidAccessKeyId) when calling the PutObject operation: The Access Key Id you provided does not exist in our records.  
+```  
+
+Please check whether your server has **port 9000** open. If it is not open, configure your server's firewall/security group to allow traffic on **port 9000**.
