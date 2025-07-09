@@ -63,7 +63,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.6.5',  items: [
+      { text: 'v0.6.6',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://geektechstudio.feishu.cn/wiki/I9VJwngzBigDt7kjIHgcPEYXnth' },
