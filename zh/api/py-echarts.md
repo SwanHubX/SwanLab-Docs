@@ -1,5 +1,5 @@
 # swanlab.echarts 
 
-<!--@include: @zh/custom-charts.md-->
+<!--@include: @zh/shared/custom-charts.md-->
 
-<!--@include: @zh/custom-charts-3d.md-->
+<!--@include: @zh/shared/custom-charts-3d.md-->

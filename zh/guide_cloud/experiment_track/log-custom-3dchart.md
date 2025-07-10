@@ -6,4 +6,4 @@ SwanLab 兼容 [pyecharts](https://pyecharts.org/#/zh-cn/intro) 的 API，可以
 
 [![](/assets/visualization_swanlab.svg)](https://swanlab.cn/@ZeyiLin/swanlab-echarts-3d-demo/charts)
 
-<!--@include: @zh/custom-charts-3d.md-->
+<!--@include: @zh/shared/custom-charts-3d.md-->
