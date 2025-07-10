@@ -12,6 +12,22 @@ Through Open API, users can:
 
 Making good use of this feature greatly enhances the flexibility and extensibility of the SDK, making it convenient to build advanced workflows or extended systems.
 
+## Supported APIs
+
+The following table lists all methods supported by SwanLab OpenAPI. Clicking on the API name will redirect to the detailed description:
+
+| API Name | Category | Description | Ready |
+|---------|------|----------|------|
+| [`list_workspaces`](#list-workspaces) | WorkSpace | Get the list of all workspaces (organizations) associated with the current user | ✅ |
+| [`list_projects`](#list-projects) | Project | Get the list of all projects in a specified workspace | ✅ |
+| [`delete_project`](#delete-project) | Project | Delete a project | ✅ |
+| [`list_experiments`](#list-experiments) | Experiment | Get the list of experiments in a specified project | ✅ |
+| [`get_experiment`](#get-experiment) | Experiment | Get the detailed information of an experiment (experiment name, configuration, environment, etc.) | ✅ |
+| [`get_summary`](#get-summary) | Experiment | Get the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps | ✅ |
+| get_metrics | Experiment | Get the value of an experiment metric | 🚧 |
+| [`delete_experiment`](#delete-experiment) | Experiment | Delete an experiment | ✅ |
+
+
 ## Introduction
 
 > Prerequisite: You need to have logged into your SwanLab account in your programming environment.

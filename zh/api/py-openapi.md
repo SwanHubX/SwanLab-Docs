@@ -12,6 +12,22 @@
 
 利用好此特性可极大提升 SDK 的灵活性和可扩展性, 方便构建高级用法或扩展体系
 
+## 支持的API列表
+
+下表列出了SwanLab OpenAPI支持的所有方法，点击API名称可跳转到详细说明：
+
+| API名称 | 分类 | 功能描述 | Ready |
+|---------|------|----------|------|
+| [`list_workspaces`](#list-workspaces) | WorkSpace | 获取当前用户的所有工作空间(组织)列表 | ✅ |
+| [`list_projects`](#list-projects) | Project | 获取指定工作空间下的所有项目列表 | ✅ |
+| [`delete_project`](#delete-project) | Project | 删除一个项目 | ✅ |
+| [`list_experiments`](#list-experiments) | Experiment | 获取指定项目下的所有实验列表 | ✅ |
+| [`get_experiment`](#get-experiment) | Experiment | 获取一个实验的详细信息（实验名、配置、环境等） | ✅ |
+| [`get_summary`](#get-summary) | Experiment | 获取一个实验的Summary信息，包含实验跟踪指标的最终值和最大最小值 | ✅ |
+| get_metrics | Experiment | 获取一个实验指标的值 | 🚧 |
+| [`delete_experiment`](#delete-experiment) | Experiment | 删除一个实验 | ✅ |
+
+
 ## 介绍
 
 > 前置条件：需要在编程环境下登录过SwanLab账号。
