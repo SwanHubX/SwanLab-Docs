@@ -6,7 +6,7 @@ SwanLab provides API compatibility with [pyecharts](https://pyecharts.org/#/en-u
 
 ## Line
 
-![line](./py-echarts/line-1.png)
+![line](/assets/py-echarts/line-1.png)
 
 ```python
 import swanlab
@@ -34,7 +34,7 @@ swanlab.log({"line": line})
 
 ## Bar Chart  
 
-![bar](./py-echarts/bar-1.png)  
+![bar](/assets/py-echarts/bar-1.png)  
 
 ```python  
 import swanlab  
@@ -59,7 +59,7 @@ swanlab.log({"bar": bar})
 
 ## Pie Chart  
 
-![pie](./py-echarts/pie-1.png)  
+![pie](/assets/py-echarts/pie-1.png)  
 
 ```python  
 import swanlab  
@@ -93,7 +93,7 @@ swanlab.log({"pie": pie})
 
 ## Heatmap  
 
-![heatmap](./py-echarts/heatmap-1.png)  
+![heatmap](/assets/py-echarts/heatmap-1.png)  
 
 ```python  
 import swanlab  
@@ -147,7 +147,7 @@ swanlab.log({"heatmap": heatmap})
 
 ## Scatter Plot  
 
-![](./py-echarts/scatter-1.png)  
+![](/assets/py-echarts/scatter-1.png)  
 
 ```python  
 import swanlab  
@@ -189,7 +189,7 @@ swanlab.log({"scatter": scatter})
 
 ## Radar Chart  
 
-![radar](./py-echarts/radar-1.png)  
+![radar](/assets/py-echarts/radar-1.png)  
 
 ```python  
 import swanlab  
@@ -234,7 +234,7 @@ swanlab.log({"radar": radar})
 
 ## Boxplot  
 
-![boxplot](./py-echarts/boxplot-1.png)  
+![boxplot](/assets/py-echarts/boxplot-1.png)  
 
 ```python  
 import swanlab  
@@ -263,7 +263,7 @@ swanlab.log({"boxplot": boxplot})
 
 ## Parallel
 
-![parallel](./py-echarts/parallel-1.png)
+![parallel](/assets/py-echarts/parallel-1.png)
 
 ```python
 import swanlab
@@ -299,7 +299,7 @@ swanlab.log({"parallel": parallel})
 
 ## Gauge
 
-![gauge](./py-echarts/gauge-1.png)
+![gauge](/assets/py-echarts/gauge-1.png)
 
 ```python
 import swanlab
@@ -316,7 +316,7 @@ swanlab.log({"gauge": gauge})
 
 ## Table
 
-![table](./py-echarts/table-1.png)
+![table](/assets/py-echarts/table-1.png)
 
 ```python
 import swanlab

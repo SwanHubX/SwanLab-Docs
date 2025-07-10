@@ -6,7 +6,7 @@ SwanLab 兼容 [pyecharts](https://pyecharts.org/#/zh-cn/intro) 的 API，可以
 
 ## 折线图 line
 
-![line](./py-echarts/line-1.png)
+![line](/assets/py-echarts/line-1.png)
 
 :::code-group
 
@@ -68,7 +68,7 @@ swanlab.log({"line_opacity": line})
 
 ## 柱状图 bar
 
-![bar](./py-echarts/bar-1.png)
+![bar](/assets/py-echarts/bar-1.png)
 
 ::: code-group
 
@@ -125,7 +125,7 @@ swanlab.log({"bar_horizontal": bar})
 
 ## 饼状图 pie
 
-![pie](./py-echarts/pie-1.png)
+![pie](/assets/py-echarts/pie-1.png)
 
 ```python
 import swanlab
@@ -160,7 +160,7 @@ swanlab.log({"pie": pie})
 
 ## 热力图 heatmap
 
-![heatmap](./py-echarts/heatmap-1.png)
+![heatmap](/assets/py-echarts/heatmap-1.png)
 
 :::code-group
 
@@ -251,7 +251,7 @@ swanlab.log({"heatmap_visualmapopts": heatmap})
 
 ## 散点图 scatter
 
-![](./py-echarts/scatter-1.png)
+![](/assets/py-echarts/scatter-1.png)
 
 ```python
 import swanlab
@@ -293,7 +293,7 @@ swanlab.log({"scatter": scatter})
 
 ## 雷达图 radar
 
-![radar](./py-echarts/radar-1.png)
+![radar](/assets/py-echarts/radar-1.png)
 
 ```python
 import swanlab
@@ -340,7 +340,7 @@ swanlab.log({"radar": radar})
 
 ## 箱线图 boxplot
 
-![boxplot](./py-echarts/boxplot-1.png)
+![boxplot](/assets/py-echarts/boxplot-1.png)
 
 ```python
 import swanlab
@@ -370,7 +370,7 @@ swanlab.log({"boxplot": boxplot})
 
 ## 平行坐标系图 parallel
 
-![parallel](./py-echarts/parallel-1.png)
+![parallel](/assets/py-echarts/parallel-1.png)
 
 ```python
 import swanlab
@@ -406,7 +406,7 @@ swanlab.log({"parallel": parallel})
 
 ## 仪表盘图 gauge
 
-![gauge](./py-echarts/gauge-1.png)
+![gauge](/assets/py-echarts/gauge-1.png)
 
 ```python
 import swanlab
@@ -423,7 +423,7 @@ swanlab.log({"gauge": gauge})
 
 ## 表格 table
 
-![table](./py-echarts/table-1.png)
+![table](/assets/py-echarts/table-1.png)
 
 ```python
 import swanlab
@@ -455,7 +455,7 @@ swanlab.log({"table": table})
 
 ## 树状图 tree
 
-![tree](./py-echarts/tree-1.png)
+![tree](/assets/py-echarts/tree-1.png)
 
 ```python
 import swanlab
@@ -495,7 +495,7 @@ swanlab.log({"tree": tree})
 
 ## 桑基图 sankey
 
-![sankey](./py-echarts/sankey-1.png)
+![sankey](/assets/py-echarts/sankey-1.png)
 
 ```python
 import swanlab
