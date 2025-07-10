@@ -119,3 +119,98 @@ trainer.fit(model=autoencoder, train_dataloaders=train_loader, val_dataloaders=v
 trainer.test(dataloaders=test_loader)
 
 ```
+
+## 4. 注意：如多次调用trainer.fit
+
+如果你在一次进程中多次调用`trainer.fit`（如N折交叉验证），那么需要在`trainer.fit`之后添加一行：
+
+```python
+swanlab_logger.experiment.finish()
+# 或swanlab.finish()
+```
+
+示例程序：
+
+```python
+import torch
+from torch.utils.data import Dataset, DataLoader, Subset
+from sklearn.model_selection import KFold
+import pytorch_lightning as pl
+from swanlab.integration.pytorch_lightning import SwanLabLogger
+import datetime
+import argparse
+
+class RandomDataset(Dataset):
+    def __init__(self, size=100):
+        self.x = torch.randn(size, 10)
+        self.y = (self.x.sum(dim=1) > 0).long()  # 简单分类任务
+
+    def __len__(self):
+        return len(self.x)
+
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
+
+class SimpleClassifier(pl.LightningModule):
+    def __init__(self):
+        super().__init__()
+        self.model = torch.nn.Linear(10, 2)
+        self.loss_fn = torch.nn.CrossEntropyLoss()
+
+    def forward(self, x):
+        return self.model(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self(x)
+        loss = self.loss_fn(logits, y)
+        self.log("train_loss", loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self(x)
+        loss = self.loss_fn(logits, y)
+        acc = (logits.argmax(dim=1) == y).float().mean()
+        self.log("val_loss", loss)
+        self.log("val_acc", acc)
+
+    def configure_optimizers(self):
+        return torch.optim.Adam(self.parameters(), lr=1e-3)
+
+def main(args):
+    dataset = RandomDataset(size=100)
+    kfold = KFold(n_splits=3, shuffle=True, random_state=42)
+
+    for fold, (train_idx, val_idx) in enumerate(kfold.split(dataset)):
+        print(f"\nFold {fold + 1}/3")
+
+        train_loader = DataLoader(Subset(dataset, train_idx), batch_size=16, shuffle=True)
+        val_loader = DataLoader(Subset(dataset, val_idx), batch_size=16)
+
+        # 日志名称
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        run_name = f"{args.save_name}_fold{fold + 1}_{current_time}"
+
+        swanlab_logger = SwanLabLogger(
+            project="swanlab_example",
+            experiment_name=run_name,
+        )
+
+        model = SimpleClassifier()
+
+        trainer = pl.Trainer(
+            max_epochs=5,
+            logger=swanlab_logger,
+            log_every_n_steps=1
+        )
+
+        trainer.fit(model, train_loader, val_loader)
+        swanlab_logger.experiment.finish()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--save_name", type=str, default="test_swan")
+    args = parser.parse_args()
+    main(args)
+```
