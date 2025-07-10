@@ -4,6 +4,8 @@ Use the SwanLab Python library to log metrics and media data at each step (step)
 
 SwanLab collects metric names and data (key-value) in the training loop using `swanlab.log()`. The data collected from the script will be saved to a directory named `swanlog` in your local directory (the directory name can be set by the `logdir` parameter of `swanlab.init`) and then synchronized to the SwanLab cloud server.
 
+![](./log-experiment-metric/line.png)
+
 ## Log Scalar Metrics
 
 In the training loop, compose the metric name and data into a key-value dictionary and pass it to `swanlab.log()` to complete the logging of one metric:

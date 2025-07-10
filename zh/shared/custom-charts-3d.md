@@ -1,10 +1,4 @@
-# Log Custom 3D Chart
-
-SwanLab provides API compatibility with [pyecharts](https://pyecharts.org/#/en-us/intro), enabling seamless recording of pyecharts charts to SwanLab for rich visualization. Click the tag below for an online demo:  
-
-[![](/assets/visualization_swanlab.svg)](https://swanlab.cn/@ZeyiLin/swanlab-echarts-3d-demo/charts)  
-
-## Bar3D
+## 3D柱状图 bar3d
 
 ![bar3d](/assets/py-echarts/bar3d-1.png)
 
@@ -14,7 +8,7 @@ import pyecharts.options as opts
 
 swanlab.init(project="swanlab-echarts-3d-demo")
 
-# Define data
+# 定义数据
 hours = ["12a", "1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "9a", "10a", "11a", "12p", "1p", "2p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "10p", "11p"]
 
 days = ["Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday"]
@@ -30,10 +24,10 @@ data = [
 ]
 data = [[d[1], d[0], d[2]] for d in data]
 
-# Create echarts bar3d object
+# 创建echarts bar3d对象
 bar3d = swanlab.echarts.Bar3D()
 
-# Set bar3d data
+# 设置bar3d数据
 bar3d.add(
     "bar3d",
     data,
@@ -61,11 +55,11 @@ bar3d.set_global_opts(
         )
     )
 
-# Log to SwanLab
+# 记录到swanlab
 swanlab.log({"bar3d": bar3d})
 ```
 
-## Scatter3D
+## 3D散点图 scatter3d
 
 ![scatter3d](/assets/py-echarts/scatter3d-1.png)
 
@@ -77,21 +71,21 @@ import pyecharts.options as opts
 
 swanlab.init(project="swanlab-echarts-3d-demo")
 
-# Define data
+# 定义数据
 async def get_json_data(url: str) -> dict:
     async with ClientSession(connector=TCPConnector(ssl=False)) as session:
         async with session.get(url=url) as response:
             return await response.json()
 
 
-# Get echarts official example data
+# 获取echarts官方示例数据
 data = asyncio.run(
     get_json_data(
         url="https://echarts.apache.org/examples/data/asset/data/nutrients.json"
     )
 )
 
-# Column name mapping
+# 列名映射
 field_indices = {
     "calcium": 3,
     "calories": 12,
@@ -112,14 +106,14 @@ field_indices = {
     "water": 11,
 }
 
-# Config
+# 配置 config
 config_xAxis3D = "protein"
 config_yAxis3D = "fiber"
 config_zAxis3D = "sodium"
 config_color = "fiber"
 config_symbolSize = "vitaminc"
 
-# Construct data
+# 构造数据
 """
 数据结构为[[x, y, z, color, size, index]]
 例子：
@@ -139,10 +133,10 @@ data = [
     for index, item in enumerate(data)
 ]
 
-# Create echarts scatter3d object
+# 创建echarts scatter3d对象
 scatter3d = swanlab.echarts.Scatter3D()
 
-# Set scatter3d data
+# 设置scatter3d数据
 scatter3d.add(
     "scatter3d",
     data,
@@ -180,11 +174,11 @@ scatter3d.set_global_opts(
         ]
     )
 
-# Log to SwanLab
+# 记录到swanlab
 swanlab.log({"scatter3d": scatter3d})
 ```
 
-## Line3D
+## 3D折线图 line3d
 
 ![line3d](/assets/py-echarts/line3d-1.png)
 
@@ -197,7 +191,7 @@ from pyecharts.faker import Faker
 
 swanlab.init(project="swanlab-echarts-3d-demo")
 
-# Construct data
+# 构造数据
 data = []
 for t in range(0, 25000):
     _t = t / 1000
@@ -207,10 +201,10 @@ for t in range(0, 25000):
     data.append([x, y, z])
 
 
-# Create echarts line3d object
+# 创建echarts line3d对象
 line3d = swanlab.echarts.Line3D()
 
-# Set line3d data
+# 设置line3d数据
 line3d.add(
     "line3d",
     data,
@@ -225,13 +219,13 @@ line3d.set_global_opts(
         ),
     )
 
-# Log to SwanLab
+# 记录到swanlab
 swanlab.log({"line3d": line3d})
 ```
 
-## Surface3D
+## 3D曲面图 3d_surface
 
-![surface3d](/assets/py-echarts/surface3d-1.png)
+![3d_surface](/assets/py-echarts/surface3d-1.png)
 
 ```python
 import math
@@ -241,7 +235,7 @@ from typing import Union
 
 swanlab.init(project="swanlab-echarts-3d-demo")
 
-# Construct data
+# 构造数据
 def float_range(start: int, end: int, step: Union[int, float], round_number: int = 2):
     """
     浮点数 range
@@ -270,10 +264,10 @@ def surface3d_data():
             yield [x, y, z]
 
 
-# Create echarts surface3d object
+# 创建echarts surface3d对象
 surface3d = swanlab.echarts.Surface3D()
 
-# Set surface3d data
+# 设置surface3d数据
 surface3d.add(
     "surface3d",
     data=list(surface3d_data()),
@@ -303,6 +297,6 @@ surface3d.set_global_opts(
         )
     )
 
-# Log to SwanLab
+# 记录到swanlab
 swanlab.log({"surface3d": surface3d})
 ```
