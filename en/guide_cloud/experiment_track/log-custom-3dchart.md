@@ -6,7 +6,7 @@ SwanLab provides API compatibility with [pyecharts](https://pyecharts.org/#/en-u
 
 ## Bar3D
 
-![bar3d](./py-echarts/bar3d-1.png)
+![bar3d](/assets/py-echarts/bar3d-1.png)
 
 ```python
 import swanlab
@@ -67,7 +67,7 @@ swanlab.log({"bar3d": bar3d})
 
 ## Scatter3D
 
-![scatter3d](./py-echarts/scatter3d-1.png)
+![scatter3d](/assets/py-echarts/scatter3d-1.png)
 
 ```python
 import asyncio
@@ -186,7 +186,7 @@ swanlab.log({"scatter3d": scatter3d})
 
 ## Line3D
 
-![line3d](./py-echarts/line3d-1.png)
+![line3d](/assets/py-echarts/line3d-1.png)
 
 ```python
 import math
@@ -231,7 +231,7 @@ swanlab.log({"line3d": line3d})
 
 ## Surface3D
 
-![surface3d](./py-echarts/surface3d-1.png)
+![surface3d](/assets/py-echarts/surface3d-1.png)
 
 ```python
 import math
