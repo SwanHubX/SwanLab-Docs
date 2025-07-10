@@ -4,6 +4,8 @@
 
 SwanLab用 `swanlab.log()` 在训练循环中收集指标名和数据（key-value），然后同步到云端服务器。
 
+![](./log-experiment-metric/line.png)
+
 ## 记录标量指标
 
 在训练循环中，将指标名和数据组成一个键值对字典，传递给 `swanlab.log()` 完成1次指标的记录：
