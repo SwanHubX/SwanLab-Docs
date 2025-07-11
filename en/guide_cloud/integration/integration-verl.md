@@ -149,3 +149,12 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 ```
 
 > If you want to generate multiple results per round of evaluation, such as 10 results, modify `trainer.log_val_generations=10` instead.
+
+## Tips: Resume at the End
+
+If you want to resume the experiment at the end of the training, you can set the environment variable `SWANLAB_RESUME` to `True` and `SWANLAB_ID` to the experiment ID.
+
+```bash
+export SWANLAB_RESUME=True
+export SWANLAB_ID=<exp_id>
+```
