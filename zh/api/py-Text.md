@@ -18,7 +18,7 @@ Text(
 
 对文本数据做转换，以被`swanlab.log()`记录。
 
-![](./py-Text/show.png)
+![](./py-text/show.png)
 
 ### 记录字符串文本
 
