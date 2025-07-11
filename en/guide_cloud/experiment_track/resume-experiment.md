@@ -57,3 +57,24 @@ run.finish()
 run = swanlab.init(project="resume_test", resume=True, id=run.id)  
 swanlab.log({"loss": 0.2, "acc": 0.9})  
 ```
+
+## Tips: Use Environment Variables to Resume
+
+If you are using some frameworks for training, it may not be convenient to modify the source code at `swanlab.init`. In this case, you can use environment variables to resume:
+
+```bash
+export SWANLAB_RESUME=True
+export SWANLAB_ID=<exp_id>
+```
+
+## Tips: Copy an Experiment and Resume
+
+If you are worried that the content of the current resume may have bugs, you can copy an experiment and resume it:
+
+1. Find the `run` directory corresponding to the original experiment in the local `swanlog` folder (the path can be found in the "Log Directory" under the Environment Tab)
+2. Use the `swanlab sync` command to upload the experiment to the cloud:
+
+```bash
+swanlab sync <run_dir>
+```
+3. Resume the new uploaded experiment

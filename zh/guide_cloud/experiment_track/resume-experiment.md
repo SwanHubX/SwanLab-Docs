@@ -41,9 +41,7 @@ swanlab.init(
 https://swanlab.cn/@<username>/<project>/runs/<exp_id>/...
 ```
 
-其中`<exp_id>`就是实验id。
-
-## 示例
+## 代码示例
 
 ```python
 import swanlab
@@ -57,3 +55,23 @@ run.finish()
 run = swanlab.init(project="resume_test", resume=True, id=run.id)
 swanlab.log({"loss": 0.2, "acc": 0.9})
 ```
+
+## 技巧：使用环境变量执行resume
+
+如果你使用的是一些框架训练，不太方便修改`swanlab.init`处的源码，那么可以使用环境变量来执行resume：
+
+```bash
+export SWANLAB_RESUME=True
+export SWANLAB_ID=<exp_id>
+```
+
+## 技巧：复制一份实验再resume
+
+如果你担心本次resume的内容可能存在Bug等，保险起见可以将1份实验复制成2份，然后再resume其中一份实验：
+
+1. 找到原实验在本地`swanlog`文件夹下对应的`run`目录（通过环境Tab下的「日志目录」可以查到路径）
+2. 使用`swanlab sync`命令将此实验上传到云端：
+```bash
+swanlab sync <run_dir>
+```
+3. resume新上传的实验
