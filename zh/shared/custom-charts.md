@@ -425,6 +425,8 @@ swanlab.log({"gauge": gauge})
 
 ![table](/assets/py-echarts/table-1.png)
 
+![](/assets/text-chart.gif)
+
 ```python
 import swanlab
 
@@ -452,6 +454,9 @@ table.add(headers, rows)
 # 记录到swanlab
 swanlab.log({"table": table})
 ```
+
+
+
 
 ## 树状图 tree
 
