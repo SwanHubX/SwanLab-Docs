@@ -152,7 +152,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 > 如果你希望每轮评估时生成多条结果，如10条，那么修改`trainer.log_val_generations=10`即可
 
 
-## 端点续训
+## 断点续训
 
 如果你训练时崩溃或希望补充实验，可以使用[resume](/guide_cloud/experiment_track/resume-experiment.html)功能来恢复实验。
 

@@ -38,7 +38,7 @@ init(
 | notes       | (str) 与description效果一致，优先级低于description。|
 | settings       | (dict) 实验配置。支持传入1个`swanlab.Settings`对象。|
 | id       | (str) 上次实验的运行ID，用于恢复上次实验。ID必须为21位字符串。|
-| resume       | (str) 端点续训模式，可选True、False、"must"、"allow"、"never"，默认取None。<br>`True`： 效果同`resume="allow"`。<br>`False`：效果同`resume="never"`。<br>`must`：你必须传递 `id` 参数，并且实验必须存在。<br>`allow`：如果存在实验，则会resume该实验，否则将创建新的实验。<br>`never`：你不能传递 `id` 参数，将会创建一个新的实验。(即不开启resume的效果)|
+| resume       | (str) 断点续训模式，可选True、False、"must"、"allow"、"never"，默认取None。<br>`True`： 效果同`resume="allow"`。<br>`False`：效果同`resume="never"`。<br>`must`：你必须传递 `id` 参数，并且实验必须存在。<br>`allow`：如果存在实验，则会resume该实验，否则将创建新的实验。<br>`never`：你不能传递 `id` 参数，将会创建一个新的实验。(即不开启resume的效果)|
 | reinit       | (bool) 是否重新创建实验，如果为True，则每次调用`swanlab.init()`时，会把上一次实验`finish`掉；默认取None。|
 
 ## 介绍
