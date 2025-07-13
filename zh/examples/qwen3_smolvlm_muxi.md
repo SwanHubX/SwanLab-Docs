@@ -1,9 +1,7 @@
 # Qwen3-"VL"——超小中文多模态模型的“拼接微调”之路1（附代码和SwanLab记录）
 
 * 作者：情感机器实验室——陈少宏
-
 * 邮箱：<shaohon_chen@115lab.club>
-
 * GitHub：[https://github.com/ShaohonChen/Qwen3-SmVL](https://github.com/ShaohonChen/Qwen3-SmVL)
 * SwanLab：[https://swanlab.cn/@ShaohonChen/Qwen3-SmVL/overview](https://swanlab.cn/@ShaohonChen/Qwen3-SmVL/overview)
 * 数据集：[https://huggingface.co/datasets/HuggingFaceM4/the_cauldron](https://huggingface.co/datasets/HuggingFaceM4/the_cauldron)
@@ -31,13 +29,7 @@
 
 ## 目录
 
-* [SmolVLM2的背景知识](#SmolVLM2的背景知识)
-* [模型拼接和微调思路简介](#模型拼接和微调思路简介)
-* [模型拼接实现和关键代码讲解](#模型拼接实现和关键代码讲解)
-* [微调数据集构建](#微调数据集构建)
-* [微调方法与代码实现](#微调方法与代码实现)
-* [微调训练&结果展示](#微调训练&结果展示)
-* [代码及数据集链接汇总](#代码及数据集链接汇总)
+[[toc]]
 
 ## SmolVLM2的背景知识
 
@@ -576,7 +568,7 @@ qwen_smvl.save_pretrained(training_args.output_dir)
 
 完整代码见[代码及数据集链接汇总](#代码及数据集链接汇总)
 
-或者直接由[完整项目GitHub地址]()
+或者直接由[完整项目GitHub地址](https://github.com/ShaohonChen/Qwen3-SmVL)
 
 ## 微调训练&结果展示
 
