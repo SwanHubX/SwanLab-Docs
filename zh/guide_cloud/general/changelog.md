@@ -26,7 +26,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 
 **生态**
-- 阿里云计算巢服务上架：[指引](/zh/guide_cloud/self_host/alibabacloud-computenest.md)
+- 阿里云计算巢服务上架：[指引](/guide_cloud/self_host/alibabacloud-computenest.md)
 
 
 ## v0.6.4 - 2025.6.18
