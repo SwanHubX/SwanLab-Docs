@@ -576,7 +576,7 @@ qwen_smvl.save_pretrained(training_args.output_dir)
 
 完整代码见[代码及数据集链接汇总](#代码及数据集链接汇总)
 
-或者直接由[完整项目GitHub地址]()
+或者直接由[https://github.com/ShaohonChen/Qwen3-SmVL](https://github.com/ShaohonChen/Qwen3-SmVL)进入
 
 ## 微调训练&结果展示
 
