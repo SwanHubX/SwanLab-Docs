@@ -23,7 +23,7 @@
 
 | Environment Variable | Description |
 | --- | --- |
-| `SWANLAB_PROJ_NAME` | Project name, equivalent to `swanlab.init(project_name="...")` |
+| `SWANLAB_PROJ_NAME` | Project name, equivalent to `swanlab.init(project="...")` |
 | `SWANLAB_WORKSPACE` | Workspace name, equivalent to `swanlab.init(workspace="...")` |
 | `SWANLAB_EXP_NAME` | Experiment name, equivalent to `swanlab.init(experiment_name="...")` |
 | `SWANLAB_RUN_ID` | Experiment run ID, equivalent to `swanlab.init(id="...")` |
