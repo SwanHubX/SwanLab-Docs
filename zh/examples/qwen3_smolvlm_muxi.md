@@ -702,7 +702,7 @@ accelerate --num_process 8 train.py ./full_train.yaml
 
 <div align="center">
   <figure>
-  <img src="./qwen3_smolvlm_muxi/good_case.png" alt="dog" width="800" />
+  <img src="./qwen3_smolvlm_muxi/good_case.png" alt="good_case" width="800" />
   <figcaption>同样的图片与问题，更大的数据量和更充足的数据使得模型能够正确给出回复</figcaption>
   </figure>
 </div>
