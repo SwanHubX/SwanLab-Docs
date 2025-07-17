@@ -47,7 +47,7 @@ Video Demo:
 - ☁️ Supports **cloud** usage (like Weights & Biases), allowing remote training progress monitoring. [How to view experiments on mobile](https://docs.swanlab.cn/guide_cloud/general/app.html).  
 - 🌸 **Visualize Training**: The UI provides intuitive visualizations of experiment data, helping trainers analyze metric trends and identify improvements.  
 - 📝 **Hyperparameter logging**, **metric summaries**, **tabular analysis**.  
-- **Supported Metadata Types**: Scalar metrics, images, audio, text, 3D point clouds, biochemical molecules, Echarts custom charts...  
+- **Supported Metadata Types**: Scalar metrics, images, audio, text, video, 3D point clouds, biochemical molecules, Echarts custom charts...  
 
 ![swanlab-table](/assets/molecule.gif)  
 
