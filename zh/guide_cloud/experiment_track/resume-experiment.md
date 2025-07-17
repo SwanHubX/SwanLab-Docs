@@ -61,7 +61,7 @@ swanlab.log({"loss": 0.2, "acc": 0.9})
 如果你使用的是一些框架训练，不太方便修改`swanlab.init`处的源码，那么可以使用环境变量来执行resume：
 
 ```bash
-export SWANLAB_RESUME=True
+export SWANLAB_RESUME=must
 export SWANLAB_ID=<exp_id>
 ```
 

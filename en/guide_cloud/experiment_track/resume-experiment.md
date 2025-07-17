@@ -63,7 +63,7 @@ swanlab.log({"loss": 0.2, "acc": 0.9})
 If you are using some frameworks for training, it may not be convenient to modify the source code at `swanlab.init`. In this case, you can use environment variables to resume:
 
 ```bash
-export SWANLAB_RESUME=True
+export SWANLAB_RESUME=must
 export SWANLAB_ID=<exp_id>
 ```
 

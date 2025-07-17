@@ -27,7 +27,7 @@
 | `SWANLAB_WORKSPACE` | 工作空间名称，效果等价于 `swanlab.init(workspace="...")` |
 | `SWANLAB_EXP_NAME` | 实验名称，效果等价于 `swanlab.init(experiment_name="...")` |
 | `SWANLAB_RUN_ID` | 实验运行ID，效果等价于 `swanlab.init(id="...")` |
-| `SWANLAB_RESUME` | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `True`、`False`、`must`、`allow`、`never` |
+| `SWANLAB_RESUME` | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `must`、`allow`、`never` |
 
 ## 登录认证
 
