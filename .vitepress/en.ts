@@ -57,7 +57,7 @@ export const en = defineConfig({
       { text: 'v0.6.6',  items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
-        { text: 'Join Us', link: 'https://geektechstudio.feishu.cn/wiki/I9VJwngzBigDt7kjIHgcPEYXnth' },
+        { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
         { text: 'Docs Github', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
@@ -339,6 +339,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Video', link: 'py-Video' },
         { text: 'Echarts', link: 'py-echarts' },
         { text: 'Object3D', link: 'py-object3d' },
         { text: 'Molecule', link: 'py-molecule' },

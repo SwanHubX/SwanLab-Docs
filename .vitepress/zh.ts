@@ -67,7 +67,7 @@ export const zh = defineConfig({
         text: 'v0.6.6', items: [
           { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
           { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
-          { text: '加入我们', link: 'https://geektechstudio.feishu.cn/wiki/I9VJwngzBigDt7kjIHgcPEYXnth' },
+          { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
           { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
           { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         ]
@@ -381,6 +381,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           { text: 'Image', link: 'py-Image' },
           { text: 'Audio', link: 'py-Audio' },
           { text: 'Text', link: 'py-Text' },
+          { text: 'Video', link: 'py-Video' },
           { text: 'ECharts', link: 'py-echarts' },
           { text: 'Object3D', link: 'py-object3d' },
           { text: 'Molecule', link: 'py-molecule' },
