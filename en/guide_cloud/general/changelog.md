@@ -5,6 +5,18 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.7 - 2025.7.17
+
+**🚀 New Features**
+- Added support for **more flexible line chart configuration**, including line type, color, thickness, grid, and legend position
+- Added support for `swanlab.Video` data type, supporting recording and visualizing GIF format files
+- Added support for configuring the Y-axis and maximum number of experiments displayed in the global chart dashboard
+
+**⚙️ Improvements**
+- Increased the maximum experiment name length to 250 characters
+- Fixed some issues
+
+
 ## v0.6.5 - 2025.7.5
 
 **🚀 New Features**
