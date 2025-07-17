@@ -148,7 +148,7 @@ Please refer to this document: [API-Molecule](/en/api/py-molecule)
 
 ## 6. Video
 
-Please refer to this document: [API-Video](/en/api/py-Video)
+Please refer to this document: [API-Video](/en/api/py-video)
 
 ## Q&A
 
