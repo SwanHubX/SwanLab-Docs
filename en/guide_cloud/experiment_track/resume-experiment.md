@@ -64,7 +64,7 @@ If you are using some frameworks for training, it may not be convenient to modif
 
 ```bash
 export SWANLAB_RESUME=must
-export SWANLAB_ID=<exp_id>
+export SWANLAB_RUN_ID=<exp_id>
 ```
 
 ## Tips: Copy an Experiment and Resume

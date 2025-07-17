@@ -152,9 +152,9 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 
 ## Tips: Resume at the End
 
-If you want to resume the experiment at the end of the training, you can set the environment variable `SWANLAB_RESUME` to `True` and `SWANLAB_ID` to the experiment ID.
+If you want to resume the experiment at the end of the training, you can set the environment variable `SWANLAB_RESUME` to `must` and `SWANLAB_RUN_ID` to the experiment ID.
 
 ```bash
-export SWANLAB_RESUME=True
-export SWANLAB_ID=<exp_id>
+export SWANLAB_RESUME=must
+export SWANLAB_RUN_ID=<exp_id>
 ```
