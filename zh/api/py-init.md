@@ -130,7 +130,7 @@ swanlab.init(
 
 ### 插件
 
-关于插件的更多信息，请参考[插件](/zh/plugin/plugin-index.md)。
+关于插件的更多信息，请参考[插件](/plugin/plugin-index.md)。
 
 ```python
 from swanlab.plugin.notification import EmailCallback
