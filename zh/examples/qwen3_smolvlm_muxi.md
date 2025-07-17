@@ -10,7 +10,7 @@
 
 ## 摘要
 
-最近Huggingface团队发布了超小多模态模型SmolVLM2，可以做到端侧1GB显存推理。在怀着惊喜试用后发现，虽然模型有极其强大的视觉文本理解能力，但是模型却无法理解中文。这对一个“四六级压线过”的笔者来说十分不友好。刚好前段时间做SwanLab硬件检测适配时有一台未到期的沐曦C500服务器，因此萌生了使用**沐曦AI芯片微调**，把当前中文小模型扛把子Qwen3与SmolVLM2直接微调拼接的想法。
+最近Huggingface团队发布了超小多模态模型SmolVLM2，可以做到端侧1GB显存推理。在怀着惊喜试用后发现，虽然模型有极其强大的视觉文本理解能力，但是模型却无法理解中文。这对一个“四六级压线过”的笔者来说十分不友好。刚好前段时间做SwanLab硬件检测适配时有一台未到期的沐曦曦云C500服务器，因此萌生了使用**沐曦GPU芯片**微调、把当前中文小模型扛把子Qwen3与SmolVLM2直接微调拼接的想法。
 
 本教程将介绍一种模型拼接的思路，将SmolVLM2的视觉模块（0.09B）与Qwen3最小的模型（0.6B）进行对齐微调，最终使得Qwen模型具备一定的视觉理解能力。由于笔者时间有限且考虑到文章篇幅的原因，因此该系列预计将以系列的方式放出。篇幅规划如下：
 
@@ -301,7 +301,7 @@ smolvlm2_02B_model.model.connector = new_connector
 
 ### 冻结模型参数微调
 
-整体微调方法采用了CLM模型通常的Teacher Forcing的学习方法，损失就是标准的交叉熵损失。考虑到此次本教程的目标是先确保模型具备中文多模态能力（优化模型性能等之后撰写其他博客），因此为了实验效率，在对齐微调阶段**采用冻结视觉模型与文本模型、语言模型头，仅微调特征映射器**的方法。
+整体微调方法采用了CLM模型通常的Teacher Forcing的学习方法，损失就是标准的交叉熵损失。考虑到此次本教程的目标是先确保模型具备中文多模态能力（优化模型性能等之后撰写其他博客），因此为了实验效率，在对齐微调阶段**采用冻结视觉模型与文本模型，仅微调特征映射器和语言模型头**的方法。
 
 冻结模型参数的核心代码如下：
 
@@ -310,8 +310,6 @@ def freeze_model(qwen_smvl):
     for _, param in qwen_smvl.model.text_model.named_parameters():
         param.requires_grad = False
     for _, param in qwen_smvl.model.vision_model.named_parameters():
-        param.requires_grad = False
-    for _, param in qwen_smvl.lm_head.named_parameters():
         param.requires_grad = False
     return qwen_smvl
 ```
@@ -445,9 +443,11 @@ training_args = TrainingArguments(
 
 微调代码基于沐曦的C500国产通用计算GPU实现，显存为64G。沐曦的AI芯片基本完全兼容pytorch和huggingface transformers场景，并且在做多模态训练时相比较其他国产AI芯片罕见的没有兼容性问题。读者在尝试本项目代码时可以采用Nvidia显存40G以上的显卡运行本教程。
 
+**笔者个人感觉沐曦的GPU整体适配效果还是非常好的，没遇到适配性的问题。体验上和用NV的GPU做训练没什么区别**。笔者自己也用过好几款国产GPU，沐曦的体验肯定是名列前茅的，包括代码中有指定flash attention在沐曦GPU上都能成功迁移，这点非常值得给沐曦团队点个赞。希望国产GPU生态能越发展越好，造福广大炼丹师；）。
+
 <div align="center">
   <figure>
-  <img src="./qwen3_smolvlm_muxi/muxi-gpu.png" alt="muxi-gpu" width="400" />
+  <img src="./qwen3_smolvlm_muxi/muxi-gpu.jpg" alt="muxi-gpu" width="400" />
   <figcaption>沐曦国产GPU，笔者用的云端服务器没见过真机，因此找了张网图</figcaption>
   </figure>
 </div>
@@ -539,7 +539,7 @@ Attached GPUs                                     : 8
 
 笔者在训练过程中使用的是bfloat16精度，相比于float16来说bfloat16增加了尾数位数，训练过程中精度会更高些。
 
-在前期进行方案验证阶段笔者采用的是cocoqa数据集，并且进行200steps的微调训练。在确定方案可行后笔者使用完整数据集进行2000steps的微调训练。2000steps仅能利用完整数据集的10%，然而考虑到训练数据量仅仅只有整个模型的12M，参数量与Token的比值接近10:1，笔者认为参与训练的数量是足以令模型收敛的，后续实验也证明了模型确实能达到我们所期望的效果。
+在前期进行方案验证阶段笔者采用的是cocoqa数据集，并且进行200steps的微调训练。在确定方案可行后笔者计划使用完整数据集进行微调训练，然而考虑到训练数据量仅仅只有整个模型的12M，因此笔者按参数量与训练Token的比值为1:10采样数据集，即总共从数据集中采样出60K条数据用于实际训练（文本长度按照2k计算，实际上有padding部分因此实际参与token数小于120M）。笔者认为参与训练的数量是足以令模型收敛的，后续实验也证明了模型确实能达到我们所期望的效果。
 
 **训练关键代码实现**
 
@@ -576,7 +576,7 @@ qwen_smvl.save_pretrained(training_args.output_dir)
 
 完整代码见[代码及数据集链接汇总](#代码及数据集链接汇总)
 
-或者直接由[https://github.com/ShaohonChen/Qwen3-SmVL](https://github.com/ShaohonChen/Qwen3-SmVL)进入
+或者直接由[完整项目GitHub地址]()
 
 ## 微调训练&结果展示
 
@@ -602,7 +602,7 @@ bash download_resource.sh
 
 为了进行快速验证，笔者首先使用cocoqa数据集并且进行了200steps的训练，所有参数与前文所述一致。通过
 
-运行实验命令如下，推荐使用8卡进行训练，在8片沐曦C500芯片上预计需要使用20min
+运行实验命令如下，推荐使用8卡进行训练，在8张沐曦GPU卡上预计需要使用20min
 
 ```bash
 # 单GPU训练
@@ -669,7 +669,7 @@ accelerate --num_process 8 train.py ./full_train.yaml
   </figure>
 </div>
 
-进一步对比完整训练和小批量训练的训练和测试损失，可以看到完整训练的模型训练损失达到了0.38，远高于仅仅使用cocoqa模型的效果，评估损失也远低于前者，维持在0.58左右。
+进一步对比完整训练和小批量训练的训练和测试损失，可以看到完整训练的模型训练损失达到了0.61，远低于仅仅使用cocoqa模型的效果，评估损失也远低于前者，维持在0.58左右。
 
 <div align="center">
   <figure>
@@ -678,7 +678,7 @@ accelerate --num_process 8 train.py ./full_train.yaml
   </figure>
 </div>
 
-这里要说明的是，由于我们选用的测试集比较小（仅有64条数据），因此训练损失和测试损失的差距并不能直接理解为过拟合的证据。实际上在大模型训练上，如果数据集足够大的情况下，通常可以认为训练损失等同于评估损失。
+这里值得一提的是，由于我们选用的测试集比较小（仅有64条数据），因此训练损失和测试损失的差距并不能直接理解为过拟合的证据。实际上在大模型训练上，如果数据集足够大的情况下，通常可以认为训练损失等同于评估损失。
 
 此外，模型通过分析1k步之后的训练损失、平均梯度范数（Grad Norm）变化。此时训练任务已过半，且学习率开始快速衰减。如下图，可以看到学习率快速衰减的情况下模型损失并没有明显的进一步下降，这说明模型已经实现了充分训练。
 
@@ -693,7 +693,7 @@ accelerate --num_process 8 train.py ./full_train.yaml
 
 <div align="center">
   <figure>
-  <img src="./qwen3_smolvlm_muxi/mx-gpu.png" alt="mx-gpu" width="800" />
+  <img src="./qwen3_smolvlm_muxi/mx-gpu-use.png" alt="mx-gpu-use" width="800" />
   <figcaption>SwanLab对沐曦C500训效率自动记录</figcaption>
   </figure>
 </div>
@@ -710,6 +710,8 @@ accelerate --num_process 8 train.py ./full_train.yaml
 ### 模型推理与效果分析
 
 等笔者下完数据集后未来补一下测试环节 ; ）
+
+可以关注[swanlab教程集合](https://docs.swanlab.cn/examples/qwen3_smolvlm_muxi.html)获取最新更新教程！
 
 ## 代码及数据集链接汇总
 
