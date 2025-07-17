@@ -63,14 +63,13 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      {
-        text: 'v0.6.6', items: [
-          { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
-          { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
-          { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
-          { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
-          { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
-        ]
+      { text: 'v0.6.7',  items: [
+        { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
+        { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
+        { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
+        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
+        { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
+      ]
       },
       {
         component: 'HeaderButton',

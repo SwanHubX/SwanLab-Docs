@@ -148,7 +148,7 @@ swanlab.log({"examples": text_list})
 
 ## 6. 视频
 
-请参考此文档：[API-Video](/api/py-Video)
+请参考此文档：[API-Video](/api/py-video)
 
 ## Q&A
 

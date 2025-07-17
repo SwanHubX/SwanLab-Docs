@@ -159,6 +159,6 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 在verl训练中，你可以通过设置环境变量来执行resume：
 
 ```bash
-export SWANLAB_RESUME=True
-export SWANLAB_ID=<exp_id>
+export SWANLAB_RESUME=must
+export SWANLAB_RUN_ID=<exp_id>
 ```
