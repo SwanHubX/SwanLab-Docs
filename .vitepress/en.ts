@@ -312,6 +312,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'LSTM Stock Prediction', link: 'lstm_stock'},
     ]
   },
+  {
+    text: 'Robot',
+    items: [
+      { text: 'LeRobot Guide', link: 'robot/lerobot-guide' },
+    ]
+  },
 ]
 }
 
