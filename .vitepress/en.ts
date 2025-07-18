@@ -291,6 +291,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: 'Robot',
+    items: [
+      { text: 'LeRobot Guide', link: 'robot/lerobot-guide' },
+    ]
+  },
+  {
     text: 'Reinforcement Learning',
     // collapsed: false,
     items: [
