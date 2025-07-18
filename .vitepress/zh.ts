@@ -342,6 +342,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: '机器人',
+    items: [
+      { text: 'LeRobot 入门', link: 'robot/lerobot-guide' },
+    ]
+  },
+  {
     text: '其他',
     collapsed: false,
     items: [
