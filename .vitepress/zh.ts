@@ -320,6 +320,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: '机器人',
+    items: [
+      { text: 'LeRobot 入门', link: 'robot/lerobot-guide' },
+    ]
+  },
+  {
     text: '强化学习',
     // collapsed: false,
     items: [
@@ -339,12 +345,6 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'LSTM股票预测', link: 'lstm_stock'},
-    ]
-  },
-  {
-    text: '机器人',
-    items: [
-      { text: 'LeRobot 入门', link: 'robot/lerobot-guide' },
     ]
   },
   {

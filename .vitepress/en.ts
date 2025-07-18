@@ -291,6 +291,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: 'Robot',
+    items: [
+      { text: 'LeRobot Guide', link: 'robot/lerobot-guide' },
+    ]
+  },
+  {
     text: 'Reinforcement Learning',
     // collapsed: false,
     items: [
@@ -310,12 +316,6 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'LSTM Stock Prediction', link: 'lstm_stock'},
-    ]
-  },
-  {
-    text: 'Robot',
-    items: [
-      { text: 'LeRobot Guide', link: 'robot/lerobot-guide' },
     ]
   },
 ]
