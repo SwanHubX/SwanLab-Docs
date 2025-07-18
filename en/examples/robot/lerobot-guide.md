@@ -1,39 +1,51 @@
-# Getting Started with LeRobot for Embodied Intelligence
+# Getting Started with Embodied AI using LeRobot
 
-[LeRobot](https://github.com/huggingface/lerobot) is an open-source robotics project initiated by [Hugging Face](https://huggingface.co/lerobot). It aims to provide datasets, models, and related tools for real-world robots, lowering the barrier to entry in robotics. LeRobot includes methods for imitation learning and reinforcement learning, and also offers a series of pre-trained models, datasets with human-collected demonstrations, and simulation environments.
+[LeRobot](https://github.com/huggingface/lerobot) is an open-source robotics project initiated by [Hugging Face](https://huggingface.co/lerobot). It aims to provide datasets, models, and tools for real-world robotics, lowering the barrier to entry. LeRobot includes methods for imitation learning and reinforcement learning, and also offers a series of pre-trained models, datasets with human-collected demonstrations, and simulation environments.
 
 ![LeRobot, Hugging Face Robotics Library](./assets/lerobot-swanlab1.png)
 
-The following tutorial primarily discusses how to train your own VLA model based on LeRobot, covering the entire pipeline from data collection and model training to model inference, ultimately enabling a robotic arm to perform grasping tasks autonomously.
+The following tutorial focuses on how to train your own VLA model based on LeRobot, covering the entire pipeline from data collection and model training to model inference, ultimately enabling a robotic arm to perform grasping tasks autonomously.
 
 > [!NOTE]
 >
-> **VLA (Vision-Language-Action)** is an advanced multimodal machine learning model that combines vision, language, and action capabilities. It aims to achieve a complete closed-loop capability, directly mapping from perceptual input to robot control actions. To learn more, check out [SmolVLA](https://huggingface.co/blog/smolvla).
+> **VLA (Vision Language Action)** is an advanced multimodal machine learning model that combines vision, language, and action capabilities. It aims to achieve a complete closed-loop capability, directly mapping perceptual input to robot control actions. To learn more, check out [SmolVLA](https://huggingface.co/blog/en/smolvla).
 
-## 0. Preparation Phase
+[[toc]]
 
-Materials needed:
+## 0. List of Materials
 
--   A laptop: To set up the LeRobot environment, control the robotic arm, and collect robot data.
--   LeRobot robotic arm kit: Includes a leader and a follower arm. The leader arm is for teleoperation, and the follower arm is for executing actions.
--   A USB camera: To provide video input of the environment, acting as the "eyes" for the robotic arm.
--   A GPU server: For training the model. If your laptop has a GPU, you can also use it for training.
+Here's what you'll need:
 
-You will also need a large table to provide ample space for the robotic arm's operation. Once everything is ready, the operational flow is as shown in the diagram below:
+- **A laptop computer**: To configure the LeRobot environment, control the robotic arm, and collect robot data.
+- **LeRobot Robotic Arm Kit**: Includes two arms, a leader and a follower. The leader arm is used for teleoperation, and the follower arm executes the actions.
+- **A USB camera**: To provide video input of the environment, acting as the "eyes" for the robotic arm.
+- **A GPU server**: For training the model. If your laptop has a GPU, you can also use it for training.
+
+In this tutorial, we use the [SO-101](https://huggingface.co/docs/lerobot/so101) model robotic arm. The SO-101 kit includes a leader arm (black) and a follower arm (white), as shown below.
+
+<img src="./assets/so-101.png" alt="SO-101" style="zoom:30%;" />
+
+[Taobao Purchase Link](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
+
+> [!warning]
+>
+> When purchasing, make sure to select both "SOARM101" and "Servos + Control Board + 3D Printed Parts". You will receive the components as a kit and will need to assemble it yourself.
+
+You'll also need a spacious desk for operating the robotic arm. Once everything is ready, the workflow is as follows:
 
 ![pipeline](./assets/pipeline.png)
 
 1.  Connect the leader and follower arms and the camera to the laptop, then collect data via teleoperation.
-2.  After collecting the data, train the model on a server with a GPU, and use [SwanLab](https://swanlab.dev/) for training tracking.
-3.  Finally, after the model is trained, deploy it on the laptop for inference, enabling the robotic arm to perform grasping tasks autonomously.
+2.  After collecting the data, train the model on a GPU-equipped server, using [SwanLab](https://swanlab.io/) for training tracking.
+3.  Finally, once the model is trained, deploy it on the laptop for inference, enabling the robotic arm to perform grasping tasks autonomously.
 
 > [!Note]
 >
-> **Teleoperation** is a technique for manually remote-controlling a robotic arm. It involves a leader arm and a follower arm; you manually control the movement of the leader arm, and the follower arm will mimic the motion.
+> **Teleoperation** is a technique for manually controlling a robot from a distance. It involves a leader arm and a follower arm; as you manually control the leader arm's movements, the follower arm mimics them.
 
-## 1. Installing the LeRobot Environment
+## 1. Install the LeRobot Environment
 
-You need to set up the LeRobot environment on both your laptop and the training server. The laptop is for controlling the robotic arm, and the server is for model training.
+You need to set up the LeRobot environment on both your laptop (for controlling the arm) and the training server (for model training).
 
 First, clone the LeRobot source code:
 
@@ -42,7 +54,7 @@ git clone https://github.com/swpfY/lerobot.git
 cd lerobot
 ```
 
-Use [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install) to create a Python 3.10 virtual environment and activate it:
+Use [miniconda](https://docs.anaconda.com/free/miniconda/miniconda-install/) to create and activate a Python 3.10 virtual environment:
 
 ```bash
 conda create -y -n lerobot python=3.10
@@ -52,12 +64,12 @@ conda activate lerobot
 Then, install `ffmpeg` in the conda environment:
 
 ```bash
-conda install ffmpeg=7.1.1 -c conda-forge
+conda install ffmpeg=7.0 -c conda-forge
 ```
 
-> Note that this step requires the specific installation of `ffmpeg=7.1.1`. The latest version of ffmpeg is not compatible at the moment.
+> Note: It's important to install this specific `ffmpeg=7.0` version, as the latest version may have compatibility issues.
 
-Finally, install 🤗LeRobot:
+Finally, install 🤗 LeRobot:
 
 ```bash
 pip install -e .
@@ -65,7 +77,7 @@ pip install -e .
 
 > [!Important]
 >
-> Please be aware that the LeRobot repository is currently not stable, and API and script changes may occur. This tutorial uses the LeRobot version corresponding to [commit cf86b93](https://github.com/huggingface/lerobot/commit/cf86b9300dc83fdad408cfe4787b7b09b55f12cf).
+> The LeRobot repository is currently under active development, so APIs and scripts may change. This tutorial is based on the version corresponding to [commit cf86b93](https://github.com/huggingface/lerobot/commit/cf86b9300dc83fdad408cfe4787b7b09b55f12cf).
 
 Next, install [SwanLab](https://github.com/SwanHubX/SwanLab) and log in:
 
@@ -74,43 +86,33 @@ pip install -U swanlab
 swanlab login
 ```
 
-## 2. Preparing the Robotic Arm
+## 2. Assembling the Robotic Arm
 
-In this tutorial, we will use the [SO-101](https://huggingface.co/docs/lerobot/so101) model robotic arm for our experiments. The SO-101 kit includes a leader arm (black) and a follower arm (white), as shown below.
+### 2.1 Arm Assembly
 
-<img src="./assets/so-101.png" alt="SO-101" style="zoom:30%;" />
+The assembly process varies for different kit models. Please refer to seeed's [assembly tutorial](https://wiki.seeedstudio.com/lerobot_so100m/#servo-calibration) for specific instructions.
 
-[Taobao Purchase Link](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
+This step can be challenging for those not accustomed to hands-on assembly. If an assembled kit is available, consider purchasing it to skip this step.
 
-> [!Warning]
->
-> When purchasing, you need to select both "SOARM101" and "Servos + Control Board + 3D Printed Parts". After purchase, you will receive the parts and will need to assemble them yourself.
+### 2.2 Important Notes
 
-### 2.1 Assembling the Robotic Arm
+(1) The servo models provided with the SO-101 kit are not all the same. The leader arm (black) uses a 5V power supply, and all its servos are the same 7.4V model. The follower arm, however, uses a 12V power supply and has different servos for different joints. Be extremely careful during assembly and label everything to avoid burning out the servos. For details, see [Servo Calibration](https://wiki.seeedstudio.com/lerobot_so100m/#servo-calibration).
 
-Since the assembly methods for different kit models vary, you can refer to Seeed's [assembly tutorial](https://wiki.seeedstudio.com/en/lerobot_so100m/#servo-calibration-and-mechanical-arm-assembly).
+(2) The USB and power cables are separate; USB does not power the servos. It's a good idea to use a powered USB hub between your computer and the servo control board to prevent potential damage to your computer's USB port (though most circuits have overcurrent protection).
 
-This assembly step requires some hands-on skill. If a fully assembled kit is available, it's recommended to pay extra for it to skip the personal assembly process.
+(3) For kits purchased before June 30th, you may need to upgrade the servo driver from version 3.9 to 3.10 to avoid compatibility issues. Refer to the [assembly tutorial](https://wiki.seeedstudio.com/lerobot_so100m/#calibrate-the-servos-and-assemble-the-robotic-arm).
 
-### 2.2 Notes
+(4) The [tutorial provided by seeed](https://wiki.seeedstudio.com/lerobot_so100m/#calibrate-the-servos-and-assemble-the-robotic-arm) is not fully compatible with the latest LeRobot code. The servo calibration script it provides is from an older version of the repository. You should cross-reference it with the [official LeRobot tutorial](https://huggingface.co/docs/lerobot/so101).
 
-(1) The servo models provided in the SO-101 kit are not consistent. The leader arm (black) uses a 5V power supply, and all its servos are the same 7.4V model. The follower arm, however, uses a 12V power supply, and different joints use different servos. Be very careful during assembly and mark them well to prevent burning out the servos. See [Servo Calibration](https://wiki.seeedstudio.com/en/lerobot_so100m/#servo-calibration-and-mechanical-arm-assembly) for details.
-
-(2) The USB and power cables are separate; USB will not power the servos. It's a good idea to use a USB hub between your computer and the servo control board to prevent damage to your computer's ports (though most circuits have protection).
-
-(3) For arm kits purchased before June 30th, the servo driver needs to be upgraded from version 3.9 to 3.10, otherwise, you will encounter compatibility issues. Refer to the [assembly tutorial](https://wiki.seeedstudio.com/en/lerobot_so100m/#servo-calibration-and-mechanical-arm-assembly).
-
-(4) The [tutorial](https://wiki.seeedstudio.com/en/lerobot_so100m/#servo-calibration-and-mechanical-arm-assembly) provided by Seeed is not adapted for the latest version of the LeRobot code. The servo calibration script it provides is from an older version of the repository and is not compatible with the latest version. You need to compare it with the [LeRobot tutorial](https://huggingface.co/docs/lerobot/so101).
-
-(5) Note the method for fixing the arm's clamp as shown below to ensure the arm is securely attached to the edge of the table:
+(5) Make sure to fix the robotic arm to the edge of the desk using the clamp as shown below to ensure stability:
 
 <img src="./assets/note-fixed.jpg" alt="fixed" style="zoom:10%;" />
 
 ## 3. Calibrating the Robotic Arm
 
-> Note that the LeRobot code used in this tutorial corresponds to [commit cf86b93](https://github.com/huggingface/lerobot/commit/cf86b9300dc83fdad408cfe4787b7b09b55f12cf).
+> Note: This tutorial uses the LeRobot code corresponding to [commit cf86b93](https://github.com/huggingface/lerobot/commit/cf86b9300dc83fdad408cfe4787b7b09b55f12cf).
 
-### 3.1 Get the USB Port of the Robotic Arm
+### 3.1 Get the Robotic Arm's USB Port
 
 Use the following command:
 
@@ -125,11 +127,11 @@ Example output:
 Remove the USB cable from your MotorsBus and press Enter when done.
 ```
 
-You can see that `/dev/tty.usbmodem5AA90178121` is either the leader or follower arm. You can identify which arm corresponds to which port by plugging them in one by one.
+The output `/dev/tty.usbmodem5AA90178121` corresponds to either the leader or follower arm. You can identify each one by plugging them in one at a time.
 
-### 3.2 Robotic Arm Calibration
+### 3.2 Arm Calibration
 
-We will calibrate them one by one. First, let's calibrate the follower arm with the following command:
+We'll calibrate the arms one by one, starting with the follower arm. Use the following command:
 
 ```bash
 python -m lerobot.calibrate \
@@ -138,8 +140,8 @@ python -m lerobot.calibrate \
    --robot.id=my_red_robot_arm
 ```
 
--   `--robot.port` is the corresponding port, which we obtained using the method above.
--   `--robot.id` is the robotic arm ID. Here, I've defined the follower arm as `my_red_robot_arm`.
+- `--robot.port`: The port you identified in the previous step.
+- `--robot.id`: A unique ID for the arm. Here, I've named the follower arm `my_red_robot_arm`.
 
 Example output:
 
@@ -174,11 +176,11 @@ wrist_roll      |    160 |   2036 |   4002
 gripper         |   2020 |   2081 |   3391
 ```
 
-First, we need to move all joints of the robotic arm to the middle of their range of motion and press Enter. Then, we move each joint through its entire range, from minimum to maximum.
+First, move all joints of the robotic arm to the middle of their range of motion and press Enter. Then, move each joint through its full range, from its minimum to its maximum position.
 
-As shown in the output above, you can see the `MIN`, `POS`, and `MAX` parameters. The purpose of calibration is to set the range of motion for each joint.
+As shown in the output above, you'll see `MIN`, `POS`, and `MAX` values. The purpose of calibration is to set the operating range for each joint.
 
-Next, calibrate the leader arm with this example command:
+Next, calibrate the leader arm with a similar command:
 
 ```bash
 python -m lerobot.calibrate \
@@ -189,11 +191,11 @@ python -m lerobot.calibrate \
 
 > [!Note]
 >
-> For detailed operational steps, watch the [official calibration video](https://huggingface.co/docs/lerobot/so101?calibrate_follower=Command#calibration-video).
+> For a detailed walkthrough of the procedure, watch the [official calibration video](https://huggingface.co/docs/lerobot/so101?calibrate_follower=Command#calibration-video).
 
 ## 4. Teleoperation Control
 
-Use the following script:
+Use the following script to start teleoperation:
 
 ```python
 python -m lerobot.teleoperate \
@@ -205,9 +207,9 @@ python -m lerobot.teleoperate \
     --teleop.id=my_blue_leader_arm
 ```
 
-Make sure to modify the `--robot.port`, `--robot.id`, `--teleop.port`, and `--teleop.id` parameters above.
+Make sure to replace `--robot.port`, `--robot.id`, `--teleop.port`, and `--teleop.id` with your own settings.
 
-After running the script, you will usually be asked to re-calibrate the follower arm (SO101Follower). The output will be as follows:
+After running the script, you might be prompted to recalibrate the follower arm (SO101Follower):
 
 ```bash
 Move my_red_robot_arm SO101Follower to the middle of its range of motion and press ENTER....
@@ -215,25 +217,25 @@ Move all joints sequentially through their entire ranges of motion.
 Recording positions. Press ENTER to stop...
 ```
 
-Once this is successfully completed, when you control the leader arm, the follower arm will move along with it.
+Once successful, you can control the leader arm, and the follower arm will mimic its movements.
 
 > [!TIP]
 >
-> You can save the above command into a shell script for easy execution next time.
+> Consider saving the command above into a shell script for quick access later.
 
-## 5. Collecting a Dataset via Teleoperation
+## 5. Collecting Datasets with Teleoperation
 
 ### 5.1 Adding a Camera
 
-Use the following command to find the index of the camera connected to your system. The default camera index is `0`:
+Use the following command to find the index of your connected camera. The default camera is usually index `0`:
 
 ```bash
 python -m lerobot.find_cameras opencv
 ```
 
-> For more related content, refer to: [Cameras](https://huggingface.co/docs/lerobot/cameras)
+> For more information, see: [Cameras](https://huggingface.co/docs/lerobot/cameras)
 
-You can use the following Python script to check the status of your camera and ensure it is working correctly:
+You can use the following Python script to check if the camera is working correctly:
 
 ::: details Click to view code
 
@@ -267,17 +269,17 @@ finally:
 
 :::
 
-### 5.2 Login to Hugging Face CLI
+### 5.2 Log in to Hugging Face CLI
 
-We will need to use the [Hugging Face Hub](https://huggingface.co/) to upload datasets and models. Use the following command to log in:
+You will need to upload your datasets and models to the [Hugging Face Hub](https://huggingface.co/). Log in using the following command:
 
 ```bash
 huggingface-cli login --token ${HUGGINGFACE_TOKEN} --add-to-git-credential
 ```
 
-`${HUGGINGFACE_TOKEN}` is your Hugging Face access token, which can be obtained from your [settings](https://huggingface.co/settings/tokens).
+Replace `${HUGGINGFACE_TOKEN}` with your Hugging Face access token, which you can get from your [settings](https://huggingface.co/settings/tokens).
 
-You can use the following command to check if the login was successful:
+Check if the login was successful with:
 
 ```bash
 huggingface-cli whoami
@@ -285,9 +287,9 @@ huggingface-cli whoami
 
 ### 5.3 Recording the Dataset
 
-Use the following script to control the robotic arm and collect the dataset.
+Use the following script to control the arm and collect the dataset.
 
-::: details Code Details
+::: details Full Code
 
 ```python
 from lerobot.cameras.opencv.configuration_opencv import OpenCVCameraConfig
@@ -388,29 +390,29 @@ dataset.push_to_hub()
 
 :::
 
-There are some important parameters in the code above that you need to modify:
+You need to modify some important parameters in the code above:
 
--   `SO101FollowerConfig` and `SO101LeaderConfig` need to be changed to your own arm's configuration, specifically the `port` and `id` parameters.
--   `<hf_username>/<dataset_repo_id>` is the path to your Hugging Face repository. You need to use your own repository path, for example: `swanlab101/lerobot`.
+-   `SO101FollowerConfig` and `SO101LeaderConfig`: Update these with your own arm's configuration, specifically the `port` and `id` parameters.
+-   `<hf_username>/<dataset_repo_id>`: This is the path to your Hugging Face repository. Replace it with your own, for example: `swanlab101/lerobot-dataset`.
 
-Here are some global configuration parameters that you can choose to change. This is just an explanation:
+Here are some global configuration parameters you can optionally change, with explanations:
 
--   `NUM_EPISODES = 50` means recording 50 sets of data. A complete grasping action is one episode, which means one complete data set.
--   `FPS = 30` means the camera's recording frame rate is 30 frames per second.
--   `EPISODE_TIME_SEC = 60` means the time for each action set is set to 60 seconds.
--   `RESET_TIME_SEC = 10` is the preparation time before starting each action set.
+-   `NUM_EPISODES = 50`: This means you will record 50 episodes. One complete grasping action is one episode.
+-   `FPS = 30`: The camera's recording frame rate is 30 frames per second.
+-   `EPISODE_TIME_SEC = 60`: The maximum duration for each episode is set to 60 seconds.
+-   `RESET_TIME_SEC = 10`: The time allotted to reset the environment before starting a new episode.
 
-The parameters above mean that the entire dataset requires recording 50 episodes. Each episode is given 60 seconds for recording by default before the next episode begins. The dataset includes the arm's movement video and the motor movement data.
+These settings mean you will record a dataset of 50 episodes, with each recording session lasting up to 60 seconds. The dataset will include video of the arm's movements and data from the arm's motors.
 
 ### 5.4 Start Recording
 
-After starting the script, you will hear a voice prompt. Be sure to complete the operation within the specified time. If the arm completes the relevant action within 60 seconds, you can use a shortcut key to end the current recording and start the next one. Here are the shortcuts:
+After starting the script, you will hear a voice prompt. Be sure to complete the action within the allotted time. If you finish the action in under 60 seconds, you can use hotkeys to end the current episode and start the next one. The hotkeys are:
 
--   Press the right arrow key (**`→`**): End the current data recording early and start the next round.
--   Press the left arrow key (**`←`**): Cancel the current data recording and start recording it again.
--   Press the `ESC` key: Stop the recording operation immediately.
+-   **Right Arrow (`→`)**: End the current episode early and start the next one.
+-   **Left Arrow (`←`)**: Cancel the current episode and start a new recording.
+-   **`ESC` key**: Stop the recording process immediately.
 
-::: details Example Output
+::: details Example Console Output
 
 ```bash
 > python record.py
@@ -446,11 +448,11 @@ Svt[info]: Svt[info]: -------------------------------------------
 
 :::
 
-During recording, [rerun](https://rerun.io/) will start, displaying motor parameters and the arm's movement video. We can use it to monitor the follower arm's state.
+During recording, [rerun.io](https://rerun.io/) will launch, displaying motor parameters and a video feed of the arm's movements. You can use it to monitor the state of the follower arm.
 
 ![rerun](./assets/rerun.png)
 
-Here is an example video of one episode:
+Here is an example video of one recording episode:
 
 <video height="400" controls>
   <source src="./assets/episode_000000.mp4" type="video/mp4">
@@ -459,47 +461,46 @@ Here is an example video of one episode:
 
 > [!Note]
 >
-> Example dataset reference: [ink-swpfy/lrobot4](https://huggingface.co/datasets/ink-swpfy/lrobot4)
+> Example dataset for reference: [ink-swpfy/lrobot4](https://huggingface.co/datasets/ink-swpfy/lrobot4)
 
 ### 5.5 Recording Tips
 
--   You can first collect a small dataset (e.g., 5 episodes) to familiarize yourself with the entire process. Once you are comfortable, you can create a larger dataset for training.
+-   Start by collecting a small dataset (e.g., 5 episodes) to get familiar with the workflow. Once you're comfortable, you can create a larger dataset for training.
+-   A good starting task is to pick up a brightly colored rectangular block and place it in a box. The object should have a distinct color (like yellow), and its rectangular shape makes it easier to grasp without being obscured by the gripper.
+-   It's recommended to record at least 50 episodes, with about 10 episodes for each initial object position. Keep the camera fixed and maintain consistent grasping behavior throughout the recording process.
+-   A good rule of thumb is that you should be able to perform the task by only looking at the camera feed.
 
--   A good starting task is to pick up a colored rectangular block and place it into a box. The object to be grasped should have a distinct color, like yellow. A rectangular shape is easier for the arm to grasp and is less likely to be obscured from the camera's view.
--   It is recommended to record at least 50 episodes, with 10 episodes for each position. Keep the camera fixed and maintain consistent grasping behavior throughout the recording process.
--   A good rule of thumb is that you should be able to complete the task just by looking at the camera image.
-
-> For more, refer to the [Official Tutorial](https://huggingface.co/docs/lerobot/il_robots?record=API+example#tips-for-gathering-data)
+> For more tips, see the [official tutorial](https://huggingface.co/docs/lerobot/il_robots?record=API+example#tips-for-gathering-data)
 
 ## 6. Training the Model
 
 ### 6.1 Start Training
 
-Use the following script on the GPU server to start training:
+On your GPU server, use the following script to start training:
 
 ```bash
 python -m lerobot.scripts.train \
-  --dataset.repo_id=${HF_USER}/lrobot2 \
+  --dataset.repo_id=${HF_USER}/lerobot-dataset \
   --policy.type=act \
-  --output_dir=outputs/train/lrobot \
-  --job_name=lrobot_test \
+  --output_dir=outputs/train/lerobot \
+  --job_name=lerobot_test \
   --policy.device=cuda \
   --wandb.enable=false \
-  --policy.repo_id=${HF_USER}/lrobot_model \
+  --policy.repo_id=${HF_USER}/lerobot_model \
   --tracker=swanlab \
-  --swanlab.project=my_lrobot \
+  --swanlab.project=my_lerobot \
   --swanlab.mode=cloud
 ```
 
--   `--dataset.repo_id` should be set to the path of the dataset you uploaded to Hugging Face.
--   `--policy.type=act` is the training policy, which will automatically adapt to the motor states, motor actions, and number of cameras of the robot saved in the dataset.
--   `--output_dir` is the model output path. The final model will be saved in the `outputs/train/lrobot/checkpoints` directory.
--   `--policy.device=cuda` indicates that we are using an Nvidia GPU for training. If you need to train on an Apple M-series chip computer, you can set it to `--policy.device=mps`.
--   `--swanlab.project=my_lrobot` represents the corresponding project name in SwanLab.
+-   `--dataset.repo_id`: Set this to the path of the dataset you uploaded to Hugging Face.
+-   `--policy.type=act`: This is the training policy, which will automatically adapt to the motor states, motor actions, and number of cameras saved in the dataset.
+-   `--output_dir`: The path where the model will be saved. The final model checkpoints will be in `outputs/train/lerobot/checkpoints`.
+-   `--policy.device=cuda`: Indicates we are using an Nvidia GPU for training. If you are training on an Apple M-series chip, set this to `--policy.device=mps`.
+-   `--swanlab.project=my_lerobot`: The name of the corresponding SwanLab project.
 
-Training will take several hours. On a laptop with a 3060 8GB GPU, training with 50 episodes takes about 6 hours. On a computer with a 4090 or A100, training with 50 episodes takes about 2-3 hours.
+Training will take several hours. On a laptop with an 8GB 3060 GPU, training with 50 episodes takes about 6 hours. On a 4090 or A100, it takes about 2-3 hours.
 
-::: details Command Line Example Output
+::: details Example Command Line Output
 
 ```bash
 swanlab: 👋 Hi ink,welcome to swanlab!
@@ -509,14 +510,14 @@ swanlab: 🚀 View run at https://swanlab.cn/@ink/my_lrobot/runs/6er56ixwsjqq5v5
 Logs will be synced with swanlab.
 INFO 2025-07-18 06:09:22 lab_utils.py:95 Track this run --> https://swanlab.cn/@ink/my_lrobot/runs/ogl0bza0i5xlorw08bp4r
 INFO 2025-07-18 06:09:22 ts/train.py:134 Creating dataset
-Resolving data files: 100%|████████████████████████████████████████████████| 50/50 [00:00<00:00, 157562.13it/s]
+Resolving data files: 100%|████████████████████████████████████████████████████████████| 50/50 [00:00<00:00, 157562.13it/s]
 === Debug Info ===
 datasets version: 2.19.0
 torch version: 2.7.1+cu126
 hf_dataset type: <class 'datasets.arrow_dataset.Dataset'>
 timestamp column type: <class 'list'>
-timestamp column methods: ['__add__', '__class__', '__class_getitem__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__iadd__', '__imul__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__rmul__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
-has transform: False
+timestamp column methods: [...]
+Has transform: False
 ===============
 INFO 2025-07-18 06:09:24 ts/train.py:145 Creating policy
 INFO 2025-07-18 06:09:25 ts/train.py:151 Creating optimizer and scheduler
@@ -530,21 +531,22 @@ INFO 2025-07-18 06:09:25 ts/train.py:209 Start offline training on a fixed datas
 INFO 2025-07-18 06:09:42 ts/train.py:239 step:200 smpl:2K ep:3 epch:0.07 loss:6.785 grdn:153.774 lr:1.0e-05 updt_s:0.078 data_s:0.003
 INFO 2025-07-18 06:09:56 ts/train.py:239 step:400 smpl:3K ep:7 epch:0.13 loss:3.020 grdn:83.672 lr:1.0e-05 updt_s:0.071 data_s:0.000
 ```
+
 :::
 
 > [!Note]
 >
-> Since the Hugging Face website is hosted overseas, if your dataset fails to upload to the Hugging Face Hub, you can manually upload the dataset collected on your local laptop to the server via SFTP for training. The dataset path is: `~/.cache/huggingface/lerobot/<HF_USER>/lrobot`.
+> Hugging Face is hosted overseas. If you have trouble uploading your dataset to the Hugging Face Hub, you can manually transfer the locally collected dataset from your laptop to the server using SFTP. The local dataset path is: `~/.cache/huggingface/lerobot/<HF_USER>/<dataset_repo>`.
 >
-> The path on the GPU server should be consistent, as LeRobot will look for the dataset in `~/.cache/huggingface/lerobot` by default.
+> The path on the GPU server should be the same, as LeRobot will look for datasets in `~/.cache/huggingface/lerobot` by default.
 
-### 6.2 Observing Training with SwanLab
+### 6.2 Monitoring Training with SwanLab
 
-After starting the training command, a SwanLab project link will be printed in the console. You can open this link in a web browser to view the model's training status, as shown below:
+After starting the training command, a SwanLab project link will be printed in the console. You can open this link in your browser to monitor the model's training progress. It will look something like this:
 
 ![swanlab](./assets/swanlab.png)
 
-Pay close attention to the `train/loss` and `train/grad_norm` metrics. When the training reaches around 40,000 steps, the model has generally converged. By default, LeRobot trains for 100,000 steps, but you can control the number of training steps by setting the `--step=40000` parameter.
+Key metrics to watch are `train/loss` and `train/grad_norm`. The model is typically well-trained after about 40,000 steps. By default, LeRobot trains for 100,000 steps, but you can control this by setting the `--steps=40000` argument.
 
 > [!Note]
 >
@@ -552,9 +554,9 @@ Pay close attention to the `train/loss` and `train/grad_norm` metrics. When the 
 
 ## 7. Model Inference & Autonomous Arm Control
 
-### 7.1 Execute Inference
+### 7.1 Run Inference
 
-After the training is complete, the model will be uploaded to the Hugging Face Hub. We can now use the model to make the robotic arm perform autonomous grasping. Here is the code:
+After training is complete, the model will be uploaded to the Hugging Face Hub. Now you can use the model to have the arm perform autonomous grasping. Use the following code:
 
 ::: details Code Details
 
@@ -585,7 +587,7 @@ robot_config = SO101FollowerConfig(
 robot = SO101Follower(robot_config)
 
 # Initialize the policy
-policy = ACTPolicy.from_pretrained("<HF_USER>/lrobot")
+policy = ACTPolicy.from_pretrained("<HF_USER>/lerobot_model")
 
 # Configure the dataset features
 action_features = hw_to_dataset_features(robot.action_features, "action")
@@ -594,7 +596,7 @@ dataset_features = {**action_features, **obs_features}
 
 # Create the dataset
 dataset = LeRobotDataset.create(
-    repo_id="<HF_USER>/eval_lrobot",
+    repo_id="<HF_USER>/eval_lerobot_dataset",
     fps=FPS,
     features=dataset_features,
     robot_type=robot.name,
@@ -633,36 +635,36 @@ dataset.push_to_hub()
 
 :::
 
-Places to modify in the code above:
+You need to modify the following in the code:
 
--   `SO101FollowerConfig` contains the parameters for the follower arm; you need to change them to match your arm.
--   `ACTPolicy.from_pretrained()` needs to be changed to your own model path.
--   `LeRobotDataset` is for the model evaluation dataset; you need to change `<HF_USER>` to your own Hugging Face username.
+-   `SO101FollowerConfig`: Change this to your follower arm's configuration.
+-   `ACTPolicy.from_pretrained()`: Change this to the path of your trained model.
+-   `LeRobotDataset`: This is for the model evaluation dataset. Change `<HF_USER>` to your Hugging Face username.
 
-The code above is used to collect a dataset for model evaluation. Therefore, like teleoperation data collection, it will also involve recording, but it will not use the leader arm; the follower arm will move and grasp autonomously. The parameter meanings are:
+This script is used to collect a dataset for model evaluation. Therefore, like data collection with teleoperation, it will record episodes, but it does so with the follower arm moving autonomously, without the leader arm. The parameter meanings are:
 
--   `NUM_EPISODES` is the number of times to execute.
--   `EPISODE_TIME_SEC` is the duration of each run, set to 60 seconds.
+-   `NUM_EPISODES`: The number of times to run the inference.
+-   `EPISODE_TIME_SEC`: The duration for each run, set to 60 seconds.
 
-> [!Note]
+>[!Note]
 >
-> [Example Model](https://huggingface.co/ink-swpfy/lrobot2)
+>[Example Model](https://huggingface.co/ink-swpfy/lrobot2)
 
 ### 7.2 Autonomous Grasping Example
 
-Here is an example video:
+Here is a video of an example run:
 
 <video height="400" controls>
   <source src="./assets/episode_000000_eval.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-The grasping performance is heavily influenced by the training dataset and the environment. For example, running inference during the day versus at night can produce significant differences in results. The camera's installation position affects the dataset, which in turn affects the actual model performance. It is recommended to operate in a large, clear desk space with minimal environmental interference.
+The grasping performance is heavily influenced by the training dataset and the environment. For example, inference results can vary significantly between daytime and nighttime. The camera's position affects the dataset and, consequently, the model's performance. It is recommended to work in a large, clutter-free space with minimal environmental interference.
 
 ## 8. Related Links
 
--   [Robotic Arm Assembly Tutorial - Seeed Studio](https://wiki.seeedstudio.com/en/lerobot_so100m/#servo-calibration-and-mechanical-arm-assembly)
--   [LeRobot Project with SwanLab Integration](https://github.com/swpfY/lerobot) (The official repository has not yet merged the SwanLab-related PR)
+-   [Robotic Arm Assembly Tutorial - seeed studio](https://wiki.seeedstudio.com/lerobot_so100m/#calibrate-the-servos-and-assemble-the-robotic-arm)
+-   [LeRobot Fork with SwanLab Integration](https://github.com/swpfY/lerobot) (Official repo has not yet merged the SwanLab PR)
 -   [LeRobot Official Documentation](https://huggingface.co/docs/lerobot/index)
 -   [SO101 Robotic Arm Taobao Purchase Link](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
--   [SwanLab Official Website](https://swanlab.dev/)
+-   [SwanLab Official Website](https://swanlab.io/)

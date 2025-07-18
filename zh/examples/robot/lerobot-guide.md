@@ -10,14 +10,26 @@
 >
 > **VLA（Vision Language Action）** 是一种先进的多模态机器学习模型，它结合了视觉、语言和动作三种能力，旨在实现从感知输入直接映射到机器人控制动作的完整闭环能力。了解更多查看 [SmolVLA](https://huggingface.co/blog/zh/smolvla)。
 
-## 0. 准备阶段
+[[toc]]
+
+## 0. 准备物料一览
 
 需要准备的物料：
 
-- 笔记本电脑：配置 LeRobot 环境，用于控制机械臂以及收集机器人数据。
-- LeRobot 机械臂套件：包含主从两个机械臂，主臂用于遥操作，从臂用于执行动作。
-- USB 摄像头：用于输入环境的视频信号，作为机械臂的“眼睛”。
-- GPU 服务器：用于训练模型，如果笔记本有 GPU 也可以使用笔记本训练。
+- **笔记本电脑**：配置 LeRobot 环境，用于控制机械臂以及收集机器人数据。
+- **LeRobot 机械臂套件**：包含主从两个机械臂，主臂用于遥操作，从臂用于执行动作。
+- **USB 摄像头**：用于输入环境的视频信号，作为机械臂的“眼睛”。
+- **GPU 服务器**：用于训练模型，如果笔记本有 GPU 也可以使用笔记本训练。
+
+在本教程中我们基于型号 [SO-101](https://huggingface.co/docs/lerobot/so101) 的机械臂完成实验，SO-101 套件包含一个主臂（黑色）和从臂（白色），如下图所示。
+
+<img src="./assets/so-101.png" alt="SO-101" style="zoom:30%;" />
+
+[淘宝购买链接](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
+
+> [!warning]
+>
+> 注意购买的时候需要选择「SOARM101」 和「舵机+控制板+3D 打印件」，购买完成后收到的是散件，需要自行组装。
 
 还需要准备一个空间比较大的桌子，便于机械臂的操作。一切准备就绪后，操作流程如下图所示：
 
@@ -74,17 +86,7 @@ pip install -U swanlab
 swanlab login
 ```
 
-## 2. 准备机械臂
-
-在本教程中我们基于型号 [SO-101](https://huggingface.co/docs/lerobot/so101) 的机械臂完成实验，SO-101 套件包含一个主臂（黑色）和从臂（白色），如下图所示。
-
-<img src="./assets/so-101.png" alt="SO-101" style="zoom:30%;" />
-
-[淘宝购买链接](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
-
-> [!Warning]
->
-> 注意购买的时候需要选择「SOARM101」 和「舵机+控制板+3D 打印件」，购买完成后收到的是散件，需要自行组装。
+## 2. 机械臂组装
 
 ### 2.1 组装机械臂
 
