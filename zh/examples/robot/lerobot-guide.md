@@ -490,7 +490,7 @@ python -m lerobot.scripts.train \
   --wandb.enable=false \
   --policy.repo_id=${HF_USER}/lrobot_model \
   --tracker=swanlab \
-  --swanlab.project=my_lrobot \
+  --swanlab.project=my_lerobot \
   --swanlab.mode=cloud
 ```
 
@@ -499,7 +499,7 @@ python -m lerobot.scripts.train \
 - `--output_dir` 为模型输出路径，最终模型输出在 `outputs/train/lrobot/checkpoints` 目录下。
 - `--policy.device=cuda` 代表我们使用 Nvidia GPU 训练，如果你需要在 Apple M系列芯片的电脑上开始训练，可以设置为 `--policy.device=mps`。
 
-- `--swanlab.project=my_lrobot` 代表 SwanLab 对应的项目名称。
+- `--swanlab.project=my_lerobot` 代表 SwanLab 对应的项目名称。
 
 训练大概需要几个小时的时间。在 3060 的 8G 笔记本上使用 50 组数据训练的时间大概为 6 小时，在 4090 和 A100 的电脑上使用 50 组数据训练的时间大概为 2~3 小时。
 
@@ -508,10 +508,10 @@ python -m lerobot.scripts.train \
 ```bash
 swanlab: 👋 Hi ink,welcome to swanlab!
 swanlab: Syncing run pig-13 to the cloud
-swanlab: 🏠 View project at https://swanlab.cn/@ink/my_lrobot
-swanlab: 🚀 View run at https://swanlab.cn/@ink/my_lrobot/runs/6er56ixwsjqq5v5chwxyz
+swanlab: 🏠 View project at https://swanlab.cn/@ink/my_lerobot
+swanlab: 🚀 View run at https://swanlab.cn/@ink/my_lerobot/runs/6er56ixwsjqq5v5chwxyz
 Logs will be synced with swanlab.
-INFO 2025-07-18 06:09:22 lab_utils.py:95 Track this run --> https://swanlab.cn/@ink/my_lrobot/runs/ogl0bza0i5xlorw08bp4r
+INFO 2025-07-18 06:09:22 lab_utils.py:95 Track this run --> https://swanlab.cn/@ink/my_lerobot/runs/ogl0bza0i5xlorw08bp4r
 INFO 2025-07-18 06:09:22 ts/train.py:134 Creating dataset
 Resolving data files: 100%|████████████████████████████████████████████████████████████| 50/50 [00:00<00:00, 157562.13it/s]
 === 调试信息 ===
@@ -553,7 +553,7 @@ INFO 2025-07-18 06:09:56 ts/train.py:239 step:400 smpl:3K ep:7 epch:0.13 loss:3.
 
 > [!Note]
 >
-> [示例 SwanLab 项目](https://swanlab.cn/@ink/my_lrobot/runs/6er56ixwsjqq5v5chwxyz/chart)
+> [示例 SwanLab 项目](https://swanlab.cn/@ink/my_lerobot/runs/6er56ixwsjqq5v5chwxyz/chart)
 
 ## 7. 模型推理 & 机械臂自主操控
 

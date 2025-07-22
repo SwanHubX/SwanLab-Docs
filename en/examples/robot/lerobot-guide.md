@@ -505,10 +505,10 @@ Training will take several hours. On a laptop with an 8GB 3060 GPU, training wit
 ```bash
 swanlab: 👋 Hi ink,welcome to swanlab!
 swanlab: Syncing run pig-13 to the cloud
-swanlab: 🏠 View project at https://swanlab.cn/@ink/my_lrobot
-swanlab: 🚀 View run at https://swanlab.cn/@ink/my_lrobot/runs/6er56ixwsjqq5v5chwxyz
+swanlab: 🏠 View project at https://swanlab.cn/@ink/my_lerobot
+swanlab: 🚀 View run at https://swanlab.cn/@ink/my_lerobot/runs/6er56ixwsjqq5v5chwxyz
 Logs will be synced with swanlab.
-INFO 2025-07-18 06:09:22 lab_utils.py:95 Track this run --> https://swanlab.cn/@ink/my_lrobot/runs/ogl0bza0i5xlorw08bp4r
+INFO 2025-07-18 06:09:22 lab_utils.py:95 Track this run --> https://swanlab.cn/@ink/my_lerobot/runs/ogl0bza0i5xlorw08bp4r
 INFO 2025-07-18 06:09:22 ts/train.py:134 Creating dataset
 Resolving data files: 100%|████████████████████████████████████████████████████████████| 50/50 [00:00<00:00, 157562.13it/s]
 === Debug Info ===
@@ -550,7 +550,7 @@ Key metrics to watch are `train/loss` and `train/grad_norm`. The model is typica
 
 > [!Note]
 >
-> [Example SwanLab Project](https://swanlab.cn/@ink/my_lrobot/runs/6er56ixwsjqq5v5chwxyz/chart)
+> [Example SwanLab Project](https://swanlab.cn/@ink/my_lerobot/runs/6er56ixwsjqq5v5chwxyz/chart)
 
 ## 7. Model Inference & Autonomous Arm Control
 
