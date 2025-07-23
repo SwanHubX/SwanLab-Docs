@@ -30,5 +30,9 @@ export default defineConfig({
   locales: {
     root: { label: '简体中文', ...zh },
     en: { label: 'English', ...en },
-  }
+  },
+
+  head: [
+    ['script', { defer: '', src: 'https://umami.dev101.swanlab.cn/script.js', 'data-website-id': process.env.UMAMI_WEBSITE_ID ?? '' }]
+  ]
 })
