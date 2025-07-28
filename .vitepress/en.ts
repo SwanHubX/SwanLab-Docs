@@ -143,12 +143,17 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
-      { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
-      { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
-      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
-      { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+      { 
+        text: 'Tips',
+        items: [
+          { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
+          { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
+          { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+          { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
+          { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+        ]
+      },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]

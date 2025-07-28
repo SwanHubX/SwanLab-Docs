@@ -169,7 +169,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
         { text: '技巧', items: [
           { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
-          { text: '上传离线实验记录', link: 'experiment_track/sync-logfile' },
+          { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
           { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
           { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
           { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
@@ -200,7 +200,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     },
     {
       text: '💻 离线看板',
-      // collapsed: true,
+      collapsed: true,
       items: [
         { text: '使用离线看板', link: 'self_host/offline-board' },
         { text: '远程访问离线看板', link: 'self_host/remote-view' },
