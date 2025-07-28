@@ -14,7 +14,7 @@ swanlab sync [options] [logdir]
 
 ## 介绍
 
-将本地日志，同步到SwanLab云端/私有化部署端。
+将本地日志，同步上传到SwanLab云端/私有化部署端。
 
 ## 版本对照
 
