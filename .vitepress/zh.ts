@@ -63,7 +63,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.6.7',  items: [
+      { text: 'v0.6.8',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -162,15 +162,18 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
             { text: '自定义3D图表', link: 'experiment_track/log-custom-3dchart' },
           ]
         },
-        { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
         { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
         { text: '查看实验结果', link: 'experiment_track/view-result' },
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
-        { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
+        { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-        { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
-        { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
-        { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+        { text: '技巧', items: [
+          { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
+          { text: '上传离线实验记录', link: 'experiment_track/sync-logfile' },
+          { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+          { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
+          { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+        ] },
         { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
         { text: '常见问题', link: 'experiment_track/FAQ' },
 

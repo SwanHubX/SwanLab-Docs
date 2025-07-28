@@ -54,7 +54,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.6.7',  items: [
+      { text: 'v0.6.8',  items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
         { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -144,6 +144,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
+      { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },

@@ -124,4 +124,4 @@ In the pop-up window, select your desired status:
 
 ## How to enable resume training?
 
-Refer to the documentation: [resume](/en/api/py-init#resume-training)
+Refer to the documentation: [resume](/en/guide_cloud/experiment_track/resume-experiment.md)
