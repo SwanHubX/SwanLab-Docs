@@ -10,6 +10,7 @@ swanlab sync [options] [logdir]
 | `-h`, `--host` | 同步日志的主机地址。如果未指定，将使用默认主机(`https://swanlab.cn`)。|
 | `-w`, `--workspace` | 同步日志的工作空间。如果未指定，将使用默认工作空间。|
 | `-p`, `--project` | 同步日志的项目。如果未指定，将使用默认项目。|
+| `-i`, `--id` | 同步日志的实验ID。仅当路径为单个目录时可用。更多详情请参考[#1194](https://github.com/SwanHubX/SwanLab/pull/1194)。|
 
 
 ## 介绍
