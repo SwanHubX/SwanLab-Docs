@@ -10,7 +10,7 @@ swanlab sync [options] [logdir]
 | `-h`, `--host` | The host address for syncing logs. If not specified, the default host (`https://swanlab.cn`) will be used. |
 | `-w`, `--workspace` | The workspace for syncing logs. If not specified, the default workspace will be used. |
 | `-p`, `--project` | The project for syncing logs. If not specified, the default project will be used. |
-| `-i`, `--id` | The experiment ID to sync the logs to. It can only be used when the path is a single directory. For more details, see [#1194](https://github.com/SwanHubX/SwanLab/pull/1194). |
+| `-i`, `--id` | The experiment ID to sync the logs to. It can only be used when the path is a single directory. |
 
 ## Introduction
 
