@@ -395,6 +395,13 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           { text: 'Molecule', link: 'py-molecule' },
         ]
       },
+      {
+        text: '指标数据', items: [
+          { text: 'pr_curve', link: 'py-pr_curve' },
+          { text: 'roc_curve', link: 'py-roc_curve' },
+          { text: 'confusion_matrix', link: 'py-confusion_matrix' },
+        ]
+      },
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
