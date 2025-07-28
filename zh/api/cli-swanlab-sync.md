@@ -10,11 +10,21 @@ swanlab sync [options] [logdir]
 | `-h`, `--host` | 同步日志的主机地址。如果未指定，将使用默认主机(`https://swanlab.cn`)。|
 | `-w`, `--workspace` | 同步日志的工作空间。如果未指定，将使用默认工作空间。|
 | `-p`, `--project` | 同步日志的项目。如果未指定，将使用默认项目。|
+| `-i`, `--id` | 同步日志的实验ID。仅当路径为单个目录时可用。|
 
 
 ## 介绍
 
-将本地日志，同步到SwanLab云端/私有化部署端。
+将本地日志，同步上传到SwanLab云端/私有化部署端。
+
+## 版本对照
+
+> 版本对照仅适用于`swanlab sync`命令
+
+| swanlab库版本 | 特性 | 支持的日志文件 |
+| --- | --- | --- |
+| >=0.6.8 | 支持同步训练异常终端的日志文件；支持`id`参数 | 由`>=0.6.8`版本的swanlab库产生 |
+| <0.6.8 | - | 由`<0.6.8`版本的swanlab库产生 |
 
 ## 命令行示例
 
@@ -32,6 +42,8 @@ swanlab sync ./swanlog/run-xxx
 看到下面的打印信息，则表示同步成功：
 
 ![swanlab sync](./cli-swanlab-sync/console.png)
+
+完成sync操作后，项目上会多出一个新的实验。
 
 
 ## Python代码示例
@@ -53,3 +65,13 @@ swanlab.sync(
 ```bash
 swanlab sync ./swanlog/run-*
 ```
+
+## resume式同步
+
+如果你不希望创建1个新实验，而是在原本的实验上同步（会自行比对数据，增加差异的部分），可以使用`--id`参数：
+
+```bash
+swanlab sync ./swanlog/run-xxx --id <实验ID>
+```
+
+实验ID获取方式见：[恢复实验/断点续训](/guide_cloud/experiment_track/resume-experiment.md)

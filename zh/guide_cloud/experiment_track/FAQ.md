@@ -131,4 +131,4 @@ swanlab.init()
 
 ## 如何开启断点续训？
 
-参考文档：[resume](/api/py-init#断点续训)
+参考文档：[resume](/guide_cloud/experiment_track/resume-experiment.md)

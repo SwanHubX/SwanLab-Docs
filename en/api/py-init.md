@@ -89,14 +89,11 @@ swanlab.init(
 
 ### Setting the Log File Save Location
 
-> Only valid when mode="local"
-
 The following code demonstrates how to save log files to a custom directory:
 
 ```python
 swanlab.init(
     logdir="path/to/my_custom_dir",
-    mode="local",
 )
 ```
 
