@@ -43,6 +43,8 @@ swanlab sync ./swanlog/run-xxx
 
 ![swanlab sync](./cli-swanlab-sync/console.png)
 
+完成sync操作后，项目上会多出一个新的实验。
+
 
 ## Python代码示例
 
@@ -63,3 +65,13 @@ swanlab.sync(
 ```bash
 swanlab sync ./swanlog/run-*
 ```
+
+## resume式同步
+
+如果你不希望创建1个新实验，而是在原本的实验上同步（会自行比对数据，增加差异的部分），可以使用`--id`参数：
+
+```bash
+swanlab sync ./swanlog/run-xxx --id <实验ID>
+```
+
+实验ID获取方式见：[恢复实验/断点续训](/guide_cloud/experiment_track/resume-experiment.md)
