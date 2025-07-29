@@ -24,7 +24,7 @@ The following table lists all methods supported by SwanLab OpenAPI. Clicking on 
 | [`list_experiments`](#list-experiments) | Experiment | Get the list of experiments in a specified project | ✅ |
 | [`get_experiment`](#get-experiment) | Experiment | Get the detailed information of an experiment (experiment name, configuration, environment, etc.) | ✅ |
 | [`get_summary`](#get-summary) | Experiment | Get the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps | ✅ |
-| get_metrics | Experiment | Get the value of an experiment metric | 🚧 |
+| [`get_metrics`](#get-metrics) | Experiment | Get the value of an experiment metric | ✅ |
 | [`delete_experiment`](#delete-experiment) | Experiment | Delete an experiment | ✅ |
 
 
@@ -216,6 +216,8 @@ my_api.list_workspaces().code
 :::
 
 <br>
+
+---
 
 ### Experiments
 
@@ -442,6 +444,48 @@ my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step
 :::
 
 <br>
+
+#### `get_metrics`
+
+Get the value of an experiment metric.
+
+**Method Parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `exp_id` | `str` | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
+| `keys` | `Union[str, List[str]]` | Metric name list, i.e., the key in `swanlab.log({key: value})`, can be viewed on the website, or obtained via `get_summary` |
+
+**Returns**
+
+`data` `(DataFrame)`: Returns a DataFrame containing the metric values of the experiment.
+
+**Example**
+
+::: code-group
+
+```python [Get the value of an experiment metric]
+my_api.get_metrics(exp_id="cuid1", keys=["loss", "acc"]).data
+"""
+          loss  loss_timestamp       acc  acc_timestamp
+step                                                   
+1     0.336772   1751712864853  0.670422  1751712864852
+2     0.338035   1751712864858  0.830018  1751712864857
+3     0.282654   1751712864862  0.794594  1751712864862
+4     0.258216   1751712864866  0.832750  1751712864866
+5     0.097542   1751712864871  0.901684  1751712864871
+6     0.092955   1751712864875  0.907544  1751712864875
+7     0.149327   1751712864879  0.942524  1751712864879
+8     0.131631   1751712864884  0.921309  1751712864883
+"""
+```
+
+:::
+
+
+<br>
+
+---
 
 ### Projects
 
