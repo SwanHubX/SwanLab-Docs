@@ -5,6 +5,22 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.8 - 2025.7.29
+
+**🚀 New Features**
+- Sidebar now supports **experiment filtering and sorting**
+- Table view introduces a **column control panel** for easy column hiding and showing
+- **Multiple API Key management** is now available, making your data more secure
+- [swanlab sync](/en/guide_cloud/experiment_track/sync-logfile.md) now offers improved compatibility for log file integrity, adapting to scenarios such as training crashes
+- New chart types released: [PR Curve](/en/api/py-pr_curve.md), [ROC Curve](/en/api/py-roc_curve.md), and [Confusion Matrix](/en/api/py-confusion_matrix.md)
+- Open API now includes an **interface for retrieving experiment metrics**
+
+**🤔 Improvements**
+- Added support for Japanese and Russian languages
+- The configuration table in experiment cards now supports one-click collapse/expand
+- Fixed some issues
+
+
 ## v0.6.7 - 2025.7.17
 
 **🚀 New Features**
