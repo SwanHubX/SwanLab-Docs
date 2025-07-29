@@ -34,7 +34,7 @@ API文档分为以下几个部分：
 - [register_callback](/api/py-register-callback.md)
 
 ## 其他
-- [开放接口](/api/open-api.md)
+- [开放接口](/api/openapi.md)
 - [环境变量](/api/environment-variable.md)
 
     

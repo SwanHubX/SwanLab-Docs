@@ -25,5 +25,5 @@
 - [sync_wandb](/en/api/py-sync-wandb.md)
 
 ## Other
-- [Open API](/en/api/open-api.md)
+- [Open API](/en/api/openapi.md)
 - [Environment Variables](/en/api/environment-variable.md)
