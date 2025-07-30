@@ -150,10 +150,11 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
           { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
           { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
-          { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
-          { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+          { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
         ]
       },
+      { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
+      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
