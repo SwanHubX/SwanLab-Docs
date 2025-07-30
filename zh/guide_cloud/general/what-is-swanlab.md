@@ -55,6 +55,10 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 
 ![swanlab-echarts](./what_is_swanlab/echarts.png)
 
+- **LLM生成内容可视化组件**：为大语言模型训练场景打造的文本内容可视化图表，支持Markdown渲染
+
+![swanlab-llm-content](/assets/text-chart.gif)
+
 - **后台自动记录**：日志logging、硬件环境、Git 仓库、Python 环境、Python 库列表、项目运行目录
 - **断点续训记录**：支持在训练完成/中断后，补充新的指标数据到同个实验中
 

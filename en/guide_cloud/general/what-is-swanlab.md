@@ -55,6 +55,10 @@ Video Demo:
 
 ![swanlab-echarts](./what_is_swanlab/echarts.png)  
 
+- **LLM Content Visualization Component**: A text content visualization chart designed for LLM training scenarios, supporting Markdown rendering.
+
+![swanlab-llm-content](/assets/text-chart.gif)
+
 - **Automatic Background Logging**: Logging, hardware environment, Git repo, Python environment, Python library list, project directory.  
 - **Resume Training Logging**: Supports adding new metric data to the same experiment after training completes/interrupts.  
 
