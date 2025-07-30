@@ -171,9 +171,10 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
           { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
           { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
-          { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
-          { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+          { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
         ] },
+        { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },  
+        { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
         { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
         { text: '常见问题', link: 'experiment_track/FAQ' },
 
