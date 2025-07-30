@@ -162,6 +162,13 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
             { text: '自定义3D图表', link: 'experiment_track/log-custom-3dchart' },
           ]
         },
+        {
+          text: '记录计算指标', collapsed: true, items: [
+            { text: 'PR曲线', link: 'experiment_track/compute_metric/log-pr-curve' },
+            { text: 'ROC曲线', link: 'experiment_track/compute_metric/log-roc-curve' },
+            { text: '混淆矩阵', link: 'experiment_track/compute_metric/log-confusion-matrix' },
+          ]
+        },
         { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
         { text: '查看实验结果', link: 'experiment_track/view-result' },
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },

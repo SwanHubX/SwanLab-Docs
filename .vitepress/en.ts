@@ -139,6 +139,15 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
         { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart' },
       ]},
+      {
+        text: 'Log compute metric',
+        collapsed: true,
+        items: [
+          { text: 'Log PR Curve', link: 'experiment_track/compute_metric/log-pr-curve' },
+          { text: 'Log ROC Curve', link: 'experiment_track/compute_metric/log-roc-curve' },
+          { text: 'Log Confusion Matrix', link: 'experiment_track/compute_metric/log-confusion-matrix' },
+        ]
+      },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
