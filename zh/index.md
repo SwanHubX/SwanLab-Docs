@@ -50,7 +50,7 @@ features:
 
 ---
 
-<!-- 精选文章部分 -->
+<!-- 精选文章部分 第一行 -->
 <div class="featured-articles">
   <h2>✨精选内容✨</h2>
   <div class="article-container">
@@ -84,7 +84,7 @@ features:
   </div>
 </div>
 
-<!-- 精选文章部分 -->
+<!-- 精选文章部分 第二行 -->
 <div class="featured-articles" style="margin: 30px auto 0;">
   <div class="article-container">
     <div class="article-card">
@@ -114,6 +114,39 @@ features:
         </a>
         <p>深入了解SwanLab的插件生态，快速接入你的邮件、飞书、钉钉、企业微信等IM系统，让掌握进度快人一步</p>
       </div>
+  </div>
+</div>
+
+<!-- 精选文章部分 第三行 -->
+<div class="featured-articles" style="margin: 30px auto 0;">
+  <div class="article-container">
+    <div class="article-card">
+      <a href="/examples/robot/lerobot-guide" class="article-link">
+        <div class="article-cover">
+          <img src="/zh/examples/robot/assets/demo.png" alt="LeRobot具身智能教程">
+        </div>
+        <h3>LeRobot具身智能教程</h3>
+      </a>
+      <p>基于LeRobot机械臂的具身智能教程，从零开始，手把手教你如何使用SwanLab进行具身智能训练。</p>
+    </div>
+    <div class="article-card">
+      <a href="/examples/pretrain_llm" class="article-link">
+        <div class="article-cover">
+          <img src="/assets/examples/pretrain_llm/llm.png" alt="从零预训练一个自己的大模型">
+        </div>
+        <h3>SwanLab与verl的集成</h3>
+      </a>
+      <p>本文则从如何自己实战预训练一个大语言模型的角度，使用Wiki数据集进行一个简单的从零预训练工作。</p>
+    </div>
+    <div class="article-card">
+      <a href="/plugin/notification-email" class="article-link">
+        <div class="article-cover">
+          <img src="/zh/plugin/notification-email/logo.jpg" alt="SwanLab邮件通知插件：掌握进度更及时">
+        </div>
+        <h3>SwanLab邮件通知插件：掌握进度更及时</h3>
+      </a>
+      <p>深入了解SwanLab的插件生态，快速接入你的邮件、飞书、钉钉、企业微信等IM系统，让掌握进度快人一步</p>
+    </div>
   </div>
 </div>
 
