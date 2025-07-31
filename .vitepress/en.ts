@@ -27,7 +27,7 @@ export const en = defineConfig({
 
     // 导航栏配置
     nav: [
-      { 
+      {
         text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
       },
@@ -61,6 +61,9 @@ export const en = defineConfig({
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
         { text: 'Docs Github', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
+      {
+        component: 'HeaderDocHelperButtonEN',
+      },
       {
         component: 'HeaderButtonEN',
       },

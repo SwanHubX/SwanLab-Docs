@@ -72,6 +72,9 @@ export const zh = defineConfig({
       ]
       },
       {
+        component: 'HeaderDocHelperButton',
+      },
+      {
         component: 'HeaderButton',
       },
       {
