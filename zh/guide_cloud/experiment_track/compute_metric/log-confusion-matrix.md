@@ -8,6 +8,8 @@
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
+![](./py-confusion_martix/demo.png)
+
 ### 基本用法
 
 ```python
@@ -42,8 +44,6 @@ swanlab.log({
 
 swanlab.finish()
 ```
-
-![](./py-confusion_martix/demo.png)
 
 ### 使用自定义类别名称
 
