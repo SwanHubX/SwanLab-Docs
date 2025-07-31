@@ -1,27 +1,27 @@
 :root {
     --vp-c-brand-1: #107d8b;
-    --vp-layout-max-width: 1440px;
+    --vp-layout-max-width:1660px;
     --vp-sidebar-bg-color: var(--vp-c-bg-alt);
-    --vp-sidebar-width: 308px;
-    --vp-layout-max-width: 100%;
-    /* --vp-sidebar-padding-left: 0px; */
-    /* --vp-c-gutter: transparent; */
+    --vp-sidebar-width: 300px;
+    --vp-sidebar-padding-left: 16px;
+    /* --vp-layout-max-width: 65%; */
 }
+
 
 .dark {
     --vp-c-brand-1: #2e9dac;
 }
 
-.VPSidebar {
+/* .VPSidebar {
     padding-left: 32px !important;
-}
+} */
 
 .VPDoc.has-aside .content-container {
-    max-width: 920px !important;
+    max-width: 800px !important;
 }
 
 .VPDoc.has-aside .content {
-    max-width: 1236px !important;
+    max-width: 800px !important;
 }
 
 .title {
