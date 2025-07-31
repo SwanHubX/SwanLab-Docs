@@ -31,7 +31,7 @@ export const zh = defineConfig({
 
     // 导航栏配置
     nav: [
-      {
+        {
         component: 'HeaderDocHelperButton',
       },
       {

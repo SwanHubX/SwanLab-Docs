@@ -27,6 +27,9 @@ export const en = defineConfig({
 
     // 导航栏配置
     nav: [
+      {
+        component: 'HeaderDocHelperButtonEN',
+      },
       { 
         text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',

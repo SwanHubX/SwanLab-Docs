@@ -10,8 +10,8 @@ hero:
   tagline: 深度学习训练跟踪与可视化工具，同时支持云端/离线使用，适配40+主流AI训练框架
   actions:
     - theme: alt
-      text: 使用指南
-      link: /guide_cloud/general/what-is-swanlab.md
+      text: AI文档助手
+      link: https://chat.swanlab.cn
     - theme: alt
       text: 立即使用
       link: https://swanlab.cn
