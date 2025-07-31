@@ -31,9 +31,6 @@ export const zh = defineConfig({
 
     // 导航栏配置
     nav: [
-        {
-        component: 'HeaderDocHelperButton',
-      },
       {
         text: '指南',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
@@ -73,6 +70,9 @@ export const zh = defineConfig({
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ]
+      },
+      {
+        component: 'HeaderDocHelperButton',
       },
       {
         component: 'HeaderButton',
