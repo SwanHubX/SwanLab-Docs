@@ -117,3 +117,18 @@ swanlab.init()
 在右侧拉出的菜单中，找到「平滑」选项，拉动滑动条即可开启平滑：
 
 ![](./faq/smooth_button.png)
+
+
+## 如何修改实验“中断”状态
+
+在实验页面，点击状态标签：
+
+![](./faq/exp_header_crash.png)
+
+在弹窗中，选择你想要的状态：
+
+![](./faq/exp_windows_finish.png)
+
+## 如何开启断点续训？
+
+参考文档：[resume](/guide_cloud/experiment_track/resume-experiment.md)

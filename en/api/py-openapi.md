@@ -12,31 +12,70 @@ Through Open API, users can:
 
 Making good use of this feature greatly enhances the flexibility and extensibility of the SDK, making it convenient to build advanced workflows or extended systems.
 
+## Supported APIs
+
+The following table lists all methods supported by SwanLab OpenAPI. Clicking on the API name will redirect to the detailed description:
+
+| API Name | Category | Description | Ready |
+|---------|------|----------|------|
+| [`list_workspaces`](#list-workspaces) | WorkSpace | Get the list of all workspaces (organizations) associated with the current user | ✅ |
+| [`list_projects`](#list-projects) | Project | Get the list of all projects in a specified workspace | ✅ |
+| [`delete_project`](#delete-project) | Project | Delete a project | ✅ |
+| [`list_experiments`](#list-experiments) | Experiment | Get the list of experiments in a specified project | ✅ |
+| [`get_experiment`](#get-experiment) | Experiment | Get the detailed information of an experiment (experiment name, configuration, environment, etc.) | ✅ |
+| [`get_summary`](#get-summary) | Experiment | Get the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps | ✅ |
+| [`get_metrics`](#get-metrics) | Experiment | Get the value of an experiment metric | ✅ |
+| [`delete_experiment`](#delete-experiment) | Experiment | Delete an experiment | ✅ |
+
+
 ## Introduction
 
-To use SwanLab's Open API, simply instantiate an `OpenApi` object. Make sure you have previously logged in using `swanlab login` in your local environment, or provide an API key via the `api_key` parameter in code.
+> Prerequisite: You need to have logged into your SwanLab account in your programming environment.
+
+To use SwanLab's Open API, simply instantiate an `OpenApi` object.
 
 ```python
 from swanlab import OpenApi
 
-my_api = OpenApi() # Uses existing login information
-print(my_api.list_workspaces().data)
+my_api = OpenApi() # Uses local login information
+print(my_api.list_workspaces().data) # Get the list of workspaces for the current user
+```
 
-other_api = OpenApi(api_key='other_api_key') # Uses another account's API key
+If you need to access data from another account:
+```python
+from swanlab import OpenApi
+
+other_api = OpenApi(api_key='other_api_key') # Use another account's api_key
 print(other_api.list_workspaces().data)
 ```
 
 Specifically, the **OpenApi** authentication logic is as follows:
 
-1. If the `api_key` parameter is explicitly provided, it will be used for authentication.
-    - The API key can be found [here](https://swanlab.cn/space/~/settings).
-2. Otherwise, the logic follows that of `swanlab.login()`
+1. If the `api_key` parameter is explicitly provided, it will be used for authentication. You can find your API key [here](https://swanlab.cn/space/~/settings).
+2. Otherwise, local authentication information will be used.
 
-## OpenAPIs
+## Common Parameters
 
-Each API is implemented as a method of the `OpenApi` class, containing the following fields:
+### Experiment ID `exp_id`
 
-### Model Definitions
+The unique identifier for an experiment is the **CUID**, i.e., `exp_id`, which can be obtained via the `list_experiments` method's `cuid` field.
+
+To view the CUID of a specific experiment, go to the "Environment" tab of the experiment on the web version and check the "Experiment ID" row. Click to copy the CUID.
+
+![](./py-openapi/exp_id.png)
+
+### Workspace Name `username`
+
+The workspace name is `username`, used to identify the workspace:
+
+- For a personal workspace, `username` is the user's username.
+- For an organization workspace, `username` is the organization ID.
+
+You can get the `username` via the `list_workspaces` method; the `username` field in each workspace entry is the workspace name.
+
+Generally, if you do not specify `username` in OpenAPI calls, it **defaults** to your personal workspace.
+
+## Model Definitions
 
 When using Open API, some cloud resources, such as experiments and projects, are too complex to be a Python based data structure.
 
@@ -58,14 +97,6 @@ my_project: Project = api_response.data[0]
 workspace_name: str = my_project.group["name"]
 ```
 
-对于一个模型, 其属性可通过以下三种方式访问:
-
-- `my_exp.createdAt`
-- `my_exp["createdAt"]`
-- `my_exp.get("createdAt")`
-
-模型可以通过字典风格访问, 但不是真正的字典, 可以通过`my_exp_dict: Dict = my_exp.model_dump()`获取此时模型对应的字典
-
 As a Model, its attributes can be accessed in three ways:
 
 - `my_exp.createdAt`
@@ -74,7 +105,7 @@ As a Model, its attributes can be accessed in three ways:
 
 > Note: The model can be accessed in a dictionary-like manner, but it is not a true dictionary. You can obtain the corresponding dictionary of the model using `my_exp_dict: Dict = my_exp.model_dump()`.
 
-#### ApiResponse Model
+### API Response `ApiResponse`
 
 Each Open API method returns a `swanlab.api.openapi.types.ApiResponse` object, which contains the following fields:
 
@@ -84,7 +115,7 @@ Each Open API method returns a `swanlab.api.openapi.types.ApiResponse` object, w
 | `errmsg` | `str` | Error message, non-empty if the status code is not `2XX` |
 | `data` | `Any` | Specific data returned, as mentioned in the API descriptions below |
 
-#### Experiment Model
+### Experiment Model
 
 The experiment object is of type `swanlab.api.openapi.types.Experiment`, containing the following fields:
 
@@ -100,7 +131,7 @@ The experiment object is of type `swanlab.api.openapi.types.Experiment`, contain
 | `user` | `Dict[str, str]` | Creator of the experiment, containing `username` and `name` |
 | `profile` | `dict` | Detailed configuration information of the experiment, including user-defined configurations and Python runtime environment, etc. |
 
-#### Project Model
+### Project Model
 
 The project object is of type `swanlab.api.openapi.types.Project`, containing the following fields:
 
@@ -115,7 +146,11 @@ The project object is of type `swanlab.api.openapi.types.Project`, containing th
 | `group` | `Dict[str, str]` | Workspace information, containing `type`, `username`, and `name` |
 | `count` | `Dict[str, int]` | Project statistics, such as the number of experiments, number of collaborators, etc. |
 
-Below is a list of all available APIs.
+## OpenAPIs
+
+Each Open API is a method of the `OpenApi` object.
+
+Below is a list of all available SwanLab Open APIs.
 
 ### Workspaces
 
@@ -138,6 +173,9 @@ Retrieve the list of all workspaces (organizations) associated with the current 
 ::: code-group  
 
 ```python [Retrieve the list of workspaces]
+from swanlab import OpenApi
+my_api = OpenApi()
+
 my_api.list_workspaces().data
 """
 [
@@ -156,13 +194,19 @@ my_api.list_workspaces().data
 ```
 
 ```python [Retrieve the name of the first workspace]
+from swanlab import OpenApi
+my_api = OpenApi()
+
 my_api.list_workspaces().data[0]["name"]
 """
-workspace1
+"workspace1"
 """
 ```
 
 ```python [Retrieve the response code]
+from swanlab import OpenApi
+my_api = OpenApi()
+
 my_api.list_workspaces().code
 """
 200
@@ -171,9 +215,13 @@ my_api.list_workspaces().code
 
 :::
 
+<br>
+
+---
+
 ### Experiments
 
-#### `list_project_exps`
+#### `list_experiments`
 
 Retrieve the list of experiments in a specified project.
 
@@ -193,14 +241,14 @@ Retrieve the list of experiments in a specified project.
 ::: code-group
 
 ```python [Retrieve the list of experiments]
-my_api.list_project_exps(project="project1").data
+my_api.list_experiments(project="project1").data
 """
 [
     {
         "cuid": "cuid1",
         "name": "experiment1",
-        "description": "This is a test experiment",
-        "state": "FINISHED",
+        "description": "Description 1",
+        "state": "RUNNING",
         "show": true,
         "createdAt": "2024-11-23T12:28:04.286Z",
         "finishedAt": null,
@@ -220,14 +268,23 @@ my_api.list_project_exps(project="project1").data
 """
 ```
 
+```python [Retrieve the CUID of the first experiment]
+my_api.list_experiments(project="project1").data[0].cuid
+"""
+"cuid1"
+"""
+```
+
 ```python [Retrieve the name of the first experiment]
-my_api.list_project_exps(project="project1").data.items[0].name
+my_api.list_experiments(project="project1").data[0].name
 """
 "experiment1"
 """
 ```
 
 :::
+
+<br>
 
 #### `get_experiment`
 
@@ -238,8 +295,8 @@ Retrieve the information of an experiment.
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `project` | `str` | Project name |
-| `exp_cuid` | `str` | Unique identifier for the experiment |
-| `user` | `str` | Username of the workspace, defaults to the current user |
+| `exp_id` | `str` | Unique identifier for the experiment (CUID), can be obtained via `list_experiments` or from the "Environment" tab on the web |
+| `username` | `str` | Username of the workspace, defaults to the current user |
 
 **Returns**
 
@@ -250,7 +307,7 @@ Retrieve the information of an experiment.
 ::: code-group
 
 ```python [Retrieve the information of an experiment]
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data
+my_api.get_experiment(project="project1", exp_id="cuid1").data
 """
 {
     "cuid": "cuid1",
@@ -259,7 +316,7 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data
     "state": "FINISHED",
     "show": true,
     "createdAt": "2024-11-23T12:28:04.286Z",
-    "finishedAt": null,
+    "finishedAt": "2024-11-25T15:56:48.123Z",
     "user": {
         "username": "kites-test3",
         "name": "Kites Test"
@@ -273,24 +330,15 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data
 """
 ```
 
-```python [Retrieve the CUID of the experiment]
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.cuid
-"""
-"cuid1"
-"""
-```
-
-Retrieve the status of the experiment:
-
 ```python [Retrieve the status of the experiment]
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.state
+my_api.get_experiment(project="project1", exp_id="cuid1").data.state
 """
-FINISHED
+"FINISHED"
 """
 ```
 
-```python
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"]
+```python [Retrieve the creator's username]
+my_api.get_experiment(project="project1", exp_id="cuid1").data.user["username"]
 """
 "kites-test3"
 """
@@ -300,38 +348,66 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 
 <br>
 
-#### `get_exp_summary`
+#### `delete_experiment`
 
-获取一个实验的概要信息, 包含实验跟踪指标的最终值和最大最小值, 以及其对应的步数
+Delete an experiment.
 
-**方法参数**
+**Method Parameters**
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
-| `exp_cuid` | `str` | 实验CUID, 唯一标识符，可通过`list_project_exps`获取，也可以在URL如`https://swanlab.cn/usename/projectname/runs/{exp_cuid}/chart`中获取 |
-| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+| Parameter  | Type   | Description                                                                                   |
+| ---        | ---    | ---                                                                                           |
+| `project`  | `str`  | Project name                                                                                  |
+| `exp_id`   | `str`  | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
+| `username` | `str`  | Username of the workspace, defaults to the current user                                       |
 
-**返回值**
+**Returns**
 
-`data` `(Dict[str, Dict])`: 返回一个字典, 包含实验的概要信息
+`data` `(dict)`: Empty dictionary, indicating the delete operation was successful
 
-字典中的每个键是一个指标名称, 值是一个结构如下的字典:
-
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `step` | `int` | 最后一个步数 |
-| `value` | `float` | 最后一个步数的指标值 |
-| `min` | `Dict[str, float]` | 最小值对应的步数和指标值 |
-| `max` | `Dict[str, float]` | 最大值对应的步数和指标值 |
-
-
-**示例**
+**Example**
 
 ::: code-group
 
-```python [获取实验概要信息]
-my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data
+```python [Delete an experiment]
+my_api.delete_experiment(project="project1", exp_id="cuid1")
+```
+
+:::
+
+<br>
+
+#### `get_summary`
+
+Retrieve the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps.
+
+**Method Parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `project` | `str` | Project name |
+| `exp_id` | `str` | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
+| `username` | `str` | Username of the workspace, defaults to the current user |
+
+**Returns**
+
+`data` `(Dict[str, Dict])`: Returns a dictionary containing the summary information of the experiment.
+
+Each key in the dictionary is a metric name, and the value is a dictionary with the following structure:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `step` | `int` | Last step |
+| `value` | `float` | Metric value at the last step |
+| `min` | `Dict[str, float]` | Step and value for the minimum |
+| `max` | `Dict[str, float]` | Step and value for the maximum |
+
+
+**Example**
+
+::: code-group
+
+```python [Retrieve experiment summary information]
+my_api.get_summary(project="project1", exp_id="cuid1").data
 """
 {
     "loss": {
@@ -352,15 +428,15 @@ my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data
 ```
 
 
-```python [获取指标的最大值]
-my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["max"]["value"]
+```python [Retrieve the max value of a metric]
+my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["max"]["value"]
 """
 0.7108771095136294
 """
 ```
 
-```python [获取指标最小值所在步]
-my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["min"]["step"]
+```python [Retrieve the step of the min value of a metric]
+my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step"]
 """
 33
 """
@@ -368,6 +444,48 @@ my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["min"]
 :::
 
 <br>
+
+#### `get_metrics`
+
+Get the value of an experiment metric.
+
+**Method Parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `exp_id` | `str` | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
+| `keys` | `Union[str, List[str]]` | Metric name list, i.e., the key in `swanlab.log({key: value})`, can be viewed on the website, or obtained via `get_summary` |
+
+**Returns**
+
+`data` `(DataFrame)`: Returns a DataFrame containing the metric values of the experiment.
+
+**Example**
+
+::: code-group
+
+```python [Get the value of an experiment metric]
+my_api.get_metrics(exp_id="cuid1", keys=["loss", "acc"]).data
+"""
+          loss  loss_timestamp       acc  acc_timestamp
+step                                                   
+1     0.336772   1751712864853  0.670422  1751712864852
+2     0.338035   1751712864858  0.830018  1751712864857
+3     0.282654   1751712864862  0.794594  1751712864862
+4     0.258216   1751712864866  0.832750  1751712864866
+5     0.097542   1751712864871  0.901684  1751712864871
+6     0.092955   1751712864875  0.907544  1751712864875
+7     0.149327   1751712864879  0.942524  1751712864879
+8     0.131631   1751712864884  0.921309  1751712864883
+"""
+```
+
+:::
+
+
+<br>
+
+---
 
 ### Projects
 
@@ -419,3 +537,32 @@ my_api.list_projects().data
 ```
 
 :::
+
+<br>
+
+#### `delete_project`
+
+Delete a project.
+
+**Method Parameters**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `project` | `str` | Project name |
+| `username` | `str` | Username of the workspace, defaults to the current user
+
+**Returns**
+
+`data` `(dict)`: Empty dictionary, indicating the delete operation was successful
+
+**Example**
+
+::: code-group
+
+```python [Delete a project]
+my_api.delete_project(project="project1")
+```
+
+:::
+
+<br>

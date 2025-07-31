@@ -23,9 +23,11 @@
 
 | 环境变量 | 描述 |
 | --- | --- |
-| `SWANLAB_PROJ_NAME` | 项目名称，效果等价于 `swanlab.init(project_name="...")` |
+| `SWANLAB_PROJ_NAME` | 项目名称，效果等价于 `swanlab.init(project="...")` |
 | `SWANLAB_WORKSPACE` | 工作空间名称，效果等价于 `swanlab.init(workspace="...")` |
 | `SWANLAB_EXP_NAME` | 实验名称，效果等价于 `swanlab.init(experiment_name="...")` |
+| `SWANLAB_RUN_ID` | 实验运行ID，效果等价于 `swanlab.init(id="...")` |
+| `SWANLAB_RESUME` | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `must`、`allow`、`never` |
 
 ## 登录认证
 

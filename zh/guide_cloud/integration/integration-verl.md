@@ -76,7 +76,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  critic.model.path=Qwen/Qwen2.5-0.5B-Instruct \
  critic.ppo_micro_batch_size_per_gpu=4 \
  algorithm.kl_ctrl.kl_coef=0.001 \
- +trainer.val_before_train=False \
+ trainer.val_before_train=False \
  trainer.default_hdfs_dir=null \
  trainer.n_gpus_per_node=1 \
  trainer.nnodes=1 \
@@ -84,6 +84,18 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  trainer.test_freq=10 \
  trainer.total_epochs=15 2>&1 | tee verl_demo.log
 ```
+
+:::info
+如果你需要设置项目和实验名，可以设置`trainer.project_name`和`trainer.experiment_name`。  
+如：
+```bash
+PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+ ...
+ trainer.project_name="verl_demo" \
+ trainer.experiment_name="ppo" \
+ ...
+```
+:::
 
 如果启动训练时你还未登陆SwanLab，会出现如下提示。
 
@@ -138,3 +150,15 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 ```
 
 > 如果你希望每轮评估时生成多条结果，如10条，那么修改`trainer.log_val_generations=10`即可
+
+
+## 断点续训
+
+如果你训练时崩溃或希望补充实验，可以使用[resume](/guide_cloud/experiment_track/resume-experiment.html)功能来恢复实验。
+
+在verl训练中，你可以通过设置环境变量来执行resume：
+
+```bash
+export SWANLAB_RESUME=must
+export SWANLAB_RUN_ID=<exp_id>
+```

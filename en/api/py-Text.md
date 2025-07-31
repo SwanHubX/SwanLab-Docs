@@ -18,6 +18,9 @@ Text(
 
 Convert text data to be recorded by `swanlab.log()`.
 
+![](./py-text/show.png)
+
+
 ### Logging String Text
 
 Logging a single string text:

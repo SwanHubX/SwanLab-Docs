@@ -1,6 +1,6 @@
 # 欢迎使用SwanLab 
 
-[官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [VSCode插件](https://marketplace.visualstudio.com/items?itemName=SwanLab.swanlab&ssr=false#overview) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪)
+[官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [快速开始](/guide_cloud/general/quick-start.md) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
 ::: warning 🎉 私有化部署版正式上线！
 私有化部署版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/guide_cloud/self_host/docker-deploy.md)
@@ -47,7 +47,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - ☁️ 支持**云端**使用（类似Weights & Biases），随时随地查看训练进展。[手机看实验的方法](https://docs.swanlab.cn/guide_cloud/general/app.html)
 - 🌸 **可视化训练过程**: 通过UI界面对实验跟踪数据进行可视化，可以让训练师直观地看到实验每一步的结果，分析指标走势，判断哪些变化导致了模型效果的提升，从而整体性地提升模型迭代效率。
 - 📝 **超参数记录**、**指标总结**、**表格分析**
-- **支持的元数据类型**：标量指标、图像、音频、文本、3D点云、生物化学分子、Echarts自定义图表...
+- **支持的元数据类型**：标量指标、图像、音频、文本、视频、3D点云、生物化学分子、Echarts自定义图表...
 
 ![swanlab-table](/assets/molecule.gif)
 
@@ -55,10 +55,15 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 
 ![swanlab-echarts](./what_is_swanlab/echarts.png)
 
+- **LLM生成内容可视化组件**：为大语言模型训练场景打造的文本内容可视化图表，支持Markdown渲染
+
+![swanlab-llm-content](/assets/text-chart.gif)
 
 - **后台自动记录**：日志logging、硬件环境、Git 仓库、Python 环境、Python 库列表、项目运行目录
+- **断点续训记录**：支持在训练完成/中断后，补充新的指标数据到同个实验中
 
-**2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetetion、LightGBM、XGBoost、Keras、Tensorboard、Weights&Biases、OpenAI、Swift、XTuner、Stable Baseline3、Hydra 在内的 **30+** 框架
+
+**2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetetion、LightGBM、XGBoost、Keras、Tensorboard、Weights&Biases、OpenAI、Swift、XTuner、Stable Baseline3、Hydra 在内的 **40+** 框架
 
 ![](/assets/integrations.png)
 
@@ -67,6 +72,8 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 **4. 📦 实验管理**: 通过专为训练场景设计的集中式仪表板，通过整体视图速览全局，快速管理多个项目与实验
 
 **5. 🆚 比较结果**: 通过在线表格与对比图表比较不同实验的超参数和结果，挖掘迭代灵感
+
+![](./what_is_swanlab/chart3.png)
 
 **6. 👥 在线协作**: 您可以与团队进行协作式训练，支持将实验实时同步在一个项目下，您可以在线查看团队的训练记录，基于结果发表看法与建议
 
@@ -88,6 +95,8 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 > 以往的AI研究的分享和开源更关注结果，而我们更关注过程。<br>
 > 社区用户对SwanLab的产品评价可以归结为**简洁易用、提升效率与迭代迅速**<br>
 > ——泽毅，SwanLab 联合创始人
+
+<img src="./what_is_swanlab/carton.png" width="350">
 
 更重要的是，SwanLab是开源的，由一帮热爱开源的机器学习工程师与社区共同构建，我们提供了完全自托管的版本，可以保证你的数据安全与隐私性。
 
@@ -163,6 +172,8 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [veRL](/guide_cloud/integration/integration-verl.html)
 - [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
 - [EasyR1](/guide_cloud/integration/integration-easyr1.html)
+- [AReaL](/guide_cloud/integration/integration-areal.html)
+- [ROLL](/guide_cloud/integration/integration-roll.html)
 
 **其他框架：**
 - [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)

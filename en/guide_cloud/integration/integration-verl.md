@@ -75,7 +75,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  critic.ppo_micro_batch_size_per_gpu=4 \
  algorithm.kl_ctrl.kl_coef=0.001 \
  trainer.logger=['console','swanlab'] \
- +trainer.val_before_train=False \
+ trainer.val_before_train=False \
  trainer.default_hdfs_dir=null \
  trainer.n_gpus_per_node=1 \
  trainer.nnodes=1 \
@@ -83,6 +83,18 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  trainer.test_freq=10 \
  trainer.total_epochs=15 2>&1 | tee verl_demo.log
 ```
+
+:::info
+If you need to set the project and experiment name, you can set `trainer.project_name` and `trainer.experiment_name`.  
+For example:
+```bash
+PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+ ...
+ trainer.project_name="verl_demo" \
+ trainer.experiment_name="ppo" \
+ ...
+```
+:::
 
 If you are not logged into SwanLab when starting the training, the following prompt will appear.
 
@@ -137,3 +149,12 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 ```
 
 > If you want to generate multiple results per round of evaluation, such as 10 results, modify `trainer.log_val_generations=10` instead.
+
+## Tips: Resume at the End
+
+If you want to resume the experiment at the end of the training, you can set the environment variable `SWANLAB_RESUME` to `must` and `SWANLAB_RUN_ID` to the experiment ID.
+
+```bash
+export SWANLAB_RESUME=must
+export SWANLAB_RUN_ID=<exp_id>
+```

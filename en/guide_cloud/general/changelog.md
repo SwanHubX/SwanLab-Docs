@@ -5,6 +5,93 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.8 - 2025.7.29
+
+**🚀 New Features**
+- Sidebar now supports **experiment filtering and sorting**
+- Table view introduces a **column control panel** for easy column hiding and showing
+- **Multiple API Key management** is now available, making your data more secure
+- [swanlab sync](/en/guide_cloud/experiment_track/sync-logfile.md) now offers improved compatibility for log file integrity, adapting to scenarios such as training crashes
+- New chart types released: [PR Curve](/en/api/py-pr_curve.md), [ROC Curve](/en/api/py-roc_curve.md), and [Confusion Matrix](/en/api/py-confusion_matrix.md)
+- Open API now includes an **interface for retrieving experiment metrics**
+
+**🤔 Improvements**
+- Added support for Japanese and Russian languages
+- The configuration table in experiment cards now supports one-click collapse/expand
+- Fixed some issues
+
+
+## v0.6.7 - 2025.7.17
+
+**🚀 New Features**
+- Added support for **more flexible line chart configuration**, including line type, color, thickness, grid, and legend position
+- Added support for `swanlab.Video` data type, supporting recording and visualizing GIF format files
+- Added support for configuring the Y-axis and maximum number of experiments displayed in the global chart dashboard
+
+**⚙️ Improvements**
+- Increased the maximum experiment name length to 250 characters
+- Fixed some issues
+
+
+## v0.6.5 - 2025.7.5
+
+**🚀 New Features**
+- Added support for **resuming training from checkpoints (resume断点续训)**
+- Added support for **zooming in on small line charts**
+- Added support for configuring **individual chart smoothing**
+
+**⚙️ Improvements**
+- Significantly improved **interaction experience when zooming in on charts**
+
+**🔌 Integrations**
+- 🤗 Integrated with the [accelerate](https://github.com/huggingface/accelerate) framework. See the [documentation](/guide_cloud/integration/integration-huggingface-accelerate.md) to enhance experiment tracking in distributed training.
+- Integrated with the [ROLL](https://github.com/alibaba/ROLL) framework. See the [documentation](/guide_cloud/integration/integration-roll.md) to improve experiment logging during distributed training.
+- Integrated with the [Ray](https://github.com/ray-project/ray) framework. See the [documentation](/guide_cloud/integration/integration-ray.md) to enhance experiment tracking in distributed training environments.
+
+**🔌 Plugins**
+- Added a new `LogdirFileWriter` plugin, which supports writing files directly into the log directory.
+
+
+## v0.6.4 - 2025.6.18
+
+**🚀 New Features**
+- Added integration with [AREAL](https://github.com/inclusionAI/AReaL), [PR](https://github.com/inclusionAI/AReaL/pull/98)
+- Added support for highlighting corresponding curves when hovering over experiments in the sidebar
+- Added support for cross-group comparison line charts
+- Enabled progressive chart rendering to improve page loading speed
+- Added support for setting experiment name clipping rules
+
+**⚙️ Bug Fixes**
+- Fixed issues with `local` mode where log files could not be correctly `sync`ed and `watched`
+
+## v0.6.3 - 2025.6.12
+
+**🚀 New Features**
+- Added `swanlab.echarts.table` to support creating table charts
+- Added MB memory recording for Ascend NPU, MetaX, Hygon DCU, Cambricon MLU, and Kunlunxin XPU hardware monitoring
+- `swanlab sync` now supports uploading multiple log files at once
+- Added `Public/Private` filtering to workspaces
+- Added `Latest/Max/Min` switch module to table view
+
+## v0.6.2 - 2025.6.9
+
+**🚀 New Features**
+- Added the `swanlab sync` command to support syncing local logs to SwanLab Cloud or private deployment  
+- Supports storing complete experiment log files locally
+
+
+## v0.6.1 - 2025.6.5
+
+**🚀 New Features**  
+- Hovering over the table header now displays a shortened name  
+- Added the "Expand Subtable" feature in table view  
+- Hardware monitoring now supports Hygon DCU  
+- Hardware monitoring now supports retrieving power consumption information for Ascend NPUs  
+
+**🤔 Optimizations**  
+- Improved integration with the HuggingFace Accelerate framework  
+- Duplicate step log warnings are no longer printed by default
+
 ## v0.6.0 - 2025.6.1  
 
 **🚀 New Features**  

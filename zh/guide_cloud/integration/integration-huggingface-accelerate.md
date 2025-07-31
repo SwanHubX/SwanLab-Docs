@@ -6,17 +6,69 @@ HuggingFace 的 [accelerate](https://huggingface.co/docs/accelerate/index) 是�
 
 它提供了高效的分布式训练和推理的工具，使开发者能够更轻松地在不同硬件设备上部署和加速模型。通过简单的几行代码改动，就可以轻松将现有的训练代码集成进 `torch_xla` 和 `torch.distributed` 这类平台，而无需为复杂的分布式计算架构烦恼，从而提升工作效率和模型性能。
 
-![hf-accelerate-image](/assets/ig-huggingface-accelerate.png)
+![hf-accelerate-image](./huggingface_accelerate/logo.png)
 
 你可以使用`accelerate`快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
-## 1. 引入
+> `accelerate`>=1.8.0 的版本，已官方集成了swanlab  
+> 如果你的版本低于1.8.0，请使用 **SwanLabTracker集成**
 
-```python
-from swanlab.integration.accelerate import SwanLabTracker
+
+## 1. 两行代码完成集成
+
+```python {4,9}
+from accelerate import Accelerator
+
+# 告诉 Accelerator 对象使用 swanlab 进行日志记录
+accelerator = Accelerator(log_with="swanlab")
+
+# 初始化您的 swanlab 实验，传递 swanlab 参数和任何配置信息
+accelerator.init_trackers(
+    ...
+    init_kwargs={"swanlab": {"experiment_name": "hello_world"}}
+    )
 ```
 
-## 2. 在初始化accelerate时指定日志记录器
+::: warning 补充信息
+1. swanlab项目名由`accelerator.init_trackers`的`project_name`参数指定
+2. 向`init_kwargs`传递的`swanlab`字典，key-value和`swanlab.init`的参数完全一致（除了project）。
+:::
+
+最小能跑代码：
+
+```python {4,10}
+from accelerate import Accelerator
+
+# Tell the Accelerator object to log with swanlab
+accelerator = Accelerator(log_with="swanlab")
+
+# Initialise your swanlab experiment, passing swanlab parameters and any config information
+accelerator.init_trackers(
+    project_name="accelerator",
+    config={"dropout": 0.1, "learning_rate": 1e-2},
+    init_kwargs={"swanlab": {"experiment_name": "hello_world"}}
+    )
+
+for i in range(100):
+    # Log to swanlab by calling `accelerator.log`, `step` is optional
+    accelerator.log({"train_loss": 1.12, "valid_loss": 0.8}, step=i+1)
+
+# Make sure that the swanlab tracker finishes correctly
+accelerator.end_training()
+```
+
+## 2. SwanLabTracker集成
+
+如果你使用的是`accelerate<1.8.0`的版本，则可以使用SwanLabCallback集成。
+
+### 2.1 引入
+
+```bash
+from swanlab.integration.accelerate import SwanLabTracke
+```
+
+
+### 2.2 在初始化accelerate时指定日志记录器
 
 ```python (1,7,9,12)
 from swanlab.integration.accelerate import SwanLabTracker
@@ -40,11 +92,11 @@ accelerator.init_trackers("YOUR_SMART_PROJECT_NAME", config=config)
 
 - 显式调用`init_trackers`来初始化所有日志记录是`accelerate`的机制，第二次设置的项目名是当有多个日志记录器时,初始化内置的日志记录器的情况下才会用到。
 
-## 3. 完整案例代码
+### 2.3 完整案例代码
 
 下面是一个使用accelerate进行cifar10分类，并使用SwanLab进行日志跟踪的案例：
 
-```python (10,45,46,47,71,89)
+```python (10,45,46,47,71,90)
 import torch
 import torch.utils
 import torch.utils.data
@@ -144,5 +196,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```

@@ -19,7 +19,7 @@ Example code:
 
 ```python
 image = swanlab.Image(image_array, caption="Left: Input, Right: Output")
-swanlab.log({"examples": image})
+swanlab.log({"examples": image})    
 ```
 
 ### 1.2 Log PIL-Type Images
@@ -146,6 +146,9 @@ swanlab.log({"examples": text_list})
 
 Please refer to this document: [API-Molecule](/en/api/py-molecule)
 
+## 6. Video
+
+Please refer to this document: [API-Video](/en/api/py-video)
 
 ## Q&A
 

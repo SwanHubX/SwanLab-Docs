@@ -8,12 +8,16 @@ During experiment tracking, SwanLab automatically monitors machine hardware reso
 | Ascend NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |  
 | Cambricon MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |  
 | Kunlunxin XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |  
-| MooreThread GPU | ✅ | ✅ | [moorethread.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethread.py) |  
+| MooreThread GPU | ✅ | ✅ | [moorethreads.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethreads.py) |  
 | MetaX GPU | ✅ | ✅ | [metax.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/metax.py) |  
+| Hygon DCU | ✅ | ✅ | [hygon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/dcu/hygon.py) |  
 | CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |  
 | Memory | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |  
 | Disk | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |  
 | Network | ✅ | ✅ | [network.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/network.py) |  
+
+[[toc]]
+
 
 ## System Monitoring Metrics  
 
@@ -59,8 +63,10 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Metric | Description |  
 |-----------------------|------------------------------------------------|  
 | NPU Utilization (%) | NPU computational utilization. |  
+| NPU Memory Allocated (MB) | NPU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
 | NPU Memory Allocated (%) | NPU memory utilization. |  
 | NPU Temperature (℃) | NPU temperature in Celsius. |  
+| NPU Power (W) | NPU power draw in watts. |  
 
 <br>
 
@@ -73,6 +79,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Metric | Description |  
 |-----------------------|------------------------------------------------|  
 | MLU Utilization (%) | MLU computational utilization. |  
+| MLU Memory Allocated (MB) | MLU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
 | MLU Memory Allocated (%) | MLU memory utilization. |  
 | MLU Temperature (℃) | MLU temperature in Celsius. |  
 | MLU Power (W) | MLU power draw in watts. |  
@@ -88,6 +95,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Metric | Description |  
 |-----------------------|------------------------------------------------|  
 | XPU Utilization (%) | XPU computational utilization. |  
+| XPU Memory Allocated (MB) | XPU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
 | XPU Memory Allocated (%) | XPU memory utilization. |  
 | XPU Temperature (℃) | XPU temperature in Celsius. |  
 | XPU Power (W) | XPU power draw in watts. |  
@@ -103,6 +111,7 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Metric | Description |  
 |-----------------------|------------------------------------------------|  
 | GPU Utilization (%) | GPU computational utilization. |  
+| GPU Memory Allocated (MB) | GPU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
 | GPU Memory Allocated (%) | GPU memory utilization. |  
 | GPU Temperature (℃) | GPU temperature in Celsius. |  
 | GPU Power (W) | GPU power draw in watts. |
@@ -118,9 +127,24 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 | Metric | Description |  
 |-----------------------|------------------------------------------------|  
 | GPU Utilization (%) | GPU computational utilization. |  
+| GPU Memory Allocated (MB) | GPU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
 | GPU Memory Allocated (%) | GPU memory utilization. |  
 | GPU Temperature (℃) | GPU temperature in Celsius. |  
 | GPU Power (W) | GPU power draw in watts. |
+
+<br>
+
+## DCU (Hygon)
+
+> On multi-DCU machines, each DCU's metrics are recorded separately.
+
+| Metric | Description |  
+|-----------------------|------------------------------------------------|  
+| DCU Utilization (%) | DCU computational utilization. |  
+| DCU Memory Allocated (MB) | DCU memory usage – VRAM consumption in MB. Chart Y-axis capped at the maximum VRAM across GPUs. |  
+| DCU Memory Allocated (%) | DCU memory utilization. |  
+| DCU Temperature (℃) | DCU temperature in Celsius. |  
+| DCU Power (W) | DCU power draw in watts. |
 
 <br>
 

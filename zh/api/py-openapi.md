@@ -12,6 +12,22 @@
 
 利用好此特性可极大提升 SDK 的灵活性和可扩展性, 方便构建高级用法或扩展体系
 
+## 支持的API列表
+
+下表列出了SwanLab OpenAPI支持的所有方法，点击API名称可跳转到详细说明：
+
+| API名称 | 分类 | 功能描述 | Ready |
+|---------|------|----------|------|
+| [`list_workspaces`](#list-workspaces) | WorkSpace | 获取当前用户的所有工作空间(组织)列表 | ✅ |
+| [`list_projects`](#list-projects) | Project | 获取指定工作空间下的所有项目列表 | ✅ |
+| [`delete_project`](#delete-project) | Project | 删除一个项目 | ✅ |
+| [`list_experiments`](#list-experiments) | Experiment | 获取指定项目下的所有实验列表 | ✅ |
+| [`get_experiment`](#get-experiment) | Experiment | 获取一个实验的详细信息（实验名、配置、环境等） | ✅ |
+| [`get_summary`](#get-summary) | Experiment | 获取一个实验的Summary信息，包含实验跟踪指标的最终值和最大最小值 | ✅ |
+| [`get_metrics`](#get-metrics) | Experiment | 获取一个实验指标的值 |  ✅ |
+| [`delete_experiment`](#delete-experiment) | Experiment | 删除一个实验 | ✅ |
+
+
 ## 介绍
 
 > 前置条件：需要在编程环境下登录过SwanLab账号。
@@ -39,11 +55,28 @@ print(other_api.list_workspaces().data)
 1. 如果显式提供了`api_key`参数, 则优先使用该`api_key`进行身份认证, 可以在[这里](https://swanlab.cn/space/~/settings)查看自己的 API 密钥；
 2. 否则,使用本地的认证信息。
 
-## OpenAPIs
+## 常用参数
 
-每个开放 API 都是`OpenApi`对象的一个方法
+### 实验ID `exp_id`
 
-### 模型定义
+实验的唯一标识符**CUID**, 即`exp_id`, 可通过`list_experiments`方法获取对应的`cuid`字段
+
+要查看某一个实验的CUID, 可在云端版网页的"环境"标签页查看"实验ID"一行, 点击即可复制此实验的CUID
+
+![](./py-openapi/exp_id.png)
+
+### 工作空间名 `username`
+
+工作空间名即`username`, 用于标识用户所在的工作空间:
+
+- 若为个人空间, `username`即为用户的用户名
+- 若为组织空间, `username`为该组织的组织ID
+
+`username`可以通过`list_workspaces`方法获取, 返回的工作空间列表中每个元素的`username`字段即为工作空间名
+
+一般的, 若在开放API调用中不指定`username`, 则**默认**为当前用户的个人空间
+
+## 模型定义
 
 在使用开放 API 时, 获取到的部分云端资源组成较为复杂, 如实验、项目等, 难以用简单的Python数据类型表示
 
@@ -73,7 +106,7 @@ workspace_name: str = my_project.group["name"]
 
 > Note: 模型可以通过字典风格访问, 但不是真正的字典, 可以通过`my_exp_dict: Dict = my_exp.model_dump()`获取此时模型对应的字典
 
-#### API 响应 `ApiResponse`
+### API 响应 `ApiResponse`
 
 开放 API 方法返回`swanlab.api.openapi.types.ApiResponse`对象, 包含以下字段:
 
@@ -83,7 +116,7 @@ workspace_name: str = my_project.group["name"]
 | `errmsg` | `str` | 错误信息, 如果状态码不为`2XX`则非空 |
 | `data` | `Any` | 返回的具体数据, 下面API文档中提到的返回值即为该字段 |
 
-#### 实验模型 `Experiment`
+### 实验模型 `Experiment`
 
 实验对象的类型为`swanlab.api.openapi.types.Experiment`, 包含以下字段:
 
@@ -99,7 +132,7 @@ workspace_name: str = my_project.group["name"]
 | `user` | `Dict[str, str]` | 实验创建者, 包含 `username` 与 `name` |
 | `profile` | `dict` | 详细包含了实验的所有配置信息, 如用户自定义配置与Python运行环境等 |
 
-#### 项目模型 `Project`
+### 项目模型 `Project`
 
 项目对象的类型为`swanlab.api.openapi.types.Project`, 包含以下字段:
 
@@ -114,9 +147,11 @@ workspace_name: str = my_project.group["name"]
 | `group` | `Dict[str, str]` | 工作空间信息, 包含 `type`, `username`, `name` |
 | `count` | `Dict[str, int]` | 项目的统计信息, 如实验个数, 协作者数量等 |
 
-下面是所有可用的SwanLab 开放 API:
+## OpenAPIs
 
-<br>
+每个开放 API 都是`OpenApi`对象的一个方法
+
+下面是所有可用的SwanLab 开放 API
 
 ### WorkSpace
 
@@ -183,9 +218,11 @@ my_api.list_workspaces().code
 
 <br>
 
+---
+
 ### Experiment
 
-#### `list_project_exps`
+#### `list_experiments`
 
 获取指定项目下的所有实验列表
 
@@ -205,7 +242,7 @@ my_api.list_workspaces().code
 ::: code-group
 
 ```python [获取实验列表]
-my_api.list_project_exps(project="project1").data
+my_api.list_experiments(project="project1").data
 """
 [
     {
@@ -233,14 +270,14 @@ my_api.list_project_exps(project="project1").data
 ```
 
 ```python [获取第一个实验的CUID]
-my_api.list_project_exps(project="project1").data[0].cuid
+my_api.list_experiments(project="project1").data[0].cuid
 """
 "cuid1"
 """
 ```
 
 ```python [获取第一个实验的名称]
-my_api.list_project_exps(project="project1").data[0].name
+my_api.list_experiments(project="project1").data[0].name
 """
 "experiment1"
 """
@@ -259,7 +296,7 @@ my_api.list_project_exps(project="project1").data[0].name
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `project` | `str` | 项目名 |
-| `exp_cuid` | `str` | 实验CUID, 唯一标识符，可通过`list_project_exps`获取，也可以在URL如`https://swanlab.cn/usename/projectname/runs/{exp_cuid}/chart`中获取 |
+| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
 | `username` | `str` | 工作空间名, 默认为用户个人空间 |
 
 **返回值**
@@ -271,7 +308,7 @@ my_api.list_project_exps(project="project1").data[0].name
 ::: code-group
 
 ```python [获取实验信息]
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data
+my_api.get_experiment(project="project1", exp_id="cuid1").data
 """
 {
     "cuid": "cuid1",
@@ -295,14 +332,14 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data
 ```
 
 ```python [获取实验的状态]
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.state
+my_api.get_experiment(project="project1", exp_id="cuid1").data.state
 """
 "FINISHED"
 """
 ```
 
 ```python [获取实验的创建者用户名]
-my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"]
+my_api.get_experiment(project="project1", exp_id="cuid1").data.user["username"]
 """
 "kites-test3"
 """
@@ -312,7 +349,33 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 
 <br>
 
-#### `get_exp_summary`
+#### `delete_experiment`
+
+删除一个实验
+
+**方法参数**
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `project` | `str` | 项目名 |
+| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+
+**返回值**
+`data` `(dict)`: 空字典, 仅表示删除操作成功
+
+**示例**
+
+::: code-group
+
+```python [删除实验]
+my_api.delete_experiment(project="project1", exp_id="cuid1")
+```
+
+:::
+
+<br>
+
+#### `get_summary`
 
 获取一个实验的概要信息, 包含实验跟踪指标的最终值和最大最小值, 以及其对应的步数
 
@@ -321,7 +384,7 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `project` | `str` | 项目名 |
-| `exp_cuid` | `str` | 实验CUID, 唯一标识符，可通过`list_project_exps`获取，也可以在URL如`https://swanlab.cn/usename/projectname/runs/{exp_cuid}/chart`中获取 |
+| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
 | `username` | `str` | 工作空间名, 默认为用户个人空间 |
 
 **返回值**
@@ -343,7 +406,7 @@ my_api.get_experiment(project="project1", exp_cuid="cuid1").data.user["username"
 ::: code-group
 
 ```python [获取实验概要信息]
-my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data
+my_api.get_summary(project="project1", exp_id="cuid1").data
 """
 {
     "loss": {
@@ -365,14 +428,14 @@ my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data
 
 
 ```python [获取指标的最大值]
-my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["max"]["value"]
+my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["max"]["value"]
 """
 0.7108771095136294
 """
 ```
 
 ```python [获取指标最小值所在步]
-my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["min"]["step"]
+my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step"]
 """
 33
 """
@@ -380,6 +443,49 @@ my_api.get_exp_summary(project="project1", exp_cuid="cuid1").data["loss"]["min"]
 :::
 
 <br>
+
+#### get_metrics
+
+获取一个实验的指标值
+
+**方法参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
+| `keys` | `Union[str, List[str]]` | 指标名列表, 即swanlab.log({key: value})中的key, 可在网站查看, 也可通过`get_summary`获取 |
+
+**返回值**
+
+`data` `(DataFrame)`: 返回一个DataFrame, 包含实验的指标值
+
+**示例**
+
+::: code-group
+
+```python [获取实验指标]
+my_api.get_metrics(exp_id="cuid1", keys=["loss", "acc"]).data
+"""
+          loss  loss_timestamp       acc  acc_timestamp
+step                                                   
+1     0.336772   1751712864853  0.670422  1751712864852
+2     0.338035   1751712864858  0.830018  1751712864857
+3     0.282654   1751712864862  0.794594  1751712864862
+4     0.258216   1751712864866  0.832750  1751712864866
+5     0.097542   1751712864871  0.901684  1751712864871
+6     0.092955   1751712864875  0.907544  1751712864875
+7     0.149327   1751712864879  0.942524  1751712864879
+8     0.131631   1751712864884  0.921309  1751712864883
+"""
+```
+
+:::
+
+
+<br>
+
+---
+
 
 ### Project
 
@@ -431,3 +537,30 @@ my_api.list_projects().data
 ```
 
 :::
+
+#### `delete_project`
+
+删除一个项目
+
+**方法参数**
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `project` | `str` | 项目名 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+
+**返回值**
+
+`data` `(dict)`: 空字典, 仅表示删除操作成功
+
+**示例**
+
+::: code-group
+
+```python [删除项目]
+my_api.delete_project(project="project1")
+```
+
+:::
+
+<br>

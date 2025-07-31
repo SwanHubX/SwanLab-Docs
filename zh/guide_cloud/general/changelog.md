@@ -5,6 +5,96 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.6.8 - 2025.7.29
+
+**🚀新增功能**
+- 侧边栏支持**实验筛选、排序**
+- 表格视图上线**列控制面板**，能够方便地实现列的隐藏与显示
+- **多API Key管理**上线，让你的数据更安全
+- [swanlab sync](/guide_cloud/experiment_track/sync-logfile.md) 提高了对日志文件完整性的兼容，适配训练崩溃等场景
+- 新图表类型-[PR曲线](/api/py-pr_curve.md)、[ROC曲线](/api/py-roc_curve.md)、[混淆矩阵](/api/py-confusion_matrix.md)上线
+- 开放接口新增**获取实验指标**接口
+
+**🤔优化**
+- 增加 日语、俄语 语言支持
+- 实验卡片中的配置表格支持一键折叠/展开
+- 修复了一些问题
+
+## v0.6.7 - 2025.7.17
+
+**🚀新增功能**
+- 更强大的折线图配置，支持灵活配置线型、颜色、粗细、网格和图例位置
+- 支持`swanlab.Video`数据类型，支持记录与可视化GIF格式文件
+- 全局图表仪表盘支持配置Y轴与最大显示实验数
+- 更强大的文本图表，适配大语言模型训练场景
+
+**🤔优化**
+- 最大实验名提升到250个字符
+- 修复了一些问题
+
+## v0.6.5 - 2025.7.5
+
+**🚀新增功能**
+- 支持**resume断点续训**
+- 支持小折线图局部放大
+- 支持配置单个折线图平滑
+
+**⚙️优化**
+- 大幅改进了图像图表放大后的交互效果
+
+**🔌集成**
+- 🤗集成[accelerate](https://github.com/huggingface/accelerate)框架，[文档](/guide_cloud/integration/integration-huggingface-accelerate.md)增强分布式训练中的实验记录体验；
+- 集成[ROLL](https://github.com/alibaba/ROLL)框架，[文档](/guide_cloud/integration/integration-roll.md)增强分布式训练中的实验记录体验；
+- 集成[Ray](https://github.com/ray-project/ray)框架，[文档](/guide_cloud/integration/integration-ray.md)增强分布式训练中的实验记录体验；
+
+**🔌插件**
+- 新增`LogdirFileWriter`插件，支持将文件写入到日志文件夹
+
+
+**生态**
+- 阿里云计算巢服务上架：[指引](/guide_cloud/self_host/alibabacloud-computenest.md)
+
+
+## v0.6.4 - 2025.6.18
+
+**🚀新增功能**
+- 新增与[AREAL](https://github.com/inclusionAI/AReaL)框架的集成，[PR](https://github.com/inclusionAI/AReaL/pull/98)
+- 支持鼠标Hover到侧边栏实验时，高亮相应曲线
+- 支持跨组对比折线图
+- 启用渐进式图表渲染，提高页面加载速度
+- 支持设置实验名裁剪规则
+
+**⚙️修复**
+- 修复了`local`模式下，日志文件无法正确`sync`和`watch`的问题
+
+## v0.6.3 - 2025.6.12
+
+**🚀新增功能**
+- 新增`swnalab.echarts.table`，支持创建表格图表
+- 昇腾/沐曦/海光/寒武纪/昆仑芯 硬件监控 增加显存（MB）记录
+- `swanlab sync`支持一次多日志上传
+- 工作区增加`公开/私有`筛选
+- 表格视图增加`最新/最大/最小值`切换模块
+
+
+## v0.6.2 - 2025.6.9
+
+**🚀新增功能**
+- 新增`swanlab sync`命令，支持将本地日志同步到SwanLab云端/私有化部署端
+- 支持在本地存储完整的实验日志文件
+
+## v0.6.1 - 2025.6.5
+
+**🚀新增功能**
+- 鼠标放到表头，可以显示缩略的名称了
+- 表格视图增加「展开子表」功能
+- 硬件监控支持海光DCU
+- 硬件监控支持获取昇腾NPU的功耗信息
+
+**🤔优化**
+- 优化了HuggigngFace accelerate框架的集成
+- 默认不再打印重复step log warning
+
 ## v0.6.0 - 2025.6.1
 
 **🚀新增功能**

@@ -146,6 +146,9 @@ swanlab.log({"examples": text_list})
 
 请参考此文档：[API-Molecule](/api/py-molecule)
 
+## 6. 视频
+
+请参考此文档：[API-Video](/api/py-video)
 
 ## Q&A
 

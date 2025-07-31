@@ -155,7 +155,7 @@ model = AutoModelForCausalLM.from_pretrained("./Qwen/Qwen3-1.7B", device_map="au
 
 We use **SwanLab** to monitor training and evaluate model performance.  
 
-SwanLab is an open-source, lightweight AI training tracking and visualization tool, often called the "Chinese Weights & Biases + Tensorboard." It supports cloud/offline use and integrates with 30+ frameworks (PyTorch, Transformers, etc.).  
+SwanLab is an open-source, lightweight AI training tracking and visualization tool, often called the "Chinese Weights & Biases + Tensorboard." It supports cloud/offline use and integrates with 40+ frameworks (PyTorch, Transformers, etc.).  
 
 ![09-05](./qwen3/05.png)  
 ![09-06](./qwen3/06.png)  

@@ -27,9 +27,11 @@ Settings(
 | `conda_collect`        | StrictBool    | 是否采集 Conda 环境信息。默认值为 `False`。                                                   |
 | `hardware_monitor`     | StrictBool    | 是否开启硬件监控。如果 `metadata_collect` 关闭，则此项无效。默认值为 `True`。                            |
 | `disk_io_dir`          | DirectoryPath | 磁盘 IO 监控的路径。默认值为系统根目录 (`/` 或 `C:\`)。                                            |
+| `hardware_interval`    | PositiveInt   | 硬件监控采集间隔，以秒为单位，最小值为5秒。                                                          |
+| `backup`               | PositiveInt   | 日志备份开启功能，默认值为 `True`。开启后，日志将被备份到本地（默认为`swanlog`目录）。      |
 | `upload_interval`      | PositiveInt   | 日志上传间隔（单位：秒）。默认值为 `1`。                                                          |
 | `max_log_length`       | int           | 终端日志上传单行最大字符数（范围：500-4096）。默认值为 `1024`。                                         |
-| `log_proxy_type`       | Literal | 日志代理类型，会影响实验的日志选项卡记录的内容。默认值为 `"all"`。"stdout" 表示只代理标准输出流，"stderr" 表示只代理标准错误流，"all" 表示代理标准输出流和标准错误流，"none" 表示不代理日志。|
+| `log_proxy_type`       | Literal       | 日志代理类型，会影响实验的日志选项卡记录的内容。默认值为 `"all"`。"stdout" 表示只代理标准输出流，"stderr" 表示只代理标准错误流，"all" 表示代理标准输出流和标准错误流，"none" 表示不代理日志。|
 
 ## 介绍
 
@@ -45,12 +47,27 @@ Settings(
 
 ### 更新全局设置
 
-```python
+::: code-group
+
+```python [方式一]
 import swanlab
-from swanlab import Settings
 
 # 创建新的设置对象
-new_settings = Settings(
+new_settings = swanlab.Settings(
+    metadata_collect=False,
+    hardware_monitor=False,
+    upload_interval=5
+)
+
+swanlab.init(settings=new_settings)
+...
+```
+
+```python [方式二]
+import swanlab
+
+# 创建新的设置对象
+new_settings = swanlab.Settings(
     metadata_collect=False,
     hardware_monitor=False,
     upload_interval=5
@@ -62,6 +79,8 @@ swanlab.merge_settings(new_settings)
 swanlab.init()
 ...
 ```
+
+:::
 
 ### 记录 conda 环境信息
 

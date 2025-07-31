@@ -43,3 +43,13 @@ SwanLab 自托管版本基于 [Docker](https://www.docker.com/) 部署，默认�
 > 上面将访问端口修改为了 `80`
 
 修改完成后执行 `docker compose up -d` 重启容器，重启完成后即可通过 `http://{ip}:80` 访问
+
+## 上传媒体文件报错怎么办
+
+当你使用`swanlab.log`记录媒体文件，如图像、音频时，发现报错，如：
+
+```bash
+swanlab: Upload error: An error occurred (InvalidAccessKeyId) when calling the PutObject operation: The Access Key Id you provided does not exist in our records.
+```
+
+请检查你的服务器是否开放了`9000`端口，如果未开放，请在服务器防火墙/安全组中开放`9000`端口。

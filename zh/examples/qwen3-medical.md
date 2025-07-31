@@ -165,7 +165,7 @@ model = AutoModelForCausalLM.from_pretrained("./Qwen/Qwen3-1.7B", device_map="au
 
 我们使用SwanLab来监控整个训练过程，并评估最终的模型效果。
 
-SwanLab 是一款开源、轻量的 AI 模型训练跟踪与可视化工具，面向人工智能与深度学习开发者，提供了一个跟踪、记录、比较、和协作实验的平台，常被称为"中国版 Weights & Biases + Tensorboard"。SwanLab同时支持云端和离线使用，并适配了从PyTorch、Transformers、Lightning再到LLaMA Factory、veRL等30+ AI训练框架。
+SwanLab 是一款开源、轻量的 AI 模型训练跟踪与可视化工具，面向人工智能与深度学习开发者，提供了一个跟踪、记录、比较、和协作实验的平台，常被称为"中国版 Weights & Biases + Tensorboard"。SwanLab同时支持云端和离线使用，并适配了从PyTorch、Transformers、Lightning再到LLaMA Factory、veRL等40+ AI训练框架。
 
 ![09-05](./qwen3/05.png)
 ![09-06](./qwen3/06.png)

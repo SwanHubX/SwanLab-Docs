@@ -8,12 +8,15 @@ SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情
 | 昇腾NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |
 | 寒武纪MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |
 | 昆仑芯XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |
-| 摩尔线程GPU | ✅ | ✅ | [moorethread.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethread.py) |
+| 摩尔线程GPU | ✅ | ✅ | [moorethreads.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethreads.py) |
 | 沐曦GPU | ✅ | ✅ | [metax.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/metax.py) |
+| 海光DCU | ✅ | ✅ | [hygon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/dcu/hygon.py) |
 | CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |
 | 内存 | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |
 | 硬盘 | ✅ | ✅ | [disk.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/disk.py) |
 | 网络 | ✅ | ✅ | [network.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/network.py) |
+
+[[toc]]
 
 
 ## 系统监控指标详解
@@ -58,8 +61,10 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | 指标 | 描述 |  
 |--------|------------|  
 | NPU Utilization (%) | **NPU 利用率**，表示此NPU的计算资源占用百分比。|
+| NPU Memory Allocated (MB) | **NPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
 | NPU Memory Allocated (%) | **NPU 显存使用率**，表示此NPU的显存占用百分比。|
 | NPU Temperature (℃) | **NPU 温度**，表示此NPU的温度，以摄氏度为单位。|
+| NPU Power (W) | **NPU 功率**，表示此NPU的功率，以瓦特为单位。|
 
 <br>
 
@@ -72,6 +77,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | 指标 | 描述 |  
 |--------|------------|  
 | MLU Utilization (%) | **MLU 利用率**，表示此MLU的计算资源占用百分比。|
+| MLU Memory Allocated (MB) | **MLU 显存使用率**，表示此MLU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有MLU中的最大总显存。|
 | MLU Memory Allocated (%) | **MLU 显存使用率**，表示此MLU的显存占用百分比。|
 | MLU Temperature (℃) | **MLU 温度**，表示此MLU的温度，以摄氏度为单位。|
 | MLU Power (W) | **MLU 功率**，表示此MLU的功率，以瓦特为单位。|
@@ -87,6 +93,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | 指标 | 描述 |  
 |--------|------------|  
 | XPU Utilization (%) | **XPU 利用率**，表示此XPU的计算资源占用百分比。|
+| XPU Memory Allocated (MB) | **XPU 显存使用率**，表示此XPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有XPU中的最大总显存。|
 | XPU Memory Allocated (%) | **XPU 显存使用率**，表示此XPU的显存占用百分比。|
 | XPU Temperature (℃) | **XPU 温度**，表示此XPU的温度，以摄氏度为单位。|
 | XPU Power (W) | **XPU 功率**，表示此XPU的功率，以瓦特为单位。|
@@ -102,6 +109,7 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | 指标 | 描述 |  
 |--------|------------|  
 | GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Memory Allocated (MB) | **GPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
 | GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
 | GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
 | GPU Power (W) | **GPU 功率**，表示此GPU的功率，以瓦特为单位。|
@@ -117,9 +125,25 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | 指标 | 描述 |     
 |--------|------------|  
 | GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Memory Allocated (MB) | **GPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
 | GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
 | GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
 | GPU Power (W) | **GPU 功率**，表示此GPU的功率，以瓦特为单位。|
+
+<br>
+
+## DCU（海光）
+
+> 在多卡机器上，每个海光DCU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |     
+|--------|------------|  
+| GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Memory Allocated (MB) | **GPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
+| GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
+| GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
+| GPU Power (W) | **GPU 功率**，表示此GPU的功率，以瓦特为单位。|
+
 
 <br>
 

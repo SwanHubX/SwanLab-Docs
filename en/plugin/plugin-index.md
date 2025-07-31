@@ -13,4 +13,5 @@
 
 ## 📝 Logging Plugins
 
+- [File Logger](/en/plugin/writer-filelogdir.md)
 - [CSV Writer](/en/plugin/writer-csv.md)    

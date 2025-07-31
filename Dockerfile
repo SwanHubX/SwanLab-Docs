@@ -5,6 +5,10 @@ RUN npm install -g pnpm && pnpm install
 RUN echo "依赖安装完成..."
 COPY . .
 
+# 注入环境变量到构建阶段
+ARG UMAMI_WEBSITE_ID
+ENV UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
+
 RUN echo '开始build'
 RUN pnpm run docs:build
 RUN echo '---build 完成---'

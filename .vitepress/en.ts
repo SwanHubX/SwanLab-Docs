@@ -33,7 +33,7 @@ export const en = defineConfig({
       },
       {
         text: 'Integration',  items: [
-          { text: 'All 30+ Frameworks', link: base_path_guide_cloud + '/integration'},
+          { text: 'All 40+ Frameworks', link: base_path_guide_cloud + '/integration'},
           { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
           { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
           { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
@@ -54,10 +54,12 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.6.0',  items: [
-        { text: 'changelog', link: base_path_guide_cloud + '/general/changelog' },
-        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
-        { text: 'Contribute Docs', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
+      { text: 'v0.6.8',  items: [
+        { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
+        { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
+        { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
+        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
+        { text: 'Docs Github', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
       {
         component: 'HeaderButtonEN',
@@ -135,15 +137,33 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Log media metric', items:[
         { text: 'Log Media', link: 'experiment_track/log-media' },
         { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
+        { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart' },
       ]},
+      {
+        text: 'Log compute metric',
+        collapsed: true,
+        items: [
+          { text: 'Log PR Curve', link: 'experiment_track/compute_metric/log-pr-curve' },
+          { text: 'Log ROC Curve', link: 'experiment_track/compute_metric/log-roc-curve' },
+          { text: 'Log Confusion Matrix', link: 'experiment_track/compute_metric/log-confusion-matrix' },
+        ]
+      },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
+      { 
+        text: 'Tips',
+        items: [
+          { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
+          { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
+          { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+          { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
+        ]
+      },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
-      { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
@@ -153,7 +173,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Docker deployment', link: 'self_host/docker-deploy' },
-      { text: 'Tencent Cloud App deployment', link: 'self_host/tencentcloud-app' },
       { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
       { text: 'Version Table', link: 'self_host/version' },
@@ -191,6 +210,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'Argparse', link:'integration-argparse' },
+      { text: 'Areal', link: 'integration-areal' },
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
@@ -229,6 +249,8 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'PyTorch', link: 'integration-pytorch' },
       { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
       { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
+      { text: 'Ray', link: 'integration-ray' },
+      { text: 'ROLL', link: 'integration-roll' },
       { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
       { text: 'Stable Baseline3', link: 'integration-sb3' },
       { text: 'Tensorboard', link: 'integration-tensorboard'},
@@ -285,6 +307,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
+    text: 'Robot',
+    items: [
+      { text: 'LeRobot Guide', link: 'robot/lerobot-guide' },
+    ]
+  },
+  {
     text: 'Reinforcement Learning',
     // collapsed: false,
     items: [
@@ -318,7 +346,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
-      // { text: '(Beta) swanlab remote gpu', link: 'cli-swanlab-remote-gpu' },
+      { text: 'swanlab sync', link: 'cli-swanlab-sync' },
       { text: 'Other', link: 'cli-swanlab-other' },
     ]
   },
@@ -333,10 +361,18 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: 'Image', link: 'py-Image' },
         { text: 'Audio', link: 'py-Audio' },
         { text: 'Text', link: 'py-Text' },
+        { text: 'Video', link: 'py-video' },
         { text: 'Echarts', link: 'py-echarts' },
         { text: 'Object3D', link: 'py-object3d' },
         { text: 'Molecule', link: 'py-molecule' },
       ]},
+      {
+        text: 'Metrics', items: [
+          { text: 'pr_curve', link: 'py-pr_curve' },
+          { text: 'roc_curve', link: 'py-roc_curve' },
+          { text: 'confusion_matrix', link: 'py-confusion_matrix' },
+        ]
+      },
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
       { text: 'integration', link: 'py-integration' },
@@ -381,6 +417,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
     text: '📝 Writer',
     // collapsed: false,
     items: [
+      { text: 'File Logger', link: 'writer-filelogdir' },
       { text: 'CSV Table', link: 'writer-csv' },
     ]
   },
