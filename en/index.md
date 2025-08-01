@@ -10,8 +10,8 @@ hero:
   tagline: A deep learning training tracking and visualization tool that supports both cloud and offline use, compatible with over 30 mainstream AI training frameworks.
   actions:
     - theme: alt
-      text: Swanlab Copilot
-      link: https://chat.swanlab.cn
+      text: Guide
+      link: /en/guide_cloud/general/what-is-swanlab.md
     - theme: alt
       text: Website
       link: https://swanlab.cn
