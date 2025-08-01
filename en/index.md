@@ -149,7 +149,7 @@ features:
   display: inline-block;
   width: 16px;
   height: 16px;
-  background-image: url("./assets/chat-white.svg");
+  background-image: url("/assets/chat-white.svg");
   background-size: contain;
   background-repeat: no-repeat;
 }
