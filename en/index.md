@@ -18,6 +18,9 @@ hero:
     - theme: github
       text: GitHub
       link: https://github.com/SwanHubX/SwanLab
+    - theme: ai-assistant
+      text: Docs Copilot
+      link: https://chat.swanlab.cn/
   image:
     src: /page.png
     alt: VitePress
@@ -123,6 +126,63 @@ features:
   color: white;
   background-color:rgb(39, 39, 39);
 }
+
+/* AI文档助手按钮样式 */
+.VPButton.ai-assistant {
+  position: relative;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: linear-gradient(-45deg, #54d3ff, #b17af0, #9f87f0, #5ac8ff);
+  background-size: 300% 300%;
+  box-shadow: 0 0 15px rgba(177, 122, 240, 0.5);
+  animation: gradient-animation 3s ease infinite, pulse 1.5s infinite alternate;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.VPButton.ai-assistant::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("./assets/chat-white.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.VPButton.ai-assistant:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(177, 122, 240, 0.8);
+  animation-play-state: paused;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(177, 122, 240, 0.5);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(84, 211, 255, 0.8);
+    transform: scale(1.02);
+  }
+}
+
 </style>
 
 
