@@ -321,7 +321,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Yolo目标检测', link: 'yolo' },
       { text: 'UNet医学影像分割', link: 'unet-medical-segmentation' },
       { text: 'QwenVL多模态大模型微调', link: 'qwen_vl_coco' },
-      { text: '手搓0.6B多模态模型', link: 'qwen3_smolvlm_muxi' },
+      { text: 'Qwen3-smVL模型拼接微调', link: 'qwen3_smolvlm_muxi' },
       { text: 'Stable Diffusion文生图微调', link: 'stable_diffusion' },
     ]
   },
