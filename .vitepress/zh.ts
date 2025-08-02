@@ -37,7 +37,7 @@ export const zh = defineConfig({
         // activeMatch: '/guide_cloud/',
       },
       {
-        text: '框架集成', items: [
+        text: '集成', items: [
           { text: '全部40+框架', link: base_path_guide_cloud + '/integration' },
           { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
           { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
@@ -49,12 +49,12 @@ export const zh = defineConfig({
         ]
       },
       {
-        text: '实战案例',
+        text: '案例',
         link: base_path_examples + '/mnist',
         activeMatch: '/examples/',
       },
       {
-        text: 'API文档',
+        text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
       },
