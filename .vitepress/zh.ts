@@ -376,8 +376,17 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
 }
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
-  return [{
-    text: 'CLI',
+  return [
+  {
+      text: '开发',
+      // collapsed: false,
+      items: [
+        { text: '开放接口', link: 'py-openapi' },
+        { text: '环境变量', link: 'environment-variable' },
+      ]
+  },  
+  {
+    text: '命令行',
     // collapsed: false,
     items: [
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
@@ -429,14 +438,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: '其他', link: 'py-other' },
     ]
   },
-  {
-    text: '其他',
-    // collapsed: false,
-    items: [
-      { text: '开放接口', link: 'py-openapi' },
-      { text: '环境变量', link: 'environment-variable' },
-    ]
-  }
   ]
 }
 

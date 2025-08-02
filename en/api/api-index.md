@@ -1,5 +1,9 @@
 # API Docs
 
+## Develop
+- [Open API](/en/api/py-openapi.md)
+- [Environment Variables](/en/api/environment-variable.md)
+
 ## CLI
 - [swanlab watch](/en/api/cli-swanlab-watch.md): Start offline experiment board
 - [swanlab login](/en/api/cli-swanlab-login.md): Login to SwanLab
@@ -23,7 +27,3 @@
 - [run](/api/py-run.md)
 - [convert](/en/api/py-converter.md)
 - [sync_wandb](/en/api/py-sync-wandb.md)
-
-## Other
-- [Open API](/en/api/py-openapi.md)
-- [Environment Variables](/en/api/environment-variable.md)

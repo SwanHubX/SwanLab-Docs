@@ -341,7 +341,16 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
 }
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
-  return [{
+  return [
+  {
+    text: 'Develop',
+    // collapsed: false,
+    items: [
+      { text: 'OpenAPI', link: 'py-openapi' },
+      { text: 'Environment Variables', link: 'environment-variable' },
+    ]
+  },
+  {
     text: 'CLI',
     // collapsed: false,
     items: [
@@ -387,14 +396,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'Other', link: 'py-other' },
     ]
   },
-  {
-    text: 'Other',
-    // collapsed: false,
-    items: [
-      { text: 'OpenAPI', link: 'py-openapi' },
-      { text: 'Environment Variables', link: 'environment-variable' },
-    ]
-  }
 ]
 }
 
