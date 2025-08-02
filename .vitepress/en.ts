@@ -163,6 +163,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
           { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
           { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
+          { text: 'Use OpenAPI to get experiment data', link: 'experiment_track/use-openapi' },
         ]
       },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
