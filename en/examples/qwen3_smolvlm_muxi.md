@@ -11,7 +11,7 @@
 
 ## Abstract  
 
-Recently, the HuggingFace team released an ultra-small multimodal model, SmolVLM2, capable of edge-side inference with just 1GB of VRAM. After testing it with great excitement, I found that while the model has incredibly powerful visual-text understanding capabilities, it cannot comprehend Chinese. This was quite unfriendly for someone like me who barely passed the CET-4 and CET-6 exams. Coincidentally, while working on SwanLab hardware detection and adaptation, I had access to an unused Muxi Xiyun C500 server that hadn't expired yet. This led to the idea of using **Muxi GPU chips** to fine-tune and directly splice the current top Chinese small model, Qwen3, with SmolVLM2.  
+Recently, the HuggingFace team released an ultra-small multimodal model, SmolVLM2, capable of edge-side inference with just 1GB of VRAM. After testing it with great excitement, I found that while the model has incredibly powerful visual-text understanding capabilities, it cannot comprehend Chinese. This was quite unfriendly for someone like me who barely passed the CET-4 and CET-6 exams. Coincidentally, while working on SwanLab hardware detection and adaptation, I had access to an unused Muxi Xiyun C500 server that hadn't expired yet. This led to the idea of using **MetaX GPU chips** to fine-tune and directly splice the current top Chinese small model, Qwen3, with SmolVLM2.  
 
 This tutorial will introduce an approach to model splicing, aligning and fine-tuning SmolVLM2's vision module (0.09B) with Qwen3's smallest model (0.6B), ultimately enabling the Qwen model to possess certain visual understanding capabilities. Due to time constraints and considerations for article length, this series will be released in installments. The planned content is as follows:  
 
@@ -21,7 +21,7 @@ This tutorial will introduce an approach to model splicing, aligning and fine-tu
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/PPAP.png" alt="PPAP" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/PPAP.png" alt="PPAP" width="400" />  
   <figcaption>I have a Qwen, I have a SmolVLM...</figcaption>  
   </figure>  
 </div>  
@@ -40,7 +40,7 @@ First, let’s review the construction of the SmolVLM2 model. The overall archit
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/smolvlm2.png" alt="smolvlm2" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/smolvlm2.png" alt="smolvlm2" width="400" />  
   <figcaption>Architecture of SmolVLM2</figcaption>  
   </figure>  
 </div>  
@@ -71,7 +71,7 @@ The overall architecture and pre/post-processing for image-text pairs remain unc
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/concatation.png" alt="concatation" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/concatation.png" alt="concatation" width="400" />  
   <figcaption>Replacing SmolVLM2's language model with Qwen3-0.6B</figcaption>  
   </figure>  
 </div>  
@@ -133,7 +133,7 @@ Besides `<fake_token_around_image>` and `<image>`, position indicators like `<ro
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/image-split.png" alt="image-split" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/image-split.png" alt="image-split" width="400" />  
   <figcaption>SmolVLM2's full inference pipeline, showing pre-splitting with `image splitting` before image input</figcaption>  
   </figure>  
 </div>  
@@ -168,7 +168,7 @@ Replacing the model isn’t particularly complex, but it requires navigating Tra
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/change_model.png" alt="change_model" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/change_model.png" alt="change_model" width="400" />  
   <figcaption>Replacing SmolVLM2's text module and language model head</figcaption>  
   </figure>  
 </div>  
@@ -231,7 +231,7 @@ The code above shows that when replacing variables, nested model variables must 
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/fail_train.png" alt="fail_train" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/fail_train.png" alt="fail_train" width="800" />  
   <figcaption>SwanLab training results: Blue shows the loss curve of the failed full fine-tuning, where loss drops quickly but the model lacks visual understanding. Freezing the LM head (red) reveals zero grad_norm and non-converging loss. The correct curve is yellow.</figcaption>  
   </figure>  
 </div>  
@@ -273,7 +273,7 @@ Initially, I planned to find a Chinese multimodal dataset but discovered limited
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/the_cauldron.png" alt="the_cauldron" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/the_cauldron.png" alt="the_cauldron" width="400" />  
   <figcaption>Logo of the_cauldron dataset</figcaption>  
   </figure>  
 </div>  
@@ -282,7 +282,7 @@ For convenience, this project directly uses HuggingFace's integrated multimodal 
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/data_show.png" alt="data_show" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/data_show.png" alt="data_show" width="800" />  
   <figcaption>Dataset sample display</figcaption>  
   </figure>  
 </div>  
@@ -437,7 +437,7 @@ Fine-tuning was performed on Muxi's C500 domestic GPUs (64GB VRAM). Muxi's AI ch
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/Metax-gpu.jpg" alt="Metax-gpu" width="400" />  
+  <img src="./qwen3_smolvlm_muxi/muxi-gpu.jpg" alt="muxi-gpu" width="400" />  
   <figcaption>Muxi domestic GPU (I used cloud servers, so this is a web image)</figcaption>  
   </figure>  
 </div>  
@@ -599,7 +599,7 @@ This project uses SwanLab for logging. If not logged in, run `swanlab login`. Su
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/run.png" alt="run" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/run.png" alt="run" width="800" />  
   <figcaption>SwanLab link appears upon successful training</figcaption>  
   </figure>  
 </div>  
@@ -608,7 +608,7 @@ Training and test loss graphs:
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/cocoqa_swanlab.png" alt="cocoqa_swanlab" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/cocoqa_swanlab.png" alt="cocoqa_swanlab" width="800" />  
   <figcaption>SwanLab visualization: Final training/test losses converge at ~0.65</figcaption>  
   </figure>  
 </div>  
@@ -617,7 +617,7 @@ Post-training, the model is tested with a dog image and the question "What anima
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/bad_case.png" alt="bad_case" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/bad_case.png" alt="bad_case" width="800" />  
   <figcaption>SwanLab records inference: The model understands and responds in Chinese but misidentifies dogs as rabbits</figcaption>  
   </figure>  
 </div>  
@@ -626,7 +626,7 @@ Initially, I thought training had failed, but models that fail typically output 
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/dog.png" alt="dog" width="250" />  
+  <img src="./qwen3_smolvlm_muxi/dog.png" alt="dog" width="250" />  
   <figcaption>Three melancholic dogs—do they resemble rabbits?</figcaption>  
   </figure>  
 </div>  
@@ -648,7 +648,7 @@ Full-data fine-tuning (red) shows more loss fluctuation than small-batch (yellow
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/fulldata_swanlab.png" alt="fulldata_swanlab" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/fulldata_swanlab.png" alt="fulldata_swanlab" width="800" />  
   <figcaption>Red: Full training loss; Yellow: Small-batch results</figcaption>  
   </figure>  
 </div>  
@@ -657,7 +657,7 @@ Full training achieved lower training loss (0.61) and evaluation loss (0.58):
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/evalloss.png" alt="evalloss" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/evalloss.png" alt="evalloss" width="800" />  
   <figcaption>Red: Full training; Yellow: Small-batch</figcaption>  
   </figure>  
 </div>  
@@ -668,7 +668,7 @@ After 1K steps (mid-training, LR decay), loss plateaus, indicating sufficient tr
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/1kstep.png" alt="1kstep" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/1kstep.png" alt="1kstep" width="800" />  
   <figcaption>Training loss post-1K steps</figcaption>  
   </figure>  
 </div>  
@@ -677,7 +677,7 @@ GPU utilization isn’t maxed due to multimodal architecture complexity (image/t
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/mx-gpu-use.png" alt="mx-gpu-use" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/mx-gpu-use.png" alt="mx-gpu-use" width="800" />  
   <figcaption>SwanLab’s automatic Muxi C500 efficiency tracking</figcaption>  
   </figure>  
 </div>  
@@ -686,14 +686,14 @@ Post-training, the model correctly understands images, Chinese, and retains Qwen
 
 <div align="center">  
   <figure>  
-  <img src="./qwen3_smolvlm_Metax/good_case.png" alt="good_case" width="800" />  
+  <img src="./qwen3_smolvlm_muxi/good_case.png" alt="good_case" width="800" />  
   <figcaption>Same image/question: More data enables correct responses</figcaption>  
   </figure>  
 </div>  
 
 ### Model Inference and Analysis  
 
-Testing details will be added after dataset downloads. Follow [SwanLab tutorials](https://docs.swanlab.cn/examples/qwen3_smolvlm_Metax.html) for updates!  
+Testing details will be added after dataset downloads. Follow [SwanLab tutorials](https://docs.swanlab.cn/examples/qwen3_smolvlm_muxi.html) for updates!  
 
 ## Code and Dataset Links  
 
