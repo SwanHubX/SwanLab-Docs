@@ -190,6 +190,11 @@ def openai_completion(
 
 如果不太理解具体如何做，在下面的教程中按照步骤运行相应的文件，不明白原理的可以参考我们的代码。
 
+<div style="background:#e7f5ff;color:#000;padding:12px 16px;border-left:4px solid #74c0fc;">
+ 我们还提供了AutoDl上使用<a href="https://www.autodl.com/market/list" target="_blank" rel="noopener">昇腾系列NPU</a>来做vllm推理服务，具体步骤可查看我们的教程👉<a href="./1、huawei_vllm.md" target="_blank" rel="noopener">地址</a>
+</div>
+
+
 ### API
 
 上面的选择或多或少都对你的硬件条件要求较高，当然，经验丰富的你可能会选择大模型量化，在更低的精度、更低的显存占用、更快的推理速度等来实现推理，但是或许我们会有更好的选择，比如调用API。
