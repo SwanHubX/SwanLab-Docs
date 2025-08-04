@@ -111,7 +111,7 @@ print(response)
 
 vllm在吞吐量方面，vLLM的性能比[HuggingFace Transformers](https://zhida.zhihu.com/search?content_id=238989790&content_type=Article&match_order=1&q=HuggingFace+Transformers&zhida_source=entity)(HF)高出 24 倍，文本生成推理（TGI）高出3.5倍。
 
-简单点说就是vllm框架的推理速度很快，但是显存占用较高，同样的3B模型，本地推理可能只需要15GB左右，而vllm框架则需要37GB，因此如果硬件资源不足，vllm并不是一个很好的选择。
+简单点说就是vllm框架的推理速度很快，但是显存占用较高，同样的3B模型，本地推理可能只需要15GB左右，而vllm框架则需要37GB。
 
 首先，我们需要在环境里安装vllm库:
 
