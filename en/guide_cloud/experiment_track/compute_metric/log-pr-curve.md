@@ -8,6 +8,8 @@ You can use `swanlab.pr_curve` to log a PR curve.
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/35snhyn3wndz58r4j8d4h/chart#ZTIwZm1s-aVI2S1ZCQl8=)
 
+![](./py-pr_curve/demo.png)
+
 ### Basic Usage
 
 ```python {22}
@@ -37,8 +39,6 @@ swanlab.log({
 
 swanlab.finish()
 ```
-
-![](./py-pr_curve/demo.png)
 
 ### Custom Title
 

@@ -1,12 +1,10 @@
 # API文档
 
-API文档分为以下几个部分：
+## Develop
+- [开放接口](/api/py-openapi.md)
+- [环境变量](/api/environment-variable.md)
 
-- `CLI`：命令行部分
-- `Python`：Python SDK部分
-- `其他`：环境变量
-
-## CLI
+## 命令行
 - [swanlab watch](/api/cli-swanlab-watch.md): 启动离线实验看板
 - [swanlab login](/api/cli-swanlab-login.md): 登录SwanLab
 - [swanlab logout](/api/cli-swanlab-logout.md): 登出SwanLab
@@ -32,9 +30,3 @@ API文档分为以下几个部分：
 - [sync_tensorboard](/api/py-sync-tensorboard.md)
 - [sync_mlflow](/api/py-sync-mlflow.md)
 - [register_callback](/api/py-register-callback.md)
-
-## 其他
-- [开放接口](/api/py-openapi.md)
-- [环境变量](/api/environment-variable.md)
-
-    

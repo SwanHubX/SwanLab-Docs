@@ -8,6 +8,8 @@ You can use `swanlab.roc_curve` to log an ROC curve.
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
+![](./pr-roc_curve/demo.png)
+
 ### Basic Usage
 
 ```python
@@ -37,8 +39,6 @@ swanlab.log({
 
 swanlab.finish()
 ```
-
-![](./pr-roc_curve/demo.png)
 
 ### Custom Title
 

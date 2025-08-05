@@ -37,7 +37,7 @@ export const zh = defineConfig({
         // activeMatch: '/guide_cloud/',
       },
       {
-        text: '框架集成', items: [
+        text: '集成', items: [
           { text: '全部40+框架', link: base_path_guide_cloud + '/integration' },
           { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
           { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
@@ -49,12 +49,12 @@ export const zh = defineConfig({
         ]
       },
       {
-        text: '实战案例',
+        text: '案例',
         link: base_path_examples + '/mnist',
         activeMatch: '/examples/',
       },
       {
-        text: 'API文档',
+        text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
       },
@@ -70,6 +70,9 @@ export const zh = defineConfig({
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ]
+      },
+      {
+        component: 'HeaderDocHelperButton',
       },
       {
         component: 'HeaderButton',
@@ -179,6 +182,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
           { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
           { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
+          { text: '使用OpenAPI获取实验数据', link: 'experiment_track/use-openapi' },
         ] },
         { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },  
         { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
@@ -318,7 +322,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Yolo目标检测', link: 'yolo' },
       { text: 'UNet医学影像分割', link: 'unet-medical-segmentation' },
       { text: 'QwenVL多模态大模型微调', link: 'qwen_vl_coco' },
-      { text: '手搓0.6B多模态模型', link: 'qwen3_smolvlm_muxi' },
+      { text: 'Qwen3-smVL模型拼接微调', link: 'qwen3_smolvlm_muxi' },
       { text: 'Stable Diffusion文生图微调', link: 'stable_diffusion' },
     ]
   },
@@ -373,8 +377,17 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
 }
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
-  return [{
-    text: 'CLI',
+  return [
+  {
+      text: '开发',
+      // collapsed: false,
+      items: [
+        { text: '开放接口', link: 'py-openapi' },
+        { text: '环境变量', link: 'environment-variable' },
+      ]
+  },  
+  {
+    text: '命令行',
     // collapsed: false,
     items: [
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
@@ -426,14 +439,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: '其他', link: 'py-other' },
     ]
   },
-  {
-    text: '其他',
-    // collapsed: false,
-    items: [
-      { text: '开放接口', link: 'py-openapi' },
-      { text: '环境变量', link: 'environment-variable' },
-    ]
-  }
   ]
 }
 

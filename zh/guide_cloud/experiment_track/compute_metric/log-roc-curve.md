@@ -8,6 +8,8 @@ ROC曲线是评估分类模型性能的重要工具，能够直观地展示模�
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
+![](./pr-roc_curve/demo.png)
+
 ### 基本用法
 
 ```python
@@ -37,8 +39,6 @@ swanlab.log({
 
 swanlab.finish()
 ```
-
-![](./pr-roc_curve/demo.png)
 
 ### 自定义标题
 

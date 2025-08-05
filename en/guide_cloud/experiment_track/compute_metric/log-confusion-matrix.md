@@ -8,6 +8,8 @@ You can use `swanlab.confusion_matrix` to log a confusion matrix.
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
+![](./py-confusion_martix/demo.png)
+
 ### Basic Usage
 
 ```python
@@ -42,8 +44,6 @@ swanlab.log({
 
 swanlab.finish()
 ```
-
-![](./py-confusion_martix/demo.png)
 
 ### Using Custom Class Names
 
