@@ -188,11 +188,8 @@ def openai_completion(
 
 经过这些步骤后，我们在运行推理服务的时候就能充分利用GPU资源，高效完成各项推理任务。
 
-如果不太理解具体如何做，在下面的教程中按照步骤运行相应的文件，不明白原理的可以参考我们的代码。
+如果不太理解具体如何做，在后面的教程中按照步骤运行相应的文件，不明白原理的可以参考我们的代码。
 
-<div style="background:#e7f5ff;color:#000;padding:12px 16px;border-left:4px solid #74c0fc;">
- 我们还提供了AutoDl上使用<a href="https://www.autodl.com/market/list" target="_blank" rel="noopener">昇腾系列NPU</a>来做vllm推理服务，具体步骤可查看我们的教程👉<a href="./1、huawei_vllm.md" target="_blank" rel="noopener">地址</a>
-</div>
 
 
 ### API
