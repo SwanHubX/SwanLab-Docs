@@ -16,9 +16,7 @@
 ✅ <strong>我们的所有代码均可在 <a href="https://github.com/828Tina/PromptEngineeringCourse" target="_blank" rel="noopener">GitHub</a> 查看。</strong>
 </div>
 
----
-
-# 提示词工程与上下文工程
+## 提示词工程与上下文工程
 
 上下文工程作为新出的概念，和提示词工程的区别简单来说是包含的关系，提示词工程 $\subset$ 上下文工程。
 
