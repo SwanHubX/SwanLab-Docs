@@ -27,7 +27,7 @@ export const en = defineConfig({
 
     // 导航栏配置
     nav: [
-      { 
+      {
         text: 'Guide',
         link: base_path_guide_cloud + '/general/what-is-swanlab',
       },
@@ -61,6 +61,9 @@ export const en = defineConfig({
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
         { text: 'Docs Github', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
+      {
+        component: 'HeaderDocHelperButtonEN',
+      },
       {
         component: 'HeaderButtonEN',
       },
@@ -160,6 +163,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
           { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
           { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
+          { text: 'Use OpenAPI to get experiment data', link: 'experiment_track/use-openapi' },
         ]
       },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
@@ -338,7 +342,16 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
 }
 
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
-  return [{
+  return [
+  {
+    text: 'Develop',
+    // collapsed: false,
+    items: [
+      { text: 'OpenAPI', link: 'py-openapi' },
+      { text: 'Environment Variables', link: 'environment-variable' },
+    ]
+  },
+  {
     text: 'CLI',
     // collapsed: false,
     items: [
@@ -384,14 +397,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'Other', link: 'py-other' },
     ]
   },
-  {
-    text: 'Other',
-    // collapsed: false,
-    items: [
-      { text: 'OpenAPI', link: 'py-openapi' },
-      { text: 'Environment Variables', link: 'environment-variable' },
-    ]
-  }
 ]
 }
 

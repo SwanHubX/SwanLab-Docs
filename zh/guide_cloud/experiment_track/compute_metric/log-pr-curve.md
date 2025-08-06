@@ -8,6 +8,8 @@ PR曲线也特别适用于处理不平衡数据集，能够更好地评估模型
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/35snhyn3wndz58r4j8d4h/chart#ZTIwZm1s-aVI2S1ZCQl8=)
 
+![](./py-pr_curve/demo.png)
+
 ### 基本用法
 
 ```python {22}
@@ -37,8 +39,6 @@ swanlab.log({
 
 swanlab.finish()
 ```
-
-![](./py-pr_curve/demo.png)
 
 ### 自定义标题
 
