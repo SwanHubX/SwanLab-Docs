@@ -1,8 +1,8 @@
-# 环境安装和模型使用方式
+# 环境安装
 
-## 💻如何在本地电脑运行
+## 如何获取教程代码？
 
-要在本地运行代码，你需要先安装某个版本的Python。
+要在本地运行教程代码，你需要先安装某个版本的Python。
 
 然后，克隆仓库：
 
@@ -12,26 +12,28 @@ cd PromptEngineeringCourse
 ```
 
 
+## 如何使用大模型？
 
-## ⚙️安装Miniconda
+> 代码中需要我们使用*大模型*来完成提示词工程教学任务。
+
+大模型通常包含大量参数，推理时对显卡要求较高，本教程中，我们使用的大部分模型参数量为3B左右，对显存要求&le;20GB，**我们提供两种方式，*一种是本地调用*，*另一种是调用API*，下面我们分别从两个方面来讲如何安装环境。**
+
+
+### 本地调用大模型的环境安装指南
+
+**安装Miniconda**
 
 [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) 是一个轻量级安装器，用于安装 Conda、Python 以及一些包。Conda 是一个包管理器，方便你设置和切换不同的 Python 虚拟环境和包。它也适合安装那些无法通过 pip 获取的包。
 
-请根据自己的设备安装对应的版本。
+1. 请根据自己的设备安装对应的版本。
 
-安装好Miniconda后需要激活环境，激活后才能使用conda命令
+2. 安装好Miniconda后需要激活环境，激活后才能使用conda命令
 
 ```bash
 source ~/miniconda/bin/activate
 ```
 
-确认所有内容都准备好后，就可以开始学习了！
-
----
-
-## 📝环境配置
-
-### 硬件条件
+**硬件条件**
 
 如果将模型保存到本地运行，经过我们多次实验，我们发现Qwen系列模型规模较小的一些模型（集中于3B以下），回答质量都不算上乘，因此教程里大多使用的是3B、4B等规模的模型，当然，如果使用API调用的方法，可以使用更大规模的模型，比如7B，甚至32B等。
 
@@ -39,7 +41,8 @@ source ~/miniconda/bin/activate
 
 >  本教程基于英伟达芯片进行各个实验。
 
-### 环境搭建
+
+**环境搭建**
 
 1. python>=3.9
 2. pytorch：在[官网](https://pytorch.org/)安装最新版本即可，需要注意的是2.5版本bug较多，不建议使用
@@ -58,11 +61,11 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 pip install -U transformers modelscope
 ```
 
+**框架选择**
 
+本次教程我们使用两种框架，分别是HuggingFace和vLLM，两种框架都可以实现大模型的推理，HuggingFace框架的代码是我们教程中使用次数较多的框架，不过会稍微比较麻烦，速度较慢；vLLM可以让模型推理更加高效快速，显存占用会提高，可以根据自身条件需求选择合适框架。
 
-## 🛠️模型运行平台准备
-
-### HuggingFace
+1. HuggingFace
 
 如果将模型保存在***本地***，可以使用Huggingface提供的推理代码，在后续的举例中，如果没有特殊说明，我们都会使用Qwen系列模型作为基线模型，关于推理代码，我们使用Qwen官网提供的[推理代码](https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct)
 
@@ -105,7 +108,7 @@ print(response)
 
 不过，在后面的示例中，会有推理型模型，我们使用Qwen3系列模型，其推理代码可以在[官网](https://huggingface.co/Qwen/Qwen3-4B)找到，其实唯一的区别仅在是否开启思考模块，也就是将`enable_thinking`设置为True或者False，其他基本一致。
 
-### vLLM
+2. vLLM
 
 `vLLM`是伯克利大学[LMSYS](https://zhida.zhihu.com/search?content_id=238989790&content_type=Article&match_order=1&q=LMSYS&zhida_source=entity)组织开源的大语言模型高速推理框架，旨在极大地提升实时场景下的语言模型服务的吞吐与内存使用效率。`vLLM`是一个快速且易于使用的库，用于 LLM 推理和服务，可以和HuggingFace 无缝集成。vLLM利用了全新的注意力算法「PagedAttention」，有效地管理注意力键和值。
 
@@ -193,7 +196,8 @@ def openai_completion(
 > 我们还有基于昇腾NPU的vllm[教程](./1.huawei.md)
 
 
-### API
+
+### 调用API使用大模型的环境安装指南
 
 上面的选择或多或少都对你的硬件条件要求较高，当然，经验丰富的你可能会选择大模型量化，在更低的精度、更低的显存占用、更快的推理速度等来实现推理，但是或许我们会有更好的选择，比如调用API。
 
@@ -201,7 +205,7 @@ def openai_completion(
 
 1. **阿里百炼**
 
-或者我们也可以使用阿里百炼云平台，其中Qwen系列模型都是最新的，而且性价比也还可以，具体如何使用可以参考[API文档](https://bailian.console.aliyun.com/?spm=5176.12818093_47.resourceCenter.1.223c2cc96V9eQn&tab=api#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2712576.html)，文档内容非常详细，在此就不再赘述如何使用。
+或者我们也可以使用阿里百炼云平台，其中Qwen系列模型都是最新的，而且性价比也还可以，具体如何使用可以参考[API文档](https://bailian.console.aliyun.com/?spm=5176.12818093_47.resourceCenter.1.223c2cc96V9eQn&tab=api#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2712576.html)，文档内容非常详细，无需多余的函数库安装，按照文档指示使用即可。
 
 <img src="./picture/bailian_api.png" alt="硅基流动API文档" style="zoom:50%;" />
 
@@ -216,6 +220,3 @@ def openai_completion(
 <img src="./picture/api_chat_completions.png" alt="硅基流动API文档" style="zoom:50%;" />
 
 将代码复制，其中的`model`更改为我们需要的模型，要记住，只能是硅基流动的模型广场里有的模型，没有上架的模型会报错。然后其中的`Authorization`需要我们的api_key，`messages`可以进行多轮对话，具体的推理代码可以在我们的代码中找到。
-
-
-
