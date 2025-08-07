@@ -56,3 +56,11 @@ div.VPNavBarSearch.search {
         margin-left: 0;
     }
 }
+
+.medium-zoom-overlay {
+    z-index: 30;
+}
+
+.medium-zoom-image {
+    z-index: 31;
+}
