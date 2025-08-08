@@ -16,7 +16,11 @@ cd PromptEngineeringCourse
 
 > 代码中需要我们使用*大模型*来完成提示词工程教学任务。
 
-大模型通常包含大量参数，推理时对显卡要求较高，本教程中，我们使用的大部分模型参数量为3B左右，对显存要求&le;20GB，**我们提供两种方式，*一种是本地调用*，*另一种是调用API*，下面我们分别从两个方面来讲如何安装环境。**
+大模型通常包含大量参数，推理时对显卡要求较高，本教程中，我们使用的大部分模型参数量为3B左右，对显存要求&le;20GB。
+
+<div style="background:#e7f5ff;color:#000;padding:12px 16px;border-left:4px solid #74c0fc;">
+<strong>我们提供两种方式，<em>一种是本地调用</em>，<em>另一种是调用API</em>。本地调用需要自己配置至少一块3090，API调用对配置没有要求。下面我们分别从两种方式来讲如何安装环境，可以根据自身需求选择合适的方案👇。</strong>
+</div>
 
 
 ### 本地调用大模型的环境安装指南
@@ -110,7 +114,16 @@ print(response)
 
 2. vLLM
 
-`vLLM`是伯克利大学[LMSYS](https://zhida.zhihu.com/search?content_id=238989790&content_type=Article&match_order=1&q=LMSYS&zhida_source=entity)组织开源的大语言模型高速推理框架，旨在极大地提升实时场景下的语言模型服务的吞吐与内存使用效率。`vLLM`是一个快速且易于使用的库，用于 LLM 推理和服务，可以和HuggingFace 无缝集成。vLLM利用了全新的注意力算法「PagedAttention」，有效地管理注意力键和值。
+<div style="background:#e7f5ff;color:#000;padding:12px 16px;border-left:4px solid #74c0fc;">
+  可以参考更详细的
+  <a href="https://docs.vllm.ai/en/latest/" target="_blank" style="color:#1971c2;text-decoration:none;">
+    vLLM 文档
+  </a>，
+  这里我们仅介绍如何<strong>安装与操作</strong>
+</div>
+
+`vLLM`是伯克利大学LMSYS组织开源的大语言模型高速推理框架，旨在极大地提升实时场景下的语言模型服务的吞吐与内存使用效率。`vLLM`是一个快速且易于使用的库，用于 LLM 推理和服务，可以和HuggingFace 无缝集成。vLLM利用了全新的注意力算法「PagedAttention」，有效地管理注意力键和值。
+
 
 vllm在吞吐量方面，vLLM的性能比[HuggingFace Transformers](https://zhida.zhihu.com/search?content_id=238989790&content_type=Article&match_order=1&q=HuggingFace+Transformers&zhida_source=entity)(HF)高出 24 倍，文本生成推理（TGI）高出3.5倍。
 
