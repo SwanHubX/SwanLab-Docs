@@ -502,9 +502,9 @@ function sidebarCourse(): DefaultTheme.SidebarItem[] {
         ]},
         { text: '第七章 RAG检索', link: 'prompt_engineering_course/09-RAG/README.md' },
         { text: '第八章 Agent实践', link: 'prompt_engineering_course/10-Agent/README.md' , items: [
-          { text: '8.1 函数调用', link: 'prompt_engineering_course/10-Agent/1.function_calling.md' },
-          { text: '8.2 MCP', link: 'prompt_engineering_course/10-Agent/2.mcp_usage.md' },
-          { text: '8.3 多Agents', link: 'prompt_engineering_course/10-Agent/3.multi_agents.md' },
+          { text: '8.1 函数调用实践', link: 'prompt_engineering_course/10-Agent/1.function_calling.md' },
+          { text: '8.2 MCP实践', link: 'prompt_engineering_course/10-Agent/2.mcp_usage.md' },
+          { text: '8.3 多Agents简介', link: 'prompt_engineering_course/10-Agent/3.multi_agents.md' },
         ]},
       ]
     },
