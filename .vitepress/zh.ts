@@ -497,8 +497,8 @@ function sidebarCourse(): DefaultTheme.SidebarItem[] {
         { text: '第五章 多模态大模型提示词', link: 'prompt_engineering_course/07-multimodal_prompt/README.md' },
         { text: '第六章 合成数据', link: 'prompt_engineering_course/08-synthetic_data/README.md' , items: [
           { text: '6.1 预训练合成数据', link: 'prompt_engineering_course/08-synthetic_data/1.pretrain_data.md' },
-          { text: '6.2 微调数合成据', link: 'prompt_engineering_course/08-synthetic_data/2.instruct_data.md' },
-          { text: '6.3 推理数合成据', link: 'prompt_engineering_course/08-synthetic_data/3.reasoning_data.md' },
+          { text: '6.2 微调合成数据', link: 'prompt_engineering_course/08-synthetic_data/2.instruct_data.md' },
+          { text: '6.3 推理合成数据', link: 'prompt_engineering_course/08-synthetic_data/3.reasoning_data.md' },
         ]},
         { text: '第七章 RAG检索', link: 'prompt_engineering_course/09-RAG/README.md' },
         { text: '第八章 Agent实践', link: 'prompt_engineering_course/10-Agent/README.md' , items: [
