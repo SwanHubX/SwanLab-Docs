@@ -484,7 +484,7 @@ function sidebarCourse(): DefaultTheme.SidebarItem[] {
       text: '📕提示词工程课程',
       items: [
         { text: '前言', link: 'prompt_engineering_course/01-preface/README.md' },
-        { text: '提示词工程指南', link: 'prompt_engineering_course/02-prompt_guide/README.md' },
+        { text: '指南', link: 'prompt_engineering_course/02-prompt_guide/README.md' },
         { text: '第一章 环境安装', link: 'prompt_engineering_course/03-environmental_installation_platform_preparation/README.md' },
         { text: '第二章 模型选择', link: 'prompt_engineering_course/04-model_types/README.md' },
         { text: '第三章 提示词撰写技巧', link: 'prompt_engineering_course/05-tips_for_prompt/README.md', items: [
