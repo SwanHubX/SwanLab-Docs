@@ -54,7 +54,13 @@ Context Engineering（上下文工程 ），聚焦于大语言模型（[LLM](htt
 
 我们可以从下图中了解二者的关系：
 
-<img src="./picture/context_engineering.png" alt="提示词工程与上下文工程包含关系" style="zoom:80%;" />
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/context_engineering.png">
+    <figcaption>提示词工程与上下文工程包含关系</figcaption>
+  </figure>
+</div>
+
 
 - Prompt Engineering（提示词工程）主要是激发LLM做好单一件事情，适合处理流程简单的工作。
 - Context Engineering（上下文工程）是利用LLM处理更加复杂，更加系统的任务，更加符合这个智能Agent的时代。
@@ -64,7 +70,13 @@ Context Engineering（上下文工程 ），聚焦于大语言模型（[LLM](htt
 - **`上下文处理（Context Processing）`**：优化模型对已获取的上下文信息进行加工、变换和优化
 - **`上下文管理（Context Management）`**：对上下文进行高效的存储、记忆和优化 
 
-<img src="./picture/fundation_components.png" alt="上下文工程组件" style="zoom:80%;" />
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/fundation_components.png">
+    <figcaption>上下文工程组件</figcaption>
+  </figure>
+</div>
+
 
 
 我们来详细的说明每一部分运用的知识组件。
@@ -100,8 +112,13 @@ Context Engineering（上下文工程 ），聚焦于大语言模型（[LLM](htt
 
 在实际工程中，上述基础组件通常会集成到完整的系统架构中，从而打造出功能强大的智能应用。当前比较典型的上下文工程系统实现主要有以下几类 ：检索增强生成（RAG）、记忆系统、工具增强推理和多智能体系统。论文详细整理了每个类别都有哪些已经发表的工作。
 
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/context_en_work.png">
+    <figcaption>上下文工程相关工作</figcaption>
+  </figure>
+</div>
 
-<img src="./picture/context_en_work.png" alt="上下文工程相关工作" style="zoom:80%;" />
 
 它们各自侧重于不同的应用场景，但都利用了上下文工程的理念，将相关信息/工具动态注入模型上下文来提升性能。图中每个分支我们详细解释👇。
 

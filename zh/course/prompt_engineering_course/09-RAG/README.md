@@ -1,4 +1,4 @@
-# RAG检索
+# 第七章 RAG检索
 
 当我们向大模型询问大模型不知道的知识的时候，大模型可能会因为“幻觉”即使不知道答案，毕竟大模型在训练时候使用过的数据集通常来说不会紧跟时事训练，大部分的知识在预训练阶段灌输，在微调阶段进行回答的调试。因此大模型会胡乱用相似的知识为我们做出回答，但是很明显不会是我们想要的，那有什么方法是可以不用随时训练大模型就能让大模型回答正确呢？答案是RAG。
 
@@ -6,7 +6,13 @@
 
 我们可以看下RAG原理：
 
-<img src="./picture/rag_theory.png" alt="RAG原理" style="zoom:80%;" />
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/rag_theory.png" style="width:700px;" alt="RAG原理">
+    <figcaption>RAG原理</figcaption>
+  </figure>
+</div>
+
 
 我们简单的把RAG过程分割成三个部分，根据RAG的英文全称是Retrieval-Augmented Generation，理论上应该分割成`检索`、`增强`、`生成`，不过`检索`部分可以类比成`存储+检索`，多加了一个词，是不是原理就更清晰了呢？我们拆分下：
 

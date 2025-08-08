@@ -1,4 +1,4 @@
-# 环境安装
+# 第一章 环境安装
 
 ## 如何获取教程代码？
 
@@ -141,7 +141,13 @@ pip install -U vllm
 
 简单来说vllm相当于使用的仍然是OpenAI的API接口，但是会适配本地模型的调用，本地模型在推理的时候相当于发送一个API请求，绕过了OpenAI的接口。
 
-<img src="./picture/openai_api_vllm.png" alt="vllm本地推理模型原理图" style="zoom:50%;" />
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/openai_api_vllm.png" style="width:600px;" alt="vllm本地推理模型原理图">
+    <figcaption>vllm本地推理模型原理图</figcaption>
+  </figure>
+</div>
+
 
 具体用法可以参考[Qwen模型的vllm用法](https://qwen.readthedocs.io/zh-cn/latest/deployment/vllm.html)。另外，也可以从[官网](https://docs.vllm.ai/en/latest/index.html)获得更加详细的信息。我们简单讲述下我们教程里的使用步骤。
 
@@ -155,7 +161,14 @@ vllm serve /your/path/of/model
 
 当出现下面的提示的时候，表示已经开启对应的服务。
 
-<img src="./picture/vllm_serve.png" alt="vllm本地推理模型原理图" style="zoom:80%;" />
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/vllm_serve.png" style="width:600px;" alt="vllm成功使用">
+    <figcaption>vllm成功使用</figcaption>
+  </figure>
+</div>
+
+
 
 然后我们需要再开启一个终端页面。
 
