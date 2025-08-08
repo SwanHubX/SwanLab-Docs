@@ -1,4 +1,4 @@
-# Agent
+# 第八章 Agent实践
 
 在前面的例子中，我们学习了如何设计提示词完成各类任务，也包括简单的RAG检索，但是每一类任务都是基于我们与大模型的一问一答的互动，我们无形中把这种对话当成和“人”的对话，这样其实是限制了大模型能够做到的事情，毕竟“人”除了对话，也能决策、动手、反思等等，事实上大模型也能做到这些，而这就涉及到了另外一个专业词汇`agent`。
 
@@ -8,7 +8,14 @@
 
 我们可以查看 OpenAI 研究员 Lilian Weng的个人博客文章[LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/)，这篇博客不仅形象又具体的讲述了`agent`的结构，也对相关的研究做了总结，这里我们简单的分解下`agent`。
 
-<img src="./picture/agent_theory.png" alt="agent原理图" style="zoom:80%;" />
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/agent_theory.png" style="width:700px;" alt="agent原理图">
+    <figcaption>agent原理图</figcaption>
+  </figure>
+</div>
+
+
 
 如上图所示，Agent 共由4个关键部分组成：规划（Planning）、记忆（Memory）、工具（Tools）、行动（Action），下面详细剖析。
 
@@ -35,6 +42,6 @@ agent经过大模型的规划、记忆的读取、工具的调用，最终是要
 
 | 教程章节   | 状态 |  
 |:--------|:------|
-| [1.函数调用实战](./1.function_calling.md)   |  ✅  |
-| [2.MCP应用实战](./2.mcp_usage.md)   | ✅  |
-| [3.多Agents原理](./3.multi_agents.md)   | ✅   |
+| [8.1.函数调用实战](./1.function_calling.md)   |  ✅  |
+| [8.2.MCP应用实战](./2.mcp_usage.md)   | ✅  |
+| [8.3.多Agents原理](./3.multi_agents.md)   | ✅   |
