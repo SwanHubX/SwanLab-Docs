@@ -20,5 +20,5 @@
 | [第四章 常见任务示例](../docs/06-common_task_examples/README.md) | 文本生成、信息提取、指令问答、代码生成、数学计算等 | ✅ |
 | [第五章 多模态大模型提示词](../07-multimodal_prompt/README.md) | 图像分析、视频分析提示词、音频大模型介绍 | ✅ |
 | [第六章 合成数据](../08-synthetic_data/README.md) | 预训练、微调、推理数据合成原理&代码实践 | ✅ |
-| [第七章 RAG检索](./09-RAG/README.md) | 构建向量数据库、文档处理、检索向量、提示词增强、模型生成 | ✅ |
-| [第八章 Agent实践](./10-Agent/README.md) | 函数调用、MCP实践、多Agents介绍| ✅ |
+| [第七章 RAG检索](../09-RAG/README.md) | 构建向量数据库、文档处理、检索向量、提示词增强、模型生成 | ✅ |
+| [第八章 Agent实践](../10-Agent/README.md) | 函数调用、MCP实践、多Agents介绍| ✅ |

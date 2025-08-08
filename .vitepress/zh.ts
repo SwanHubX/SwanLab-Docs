@@ -483,28 +483,28 @@ function sidebarCourse(): DefaultTheme.SidebarItem[] {
     {
       text: '📕提示词工程课程',
       items: [
-        { text: '1.前言', link: 'prompt_engineering_course/01-preface/README.md' },
-        { text: '2.提示词工程指南', link: 'prompt_engineering_course/02-prompt_guide/README.md' },
-        { text: '3.环境安装和模型使用方式', link: 'prompt_engineering_course/03-environmental_installation_platform_preparation/README.md' },
-        { text: '4.模型选择', link: 'prompt_engineering_course/04-model_types/README.md' },
-        { text: '5.提示词撰写技巧', link: 'prompt_engineering_course/05-tips_for_prompt/README.md', items: [
-          { text: '5.1 模型参数设置', link: 'prompt_engineering_course/05-tips_for_prompt/1.model_parameter_settings.md' },
-          { text: '5.2 提示词结构', link: 'prompt_engineering_course/05-tips_for_prompt/2.prompt_structure.md' },
-          { text: '5.3 提示词要素', link: 'prompt_engineering_course/05-tips_for_prompt/3.prompt_elements.md' },
-          { text: '5.4 其他提示词技巧', link: 'prompt_engineering_course/05-tips_for_prompt/4.other_prompt_techniques.md' },
+        { text: '前言', link: 'prompt_engineering_course/01-preface/README.md' },
+        { text: '提示词工程指南', link: 'prompt_engineering_course/02-prompt_guide/README.md' },
+        { text: '第一章 环境安装', link: 'prompt_engineering_course/03-environmental_installation_platform_preparation/README.md' },
+        { text: '第二章 模型选择', link: 'prompt_engineering_course/04-model_types/README.md' },
+        { text: '第三章 提示词撰写技巧', link: 'prompt_engineering_course/05-tips_for_prompt/README.md', items: [
+          { text: '3.1 模型参数设置', link: 'prompt_engineering_course/05-tips_for_prompt/1.model_parameter_settings.md' },
+          { text: '3.2 提示词结构', link: 'prompt_engineering_course/05-tips_for_prompt/2.prompt_structure.md' },
+          { text: '3.3 提示词要素', link: 'prompt_engineering_course/05-tips_for_prompt/3.prompt_elements.md' },
+          { text: '3.4 其他提示词技巧', link: 'prompt_engineering_course/05-tips_for_prompt/4.other_prompt_techniques.md' },
         ]},
-        { text: '6.常见任务示例', link: 'prompt_engineering_course/06-common_task_examples/README.md' },
-        { text: '7.多模态提示词', link: 'prompt_engineering_course/07-multimodal_prompt/README.md' },
-        { text: '8.合成数据', link: 'prompt_engineering_course/08-synthetic_data/README.md' , items: [
-          { text: '8.1 为什么需要合成数据', link: 'prompt_engineering_course/08-synthetic_data/1.why_synthetic_data.md' },
-          { text: '8.2 合成数据举例', link: 'prompt_engineering_course/08-synthetic_data/2.synthetic_data_examples.md' },
-          { text: '8.3 实现合成数据代码举例', link: 'prompt_engineering_course/08-synthetic_data/3.data_generate_code.md' },
+        { text: '第四章 常见任务示例', link: 'prompt_engineering_course/06-common_task_examples/README.md' },
+        { text: '第五章 多模态大模型提示词', link: 'prompt_engineering_course/07-multimodal_prompt/README.md' },
+        { text: '第六章 合成数据', link: 'prompt_engineering_course/08-synthetic_data/README.md' , items: [
+          { text: '6.1 为什么需要合成数据', link: 'prompt_engineering_course/08-synthetic_data/1.why_synthetic_data.md' },
+          { text: '6.2 合成数据举例', link: 'prompt_engineering_course/08-synthetic_data/2.synthetic_data_examples.md' },
+          { text: '6.3 实现合成数据代码举例', link: 'prompt_engineering_course/08-synthetic_data/3.data_generate_code.md' },
         ]},
-        { text: '9.RAG检索', link: 'prompt_engineering_course/09-RAG/README.md' },
-        { text: '10.Agent', link: 'prompt_engineering_course/10-Agent/README.md' , items: [
-          { text: '10.1 函数调用', link: 'prompt_engineering_course/10-Agent/1.function_calling.md' },
-          { text: '10.2 MCP', link: 'prompt_engineering_course/10-Agent/2.mcp_usage.md' },
-          { text: '10.3 多Agents', link: 'prompt_engineering_course/10-Agent/3.multi_agents.md' },
+        { text: '第七章 RAG检索', link: 'prompt_engineering_course/09-RAG/README.md' },
+        { text: '第八章 Agent实践', link: 'prompt_engineering_course/10-Agent/README.md' , items: [
+          { text: '8.1 函数调用', link: 'prompt_engineering_course/10-Agent/1.function_calling.md' },
+          { text: '8.2 MCP', link: 'prompt_engineering_course/10-Agent/2.mcp_usage.md' },
+          { text: '8.3 多Agents', link: 'prompt_engineering_course/10-Agent/3.multi_agents.md' },
         ]},
       ]
     },
