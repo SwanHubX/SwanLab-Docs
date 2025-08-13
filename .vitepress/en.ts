@@ -159,7 +159,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { text: 'Share project', link: 'experiment_track/share-project' },
+      { text: 'Add project collaborator', link: 'experiment_track/add-collaborator' },
       { 
         text: 'Tips',
         items: [
