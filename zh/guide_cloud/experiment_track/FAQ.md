@@ -129,6 +129,18 @@ swanlab.init()
 
 ![](./faq/exp_windows_finish.png)
 
+
 ## 如何开启断点续训？
 
 参考文档：[resume](/guide_cloud/experiment_track/resume-experiment.md)
+
+
+## 如何关闭系统硬件监控？
+
+```python
+swanlab.init(
+    settings=swanlab.Settings(
+        hardware_monitor=False,
+    )
+)
+```
