@@ -5,6 +5,7 @@ var base_path_examples = '/examples'
 var base_path_api = '/api'
 var base_path_plugin = '/plugin'
 var base_path_course = '/course'
+var base_path_blog = '/blog'
 
 // https://vitepress.dev/reference/site-config
 export const zh = defineConfig({
@@ -58,6 +59,11 @@ export const zh = defineConfig({
         text: '课程',
         link: base_path_course + '/prompt_engineering_course/01-preface/README.md',
         activeMatch: '/course/',
+      },
+      {
+        text: '博客',
+        link: base_path_blog,
+        activeMatch: '/blog/',
       },
       {
         text: 'API',
@@ -133,6 +139,7 @@ export const zh = defineConfig({
       '/api/': { base: '/api/', items: sidebarAPI(), },
       '/plugin/': { base: '/plugin/', items: sidebarPlugin(), },
       '/course/': { base: '/course/', items: sidebarCourse(), },
+      '/blog/': { base: '/blog/', items: sidebarBlog(), },
     },
 
     // 页脚配置
@@ -309,6 +316,12 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'ZhipuAI', link: 'integration-zhipuai' },
       ]
     }]
+}
+
+function sidebarBlog(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'SwanLab 博客', link: 'blog' },
+  ]
 }
 
 
