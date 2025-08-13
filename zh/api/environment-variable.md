@@ -16,7 +16,7 @@
 | --- | --- |
 | `SWANLAB_BOARD_PORT` | CLI 离线看板 `swanboard` 服务的端口 |
 | `SWANLAB_BOARD_HOST` | CLI 离线看板 `swanboard` 服务的地址 |
-| `SWANLAB_WEB_HOST` | SwanLab 云端环境的 Web 地址 |
+| `SWANLAB_WEB_HOST` | SwanLab 云端环境的 Web 地址，私有化部署仅需设置此环境变量而无需设置 `SWANLAB_API_HOST` |
 | `SWANLAB_API_HOST` | SwanLab 云端环境的 API 地址 |
 
 ## 实验配置
