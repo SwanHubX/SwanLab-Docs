@@ -1,5 +1,8 @@
 import { defineConfig, type DefaultTheme} from 'vitepress'
 
+type SidebarItemBadge = { badge?: { type?: string; text?: string } }
+type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge
+
 var base_path_guide_cloud = '/en/guide_cloud'
 var base_path_examples = '/en/examples'
 var base_path_api = '/en/api'
@@ -117,7 +120,7 @@ export const en = defineConfig({
 })
 
 
-function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
+function sidebarGuideCloud(): SidebarItemEx[] {
   return [{
     text: 'Introduction',
     // collapsed: false,
@@ -126,21 +129,21 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'Quick Start', link: 'general/quick-start' },
       { text: 'Team Usage', link: 'general/organization' },
       { text: 'Changelog', link: 'general/changelog' },
-      { text: '🔥 Mobile SwanLab', link: 'general/app' },
+      { text: '🔥 Mobile SwanLab', link: 'general/app', badge: { type: 'hot', text: 'HOT' } },
     ]
   },
   {
     text: '📚 Experiment Tracking',
     // collapsed: false,
     items: [
-      { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track' },
+      { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track', badge: { type: 'new', text: 'NEW' } },
       { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
       { text: 'Set config', link: 'experiment_track/set-experiment-config' },
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
       { text: 'Log media metric', items:[
         { text: 'Log Media', link: 'experiment_track/log-media' },
         { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
-        { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart' },
+        { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart', badge: { type: 'beta', text: 'BETA' } },
       ]},
       {
         text: 'Log compute metric',
@@ -156,6 +159,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
+      { text: 'Add project collaborator', link: 'experiment_track/add-collaborator' },
       { 
         text: 'Tips',
         items: [

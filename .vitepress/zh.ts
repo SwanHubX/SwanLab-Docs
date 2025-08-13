@@ -155,14 +155,14 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '快速开始', link: 'general/quick-start' },
         { text: '团队使用', link: 'general/organization' },
         { text: '更新日志', link: 'general/changelog' },
-        { text: '🔥手机看实验', link: 'general/app' },
+        { text: '🔥手机看实验', link: 'general/app'},
       ]
     },
     {
       text: '📚 实验跟踪',
       // collapsed: false,
       items: [
-        { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track' },
+        { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track'},
         { text: '创建一个实验', link: 'experiment_track/create-experiment' },
         { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
         { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
@@ -170,7 +170,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           text: '记录多维数据', items: [
             { text: '媒体类型', link: 'experiment_track/log-media' },
             { text: '自定义图表', link: 'experiment_track/log-custom-chart' },
-            { text: '自定义3D图表', link: 'experiment_track/log-custom-3dchart' },
+            { text: '自定义3D图表', link: 'experiment_track/log-custom-3dchart'},
           ]
         },
         {
@@ -185,6 +185,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
         { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
+        { text: '添加项目协作者', link: 'experiment_track/add-collaborator' },
         { text: '技巧', items: [
           { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
           { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
