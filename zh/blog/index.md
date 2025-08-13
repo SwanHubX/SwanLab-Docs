@@ -5,9 +5,16 @@ title: SwanLab博客
 titleTemplate: 先进的AI团队协作与模型创新引擎
 ---
 
+<!-- SwanLab博客标题块 -->
+<div class="blog-header">
+  <div class="blog-title-container">
+    <h1 class="blog-main-title">SwanLab博客</h1>
+    <p class="blog-subtitle">探索AI实验跟踪与团队协作的最佳实践</p>
+  </div>
+</div>
+
 <!-- 精选文章部分 -->
 <div class="featured-articles">
-  <h2>✨精选内容✨</h2>
   <div class="article-container">
     <div class="article-card">
       <a href="/guide_cloud/integration/integration-huggingface-transformers" class="article-link">
@@ -208,6 +215,55 @@ titleTemplate: 先进的AI团队协作与模型创新引擎
   max-width: 1200px;
   margin: 60px auto 0;
   padding: 0 24px;
+}
+
+/* 博客标题块样式 */
+.blog-header {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.blog-title-container {
+  background: linear-gradient(135deg, var(--vp-c-bg-soft) 0%, var(--vp-c-bg) 100%);
+  border-radius: 16px;
+  padding: 40px 20px;
+  border: 1px solid var(--vp-c-divider);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.blog-main-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  background: linear-gradient(135deg, #637de8 0%, #63ca8c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.blog-subtitle {
+  font-size: 1.1rem;
+  color: var(--vp-c-text-2);
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .blog-main-title {
+    font-size: 2rem;
+  }
+  
+  .blog-subtitle {
+    font-size: 1rem;
+  }
+  
+  .blog-title-container {
+    padding: 30px 16px;
+  }
 }
 
 .featured-articles h2 {
