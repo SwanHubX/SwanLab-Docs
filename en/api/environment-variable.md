@@ -16,7 +16,7 @@
 | --- | --- |
 | `SWANLAB_BOARD_PORT` | Port for the CLI offline dashboard `swanboard` service |
 | `SWANLAB_BOARD_HOST` | Address for the CLI offline dashboard `swanboard` service |
-| `SWANLAB_WEB_HOST` | Web address for the SwanLab cloud environment |
+| `SWANLAB_WEB_HOST` | Web address for the SwanLab cloud environment, only need to set this environment variable for private deployment, no need to set `SWANLAB_API_HOST` |
 | `SWANLAB_API_HOST` | API address for the SwanLab cloud environment |
 
 ## Experiment Configuration
