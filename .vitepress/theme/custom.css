@@ -1,3 +1,6 @@
+/* 引入博客页面样式 */
+@import './custom-blog.css';
+
 :root {
     --vp-c-brand-1: #107d8b;
     --vp-layout-max-width:1660px;

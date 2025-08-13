@@ -1,0 +1,318 @@
+/* 博客页面额外样式优化 */
+
+/* 确保博客页面容器有合适的最大宽度 */
+.blog-page {
+  max-width: 1600px !important;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 博客标题区域样式 */
+.blog-header {
+  position: relative;
+  margin: -2rem -1rem 3rem -1rem;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, var(--vp-c-brand-1), #6366f1);
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blog-header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/assets/blog/hero-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.blog-header-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(16, 125, 139, 0.8) 0%, 
+    rgba(99, 102, 241, 0.6) 50%, 
+    rgba(16, 125, 139, 0.8) 100%);
+  z-index: 1;
+}
+
+.blog-header-content {
+  position: relative;
+  z-index: 3;
+}
+
+.blog-header .blog-title {
+  background: none !important;
+  -webkit-text-fill-color: white !important;
+  color: white !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.blog-header .blog-subtitle {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 博客网格布局 */
+.blog-grid {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+}
+
+/* 博客卡片入场动画 */
+.blog-card {
+  animation: slideInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.blog-card:nth-child(1) { animation-delay: 0.1s; }
+.blog-card:nth-child(2) { animation-delay: 0.2s; }
+.blog-card:nth-child(3) { animation-delay: 0.3s; }
+.blog-card:nth-child(4) { animation-delay: 0.4s; }
+.blog-card:nth-child(5) { animation-delay: 0.5s; }
+.blog-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 优化网格布局，确保一行显示3个卡片 */
+@media (min-width: 1200px) {
+  .blog-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 2.5rem;
+  }
+  
+  .blog-card {
+    min-width: 0;
+    max-width: none;
+  }
+}
+
+/* 中等屏幕显示2列 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem;
+  }
+}
+
+/* 小屏幕显示1列 */
+@media (max-width: 767px) {
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+}
+
+/* 优化卡片图片区域 */
+.card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--vp-c-bg-soft);
+}
+
+/* 占位符样式优化 */
+.card-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--vp-c-bg-soft-up), var(--vp-c-bg-soft));
+  color: var(--vp-c-text-3);
+  border: 2px dashed var(--vp-c-divider);
+  transition: all 0.3s ease;
+}
+
+.blog-card:hover .card-image-placeholder {
+  border-color: var(--vp-c-brand-1);
+  background: linear-gradient(135deg, var(--vp-c-bg-soft), var(--vp-c-brand-1));
+  color: white;
+}
+
+/* 分类筛选区域样式 */
+.category-filter {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+}
+
+.category-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-btn.active {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 博客卡片样式优化 */
+.blog-card {
+  background: var(--vp-c-bg-soft);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--vp-c-divider);
+  position: relative;
+}
+
+.blog-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--vp-c-brand-1), #6366f1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: var(--vp-c-brand-1);
+}
+
+.blog-card:hover::before {
+  opacity: 0.05;
+}
+
+/* 确保卡片内容区域有合适的高度 */
+.card-content {
+  padding: 1.5rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.card-description {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+}
+
+/* 优化标签显示 */
+.card-tags {
+  margin-top: auto;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* 响应式优化 */
+@media (max-width: 1200px) {
+  .blog-header {
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-header {
+    padding: 2.5rem 1rem;
+    margin: -1rem -1rem 2rem -1rem;
+  }
+  
+  .blog-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .blog-subtitle {
+    font-size: 1.125rem !important;
+  }
+  
+  .category-filter {
+    gap: 0.5rem;
+  }
+  
+  .category-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-page {
+    padding: 1rem 0.5rem;
+  }
+  
+  .blog-header {
+    padding: 2rem 0.5rem;
+    margin: -0.5rem -0.5rem 1.5rem -0.5rem;
+  }
+  
+  .blog-title {
+    font-size: 2rem !important;
+  }
+  
+  .blog-subtitle {
+    font-size: 1rem !important;
+  }
+  
+  .card-content {
+    padding: 1rem;
+    min-height: 180px;
+  }
+  
+  .blog-grid {
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+} 

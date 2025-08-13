@@ -1,0 +1,27 @@
+<svg width="1920" height="600" viewBox="0 0 1920 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#107d8b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#107d8b;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <!-- 背景渐变 -->
+  <rect width="100%" height="100%" fill="url(#bg)"/>
+  
+  <!-- 网格图案 -->
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  
+  <!-- 装饰性圆形 -->
+  <circle cx="200" cy="150" r="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1600" cy="400" r="120" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="400" cy="450" r="60" fill="rgba(255,255,255,0.06)"/>
+  
+  <!-- 科技感线条 -->
+  <path d="M 0 300 Q 480 200 960 300 T 1920 300" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"/>
+  <path d="M 0 400 Q 480 300 960 400 T 1920 400" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/>
+</svg> 

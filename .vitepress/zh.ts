@@ -5,6 +5,7 @@ var base_path_examples = '/examples'
 var base_path_api = '/api'
 var base_path_plugin = '/plugin'
 var base_path_course = '/course'
+var base_path_blog = '/blog'
 
 // https://vitepress.dev/reference/site-config
 export const zh = defineConfig({
@@ -58,6 +59,11 @@ export const zh = defineConfig({
         text: '课程',
         link: base_path_course + '/prompt_engineering_course/01-preface/README.md',
         activeMatch: '/course/',
+      },
+      {
+        text: '博客',
+        link: base_path_blog,
+        activeMatch: '/blog/',
       },
       {
         text: 'API',
