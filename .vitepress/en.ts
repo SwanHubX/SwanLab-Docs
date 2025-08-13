@@ -342,6 +342,14 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'LSTM Stock Prediction', link: 'lstm_stock'},
     ]
   },
+  {
+    text: 'others',
+    //collapsed: false,
+    items: [
+      { text: 'Swanlab-rag', link: 'agent/swanlab-rag' },
+
+    ]
+  }
 ]
 }
 
