@@ -23,10 +23,33 @@ export default {
   setup() {
     const route = useRoute()
 
+    const shouldZoomImage = (img) => {
+      // 1. Check if there are clear exclusion marks
+      if (img.classList.contains('no-zoomable') || img.hasAttribute('data-no-zoom') || img.closest('a[href]')) {
+        return false
+      }
+
+      // 2. Exclude specified directories
+      const src = img.src || img.getAttribute('src') || ''
+      const excludedDirectories = ['/exclude/']
+      if (excludedDirectories.some(dir => src.includes(dir))) {
+        return false
+      }
+
+      return true
+    }
+
     // Image zoom functionality
     const initZoom = () => {
-      mediumZoom('.main img:not(.no-zoomable)', {
-        background: 'var(--vp-c-bg)',
+      nextTick(() => {
+        const allImages = document.querySelectorAll('.vp-doc img')
+        const zoomableImages = Array.from(allImages).filter(shouldZoomImage)
+
+        if (zoomableImages.length > 0) {
+          mediumZoom(zoomableImages, {
+            background: 'var(--vp-c-bg)',
+          })
+        }
       })
     }
 
