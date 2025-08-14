@@ -380,7 +380,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     collapsed: false,
     items: [
       { text: 'openMind大模型微调', link: 'openMind' },
-      { text: 'Swanlab-rag文档助手', link: 'agent/swanlab-rag' },
+      { text: 'SwanLab RAG文档助手', link: 'agent/swanlab-rag' },
 
     ]
   }

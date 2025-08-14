@@ -1,12 +1,12 @@
-
-
-
-
 # 懒人专属：拖入文档=拥有AI文档助手？RAG怎么做？SwanLab文档助手方案开源了！（附详细代码）
 
-作者：李晨 、王超  新疆大学丝路多语言认知计算国际合作联合实验室研究生、情感机器实习研究员
+**作者**：李晨 、王超  
 
-联系邮箱：lichen@stu.xju.edu.cn、wangchao@stu.xju.edu.cn
+**机构**：新疆大学丝路多语言认知计算国际合作联合实验室研究生、情感机器实习研究员
+
+**联系邮箱**：lichen@stu.xju.edu.cn、wangchao@stu.xju.edu.cn
+
+---
 
 **"随着官方文档API的爆炸式增长，用户阅读较为困难，——今天，我们直接用**SwanLab**+**开箱即用的RAG框架**，带你30分钟搭建一个**服务级文档助手**（附完整源码和在线Demo，无需复杂配置，10分钟即可本地跑通！）**
 
@@ -22,10 +22,6 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
   <figcaption>Swanlab官方文档Demo演示</figcaption>
   </figure>
 </div>
-
-------
-
-
 
 ## 摘要
 
