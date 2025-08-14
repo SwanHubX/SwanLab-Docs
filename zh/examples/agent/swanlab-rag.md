@@ -8,7 +8,7 @@
 
 ---
 
-**"随着官方文档API的爆炸式增长，用户阅读较为困难，——今天，我们直接用**SwanLab**+**开箱即用的RAG框架**，带你30分钟搭建一个**服务级文档助手**（附完整源码和在线Demo，无需复杂配置，10分钟即可本地跑通！）**
+**"随着官方文档API的爆炸式增长，用户阅读较为困难，——今天，我们直接用SwanLab+开箱即用的RAG框架**，带你30分钟搭建一个**服务级文档助手**（附完整源码和在线Demo，无需复杂配置，10分钟即可本地跑通！）
 
 AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanlab.cn/)
 
@@ -280,7 +280,7 @@ distances, indices = self.index.search(query_vector, k=10)
 retrieved_chunks = [self.index_to_chunk[str(i)] for i in indices[0]]
 ```
 
-#### 关键词检索：
+#### 关键词检索
 
 关键词检索（`Keyword Search`），也称为词法检索（`Lexical Search`），是一种基于精确词汇匹配的传统信息检索方法。
 
@@ -377,7 +377,7 @@ API选用方面，为了提供给用户更好的体验，选用阿里云百炼AP
 evalscope perf \
  --parallel 1 \
  --url  https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions \
- --api-key "sk-3bd82fa09f5d4192ad345c2287e058a5"\
+ --api-key "填写api_key"\  
  --model qwen3-30b-a3b-instruct-2507 \
  --log-every-n-query 5 \
  --connect-timeout 6000 \
@@ -517,4 +517,14 @@ Swanlab官网中提供两个文档助手入口，或者直接访问链接[SwanLa
   <figcaption></figcaption>
   </figure>
 </div>
+
+---
+更多详细内容请参考：
+
+AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanlab.cn/)
+
+方案开源Github仓库链接：https://github.com/EmotionMachine/swanlab-rag
+
+Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+
 
