@@ -343,7 +343,7 @@ We used the **Evalscope** framework for latency testing, with the test script sh
 evalscope perf \
  --parallel 1 \
  --url https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions \
- --api-key "sk-3bd82fa09f5d4192ad345c2287e058a5" \
+ --api-key "Replace with your API key" \
  --model qwen3-30b-a3b-instruct-2507 \
  --log-every-n-query 5 \
  --connect-timeout 6000 \
@@ -478,3 +478,11 @@ For a particularly tricky question where the documentation does not explicitly s
   <figcaption></figcaption>
   </figure>
 </div>
+
+---
+For more content, please refer to:
+
+**AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
+**Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
+**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)  
+

@@ -510,6 +510,7 @@ function sidebarCourse(): DefaultTheme.SidebarItem[] {
           { text: '8.2 MCP实践', link: 'prompt_engineering_course/10-Agent/2.mcp_usage.md' },
           { text: '8.3 多Agents简介', link: 'prompt_engineering_course/10-Agent/3.multi_agents.md' },
         ]},
+        { text: '第九章 RAG实战', link: 'prompt_engineering_course/11-swanlab_rag/swanlab-rag.md' },
       ]
     },
   ]

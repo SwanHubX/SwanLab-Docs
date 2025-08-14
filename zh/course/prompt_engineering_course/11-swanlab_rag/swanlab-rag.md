@@ -18,7 +18,7 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-demo.gif" alt="rag-demo"  width="800" />
+  <img src="./picture/rag-demo.gif" alt="rag-demo"  width="800" />
   <figcaption>Swanlab官方文档Demo演示</figcaption>
   </figure>
 </div>
@@ -31,7 +31,7 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-structure.png" alt="image-20250813112441893" width="800" />
+  <img src="./picture/rag-structure.png" alt="image-20250813112441893" width="800" />
   <figcaption>Swanlab文档助手技术架构简介</figcaption>
   </figure>
 </div>
@@ -53,7 +53,7 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-github_api.png" alt="image-20250724121726401"  width="800" />
+  <img src="./picture/rag-github_api.png" alt="image-20250724121726401"  width="800" />
   <figcaption>GitHub API 调用流程</figcaption>
   </figure>
 </div>
@@ -79,7 +79,7 @@ API 的核心功能是为用户提供一种以编程方式访问和操作 GitHub
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-git.png" alt="image-20250724121726401"  width="800" />
+  <img src="./picture/rag-git.png" alt="image-20250724121726401"  width="800" />
   <figcaption>自动化Git仓库</figcaption>
   </figure>
 </div>															
@@ -135,7 +135,7 @@ for item in contents:
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-chunk.png" alt="image-20250724173035496" width="400" />
+  <img src="./picture/rag-chunk.png" alt="image-20250724173035496" width="400" />
   <figcaption>Chunk策略示意图</figcaption>
   </figure>
 </div>
@@ -187,7 +187,7 @@ prompt = f"""
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-embedding.png" alt="image-20250724173738310" width="800" />
+  <img src="./picture/rag-embedding.png" alt="image-20250724173738310" width="800" />
   <figcaption>生成词向量</figcaption>
   </figure>
 </div>																
@@ -230,7 +230,7 @@ def get_embeddings_from_api(texts: list[str], batch_size: int = 16) -> list[list
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-rag.png" alt="image-20250725151046751"  width="800" />
+  <img src="./picture/rag-rag.png" alt="image-20250725151046751"  width="800" />
   <figcaption>文档检索流程示意图</figcaption>
   </figure>
 </div>												
@@ -243,7 +243,7 @@ def get_embeddings_from_api(texts: list[str], batch_size: int = 16) -> list[list
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-faiss.png" alt="image-20250724145848506" width="800" />
+  <img src="./picture/rag-faiss.png" alt="image-20250724145848506" width="800" />
   <figcaption>FAISS向量数据库</figcaption>
   </figure>
 </div>
@@ -258,7 +258,7 @@ Faiss 提供多种算法来处理任意大小的向量集，支持高效的近�
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-faiss2.png" alt="image-20250725172624004" width="800" />
+  <img src="./picture/rag-faiss2.png" alt="image-20250725172624004" width="800" />
   <figcaption>FAISS</figcaption>
   </figure>
 </div>
@@ -315,7 +315,7 @@ def _keyword_search(self, query:str, k: int = 10):
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-fusion_search.png" alt="image-20250725180644828"  width="800" />
+  <img src="./picture/rag-fusion_search.png" alt="image-20250725180644828"  width="800" />
   <figcaption>混合检索示意图</figcaption>
   </figure>
 </div>										
@@ -353,7 +353,7 @@ API选用方面，为了提供给用户更好的体验，选用阿里云百炼AP
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-swanlab.png" alt="image-20250812142111725" width="800" />
+  <img src="./picture/rag-swanlab.png" alt="image-20250812142111725" width="800" />
   <figcaption></figcaption>
   </figure>
 </div>
@@ -366,7 +366,7 @@ API选用方面，为了提供给用户更好的体验，选用阿里云百炼AP
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-aliyun.png" alt="image-20250812142111725" width="800" />
+  <img src="./picture/rag-aliyun.png" alt="image-20250812142111725" width="800" />
   <figcaption></figcaption>
   </figure>
 </div>
@@ -440,7 +440,7 @@ completion = client.chat.completions.create(
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-prompt.png" alt="image-20250812142111725" width="800" />
+  <img src="./picture/rag-prompt.png" alt="image-20250812142111725" width="800" />
   <figcaption>Prompt的重要性</figcaption>
   </figure>
 </div>
@@ -482,7 +482,7 @@ prompt = f"""
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-qwen3.png" alt="image-20250724151955944" width="800" />
+  <img src="./picture/rag-qwen3.png" alt="image-20250724151955944" width="800" />
   <figcaption></figcaption>
   </figure>
 </div>
@@ -495,7 +495,7 @@ Swanlab官网中提供两个文档助手入口，或者直接访问链接[SwanLa
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-login.png" alt="image-20250812170254538"  width="800" />
+  <img src="./picture/rag-login.png" alt="image-20250812170254538"  width="800" />
   <figcaption></figcaption>
   </figure>
 </div>
@@ -504,7 +504,7 @@ Swanlab官网中提供两个文档助手入口，或者直接访问链接[SwanLa
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-test.png" alt="image-20250812170254538"  width="800" />
+  <img src="./picture/rag-test.png" alt="image-20250812170254538"  width="800" />
   <figcaption></figcaption>
   </figure>
 </div>
@@ -513,7 +513,7 @@ Swanlab官网中提供两个文档助手入口，或者直接访问链接[SwanLa
 
 <div align="center">
   <figure>
-  <img src="./assets/rag-test2.png" alt="image-20250812170254538"  width="800" />
+  <img src="./picture/rag-test2.png" alt="image-20250812170254538"  width="800" />
   <figcaption></figcaption>
   </figure>
 </div>
