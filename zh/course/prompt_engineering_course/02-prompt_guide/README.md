@@ -22,4 +22,4 @@
 | [第六章 合成数据](../08-synthetic_data/README.md)                                  | 预训练、微调、推理数据合成原理&代码实践              | ✅ |
 | [第七章 RAG检索](../09-RAG/README.md)                                            | 构建向量数据库、文档处理、检索向量、提示词增强、模型生成      | ✅ |
 | [第八章 Agent实践](../10-Agent/README.md)                                        | 函数调用、MCP实践、多Agents介绍              | ✅ |
-| [第九章 RAG实战](../11-swanlab_rag/swanlab-rag.md)                               | 数据准备、RAG实站                        | ✅ |
+| [第九章 RAG实战](../11-swanlab_rag/README.md)                               | 数据准备、RAG实站                        | ✅ |
