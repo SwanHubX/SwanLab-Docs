@@ -28,6 +28,18 @@ SwanLab supports adding project collaborators to facilitate teamwork.
 | Delete Project | ❌ | ❌ | ✅ |
 | Manage Collaborators | ❌ | ❌ | ✅ |
 
+## Collaborators creating experiments in other projects
+
+If you are a collaborator of the project `OpenVLA` (with develop or manage permissions), and the project belongs to user `A` (username is `A`), you want to create experiments in the `OpenVLA` project, then you can:
+
+```python
+swanlab.init(
+    project="OpenVLA",
+    workspace="A", 
+)
+```
+
+
 ## Removing Collaborators
 
 In the "Share" panel, click on the collaborator settings at the bottom, then click the "Remove" button. In the permission selection menu, choose "Remove" to remove the collaborator.
