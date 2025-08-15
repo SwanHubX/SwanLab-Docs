@@ -12,13 +12,14 @@
 
 我们的教程包含前言、环境设置、常见推理任务、合成数据、RAG、Agent等，带大家全方位熟悉`提示词`的使用，下面我们给出了教程的内容导航👇：
 
-| 章节 | 关键内容 | 状态 |
-| --- | --- | --- |
-| [第一章 环境安装](../03-environmental_installation_platform_preparation/README.md) | 获取教程代码、本地调用大模型环境安装、调用API使用大模型 | ✅ |
-| [第二章 模型选择](../04-model_types/README.md) | 什么时候分别使用Base、Instruct、Reasoning模型 | ✅ |
-| [第三章 提示词撰写技巧](../05-tips_for_prompt/README.md) | 模型参数设置、提示词基础结构、提示词要素、CoT等 | ✅ |
-| [第四章 常见任务示例](../06-common_task_examples/README.md) | 文本生成、信息提取、指令问答、代码生成、数学计算等 | ✅ |
-| [第五章 多模态大模型提示词](../07-multimodal_prompt/README.md) | 图像分析、视频分析提示词、音频大模型介绍 | ✅ |
-| [第六章 合成数据](../08-synthetic_data/README.md) | 预训练、微调、推理数据合成原理&代码实践 | ✅ |
-| [第七章 RAG检索](../09-RAG/README.md) | 构建向量数据库、文档处理、检索向量、提示词增强、模型生成 | ✅ |
-| [第八章 Agent实践](../10-Agent/README.md) | 函数调用、MCP实践、多Agents介绍| ✅ |
+| 章节                                                                          | 关键内容                              | 状态 |
+|-----------------------------------------------------------------------------|-----------------------------------| --- |
+| [第一章 环境安装](../03-environmental_installation_platform_preparation/README.md) | 获取教程代码、本地调用大模型环境安装、调用API使用大模型     | ✅ |
+| [第二章 模型选择](../04-model_types/README.md)                                     | 什么时候分别使用Base、Instruct、Reasoning模型 | ✅ |
+| [第三章 提示词撰写技巧](../05-tips_for_prompt/README.md)                              | 模型参数设置、提示词基础结构、提示词要素、CoT等         | ✅ |
+| [第四章 常见任务示例](../06-common_task_examples/README.md)                          | 文本生成、信息提取、指令问答、代码生成、数学计算等         | ✅ |
+| [第五章 多模态大模型提示词](../07-multimodal_prompt/README.md)                          | 图像分析、视频分析提示词、音频大模型介绍              | ✅ |
+| [第六章 合成数据](../08-synthetic_data/README.md)                                  | 预训练、微调、推理数据合成原理&代码实践              | ✅ |
+| [第七章 RAG检索](../09-RAG/README.md)                                            | 构建向量数据库、文档处理、检索向量、提示词增强、模型生成      | ✅ |
+| [第八章 Agent实践](../10-Agent/README.md)                                        | 函数调用、MCP实践、多Agents介绍              | ✅ |
+| [第九章 RAG实战](../11-swanlab_rag/README.md)                               | 数据准备、RAG实站                        | ✅ |
