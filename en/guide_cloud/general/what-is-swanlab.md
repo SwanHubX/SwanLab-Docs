@@ -145,6 +145,7 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [FastAI](/guide_cloud/integration/integration-fastai.html)  
 - [LightGBM](/guide_cloud/integration/integration-lightgbm.html)  
 - [XGBoost](/guide_cloud/integration/integration-xgboost.html)  
+- [Mlx-lm](/guide_cloud/integration/integration-mlx-lm.html)
 
 **Computer Vision**  
 - [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)  

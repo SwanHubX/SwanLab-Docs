@@ -23,6 +23,7 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [FastAI](/en/guide_cloud/integration/integration-fastai.html)
 - [LightGBM](/en/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/en/guide_cloud/integration/integration-xgboost.html)
+- [Mlx-lm](/en/guide_cloud/integration/integration-mlx-lm.html)
 
 ## Evaluation Frameworks
 - [EvalScope](/en/guide_cloud/integration/integration-evalscope.html)
