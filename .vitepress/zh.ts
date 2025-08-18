@@ -270,7 +270,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'LightGBM', link: 'integration-lightgbm' },
         { text: 'LLaMA Factory', link: 'integration-llama-factory' },
         { text: 'MLFlow', link: 'integration-mlflow' },
-        { text: 'Mlx-lm', link: 'integration-mlx-lm' },
+        { text: 'MLX LM', link: 'integration-mlx-lm' },
         { text: 'MMEngine', link: 'integration-mmengine' },
         { text: 'MMPretrain', link: 'integration-mmpretrain' },
         { text: 'MMDetection', link: 'integration-mmdetection' },
