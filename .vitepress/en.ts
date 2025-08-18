@@ -129,21 +129,21 @@ function sidebarGuideCloud(): SidebarItemEx[] {
       { text: 'Quick Start', link: 'general/quick-start' },
       { text: 'Team Usage', link: 'general/organization' },
       { text: 'Changelog', link: 'general/changelog' },
-      { text: '🔥 Mobile SwanLab', link: 'general/app', badge: { type: 'hot', text: 'HOT' } },
+      { text: '🔥 Mobile SwanLab', link: 'general/app'},
     ]
   },
   {
     text: '📚 Experiment Tracking',
     // collapsed: false,
     items: [
-      { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track', badge: { type: 'new', text: 'NEW' } },
+      { text: 'What is experiment tracking?', link: 'experiment_track/what-is-experiment-track'},
       { text: 'Create an experiment', link: 'experiment_track/create-experiment' },
       { text: 'Set config', link: 'experiment_track/set-experiment-config' },
       { text: 'Log metric', link: 'experiment_track/log-experiment-metric' },
       { text: 'Log media metric', items:[
         { text: 'Log Media', link: 'experiment_track/log-media' },
         { text: 'Log Custom Chart', link: 'experiment_track/log-custom-chart' },
-        { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart', badge: { type: 'beta', text: 'BETA' } },
+        { text: 'Log Custom 3D Chart', link: 'experiment_track/log-custom-3dchart'},
       ]},
       {
         text: 'Log compute metric',
@@ -238,6 +238,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'LightGBM', link: 'integration-lightgbm'},
       { text: 'LLaMA Factory', link: 'integration-llama-factory'},
       { text: 'MLFlow', link: 'integration-mlflow'},
+      { text: 'Mlx-lm', link: 'integration-mlx-lm' },
       { text: 'MMEngine', link: 'integration-mmengine' },
       { text: 'MMPretrain', link: 'integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration-mmdetection' },
