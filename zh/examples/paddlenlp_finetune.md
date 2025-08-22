@@ -1,14 +1,18 @@
 # PaddleNLP大模型微调实战
 
-**作者：**王超  
+**作者**：王超  
 
-**机构：**新疆大学丝路多语言认知计算国际合作联合实验室研究生、情感机器实习研究员
+**机构**：新疆大学丝路多语言认知计算国际合作联合实验室研究生、情感机器实习研究员
 
-**联系邮箱：**akiyamaice@163.com
+**联系邮箱**：akiyamaice@163.com
 
 PaddleNLP是一款基于飞桨深度学习框架的大语言模型(LLM)开发套件，支持在多种硬件上进行高效的大模型训练、无损压缩以及高性能推理。PaddleNLP 具备简单易用和性能极致的特点，致力于助力开发者实现高效的大模型产业级应用。
 
-![image-20250528222259280](.\paddlenlp\image-20250528222259280.png)
+<div align="center">
+  <figure>
+  <img src=".\paddlenlp\image-20250528222259280.png" alt="image-20250528222259280.png"  width="800" />
+  </figure>
+</div>
 
 ### 🔧 核心特性
 
@@ -67,7 +71,11 @@ pip install swanlab accelerate pandas addict
 
 该数据集中每条数据包含Instruction、Input和Output三列：
 
-![image-20250528160518297](.\paddlenlp\image-20250528160518297.png)
+<div align="center">
+  <figure>
+  <img src=".\paddlenlp\image-20250528160518297.png" alt="image-20250528160518297.png"  width="1200" />
+  </figure>
+</div>
 
 PaddleNLP支持的数据格式是每行包含一个字典，每个字典包含以下字段：
 
@@ -973,7 +981,11 @@ if __name__ == "__main__":
 
 看到下面的信息即代表训练开始：
 
-![image-20250529174428668](.\paddlenlp\image-20250529174428668.png)
+<div align="center">
+  <figure>
+  <img src=".\paddlenlp\image-20250529174428668.png" alt="image-20250529174428668.png"  width="1200" />
+  </figure>
+</div>
 
 ------
 
@@ -981,7 +993,11 @@ if __name__ == "__main__":
 
 使用SwanLab查看最终的训练结果：
 
-![image-20250529174820372](.\paddlenlp\image-20250529174820372.png)
+<div align="center">
+  <figure>
+  <img src=".\paddlenlp\image-20250529174820372.png" alt="image-20250529174820372.png"  width="1200" />
+  </figure>
+</div>
 
 至此，使用PaddleNLP进行大模型的微调已经完成。
 
