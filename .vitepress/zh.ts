@@ -382,7 +382,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'openMind大模型微调', link: 'openMind' },
       { text: 'SwanLab RAG文档助手', link: 'agent/swanlab-rag' },
-
+      { text: 'PaddleNLP大模型微调实战', link: 'paddlenlp_finetune' }
     ]
   }
   ]
