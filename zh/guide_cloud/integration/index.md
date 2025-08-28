@@ -23,7 +23,7 @@
 - [FastAI](/guide_cloud/integration/integration-fastai.html)
 - [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/guide_cloud/integration/integration-xgboost.html)
-- [Mlx-lm](/guide_cloud/integration/integration-mlx-lm.html)
+- [MLX-LM](/guide_cloud/integration/integration-mlx-lm.html)
 
 ## 评估框架
 - [EvalScope](/guide_cloud/integration/integration-evalscope.html)
