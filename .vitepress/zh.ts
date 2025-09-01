@@ -268,7 +268,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'Hydra', link: 'integration-hydra' },
         { text: 'Keras', link: 'integration-keras' },
         { text: 'LightGBM', link: 'integration-lightgbm' },
-        { text: 'LLaMA Factory', link: 'integration-llama-factory' },
+        { text: 'LLaMA-Factory', link: 'integration-llama-factory' },
         { text: 'LLaMA-Factory Online', link: 'integration-llama-factory-online' },
         { text: 'MLFlow', link: 'integration-mlflow' },
         { text: 'MMEngine', link: 'integration-mmengine' },
