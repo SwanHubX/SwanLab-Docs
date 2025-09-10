@@ -5,6 +5,21 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.9 - 2025.9.9
+
+**🚀 New Features**
+- Projects now support adding collaborators. [Documentation](/en/guide_cloud/experiment_track/add-collaborator)
+- Major upgrade to the organization management page, offering enhanced permission control and project management capabilities.
+- Added new environment variables: `SWANLAB_DESCRIPTION`, `SWANLAB_TAGS`, `SWANLAB_DISABLE_GIT`.
+
+**🤔 Improvements**
+- Enhanced chart rendering performance with low-intrusion loading animations, allowing researchers to focus more on experimental analysis itself.
+- Fixed some compatibility issues with the public API.
+
+**🔌 Integrations**
+- Added integration with Apple's [MLX LM](https://github.com/ml-explore/mlx-lm) framework. [Documentation](/en/guide_cloud/integration/integration-mlx-lm)
+- Added integration with SGLang's [SpecForge](https://github.com/sgl-project/SpecForge) framework.
+
 ## v0.6.8 - 2025.7.29
 
 **🚀 New Features**
