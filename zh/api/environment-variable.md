@@ -28,6 +28,9 @@
 | `SWANLAB_EXP_NAME` | 实验名称，效果等价于 `swanlab.init(experiment_name="...")` |
 | `SWANLAB_RUN_ID` | 实验运行ID，效果等价于 `swanlab.init(id="...")` |
 | `SWANLAB_RESUME` | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `must`、`allow`、`never` |
+| `SWANLAB_DESCRIPTION` | 实验描述，效果等价于 `swanlab.init(description="...")` |
+| `SWANLAB_TAGS` | 实验标签，效果等价于 `swanlab.init(tags=[...])`，如果你想要添加多个tags，写法为`SWANLAB_TAGS="tag1,tag2,tag3"` |
+| `SWANLAB_DISABLE_GIT` | 是否禁用Git，可选值为 `True`、`False`，当设置为 `True` 时，将不会记录Git信息 |
 
 ## 登录认证
 
