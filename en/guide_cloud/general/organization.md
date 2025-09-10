@@ -5,7 +5,7 @@
 In the top-left corner of the homepage, click the "Create Organization" button. Fill in the organization name, organization ID, and other relevant information to complete the creation of the organization.
 
 <div align="center">
-<img src="/assets/organization-create.jpg" width="400">
+<img src="./organization/create.png" width="600">
 </div>
 
 ## Inviting Members
