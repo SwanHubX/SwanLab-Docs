@@ -209,6 +209,13 @@ python predict_cls_rnn.py
 
 ### 策略一：增大batch
 
+<div align="center">
+  <figure>
+  <img src="./rnn_tutorial/baseline_loss.png" alt="rnn" width="800" />
+  <figcaption>baseline后半段损失震荡比较大</figcaption>
+  </figure>
+</div>
+
 笔者观察到在4k步以后的训练损失有点震荡。一个直观的思想是增加batch大小减少抖动。笔者将batch大小从16➡️64（当然这也引入了更多的数据集）。实验结果如下：
 
 <div align="center">
@@ -235,7 +242,7 @@ python train_cls_rnn.py --batch_size 64 --lr 0.005 --run_name large_batch_lr5e-3
 
 <div align="center">
   <figure>
-  <img src="./rnn_tutorial/large_batch.png" alt="rnn" width="800" />
+  <img src="./rnn_tutorial/large_batch_lr.png" alt="rnn" width="800" />
   <figcaption>黄色是baseline，品红色是增大学习率的曲线</figcaption>
   </figure>
 </div>
@@ -299,7 +306,7 @@ python train_cls_rnn.py --hidden_dim 32 --num_layers 3  --batch_size 64 --lr 0.0
 <div align="center">
   <figure>
   <img src="./rnn_tutorial/analyze_sota.png" alt="rnn" width="800" />
-  <figcaption>相比于收敛的实验，另两个损失在初期震荡严重</figcaption>
+  <figcaption>相比于收敛的实验，另两个不收敛实验损失在初期震荡严重</figcaption>
   </figure>
 </div>
 
@@ -339,7 +346,7 @@ Bingo！这次模型非常稳定的实现了收敛，笔者重复了三次实验
 
 <div align="center">
   <figure>
-  <img src="./rnn_tutorial/sota.png" alt="rnn" width="800" />
+  <img src="./rnn_tutorial/sota_single.png" alt="rnn" width="800" />
   <figcaption>warm up后训练前期的稳定性提升了不少</figcaption>
   </figure>
 </div>
@@ -358,7 +365,7 @@ Bingo！这次模型非常稳定的实现了收敛，笔者重复了三次实验
 <div align="center">
   <figure>
   <img src="./rnn_tutorial/example2.png" alt="rnn" width="400" />
-  <figcaption>外推表现也不错</figcaption>
+  <figcaption>超文本长度外推表现也不错</figcaption>
   </figure>
 </div>
 
