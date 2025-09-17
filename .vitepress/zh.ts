@@ -373,6 +373,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: '时间序列',
     // collapsed: false,
     items: [
+      { text: 'RNN教程1-原理简介', link: 'rnn_tutorial_1' },
+      { text: 'RNN教程2-序列预测模型构建', link: 'rnn_tutorial_2' },
       { text: 'LSTM股票预测', link: 'lstm_stock' },
     ]
   },
