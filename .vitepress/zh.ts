@@ -374,6 +374,10 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'LSTM股票预测', link: 'lstm_stock' },
+      { text: 'RNN教程', items: [
+        { text: '原理简介', link: 'rnn_tutorial_1' },
+        { text: '序列预测模型构建', link: 'rnn_tutorial_2' },
+      ]},
     ]
   },
   {
