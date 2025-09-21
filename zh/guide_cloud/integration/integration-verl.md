@@ -109,7 +109,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 ```bash
 export SWANLAB_API_KEY=<你的登陆API>           # 设置在线跟踪模式API
 export SWANLAB_LOG_DIR=<设置本地日志存储路径>    # 设置本地日志存储路径
-export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cloud云端跟踪模式（默认）、cloud-only仅云端跟踪本地不保存文件、local本地跟踪模式、disabled完全不记录用于debug
+export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cloud云端跟踪模式（默认）、cloud-only仅云端跟踪本地不保存文件、local本地跟踪模式、offline离线保存日志之后手动同步、disabled完全不记录用于debug
 ```
 
 ## 查看训练日志
