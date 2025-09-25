@@ -110,7 +110,7 @@ def main(name="小鹅", author="SwanLab团队"):
         for data in mlx_train_data:
             fwrite.write(json.dumps(data, ensure_ascii=False) + "\n")
 
-    with open("./mlx_data/val.jsonl", "w", encoding="utf-8") as fwrite:
+    with open("./mlx_data/valid.jsonl", "w", encoding="utf-8") as fwrite:
         for data in mlx_val_data:
             fwrite.write(json.dumps(data, ensure_ascii=False) + "\n")
 
@@ -187,7 +187,7 @@ steps_per_eval: 200 # 每隔多少训练步数进行一次验证。
 resume_adapter_file: null # 加载路径，用于用给定的 adapter 权重恢复训练。
 adapter_path: "cog_adapters"  # 训练后 adapter 权重的保存/加载路径。
 save_every: 100 # 每 N 次迭代保存一次模型。
-test: true # 训练后是否在测试集上评估
+test: false # 训练后是否在测试集上评估
 test_batches: 100 # 测试集批次数，-1 表示使用整个测试集。
 max_seq_length: 512 # 最大序列长度。
 grad_checkpoint: false  # 是否使用梯度检查点以减少内存使用。
