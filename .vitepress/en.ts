@@ -341,6 +341,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'LSTM Stock Prediction', link: 'lstm_stock'},
+      { text: 'RNN Fundamentals: Variable-Length Sequences', link: 'rnn_tutorial_1'},
+      { text: 'RNN Sequence Prediction', link: 'rnn_tutorial_2'},
     ]
   },
   {

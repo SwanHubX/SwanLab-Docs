@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | `SWANLAB_SAVE_DIR` | SwanLab 全局文件夹保存的路径 | 用户主目录下的 `.swanlab` 文件夹 |
 | `SWANLAB_LOG_DIR` | SwanLab 解析日志文件保存的路径 | 当前运行目录的 `swanlog` 文件夹 |
-| `SWANLAB_MODE` | SwanLab 的解析模式，涉及操作员注册的回调。目前有三种模式：`local`、`cloud`、`disabled`。**注意：大小写敏感** | `cloud` |
+| `SWANLAB_MODE` | SwanLab 的解析模式，涉及操作员注册的回调。目前有三种模式：`local`、`cloud`、 `offline`、`disabled`。**注意：大小写敏感** | `cloud` |
 
 ## 服务配置
 
