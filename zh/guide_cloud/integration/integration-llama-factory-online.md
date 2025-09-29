@@ -90,8 +90,7 @@
 
 运行前需要准备的工作
 
-* 用户已经获取LLaMA Factory Online平台账户和密码，如果需要帮助或尚未注册，可参考[注册账户](/docs/documents/quickstart/loginAccount)完成注册。
-* 当前账号的余额充裕，可满足模型微调服务的需要。点击可了解[最新的活动](/docs/documents/quickstart/freetrialguide)及[费用信息](/docs/documents/recharge/charging)，或前往<Anchor label="充值" href="/cost/recharge" />，如需了解更多请[联系我们](/docs/documents/recharge/refill#发票)。
+* 用户已经获取LLaMA Factory Online平台账户和密码，如果需要帮助或尚未注册，可参考[注册账户](https://docs.llamafactory.online/docs/documents/quickstart/loginAccount)完成注册。
 * 在本次微调任务中，我们将使用SwanLab记录整个微调过程。请您访问[SwanLab](https://www.swanlab.cn/)并完成注册。
 
 LLaMA Factory Online支持通过**任务模式**和**实例模式**运行微调任务，不同模式下的微调/评估操作详情如下所示。
