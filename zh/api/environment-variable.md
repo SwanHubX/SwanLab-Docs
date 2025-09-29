@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | `SWANLAB_SAVE_DIR` | SwanLab 全局文件夹保存的路径 | 用户主目录下的 `.swanlab` 文件夹 |
 | `SWANLAB_LOG_DIR` | SwanLab 解析日志文件保存的路径 | 当前运行目录的 `swanlog` 文件夹 |
-| `SWANLAB_MODE` | SwanLab 的解析模式，涉及操作员注册的回调。目前有三种模式：`local`、`cloud`、`disabled`。**注意：大小写敏感** | `cloud` |
+| `SWANLAB_MODE` | SwanLab 的解析模式，涉及操作员注册的回调。目前有三种模式：`local`、`cloud`、 `offline`、`disabled`。**注意：大小写敏感** | `cloud` |
 
 ## 服务配置
 
@@ -28,6 +28,9 @@
 | `SWANLAB_EXP_NAME` | 实验名称，效果等价于 `swanlab.init(experiment_name="...")` |
 | `SWANLAB_RUN_ID` | 实验运行ID，效果等价于 `swanlab.init(id="...")` |
 | `SWANLAB_RESUME` | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `must`、`allow`、`never` |
+| `SWANLAB_DESCRIPTION` | 实验描述，效果等价于 `swanlab.init(description="...")` |
+| `SWANLAB_TAGS` | 实验标签，效果等价于 `swanlab.init(tags=[...])`，如果你想要添加多个tags，写法为`SWANLAB_TAGS="tag1,tag2,tag3"` |
+| `SWANLAB_DISABLE_GIT` | 是否禁用Git，可选值为 `True`、`False`，当设置为 `True` 时，将不会记录Git信息 |
 
 ## 登录认证
 

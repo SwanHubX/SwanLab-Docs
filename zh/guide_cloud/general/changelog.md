@@ -5,6 +5,22 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+
+## v0.6.9 - 2025.9.9
+
+**🚀新增功能**
+- 项目支持添加协作者功能，[文档](/guide_cloud/experiment_track/add-collaborator)
+- 组织管理页面大升级，提供更强大的权限控制与项目管理能力
+- 新增环境变量`SWANLAB_DESCRIPTION`、`SWANLAB_TAGS`、`SWANLAB_DISABLE_GIT`
+
+**🤔优化**
+- 更强大的图表渲染性能与低侵入式加载动画，让研究者更聚焦于实验分析本身
+- 修复了开放API的一些兼容性问题
+
+**🔌集成**
+- 新增与Apple [MLX LM](https://github.com/ml-explore/mlx-lm)框架的集成，[文档](/guide_cloud/integration/integration-mlx-lm)
+- 新增与SGLang [SpecForge](https://github.com/sgl-project/SpecForge)框架的集成
+
 ## v0.6.8 - 2025.7.29
 
 **🚀新增功能**

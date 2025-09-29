@@ -158,6 +158,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [FastAI](/guide_cloud/integration/integration-fastai.html)
 - [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
 - [XGBoost](/guide_cloud/integration/integration-xgboost.html)
+- [Mlx-lm](/guide_cloud/integration/integration-mlx-lm.html)
 
 
 **计算机视觉**

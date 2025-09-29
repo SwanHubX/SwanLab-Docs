@@ -28,6 +28,9 @@
 | `SWANLAB_EXP_NAME` | Experiment name, equivalent to `swanlab.init(experiment_name="...")` |
 | `SWANLAB_RUN_ID` | Experiment run ID, equivalent to `swanlab.init(id="...")` |
 | `SWANLAB_RESUME` | Whether to resume training, equivalent to `swanlab.init(resume=...)`, possible values: `must`, `allow`, `never` |
+| `SWANLAB_DESCRIPTION` | Experiment description, equivalent to `swanlab.init(description="...")` |
+| `SWANLAB_TAGS` | Experiment tags, equivalent to `swanlab.init(tags=[...])`. If you want to add multiple tags, write it as `SWANLAB_TAGS="tag1,tag2,tag3"` |
+| `SWANLAB_DISABLE_GIT` | Whether to disable Git, possible values: `True`, `False`. When set to `True`, Git information will not be recorded. |
 
 ## Login Authentication
 

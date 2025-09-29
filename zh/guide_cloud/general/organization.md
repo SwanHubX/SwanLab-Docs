@@ -2,10 +2,10 @@
 
 ## 创建组织
 
-在主页的左上方，点击“创建组织”按钮，填写组织名、组织ID等信息，即可完成组织创建。
+在主页的左上方，点击“创建空间”按钮，填写组织名、组织ID等信息，即可完成组织创建。
 
 <div align="center">
-<img src="/assets/organization-create.jpg" width="400">
+<img src="./organization/create.png" width="600">
 </div>
 
 ## 邀请成员

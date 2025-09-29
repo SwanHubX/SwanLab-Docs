@@ -69,7 +69,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.6.8',  items: [
+      { text: 'v0.6.9',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -271,6 +271,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'LLaMA-Factory', link: 'integration-llama-factory' },
         { text: 'LLaMA-Factory Online', link: 'integration-llama-factory-online' },
         { text: 'MLFlow', link: 'integration-mlflow' },
+        { text: 'MLX LM', link: 'integration-mlx-lm' },
         { text: 'MMEngine', link: 'integration-mmengine' },
         { text: 'MMPretrain', link: 'integration-mmpretrain' },
         { text: 'MMDetection', link: 'integration-mmdetection' },
@@ -346,6 +347,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'Qwen下游任务训练', link: 'qwen_finetune' },
       { text: 'NER命名实体识别', link: 'ner' },
       { text: 'Qwen3医学模型微调', link: 'qwen3-medical' },
+      { text: '通过微调给Qwen3起新名字', link: 'mlx_lm_finetune' },
     ]
   },
   {
@@ -374,6 +376,10 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'LSTM股票预测', link: 'lstm_stock' },
+      { text: 'RNN教程', items: [
+        { text: '原理简介', link: 'rnn_tutorial_1' },
+        { text: '序列预测模型构建', link: 'rnn_tutorial_2' },
+      ]},
     ]
   },
   {
@@ -382,7 +388,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'openMind大模型微调', link: 'openMind' },
       { text: 'SwanLab RAG文档助手', link: 'agent/swanlab-rag' },
-
+      { text: 'PaddleNLP大模型微调实战', link: 'paddlenlp_finetune' }
     ]
   }
   ]

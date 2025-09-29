@@ -76,9 +76,9 @@ An experiment can be in one of three states: Completed, Running, or Crashed.
 
 Some users may encounter the following situation: Why does my training process seem to be ongoing, but the SwanLab chart shows it as crashed?  
 
-This is because SwanLab has a hidden rule for determining crashes. If no logs (including automatically collected system metrics) are uploaded within 15 minutes, the experiment is marked as crashed. This is to prevent the experiment from remaining in the "Running" state indefinitely if the training process is unexpectedly killed and cannot trigger the status upload logic in the SwanLab SDK.  
+This is because SwanLab has a hidden rule for determining crashes. If no logs (including automatically collected system metrics) are uploaded within 30 minutes, the experiment is marked as crashed. This is to prevent the experiment from remaining in the "Running" state indefinitely if the training process is unexpectedly killed and cannot trigger the status upload logic in the SwanLab SDK.  
 
-Therefore, if your machine experiences network issues for more than 15 minutes, the experiment status will be displayed as "Crashed."
+Therefore, if your machine experiences network issues for more than 30 minutes, the experiment status will be displayed as "Crashed."
 
 ## Command Line Logging and Truncation  
 
