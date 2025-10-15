@@ -25,7 +25,7 @@ SwanLab不只是1个训练跟踪工具与实验管理平台，同时可以是一
 `SwanKitCallback`类是SwanLab的回调类，所有插件都必须继承自该类。
 
 ```python
-from swankit.callback import SwanKitCallback
+from swanlab.toolkit.callback import SwanKitCallback
 ```
 
 `SwanKitCallback`类中定义了所有SwanLab的生命周期阶段，你只需要重写你感兴趣的生命周期阶段即可：
@@ -38,7 +38,7 @@ from swankit.callback import SwanKitCallback
 - `on_log`：每次执行`swanlab.log`时调用
 - `on_stop`：停止阶段，当SwanLab停止时调用
 
-更多的生命周期阶段，请参考：[SwanKitCallback](https://github.com/SwanHubX/SwanLab-Toolkit/blob/main/swankit/callback/__init__.py)
+更多的生命周期阶段，请参考：[SwanKitCallback](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/toolkit/callback.py)
 
 ## 实现一个简单的插件
 
@@ -61,7 +61,7 @@ class MyPlugin(SwanKitCallback):
 而在SwanLab中使用着这个插件非常简单，只需要在`swanlab.init()`的`callbacks`参数中传入插件实例即可。
 
 ```python {14,16}
-from swankit.callback import SwanKitCallback
+from swanlab.toolkit.callback import SwanKitCallback
 import swanlab
 
 class MyPlugin(SwanKitCallback):
@@ -107,7 +107,7 @@ class ThresholdPlugin(SwanKitCallback):
 ### 2. 使用插件
 
 ```python
-from swankit.callback import SwanKitCallback
+from swanlab.toolkit.callback import SwanKitCallback
 from typing import Optional
 import swanlab
 import random

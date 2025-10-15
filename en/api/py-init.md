@@ -32,7 +32,7 @@ init(
 | mode              | (str) Sets the mode for creating SwanLab experiments. Options are "cloud", "local", "offline", or "disabled". Default is "cloud".<br>`cloud`: Uploads the experiment to the cloud (public or private deployment).<br>`offline`: Only records experiment data locally.<br>`local`: Does not upload to the cloud but records experiment information locally.<br>`disabled`: Neither uploads nor records. |
 | load              | (str) The path to a configuration file to load. Supports yaml and json files. |
 | public            | (bool) Sets the visibility of the SwanLab project created directly via code. Default is False (private). |
-| callbacks         | (list) Sets experiment callback functions. Supports subclasses of `swankit.callback.SwanKitCallback`. |
+| callbacks         | (list) Sets experiment callback functions. Supports subclasses of `swanlab.toolkit.callback.SwanKitCallback`. |
 | name              | (str) Same effect as `experiment_name`. Lower priority than `experiment_name`. |
 | notes             | (str) Same effect as `description`. Lower priority than `description`. |
 | tags              | (list) Tags for the experiment. |

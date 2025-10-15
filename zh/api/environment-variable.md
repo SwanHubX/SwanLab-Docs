@@ -1,6 +1,6 @@
 # 环境变量
 
-[⚙️完整环境变量1 -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)、[⚙️完整环境变量2 -> Github](https://github.com/SwanHubX/SwanLab-Toolkit/blob/main/swankit/env.py)
+[⚙️完整环境变量 -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)
 
 ## 全局配置
 
