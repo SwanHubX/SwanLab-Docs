@@ -25,7 +25,7 @@ Currently, we support the `Python Library Plugin` type. Below, we will focus on 
 The `SwanKitCallback` class is SwanLab's callback class. All plugins must inherit from this class.
 
 ```python
-from swankit.callback import SwanKitCallback
+from swanlab.toolkit.callback import SwanKitCallback
 ```
 
 The `SwanKitCallback` class defines all of SwanLab's lifecycle stages. You only need to override the lifecycle stages that interest you:
@@ -38,7 +38,7 @@ Common lifecycle stages include:
 - `on_log`: Called every time `swanlab.log` is executed.
 - `on_stop`: Stop stage, called when SwanLab stops.
 
-For more lifecycle stages, refer to: [SwanKitCallback](https://github.com/SwanHubX/SwanLab-Toolkit/blob/main/swankit/callback/__init__.py)
+For more lifecycle stages, refer to: [SwanKitCallback](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/toolkit/callback.py)
 
 ## Implementing a Simple Plugin
 
@@ -61,7 +61,7 @@ This plugin is quite simple: it prints a message when `swanlab.init()` is called
 Using this plugin in SwanLab is straightforward. Just pass an instance of the plugin to the `callbacks` parameter in `swanlab.init()`.
 
 ```python {14,16}
-from swankit.callback import SwanKitCallback
+from swanlab.toolkit.callback import SwanKitCallback
 import swanlab
 
 class MyPlugin(SwanKitCallback):
@@ -106,7 +106,7 @@ class ThresholdPlugin(SwanKitCallback):
 ### 2. Using the Plugin
 
 ```python
-from swankit.callback import SwanKitCallback
+from swanlab.toolkit.callback import SwanKitCallback
 from typing import Optional
 import swanlab
 import random

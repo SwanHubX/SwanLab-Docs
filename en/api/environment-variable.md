@@ -1,6 +1,6 @@
 # Environment Variables
 
-[⚙️Complete Environment Variables 1 -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)、[⚙️Complete Environment Variables 2 -> Github](https://github.com/SwanHubX/SwanLab-Toolkit/blob/main/swankit/env.py)
+[⚙️Complete Environment Variables 1 -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)
 
 ## Global Configuration
 
