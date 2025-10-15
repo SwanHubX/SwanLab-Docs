@@ -10,6 +10,10 @@
 - [swanlab logout](/en/api/cli-swanlab-logout.md): Logout to SwanLab
 - [swanlab convert](/en/api/cli-swanlab-convert.md): Convert external logs to SwanLab project
 - [swanlab sync](/en/api/cli-swanlab-sync.md): Sync local logs to SwanLab cloud/private deployment
+- [swanlab local](/en/api/cli-swanlab-local.md): Set SwanLab to local mode
+- [swanlab online](/en/api/cli-swanlab-online.md): Set SwanLab to cloud mode
+- [swanlab offline](/en/api/cli-swanlab-offline.md): Set SwanLab to offline mode
+- [swanlab disabled](/en/api/cli-swanlab-disabled.md): Set SwanLab to disabled mode
 
 ## Python SDK
 - [init](/en/api/py-init.md)

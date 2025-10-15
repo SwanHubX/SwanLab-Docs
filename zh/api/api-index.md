@@ -10,6 +10,10 @@
 - [swanlab logout](/api/cli-swanlab-logout.md): 登出SwanLab
 - [swanlab convert](/api/cli-swanlab-convert.md): 将其他产品的日志转换为SwanLab项目
 - [swanlab sync](/api/cli-swanlab-sync.md): 将本地日志同步到SwanLab云端/私有化部署端
+- [swanlab local](/api/cli-swanlab-local.md): 将SwanLab设置为本地模式
+- [swanlab online](/api/cli-swanlab-online.md): 将SwanLab设置为云端模式
+- [swanlab offline](/api/cli-swanlab-offline.md): 将SwanLab设置为离线模式
+- [swanlab disabled](/api/cli-swanlab-disabled.md): 将SwanLab设置为禁用模式
 
 ## Python SDK
 - [init](/api/py-init.md)
