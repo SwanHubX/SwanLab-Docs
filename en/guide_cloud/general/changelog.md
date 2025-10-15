@@ -5,6 +5,15 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.11 - 2025.10.15
+
+**🚀 New Features**
+- New project UI interface, table view supports global filtering, sorting, and other capabilities
+- Line chart configuration now supports **X-axis data source** configuration
+- Added **ctrl-c** to the experiment status, indicating manually interrupted experiments
+- Added `swanlab local`, `swanlab online`, `swanlab offline`, `swanlab disabled` commands to quickly set SwanLab mode in the command line, [Documentation](/zh/api/cli-swanlab-offline.md)
+
+
 ## v0.6.9 - 2025.9.9
 
 **🚀 New Features**

@@ -6,6 +6,15 @@ Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
 
+## v0.6.11 - 2025.10.15
+
+**🚀新增功能**
+- 全新项目UI界面，表格视图支持全局筛选、排序等能力
+- 折线图配置新增 **X轴数据源** 配置功能
+- 实验状态新增 **ctrl-c**，标识用户手动中断的实验
+- 新增`swanlab local`、`swanlab online`、`swanlab offline`、`swanlab disabled`命令，支持在命令行中快速设置SwanLab模式，[文档](/zh/api/cli-swanlab-offline.md)
+
+
 ## v0.6.9 - 2025.9.9
 
 **🚀新增功能**
