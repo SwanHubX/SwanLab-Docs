@@ -413,6 +413,10 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
       { text: 'swanlab sync', link: 'cli-swanlab-sync' },
+      { text: 'swanlab offline', link: 'cli-swanlab-offline' },
+      { text: 'swanlab online', link: 'cli-swanlab-online' },
+      { text: 'swanlab local', link: 'cli-swanlab-local' },
+      { text: 'swanlab disabled', link: 'cli-swanlab-disabled' },
       { text: '其他', link: 'cli-swanlab-other' },
     ]
   },
