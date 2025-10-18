@@ -5,6 +5,13 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.6.12 - 2025.10.18
+
+**🚀 New Features**
+- Added Bark notification plugin, supporting iOS push notifications when training completes or an error occurs, [Documentation](/en/plugin/notification-bark.md)
+- Optimized application performance
+
+
 ## v0.6.11 - 2025.10.15
 
 **🚀 New Features**

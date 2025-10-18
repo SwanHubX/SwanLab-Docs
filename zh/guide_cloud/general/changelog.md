@@ -5,6 +5,11 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.6.12 - 2025.10.18
+
+**🚀新增功能**
+- 新增Bark通知插件，支持在训练完成/发生错误时，第一时间发送iOS信息通知，[文档](/plugin/notification-bark.md)
+- 优化应用性能
 
 ## v0.6.11 - 2025.10.15
 
