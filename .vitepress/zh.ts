@@ -69,7 +69,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.6.11',  items: [
+      { text: 'v0.6.12',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -480,6 +480,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
         { text: '企业微信', link: 'notification-wxwork' },
         { text: 'Discord', link: 'notification-discord' },
         { text: 'Slack', link: 'notification-slack' },
+        { text: 'Bark', link: 'notification-bark' },
       ]
     },
     {

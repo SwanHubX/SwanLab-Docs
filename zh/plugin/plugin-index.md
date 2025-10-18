@@ -10,6 +10,7 @@
 - [企业微信](notification-wxwork)
 - [Discord](notification-discord)
 - [Slack](notification-slack)
+- [Bark](notification-bark)
 
 
 ## 📝 记录类

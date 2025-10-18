@@ -10,6 +10,7 @@
 - [WeChat Work](/en/plugin/notification-wxwork.md)
 - [Discord](/en/plugin/notification-discord.md)
 - [Slack](/en/plugin/notification-slack.md)
+- [Bark](/en/plugin/notification-bark.md)
 
 ## 📝 Logging Plugins
 
