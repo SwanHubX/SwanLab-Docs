@@ -69,7 +69,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.6.12',  items: [
+      { text: 'v0.6.13',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -252,6 +252,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'Argparse', link: 'integration-argparse' },
         { text: 'Areal', link: 'integration-areal' },
         { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
+        { text: 'Catboost', link: 'integration-catboost'},
         { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
         { text: 'EasyR1', link: 'integration-easyr1' },
         { text: 'EvalScope', link: 'integration-evalscope' },

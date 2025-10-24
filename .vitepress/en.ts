@@ -57,7 +57,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.6.12',  items: [
+      { text: 'v0.6.13',  items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
         { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -220,6 +220,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Argparse', link:'integration-argparse' },
       { text: 'Areal', link: 'integration-areal' },
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
+      { text: 'Catboost', link: 'integration-catboost'},
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
       { text: 'EvalScope', link: 'integration-evalscope' },
