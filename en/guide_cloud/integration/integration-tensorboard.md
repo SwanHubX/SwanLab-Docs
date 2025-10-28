@@ -81,6 +81,7 @@ writer = SummaryWriter(log_dir='./runs')
 ```python [TensorboardX]
 import swanlab
 from tensorboardX import SummaryWriter
+import random
 
 swanlab.sync_tensorboardX()
 
@@ -99,6 +100,7 @@ for epoch in range(2, epochs):
 ```python [PyTorch]
 import swanlab
 from torch.utils.tensorboard import SummaryWriter
+import random
 
 swanlab.sync_tensorboard_torch()
 
@@ -119,6 +121,14 @@ for epoch in range(2, epochs):
 ## 2. Convert Existing Projects
 
 ### 2.1 Method 1: Command Line Conversion
+
+Because TensorBoard needs to convert data, you must have TensorFlow installed (GPU mode is not required).
+
+```bash
+pip install tensorflow
+```
+
+Use the following command to synchronize tensorboard logs:
 
 ```bash
 swanlab convert -t tensorboard --tb_logdir [TFEVENT_LOGDIR]
