@@ -126,6 +126,14 @@ for epoch in range(2, epochs):
 
 ### 2.1 方式一：命令行转换
 
+由于tensorboard转换数据的需要，需要提前安装tensorflow（无需GPU模式）
+
+```bash
+pip install tensorflow
+```
+
+使用如下命令同步tensorboard日志
+
 ```bash
 swanlab convert -t tensorboard --tb_logdir [TFEVENT_LOGDIR]
 ```
