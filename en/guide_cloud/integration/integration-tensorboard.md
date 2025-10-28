@@ -81,6 +81,7 @@ writer = SummaryWriter(log_dir='./runs')
 ```python [TensorboardX]
 import swanlab
 from tensorboardX import SummaryWriter
+import random
 
 swanlab.sync_tensorboardX()
 
@@ -99,6 +100,7 @@ for epoch in range(2, epochs):
 ```python [PyTorch]
 import swanlab
 from torch.utils.tensorboard import SummaryWriter
+import random
 
 swanlab.sync_tensorboard_torch()
 
