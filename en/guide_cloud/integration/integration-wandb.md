@@ -10,10 +10,11 @@ Weights & Biases (Wandb) is a platform for experiment tracking, model optimizati
 - [MLFlow](/guide_cloud/integration/integration-mlflow.md)  
 :::  
 
-**You can sync Wandb projects to SwanLab in two ways:**  
+**You can sync projects from Wandb to SwanLab in three ways:**
 
-1. **Live Synchronization**: If your current project uses Wandb for experiment tracking, you can use the `swanlab.sync_wandb()` command to log metrics to SwanLab simultaneously while running the training script.  
-2. **Convert Existing Projects**: If you want to replicate a Wandb project on SwanLab, you can use `swanlab convert` to migrate an existing Wandb project to SwanLab.  
+1. **Real-time Syncing**: If your current project uses wandb for experiment tracking, you can use the `swanlab.sync_wandb()` command to simultaneously log metrics to SwanLab while running your training script.
+2. **Convert existing projects from the wandb website**: If you want to copy projects from the wandb server (wandb.ai or privately deployed wandb) to SwanLab, you can use `swanlab convert` to transform existing Wandb projects into SwanLab projects.
+3. **Convert existing projects from local wandb log files**: If you want to upload local wandb log files to SwanLab, you can use `swanlab convert` to transform local wandb log files into SwanLab projects.
 
 ::: info  
 The current version only supports converting scalar charts.  
@@ -188,3 +189,56 @@ swanlab sync [LOG_DIRECTORY_PATH]
 ```  
 
 [SwanLab Sync Documentation](/en/api/cli-swanlab-sync.md)
+
+
+## 3 Converting wandb Log Files
+
+### 3.1 Locating Your Log Files
+
+wandb log files refer to the folders that wandb automatically creates in the training directory (default is the `wandb` directory) during experiment tracking, as shown below:
+
+![](./wandb/wandb_dir.png)
+
+### 3.2 Method 1: Command Line Conversion
+
+The conversion command is:
+
+```bash
+swanlab convert -t wandb-local --wb-dir [WANDB_LOG_DIR] --wb-run-dir [WANDB_RUN_DIR]
+```
+
+Supported parameters are as follows:
+
+- `-t`: Conversion type. Options: wandb, tensorboard, mlflow, wandb-local.
+- `-p`: SwanLab project name.
+- `-w`: SwanLab workspace name.
+- `--mode`: (str) Selection mode. Default is "cloud". Options: ["cloud", "local", "offline", "disabled"]
+- `-l`: logdir path.
+- `--wb-dir`: The wandb log directory to be converted.
+- `--wb-run-dir`: The specific wandb run's directory name. If this parameter is omitted, all runs within the wb-dir will be uploaded.
+
+Example:
+
+![](./wandb/wandb_show.png)
+
+### 3.3 Method 2: Code Conversion
+
+```bash
+from swanlab.converter import WandbLocalConverter
+
+wb_converter = WandbLocalConverter()
+# wb_runid is optional
+wb_converter.run(root_wandb_dir="WANDB_DIR", wandb_run_dir="WANDB_RUN_DIR")
+```
+
+Parameters supported by `WandbLocalConverter`:
+
+- `project`: SwanLab project name.
+- `workspace`: SwanLab workspace name.
+- `mode`: (str) Selection mode. Default is "cloud". Options: ["cloud", "local", "offline", "disabled"]
+- `logdir`: logdir path.
+
+Parameters supported by `WandbLocalConverter.run`:
+
+- `root_wandb_dir`: The path to the wandb log file directory.
+- `wandb_run_dir`: The path to the wandb run directory.

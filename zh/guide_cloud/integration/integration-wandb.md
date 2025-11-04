@@ -10,10 +10,11 @@ Weights & Biases (Wandb) 是一个用于机器学习和深度学习项目的实�
 - [MLFlow](/guide_cloud/integration/integration-mlflow.md)
 :::
 
-**你可以用两种方式将Wandb上的项目同步到SwanLab：**
+**你可以用三种方式将Wandb上的项目同步到SwanLab：**
 
 1. **同步跟踪**：如果你现在的项目使用了wandb进行实验跟踪，你可以使用`swanlab.sync_wandb()`命令，在运行训练脚本时同步记录指标到SwanLab。
-2. **转换已存在的项目**：如果你想要将wandb上的项目复制到SwanLab，你可以使用`swanlab convert`，将Wandb上已存在的项目转换成SwanLab项目。
+2. **从wandb网站转换已存在的项目**：如果你想要将wandb服务器（wandb.ai或wandb私有化部署版）上的项目复制到SwanLab，你可以使用`swanlab convert`，将Wandb上已存在的项目转换成SwanLab项目。
+3. **从wandb本地日志文件转换已存在的项目**：如果你想要将wandb本地的日志文件上传到swanlab，你可以使用`swanlab convert`，将wandb本地日志文件转换成SwanLab项目。
 
 ::: info
 在当前版本暂仅支持转换标量图表。
@@ -93,7 +94,7 @@ for epoch in range(2, epochs):
 
 ![alt text](/assets/ig-wandb-4.png)
 
-## 2. 转换已存在的项目
+## 2. 转换wandb网站上的项目
 
 ### 2.1 找到你在wandb.ai上的projecy、entity和runid
 
@@ -191,3 +192,57 @@ swanlab sync [日志文件夹路径]
 ```
 
 [swanlab sync文档](/zh/api/cli-swanlab-sync.md)
+
+
+## 3 转换wandb日志文件
+
+### 3.1 找到你的日志文件
+
+wandb日志文件是指，在进行实验跟踪时，wandb会默认在训练目录下创建的文件夹（默认为`wandb`目录），如下所示：
+
+![](./wandb/wandb_dir.png)
+
+### 3.2 方式一：命令行转换
+
+转换命令为：
+
+```bash
+swanlab convert -t wandb-local --wb-dir [WANDB_LOG_DIR] --wb-run-dir [WANDB_RUN_DIR]
+```
+
+支持的参数如下：
+
+- `-t`: 转换类型，可选wandb、tensorboard、mlflow、wandb-local。
+- `-p`: SwanLab项目名。
+- `-w`: SwanLab工作空间名。
+- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `-l`: logdir路径。
+- `--wb-dir`：待转换的wandb日志目录
+- `--wb-run-dir`：指定的wandb run的目录名。如果不写该参数，则将上传整个wb-dir中的run。
+
+案例：
+
+![](./wandb/wandb_show.png)
+
+
+### 3.3 方式二：代码转换
+
+```bash
+from swanlab.converter import WandbLocalConverter
+
+wb_converter = WandbLocalConverter()
+# wb_runid可选
+wb_converter.run(root_wandb_dir="WANDB_DIR", wandb_run_dir="WANDB_RUN_DIR")
+```
+
+`WandbLocalConverter`支持的参数：
+
+- `project`: SwanLab项目名。
+- `workspace`: SwanLab工作空间名。
+- `mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `logdir`: logdir路径。
+
+`WandbLocalConverter.run`支持的参数：
+
+- `root_wandb_dir`: wandb日志文件目录的路径。
+- `wandb_run_dir`: wandb run目录的路径。

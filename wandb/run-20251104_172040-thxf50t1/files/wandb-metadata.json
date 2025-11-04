@@ -1,0 +1,35 @@
+{
+  "os":  "macOS-14.1.2-arm64-arm-64bit",
+  "python":  "CPython 3.10.13",
+  "startedAt":  "2025-11-04T09:20:40.421279Z",
+  "program":  "/Users/zeyilin/Desktop/Coding/SwanLab-Docs/2.py",
+  "codePath":  "2.py",
+  "codePathLocal":  "2.py",
+  "git":  {
+    "remote":  "https://github.com/SwanHubX/SwanLab-Docs.git",
+    "commit":  "98082a016fd30ad9c9e120ae7960bd0b446d541d"
+  },
+  "root":  "/Users/zeyilin/Desktop/Coding/SwanLab-Docs",
+  "host":  "qingdeMacBook-Pro.local",
+  "executable":  "/Users/zeyilin/miniforge3/envs/test_py310/bin/python",
+  "cpu_count":  10,
+  "cpu_count_logical":  10,
+  "disk":  {
+    "/":  {
+      "total":  "994662584320",
+      "used":  "886403686400"
+    }
+  },
+  "memory":  {
+    "total":  "68719476736"
+  },
+  "apple":  {
+    "name":  "Apple M1 Max",
+    "ecpuCores":  2,
+    "pcpuCores":  8,
+    "gpuCores":  32,
+    "memoryGb":  64,
+    "ramTotalBytes":  "68719476736"
+  },
+  "writerId":  "dmrkhpx10ndlenykqbhitu7il3eix2aj"
+}

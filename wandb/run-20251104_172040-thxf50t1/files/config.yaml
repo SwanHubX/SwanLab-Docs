@@ -1,0 +1,54 @@
+_wandb:
+    value:
+        cli_version: 0.22.2
+        e:
+            dmrkhpx10ndlenykqbhitu7il3eix2aj:
+                apple:
+                    ecpuCores: 2
+                    gpuCores: 32
+                    memoryGb: 64
+                    name: Apple M1 Max
+                    pcpuCores: 8
+                    ramTotalBytes: "68719476736"
+                codePath: 2.py
+                codePathLocal: 2.py
+                cpu_count: 10
+                cpu_count_logical: 10
+                disk:
+                    /:
+                        total: "994662584320"
+                        used: "886403686400"
+                executable: /Users/zeyilin/miniforge3/envs/test_py310/bin/python
+                git:
+                    commit: 98082a016fd30ad9c9e120ae7960bd0b446d541d
+                    remote: https://github.com/SwanHubX/SwanLab-Docs.git
+                host: qingdeMacBook-Pro.local
+                memory:
+                    total: "68719476736"
+                os: macOS-14.1.2-arm64-arm-64bit
+                program: /Users/zeyilin/Desktop/Coding/SwanLab-Docs/2.py
+                python: CPython 3.10.13
+                root: /Users/zeyilin/Desktop/Coding/SwanLab-Docs
+                startedAt: "2025-11-04T09:20:40.421279Z"
+                writerId: dmrkhpx10ndlenykqbhitu7il3eix2aj
+        m: []
+        python_version: 3.10.13
+        t:
+            "1":
+                - 105
+            "2":
+                - 105
+            "3":
+                - 16
+            "4": 3.10.13
+            "5": 0.22.2
+            "12": 0.22.2
+            "13": darwin-arm64
+architecture:
+    value: CNN
+dataset:
+    value: CIFAR-100
+epochs:
+    value: 10
+learning_rate:
+    value: 0.02
