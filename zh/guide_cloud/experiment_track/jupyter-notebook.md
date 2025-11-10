@@ -9,6 +9,7 @@
 ```bash
 !pip install swanlab -qqq
 ```
+
 ps: `-qqq`是用来控制命令执行时的输出信息量的，可选。
 
 ## 在Notebok中与SwanLab交互
