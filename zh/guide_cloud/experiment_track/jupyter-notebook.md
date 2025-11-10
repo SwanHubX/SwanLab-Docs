@@ -12,6 +12,35 @@
 
 ps: `-qqq`是用来控制命令执行时的输出信息量的，可选。
 
+## 在Notebook中登录Swanlab
+
+`jupyter --execute`是 Jupyter 提供的命令行执行模式，常用于自动化、CI/CD 流水线、定时任务等场景。这些场景下，无人值守，不允许出现交互式输入（如 input()、手动粘贴密钥等），否则流程会卡住或报错。
+
+环境变量让 API Key 自动注入 Notebook 执行环境，可确保 Notebook 在任何非交互式环境下都能顺利运行。因此需要通过[swanlab.login](/api/py-login.md)进行登录。
+
+```python
+import swanlab
+import os
+
+SWANLAB_API_KEY = os.getenv("SWANLAB_API_KEY")
+swanlab.login(api_key=SWANLAB_API_KEY)
+```
+
+::: info
+
+在 Kaggle 平台上应使用 [Kaggle Secrets](https://www.kaggle.com/discussions/product-feedback/114053) 存储 API key，可防止密钥泄露、简化管理、符合安全最佳实践，并确保 Notebook 可安全公开和协作。
+
+```python
+from kaggle_secrets import UserSecretsClient
+user_secrets = UserSecretsClient()
+SWANLAB_API_KEY = user_secrets.get_secret("SWANLAB_API_KEY")
+
+import swanlab
+swanlab.login(api_key=SWANLAB_API_KEY)
+```
+
+:::
+
 ## 在Notebok中与SwanLab交互
 
 ```python

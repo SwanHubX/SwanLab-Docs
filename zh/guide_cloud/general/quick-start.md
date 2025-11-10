@@ -48,12 +48,14 @@ swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to 
 swanlab login -k your-api-key
 ```
 
-如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：
+亦可使用python脚本登录：
 
 ```python
 import swanlab
 swanlab.login(api_key="你的API Key", save=True)
 ```
+
+若要在Kaggle等Notebook环境下使用Swanlab，参见[用 Notebook 跟踪实验](/guide_cloud/experiment_track/jupyter-notebook.md)
 
 :::
 

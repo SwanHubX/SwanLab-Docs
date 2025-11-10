@@ -52,6 +52,8 @@ import swanlab
 swanlab.login(api_key="Your API Key")
 ```
 
+To use Swanlab in a Notebook environment such as Kaggle, see [Tracking Experiments with a Notebook](/en/guide_cloud/experiment_track/jupyter-notebook.md).
+
 :::
 
 ## 3. Start an experiment and track hyperparameters
