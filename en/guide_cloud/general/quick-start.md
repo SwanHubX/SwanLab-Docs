@@ -37,9 +37,16 @@ swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to 
 
 Copy your API Key from the [user settings](https://swanlab.cn/settings) page, paste it and press Enter to complete the login. You don't need to log in again after that.
 
-> If your computer does not support the `swanlab login` method, you can also log in using a Python script:
-> import swanlab  
-> swanlab.login(api_key="Your API Key")
+::: info
+
+If your computer does not support the `swanlab login` method, you can also log in using a Python script:
+
+```python
+import swanlab  
+swanlab.login(api_key="Your API Key")
+```
+
+:::
 
 ## 3. Start an experiment and track hyperparameters
 
