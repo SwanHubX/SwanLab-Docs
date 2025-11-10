@@ -2,7 +2,7 @@
 
 将 SwanLab 与 Jupyter 结合使用，无需离开Notebook即可获得交互式可视化效果。
 
-![](./jupyter-notebook/swanlab-love-jupyter.jpg)
+![SwanLab标志与Jupyter标志通过爱心连接](./jupyter-notebook/swanlab-love-jupyter.jpg)
 
 ## 在Notebook中安装SwanLab
 
@@ -25,10 +25,10 @@ swanlab.finish()
 
 在用`swanlab.init`初始化实验时，打印信息的最后会出现一个“Display SwanLab Dashboard”按钮：
 
-![](/assets/jupyter-notebook-1.jpg)
+![Jupyter notebook中执行swanlab.init()后的输出界面，底部显示'Display SwanLab Dashboard'按钮，用于打开SwanLab实验仪表板。](/assets/jupyter-notebook-1.jpg)
 
 点击该按钮，就会在Notebook中嵌入该实验的SwanLab网页：
 
-![](/assets/jupyter-notebook-2.jpg)
+![Jupyter notebook 中嵌入了 SwanLab 实验仪表板，用于显示实验详情、元数据和导航界面。](/assets/jupyter-notebook-2.jpg)
 
 现在，你可以在这个嵌入的网页中直接看到训练过程，以及和它交互。

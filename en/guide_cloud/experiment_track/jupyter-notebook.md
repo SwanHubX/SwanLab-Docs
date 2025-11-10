@@ -2,7 +2,7 @@
 
 Combine SwanLab with Jupyter to get interactive visualizations without leaving the Notebook.
 
-![swanlab-love-jupyter](./jupyter-notebook/swanlab-love-jupyter.jpg)
+![A heart connects the SwanLab and Jupyter logos](./jupyter-notebook/swanlab-love-jupyter.jpg)
 
 ## Install SwanLab in Notebook
 
@@ -25,10 +25,10 @@ swanlab.finish()
 
 When initializing the experiment with `swanlab.init`, a "Display SwanLab Dashboard" button will appear at the end of the printed information:
 
-![](/assets/jupyter-notebook-1.jpg)
+![Jupyter notebook output after running swanlab.init(), showing the ‘Display SwanLab Dashboard’ button at the bottom for opening the SwanLab experiment tracking interface.](/assets/jupyter-notebook-1.jpg)
 
 Clicking this button will embed the SwanLab web page for the experiment in the Notebook:
 
-![](/assets/jupyter-notebook-2.jpg)
+![Jupyter notebook with embedded SwanLab experiment dashboard showing experiment details, metadata, and navigation interface after clicking the display button.](/assets/jupyter-notebook-2.jpg)
 
 Now, you can directly see the training process and interact with it in this embedded web page.
