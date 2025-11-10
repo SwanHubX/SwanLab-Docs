@@ -42,6 +42,12 @@ swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to 
 
 ::: info
 
+如果你的电脑不太适合命令行粘贴API Key（比如一些Windows CMD）的方式登录，可以使用：
+
+```shell
+swanlab login -k your-api-key
+```
+
 如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：
 
 ```python

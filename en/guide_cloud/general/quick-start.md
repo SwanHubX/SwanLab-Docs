@@ -39,6 +39,12 @@ Copy your API Key from the [user settings](https://swanlab.cn/settings) page, pa
 
 ::: info
 
+If your computer isn't well-suited for logging in via command line by pasting the API Key (such as some Windows CMD commands), you can use:
+
+```shell
+swanlab login -k api-key
+```
+
 If your computer does not support the `swanlab login` method, you can also log in using a Python script:
 
 ```python
