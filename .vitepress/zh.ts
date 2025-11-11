@@ -185,14 +185,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
         { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-        { text: '技巧', items: [
-          { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
-          { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
-          { text: '添加项目协作者', link: 'experiment_track/add-collaborator' },
-          { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
-          { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
-          { text: '使用OpenAPI获取实验数据', link: 'experiment_track/use-openapi' },
-        ] },
         { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },  
         { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
         { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
@@ -200,6 +192,16 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
 
       ]
     },
+    { text: '🚢 技巧', 
+      items: [
+        { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
+        { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
+        { text: '添加项目协作者', link: 'experiment_track/add-collaborator' },
+        { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+        { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
+        { text: '使用OpenAPI获取实验数据', link: 'experiment_track/use-openapi' },
+        { text: 'Webhook设置', link: 'experiment_track/webhook-setup' },
+    ] },
     {
       text: '🚀 自托管',
       // collapsed: false,

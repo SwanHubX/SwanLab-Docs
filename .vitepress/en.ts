@@ -159,21 +159,22 @@ function sidebarGuideCloud(): SidebarItemEx[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { 
-        text: 'Tips',
-        items: [
-          { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
-          { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
-          { text: 'Add project collaborator', link: 'experiment_track/add-collaborator' },
-          { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
-          { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
-          { text: 'Use OpenAPI to get experiment data', link: 'experiment_track/use-openapi' },
-        ]
-      },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
       { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
+    ]
+  },
+  { 
+    text: 'Tips',
+    items: [
+      { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
+      { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
+      { text: 'Add project collaborator', link: 'experiment_track/add-collaborator' },
+      { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
+      { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
+      { text: 'Use OpenAPI to get experiment data', link: 'experiment_track/use-openapi' },
+      { text: 'Webhook setup', link: 'experiment_track/webhook-setup' },
     ]
   },
   {
