@@ -6,13 +6,15 @@ init(
     workspace: str = None,
     experiment_name: str = None,
     description: str = None,
+    job_type: str = None,
+    group: str = None,
     tags: List[str] = None,
     config: Union[dict, str] = None,
     logdir: str = None,
-    mode: str = "cloud",
+    mode: MODES = None,
     load: str = None,
     public: bool = None,
-    callbacks: list = None,
+    callbacks: List[SwanKitCallback] = None,
     settings: Settings = None,
     id: str = None,
     resume: Union[Literal['must', 'allow', 'never'], bool] = None,
@@ -26,6 +28,8 @@ init(
 | project |(str)项目名，如果不指定则取运行目录的名称。|
 | workspace |(str)工作空间，默认将实验同步到你的个人空间下，如果要上传到组织，则填写组织的username。|
 | experiment_name | (str) 实验名称, 如果不指定则取"swan-1"这样的`动物名+序号`作为实验名。 |
+| job_type | (str) 任务类型，默认为空。 |
+| group | (str) 实验分组，默认为空。 |
 | tags       | (list) 实验标签。可以传入多个字符串组成的列表，标签会显示在实验顶部的标签栏。|
 | description   | (str) 实验描述, 如果不指定默认为None。                                   |
 | config       | (dict, str) 实验配置，在此处可以记录一些实验的超参数等信息。支持传入配置文件路径，支持yaml和json文件。                   |

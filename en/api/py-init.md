@@ -6,12 +6,15 @@ init(
     workspace: str = None,
     experiment_name: str = None,
     description: str = None,
+    job_type: str = None,
+    group: str = None,
+    tags: List[str] = None,
     config: Union[dict, str] = None,
     logdir: str = None,
-    mode: str = "cloud",
+    mode: MODES = None,    
     load: str = None,
     public: bool = None,
-    callbacks: list = None,
+    callbacks: List[SwanKitCallback] = None,
     settings: Settings = None,
     id: str = None,
     resume: Union[Literal['must', 'allow', 'never'], bool] = None,
@@ -25,6 +28,8 @@ init(
 | project           | (str) The name of the project. If not specified, the name of the current working directory will be used. |
 | workspace         | (str) The workspace. By default, experiments are synchronized to your personal space. If you want to upload to an organization, specify the organization's username. |
 | experiment_name   | (str) The name of the experiment. If not specified, it will default to a format like "swan-1" (animal name + sequence number). |
+| job_type          | (str) The type of job. If not specified, it will default to empty string. |
+| group             | (str) The group of the experiment. If not specified, it will default to None. |
 | tags              | (list) Tags for the experiment. Can pass a list of strings, and the tags will be displayed in the tag bar at the top of the experiment. |
 | description       | (str) A description of the experiment. If not specified, it defaults to None. |
 | config            | (dict, str) Configuration for the experiment. You can record hyperparameters and other information here. Supports passing a configuration file path (yaml or json). |
