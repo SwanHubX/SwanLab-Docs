@@ -159,12 +159,12 @@ function sidebarGuideCloud(): SidebarItemEx[] {
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
-      { text: 'Add project collaborator', link: 'experiment_track/add-collaborator' },
       { 
         text: 'Tips',
         items: [
           { text: 'Resume experiment', link: 'experiment_track/resume-experiment' },
           { text: 'Upload offline experiment data', link: 'experiment_track/sync-logfile' },
+          { text: 'Add project collaborator', link: 'experiment_track/add-collaborator' },
           { text: 'Access SwanLab on internal computing nodes', link: 'experiment_track/ssh-portforwarding' },
           { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
           { text: 'Use OpenAPI to get experiment data', link: 'experiment_track/use-openapi' },
@@ -180,7 +180,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
     text: '🚀 Self-hosted',
     // collapsed: false,
     items: [
-      { text: 'Docker deployment', link: 'self_host/docker-deploy' },
+      { text: 'Docker deployment', link: 'self_host/docker-deploy' }, 
       { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
       { text: 'FAQ', link: 'self_host/faq' },
