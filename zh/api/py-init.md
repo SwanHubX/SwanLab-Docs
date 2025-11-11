@@ -100,6 +100,7 @@ swanlab.init(
 ```
 
 ### 设置分组
+
 ```python
 swanlab.init(
     group="good_try",

@@ -207,7 +207,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: "Docker部署", link: "self_host/docker-deploy" },
         { text: "纯离线环境部署", link: "self_host/offline-deployment" },
         { text: '团队/企业版', link: 'self_host/enterprise-version' },
-        { text: '版本对照表', link: 'self_host/version' },
         {
           text: "第三方部署",
           collapsed: true,
