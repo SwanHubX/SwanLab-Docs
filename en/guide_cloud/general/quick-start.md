@@ -14,8 +14,8 @@ Open the command line and enter:
 ```bash
 pip install swanlab
 ```
-Press Enter and wait for the installation to complete.
 
+Press Enter and wait for the installation to complete.
 
 ## 2. Log in
 
@@ -37,16 +37,28 @@ swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to 
 
 Copy your API Key from the [user settings](https://swanlab.cn/settings) page, paste it and press Enter to complete the login. You don't need to log in again after that.
 
+::: info
 
-> If your computer does not support the `swanlab login` method, you can also log in using a Python script:
-> import swanlab  
-> swanlab.login(api_key="Your API Key")
+If your computer isn't well-suited for logging in via command line by pasting the API Key (such as some Windows CMD commands), you can use:
 
+```shell
+swanlab login -k api-key
+```
+
+If your computer does not support the `swanlab login` method, you can also log in using a Python script:
+
+```python
+import swanlab  
+swanlab.login(api_key="Your API Key")
+```
+
+To use Swanlab in a Notebook environment such as Kaggle, see [Tracking Experiments with a Notebook](/en/guide_cloud/experiment_track/jupyter-notebook.md).
+
+:::
 
 ## 3. Start an experiment and track hyperparameters
 
 In the Python script, we use swanlab.init to create a SwanLab experiment and pass a dictionary containing hyperparameter key-value pairs to the config parameter:
-
 
 ```python
 import swanlab
@@ -63,7 +75,6 @@ run = swanlab.init(
 ```
 
 `run` is the fundamental component of SwanLab, and you will often use it to record and track experiment metrics.
-
 
 ## 4. Record experiment metrics
 
@@ -109,21 +120,21 @@ for epoch in range(2, run.config.epochs):
 
 Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of the metrics (accuracy and loss value) you recorded using SwanLab in each training step.
 
-
 ![quick-start-1](./quick_start/line-chart.png)
-
 
 ## What's next
 
 1. See how SwanLab records multimedia content (images, audio, text,...)
 2. See how SwanLab records the [MNIST handwritten recognition](/en/examples/mnist.md) case
-3. See integration with other frameworks [here](/en/guide_cloud/integration/index.md)
+3. See [integration with other frameworks](/en/guide_cloud/integration/index.md)
 4. See how to collaborate with your team through SwanLab
 
 ## FAQ
 
 ### 1. Where can I find my API Key?
+
 After logging in to the SwanLab website, the API Key will be displayed on the [user settings](https://swanlab.cn/settings) page.
 
 ### 2. Can I use SwanLab offline?
+
 Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/docker-deploy.md) section for the specific process.

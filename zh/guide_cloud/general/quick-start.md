@@ -5,7 +5,6 @@
 
 ![quick-start-1](./quick_start/quick-start.png)
 
-
 ## 1. 安装SwanLab
 
 使用 [pip](https://pip.pypa.io/en/stable/) 在Python3环境的计算机上安装swanlab库。
@@ -43,12 +42,20 @@ swanlab: Paste an API key from your profile and hit enter, or press 'CTRL-C' to 
 
 ::: info
 
-如果你的计算机不太支持`swanlab login`的登录方式，也可以使用python脚本登录：
+如果你的电脑不太适合命令行粘贴API Key（比如一些Windows CMD）的方式登录，可以使用：
+
+```shell
+swanlab login -k your-api-key
+```
+
+亦可使用python脚本登录：
 
 ```python
 import swanlab
 swanlab.login(api_key="你的API Key", save=True)
 ```
+
+若要在Kaggle等Notebook环境下使用Swanlab，参见[用 Notebook 跟踪实验](/guide_cloud/experiment_track/jupyter-notebook.md)
 
 :::
 
@@ -118,15 +125,12 @@ for epoch in range(2, run.config.epochs):
 
 ![quick-start-1](./quick_start/line-chart.png)
 
-
-
-
 ## 下一步是什么
 
 1. 查看SwanLab如何[记录多媒体内容](/guide_cloud/experiment_track/log-media)（图片、音频、文本、...）
-1. 查看SwanLab记录[MNIST手写体识别](/examples/mnist.md)的案例
-2. 查看与其他框架的[集成](/guide_cloud/integration/index.md)
-3. 查看如何通过SwanLab与[团队协作](/guide_cloud/general/organization.md)
+2. 查看SwanLab记录[MNIST手写体识别](/examples/mnist.md)的案例
+3. 查看与其他框架的[集成](/guide_cloud/integration/index.md)
+4. 查看如何通过SwanLab与[团队协作](/guide_cloud/general/organization.md)
 
 ## 常见问题
 
