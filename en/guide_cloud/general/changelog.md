@@ -5,6 +5,18 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.7.0 - 2025.11.06
+
+**🚀 New Features**
+- **Experiment Group** is now available, supporting group management for large batches of experiments
+- Workspace page upgraded, supporting quick switching between multiple organizations
+- `swanlab.init` now supports `group` and `job_type` parameters
+
+**🤔 Improvements**
+- Significantly optimized chart rendering performance, allowing researchers to focus more on experimental analysis itself.
+- Fixed some compatibility issues with the public API.
+
+
 ## v0.6.12 - 2025.10.18
 
 **🚀 New Features**
