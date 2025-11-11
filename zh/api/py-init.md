@@ -99,6 +99,13 @@ swanlab.init(
 )
 ```
 
+### 设置分组
+```python
+swanlab.init(
+    group="good_try",
+)
+```
+
 ### 设置日志文件保存位置
 
 下面的代码展示了如何将日志文件保存到自定义的目录下：

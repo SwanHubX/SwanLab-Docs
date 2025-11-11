@@ -92,6 +92,22 @@ swanlab.init(
 )
 ```
 
+### Setting Tags
+
+```python
+swanlab.init(
+    tags=["yolo", "detection", "baseline"]
+)
+```
+
+### Setting Group
+
+```python
+swanlab.init(
+    group="good_try",
+)
+```
+
 ### Setting the Log File Save Location
 
 The following code demonstrates how to save log files to a custom directory:
