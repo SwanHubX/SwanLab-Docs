@@ -43,3 +43,4 @@
 | 环境变量 | 描述 |
 | --- | --- |
 | `SWANLAB_WEBHOOK` | Webhook 地址。<br> SwanLab 初始化完毕时，如果此环境变量存在，会调用此地址发送消息 |
+| `SWANLAB_WEBHOOK_VALUE` | Webhook回调结构体传递的value。<br> 当`SWANLAB_WEBHOOK`存在时，如果此环境变量存在，会作为Webhook回调结构体的value值发送 |

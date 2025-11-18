@@ -8,6 +8,8 @@ Set the SwanLab WebHook via an environment variable:
 
 ```bash
 export SWANLAB_WEBHOOK='http://127.0.0.1/webhook'
+# Optional, if you need to pass additional information, you can set this environment variable
+export SWANLAB_WEBHOOK_VALUE='Hello World!'
 ```
 
 After setting this up, SwanLab will send a POST callback when the experiment starts (i.e., when `swanlab.init()` is called).
@@ -30,6 +32,7 @@ interface SwanLabInfo {
 
 // Webhook callback structure
 interface Body{
+   value: string
    swanlab: SwanLabInfo
 }
 ```
@@ -59,7 +62,7 @@ After running the service, execute the following script in a new terminal:
 
 ```bash
 export SWANLAB_WEBHOOK='http://127.0.0.1:5000/webhook'
-# Ignore the following two environment variables if not for private deployment
+export SWANLAB_WEBHOOK_VALUE='12345'
 export SWANLAB_API_HOST='Your backend API HOST'
 export SWANLAB_WEB_HOST='Your backend WEB HOST'
 

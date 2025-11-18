@@ -8,6 +8,8 @@ SwanLab webhook以实验为单位，将在实验创建的同时触发webhook逻�
 
 ```bash
 export SWANLAB_WEBHOOK='http://127.0.0.1/webhook'
+# 可选，如果需要传递额外信息，可以设置此环境变量
+export SWANLAB_WEBHOOK_VALUE='Hello World!'
 ```
 
 设置完成后，SwanLab便会在实验拉起时（即`swanlab.init()`调用时）发送POST回调。
@@ -30,6 +32,7 @@ interface SwanLabInfo {
 
 // webhook回调结构体
 interface Body{
+   value: string
    swanlab: SwanLabInfo
 }
 ```
@@ -59,7 +62,7 @@ if __name__ == '__main__':
 
 ```bash
 export SWANLAB_WEBHOOK='http://127.0.0.1:5000/webhook'
-# 非私有化部署则忽略下面的两个环境变量
+export SWANLAB_WEBHOOK_VALUE='12345'
 export SWANLAB_API_HOST='您的后端API HOST'
 export SWANLAB_WEB_HOST='您的后端WEB HOST'
 

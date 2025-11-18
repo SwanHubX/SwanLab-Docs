@@ -43,3 +43,4 @@
 | Environment Variable | Description |
 | --- | --- |
 | `SWANLAB_WEBHOOK` | Webhook address.<br> When SwanLab initialization is complete, if this environment variable exists, it will be called to send a message. |
+| `SWANLAB_WEBHOOK_VALUE` | The value passed to the Webhook callback structure. <br> When `SWANLAB_WEBHOOK` exists, if this environment variable exists, it will be sent as the value of the Webhook callback structure. |
