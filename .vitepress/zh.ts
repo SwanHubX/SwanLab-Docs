@@ -364,6 +364,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'DQN推车倒立摆', link: 'dqn_cartpole' },
       { text: 'GRPO大模型强化学习', link: 'qwen_grpo' },
+      { text: '数独游戏GRPO训练', link: 'sudoku_grpo' },
     ]
   },
   {
