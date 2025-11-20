@@ -24,7 +24,8 @@ export default defineConfig({
   markdown: {
     image: {
       lazyLoading: true
-    }
+    },
+    math: true
   },
 
   locales: {
