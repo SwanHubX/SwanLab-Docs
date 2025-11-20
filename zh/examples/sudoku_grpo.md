@@ -4,9 +4,21 @@
 
 最近在补充NLP任务领域的GRPO强化学习训练任务，我们希望用GRPO实现一个简单的数独游戏。
 
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./grpo_train/train41.png" style="width:100%">
+  </figure>
+</div>
+
 我们都知道大语言模型现在能够完成多类任务，包括问答任务、深入的多轮对话、还有代码和数学问题等等，我们在我们的官网中也有很多对应的实践教程比如指令微调、推理模型的微调任务等。
 
 但是数独游戏是一个比较考验模型逻辑思维能力以及推理能力的任务，一般的SFT仅能做到遵从指令回答而不能让模型具备复杂的推理能力，因此需要使用强化学习的方法来实现数独游戏的训练。本次实验我们使用GRPO的方法，用lora来做微调，我们分别在GPU、NPU的AI训练卡上训练，同时我们也对比了3B模型、7B模型的训练效果，并且通过不断地调整参数实现最终准确度达到89%。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./grpo_train/train44.png" style="width:100%">
+  </figure>
+</div>
 
 本次教程我们将完整的过程展现，从数据生成、训练框架设计、到最后的评测环节，我们将所有代码、可视化结果开源，有兴趣的小伙伴可以自己实践下，也可以参考我们的的代码来做其他的任务。
 
@@ -56,8 +68,15 @@
 
 本次教程，我们使用trl框架做GRPO训练，我们的所有代码已经开源到github中，同时训练过程的观测结果我们放在了swanlab中，具体的链接如下：
 
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./grpo_train/train43.png" style="width:100%">
+  </figure>
+</div>
+
 - 代码链接：[github](https://github.com/828Tina/sudoku_trl_grpo?tab=readme-ov-file)
-- 模型链接：[modelscope/qwen2.5-3b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-3B-Instruct)、[modelscope/qwen2.5-7b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct)
+- 基线模型链接：[modelscope/qwen2.5-3b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-3B-Instruct)、[modelscope/qwen2.5-7b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct)
+- 训练好的模型：[3B](https://www.modelscope.cn/models/Tina12345/sudoku_4x4_qwen2.5-3b_grpo/summary)、[7B](https://www.modelscope.cn/models/Tina12345/sudoku_4x4_qwen2.5-7b_grpo/summary)
 - swanlab结果：[SwanLab](https://swanlab.cn/@LiXinYu/sudoku-grpo-qwen2.5/overview)
 
 友情链接：
@@ -67,9 +86,15 @@
 - GRPOTrainer：[huggingface/TRL/GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer)
 
 - SwanLab官方文档，助你轻松开启深度学习之旅：
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./grpo_train/train42.png" style="width:100%">
+  </figure>
+</div>
   
-  > [框架集成文档](https://docs.swanlab.cn/guide_cloud/integration/)：SwanLab已经集成Transformers、LLaMA Factory、Pytorch等主流框架，并持续更新
-  > [实战案例](https://docs.swanlab.cn/examples/hello_world.html)：SwanLab提供了丰富的模型训练实战教程，助力用户快速掌握深度学习模型训练的要点
+> [框架集成文档](https://docs.swanlab.cn/guide_cloud/integration/)：SwanLab已经集成Transformers、LLaMA Factory、Pytorch等主流框架，并持续更新
+> [实战案例](https://docs.swanlab.cn/examples/hello_world.html)：SwanLab提供了丰富的模型训练实战教程，助力用户快速掌握深度学习模型训练的要点
 
 作者：情感机器实验室研究员-李馨雨 邮箱：wind.340171@gmail.com
 
@@ -139,21 +164,17 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）本质是
 两个价值函数之间可以相互转换，近似公式为：
 
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train30.png" style="width:90%">
-  </figure>
-</div>
+$$
+Q(a_t,s_t)\approx r+ \gamma V(s_{t+1})
+$$
 
 - $\gamma$：折扣因子，取值范围为$[0,1]$，用于衡量即时奖励和未来奖励之间的关联度
 
 早期的`actor-critic模型`优化目标函数使用的是早期的策略梯度的计算，公式如下：
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train29.png" style="width:100%">
-  </figure>
-</div>
+$$
+\nabla_{ \theta} \mathbb{J}(\theta)=\mathbb{E}_{\tau \sim p(\tau; \theta)}[\sum_{t=0}^{T-1}\nabla_{\theta}log\pi_{\theta}(a_t|s_t)Q(s_t,a_t)]
+$$
 
 <div style="background:#fff0dc;color:#000;padding:12px 16px;border-left:4px solid #ffb754;">
 但是上面的做法有个问题，那就是由动作价值函数作为奖励函数，计算loss的时候方差会很大，因为模型的参数更新永远都是朝着有利于提高奖励的方向，从而陷入局部最优，并且也会导致很多样本利用率不高。
@@ -167,27 +188,19 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）本质是
 
 > 其实准确来说，解决上面问题的是TRPO做的，不过PPO更有名并且应用广泛，而且PPO只是在TRPO的基础上做了点优化让方差更小、训练更稳定，所以我们从PPO角度讲起，反正都是openai团队的。
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train31.png" style="width:100%">
-  </figure>
-</div>
+$$
+J(\theta) = \mathbb{E}_{t} \left[ \min\left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)} A^{\pi_{\theta_{\text{old}}}}(a_t|s_t), \text{clip}\left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}, 1-\epsilon, 1+\epsilon \right) A^{\pi_{\theta_{\text{old}}}}(a_t|s_t) \right) \right]
+$$
 
 上面是PPO（准确来说是PPO-Clip）的优化目标函数，简单来说，有下面两个重要的点：
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train32.png" style="width:100%">
-  </figure>
-</div>
-
+1. 优势函数：$A^{\pi_{\theta_{\text{old}}}}(a_t|s_t)$
+2. 重要性采样：$\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}$
 首先对于优势函数：
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train33.png" style="width:100%">
-  </figure>
-</div>
+$$
+A(s_t,a_t)=Q(s_t,a_t)-V(s_t)
+$$
 
 我们将$V(s_t)$当作该状态的基线函数，将该状态下选择某一个动作$a_t$对应的价值函数减去这个基线函数，可以有效地减少策略梯度更新时的方差，并且可以使各个动作的相对优势更加明显，从而让梯度更新可以针对性的调整执行动作的概率。
 
@@ -197,11 +210,10 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）本质是
   </figure>
 </div>
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train34.png" style="width:100%">
-  </figure>
-</div>
+其次对于重要性采样，主要功能是修正新旧策略之间的分布差异，以便利用旧策略采样的数据来优化新策略，其中$\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}$与重要性采样有关，衡量了新旧策略在同一动作$A^{\pi_{\theta_{\text{old}}}}(a_t|s_t)$上的概率比值：
+
+- $\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}>1$：新策略更倾向于选择$A^{\pi_{\theta_{\text{old}}}}(a_t|s_t)$
+- $\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}<1$：新策略对$A^{\pi_{\theta_{\text{old}}}}(a_t|s_t)$倾向减弱
 
 > 关于更详细的重要性采样原理，可以参考[这篇](https://zhuanlan.zhihu.com/p/371156865)。
 
@@ -225,11 +237,8 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）本质是
 
 价值函数的估计分为两种方法：
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train35.png" style="width:100%">
-  </figure>
-</div>
+1. `蒙特卡洛`：也就是遵循策略$\pi$，从状态$s_t$出发，一直到最终的状态，将所有的奖励加起来，你多实验几次，然后将实验后的结果去平均值，就能逼近真实的期望。
+2. `贝尔曼(时序差分)`：不需要等待回合结束就可以估计价值函数，中心思想是将完整的对未来价值的预估转换成多个子任务的和，在计算价值函数的过程中，就是将完整的价值函数->当前奖励+未来奖励的期望。$V(s_t)\gets V(s_t)+\alpha(r_{t+1}+\gamma V(s_{t+1})-V(s_t))$更新价值函数。
 
 其中`蒙特卡洛`方法动作随机，最后每次实验后的价值估计偏差大，方差比较小；而`时序差分`的方法会朝着价值高的方向选择动作，每次实验后价值估计偏差会比较小，但是方差比较大。
 
@@ -241,11 +250,12 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）本质是
 
 极端的偏差和方差都不是我们想要的，想要稳定的训练就要在两者之间取得平衡，GAE（Generalized Advantage Estimation，广义优势估计）就是这么做的。
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train36.png" style="width:100%">
-  </figure>
-</div>
+GAE引入衰减系数 $\lambda$，权衡偏差和方差（$\lambda$ 越小，方差越小但偏差越大）：
+$$
+\hat{A}_t^{(\lambda)} = \delta_t + \gamma \lambda \delta_{t+1} + \gamma^2 \lambda^2 \delta_{t+2} + \dots + \gamma^{T-t-1} \lambda^{T-t-1} \delta_{T-1}
+$$
+
+因此我们就能在估计出优势函数的同时，又能利用优势函数来优化更新策略函数的参数。
 
 **GRPO原理**
 
@@ -259,11 +269,13 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）本质是
 
 我们再看下公式对比：
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train37.png" style="width:100%">
-  </figure>
-</div>
+$$
+J _{PPO}(\theta) = \mathbb{E}_{t} \left[ \min\left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)} A^{\pi_{\theta_{\text{old}}}}(a_t|s_t), \text{clip}\left( \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}, 1-\epsilon, 1+\epsilon \right) A^{\pi_{\theta_{\text{old}}}}(a_t|s_t) \right) \right]
+$$
+
+$$
+J _{GRPO}(\theta)=\mathbb{E} _t \left [\frac{1}{G}\sum_{i=1}^G\frac{1}{|o_i|}\sum_{t=1}^{|o_i|}\left( min\left [\frac{\pi _{\theta}(o_{i,t}|q,o_{i,<t})}{\pi_{\theta_{old}}(o_{i,t}|q,o_{i,<t})} \cdot \hat{A}_{i.t},clip(\frac{\pi_{\theta}(o_{i,t}|q,o_{i,<t})}{\pi_{\theta_{old}}(o_{i,t}|q,o_{i,<t})},1-\varepsilon,1+\varepsilon)\hat{A}_{i.t}]-\beta\mathbb{D}_{KL}[\pi_{\theta}||\pi_{ref}\right]\right)\right ]
+$$
 
 简单来说修改了两处地方：
 
@@ -277,11 +289,9 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）优化了
 $\{A_1,A_2,...,A_G\}$这一批优势值我们不再像PPO一样做的是有偏估计，而是根据下面的计算得到无偏估计值：
 
 
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train38.png" style="width:90%">
-  </figure>
-</div>
+$$
+A_i=\frac{r_i-mean(\{r_1,r_2,...,r_G\})}{std(\{r_1,r_2,...r_G\})}
+$$
 
 也就是说优势函数不再是通过模型估计出来的，而是直接根据结果奖励计算得到优势值，自然GRPO就不用价值模型了。
 
@@ -1188,7 +1198,7 @@ python ./eval/eval.py
   - `row_score`:行规则遵守分数，统计是否保证每行是1-4，并且没有重复
   - `col_score`:列规则遵守分数，统计是否保证每列是1-4，并且没有重复
   - `block_score`:宫格规则遵守分数，统计是否保证每个2\*2小宫格是1-4，并且没有重复
-  - **`total_score`:统计同时符合行、列、宫格规则，也就是三个都是满分的情况的数据的个数**
+  - **`🌟total_score`:统计同时符合行、列、宫格规则，也就是三个都是满分的情况的数据的个数**
   - `format_exclude`:上面的`total_score/format_score`，尽量排除格式带来的可能答案准确的影响，就是可能答案是对的，但是格式不是按照标准格式输出的，但是该参数其实意义不大，因为在每个奖励函数中我添加了正则化`pattern = r"^<think>[\s\S]*?</think>\s*<answer>([\s\S]*?)</answer>$"`代码，如果不遵守规则，那么根本连分数都记录不了。
 
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">

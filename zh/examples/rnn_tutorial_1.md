@@ -22,11 +22,11 @@ $$
 
 公式里面的关键变量：
 
-* $ x_t $ ：时间步 $ t $ 的输入向量
-* $ h_t $ ：时间步 $ t $ 的隐藏状态（hidden state）
-* $ W_{xh} $ ， $ W_{hh} $ ， $ b_h $ ：就是模型的参数矩阵
+* $x_t$：时间步$t$的输入向量
+* $h_t$：时间步$t$的隐藏状态（hidden state）
+* $W_{xh}$，$W_{hh}$，$b_h$：就是模型的参数矩阵
 
-笔者刚学RNN时一直弄不懂隐藏状态 $ h_t $ 和网络输出的关系（网上的图也比较乱，一会儿 $ h $ 一会儿 $ y $ 的），实际上对于RNN来说隐藏状态就是输出。隐藏状态和输出的更新关系可以用下图解释：
+笔者刚学RNN时一直弄不懂隐藏状态$h_t$和网络输出的关系（网上的图也比较乱，一会儿$h$一会儿$y$的），实际上对于RNN来说隐藏状态就是输出。隐藏状态和输出的更新关系可以用下图解释：
 
 <div align="center">
   <figure>
@@ -35,7 +35,7 @@ $$
   </figure>
 </div>
 
-这里面重要的是对于RNN来说，隐变量直接输出作为RNN网络的输出，同时该输出与下一个序列token的输入相加，隐状态 $ h_t $ 与 $ x_t $ 的结合方式即为 $ \tanh $ 的输入：
+这里面重要的是对于RNN来说，隐变量直接输出作为RNN网络的输出，同时该输出与下一个序列token的输入相加，隐状态$h_t$与$x_t$的结合方式即为$\tanh$的输入：
 
 $$
 W_{xh} x_t + W_{hh} h_{t-1} + b_h
@@ -47,7 +47,7 @@ pytorch官方实现的`torch.nn.RNN`模块支持输入如下参数
 * hidden_size: 隐藏层维度，历史无论输入多长序列，模型都会将其压缩到这个小的向量来表示
 * num_layers: 多层RNN的层数，**后面讲解**
 * nonlinearity: 非线性函数的选择，只支持输入`"tanh"`和`"relu"`两种，想用sigmoid得自己想办法实现
-* bias: 是否开启偏置，也就是上面公式中的 $ b_h $
+* bias: 是否开启偏置，也就是上面公式中的$b_h$
 * batch_first: 是否为batchu输入，跟input_size的形状有关
 * dropout: 是否给输出增加dropout
 * bidirectional: 是否为双向RNN，**后面讲解**
@@ -141,7 +141,7 @@ def forward(x, hx=None, batch_first=False):
 当然这里注意两个细节：
 
 1. 开启`bidirectional`后模型会直接生成两份RNN参数，所以RNN模型参数会大一倍
-2. `output`和`h_n`都会给两份（两个RNN各一份），上面参考图画的有点问题在于最后 $ y_0 $ 看起来好像是正向和反向RNN的隐藏状态向加，**实际上torch实现的RNN是直接把正向反向RNN的隐藏状态都返回出来的**。
+2. `output`和`h_n`都会给两份（两个RNN各一份），上面参考图画的有点问题在于最后$y_0$看起来好像是正向和反向RNN的隐藏状态向加，**实际上torch实现的RNN是直接把正向反向RNN的隐藏状态都返回出来的**。
 
 ## 基于RNN网络的序列处理模型设计
 
@@ -179,7 +179,7 @@ def forward(x, hx=None, batch_first=False):
   </figure>
 </div>
 
-对于Transformers来说这个问题比较好解决，我们可以通过增加attention mask实现并行。但是对于LSTM、RNN这种网络。由隐藏状态 $ h_n $ 是随着每个序列逐步更新的。所以我们直接padding+batch输入就会出现隐藏状态 $ h_n $ 计算时包含了pad token的问题。
+对于Transformers来说这个问题比较好解决，我们可以通过增加attention mask实现并行。但是对于LSTM、RNN这种网络。由隐藏状态$h_n$是随着每个序列逐步更新的。所以我们直接padding+batch输入就会出现隐藏状态$h_n$计算时包含了pad token的问题。
 
 <div align="center">
   <figure>
