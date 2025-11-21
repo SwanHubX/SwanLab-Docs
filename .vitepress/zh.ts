@@ -565,8 +565,10 @@ function sidebarCourseLLMTrain(): DefaultTheme.SidebarItem[] {
             { text: 'QLoRA原理', link: '03-sft/6.llamafactory-finetune/lora1.md' },
             { text: 'QLoRA微调实战', link: '03-sft/6.llamafactory-finetune/lora2.md' },
           ]},
-          { text: '3.7 其他框架微调', items: [
-            { text: 'PaddleNLP', link: '03-sft/7.other_frameworks/paddlenlp_finetune.md' },
+          { text: '3.7 deepseek模型lora微调', link: '03-sft/7.deepseek-lora/README.md' },
+          { text: '3.8 其他框架微调', items: [
+            { text: 'PaddleNLP', link: '03-sft/8.other_frameworks/paddlenlp_finetune.md' },
+            { text: 'ms-swift', link: '03-sft/8.other_frameworks/ms-swift.md' },
           ]}
             ]
           },
@@ -580,6 +582,7 @@ function sidebarCourseLLMTrain(): DefaultTheme.SidebarItem[] {
         { text: '第六章 视觉大模型', items: [
           { text: '6.1 Qwen2-VL微调', link: '06-multillm/1.qwen_vl_coco/README.md' },
           { text: '6.2 Qwen3-smVL模型拼接微调', link: '06-multillm/2.qwen3_smolvlm_muxi/README.md' },
+          { text: '6.3 Qwen2.5-VL目标检测微调', link: '06-multillm/4.grounding/README.md' },
       ]},
 
       ]

@@ -54,7 +54,6 @@ AutoDL 是面向 AI 开发者的一站式云算力服务平台，主打 “即�
 - llama-factory框架地址：[LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 - autodl网站：[算力广场](https://autodl.com/market/list)
 - swanlab地址：[SwanLab官网](https://swanlab.cn/)
-- 代码地址：
 - 可视化结果地址：[SwanLab结果](https://swanlab.cn/@LiXinYu/llamafactory/overview)
 - 作者资料：情感机器实验室研究员-李馨雨
 
