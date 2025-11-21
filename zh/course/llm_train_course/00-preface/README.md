@@ -29,17 +29,17 @@
 | 3.1 Qwen文本分类 |在这个任务中我们会使用Qwen-1.5-7b模型在zh_cls_fudan_news数据集上进行指令微调任务| [教程](../03-sft/1.text_classification/README.md) |
 | 3.2 Qwen命名体识别 |使用 Qwen2-1.5b-Instruct 模型在中文NER数据集上做指令微调训练|[教程](../03-sft/2.ner/README.md) |
 | 3.3 GLM4指令微调 |使用指令遵从微调GLM4模型，为了便于实现，减少代码量，本文使用了🤗HuggingFace的TRL框架实现|[教程](../03-sft/3.glm4-instruct/README.md) |
-| 3.4 Qwen3医学模型微调 |以Qwen3作为基座大模型，通过全参数微调的方式，实现垂直专业领域聊天，甚至支持DeepSeek R1 / QwQ式的带推理过程的对话|[教程](../03-sft/4.qwen3-medical-finetune/README.md) |
+| 3.4 Qwen3医学模型微调 |以Qwen3作为基座大模型，通过全参数微调的方式，实现医学专业领域聊天，甚至支持DeepSeek R1 / QwQ式的带推理过程的对话|[教程](../03-sft/4.qwen3-medical-finetune/README.md) |
 | 3.5 Mac上微调Qwen3模型 |本篇教程基于MLX-LM(Mac)教程给大家介绍下如何使用Macbook微调Qwen3模型|[教程](../03-sft/5.mac-qwen3-finetune/README.md) |
-| 3.6 其他框架微调 |除了基础的Transformers框架，还有些国内其他框架可以实现模型微调|[openmind](../03-sft/6.other_frameworks/openMind.md)、[paddle](../03-sft/6.other_frameworks/paddlenlp_finetune.md) |
+| 3.6 llamafactory框架QLoRA微调 |用llama-factory框架来实现大模型的lora和qlora的教程，并且对比分析运行的结果|[原理](../03-sft/6.llamafactory-finetune/lora1.md)、[实战](../03-sft/6.llamafactory-finetune/lora2.md) |
+| 3.7 其他框架微调 |除了基础的Transformers框架，还有些国内其他框架可以实现模型微调|[paddle](../03-sft/7.other_frameworks/paddlenlp_finetune.md) |
 
 ### 第四章 强化学习
 
 | 教程名称    | 描述 | 地址 |
 |:------------------- |:-----|:--------:|
-| 4.1 DQN推车倒立摆 |DQN是Q-Learning的深度学习扩展，教程为如何利用DQN来训练推车倒立摆任务| [教程](../04-reinforce/1.dqn_cartpole/README.md) |
-| 4.2 Qwen复现R1-Zero |对deepseek-r1-zero进行复现实验，简单介绍了从r1原理到代码实现，再到结果观测的整个过程|[教程](../04-reinforce/2.qwen_grpo/README.md) |
-| 4.3 数独游戏GRPO训练 |使用GRPO的方法，用lora来做微调，分别在GPU、NPU的AI训练卡上训练数独游戏任务|[教程](../04-reinforce/3.sudoku_grpo/README.md) |
+| 4.1 Qwen复现R1-Zero |对deepseek-r1-zero进行复现实验，简单介绍了从r1原理到代码实现，再到结果观测的整个过程|[教程](../04-reinforce/2.qwen_grpo/README.md) |
+| 4.2 数独游戏GRPO训练 |使用GRPO的方法，用lora来做微调，分别在GPU、NPU的AI训练卡上训练数独游戏任务|[教程](../04-reinforce/3.sudoku_grpo/README.md) |
 
 ### 第五章 评估
 
@@ -47,19 +47,18 @@
 |:------------------- |:-----|:--------:|
 | 5.1 EvalScope使用 |基于魔搭社区的官方模型评估和基准测试框架EvalScope做微调后模型的评估测试| [教程](../05-eval/1.evalscope/README.md) |
 
-### 第六章 多模态模型
+### 第六章 视觉大模型
 
 | 教程名称    | 描述 | 地址 |
 |:------------------- |:-----|:--------:|
 | 6.1 Qwen2-VL微调 |Qwen2-VL-2B-Instruct模型在COCO2014图像描述上进行Lora微调训练| [教程](../06-multillm/1.qwen_vl_coco/README.md) |
 | 6.2 Qwen3-smVL模型拼接微调 |使用沐曦GPU芯片，把Qwen3与SmolVLM2直接拼接后微调|[教程](../06-multillm/2.qwen3_smolvlm_muxi/README.md) |
-| 6.3 Stable Diffusion微调 |以SD1.5作为预训练模型，在火影忍者数据集上微调一个火影风格的文生图模型（非Lora方式）|[教程](../06-multillm/3.stable_diffusion/README.md) |
 
-### 第七章 检索增强生成
+### 第七章 音频大模型
 
 | 教程名称    | 描述 | 地址 |
 |:------------------- |:-----|:--------:|
-| 7.1 SwanLab-RAG实战 |用SwanLab+开箱即用的RAG框架，带你30分钟搭建一个服务级文档助手| [教程](../07-rag/1.swanlab-rag/README.md) |
+| 7.1 音频模型微调 |待补充| 🚧 |
 
 
 

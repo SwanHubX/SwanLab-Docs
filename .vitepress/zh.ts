@@ -571,9 +571,8 @@ function sidebarCourseLLMTrain(): DefaultTheme.SidebarItem[] {
             ]
           },
         { text: '第四章 强化学习',items: [
-          { text: '4.1 DQN推车倒立摆', link: '04-reinforce/1.dqn_cartpole/README.md' },
-          { text: '4.2 Qwen复现R1-Zero', link: '04-reinforce/2.qwen_grpo/README.md' },
-          { text: '4.3 数独游戏GRPO训练', link: '04-reinforce/3.sudoku_grpo/README.md' },
+          { text: '4.1 Qwen复现R1-Zero', link: '04-reinforce/2.qwen_grpo/README.md' },
+          { text: '4.2 数独游戏GRPO训练', link: '04-reinforce/3.sudoku_grpo/README.md' },
         ]},
         { text: '第五章 评估', items: [
           { text: '5.1 EvalScope使用', link: '05-eval/1.evalscope/README.md' },
