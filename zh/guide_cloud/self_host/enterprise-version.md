@@ -5,4 +5,3 @@
 对 团队版/企业版/多租户云版 有需求的伙伴，欢迎联系我们并备注您的公司/机构与职位：
 
 1. 邮件联系：[contact@swanlab.cn](mailto:contact@swanlab.cn)
-2. 微信联系：ShaohonWeChat

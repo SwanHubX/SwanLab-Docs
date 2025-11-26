@@ -5,4 +5,3 @@ The private individual edition (free) currently supports the majority of the fea
 For partners interested in the Team Edition, Enterprise Edition, or Multi-Tenant Cloud Edition, please feel free to contact us at:
 
 1. Email: [contact@swanlab.cn](mailto:contact@swanlab.cn)
-2. WeChat: ShaohonWeChat
