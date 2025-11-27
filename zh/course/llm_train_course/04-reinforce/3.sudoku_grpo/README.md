@@ -1,4 +1,8 @@
-# GPU&NPU无难度上手GRPO强化学习训练教程，教你复现数独小游戏
+# 教LLM玩数独：基于GRPO强化学习训练
+
+> 作者：李馨雨 - 情感机器实验室研究员
+> 
+> 邮箱：wind.340171@gmail.com
 
 ## 简介
 
@@ -12,7 +16,7 @@
 
 我们都知道大语言模型现在能够完成多类任务，包括问答任务、深入的多轮对话、还有代码和数学问题等等，我们在我们的官网中也有很多对应的实践教程比如指令微调、推理模型的微调任务等。
 
-但是数独游戏是一个比较考验模型逻辑思维能力以及推理能力的任务，一般的SFT仅能做到遵从指令回答而不能让模型具备复杂的推理能力，因此需要使用强化学习的方法来实现数独游戏的训练。本次实验我们使用GRPO的方法，用lora来做微调，我们分别在GPU、NPU的AI训练卡上训练，同时我们也对比了3B模型、7B模型的训练效果，并且通过不断地调整参数实现最终准确度达到89%。
+但是数独游戏是一个比较考验模型逻辑思维能力以及推理能力的任务，一般的SFT仅能做到遵从指令回答而不能让模型具备复杂的推理能力，因此需要使用强化学习的方法来实现数独游戏的训练。
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -20,7 +24,34 @@
   </figure>
 </div>
 
-本次教程我们将完整的过程展现，从数据生成、训练框架设计、到最后的评测环节，我们将所有代码、可视化结果开源，有兴趣的小伙伴可以自己实践下，也可以参考我们的的代码来做其他的任务。
+本次实验我们使用GRPO的方法，用lora来做微调，我们分别在GPU、昇腾NPU的AI训练卡上训练，同时我们也对比了3B模型、7B模型的训练效果，并且通过不断地调整参数实现在7B的Qwen模型上数独游戏结果的准确度从原来的41.6%提高到了89.6%。
+
+| 模型  | 格式遵从准确度 | 问题保持准确度| 行规则遵守准确度 | 列规则遵守准确度 | 宫格规则遵守准确度 | 数独答案准确度 |
+|:------|:-----|:--------|:-----|:-----|:-----|:-----|
+| Qwen2.5-3B-instruct| 0.78 | 0.29 | 0.52 | 0.14 | 0.24 | 0.14 |
+| Qwen2.5-3B-instruct-GRPO | 0.97 | 0.91 | 0.71 | 0.57 | 0.62 | 0.56 |
+| Qwen2.5-7B-instruct |0.84| 0.68 | 0.68 | 0.42 | 0.50 | 0.42 |
+| Qwen2.5-7B-instruct-GRPO  | **0.99** | **0.98** | **0.95** | **0.91** | **0.93** | **0.90** |
+
+> 数独答案准确度就是行、列、宫格同时规则同时遵守时的准确度统计
+
+本次教程我们将完整展现从数据生成、训练框架设计、到最后的评测环节的全流程，并将所有代码、可视化结果开源，希望对大家有所帮助！
+
+具体的链接如下：
+
+- 代码：[828Tina/sudoku_trl_grpo](https://github.com/828Tina/sudoku_trl_grpo?tab=readme-ov-file)
+- 基础模型：[qwen2.5-3b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-3B-Instruct)、[qwen2.5-7b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct)
+- RL训练后的模型：[sudoku_4x4_qwen2.5-3b_grpo](https://www.modelscope.cn/models/Tina12345/sudoku_4x4_qwen2.5-3b_grpo/summary)、[sudoku_4x4_qwen2.5-7b_grpo](https://www.modelscope.cn/models/Tina12345/sudoku_4x4_qwen2.5-7b_grpo/summary)
+- 实验曲线：[SwanLab](https://swanlab.cn/@LiXinYu/sudoku-grpo-qwen2.5/overview)
+
+更多相关文档：
+
+- trl仓库：[huggingface/trl](https://github.com/huggingface/trl)
+
+- GRPOTrainer官方文档：[huggingface/TRL/GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer)
+
+- SwanLab使用教程：[快速开始](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
+
 
 ## 数独游戏的难点
 
@@ -64,39 +95,7 @@
 
 3. **我们在实际实验的时候发现，因为模型是预测后面的文本内容，并不是我们习惯的填写数独同时保留问题，模型是全部输出，因此会遇到模型改题的情况，对于问题的保持也要设置为奖励函数。**
 
-## 链接资料
 
-本次教程，我们使用trl框架做GRPO训练，我们的所有代码已经开源到github中，同时训练过程的观测结果我们放在了swanlab中，具体的链接如下：
-
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train43.png" style="width:100%">
-  </figure>
-</div>
-
-- 代码链接：[github](https://github.com/828Tina/sudoku_trl_grpo?tab=readme-ov-file)
-- 基线模型链接：[modelscope/qwen2.5-3b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-3B-Instruct)、[modelscope/qwen2.5-7b-instruct](https://www.modelscope.cn/models/Qwen/Qwen2.5-7B-Instruct)
-- 训练好的模型：[3B](https://www.modelscope.cn/models/Tina12345/sudoku_4x4_qwen2.5-3b_grpo/summary)、[7B](https://www.modelscope.cn/models/Tina12345/sudoku_4x4_qwen2.5-7b_grpo/summary)
-- swanlab结果：[SwanLab](https://swanlab.cn/@LiXinYu/sudoku-grpo-qwen2.5/overview)
-
-友情链接：
-
-- trl代码：[huggingface/trl](https://github.com/huggingface/trl)
-
-- GRPOTrainer：[huggingface/TRL/GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer)
-
-- SwanLab官方文档，助你轻松开启深度学习之旅：
-
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train42.png" style="width:100%">
-  </figure>
-</div>
-  
-> [框架集成文档](https://docs.swanlab.cn/guide_cloud/integration/)：SwanLab已经集成Transformers、LLaMA Factory、Pytorch等主流框架，并持续更新
-> [实战案例](https://docs.swanlab.cn/examples/hello_world.html)：SwanLab提供了丰富的模型训练实战教程，助力用户快速掌握深度学习模型训练的要点
-
-作者：情感机器实验室研究员-李馨雨 邮箱：wind.340171@gmail.com
 
 ## GRPO原理
 
@@ -323,9 +322,9 @@ pip install -r requirements.txt
 
 > 如果per_device_train_batch_size超过2，上面的资源撑不住，需要再多几块5090。
 > 其他GPU具体没试过，因为本次教程我使用AutoDL上的算力实现的，用的更多还是5090。
-> 除了GPU，昇腾的910B2我们也进行了实验，下面我们补充了下NPU的环境配置👇：
+> 除了GPU，昇腾的910B2我们也进行了实验，下面我们补充了下昇腾NPU的环境配置👇：
 
-**NPU环境安装**
+**昇腾NPU环境安装**
 
 参考文献：[官方文档](https://www.hiascend.com/document/detail/zh/Pytorch/600/configandinstg/instg/insg_0002.html)
 
@@ -1205,9 +1204,9 @@ python ./eval/eval.py
 经过GRPO训练的模型可以达到很高的准确度，针对规则遵守的测试结果total_score相比于原模型qwen2.5-7b-instruct，训练后的模型提高了0.48的准确度，这证明了我们实验的可行性。
 </div>
 
-## NPU训练代码
+## 昇腾NPU训练代码
 
-该部分训练代码和上述代码是同一个，但是启动命令不太一样，NPU我们并没有使用`vllm`来加速推理，并且由于没办法安装`tmux`，离线训练的话得用另外的命令：
+该部分训练代码和上述代码是同一个，但是启动命令不太一样，由于昇腾NPU我们并没有使用`vllm`来加速推理，并且由于没办法安装`tmux`，离线训练的话得用另外的命令：
 
 训练启动命令：
 
@@ -1378,7 +1377,7 @@ python ./eval/eval.py
 - `gradient_accumulation_steps=3`
 - `num_devices=4`
 
-对于NPU（910B2）的实验，我们设为：
+对于昇腾NPU（910B2）的实验，我们设为：
 
 - `per_device_train_batch_size=3`   # 因为910B2的显存为64GB
 - `gradient_accumulation_steps=2`
