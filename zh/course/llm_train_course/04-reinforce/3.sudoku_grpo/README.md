@@ -10,7 +10,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./grpo_train/train41.png" style="width:100%">
+    <img src="./grpo_train/train45.jpg" style="width:100%">
   </figure>
 </div>
 
