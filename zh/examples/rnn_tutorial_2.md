@@ -10,8 +10,8 @@
 
 ## 系列目录
 
-* [考古RNN篇（上）：一文搞懂pytorch RNN如何处理可变长批次训练](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README.md)———介绍RNN原理与处理可变长批次序列方法
-* [考古RNN篇（下）：如何用RNN网络进行序列预测](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README_next.md)———训练一个求序列和余数的RNN分类网络，以及一些调参小技巧
+* [考古RNN篇（上）：一文搞懂pytorch RNN如何处理可变长批次训练](https://zhuanlan.zhihu.com/p/1951795080848475475)———介绍RNN原理与处理可变长批次序列方法
+* [考古RNN篇（下）：如何用RNN网络进行序列预测](https://zhuanlan.zhihu.com/p/1951799150158026738)———训练一个求序列和余数的RNN分类网络，以及一些调参小技巧
 
 ## 训练任务简介
 

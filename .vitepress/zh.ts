@@ -55,9 +55,10 @@ export const zh = defineConfig({
         activeMatch: '/examples/',
       },
       {
-        text: '课程',
-        link: base_path_course + '/prompt_engineering_course/01-preface/README.md',
-        activeMatch: '/course/',
+        text: '课程',items:[
+          {'text': '提示词工程', link: base_path_course + '/prompt_engineering_course/01-preface/README.md'},
+          {'text': '大模型训练', link:base_path_course+'/llm_train_course/00-preface/README.md'},
+        ],
       },
       {
         text: 'API',
@@ -132,7 +133,8 @@ export const zh = defineConfig({
       '/guide_cloud/integration/': { base: '/guide_cloud/integration/', items: sidebarIntegration(), },
       '/api/': { base: '/api/', items: sidebarAPI(), },
       '/plugin/': { base: '/plugin/', items: sidebarPlugin(), },
-      '/course/': { base: '/course/', items: sidebarCourse(), },
+      '/course/prompt_engineering_course/': { base: '/course/prompt_engineering_course/', items: sidebarCoursePromptEngineering(), },
+      '/course/llm_train_course/': { base: '/course/llm_train_course/', items: sidebarCourseLLMTrain(), },
     },
 
     // 页脚配置
@@ -497,38 +499,93 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-function sidebarCourse(): DefaultTheme.SidebarItem[] {
+function sidebarCoursePromptEngineering(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: '📕提示词工程课程',
       items: [
-        { text: '前言', link: 'prompt_engineering_course/01-preface/README.md' },
-        { text: '指南', link: 'prompt_engineering_course/02-prompt_guide/README.md' },
-        { text: '第一章 环境安装', link: 'prompt_engineering_course/03-environmental_installation_platform_preparation/README.md' },
-        { text: '第二章 模型选择', link: 'prompt_engineering_course/04-model_types/README.md' },
-        { text: '第三章 提示词撰写技巧', link: 'prompt_engineering_course/05-tips_for_prompt/README.md', items: [
-          { text: '3.1 模型参数设置', link: 'prompt_engineering_course/05-tips_for_prompt/1.model_parameter_settings.md' },
-          { text: '3.2 提示词结构', link: 'prompt_engineering_course/05-tips_for_prompt/2.prompt_structure.md' },
-          { text: '3.3 提示词要素', link: 'prompt_engineering_course/05-tips_for_prompt/3.prompt_elements.md' },
-          { text: '3.4 其他提示词技巧', link: 'prompt_engineering_course/05-tips_for_prompt/4.other_prompt_techniques.md' },
+        { text: '前言', link: '01-preface/README.md' },
+        { text: '指南', link: '02-prompt_guide/README.md' },
+        { text: '第一章 环境安装', link: '03-environmental_installation_platform_preparation/README.md' },
+        { text: '第二章 模型选择', link: '04-model_types/README.md' },
+        { text: '第三章 提示词撰写技巧', link: '05-tips_for_prompt/README.md', items: [
+          { text: '3.1 模型参数设置', link: '05-tips_for_prompt/1.model_parameter_settings.md' },
+          { text: '3.2 提示词结构', link: '05-tips_for_prompt/2.prompt_structure.md' },
+          { text: '3.3 提示词要素', link: '05-tips_for_prompt/3.prompt_elements.md' },
+          { text: '3.4 其他提示词技巧', link: '05-tips_for_prompt/4.other_prompt_techniques.md' },
         ]},
-        { text: '第四章 常见任务示例', link: 'prompt_engineering_course/06-common_task_examples/README.md' },
-        { text: '第五章 多模态大模型提示词', link: 'prompt_engineering_course/07-multimodal_prompt/README.md' },
-        { text: '第六章 合成数据', link: 'prompt_engineering_course/08-synthetic_data/README.md' , items: [
-          { text: '6.1 预训练合成数据', link: 'prompt_engineering_course/08-synthetic_data/1.pretrain_data.md' },
-          { text: '6.2 微调合成数据', link: 'prompt_engineering_course/08-synthetic_data/2.instruct_data.md' },
-          { text: '6.3 推理合成数据', link: 'prompt_engineering_course/08-synthetic_data/3.reasoning_data.md' },
+        { text: '第四章 常见任务示例', link: '06-common_task_examples/README.md' },
+        { text: '第五章 多模态大模型提示词', link: '07-multimodal_prompt/README.md' },
+        { text: '第六章 合成数据', link: '08-synthetic_data/README.md' , items: [
+          { text: '6.1 预训练合成数据', link: '08-synthetic_data/1.pretrain_data.md' },
+          { text: '6.2 微调合成数据', link: '08-synthetic_data/2.instruct_data.md' },
+          { text: '6.3 推理合成数据', link: '08-synthetic_data/3.reasoning_data.md' },
         ]},
-        { text: '第七章 RAG检索', link: 'prompt_engineering_course/09-RAG/README.md' },
-        { text: '第八章 Agent实践', link: 'prompt_engineering_course/10-Agent/README.md' , items: [
-          { text: '8.1 函数调用实践', link: 'prompt_engineering_course/10-Agent/1.function_calling.md' },
-          { text: '8.2 MCP实践', link: 'prompt_engineering_course/10-Agent/2.mcp_usage.md' },
-          { text: '8.3 多Agents简介', link: 'prompt_engineering_course/10-Agent/3.multi_agents.md' },
+        { text: '第七章 RAG检索', link: '09-RAG/README.md' },
+        { text: '第八章 Agent实践', link: '10-Agent/README.md' , items: [
+          { text: '8.1 函数调用实践', link: '10-Agent/1.function_calling.md' },
+          { text: '8.2 MCP实践', link: '10-Agent/2.mcp_usage.md' },
+          { text: '8.3 多Agents简介', link: '10-Agent/3.multi_agents.md' },
         ]},
-        { text: '第九章 项目实战', link: 'prompt_engineering_course/11-swanlab_rag/README.md' , items:[
-          { text: '9.1 Swanlab-RAG实战', link: 'prompt_engineering_course/11-swanlab_rag/1.swanlab-rag.md' },
+        { text: '第九章 项目实战', link: '11-swanlab_rag/README.md' , items:[
+          { text: '9.1 Swanlab-RAG实战', link: '11-swanlab_rag/1.swanlab-rag.md' },
         ]},
       ]
     },
+  ]
+}
+
+
+function sidebarCourseLLMTrain(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '📖大模型训练课程',
+      items: [
+        { text: '简介', link: '00-preface/README.md' },
+        { text: '第一章 传统模型', items: [
+          { text: '1.1 Bert文本分类', link: '01-traditionmodel/1.bert/README.md' },
+          { text: '1.2 LSTM股票预测', link: '01-traditionmodel/2.lstm/README.md' },
+          { text: '1.3 RNN教程', items: [
+            { text: '原理简介', link: '01-traditionmodel/3.rnn/rnn_tutorial_1.md' },
+            { text: '序列预测模型构建', link: '01-traditionmodel/3.rnn/rnn_tutorial_2.md' },
+              ]
+            },
+          ]
+        },
+        { text: '第二章 预训练', items: [
+          { text: '2.1 LLM预训练', link: '02-pretrain/1.qwen-pretrain/README.md' },
+        ]},
+        { text: '第三章 微调', items: [
+          { text: '3.1 Qwen文本分类', link: '03-sft/1.text_classification/README.md' },
+          { text: '3.2 Qwen命名体识别', link: '03-sft/2.ner/README.md' },
+          { text: '3.3 GLM4指令微调', link: '03-sft/3.glm4-instruct/README.md' },
+          { text: '3.4 Qwen3医学模型微调', link: '03-sft/4.qwen3-medical-finetune/README.md' },
+          { text: '3.5 Mac上微调Qwen3模型', link: '03-sft/5.mac-qwen3-finetune/README.md' },
+          { text: '3.6 llamafactory框架QLoRA微调', items: [
+            { text: 'QLoRA原理', link: '03-sft/6.llamafactory-finetune/lora1.md' },
+            { text: 'QLoRA微调实战', link: '03-sft/6.llamafactory-finetune/lora2.md' },
+          ]},
+          { text: '3.7 deepseek模型lora微调', link: '03-sft/7.deepseek-lora/README.md' },
+          { text: '3.8 其他框架微调', items: [
+            { text: 'PaddleNLP', link: '03-sft/8.other_frameworks/paddlenlp_finetune.md' },
+            { text: 'ms-swift', link: '03-sft/8.other_frameworks/ms-swift.md' },
+          ]}
+            ]
+          },
+        { text: '第四章 强化学习',items: [
+          { text: '4.1 Qwen复现R1-Zero', link: '04-reinforce/2.qwen_grpo/README.md' },
+          { text: '4.2 数独游戏GRPO训练', link: '04-reinforce/3.sudoku_grpo/README.md' },
+        ]},
+        { text: '第五章 评估', items: [
+          { text: '5.1 EvalScope使用', link: '05-eval/1.evalscope/README.md' },
+        ]},
+        { text: '第六章 视觉大模型', items: [
+          { text: '6.1 Qwen2-VL微调', link: '06-multillm/1.qwen_vl_coco/README.md' },
+          { text: '6.2 Qwen3-smVL模型拼接微调', link: '06-multillm/2.qwen3_smolvlm_muxi/README.md' },
+          { text: '6.3 Qwen2.5-VL目标检测微调', link: '06-multillm/4.grounding/README.md' },
+      ]},
+
+      ]
+    }
   ]
 }
