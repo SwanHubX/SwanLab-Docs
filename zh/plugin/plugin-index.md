@@ -11,6 +11,7 @@
 - [Discord](notification-discord)
 - [Slack](notification-slack)
 - [Bark](notification-bark)
+- [Telegram](notification-telegram)
 
 
 ## 📝 记录类

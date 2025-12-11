@@ -7,3 +7,8 @@ node_modules
 logs/
 docker_push.sh
 playground/
+
+
+# lock file
+yarn.lock
+pnpm-lock.yaml

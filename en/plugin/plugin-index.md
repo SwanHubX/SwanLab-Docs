@@ -11,6 +11,7 @@
 - [Discord](/en/plugin/notification-discord.md)
 - [Slack](/en/plugin/notification-slack.md)
 - [Bark](/en/plugin/notification-bark.md)
+- [Telegram](/en/plugin/notification-telegram.md)
 
 ## 📝 Logging Plugins
 

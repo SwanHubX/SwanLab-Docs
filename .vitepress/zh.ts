@@ -486,6 +486,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
         { text: 'Discord', link: 'notification-discord' },
         { text: 'Slack', link: 'notification-slack' },
         { text: 'Bark', link: 'notification-bark' },
+        { text: 'Telegram', link: 'notification-telegram' },
       ]
     },
     {
