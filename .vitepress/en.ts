@@ -347,11 +347,11 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: 'others',
+    text: 'Community Contributions',
     //collapsed: false,
     items: [
       { text: 'Swanlab-rag', link: 'agent/swanlab-rag' },
-
+      { text: 'Vit-KNO Weather Forecasting', link: 'ViT-KNO' },
     ]
   }
 ]
