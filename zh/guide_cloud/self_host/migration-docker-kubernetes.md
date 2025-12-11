@@ -44,6 +44,15 @@
 
 <img src="./kebunetes/datadir.png" alt="数据目录" width=300>
 
+<br>
+
+---
+
+**术语合集：**
+
+- `self-hosted`：部署好的SwanLab Kubernetes集群
+
+
 ## 1.迁移Redis
 
 SwanLab Docker版默认使用内置Redis服务存储核心业务数据（如实验记录、项目配置等），连接串固定为 `redis://default@redis:6379`（其中`redis`为Docker网络内的服务名，`6379`为默认端口）。迁移核心目标是将该Redis实例中的数据完整迁移至Self-Hosted版集群的Redis服务中，确保SwanLab各项功能正常运行。

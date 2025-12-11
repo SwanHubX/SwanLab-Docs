@@ -8,6 +8,15 @@
 
 [[toc]]
 
+<br>
+
+---
+
+**术语合集：**
+
+- `self-hosted`：部署好的SwanLab Kubernetes集群
+
+
 ## 先决条件
 
 使用 Kubernetes 部署 SwanLab 私有化版本，请确保您的 Kubernetes 和相关基础设施满足如下要求：
