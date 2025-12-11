@@ -246,7 +246,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'MMDetection', link: 'integration-mmdetection' },
       { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
       { text: 'Modelscope Swift', link: 'integration-swift' },
-      { text: 'NVIDIA-NeMo/RL', link: 'integration-nvidia-nemo-rl' },
+      { text: 'NVIDIA-NeMo RL', link: 'integration-nvidia-nemo-rl' },
     ]
   },
   {

@@ -1,4 +1,4 @@
-# NVIDIA-NeMo/RL
+# NVIDIA-NeMo RL
 
 我们很开心地宣布，SwanLab 已与英伟达 LLM RL 后训练框架 **NVIDIA-NeMo/RL** 完成官方集成。
 
@@ -6,13 +6,11 @@
 
 在最新的 NVIDIA NeMo RL 版本中，可以使用 SwanLab 实现对训练全流程的跟踪、观测、分析与实验管理，帮助人工智能研发人员掌控 RL 训练的每个细节，加速模型的高效迭代。
 
-![2-Logger-Documentation](./nvidia_nemo_rl/02.png)
-
-## NVIDIA-NeMo/RL
-
 * **官方文档：** [https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html](https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html)
 * **Github：** [https://github.com/NVIDIA-NeMo/RL](https://github.com/NVIDIA-NeMo/RL)
 * **SwanLab：** [https://swanlab.cn](https://swanlab.cn)
+
+## 1. NVIDIA-NeMo/RL
 
 ![3-NeMo-Framework-Architecture](./nvidia_nemo_rl/03.png)
 
@@ -29,9 +27,9 @@ NeMo RL 支持的训练种类也非常多，除了 GRPO 以外，还支持 On-po
 现在，你可以使用 NeMo RL 快速使用 LLM 后训练，同时使用 SwanLab 进行全面的跟踪、观测与分析。
 
 
-## 使用方式
+## 2. 使用方式
 
-### 1. 基础环境
+### 2.1 基础环境
 
 * **计算卡：** 至少 1 张 24GB 以上的 NVIDIA 计算卡
 * **CUDA 版本：** >= 12.8
@@ -40,7 +38,7 @@ NeMo RL 支持的训练种类也非常多，除了 GRPO 以外，还支持 On-po
 
 ---
 
-### 2. 安装环境
+### 2.2 安装环境
 
 克隆最新的 NVIDIA-NeMo/RL 仓库：
 
@@ -84,10 +82,9 @@ uv venv
 
 ---
 
-### 3. GRPO 训练
+### 2.3 GRPO训练
 
-让我们再试试 sft。这里使用 Nemo RL 微调 `Qwen2.5-1.5B`，数据集选择默认的 `squad`（斯坦福问答）：
-
+我们使用 Qwen/Qwen2.5-1.5B 模型，在 OpenMathInstruct-2 数据集上做GRPO训练：
 ```bash
 uv run python examples/run_grpo_math.py \
     policy.model_name="Qwen/Qwen2.5-1.5B" \
@@ -134,7 +131,7 @@ logger:
 
 ---
 
-### 4. SFT 监督微调
+### 2.4 SFT监督微调
 
 让我们再试试 sft。这里使用 Nemo RL 微调 `Qwen2.5-1.5B`，数据集选择默认的 `squad`（斯坦福问答）：
 
@@ -162,7 +159,3 @@ uv run python examples/run_sft.py \
 显存使用情况如下图所示（显卡为 8 卡 RTX 5090）：
 
 ![9-SFT-Memory-Usage](./nvidia_nemo_rl/09.png)
-
----
-
-**SwanLab 团队致力于打造全球领先的人工智能研发工具链，为 AI 训练师与研究者服务。**

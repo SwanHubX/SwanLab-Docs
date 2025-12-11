@@ -1,4 +1,4 @@
-# NVIDIA-NeMo/RL
+# NVIDIA-NeMo RL
 
 We are excited to announce that SwanLab has officially integrated with NVIDIA's LLM RL post-training framework, **NVIDIA-NeMo/RL**.
 
@@ -6,13 +6,11 @@ We are excited to announce that SwanLab has officially integrated with NVIDIA's 
 
 In the latest release of NVIDIA NeMo RL, you can use SwanLab to track, observe, analyze, and manage experiments throughout the entire training process. This empowers AI researchers to master every detail of RL training and accelerate efficient model iteration.
 
-![2-Logger-Documentation](./nvidia_nemo_rl/02.png)
-
-## NVIDIA-NeMo/RL
-
 * **Official Documentation:** [https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html](https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html)
 * **GitHub:** [https://github.com/NVIDIA-NeMo/RL](https://github.com/NVIDIA-NeMo/RL)
 * **SwanLab:** [https://swanlab.cn](https://swanlab.cn)
+
+## 1. NVIDIA-NeMo/RL
 
 ![3-NeMo-Framework-Architecture](./nvidia_nemo_rl/03.png)
 
@@ -28,9 +26,9 @@ As an official NVIDIA framework, NeMo RL provides excellent support for multi-ca
 
 Now, you can use NeMo RL to quickly perform LLM post-training while using SwanLab for comprehensive tracking, observation, and analysis.
 
-## Usage
+## 2. Usage
 
-### 1. Basic Environment
+### 2.1 Basic Environment
 
 * **Compute Card:** At least one NVIDIA GPU with 24GB+ VRAM
 * **CUDA Version:** >= 12.8
@@ -39,7 +37,7 @@ Now, you can use NeMo RL to quickly perform LLM post-training while using SwanLa
 
 ---
 
-### 2. Installation Environment
+### 2.2 Installation Environment
 
 Clone the latest NVIDIA-NeMo/RL repository:
 
@@ -83,9 +81,9 @@ At this point, the basic environment preparation is complete.
 
 ---
 
-### 3. GRPO Training
+### 2.3 GRPO Training
 
-Here, we use NeMo RL to fine-tune `Qwen2.5-1.5B` using the default `squad` (Stanford Question Answering Dataset) dataset:
+We use Qwen/Qwen2.5-1.5B model, and train on OpenMathInstruct-2 dataset using GRPO:
 
 ```bash
 uv run python examples/run_grpo_math.py \
@@ -133,7 +131,7 @@ Simply modify the `project` and `name` parameters.
 
 ---
 
-### 4. SFT (Supervised Fine-Tuning)
+### 2.4 SFT Training
 
 Let's try SFT. Here we use NeMo RL to fine-tune `Qwen2.5-1.5B` using the default `squad` (Stanford Question Answering Dataset) dataset:
 
@@ -161,7 +159,3 @@ Once running, observe the training results on SwanLab:
 GPU memory usage is shown below (using 8x RTX 5090 GPUs):
 
 ![9-SFT-Memory-Usage](./nvidia_nemo_rl/09.png)
-
----
-
-**The SwanLab Team is dedicated to building a world-leading AI R&D toolchain to serve AI trainers and researchers.**

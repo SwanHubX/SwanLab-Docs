@@ -163,7 +163,7 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [EasyR1](/guide_cloud/integration/integration-easyr1.html)  
 - [AReaL](/guide_cloud/integration/integration-areal.html)  
 - [ROLL](/guide_cloud/integration/integration-roll.html)  
-- [NVIDIA-NeMo/RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
+- [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
 
 
 **Other Frameworks**:  
