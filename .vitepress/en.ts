@@ -44,7 +44,6 @@ export const en = defineConfig({
           { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
           { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
           { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
-          { text: 'NVIDIA-NeMo/RL', link: base_path_guide_cloud + '/integration/integration-nvidia-nemo-rl'},
         ]
       },
       { 
