@@ -5,6 +5,17 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.7.3 - 2025.12.11
+**🚀 New Features**
+- Added detailed information display for line charts, when hovering over a line chart, pressing Shift will enable detailed mode, supporting display of the time of the current log point
+- Grouped charts now support MIN/MAX area range display
+- Added integration with NVIDIA-NeMo RL framework, [Documentation](/en/guide_cloud/integration/integration-nvidia-nemo-rl.md)
+- Added integration with Telegram notification plugin, [Documentation](/en/plugin/notification-telegram.md)
+
+**🤔 Improvements**
+- Fixed network connection quality issues with the SDK
+- Optimized chart loading performance
+
 ## v0.7.2 - 2025.11.17
 
 **🚀 New Features**

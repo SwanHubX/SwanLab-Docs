@@ -5,6 +5,18 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.7.3 - 2025.12.11
+
+**🚀新增功能**
+- 新增折线图详细信息展示，鼠标悬浮在折线图上时，单击Shift将开启详细模式，支持显示当前log点的时间
+- 图表分组支持MIN/MAX区域范围显示
+- 新增与NVIDIA-NeMo RL框架的集成，[文档](/guide_cloud/integration/integration-nvidia-nemo-rl.md)
+- 新增与Telegram通知插件的集成，[文档](/plugin/notification-telegram.md)
+
+**🤔优化**
+- 修复了SDK的网络连接质量问题
+- 优化了图表加载性能
+
 
 ## v0.7.2 - 2025.11.17
 
