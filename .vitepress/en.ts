@@ -44,6 +44,7 @@ export const en = defineConfig({
           { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
           { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
           { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+          { text: 'NVIDIA-NeMo/RL', link: base_path_guide_cloud + '/integration/integration-nvidia-nemo-rl'},
         ]
       },
       { 
@@ -245,6 +246,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'MMDetection', link: 'integration-mmdetection' },
       { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
       { text: 'Modelscope Swift', link: 'integration-swift' },
+      { text: 'NVIDIA-NeMo RL', link: 'integration-nvidia-nemo-rl' },
     ]
   },
   {
