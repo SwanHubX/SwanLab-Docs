@@ -1,8 +1,10 @@
 # 使用Kubernetes进行部署
 
+> 如需要从Docker版本迁移至Kubernetes版本，请参考[此文档](/zh/guide_cloud/self_host/migration-docker-kubernetes.md)。
+
 如果你想要使用 [Kubernetes](https://kubernetes.io/) 进行 SwanLab 私有化部署，请按照下面的流程进行安装。
 
-![](./kebunetes/logo.png)
+![swanlab kubernetes logo](./kebunetes/logo.png)
 
 ---
 
@@ -12,9 +14,11 @@
 
 ---
 
-**术语合集：**
+**资源和概念：**
 
+- [SwanHubX/charts](https://github.com/SwanHubX/charts/tree/main/charts/self-hosted)：SwanLab的Kubernetes Helm Chart仓库
 - `self-hosted`：部署好的SwanLab Kubernetes集群
+
 
 
 ## 先决条件
@@ -66,7 +70,7 @@ helm install swanlab-self-hosted swanlab/self-hosted
 应用服务资源指的是SwanLab核心的业务资源——这些服务的镜像会跟随self-hosted版本更新变动——他们包括：
 
 1. **Swanlab-Server**：SwanLab核心后端服务
-2. **SwanLab-House**：SwanLab日志分析服务
+2. **SwanLab-House**：SwanLab指标计算与分析服务
 3. **SwanLab-Cloud**：SwanLab前端展示组件
 4. **SwanLab-Next**：SwanLab前端展示组件
 5. **Traefik-Proxy**：基于Traefik封装的网关组件
@@ -90,7 +94,7 @@ helm show values swanlab/self-hosted
 我们在[values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)中撰写了详细的注释和密钥数据结构说明。需要注意的是，如果您将任一集成基础服务资源开启（例如设置`integrations.postgres.enabled`为`true`），`self-hosted`部署的单实例服务将被销毁。
 
 
-#### 3.1.1 自定义Postgress
+#### 3.1.1 Postgress
 
 如果您希望使用自己部署的cnpg集群或者使用云厂商的服务，您只需要：
 
@@ -106,7 +110,7 @@ helm show values swanlab/self-hosted
 | `replicaUrl` | 只读数据库连接串，一般用于负载均衡并且除了账号密码以外全部与primaryUrl相同。如果并没有配置只读用户/集群，可使用可读可写数据库连接串代替 |
 
 
-#### 3.1.2 自定义Redis
+#### 3.1.2 Redis
 
 如果您希望使用自己部署的redis集群或者使用云厂商的服务，您只需要：
 1. 将`integrations.redis.enabled`设置为`true`
@@ -117,7 +121,7 @@ helm show values swanlab/self-hosted
 | `url` | 数据库连接串，格式类似于： `redis://{username}:${password}@redis:6379` |
 
 
-#### 3.1.3 自定义Clickhouse
+#### 3.1.3 Clickhouse
 
 如果您希望使用自己部署的clickhouse集群或者使用云厂商的服务，您只需要：
 1. 将`integrations.clickhouse.enabled`设置为`true`
@@ -133,7 +137,7 @@ helm show values swanlab/self-hosted
 | `tcpPort` | Clickhouse tcp服务端口，一般为8123 |
 
 
-#### 3.1.4 自定义对象存储
+#### 3.1.4 对象存储
 
 如果您希望使用自己部署的minio集群或者使用云厂商的服务，您只需要：
 1. 将`integrations.s3.enabled`设置为`true`
@@ -164,7 +168,9 @@ helm show values swanlab/self-hosted
 2. 确保您的storage-class或者claim存在于集群中
 
 
-#### 3.2.1 自定义基础服务资源的存储类
+#### 3.2.1 基础服务资源的存储类
+
+> 基础服务资源的定义，请见本文档 2.1
 
 你可以通过`dependencies`部分配置基础服务资源。以postgres为例：
 
@@ -174,7 +180,9 @@ helm show values swanlab/self-hosted
 通常，配置`dependencies.postgres.persistence.existingClaim`是一个比较推荐的做法，这将确保存储资源由您自己管理。
 
 
-#### 3.2.2 自定义应用服务资源的存储类
+#### 3.2.2 应用服务资源的存储类
+
+> 应用服务资源的定义，请见本文档 2.2
 
 由于目前技术限制，`swanlab-house`以StatefulSet部署，因此您需要为它挂载存储卷。与配置基础服务资源类似，您需要配置`service.house.persistence`下的字段。需要注意的是，这里并不允许配置`existingClaim`。
 
@@ -186,7 +194,7 @@ helm show values swanlab/self-hosted
 
 ### 3.3 增加应用副本以提高服务质量
 
-我们为`services`字段下的所有服务提供了`replicas`接口，您可以自由更改其数量，根据SwanLab的运维经验，绝大多数场景下：
+我们为`service`字段下的所有服务提供了`replicas`接口，您可以自由更改其数量，根据SwanLab的运维经验，绝大多数场景下：
 1. `server`服务的副本数量为3
 2. `house`服务的副本数量为3
 3. `next`服务的副本数量为2
@@ -226,7 +234,7 @@ ingress:
 
 如果您需要修改此值，可以通过配置 `env.apiHost` 将其指定为您期望的域名。
 
-需要注意的是，这一配置仅仅是显示上的更改而不会作用到实际的路由转发规则上。此外，这一配置与ingress.host存在冲突，后者将会配置严格的域名转发规则以导致客户端无法访问env.apiHost——在这种情况下，我们建议您在self-hosted服务上层部署负载均衡器接管流量转发规则和实现TLS终止，详见更改应用服务类型。
+需要注意的是，这一配置仅仅是显示上的更改而不会作用到实际的路由转发规则上。此外，这一配置与`ingress.host`存在冲突，后者将会配置严格的域名转发规则以导致客户端无法访问`env.apiHost`——在这种情况下，我们建议您在self-hosted服务上层部署负载均衡器接管流量转发规则和实现TLS终止，详见更改应用服务类型。
 
 
 ### 3.7 接入Prometheus

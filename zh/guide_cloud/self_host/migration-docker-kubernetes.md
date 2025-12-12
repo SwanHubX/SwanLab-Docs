@@ -1,6 +1,8 @@
 # 从Docker版本迁移至K8S版本
 
-本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#自定义基础服务资源)）。
+![migration from docker to kubernetes](./kebunetes/migration.png)
+
+本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)）。
 
 若您希望迁移至各云厂商提供的托管服务或者迁移至自部署的云原生高可用服务，本指南可作为参考。同时，请参阅相应云厂商和云原生项目的官方迁移文档，并在迁移时确保数据库名称、表名称、对象存储桶名称正确。
 
@@ -10,9 +12,8 @@
 
 **此方案要求：**
 1. 先迁移数据，后部署服务
-2. 您使用[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#自定义基础服务资源)功能
+2. 您使用[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)功能
 3. 您有一个busybox镜像用于实现迁移任务
-4. 使用自定义负载均衡器转发对象存储服务，参考更改[应用服务类型](/zh/guide_cloud/self_host/kubernetes-deploy.md#)。
 
 我们通过打包数据、下载数据后存储在数据卷中的方式预先制作存储卷，后挂载存储卷资源。
 
@@ -33,7 +34,9 @@
 3. 您已找到swanlab生成的`docker-compose.yaml`。这主要为了迁移账号密码，如果您忘记了`docker-compose.yaml`文件的位置，您依旧可以通过`docker inspect`查找对应的账号密码环境变量。
 :::
 
-为了方便描述，接下来docker相关命令基于`self-hosted/docker/swanlab/`请根据您的实际情况调整对应的路径。此外，本指南中涉及的账号密码仅作为参考，请参考您实际的配置做调整。
+为了方便描述，接下来docker相关命令基于`self-hosted/docker/swanlab/`请根据您的实际情况调整对应的路径。
+
+此外，本指南中涉及的账号密码仅作为参考，请参考您实际的配置做调整。
 
 请明确在Docker版本中各种基础服务资源的存储位置：
 
@@ -218,7 +221,7 @@ spec:
 tar -czvf postgres-data.tar.gz -C data/postgres/ .
 ```
 
-然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，文件链接为：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：：
 
 ```
 https://xxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/postgres-data.tar.gz
@@ -361,7 +364,7 @@ spec:
 tar -czvf clickhouse-data.tar.gz -C data/clickhouse/ .
 ```
 
-然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，文件链接为：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：：
 
 ```
 https://xxxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/clickhouse-data.tar.gz
@@ -500,7 +503,7 @@ spec:
 tar -czvf minio-data.tar.gz -C data/minio/ .
 ```
 
-然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，文件链接为：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：：
 
 ```
 https://xxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/minio-data.tar.gz
@@ -631,7 +634,13 @@ spec:
 
 ## 5.部署服务
 
-参考values如下：
+当你完成上面4个服务的迁移之后，就可以开始部署SwanLab Kubernetes服务了。
+
+> 部署Kubernetes服务的基本操作见：[使用Kubernetes进行部署](/zh/guide_cloud/self_host/kubernetes-deploy.md)。
+
+你只需要在原[values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)的基础上，修改`integrations`部分，将`enabled`设置为`true`，并配置`existingSecret`为对应服务的secret名称即可。
+
+参考values如下（请确保您的密钥正确）：
 
 ```yaml
 integrations:
@@ -649,4 +658,12 @@ integrations:
     existingSecret: "minio-docker"
 ```
 
-请确保您的密钥正确。在部署以后，如果您已在您的浏览器上登录了**Swanlab Docker版**，并且迁移前后域名保持一致，您不需要再次登录。
+完成修改后，执行以下命令部署SwanLab Kubernetes服务：
+
+```bash
+helm install swanlab-self-hosted swanlab/self-hosted
+```
+
+> 在部署以后，如果您已在您的浏览器上登录了**Swanlab Docker版**，并且迁移前后域名保持一致，您不需要再次登录。
+
+更多 Kubernetes 部署的详细操作，请参考：[使用Kubernetes进行部署](/zh/guide_cloud/self_host/kubernetes-deploy.md)。
