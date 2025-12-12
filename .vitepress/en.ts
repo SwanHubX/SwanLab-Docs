@@ -181,7 +181,9 @@ function sidebarGuideCloud(): SidebarItemEx[] {
     text: '🚀 Self-hosted',
     // collapsed: false,
     items: [
+      { text: 'Kubernetes deployment', link: 'self_host/kubernetes-deploy' },
       { text: 'Docker deployment', link: 'self_host/docker-deploy' }, 
+      { text: 'Migration from Docker to Kubernetes', link: 'self_host/migration-docker-kubernetes' },
       { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
       { text: 'FAQ', link: 'self_host/faq' },
