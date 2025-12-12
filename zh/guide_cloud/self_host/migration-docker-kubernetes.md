@@ -1,6 +1,6 @@
 # 从Docker版本迁移至K8S版本
 
-![migration from docker to kubernetes](./kebunetes/migration.png)
+![migration from docker to kubernetes](./kubernetes/migration.png)
 
 本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)）。
 
@@ -45,7 +45,7 @@
 3. Minio的数据存储在`self-hosted/docker/swanlab/data/minio`
 4. Redis数据存储在`self-hosted/docker/swanlab/data/redis`
 
-<img src="./kebunetes/datadir.png" alt="数据目录" width=300>
+<img src="./kubernetes/datadir.png" alt="数据目录" width=300>
 
 <br>
 
@@ -84,7 +84,7 @@ tar -czvf redis-data.tar.gz -C data/redis .
 
 执行完成后，当前目录会生成`redis-data.tar.gz`压缩包。
 
-然后，将打包好的压缩包上传至集群内所有节点可访问的网络存储服务，本例以阿里云OSS为例，上传后的文件链接样例为：：
+然后，将打包好的压缩包上传至集群内所有节点可访问的网络存储服务，本例以阿里云OSS为例，上传后的文件链接样例为：
 
 ```bash
 https://xxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/redis-data.tar.gz
@@ -109,7 +109,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: redis-migrate
-          image: busybox:1.37.0
+          image: busybox:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: redis-volume
@@ -221,7 +221,7 @@ spec:
 tar -czvf postgres-data.tar.gz -C data/postgres/ .
 ```
 
-然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：
 
 ```
 https://xxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/postgres-data.tar.gz
@@ -244,7 +244,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: postgres-migrate
-          image: busybox:1.37.0
+          image: busybox:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: postgres-volume
@@ -358,13 +358,13 @@ spec:
 - 连接串：`tcp://swanlab:2jwnZiojEV@clickhouse-docker:9000/app`
 - http端口：`8123`
 
-使用如下命令打包pg数据：
+使用如下命令打包clickhouse数据：
 
 ```bash
 tar -czvf clickhouse-data.tar.gz -C data/clickhouse/ .
 ```
 
-然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：
 
 ```
 https://xxxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/clickhouse-data.tar.gz
@@ -387,7 +387,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: clickhouse-migrate
-          image: busybox:1.37.0
+          image: busybox:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: clickhouse-volume
@@ -417,7 +417,6 @@ spec:
 | `host` | `clickhouse-docker` | 主机 |
 | `httpPort` | `8123` | http端口 |
 | `tcpPort` | `9000` | tcp端口 |
-`
 
 参考clickhouse部署配置如下：
 
@@ -497,13 +496,13 @@ spec:
 
 ### 4.1 打包并上传压缩包
 
-使用如下命令打包pg数据：
+使用如下命令打包minio数据：
 
 ```bash
 tar -czvf minio-data.tar.gz -C data/minio/ .
 ```
 
-然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，上传后的文件链接样例为：
 
 ```
 https://xxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/minio-data.tar.gz
@@ -526,7 +525,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: minio-migrate
-          image: busybox:1.37.0
+          image: busybox:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: minio-volume

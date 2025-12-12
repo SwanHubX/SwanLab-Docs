@@ -4,7 +4,7 @@
 
 如果你想要使用 [Kubernetes](https://kubernetes.io/) 进行 SwanLab 私有化部署，请按照下面的流程进行安装。
 
-![swanlab kubernetes logo](./kebunetes/logo.png)
+![swanlab kubernetes logo](./kubernetes/logo.png)
 
 ---
 
@@ -69,7 +69,7 @@ helm install swanlab-self-hosted swanlab/self-hosted
 
 应用服务资源指的是SwanLab核心的业务资源——这些服务的镜像会跟随self-hosted版本更新变动——他们包括：
 
-1. **Swanlab-Server**：SwanLab核心后端服务
+1. **SwanLab-Server**：SwanLab核心后端服务
 2. **SwanLab-House**：SwanLab指标计算与分析服务
 3. **SwanLab-Cloud**：SwanLab前端展示组件
 4. **SwanLab-Next**：SwanLab前端展示组件
@@ -133,8 +133,8 @@ helm show values swanlab/self-hosted
 | `username` | 可读可写用户名称 |
 | `password` | 可读可写用户密码 |
 | `host` | clickhouse服务地址 |
-| `httpPort` | Clickhouse http服务端口，一般为9000 |
-| `tcpPort` | Clickhouse tcp服务端口，一般为8123 |
+| `httpPort` | Clickhouse http服务端口，一般为8123 |
+| `tcpPort` | Clickhouse tcp服务端口，一般为9000 |
 
 
 #### 3.1.4 对象存储

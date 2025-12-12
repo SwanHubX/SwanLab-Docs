@@ -4,7 +4,7 @@
 
 If you wish to use [Kubernetes](https://kubernetes.io/) for a self-hosted deployment of SwanLab, please follow the process below for installation.
 
-![swanlab kubernetes logo](./kebunetes/logo.png)
+![swanlab kubernetes logo](./kubernetes/logo.png)
 
 -----
 
@@ -127,8 +127,8 @@ If you wish to use your own deployed ClickHouse cluster or use cloud provider se
 | `username` | Read-write username. |
 | `password` | Read-write user password. |
 | `host` | ClickHouse service address. |
-| `httpPort` | ClickHouse HTTP service port, usually 9000. |
-| `tcpPort` | ClickHouse TCP service port, usually 8123. |
+| `httpPort` | ClickHouse HTTP service port, usually 8123. |
+| `tcpPort` | ClickHouse TCP service port, usually 9000. |
 
 #### 3.1.4 Object Storage
 
