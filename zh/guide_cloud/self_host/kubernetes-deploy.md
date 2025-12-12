@@ -47,7 +47,7 @@ swanlab这个仓库将包含SwanLab官方开源的所有Charts，你可以使用
 helm install swanlab-self-hosted swanlab/self-hosted
 ```
 
-通过安装 `swanlab/self-hosted`（下面简称`self-hosted`)，即可在k8s上安装SwanLab私有化部署版应用。
+通过安装 `swanlab/self-hosted`（下面简称`self-hosted`），即可在k8s上安装SwanLab私有化部署版应用。
 
 > 您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看self-hosted的所有可配置项。
 
@@ -94,7 +94,7 @@ helm show values swanlab/self-hosted
 我们在[values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)中撰写了详细的注释和密钥数据结构说明。需要注意的是，如果您将任一集成基础服务资源开启（例如设置`integrations.postgres.enabled`为`true`），`self-hosted`部署的单实例服务将被销毁。
 
 
-#### 3.1.1 Postgress
+#### 3.1.1 Postgres
 
 如果您希望使用自己部署的cnpg集群或者使用云厂商的服务，您只需要：
 
@@ -214,7 +214,7 @@ helm show values swanlab/self-hosted
 
 ### 3.5 配置自定义负载均衡、域名并提供TLS服务
 
-`self-hosted`本身不提供ingress，在k8s中您需要使用外部负载均衡访问。首先，确保您已更改应用服务类型为NodePort或ClusterIP；此外，为了避免不必要的意外，通常我们推荐您在负载均衡器侧完成TLS终止，并要求负载均器传递`X-Forwarded-*`相关的请求头。
+`self-hosted`本身不提供ingress，在k8s中您需要使用外部负载均衡访问。首先，确保您已更改应用服务类型为NodePort或ClusterIP；此外，为了避免不必要的意外，通常我们推荐您在负载均衡器侧完成TLS终止，并要求负载均衡器传递`X-Forwarded-*`相关的请求头。
 
 最后，除了在您自己的负载均衡器上配置对应流量转发规则以外，请配置traefik信任上游服务设置的`X-Forwarded-*`请求头，参考[此文档](https://doc.traefik.io/traefik/reference/install-configuration/entrypoints/#opt-forwardedHeaders-trustedIPs)：
 
