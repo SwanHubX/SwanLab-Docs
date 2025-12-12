@@ -4,4 +4,4 @@
 
 <img src="./areal/logo.png" width="200">
 
-AReaL项目已集成SwanLab，指引可见此文档：[Areal - monitoring-the-training-process](https://inclusionai.github.io/AReaL/tutorial/quickstart_legacy.html#monitoring-the-training-process)
+AReaL项目已集成SwanLab，指引可见此文档：[Areal中的SwanLab配置](https://inclusionai.github.io/AReaL/cli_reference.html#swanlab-configuration)
