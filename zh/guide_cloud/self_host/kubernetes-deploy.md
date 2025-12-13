@@ -25,7 +25,7 @@
 
 使用 Kubernetes 部署 SwanLab 私有化版本，请确保您的 Kubernetes 和相关基础设施满足如下要求：
 
-| 软件/基础设施 | 版本/配置要求 | 解释 |
+| 软件/基础设施 | 版本/配置要求 | 必要性说明 |
 | --- | --- | --- |
 | kubernetes | v1.24 及以上 | 官方测试验证覆盖了 v1.24+ 版本。为确保 API 兼容性与系统稳定性，不建议在低于此版本的集群中部署。 |
 | helm | version>=3 | SwanLab 采用 Helm v3 标准构建 Chart 包，不兼容 Helm v2（Tiller 模式）。 |
@@ -48,11 +48,11 @@ helm repo add swanlab https://helm.swanlab.cn
 helm install swanlab-self-hosted swanlab/self-hosted
 ```
 
-通过安装 `swanlab/self-hosted`（下面简称`self-hosted`），即可在k8s上安装SwanLab私有化部署版应用。
+:::warning 提示
+您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看`self-hosted`的所有可配置项，于此同时我们建议您保存好您的`values.yaml`
+:::
 
-> 您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看self-hosted的所有可配置项。
-
-安装结果会在终端打印：
+通过安装 `swanlab/self-hosted`（下面简称`self-hosted`），即可在k8s上安装SwanLab私有化部署版应用，安装结果会在终端打印：
 
 ```bash
 Release "self-hosted" has been upgraded. Happy Helming!
@@ -365,7 +365,7 @@ global:
 
 我们会更新helm chart版本，这将包含一些新功能和错误修复，您可以选择在适当的时机更新您部署的服务。
 
-:::info warning
+:::warning 
 在更新前，请您确保已备份对应的PVC数据！
 :::
 
