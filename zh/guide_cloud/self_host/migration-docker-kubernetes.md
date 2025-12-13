@@ -135,45 +135,27 @@ dependencies:
 
 ## 2.迁移Redis
 
-SwanLab Docker版默认使用内置Redis服务存储核心业务数据（如实验记录、项目配置等），连接串固定为 `redis://default@redis:6379`（其中`redis`为Docker网络内的服务名，`6379`为默认端口）。迁移核心目标是将该Redis实例中的数据完整迁移至Self-Hosted版集群的Redis服务中，确保SwanLab各项功能正常运行。
-
-:::warning
-迁移前建议停止SwanLab Docker版服务，避免数据写入导致迁移不完整；同时备份Redis数据目录，防止迁移失败造成数据丢失。
-:::
+在 SwanLab Docker 版中，Redis连接串为默认连接串`redis://default@redis:6379`
 
 ### 2.1 打包并上传压缩包
 
-本步骤需在运行SwanLab Docker版的服务器上执行，核心操作是打包Redis数据目录，再上传至集群可访问的对象存储服务（如阿里云OSS、AWS S3等），为后续集群内数据复制做准备。
-
-SwanLab Docker版的Redis数据默认挂载在宿主机的`data/redis`目录下（该路径为Docker Compose配置中指定的宿主机挂载路径，若您自定义过挂载目录，请替换为实际路径）。可通过以下命令验证目录存在性及数据完整性：
+使用如下命令打包redis数据：
 
 ```bash
-# 查看Redis数据目录结构
-ls -l data/redis
-# 若目录下存在dump.rdb等文件，说明数据目录正确
+tar -czvf redis-data.tar.gz -C data/redis/ .
 ```
 
-使用tar命令打包Redis数据目录，执行命令如下：
+然后将其上传至对象存储或任何集群可访问的网络存储服务，本例中我们上传至aliyun对象存储，文件链接样例为：
 
-```bash
-tar -czvf redis-data.tar.gz -C data/redis .
 ```
-
-执行完成后，当前目录会生成`redis-data.tar.gz`压缩包。
-
-然后，将打包好的压缩包上传至集群内所有节点可访问的网络存储服务，本例以阿里云OSS为例，上传后的文件链接样例为：
-
-```bash
 https://xxx.oss-cn-beijing.aliyuncs.com/self-hosted/docker/redis-data.tar.gz
 ```
 
-### 2.2 复制数据至Redis存储卷
+### 2.2 复制数据至存储卷
 
-本步骤通过Kubernetes Job资源在集群内执行，核心操作是从对象存储下载数据压缩包，解压后复制到Redis服务对应的持久化存储卷（PVC）中，实现数据从对象存储到集群存储卷的迁移。
+参考配置如下：
 
-创建名为`redis-migrate.yaml`的Job配置文件，参考样例如下：
-
-```yaml {20}
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -186,7 +168,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: redis-migrate
-          image: busybox:latest
+          image: busybox:1.37.0
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: redis-volume
@@ -206,16 +188,7 @@ spec:
             claimName: redis-docker-pvc
 ```
 
-注意PVC名称，确认无误后在集群控制节点执行以下命令，以创建并运行Job：
-
-```bash
-# 应用Job配置文件
-kubectl apply -f redis-migrate.yaml
-# 查看Job执行状态（RUNNING表示正在执行，SUCCEEDED表示执行成功）
-kubectl get jobs -l swanlab=redis
-# 查看Job对应的Pod日志，确认数据下载和解压过程
-kubectl logs -l job-name=redis-migrate
-```
+注意PVC名称，确认无误后运行即可。
 
 ### 2.3 明确你的配置
 
@@ -403,7 +376,7 @@ dependencies:
 完成修改后，执行以下命令部署SwanLab Kubernetes服务：
 
 ```bash
-helm install swanlab-self-hosted swanlab/self-hosted
+helm install swanlab-self-hosted swanlab/self-hosted -f values.yaml
 ```
 
 > 在部署以后，如果您已在您的浏览器上登录了**Swanlab Docker版**，并且迁移前后域名保持一致，您不需要再次登录。
