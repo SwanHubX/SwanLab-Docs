@@ -55,8 +55,8 @@ helm install swanlab-self-hosted swanlab/self-hosted
 通过安装 `swanlab/self-hosted`（下面简称`self-hosted`），即可在k8s上安装SwanLab私有化部署版应用，安装结果会在终端打印：
 
 ```bash
-Release "self-hosted" has been upgraded. Happy Helming!
-NAME: self-hosted
+Release "swanlab-self-hosted" has been upgraded. Happy Helming!
+NAME: swanlab-self-hosted
 LAST DEPLOYED: Sat Dec 13 17:52:05 2025
 NAMESPACE: self-hosted
 STATUS: deployed
@@ -69,7 +69,7 @@ Get the application URL by running these commands:
 
 1. Access via kube-proxy:
    Run the following command to forward your local port 8080 to the service:
-     kubectl port-forward --namespace self-hosted svc/self-hosted 8080:80
+     kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
    Then, you can access the service via:
      http://127.0.0.1:8080
@@ -346,11 +346,20 @@ global:
 
 ### 3.6 配置应用访问入口
 
-通常建议您优先使用 **独立域名（Host-based）** 来配置访问策略，以规避因路径规则复杂或变更导致的路由冲突。
+应用服务在集群中的域名为您部署的release名称，举个例子，假设您的`cluster domain`为`cluster.local`，部署命令为：
+
+```bash
+helm install swanlab-self-hosted swanlab/self-hosted -n self-hosted
+```
+
+- 应用在`self-hosted`命名空间下的域名为`swanlab-self-hosted`
+- 应用在`kubernetes`集群下的域名为：`swanlab-self-hosted.self-hosted.svc.cluster.local`
+
+您可以基于如上信息编写负载均衡策略。通常建议您优先使用 **独立域名（Host-based）** 来配置访问策略，以规避因路径规则复杂或变更导致的路由冲突。
 
 **基于架构解耦原则**，Self-hosted 不内置 Ingress 控制器。您需要在集群的负载均衡器（或 Ingress）上配置外部访问入口，并由其负责 **TLS 终止（HTTPS 卸载）**。
 
-**在安全策略方面**，应用默认信任所有的 X-Forwarded-* 请求头。如果您需要更严格的头部校验或转发控制，请务必在负载均衡层统一实施——这有可能影响到内部S3的签名效果，如果您使用外部对象存储服务，则不需要有这方面担忧。
+**在安全策略方面**，应用默认信任所有的 `X-Forwarded-*` 请求头。如果您需要更严格的头部校验或转发控制，请务必在负载均衡层统一实施——这有可能影响到内部S3的签名效果，如果您使用外部对象存储服务，则不需要有这方面担忧。
 
 
 ### 3.7 更改swanlab.login显示的域名
