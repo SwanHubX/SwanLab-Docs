@@ -25,11 +25,12 @@
 
 使用 Kubernetes 部署 SwanLab 私有化版本，请确保您的 Kubernetes 和相关基础设施满足如下要求：
 
-| 软件/基础设施 | 要求 | 解释 |
+| 软件/基础设施 | 版本/配置要求 | 解释 |
 | --- | --- | --- |
-| kubernetes | version>=1.24 | SwanLab仅在此版本以上做过测试，较低版本并不保证使用 |
-| helm | version>=3 | SwanLab使用helm3编写swanlab的kubernetes软件包 |
-| NAT白名单 | 允许集群访问swanlab.cn根域名和子域名 | 集群需要通过`repo.swanlab.cn`拉取镜像，并且商业版需要通过`api.swanlab.cn`完成License校验 |
+| kubernetes | v1.24 及以上 | 官方测试验证覆盖了 v1.24+ 版本。为确保 API 兼容性与系统稳定性，不建议在低于此版本的集群中部署。 |
+| helm | version>=3 | SwanLab 采用 Helm v3 标准构建 Chart 包，不兼容 Helm v2（Tiller 模式）。 |
+| RBAC 权限 | Namespace Admin | 部署账户需具备当前命名空间下的**写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。 |
+| 网络访问 (Egress) | *.swanlab.cn | 集群节点需具备访问公网的能力（或配置 NAT 网关）：<br>1. `repo.swanlab.cn`：用于拉取应用镜像。  <br>2. `api.swanlab.cn`：用于 License 在线激活与校验。 |
 
 ## 1. 快速开始
 
@@ -41,7 +42,7 @@
 helm repo add swanlab https://helm.swanlab.cn
 ```
 
-swanlab这个仓库将包含SwanLab官方开源的所有Charts，你可以使用如下命令安装SwanLab私有化服务：
+`swanlab`这个仓库将包含SwanLab官方开源的所有Charts，你可以使用如下命令安装SwanLab私有化服务：
 
 ```bash
 helm install swanlab-self-hosted swanlab/self-hosted
@@ -50,6 +51,56 @@ helm install swanlab-self-hosted swanlab/self-hosted
 通过安装 `swanlab/self-hosted`（下面简称`self-hosted`），即可在k8s上安装SwanLab私有化部署版应用。
 
 > 您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看self-hosted的所有可配置项。
+
+安装结果会在终端打印：
+
+```bash
+Release "self-hosted" has been upgraded. Happy Helming!
+NAME: self-hosted
+LAST DEPLOYED: Sat Dec 13 17:52:05 2025
+NAMESPACE: self-hosted
+STATUS: deployed
+REVISION: 6
+TEST SUITE: None
+NOTES:
+Thank you for installing self-hosted!
+
+Get the application URL by running these commands:
+
+1. Access via kube-proxy:
+   Run the following command to forward your local port 8080 to the service:
+     kubectl port-forward --namespace self-hosted svc/self-hosted 8080:80
+
+   Then, you can access the service via:
+     http://127.0.0.1:8080
+
+2. Expose Service Externally:
+   SwanLab self-hosted is not exposed to the public internet.
+   If you wish to expose this service, you need to configure a LoadBalancer manually or use an Ingress Controller.
+   
+   Please refer to the official documentation for configuration details:
+   https://docs.swanlab.cn/guide_cloud/self_host/kubernetes-deploy.html
+```
+
+如上所示，`self-hosted`默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。如果您希望**开启外部访问（通过IP或域名）**，请参考[配置应用访问入口](label)。
+
+下面是一个在本机访问的例子，打开终端并执行：
+
+```bash
+kubectl port-forward --namespace self-hosted svc/self-hosted 8080:80
+```
+
+然后你可以在浏览器中访问：`http://127.0.0.1:8080`，即可看到SwanLab的页面：
+
+![](./docker-deploy/create-account.png)
+
+现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个，位置在 「设置」-「账户与许可证」。
+
+![](./docker-deploy/apply-license.png)
+
+拿到License后，回到激活页面，填写用户名、密码、确认密码和License，点击激活即可完成创建。
+
+![](./docker-deploy/quick-start.png)
 
 
 ## 2. 资源清单
@@ -64,10 +115,11 @@ helm install swanlab-self-hosted swanlab/self-hosted
 2. **redis单实例**：存储服务cache
 3. **clickhouse单实例**：存储实验日志资源
 4. **minio单实例**：存储媒体资源
+5. **traefik单实例**：网关和应用入口
 
 ### 2.2 应用服务资源
 
-应用服务资源指的是SwanLab核心的业务资源——这些服务的镜像会跟随self-hosted版本更新变动——他们包括：
+应用服务资源指的是SwanLab核心的业务资源——这些服务的镜像会跟随`self-hosted`版本更新变动——他们包括：
 
 1. **SwanLab-Server**：SwanLab核心后端服务
 2. **SwanLab-House**：SwanLab指标计算与分析服务
@@ -103,11 +155,25 @@ helm show values swanlab/self-hosted
 
 | `.data.<keys>` | 解释 |
 | --- | --- |
-| `database` | 使用的数据库名称，我们推荐设置为app |
 | `username` | 可读可写用户名称 |
 | `password` | 可读可写用户密码 |
 | `primaryUrl` | 可读可写数据库连接串，格式类似于： `postgresql://{username}:${password}@postgres:5432/app?schema=public` |
 | `replicaUrl` | 只读数据库连接串，一般用于负载均衡并且除了账号密码以外全部与primaryUrl相同。如果并没有配置只读用户/集群，可使用可读可写数据库连接串代替 |
+
+3. 通过`values.yaml`设置`integrations.postgres`的其他配置
+
+最终配置示例如下：
+```yaml
+integrations:
+  postgres:
+    enabled: true
+    host: "example.postgres"
+    port: 5432
+    database: "app"
+    existingSecret: integration-postgres
+```
+
+> 请保证上述配置与secret中能对应上
 
 
 #### 3.1.2 Redis
@@ -120,6 +186,22 @@ helm show values swanlab/self-hosted
 | --- | --- |
 | `url` | 数据库连接串，格式类似于： `redis://{username}:${password}@redis:6379` |
 
+3. 通过`values.yaml`设置`integrations.redis`的其他配置
+
+最终配置示例如下：
+
+```yaml
+integrations:
+  redis:
+    enabled: true
+    host: "example.redis"
+    port: 6379
+    database: "0"
+    existingSecret: integration-redis
+```
+
+> 请保证上述配置与secret中能对应上
+
 
 #### 3.1.3 Clickhouse
 
@@ -129,17 +211,30 @@ helm show values swanlab/self-hosted
 
 | `.data.<keys>` | 解释 |
 | --- | --- |
-| `database` | 使用的数据库名称，我们推荐设置为app |
 | `username` | 可读可写用户名称 |
 | `password` | 可读可写用户密码 |
-| `host` | clickhouse服务地址 |
-| `httpPort` | Clickhouse http服务端口，一般为8123 |
-| `tcpPort` | Clickhouse tcp服务端口，一般为9000 |
 
+3. 通过`values.yaml`设置`integrations.clickhouse`的其他配置
 
+最终配置示例如下：
+
+```yaml
+integrations:
+  clickhouse:
+    enabled: true
+    host: "example.clickhouse"
+    httpPort: 8123
+    tcpPort: 9000
+    database: "app"
+    existingSecret: integration-clickhouse
+```
+
+> 请保证上述配置与secret中能对应上
+
+    
 #### 3.1.4 对象存储
 
-如果您希望使用自己部署的minio集群或者使用云厂商的服务，您只需要：
+如果您希望使用自己部署的minio集群或者使用云厂商的服务（必须兼容S3协议），您只需要：
 1. 将`integrations.s3.enabled`设置为`true`
 2. 设置一个Secret，通过`integrations.s3.existingSecret`传入此密钥的名称，密钥信息包括：
 
@@ -147,34 +242,57 @@ helm show values swanlab/self-hosted
 | --- | --- |
 | `accessKey` | 对象存储访问密钥 |
 | `secretKey` | 对象存储密钥 |
-| `endpoint` | 对象存储地址 |
-| `privateBucket` | 私有桶名称，我们推荐设置为swanlab-private |
-| `publicBucket` | 公有桶名称，我们推荐设置为swanlab-public |
-| `region` | 对象存储地域，如果您使用自己部署的minio等服务，可能没有此字段，设置为local即可 |
 
-3. 确保密钥中配置的`privateBucket`和`publicBucket`已经在对象存储服务中存在
+3. 通过`values.yaml`设置`integrations.s3`的其他配置
+最终配置示例如下：
+```yaml
+integrations:
+  s3:
+    enabled: true
+    public:
+      ssl: true
+      endpoint: "xxx.s3.com"
+      region: "cn-beijing"
+      pathStyle: false
+      port: 443
+      domain: "https://xxx.xxxx.s3.com"
+      bucket: "swanlab-public"
+    private:
+      ssl: true
+      endpoint: "xxx.s3.com"
+      region: "cn-beijing"
+      pathStyle: false
+      port: 443
+      bucket: "swanlab-private"
+    existingSecret: integration-s3
+```
+
+> 请保证上述配置与secret中能对应上
 
 :::warning
-如果您打算在集群中配置自己的minio或者其他对象存储服务，您应该保证此服务对公网可访问——因为SwanLab前端服务也需要访问此服务，并且self-hosted默认不会配置第三方服务的负载均衡策略。
+- publicBucket的权限为**公有读私有写**，privateBucket的权限为**私有读写**
+- 当您选择自定义对象存储服务时，请保证您的对象存储服务在可以直接通过外部访问（通过IP或域名）
+- 您的对象存储密钥必须对 **publicBucket** 和 **privateBucket** 同时有写权限和S3签名权限
+
 :::
 
 
 ### 3.2 自定义存储资源
 
-如果您希望使用self-hosted部署的单实例基础服务，那么我们建议您自己声明storage-class以支持数据持久化，因为self-hosted默认使用local-storage声明PVC。
+如果您希望使用`self-hosted`部署的单实例基础服务，那么我们建议您自己声明`storage-class`以支持数据持久化。
 
 在进行自定义基础资源的存储类之前，请确保：
 1. 这个基础服务资源并没有开启`integrations`
-2. 确保您的storage-class或者claim存在于集群中
+2. 确保您的`storage-class`或者`claim`存在于集群中
 
 
 #### 3.2.1 基础服务资源的存储类
 
 > 基础服务资源的定义，请见本文档 2.1
 
-你可以通过`dependencies`部分配置基础服务资源。以postgres为例：
+你可以通过`dependencies`部分配置基础服务资源。以`postgres`为例：
 
-1. 如果您希望self-hosted生成存储卷，可以通过配置`dependencies.postgres.persistence`下的`storageClass`和`storageSize`配置存储卷类型和大小
+1. 如果您希望`self-hosted`生成存储卷，可以通过配置`dependencies.postgres.persistence`下的`storageClass`和`storageSize`配置存储卷类型和大小
 2. 如果您已经有存储卷，可以通过`dependencies.postgres.persistence.existingClaim`配置一个已经存在的存储卷
 
 通常，配置`dependencies.postgres.persistence.existingClaim`是一个比较推荐的做法，这将确保存储资源由您自己管理。
@@ -184,7 +302,7 @@ helm show values swanlab/self-hosted
 
 > 应用服务资源的定义，请见本文档 2.2
 
-由于目前技术限制，`swanlab-house`以StatefulSet部署，因此您需要为它挂载存储卷。与配置基础服务资源类似，您需要配置`service.house.persistence`下的字段。需要注意的是，这里并不允许配置`existingClaim`。
+由于目前技术限制，`swanlab-house`以`StatefulSet`部署，因此您需要为它挂载存储卷。与配置基础服务资源类似，您需要配置`service.house.persistence`下的字段。需要注意的是，这里并不允许配置`existingClaim`。
 
 :::warning
 `swanlab-house`会在存储卷下存储一些指标中间产物，一般情况下您不需要关心此存储卷中的数据。
@@ -201,42 +319,83 @@ helm show values swanlab/self-hosted
 4. `cloud`服务的副本数量为1
 当然，应用性能是一个复杂的计算指标，通常它还取决于资源限制，我们也提供了`resources`等接口允许您配置应用的资源用量。
 
+### 3.4 更改Pod反亲和性
 
-### 3.4 定义声明、标签等元数据
-
-对于任一服务，我们定义了如下接口以方便您调度SwanLab应用容器：
-1. `customLabels`：自定义应用标签
-2. `customAnnotations`：自定义应用注解
-3. `customTolerations`：自定义容忍度
-4. `customNodeSelector`：自定义节点选择器
-您可以通过这些资源自由管理和调度SwanLab应用。
-
-
-### 3.5 配置自定义负载均衡、域名并提供TLS服务
-
-`self-hosted`本身不提供ingress，在k8s中您需要使用外部负载均衡访问。首先，确保您已更改应用服务类型为NodePort或ClusterIP；此外，为了避免不必要的意外，通常我们推荐您在负载均衡器侧完成TLS终止，并要求负载均衡器传递`X-Forwarded-*`相关的请求头。
-
-最后，除了在您自己的负载均衡器上配置对应流量转发规则以外，请配置traefik信任上游服务设置的`X-Forwarded-*`请求头，参考[此文档](https://doc.traefik.io/traefik/reference/install-configuration/entrypoints/#opt-forwardedHeaders-trustedIPs)：
+您可以通过设置`global.podAntiAffinityPreset`来设置Pod反亲和性以提升容灾能力：
 
 ```yaml
-ingress:
-  traefik:
-    ports:
-      web:
-        forwardedHeaders:
-          trustedIPs: [] # 在此设置您上游负载均衡器内网IP
+global:
+  # Kubernetes Pod Affinity/Anti-Affinity settings
+  # We use Topology Spread Constraints to achieve pod distribution across nodes.
+  podAntiAffinityPreset: "soft" # soft, hard, or none
+```
+默认情况为`soft`，这意味着所有Pod将均匀分布在各个Node上。您可以将其设置为`hard`以确保同一服务Pod不会分布在同一Node上，或者设置为`none`以禁用Pod反亲和性。
+
+
+### 3.5 定义声明、标签等元数据
+
+对于任一服务，我们定义了如下接口以方便您调度SwanLab应用容器：
+
+1. `resources`：限定服务所需CPU和RAM资源
+2. `customLabels`：自定义应用标签
+3. `customAnnotations`：自定义应用注解
+4. `customTolerations`：自定义容忍度
+5. `customNodeSelector`：自定义节点选择器
+
+您可以通过这些资源自由管理和调度SwanLab应用。
+
+### 3.6 配置应用访问入口
+
+通常建议您优先使用 **独立域名（Host-based）** 来配置访问策略，以规避因路径规则复杂或变更导致的路由冲突。
+
+**基于架构解耦原则**，Self-hosted 不内置 Ingress 控制器。您需要在集群的负载均衡器（或 Ingress）上配置外部访问入口，并由其负责 **TLS 终止（HTTPS 卸载）**。
+
+**在安全策略方面**，应用默认信任所有的 X-Forwarded-* 请求头。如果您需要更严格的头部校验或转发控制，请务必在负载均衡层统一实施——这有可能影响到内部S3的签名效果，如果您使用外部对象存储服务，则不需要有这方面担忧。
+
+
+### 3.7 更改swanlab.login显示的域名
+
+默认情况下，`<Your Host>/space/~/quick-start` 页面中显示的 **login host** 会自动使用您当前访问前端的域名 `<Your Host>`。
+
+如果您需要修改此值，可以通过配置 `global.settings.loginHost` 将其指定为您期望的域名。**请注意**，此设置不会影响实际的后端服务地址，您需要自己配置对应的转发规则。
+
+### 3.8 更新、回滚服务
+
+#### 更新
+
+我们会更新helm chart版本，这将包含一些新功能和错误修复，您可以选择在适当的时机更新您部署的服务。
+
+:::info warning
+在更新前，请您确保已备份对应的PVC数据！
+:::
+
+您可以运行如下命令升级您的本地repo，其中应该包含swanlab repo：
+
+```bash
+# 更新仓库
+helm repo update
+
+# 列出所有版本
+helm search repo swanlab/self-hosted --versions
 ```
 
+然后选择您所需的版本号完成更新：
 
-### 3.6 更改swanlab.login显示的域名
+```bash
+helm upgrade self-hosted swanlab-charts/self-hosted \
+  --version x.x.x \
+  -f my-values.yaml \
+  --namespace xxx
+```
 
-默认情况下，`<Your Host>/space/~/quick-start` 页面中显示的 login host 会自动使用您当前访问前端的域名 `<Your Host>`。
+#### 回滚
 
-如果您需要修改此值，可以通过配置 `env.apiHost` 将其指定为您期望的域名。
+如果在更新后发现服务无法启动（如 CrashLoopBackOff），请通过以下命令立即回滚至上一个稳定版本：
 
-需要注意的是，这一配置仅仅是显示上的更改而不会作用到实际的路由转发规则上。此外，这一配置与`ingress.host`存在冲突，后者将会配置严格的域名转发规则以导致客户端无法访问`env.apiHost`——在这种情况下，我们建议您在self-hosted服务上层部署负载均衡器接管流量转发规则和实现TLS终止，详见更改应用服务类型。
+```bash
+helm rollback self-hosted x.x.x -n xxx
+```
 
-
-### 3.7 接入Prometheus
+### 3.9 接入Prometheus
 
 SwanLab的应用服务暂不支持接入`Prometheus`，此功能正在开发中，敬请期待！
