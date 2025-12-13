@@ -208,7 +208,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       text: '🚀 自托管',
       // collapsed: false,
       items: [
+        { text: 'Kubernetes部署（推荐）', link: 'self_host/kubernetes-deploy' },
         { text: "Docker部署", link: "self_host/docker-deploy" },
+        { text: '从Docker迁移至K8S', link: 'self_host/migration-docker-kubernetes' },
         { text: "纯离线环境部署", link: "self_host/offline-deployment" },
         { text: '团队/企业版', link: 'self_host/enterprise-version' },
         {
