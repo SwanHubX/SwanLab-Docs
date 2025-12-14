@@ -2,7 +2,7 @@
 
 ![migration from docker to kubernetes](./kubernetes/migration.png)
 
-本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)）。
+本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)）。
 
 若您希望迁移至各云厂商提供的托管服务或者迁移至自部署的云原生高可用服务，本指南可作为参考。同时，请参阅相应云厂商和云原生项目的官方迁移文档，并在迁移时确保数据库名称、表名称、对象存储桶名称正确。
 
@@ -12,7 +12,7 @@
 
 **此方案要求：**
 1. 先迁移数据，后部署服务
-2. 您使用[自定义基础服务资源](/zh/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)功能
+2. 您使用[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)功能
 3. 您有一个busybox镜像用于实现迁移任务
 4. 确保您的Storage Class的回收策略不会因为Pod卸载而删除数据
 
@@ -345,7 +345,7 @@ dependencies:
 
 当你完成上面4个步骤之后，就可以开始部署SwanLab Kubernetes服务了。
 
-> 部署Kubernetes服务的基本操作见：[使用Kubernetes进行部署](/zh/guide_cloud/self_host/kubernetes-deploy.md)。
+> 部署Kubernetes服务的基本操作见：[使用Kubernetes进行部署](/guide_cloud/self_host/kubernetes-deploy.md)。
 
 你只需要在原[values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)的基础上，修改`dependencies`部分。
 
@@ -381,4 +381,4 @@ helm install swanlab-self-hosted swanlab/self-hosted -f values.yaml
 
 > 在部署以后，如果您已在您的浏览器上登录了**Swanlab Docker版**，并且迁移前后域名保持一致，您不需要再次登录。
 
-更多 Kubernetes 部署的详细操作，请参考：[使用Kubernetes进行部署](/zh/guide_cloud/self_host/kubernetes-deploy.md)。
+更多 Kubernetes 部署的详细操作，请参考：[使用Kubernetes进行部署](/guide_cloud/self_host/kubernetes-deploy.md)。

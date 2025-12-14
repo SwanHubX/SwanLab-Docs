@@ -25,8 +25,8 @@ To deploy the SwanLab private/self-hosted version using Kubernetes, please ensur
 
 | Software/Infrastructure | Requirement | Explanation |
 | --- | --- | --- |
-| kubernetes | version >= 1.24 | SwanLab has only been tested on versions above this; lower versions are not guaranteed to work. |
-| helm | version >= 3 | SwanLab uses Helm 3 to write SwanLab's Kubernetes packages. |
+| kubernetes | version \>= 1.24 | SwanLab has only been tested on versions above this; lower versions are not guaranteed to work. |
+| helm | version \>= 3 | SwanLab uses Helm 3 to write SwanLab's Kubernetes packages. |
 | NAT Whitelist | Allow cluster access to `swanlab.cn` root domain and subdomains | The cluster needs to pull images via `repo.swanlab.cn`, and the commercial version needs to complete License verification via `api.swanlab.cn`. |
 
 ## 1\. Quick Start
@@ -47,7 +47,7 @@ helm install swanlab-self-hosted swanlab/self-hosted
 
 By installing `swanlab/self-hosted` (hereinafter referred to as `self-hosted`), you can install the SwanLab self-hosted application on K8s.
 
-> You can view all configurable items for self-hosted [here](https://www.google.com/search?q=https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
+> You can view all configurable items for self-hosted [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
 ## 2\. Resource List
 
@@ -80,13 +80,13 @@ helm show values swanlab/self-hosted
 
 ## 3\. Configuring Custom Resources
 
-You can view all configurable items for self-hosted [here](https://www.google.com/search?q=https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). In this section, we will explain some common configuration practices recommended by SwanLab.
+You can view all configurable items for self-hosted [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). In this section, we will explain some common configuration practices recommended by SwanLab.
 
 ### 3.1 Customizing Basic Service Resources
 
 As you can see, all basic services deployed by `self-hosted` are single instances. If you are seeking enterprise-level stability, this will not meet your needs. Therefore, `self-hosted` supports attaching external basic service resources—you can configure them via the `integrations` section. Next, we will explain how to use various basic service resources respectively.
 
-We have written detailed comments and secret data structure descriptions in [values.yaml](https://www.google.com/search?q=https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). Note that if you enable any integrated basic service resource (e.g., setting `integrations.postgres.enabled` to `true`), the single-instance service deployed by `self-hosted` will be destroyed.
+We have written detailed comments and secret data structure descriptions in [values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). Note that if you enable any integrated basic service resource (e.g., setting `integrations.postgres.enabled` to `true`), the single-instance service deployed by `self-hosted` will be destroyed.
 
 #### 3.1.1 Postgres
 

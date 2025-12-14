@@ -2,8 +2,8 @@
 
 [Official Website](https://swanlab.cn) · [Framework Integration](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [Quick Start](/guide_cloud/general/quick-start.md) · [Sync WandB](/guide_cloud/integration/integration-wandb.md#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)  
 
-::: warning 🎉 Self-Hosted Version Officially Released!  
-The self-hosted version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](/guide_cloud/self_host/docker-deploy.md).  
+::: warning 🎉 Self-Hosted Kubernetes Version Officially Released!  
+The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](/en/guide_cloud/self_host/kubernetes-deploy.md).  
 :::  
 
 ![alt text](/assets/product-swanlab-1.png)  

@@ -1,6 +1,6 @@
 # 使用Kubernetes进行部署
 
-> 如需要从Docker版本迁移至Kubernetes版本，请参考[此文档](/zh/guide_cloud/self_host/migration-docker-kubernetes.md)。
+> 如需要从Docker版本迁移至Kubernetes版本，请参考[此文档](/guide_cloud/self_host/migration-docker-kubernetes.md)。
 
 如果你想要使用 [Kubernetes](https://kubernetes.io/) 进行 SwanLab 私有化部署，请按照下面的流程进行安装。
 
