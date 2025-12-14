@@ -82,7 +82,7 @@ Get the application URL by running these commands:
    https://docs.swanlab.cn/guide_cloud/self_host/kubernetes-deploy.html
 ```
 
-如上所示，`self-hosted`默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。如果您希望**开启外部访问（通过IP或域名）**，请参考[配置应用访问入口](label)。
+如上所示，`self-hosted`默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。如果您希望**开启外部访问（通过IP或域名）**，请参考[3.6 配置应用访问入口](/guide_cloud/self_host/kubernetes-deploy.md#_3-6-配置应用访问入口)。
 
 下面是一个在本机访问的例子，打开终端并执行：
 

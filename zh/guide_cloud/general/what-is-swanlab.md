@@ -1,6 +1,6 @@
 # 欢迎使用SwanLab 
 
-[快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration) · [Github](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
+[快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/index.md) · [Github](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
 ::: warning 🎉 私有化部署Kubernetes版正式上线！
 私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/guide_cloud/self_host/kubernetes-deploy.md)
