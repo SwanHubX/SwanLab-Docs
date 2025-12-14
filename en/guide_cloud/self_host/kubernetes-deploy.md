@@ -1,6 +1,7 @@
 # Deploying with Kubernetes
 
-> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/en/guide_cloud/self_host/migration-docker-kubernetes.md).
+> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/en/guide_cloud/self_host/migration-docker-kubernetes.md).  
+> The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.4
 
 If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployment of SwanLab, please follow the installation process below.
 
