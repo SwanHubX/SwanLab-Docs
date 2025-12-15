@@ -353,6 +353,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: 'Community Contributions',
     //collapsed: false,
     items: [
+      { text: 'How to Choose Open Source License', link: 'how-to-choose-open-source-license' },
       { text: 'Swanlab-rag', link: 'agent/swanlab-rag' },
       { text: 'Vit-KNO Weather Forecasting', link: 'ViT-KNO' },
     ]

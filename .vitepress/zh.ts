@@ -394,6 +394,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: '社区供稿',
     collapsed: false,
     items: [
+      { text: '如何为你的大模型选择开源许可证', link: 'how-to-choose-open-source-license' },
       { text: 'openMind大模型微调', link: 'openMind' },
       { text: 'SwanLab RAG文档助手', link: 'agent/swanlab-rag' },
       { text: 'PaddleNLP大模型微调实战', link: 'paddlenlp_finetune' },
