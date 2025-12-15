@@ -409,3 +409,47 @@ helm rollback self-hosted x.x.x -n xxx
 ### 3.9 接入Prometheus
 
 SwanLab的应用服务暂不支持接入`Prometheus`，此功能正在开发中，敬请期待！
+
+### 4. FAQ
+
+#### 部署服务是否需要较高部署权限（如部署 CRD 或 Controller）？
+不需要。
+
+#### 迁移数据时能否保证原服务不停机？
+迁移过程中必须停机原服务。如果不停止原服务会出现数据 gap。  
+此时可考虑使用[swanlab sync](/api/cli-swanlab-sync.md)将数据上传至新服务。
+
+#### 集群无法连接外网，如何下载、更新镜像？
+您可手动下载 swanlab 系列服务镜像，并上传至内网镜像仓库，包括：
+
+- `service.gateway.image`：swanlab 网关服务，整个应用服务入口  
+- `service.gateway.identifyImage`：swanlab 网关辅助镜像  
+- `service.helper`：帮助部署 swanlab 服务，本质为 busybox  
+- `service.server.image`：swanlab 后端服务，镜像标签为 Chart 的 AppVersion  
+- `service.house.image`：swanlab 后端服务，镜像标签为 Chart 的 AppVersion  
+- `service.house.logImage`：swanlab-house 辅助镜像  
+- `service.house.fbImage`：swanlab-house 辅助镜像  
+- `service.cloud.image`：swanlab 前端服务，镜像标签为 Chart 的 AppVersion  
+- `service.next.image`：swanlab 前端服务，镜像标签为 Chart 的 AppVersion  
+- `dependencies.postgres.image`：Postgres 数据库镜像（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）  
+- `dependencies.redis.image`：Redis 数据库镜像（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）  
+- `dependencies.s3.image`：MinIO 对象存储镜像（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）  
+- `dependencies.clickhouse.image`：ClickHouse 数据库镜像（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）
+
+#### SwanLab 用到的所有存储组件及用途有哪些？
+swanlab所有存储组件与用途如下：
+
+- `service.house.persistence`  
+  辅助 swanlab 数据写入服务实现高可用，未来版本将删除。[迁移服务](/guide_cloud/self_host/migration-docker-kubernetes.md)时无需迁移该卷数据。
+
+- `dependencies.postgres.persistence`  
+  用于 Postgres 数据库持久化（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）。
+
+- `dependencies.redis.persistence`  
+  用于 Redis 数据库持久化（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）。
+
+- `dependencies.s3.persistence`  
+  用于对象存储服务持久化（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）。
+
+- `dependencies.clickhouse.persistence`  
+  用于 ClickHouse 数据库持久化（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）。

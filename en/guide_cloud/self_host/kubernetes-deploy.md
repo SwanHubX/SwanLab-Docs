@@ -408,3 +408,48 @@ helm rollback self-hosted x.x.x -n xxx
 ### 3.9 Integrating with Prometheus
 
 SwanLab's application services currently do not support integration with `Prometheus`. This feature is under development, please stay tuned!
+
+### 4. FAQ
+
+#### Does deploying the service require elevated permissions (such as deploying CRDs or Controllers)?
+No.
+
+#### Can the original service remain online during data migration?
+The original service must be stopped during migration. If the original service is not stopped, data gaps will occur.  
+In such cases, you may consider using [swanlab sync](/en/api/cli-swanlab-sync.md) to upload data to the new service.
+
+#### If the cluster cannot access the public internet, how can images be downloaded and updated?
+You can manually download the swanlab service images and upload them to an internal image registry, including:
+
+- `service.gateway.image`: SwanLab gateway service, the entry point for the entire application  
+- `service.gateway.identifyImage`: Auxiliary image for the SwanLab gateway  
+- `service.helper`: Used to assist with deploying SwanLab services; essentially a busybox image  
+- `service.server.image`: SwanLab backend service; image tag corresponds to the Chart AppVersion  
+- `service.house.image`: SwanLab backend service; image tag corresponds to the Chart AppVersion  
+- `service.house.logImage`: Auxiliary image for the swanlab-house service  
+- `service.house.fbImage`: Auxiliary image for the swanlab-house service  
+- `service.cloud.image`: SwanLab frontend service; image tag corresponds to the Chart AppVersion  
+- `service.next.image`: SwanLab frontend service; image tag corresponds to the Chart AppVersion  
+- `dependencies.postgres.image`: Postgres database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
+- `dependencies.redis.image`: Redis database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
+- `dependencies.s3.image`: MinIO object storage image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
+- `dependencies.clickhouse.image`: ClickHouse database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)
+
+#### What storage components are used by SwanLab and what are their purposes?
+All SwanLab storage components and their purposes are as follows:
+
+- `service.house.persistence`  
+  Assists the SwanLab data writing service in achieving high availability and will be removed in future versions.  
+  When performing [service migration](/en/guide_cloud/self_host/migration-docker-kubernetes.md), this volume does not need to be migrated.
+
+- `dependencies.postgres.persistence`  
+  Used for Postgres database persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+
+- `dependencies.redis.persistence`  
+  Used for Redis database persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+
+- `dependencies.s3.persistence`  
+  Used for object storage service persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+
+- `dependencies.clickhouse.persistence`  
+  Used for ClickHouse database persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
