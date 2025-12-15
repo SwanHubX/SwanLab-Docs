@@ -5,6 +5,16 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.7.4 - 2025.12.14
+
+Released SwanLab Kubernetes version, deployment instructions see [this document](/en/guide_cloud/self_host/kubernetes-deploy.md)
+
+![](/en/guide_cloud/self_host/kubernetes/logo.png)
+
+**🚀 New Features**
+- Adapted to SwanLab Kubernetes version
+- Overview table view - supports hiding, showing, pinning, sorting, and ascending/descending columns through table headers
+
 ## v0.7.3 - 2025.12.11
 **🚀 New Features**
 - Added detailed information display for line charts, when hovering over a line chart, pressing Shift will enable detailed mode, supporting display of the time of the current log point

@@ -5,6 +5,16 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+## v0.7.4 - 2025.12.14
+
+发布 SwanLab Kubernetes版本，部署方式见[此文档](/guide_cloud/self_host/kubernetes-deploy.md)
+
+![](/zh/guide_cloud/self_host/kubernetes/logo.png)
+
+**🚀新增功能**
+- 适配SwanLab Kubernetes版本
+- 概览表格视图-支持通过表头设置列的隐藏、显示、Pin、升序、降序
+
 ## v0.7.3 - 2025.12.11
 
 **🚀新增功能**
