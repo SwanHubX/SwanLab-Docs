@@ -26,47 +26,103 @@ SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swa
 
 > 特此声明：本次教程仅作为AI模型训练，数据集均来自开源数据集。
 
+派蒙是《原神》的标志性角色，也是旅行者在提瓦特大陆的伙伴与向导。她有着白色齐肩发与蓝色眼睛，身披带星空纹理的小披风，以漂浮姿态伴旅行者左右。她是被旅行者从水中钓起后结伴同行的。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon18.jpg" style="width:100%">
+  </figure>
+</div>
+
+派蒙活泼贪吃，还总被旅行者调侃为 “应急食品”。剧情里旅行者大多沉默，常由她代为沟通推进对话，同时她会指引方向、提供任务线索和世界背景，帮旅行者熟悉提瓦特。
+
+**👏下面我们就来听听派蒙的声音，另外各位读者可以试听下训练前后的效果。**
+
+<h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #050505ff; border-bottom: 1px solid #787878ff; width: 100%; font-size: 22px;">游戏内派蒙语音</h3>
+<table style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #ecececff; font-weight: 600; min-width: 200px; font-size: 16px;color: #050505ff">游戏内文本</th>
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #ecececff; font-weight: 600; min-width: 400px; font-size: 16px; color: #050505ff">音频效果演示</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fff; font-size: 14px;"><strong>文本内容</strong>：等等，算起来…今天是不是就是连续打工的第三天了？现在正是午饭时间！</td>
+      <td style="padding: 12px 15px;  border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #fff;">
+        <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
+          <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_7265.wav" type="audio/wav">
+        </audio><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #ecececff; font-size: 14px;"><strong>文本内容</strong>：累死了，除了打工就是打工，我的身体已经彻底透支了啊…</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #ecececff;">
+        <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
+          <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_7264.wav" type="audio/wav">
+        </audio> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fff; font-size: 14px;"><strong>文本内容</strong>：那种地方不太可能会有人吧？</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #fff;">
+        <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
+          <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_6834.wav" type="audio/wav">
+        </audio> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #ecececff; font-size: 14px;"><strong>文本内容</strong>：似乎都是些常见的魔术道具，没有我们要找的线索…我们再往深处看看吧！</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #ecececff;">
+        <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
+          <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_10002.wav" type="audio/wav">
+        </audio> <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <div style="min-width: 600px;">
-  <h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #050505ff; border-bottom: 1px solid #787878ff; width: 100%;">音频效果对照表（全是派蒙）</h3>
+  <h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #050505ff; border-bottom: 1px solid #787878ff; width: 100%; font-size: 22px;">音频效果对照表（全是派蒙）</h3>
   <div style="overflow-x: auto; width: 100%;">
-    <table style="width: 100%; border-collapse: collapse; min-width: 1100px;">
+    <table style="width: 100%; border-collapse: collapse; min-width: 1200px;">
       <thead>
         <tr style="background: #f5f5f5;">
-          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff;">Text</th>
-          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff;">CosyVoice2</th>
-          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff;">CosyVoice2 SFT</th>
-          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff;">CosyVoice3</th>
+          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff; font-size: 16px;background-color: #ecececff">Text</th>
+          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff; font-size: 16px;background-color: #ecececff">CosyVoice2 After SFT</th>
+          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff; font-size: 16px;background-color: #ecececff">CosyVoice2 Before SFT</th>
+          <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0; text-align: center;color: #050505ff; font-size: 16px;background-color: #ecececff">CosyVoice3</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 200px;"><strong>游戏内文本：</strong>欸！蒙德城的修女还能负责抓捕可疑人士的吗？！</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_0.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>游戏内文本：</strong>欸！蒙德城的修女还能负责抓捕可疑人士的吗？！</td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/paimon_sft_inference_0.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; "><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_0.wav" type="audio/wav">  </audio></td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_0.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 200px;"><strong>现实文本：</strong>现代科技让世界变得更加紧密相连。</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_1.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/paimon_sft_inference_1.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_1.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px; background-color: #ecececff"><strong>现实文本：</strong>现代科技让世界变得更加紧密相连。</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/paimon_sft_inference_1.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_1.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_1.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 200px;"><strong>情绪化文本：</strong>啊啊啊！真是让人生气！他怎么可以这样说！我明明不是那样的人！</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_2.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>情绪化文本：</strong>啊啊啊！真是让人生气！他怎么可以这样说！我明明不是那样的人！</td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/paimon_sft_inference_2.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_2.wav" type="audio/wav">  </audio></td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_2.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 200px;"><strong>方言文本：</strong>用四川话说：走哦兄弟，楼下新开的火锅店巴适得板，味道绝了，我们整起，保证吃得你肚皮圆滚滚！</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;">待补充...</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;background-color: #ecececff"><strong>方言文本：</strong>用四川话说：走哦兄弟，楼下新开的火锅店巴适得板，味道绝了，我们整起，保证吃得你肚皮圆滚滚！</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff">待补充...</td>
         </tr>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 200px;"><strong>跨语言文本：</strong>Has the author of my issue seen it?</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/cross_lingual_zero_shot_0.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>跨语言文本：</strong>Has the author of my issue seen it?</td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/cross_lingual_zero_shot_0.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/cross_lingual_zero_shot_0.wav" type="audio/wav">  </audio></td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;">待补充...</td>
         </tr>
       </tbody>
@@ -76,7 +132,7 @@ SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swa
 
 ## CosyVoice原理
 
-未完待续...
+
 
 ## 零样本推理
 
@@ -171,8 +227,8 @@ stop_stage=1
 - 克隆代码
 
 ```bash
-git clone --recursive https://github.com/...
-cd Genshin_CosyVoice_sft
+git clone --recursive https://github.com/828Tina/cosyvoice-paimon-sft.git
+cd cosyvoice-paimon-sft
 git submodule update --init --recursive
 ```
 
@@ -181,6 +237,11 @@ git submodule update --init --recursive
 ```bash
 pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com
 ```
+
+- 要求：
+
+1. $5090个数 \ge 2$
+2. `Pytorch` $\ge$ 2.7，CUDA适应自己的版本，我的是12.8
 
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
 本次教程我们使用5090来训练模型，由于cosyvoice这个模型也比较早了，当时的pytorch版本没有那么高，没有什么bug，但是5090安装的驱动CUDA适配的pytorch版本较高，就导致我实际在跑的时候报了很多bug，下面我会依次说明都出了哪些问题并如何解决。（我的代码应该是可以直接用的，但是如果报环境错误，可以根据下面给出的信息来查看是否是对应的bug）
@@ -308,6 +369,23 @@ try:
 ```
 
 然后就可以解决问题了😄。
+
+5. `No module named 'matcha'`
+
+先执行下面的代码：
+
+```
+cd cosyvoice-paimon-sft
+git submodule update --init --recursive
+```
+
+如果不行，请检查`path.sh`文件，查看里面的地址是否正确，我写的绝对地址，所以需要填写你的项目绝对地址：
+
+```bash
+# NOTE(kan-bayashi): Use UTF-8 in Python to avoid UnicodeDecodeError when LC_ALL=C
+export PYTHONIOENCODING=UTF-8
+export PYTHONPATH=/home/lxy/tts_project/cosyvoice-paimon-sft:/home/lxy/tts_project/cosyvoice-paimon-sft/third_party/Matcha-TTS:$PYTHONPATH
+```
 
 ### 2. 数据处理
 
@@ -465,7 +543,7 @@ CUDA_VISIBLE_DEVICES=your GPU id
 很凑巧的是，在写这篇教程的时候，cosyvoice3发布了😂，我们检查了代码，发现有如下修改：<br>
 1. 模型地址在脚本中修改了<br>
 2. cosyvoice部分，主要是加入了instruct的处理<br>
-因此我直接训练了一波看看效果如何，其中超参数文件用<strong>cosyvoice3-paimon.yaml</strong>。
+我先去训练了一波看看效果如何，其中超参数文件用<strong>cosyvoice3-paimon.yaml</strong>。
 </div>
 
 <div style="display:flex;justify-content:center;">
@@ -473,6 +551,8 @@ CUDA_VISIBLE_DEVICES=your GPU id
     <img src="./cosyvoice/paimon11.png" style="width:100%">
   </figure>
 </div>
+
+> bug稍微有点多哈🤏，短时间内估计训不出来，等CosyVoice作者发布完代码再说。
 
 ```bash
 ### 启动训练
@@ -660,7 +740,7 @@ shutil.copyfile(target_model_path, final_model_path)
   <thead>
     <tr>
       <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; min-width: 150px; font-size: 16px;">原始数据编号</th>
-      <th style="padding: 12px 15px; text-align: left; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; min-width: 585px; font-size: 16px; ">音频效果演示 & 游戏文本</th>
+      <th style="padding: 12px 15px; text-align: left; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; min-width: 480px; font-size: 16px; ">音频效果演示 & 游戏文本</th>
     </tr>
   </thead>
   <tbody>
