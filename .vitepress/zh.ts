@@ -70,7 +70,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.7.2',  items: [
+      { text: 'v0.7.4',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -208,7 +208,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       text: '🚀 自托管',
       // collapsed: false,
       items: [
+        { text: 'Kubernetes部署（推荐）', link: 'self_host/kubernetes-deploy' },
         { text: "Docker部署", link: "self_host/docker-deploy" },
+        { text: '从Docker迁移至K8S', link: 'self_host/migration-docker-kubernetes' },
         { text: "纯离线环境部署", link: "self_host/offline-deployment" },
         { text: '团队/企业版', link: 'self_host/enterprise-version' },
         {
@@ -281,6 +283,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'MMDetection', link: 'integration-mmdetection' },
         { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
         { text: 'Modelscope Swift', link: 'integration-swift' },
+        { text: 'NVIDIA-NeMo RL', link: 'integration-nvidia-nemo-rl' },
       ]
     },
     {
@@ -388,12 +391,14 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     ]
   },
   {
-    text: '其他',
+    text: '社区供稿',
     collapsed: false,
     items: [
+      { text: '如何为你的大模型选择开源许可证', link: 'how-to-choose-open-source-license' },
       { text: 'openMind大模型微调', link: 'openMind' },
       { text: 'SwanLab RAG文档助手', link: 'agent/swanlab-rag' },
-      { text: 'PaddleNLP大模型微调实战', link: 'paddlenlp_finetune' }
+      { text: 'PaddleNLP大模型微调实战', link: 'paddlenlp_finetune' },
+      { text: 'Vit-KNO 气象预测', link: 'ViT-KNO' },
     ]
   }
   ]
@@ -486,6 +491,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
         { text: 'Discord', link: 'notification-discord' },
         { text: 'Slack', link: 'notification-slack' },
         { text: 'Bark', link: 'notification-bark' },
+        { text: 'Telegram', link: 'notification-telegram' },
       ]
     },
     {

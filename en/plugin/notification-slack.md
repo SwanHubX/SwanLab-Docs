@@ -50,7 +50,7 @@ SwanLab plugins are open-source. You can view the [Github source code](https://g
 
 ## Basic Usage
 
-Using the Discord notification plugin is straightforward. Simply initialize a `SlackCallback` object：
+Using the Slack notification plugin is straightforward. Simply initialize a `SlackCallback` object：
 
 ```python
 from swanlab.plugin.notification import SlackCallback

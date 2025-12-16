@@ -19,7 +19,7 @@
 
 ## 📚链接资料
 
-作者信息：情感机器实验室研究员-李馨雨  邮箱：[wind.340171@gmail.com](wind.340171@gmail.com)
+作者信息：情感机器实验室研究员-李馨雨  邮箱：wind.340171@gmail.com
 
 数据集：[心理大模型微调数据集地址](https://github.com/SmartFlowAI/EmoLLM/blob/main/datasets/data_pro.json)
 
@@ -109,7 +109,7 @@ LoRA（Low-Rank Adaptation）是一种针对大型语言模型的微调技术，
 
 在LoRA中，原始模型的全秩矩阵被分解为低秩矩阵的乘积。具体来说，对于一个全秩矩阵W，LoRA将其分解为两个低秩矩阵A和B的乘积，即W ≈ A * B。其中，A和B的秩远小于W的秩，从而显著减少了参数数量。
 
-<img src="./example/lora.PNG" alt="lora原理图" style="zoom:70%;" />
+<img src="./example/lora.png" alt="lora原理图" style="zoom:70%;" />
 
 上图为 LoRA 的实现原理，其实现流程为：
 1. 在原始预训练语言模型旁边增加一个旁路，做降维再升维的操作来模拟内在秩；

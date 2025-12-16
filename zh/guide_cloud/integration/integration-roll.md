@@ -7,3 +7,5 @@ ROLL 利用 Ray 的多角色分布式架构实现灵活的资源分配和异构�
 ![ROLL](./roll/logo.png)
 
 在ROLL中使用SwanLab非常简单，只需要设置一些参数即可，详情参考 [agentic_pipeline_config.yaml](https://github.com/alibaba/ROLL/blob/main/tests/pipeline/agentic_pipeline_config.yaml) 中的`track_with: swanlab`部分。
+
+更多详情请参考：[ROLL官方API文档-配置SwanLab](https://alibaba.github.io/ROLL/docs/User%20Guides/Tracker%20&%20Metrics/trackers_and_metrics#configuring-swanlab)。

@@ -10,7 +10,7 @@
 
 作者信息：情感机器实验室研究员-李馨雨 邮箱：wind.340171@gmail.com
 
-模型地址：Qwen2.5-VL-3B-Instruct：[huggingface](Qwen/Qwen2.5-VL-3B-Instruct)|[魔搭社区（下面的模型下载使用，而且比较方便）](https://www.modelscope.cn/models/Qwen/Qwen2.5-VL-3B-Instruct)
+模型地址：Qwen2.5-VL-3B-Instruct：[huggingface](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)|[魔搭社区（下面的模型下载使用，而且比较方便）](https://www.modelscope.cn/models/Qwen/Qwen2.5-VL-3B-Instruct)
 
 数据集地址：TextVQA_GroundingTask_bbox：[huggingface](https://huggingface.co/datasets/jrzhang/TextVQA_GT_bbox)|[魔搭社区](https://www.modelscope.cn/datasets/Tina12345/textVQA_groundingtask_bbox)
 

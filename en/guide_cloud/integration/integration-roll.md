@@ -7,3 +7,5 @@ ROLL employs a multi-role distributed architecture based on Ray to enable flexib
 ![ROLL](./roll/logo.png)
 
 Using SwanLab in ROLL is very straightforward—just configure a few parameters. For details, please refer to the `track_with: swanlab` section in [agentic_pipeline_config.yaml](https://github.com/alibaba/ROLL/blob/main/tests/pipeline/agentic_pipeline_config.yaml).
+
+More details please refer to: [ROLL Official API Documentation - Configuring SwanLab](https://alibaba.github.io/ROLL/docs/User%20Guides/Tracker%20&%20Metrics/trackers_and_metrics#configuring-swanlab).
