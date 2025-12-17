@@ -5,13 +5,10 @@
 > 作者信息：情感机器实验室研究员-李馨雨  
 > 邮箱：wind.340171@gmail.com
 
-- **代码**：[828Tina/cosyvoice-paimon-sft](https://github.com/828Tina/cosyvoice-paimon-sft)
-
-- **数据集**：[aihobbyist/Genshin_Dataset](https://www.modelscope.cn/datasets/aihobbyist/Genshin_Dataset)
-
-- **模型**：[iic/CosyVoice2-0.5B](https://www.modelscope.cn/models/iic/CosyVoice2-0.5B)
-
-- **SwanLab**：[@LiXinYu/cosyvoice-sft/overview](https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview)
+- **代码**：[cosyvoice-paimon-sft](https://github.com/828Tina/cosyvoice-paimon-sft)
+- **数据集**：[Genshin_Dataset](https://www.modelscope.cn/datasets/aihobbyist/Genshin_Dataset)
+- **模型**：[CosyVoice2-0.5B](https://www.modelscope.cn/models/iic/CosyVoice2-0.5B)
+- **SwanLab**：[cosyvoice-sft](https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview)
 
 本次模型训练的数据集来源于`ModelScope`上`AI Hobbyist`提供的原神语音数据集，特此感谢作者🙏
 
