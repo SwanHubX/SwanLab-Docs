@@ -1,16 +1,17 @@
 # 用CosyVoice2实现派蒙语音的微调
 
-[![SVG Banners](https://svg-banners.vercel.app/api?type=origin&text1=CosyVoice%20SFT%20🤠&text2=Text-to-Speech%20💖%20Genshin%20Paimon&width=800&height=300)](https://github.com/Akshay090/svg-banners)
+[![SVG Banners](./cosyvoice/head.svg)](https://github.com/Akshay090/svg-banners)
 
-作者信息：情感机器实验室研究员-李馨雨 邮箱：wind.340171@gmail.com
+> 作者信息：情感机器实验室研究员-李馨雨  
+> 邮箱：wind.340171@gmail.com
 
-代码：[https://github.com/828Tina/cosyvoice-paimon-sft](https://github.com/828Tina/cosyvoice-paimon-sft)
+- **代码**：[828Tina/cosyvoice-paimon-sft](https://github.com/828Tina/cosyvoice-paimon-sft)
 
-数据集：[https://www.modelscope.cn/datasets/aihobbyist/Genshin_Dataset](https://www.modelscope.cn/datasets/aihobbyist/Genshin_Dataset)
+- **数据集**：[aihobbyist/Genshin_Dataset](https://www.modelscope.cn/datasets/aihobbyist/Genshin_Dataset)
 
-模型：[https://www.modelscope.cn/models/iic/CosyVoice2-0.5B](https://www.modelscope.cn/models/iic/CosyVoice2-0.5B)
+- **模型**：[iic/CosyVoice2-0.5B](https://www.modelscope.cn/models/iic/CosyVoice2-0.5B)
 
-SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview)
+- **SwanLab**：[@LiXinYu/cosyvoice-sft/overview](https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview)
 
 本次模型训练的数据集来源于`ModelScope`上`AI Hobbyist`提供的原神语音数据集，特此感谢作者🙏
 
@@ -19,6 +20,8 @@ SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swa
     <img src="./cosyvoice/paimon21.png" style="width:100%">
   </figure>
 </div>
+
+[[toc]]
 
 ## 简介
 
@@ -172,7 +175,7 @@ CosyVoice在多语言语音生成、零样本语音生成、跨语言语音克�
 
 这张图是cosyVoice的架构原理图，从左到右我认为就是我上面说的三个问题的解决，（a）是Speech Tokenizer训练原理，用于生成包含语义信息的Speech Tokens；（b）是整体的训练和推理的原理，其中`x-vector`就是输入的参考音色，让生成的语音包含说话人(speaker)的语音特色；（c）则是Flow Matching模型将LLM生成的speech tokens转换成对应的梅尔频谱图，后续将梅尔频谱图通过声码器转换成实际语音。
 
-**Speech Tokenizer**
+### Speech Tokenizer
 
 首先我们来看Speech Tokenizer部分，这部分是在ASR模型编码器中插入向量量化层VQ，将连续的语音信号转换成离散的包含语义信息的tokens。
 
@@ -222,7 +225,7 @@ $$P(Y|X)=ASRDecoder(\tilde{H},Y^{Z-1})$$
 
 这些Speech Tokens构成了CosyVoice后续语音合成的核心中间表示。在合成阶段，LLM将以文本编码和说话人嵌入为条件，自回归地预测出对应的Speech Token序列。
 
-**CosyVoice LM**
+### CosyVoice LM
 
 对于Text-to-token LM部分，本质是根据prompt自回归生成后续的speech tokens，因此对于该阶段，最重要的其实就是prompt的构建，和怎么生成tokens的，其实理解起来也很简单，论文中已经给出：
 
@@ -257,7 +260,7 @@ $\{\mu_l\}_{l\in [1:L]}$代表语音语义token序列，长度是L，无论是�
 
 这种方式使模型能够从少量参考示例中学习音色与风格，并推广到新的文本内容，实现**零样本语音克隆**。
 
-**Flow Matching**
+### Flow Matching
 
 经过LLM的文本到语音tokens生成，我们得到了包含语义信息的离散token序列。然而，要合成最终可听的语音波形，还需要将这些tokens转换回连续的声学特征表示——梅尔频谱图。CosyVoice采用了最优传输条件流匹配（Optimal-Transport Conditional Flow Matching，OT-CFM）模型来完成这一关键转换。
 
@@ -279,7 +282,7 @@ $$\tilde{v}_t=(1+\beta)\cdot v_t(条件)-\beta\cdot v_t(无条件)$$
 
 在推理阶段，OT-CFM从高斯噪声$X_0$出发，沿学习到的概率流逐步解算ODE，最终生成符合目标音色和语义内容的梅尔频谱$X_1$。该频谱随后由HiFi-GAN声码器转换成高质量波形，完成从文本到语音的端到端合成。
 
-**CosyVoice2**
+### CosyVoice2
 
 论文地址👉[CosyVoice 2: Scalable Streaming Speech Synthesis with Large Language Models](https://arxiv.org/abs/2412.10117)，CosyVoice2是在CosyVoice的基础上做出的优化，整体结构并没有改变，我这里总结以下几点：
 
@@ -402,7 +405,7 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 在训练阶段，模型会随机抽样使用这四种掩码之一，使得单一模型同时学会了如何处理不同范围的上下文。这种设计带来两大优势：一是部署简化，一个模型即可应对多种延迟要求的场景；二是隐式自蒸馏，在训练中，能够看到更多上下文的掩码（如块-2M）其学习到的特征和生成模式，会间接地帮助看到较少上下文的掩码（如全因果）提升表现，实现了知识在模型内部的迁移。
 
-**CosyVoice3**
+### CosyVoice3
 
 论文地址👉[CosyVoice 3: Towards In-the-wild Speech Generation via Scaling-up and Post-training](https://arxiv.org/abs/2505.17589)
 
