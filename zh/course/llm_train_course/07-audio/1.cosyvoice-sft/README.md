@@ -12,6 +12,14 @@
 
 SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview)
 
+本次模型训练的数据集来源于`ModelScope`上`AI Hobbyist`提供的原神语音数据集，特此感谢作者🙏
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon21.png" style="width:100%">
+  </figure>
+</div>
+
 ## 简介
 
 <div style="display:flex;justify-content:center;">
@@ -36,7 +44,7 @@ SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swa
 
 派蒙活泼贪吃，还总被旅行者调侃为 “应急食品”。剧情里旅行者大多沉默，常由她代为沟通推进对话，同时她会指引方向、提供任务线索和世界背景，帮旅行者熟悉提瓦特。
 
-**👏下面我们就来听听派蒙的声音，另外各位读者可以试听下训练前后的效果。**
+**👏下面我们就来听听派蒙的声音，另外各位读者可以试听下训练前后的效果。下面两个表分别是游戏内派蒙真实语音，然后是用CosyVoice2的原始模型和用派蒙语音微调之后的模型生成的音频的效果对比表（CosyVoice3是后来加入的训练前零样本语音克隆结果，没做训练）。**
 
 <h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #050505ff; border-bottom: 1px solid #787878ff; width: 100%; font-size: 22px;">游戏内派蒙语音</h3>
 <table style="width: 100%; border-collapse: collapse;">
@@ -117,22 +125,333 @@ SwanLab结果：[https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview](https://swa
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;background-color: #ecececff"><strong>方言文本：</strong>用四川话说：走哦兄弟，楼下新开的火锅店巴适得板，味道绝了，我们整起，保证吃得你肚皮圆滚滚！</td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff">待补充...</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/cosyvoice3-instruct.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>跨语言文本：</strong>Has the author of my issue seen it?</td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/cross_lingual_zero_shot_0.wav" type="audio/wav">  </audio></td>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/cross_lingual_zero_shot_0.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;">待补充...</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/fine_grained_control.wav" type="audio/wav">  </audio></td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
+> 因为作者在写这篇教程的时候，CosyVoice3才发布不久，因此作者便去尝试了下Cosyvoice3的零样本语音克隆，由于官方作者可能还没上传完代码，因此训练的任务等之后有机会会补上，这里仅做零样本推理语音克隆做参考。
+
 ## CosyVoice原理
 
+目前CosyVoice论文已经出到了3，本次教程重点针对1和2来讲述，3的话简单说明一下，大体结构和前两个类似，因此本次教程重点是讲述CosyVoice的整体架构理论。
 
+首先是第一篇👉[《CosyVoice: A Scalable Multilingual Zero-shot Text-to-speech Synthesizer based on Supervised Semantic Tokens》](https://funaudiollm.github.io/pdf/CosyVoice_v1.pdf)。
+
+这篇讲述TTS原理的文章核心解决一个问题：**零样本语音克隆**
+
+CosyVoice在多语言语音生成、零样本语音生成、跨语言语音克隆和指令跟随功能方面表现出色，在推理时仅需要提供少量参考，就可以模仿其音色和语气，生成新的文本对应的音频。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon19.png" style="width:100%">
+  </figure>
+</div>
+
+那么CosyVoice具体是怎么做到的？
+
+在我看来其实主要解决了三个问题：
+
+1. `首次引入监督式Speech tokens`：解决了传统无监督tokens缺乏语义关联性和文本对齐性的问题，提升零样本语音克隆的内容一致性和说话人相似度。
+2. `x-vector分离语义与音色`：支持零样本上下文学习、跨语言语音克隆，通过指令微调实现说话人身份、情感、副语言特征（如笑声、重音）的精细控制。
+3. `提出CosyVoice高效架构`：融合LLM与条件流匹配模型（OT-CFM），构建端到端TTS系统，无需额外音素器和强制对齐器。LLM负责文本到语义 tokens的生成，OT-CFM模型实现tokens到语音的合成，兼顾训练 / 推理效率与合成质量。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon20.png" style="width:100%">
+  </figure>
+</div>
+
+这张图是cosyVoice的架构原理图，从左到右我认为就是我上面说的三个问题的解决，（a）是Speech Tokenizer训练原理，用于生成包含语义信息的Speech Tokens；（b）是整体的训练和推理的原理，其中`x-vector`就是输入的参考音色，让生成的语音包含说话人(speaker)的语音特色；（c）则是Flow Matching模型将LLM生成的speech tokens转换成对应的梅尔频谱图，后续将梅尔频谱图通过声码器转换成实际语音。
+
+**Speech Tokenizer**
+
+首先我们来看Speech Tokenizer部分，这部分是在ASR模型编码器中插入向量量化层VQ，将连续的语音信号转换成离散的包含语义信息的tokens。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon22.png" style="width:100%">
+  </figure>
+</div>
+
+输入的SpeechX是已经将音频转换成梅尔频谱图，比如帧数有L，对应的梅尔频谱带长度为$D_{mel}$，经过位置编码和Encoder1处理后，可获得具有上下文感知特征的表示H：
+
+$$H=Encoder_1(PosEnc(X))$$
+
+该过程赋予每一帧$h_l$语义表征，理论上H的维度应该是$(L,D_{hidden})$，但是为了计算方便并提升特征抽象层的语义信息，适应后续自回归生成长度等，或许会在其中加入一些卷积层，降低L的长度，不过为了表述方便，我们当作没有经过这些变化，输出维度就是$(L,D)$。
+
+在经过VQ层之前，我们需要了解一些概念，论文中提到了CodeBook，模型在训练的时候就是通过每一帧$h_l$的语义表征和CodeBook中的特征信息做最短欧几里得距离计算并得到CodeBook中对应特征信息代表的索引作为token，然后CodeBook中的向量通过指数移动平均（EMA）来更新。那么CodeBook是什么呢？
+
+这里我认为类似于代表语音tokens的字典，每个字典中的序号背后可能都是一个向量表示，和自然语言处理的vocab我认为没什么区别，无非这个是表示语音的。
+
+我们令CodeBook=C，其中$C=\{c_1,c_2,...,c_{4096}\}$，假设字典有4096这么多的信息，然后VQ层来求的最短的欧几里得距离：
+
+$$\mu_l=VQ(h_l,C)=arg \min_{c_n \in C}\left \| h_l-c_n \right \|_2 $$
+
+其中$\mu_l$为CodeBook中的编号，就是$n_i$。
+
+CodeBook中的向量训练前初始化，然后经过上述的计算，通过EMA实现向量更新：
+
+$$c_{\mu_l}:=\alpha c_{\mu _l}+(1-\alpha)h_l$$
+
+我们最终得到的Speech Tokens其实就是序号，这些序号对应CodeBook中的向量表示，我们可以表示为：
+
+$$Speech Tokens=\{\mu_1,\mu_2,...,\mu_L\}$$
+
+$$\bar{H}=\{c_{\mu_1},c_{\mu_2},...,c_{\mu_L}\} $$
+
+这里需要注意，我们在推理的时候，到Speech Tokens这一步就停止了，但是在预训练中训练Tokenizer的阶段，我们需要$\bar{H}$做后续的操作，也就是ASR的解码阶段，通过生成预测出的文本和原始文本对比，这一步做监督训练，让训练出的CodeBook中的向量能够包含语义信息。我们详细解释：
+
+首先$\bar{H}$经过Encoder2，因为我们最终要预测文本，因此它需要将离散tokens序列映射到更易于文本对齐的表示空间，便于CTC或自回归解码，因此需要Encoder2阶段通过自注意力机制重新建立帧之间的长程依赖关系，修复因量化损失的信息，进一步编码和强化已经由Encoder1提取、并由VQ离散化后的语义表示，使其更适合下游的ASR解码任务。用公式表示：
+
+$$\tilde{H}=Encoder_2(PosEnc(\bar{H}))$$
+
+经过Encoder2处理后，接续一个基于Transformer架构的自动语音识别解码器，用于预测文本标签的后验概率。
+
+$$P(Y|X)=ASRDecoder(\tilde{H},Y^{Z-1})$$
+
+在完成上述ASR监督训练后，我们便得到了一个能够将语音高效编码为具有明确语义信息的离散token序列的Speech Tokenizer。这一Tokenizer在推理时仅需运行至Speech Tokens生成步骤，即可输出紧凑且富含内容的语义表示序列。
+
+这些Speech Tokens构成了CosyVoice后续语音合成的核心中间表示。在合成阶段，LLM将以文本编码和说话人嵌入为条件，自回归地预测出对应的Speech Token序列。
+
+**CosyVoice LM**
+
+对于Text-to-token LM部分，本质是根据prompt自回归生成后续的speech tokens，因此对于该阶段，最重要的其实就是prompt的构建，和怎么生成tokens的，其实理解起来也很简单，论文中已经给出：
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon23.png" style="width:100%">
+  </figure>
+</div>
+
+如果要做zero-shot推理，那么提示词部分是参考语音的txt和你要生成音频的txt，生成部分中会直接先给出参考语音，然后模型会生成后面的tokens，而如果是不需要参考语音的任务，比如微调后的模型输出、跨语言输出等任务，那么输入的prompt仅为你要生成音频的txt，模型会根据你给出的prompt生成对应的speech tokens。
+
+下面我们看下具体生成原理：
+
+对于LLM而言，序列构建是最关键的事项，其构建方式如下：
+
+$$[S , v, \{\bar y_u\}_{u \in [1:U]}, T, \{\mu_l\}_{l\in [1:L]}]$$
+
+v代表说话人音色代表的embedding，$\{\bar y_u\}_{u \in [1:U]}$表示你希望输出的音频对应的文本转换成的特征向量$\bar Y$，原始的待合成文本为$Y$，那么
+
+$$\bar Y=TextEncoder(BPE(Y))=\{\bar y_u\}_{u \in [1:U]}$$
+
+原始待合成文本$Y$通过Byte Pair Encoding (BPE)分词器转换为子词token，再通过文本编码器TextEncoder映射为连续向量。这里本质是为了提供待合成文本的语义内容，作为LLM生成语音token的条件输入。
+
+然后T表示Turn of Speech Token，是语音转折符，标记文本编码结束和speech token开始生成的位置。T是为了明确分隔文本与语音两部分，引导 LLM 在接收到此 token 后开始生成speech token。
+
+$\{\mu_l\}_{l\in [1:L]}$代表语音语义token序列，长度是L，无论是训练还是推理，这部分都是需要模型去预测并生成的部分，是由$S^3 tokenizer$从训练语音中提取得到（训练时）或由 LLM 预测生成（推理时）。
+
+需要注意的是，对于零样本推理：
+
+- 输入 = 参考语音信息（文本 + tokens + 说话人嵌入） + 目标文本
+- 输出 = 目标文本对应的语音 tokens（模型自回归生成）
+
+这种方式使模型能够从少量参考示例中学习音色与风格，并推广到新的文本内容，实现**零样本语音克隆**。
+
+**Flow Matching**
+
+经过LLM的文本到语音tokens生成，我们得到了包含语义信息的离散token序列。然而，要合成最终可听的语音波形，还需要将这些tokens转换回连续的声学特征表示——梅尔频谱图。CosyVoice采用了最优传输条件流匹配（Optimal-Transport Conditional Flow Matching，OT-CFM）模型来完成这一关键转换。
+
+Flow Matching是一种基于连续时间归一化流的生成模型，相比传统的扩散概率模型，它在训练和推理效率上具有显著优势，同时能生成高质量样本。在CosyVoice中，OT-CFM的目标是学习从简单先验分布（如高斯噪声）到真实梅尔频谱分布的概率密度路径，并以生成的语音tokens、说话人嵌入等作为条件。
+
+具体而言，给定一个由高斯噪声初始化的梅尔频谱样本$X_0 \sim \mathcal{N}(0,I)$和目标梅尔频谱$X_1$，OT-CFM通过定义一条直线路径，也就是最优传输路径连接两者：
+
+$$\phi_t^{OT}(X_0,X_1)=(1-(1-\sigma)t)X_0+tX_1$$
+
+其中时间步$t\in[0,1]$，$\sigma$是一个常数用于稳定训练，相应的向量场为：
+
+$$\omega_t(\phi_t^{OT}|X_1)=X_1-(1-\sigma)X_0$$
+
+模型通过神经网络$NN_{\theta}$学习匹配这个向量场，条件信息包括说话人嵌入v、speech tokens{\mu_l}以及部分mask的梅尔频谱$\tilde{X}_1$。
+
+为了进一步提升生成质量，CosyVoice引入了无分类引导CFG技术，在训练时以一定概率丢弃条件信息，十模型同时学习条件与无条件生成；在推理阶段通过引导强度$\beta$调整条件与无条件预测的加权来增强条件控制效果：
+
+$$\tilde{v}_t=(1+\beta)\cdot v_t(条件)-\beta\cdot v_t(无条件)$$
+
+在推理阶段，OT-CFM从高斯噪声$X_0$出发，沿学习到的概率流逐步解算ODE，最终生成符合目标音色和语义内容的梅尔频谱$X_1$。该频谱随后由HiFi-GAN声码器转换成高质量波形，完成从文本到语音的端到端合成。
+
+**CosyVoice2**
+
+论文地址👉[CosyVoice 2: Scalable Streaming Speech Synthesis with Large Language Models](https://arxiv.org/abs/2412.10117)，CosyVoice2是在CosyVoice的基础上做出的优化，整体结构并没有改变，我这里总结以下几点：
+
+1. `CodeBook的利用率提升至100%`：优化Speech Tokenizer中VQ层，替换成有限标量量化FSQ（finite scalar quantization）
+2. `简化LM结构`：复用Qwen2.5等预训练LLM，移除冗余模块，让模型更轻量高效。
+3. `支持流式/非流式统一合成`：Cosyvoice2的核心idea是实现流式合成，即边输入文本边合成语音。
+4. `设计块感知flow match模型`：块感知flow match模型设计了4种mask策略，可根据需求选择，不同的mask策略可以平衡延迟与生成质量。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon24.png" style="width:100%">
+  </figure>
+</div>
+
+**CodeBook的利用率提升至100%**
+
+对于Supervised speech tokenizer，在FSQ模块中，中间表示H首先被投影到一个D维低秩空间，每个维度的值通过有界舍入操作被量化到[−K, K]区间。
+
+量化后的低维向量$\bar{h_i}$按照$(2K+1)$进制计算为整数索引$\mu_i$：
+
+$$\mu_i = \sum_{j=0}^{D-1}\bar{h}_{i,j}\cdot (2K+1)^j$$
+
+随后，量化后的低秩表示$\bar{H}$被重新投影回原始维度$\tilde{H}$，以供后续模块使用。
+
+在之前的向量量化（VQ）中，模型用一个包含几千个“语音单词”的码本去匹配每一帧语音，就像从一本厚厚的词典里找一个最接近的词。但问题是，这本词典里很多词几乎从没用过，真正被频繁使用的只有少数几个。
+
+而有限标量量化（FSQ）换了一种思路：它不直接找整个词，而是把语音特征拆成几个维度（比如8个），每个维度只用一个很小的整数（比如-1,0,1）来表示。通过组合这些整数，就能唯一确定一个语音token。这种方式就像用“坐标”来定位，而不是去“查词典”。
+
+由于每个维度都必须被使用，而且所有可能的整数组合都会出现，因此码本的每一个“位置”都会被充分利用，利用率自然达到100%。这不仅让语音表示更紧凑、信息更完整，也让后续的语音合成更准确、更自然——因为每个token都承载了实实在在的语义信息，没有“闲置”或“浪费”的编码。
+
+**简化LM结构**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon25.png" style="width:80%">
+  </figure>
+</div>
+
+在CosyVoice 2中，语言模型（LM）部分进行了大幅简化，主要体现在以下两点：
+
+1. 移除了文本编码器和说话人嵌入：原版CosyVoice使用独立的文本编码器将文本映射到语义空间，并引入说话人嵌入向量控制音色。新版直接复用预训练大语言模型（Qwen2.5），利用其强大的语义理解能力自然对齐文本与语音token，无需额外编码模块。说话人信息改由后续Flow Matching模型单独处理，避免信息混淆。
+
+2. 统一流式与非流式架构：通过设计混合序列（文本token与语音token按比例交错），同一LM即可支持流式生成（边输入边合成）和非流式生成（整句合成）。这消除了为不同模式训练独立模型的需求，大幅简化部署结构。
+
+我们知道在第一代CosyVoice中，text-to-speech的输入是有说话人嵌入的，也就是会引入说话人的音色等信息，但是如果利用流式生成，就会导致可能前一个N块中最后生成的第M个语音token表示高音，然后后续的就会连续高音，而不是自然发音，或者也会出现边界的突变现象。
+那么如何解决这个问题呢？
+
+***答案是解耦***
+
+既然由于包含了音色导致生成的语音tokens会有不连贯的现象，那么我干脆在text-to-tokens就不做音色处理，只做文本内容和语义信息传递，音色交给flow模型控制。
+
+那么这样做就可以保证，在生成speech tokens阶段不会受到音色干扰导致语音的不连贯，
+
+而且我们可以将语音tokens生成频率调整，论文中25Hz生成，每块语音tokens15个大概为0.6秒，足够小的时间即使有不连贯的，基本听起来没有太大差别。
+
+简言之，CosyVoice 2通过去除冗余模块和统一生成模式，实现了更轻量、更灵活且性能更强的语音合成架构。
+
+**支持流式/非流式统一合成**
+
+这个是CosyVoice2中最核心的改动，相比于Cosyvoice1中需要输入完整的文本和参考语音，等生成完speech tokens才能去做后续的tokens转梅尔频谱然后生成音频，整个过程需要花费很长时间，
+
+于是CosyVoice2针对1中的统一生成，采用流式和非流式综合的方式，使得模型在推理时，如果选择流式生成，可以不用等完整的生成tokens，只要有一步分tokens就能够转成语音，然后一步一步完成音频结果的生成，以后做交互提供了便利。
+
+具体我们看下如何生成：
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon26.png" style="width:100%">
+  </figure>
+</div>
+
+在流式模式下，论文中按照预设的N:M比例混合文本标记与语音标记，即每N个文本标记后跟随M个语音标记。当下一标记为文本标记时，模型需预测填充标记（而非文本标记），这表示在推理阶段应拼接后续N个文本标记。当文本标记耗尽后，"语音转换"标记T与剩余语音标记将按序拼接，最终形成流式模式下的混合文本-语音标记序列。
+
+我们举个例子：
+
+```
+参数: N=5, M=15
+文本: "今天天气真好我们出去玩吧" (10个token)
+语音: 需要生成100个token
+
+推理流程：
+1. 初始状态: remaining_text=10, current_position=0
+2. 输入前5个token: [今][天][天][气][真]
+3. 模型生成15个语音token
+4. 模型预测下一个token → 填充标记 ✓ (因为remaining_text=5>0)
+5. 系统添加下5个token: [好][我][们][出][去]
+   remaining_text=0, current_position=10
+6. 模型生成15个语音token  
+7. 模型预测下一个token → <TURN> ✓ (因为remaining_text=0)
+8. 模型生成剩余85个语音token直到<EOS>
+```
+
+对于输入的文本，按照N、N、N、……、<=N、无；的长度分割，对应N应该生成的语音tokens为M、M、M、……M、剩余语音。
+
+每个N文本让模型生成M个语音后，如果当前表示的文本长度还没有超过全部的文本长度，那么就生成一个“填充标记”提示模型还需要在生成语音tokens
+就这样到最后一个不足N个的文本时，生成对应M个语音tokens以及剩余的所有的tokens，然后由于当前文本长度已经超过完整文本长度了，因此最后不用再生成填充标记，而是添加T标记，提示模型要自主生成后续剩余语音tokens.
+
+ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体的streaming生成逻辑是一样的。
+
+
+**设计块感知flow match模型**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon27.png" style="width:100%">
+  </figure>
+</div>
+
+传统 Flow Matching 模型在生成梅尔频谱时通常需要完整的语音 token 序列作为条件，这导致其无法支持流式合成——必须等待所有语音 token 生成完毕才能开始声学特征的解码。为了突破这一限制，CosyVoice 2 提出了块感知因果流匹配模型（Chunk-aware Causal Flow Matching），其核心思想是将流匹配过程分块化与因果化，使其能够基于局部语音 token 片段逐步生成对应的梅尔频谱块。
+
+实现这一能力的关键在于对模型中注意力机制的掩码（Mask）进行精心设计。CosyVoice 2 共定义了四种掩码策略，每种策略对应不同的上下文感知范围，从而在生成质量与推理延迟之间提供灵活的权衡：
+
+1. 非因果掩码（Non-causal Mask）：允许模型在生成当前帧时，关注输入序列的所有过去和未来帧。这种掩码用于非流式（离线）模式，能够获取最完整的全局信息，从而生成质量最高、韵律最自然的语音，但无法满足低延迟要求。
+
+2. 全因果掩码（Full-causal Mask）：生成当前帧时，仅允许关注该帧之前的所有帧（过去上下文），严格禁止看到任何未来信息。这种掩码提供了最低的生成延迟，适用于对实时性要求极高的场景（如实时语音对话），但由于上下文信息最受限，生成质量通常有一定牺牲。
+
+3. 块-M掩码（Chunk-M Mask）：这是一种折衷方案。模型在生成当前帧时，除了可以访问所有过去帧，还能额外看到未来 M 帧 的信息。这模拟了流式合成中“适度向前看”的能力。该掩码特别适用于流式生成的首个语音块，能在可接受的额外延迟内，显著提升开头部分语音的自然度和稳定性。
+
+4. 块-2M掩码（Chunk-2M Mask）：在块-M掩码的基础上，将可感知的未来上下文扩展至 2M 帧。这进一步逼近了离线模式的生成质量，通常用于流式合成中后续的语音块生成。由于在生成后续块时，前面的音频已经输出，允许稍长的“向前看”延迟对整体体验影响较小，却能换来整体合成质量的显著提升。
+
+在训练阶段，模型会随机抽样使用这四种掩码之一，使得单一模型同时学会了如何处理不同范围的上下文。这种设计带来两大优势：一是部署简化，一个模型即可应对多种延迟要求的场景；二是隐式自蒸馏，在训练中，能够看到更多上下文的掩码（如块-2M）其学习到的特征和生成模式，会间接地帮助看到较少上下文的掩码（如全因果）提升表现，实现了知识在模型内部的迁移。
+
+**CosyVoice3**
+
+论文地址👉[CosyVoice 3: Towards In-the-wild Speech Generation via Scaling-up and Post-training](https://arxiv.org/abs/2505.17589)
+
+由于CosyVoice3才刚出不久，作者还没来得及做训练等，因此这里参考[CosyVoice三部曲深度解析【论文精读】](https://www.bilibili.com/opus/1136165016148377601)，仅简单讲述下优化的点：
+
+1. 提出多任务监督语音tokenizer，融合多模态信息：基于大尺度语音理解模型 MinMo，引入有监督多任务学习（ASR、语言识别、情感识别、音频事件检测、说话人分析）构建语音 tokenizer。相较于 CosyVoice 2 使用的 ASR 模型，MinMo 在 140 万小时语音数据上预训练，具备更强的跨任务泛化能力；tokenizer 输出的离散 token 不仅包含语义信息，还融合了情感、口音、语种等多维副语言特征，显著提升合成语音的韵律自然度与风格可控性。
+
+2. 引入可微分奖励优化DiffRO，提升生成鲁棒性：通过类似 ASR 的 Token2Text 模型生成后验概率作为奖励信号，结合 Gumbel-Softmax 采样与 KL 散度约束，在提升内容一致性的同时保持生成稳定性；进一步支持多任务奖励建模（MTR），实现对情感、音频质量等多属性的联合优化。
+
+3. 数据规模扩展至100万小时，覆盖9种语言和18种方言：训练数据从万小时级扩展至 100 万小时，涵盖 9 种主流语言与 18 种汉语方言/口音，覆盖电商、导航、教育、对话、朗诵等多种领域与文本格式。
+
+4. 模型参数增至1.5B，增强复杂文本理解能力：更大容量的语言模型增强了对复杂文本、多音词与长尾表达的理解能力；DiT 架构简化了模型结构，去除冗余的文本编码与长度规整模块，通过插值解决帧率不匹配问题，提升训练效率与生成质量。
+
+5. 支持发音修复和文本归一化，适配真实场景：支持混合输入单词与音素，通过替换单音字/词为拼音/音素构建辅助训练集，提升对多音词与罕见词的发音准确性。指令跟随数据扩展至 5,000 小时，覆盖 100+ 种风格（情感、语速、方言、角色扮演等），支持自然语言指令与细粒度标签控制。
+
+6. 构建全新评估基准 CV3-Eval，推动野外场景语音生成评测：提出针对零样本语音合成的多语言、多场景评估基准，包含多语言语音克隆、跨语言克隆、情感克隆等客观任务，以及表达性语音克隆、语音续写、方言克隆等主观任务。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon28.png" style="width:100%">
+  </figure>
+</div>
+
+
+前两个模型难以处理方言混杂，网络热词和噪声环境。
+
+cosyvoice3的核心idea是通过大规模数据和多任务学习，让TTS模型适应野外场景，如上图所示，多任务监督tokenizer在原有语义基础上，融合里情绪识别SER，语言识别LID等任务信息，让tokens不仅携带文字含义，还包括开心，四川方言等风格特征。
+
+数据规模从10万小时扩展至100万小时，相当于让模型读遍全球书籍，见过更多罕见表达。
+
+1.5B参数的LLM增强了语义理解能力，可处理多音词。
+
+可微分奖励DiffRO是另一突破。通过ASR模型的识别结果作为反馈，自动修正发音错误。就像让模型自己听自己说的话并纠错，在噪声环境中也能保持清晰。
+
+*Cosyvoice的演进呈现3个清晰方向：*
+
+WER性能提升
+
+1. 内容一致性提升，这得益于从监督tokens到多任务tokens的技术升级，让语音和文本的对齐越来越精准
+
+2. 场景扩展：从仅支持非流式合成适合新闻播报，到cosyvoice2的流式，非流式统一支持实时对话，再到cosyvoice3的真实场景适配，支持方言，噪声环境。模型参数从0.5B到1.5B。VQ到FSQ再到增强FSQ，逐步释放语音细节的表达能力，这是音质提升的关键。
+
+下面是三个模型的优化对比一览：
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./cosyvoice/paimon29.png" style="width:100%">
+  </figure>
+</div>
 
 ## 零样本推理
 
@@ -156,7 +475,7 @@ stop_stage=0
 参数含义分别如下：
 
 - `--tts_text`:你需要模型生成的文本内容对应的地址，需要注意的是内部有以下标签：
-    
+
 ```json
 {
   "paimon":{
@@ -218,7 +537,7 @@ stop_stage=1
 
 > 注意⚠️：在运行这个代码前，最好确保run.sh中的进程4已经运行，不然找不到对应模型地址。
 
-## SFT代码
+## 完整代码
 
 完整的代码其实用的是官方给的[example](https://github.com/FunAudioLLM/CosyVoice/tree/main/examples/libritts/cosyvoice2)，只要环境和配置设置正确，直接可以用，不过我对其进行了一点小小的改造🤏，具体的我们下面详细讲述。
 
@@ -239,7 +558,6 @@ pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ --tru
 ```
 
 - 要求：
-
 1. $5090个数 \ge 2$
 2. `Pytorch` $\ge$ 2.7，CUDA适应自己的版本，我的是12.8
 
@@ -389,7 +707,7 @@ export PYTHONPATH=/home/lxy/tts_project/cosyvoice-paimon-sft:/home/lxy/tts_proje
 
 ### 2. 数据处理
 
-数据处理这一步，其实官方已经给出了脚本，在`run.sh`中的前4步中，如下所示：
+数据处理这一步，其实官方已经给出了脚本，在`run.sh`中的前4步，同时我自己加了一步，用于存储embedding信息到模型文件中，具体如下所示：
 
 ```bash
 data_dir=/data/tts-data/paimon_4k
@@ -434,6 +752,21 @@ if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
       --des_dir data/$x/parquet
   done
 fi
+
+# 我自己加了步骤4，也要一起运行
+# 保存一个spk2info.pt文件到指定的文件夹
+spk_id=paimon # 你指定的说话人编号，这里我用名字替代
+if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ]; then
+  echo "Save your speaker embedding as spk2info.pt"
+  for model in llm flow llm_flow; do
+    python tools/save_spk2info.py \
+      --spk_id $spk_id \
+      --origin_model_dir $pretrained_model_dir \
+      --target_model_dir $output_model_dir/$model \
+      --emb_path data/train/spk2embedding.pt
+  done
+fi
+
 ```
 
 核心在于序号`1`和序号`2`，分别是我们在原理中讲到的`speaker-vector`也就是`embedding`，和`speech-tokens`。其中`speech-tokens`是`llm`模型训练的时候预测出来对照计算loss和accuracy的部分，而`speaker-vector`用在`flow`模型的训练中，用于匹配说话人音色。`speaker-vector`后续也可以作为推理使用。
@@ -542,8 +875,9 @@ CUDA_VISIBLE_DEVICES=your GPU id
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
 很凑巧的是，在写这篇教程的时候，cosyvoice3发布了😂，我们检查了代码，发现有如下修改：<br>
 1. 模型地址在脚本中修改了<br>
-2. cosyvoice部分，主要是加入了instruct的处理<br>
-我先去训练了一波看看效果如何，其中超参数文件用<strong>cosyvoice3-paimon.yaml</strong>。
+2. 对于cosyvoice部分，主要是加入了instruct的处理<br>
+3. flow模型做了比较多的修改<br>
+我先去训练一波看看效果如何，等训练好了会更新文档
 </div>
 
 <div style="display:flex;justify-content:center;">
@@ -552,8 +886,6 @@ CUDA_VISIBLE_DEVICES=your GPU id
   </figure>
 </div>
 
-> bug稍微有点多哈🤏，短时间内估计训不出来，等CosyVoice作者发布完代码再说。
-
 ```bash
 ### 启动训练
 bash run.sh
@@ -561,7 +893,7 @@ bash run.sh
 
 ### 4. SwanLab设置
 
-官方使用的是`tensorboard`来观测loss等变化，为了方便起见，我们选择一个能直接在线观察train loss变化的`SwanLab`，然后我们对代码进行一点改造。
+官方使用的是`tensorboard`来观测loss等变化，为了方便起见，我们选择一个能直接在线观察train loss变化，并且可以直接在线听训练过程中产生的音频的`SwanLab`，我们对代码进行一点改造。
 
 在`./utils/train_utils.py`中找到`tensorboard`使用的地方，然后将tensorboard生成的log迁移到`swanlab`中：
 
@@ -600,7 +932,7 @@ swan:
 
 > 如果为了不想每次输入`api_key`导致信息泄露，可以删掉该参数，在外部只要最开始`login`一次就行
 
-**SwanLab**有一个功能`Audio`，可以直接在网页端上传并听音频文件，因此我们需要设置在每个epoch结束后，保存模型并进行推理，生成音频播放到`SwanLab`中，代码我已经给出，因此不需要读者做太复杂的操作，仅需要注意一个小的地方。
+**SwanLab**有一个功能`Audio`，可以直接在网页端上传并听音频文件，因此我们需要设置在每个epoch结束后，保存模型并进行推理，生成音频播放到`SwanLab`中，代码我已经给出。
 
 **实际训练的时候，不需要读者做什么操作，只需要运行训练脚本即可，但是如果想了解具体原理，可以看下面的内容。**
 
@@ -653,6 +985,8 @@ shutil.copyfile(target_model_path, final_model_path)
     <img src="./cosyvoice/paimon12.png" style="width:100%">
   </figure>
 </div>
+
+> 补充说明：作者在训练的时候发现少量的steps对应的loss等信息并没有记录到网页端，这并不是因为SwanLab丢失数据，而是在tensorboard记录中可能由于网络波动导致的数据丢失，不过因为steps通常足够多，并且实际训练的时候没有丢失某些steps，而是因为log上传信息的时候没把信息上传上去，因此不会对模型有影响。
 
 ## SwanLab观测结果
 
@@ -707,27 +1041,28 @@ shutil.copyfile(target_model_path, final_model_path)
 在进行推理的时候，我们需要将说话人对应的音色`embedding`作为输入，用`instruct_sft`来生成对应目标文本的音频文件，而如果只微调`llm`或者`flow`单独一个模型，效果并不是很好，这是因为单独一个分别有自己的任务要完成。
 
 - `llm`聚焦 “文本与音频的语义、指令对齐”，不直接学习声学细节：
-
-    1. 文本到语义令牌的映射：将输入文本（含自然语言指令）转化为离散的 speech tokens，确保内容一致性（比如文本 “开心地打招呼” 对应包含 “开心” 情绪倾向的语义令牌）。
-    2. 指令解析与执行逻辑：学习理解 “用粤语说”“快速朗读” 等指令，将指令信息编码到语义令牌中，为后续声学生成提供高层指导。
-    3. 语言与格式适配：掌握多语言语法、文本归一化规则（如数字、符号的口语化转换），以及多音字、生僻词的发音逻辑（通过发音修复模块辅助）。
+  
+  1. 文本到语义令牌的映射：将输入文本（含自然语言指令）转化为离散的 speech tokens，确保内容一致性（比如文本 “开心地打招呼” 对应包含 “开心” 情绪倾向的语义令牌）。
+  2. 指令解析与执行逻辑：学习理解 “用粤语说”“快速朗读” 等指令，将指令信息编码到语义令牌中，为后续声学生成提供高层指导。
+  3. 语言与格式适配：掌握多语言语法、文本归一化规则（如数字、符号的口语化转换），以及多音字、生僻词的发音逻辑（通过发音修复模块辅助）。
 
 - `flow`模型聚焦 “将语义令牌转化为真实音频波形”，核心学习目标是声学细节的生成与还原：
-    1. 声学特征建模：基于 speech tokens，生成对应的 Mel 频谱（音频的核心声学特征），涵盖频率分布、时长匹配等基础声学属性。
-    2. 环境与噪声适配：学习处理真实场景中的噪声、背景音，生成符合场景的自然音频（比如还原参考音频的轻微背景噪声）。
-    3. 细粒度声学控制：响应 LLM 传递的指令信息，调整语速、音量等声学参数（如 “快速朗读” 对应更快的帧生成节奏）。
+  
+  1. 声学特征建模：基于 speech tokens，生成对应的 Mel 频谱（音频的核心声学特征），涵盖频率分布、时长匹配等基础声学属性。
+  2. 环境与噪声适配：学习处理真实场景中的噪声、背景音，生成符合场景的自然音频（比如还原参考音频的轻微背景噪声）。
+  3. 细粒度声学控制：响应 LLM 传递的指令信息，调整语速、音量等声学参数（如 “快速朗读” 对应更快的帧生成节奏）。
 
 我们简单总结下📖：
 
-|模型组件|核心学习目标|是否学习音频韵律/音色/语调|角色定位|
-|:---:|:---|:---|:---|
-|llm|文本-语义-指令对齐|否（仅传递高层倾向信息）|内容与指令理解者|
-|flow|声学细节生成、个性化特征还原|	是（主导学习）|音频生成执行者|
+| 模型组件 | 核心学习目标         | 是否学习音频韵律/音色/语调 | 角色定位     |
+|:----:|:-------------- |:-------------- |:-------- |
+| llm  | 文本-语义-指令对齐     | 否（仅传递高层倾向信息）   | 内容与指令理解者 |
+| flow | 声学细节生成、个性化特征还原 | 是（主导学习）        | 音频生成执行者  |
 
 如果文字表述比较抽象的话，可以听下下面展示出来的音频结果，分别是单独模型组件和两个模型组件一起作用时的结果。
 
-| 微调方案  | 音频效果演示 & 对应自定义文本   |
-| ------------ | ------------------------------- |
+| 微调方案         | 音频效果演示 & 对应自定义文本                                                                                                                                                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 仅llm微调后      | <audio controls style="width: 400px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/single_example/paimon_sft_inference_llm.wav" type="audio/wav">  </audio> <br> **文本内容**：有任何问题都可以来找我，我可是提瓦特最棒的、最厉害的、知道的最多的向导！     |
 | 仅flow微调后     | <audio controls style="width: 400px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/single_example/paimon_sft_inference_flow.wav" type="audio/wav">  </audio> <br> **文本内容**：有任何问题都可以来找我，我可是提瓦特最棒的、最厉害的、知道的最多的向导！    |
 | llm和flow都微调后 | <audio controls style="width: 400px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/single_example/paimon_sft_inference_llmflow.wav" type="audio/wav">  </audio> <br> **文本内容**：有任何问题都可以来找我，我可是提瓦特最棒的、最厉害的、知道的最多的向导！ |
@@ -768,6 +1103,7 @@ shutil.copyfile(target_model_path, final_model_path)
 ---
 
 <!-- 外层容器：控制滚动+基础样式（兼容大部分平台） -->
+
 <div style="overflow-x: auto; max-width: 100%; border: 1px solid #cdccccff;">
 <!-- 标题嵌入容器内 -->
   <h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #333; border-bottom: 1px solid #787878ff;">零样本&微调音频效果对照表</h3>
@@ -803,6 +1139,7 @@ shutil.copyfile(target_model_path, final_model_path)
 </div>
 
 以上三段文字都是我写的自定义文本：
+
 - 第一条是贴合原神派蒙会说的话（当然不排除可能在游戏里真的说过😂，如果有，可以当作用训练数据作为参考）；
 - 第二条表示疑问的语气；
 - 第三条直接完全脱离原神游戏里的内容，以陈述句形式来展示效果
@@ -810,7 +1147,6 @@ shutil.copyfile(target_model_path, final_model_path)
 可以从实际效果长听出，零样本推理其实已经具备了一点派蒙的声线和说话习惯，但是相比于真实声线，其实还是差很多的。而微调过后的模型，对于派蒙声音的模仿就要好得多，如此也可以证明微调的效果。
 
 > 如果想要更真实的数据支撑推理的效果，可以参考👉[https://github.com/FunAudioLLM/CV3-Eval](https://github.com/FunAudioLLM/CV3-Eval)，这是官方发布的针对CosyVoice3的模型推理效果评测，应该对CosyVoice2也可以用，我之后有时间研究下，这里先放个未完待续...
-
 
 ## 参考文献
 
@@ -821,3 +1157,5 @@ shutil.copyfile(target_model_path, final_model_path)
 [3]. [https://funaudiollm.github.io/pdf/CosyVoice_v1.pdf](https://funaudiollm.github.io/pdf/CosyVoice_v1.pdf)
 
 [4]. [https://arxiv.org/abs/2412.10117](https://arxiv.org/abs/2412.10117)
+
+[5]. [CosyVoice三部曲深度解析【论文精读】](https://www.bilibili.com/opus/1136165016148377601)
