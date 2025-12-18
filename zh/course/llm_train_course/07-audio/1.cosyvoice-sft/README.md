@@ -1144,7 +1144,7 @@ shutil.copyfile(target_model_path, final_model_path)
 
 可以从实际效果长听出，零样本推理其实已经具备了一点派蒙的声线和说话习惯，但是相比于真实声线，其实还是差很多的。而微调过后的模型，对于派蒙声音的模仿就要好得多，如此也可以证明微调的效果。
 
-> 如果想要更真实的数据支撑推理的效果，可以参考👉[https://github.com/FunAudioLLM/CV3-Eval](https://github.com/FunAudioLLM/CV3-Eval)，这是官方发布的针对CosyVoice3的模型推理效果评测，应该对CosyVoice2也可以用，我之后有时间研究下，这里先放个未完待续...
+> 如果想要更真实的数据支撑推理的效果，可以参考👉[https://github.com/FunAudioLLM/CV3-Eval](https://github.com/FunAudioLLM/CV3-Eval)，这是官方发布的针对CosyVoice3的模型推理效果评测，应该对CosyVoice2也可以用。
 
 ## 参考文献
 
