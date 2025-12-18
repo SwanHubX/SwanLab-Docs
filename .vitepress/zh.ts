@@ -377,6 +377,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: '音频分类', link: 'audio_classification' },
+      { text: '原神派蒙语音克隆', link: 'genshin-paimon-cosyvoice-sft' },
     ]
   },
   {
@@ -590,7 +591,9 @@ function sidebarCourseLLMTrain(): DefaultTheme.SidebarItem[] {
           { text: '6.2 Qwen3-smVL模型拼接微调', link: '06-multillm/2.qwen3_smolvlm_muxi/README.md' },
           { text: '6.3 Qwen2.5-VL目标检测微调', link: '06-multillm/4.grounding/README.md' },
       ]},
-
+      { text: '第七章 音频大模型', items: [
+          { text: '7.1 CosyVoice微调派蒙语音', link: '07-audio/1.cosyvoice-sft/README.md' },
+      ]},
       ]
     }
   ]
