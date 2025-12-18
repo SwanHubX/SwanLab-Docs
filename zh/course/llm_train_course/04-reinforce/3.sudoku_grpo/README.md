@@ -351,7 +351,7 @@ op-compile-tool 0.1.0 requires multiprocessing, which is not installed.
 dataflow 0.0.1 requires jinja2, which is not installed.
 ```
 
-安装pytorch 2.4.0和torch_npu 2.4.0
+安装pytorch 2.4.0和torch_npu 6.0.0
 
 ```bash
 # 下载PyTorch安装包
