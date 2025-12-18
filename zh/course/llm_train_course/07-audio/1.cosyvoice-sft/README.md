@@ -1,6 +1,6 @@
 # 用CosyVoice2实现派蒙语音的微调
 
-[![SVG Banners](./cosyvoice/head.svg)](https://github.com/Akshay090/svg-banners)
+[![SVG Banners](/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/head.svg)](https://github.com/Akshay090/svg-banners)
 
 > 作者信息：情感机器实验室研究员-李馨雨  
 > 邮箱：wind.340171@gmail.com
@@ -14,7 +14,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon21.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon21.png" style="width:100%">
   </figure>
 </div>
 
@@ -26,7 +26,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon4.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon4.png" style="width:100%">
   </figure>
 </div>
 
@@ -40,7 +40,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon18.jpg" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon18.jpg" style="width:100%">
   </figure>
 </div>
 
@@ -156,7 +156,7 @@ CosyVoice在多语言语音生成、零样本语音生成、跨语言语音克�
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon19.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon19.png" style="width:100%">
   </figure>
 </div>
 
@@ -170,7 +170,7 @@ CosyVoice在多语言语音生成、零样本语音生成、跨语言语音克�
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon20.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon20.png" style="width:100%">
   </figure>
 </div>
 
@@ -182,7 +182,7 @@ CosyVoice在多语言语音生成、零样本语音生成、跨语言语音克�
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon22.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon22.png" style="width:100%">
   </figure>
 </div>
 
@@ -232,7 +232,7 @@ $$P(Y|X)=ASRDecoder(\tilde{H},Y^{Z-1})$$
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon23.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon23.png" style="width:100%">
   </figure>
 </div>
 
@@ -294,7 +294,7 @@ $$\tilde{v}_t=(1+\beta)\cdot v_t(条件)-\beta\cdot v_t(无条件)$$
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon24.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon24.png" style="width:100%">
   </figure>
 </div>
 
@@ -318,7 +318,7 @@ $$\mu_i = \sum_{j=0}^{D-1}\bar{h}_{i,j}\cdot (2K+1)^j$$
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon25.png" style="width:80%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon25.png" style="width:80%">
   </figure>
 </div>
 
@@ -351,7 +351,7 @@ $$\mu_i = \sum_{j=0}^{D-1}\bar{h}_{i,j}\cdot (2K+1)^j$$
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon26.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon26.png" style="width:100%">
   </figure>
 </div>
 
@@ -388,7 +388,7 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon27.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon27.png" style="width:100%">
   </figure>
 </div>
 
@@ -426,7 +426,7 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon28.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon28.png" style="width:100%">
   </figure>
 </div>
 
@@ -453,7 +453,7 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon29.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon29.png" style="width:100%">
   </figure>
 </div>
 
@@ -607,7 +607,7 @@ If you want to use the NVIDIA GeForce RTX 5090 GPU with PyTorch, please check th
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon5.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon5.png" style="width:100%">
   </figure>
 </div>
 
@@ -619,7 +619,7 @@ If you want to use the NVIDIA GeForce RTX 5090 GPU with PyTorch, please check th
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon6.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon6.png" style="width:100%">
   </figure>
 </div>
 
@@ -644,7 +644,7 @@ pip install --pre torchcodec \
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon7.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon7.png" style="width:100%">
   </figure>
 </div>
 
@@ -806,7 +806,7 @@ OK啊，我们知道要喂给脚本的数据集具体长什么样子，那么我
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon8.png" style="width:80%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon8.png" style="width:80%">
   </figure>
 </div>
 
@@ -827,7 +827,7 @@ python ./tools/data_save_process.py \
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon9.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon9.png" style="width:100%">
   </figure>
 </div>
 
@@ -839,7 +839,7 @@ python ./tools/data_save_process.py \
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon10.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon10.png" style="width:100%">
   </figure>
 </div>
 
@@ -885,7 +885,7 @@ CUDA_VISIBLE_DEVICES=your GPU id
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon11.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon11.png" style="width:100%">
   </figure>
 </div>
 
@@ -985,7 +985,7 @@ shutil.copyfile(target_model_path, final_model_path)
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon12.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon12.png" style="width:100%">
   </figure>
 </div>
 
@@ -1001,19 +1001,19 @@ shutil.copyfile(target_model_path, final_model_path)
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon13.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon13.png" style="width:100%">
   </figure>
 </div>
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon14.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon14.png" style="width:100%">
   </figure>
 </div>
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon15.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon15.png" style="width:100%">
   </figure>
 </div>
 
@@ -1021,13 +1021,13 @@ shutil.copyfile(target_model_path, final_model_path)
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon16.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon16.png" style="width:100%">
   </figure>
 </div>
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./cosyvoice/paimon17.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/07-audio/1.cosyvoice-sft/cosyvoice/paimon17.png" style="width:100%">
   </figure>
 </div>
 

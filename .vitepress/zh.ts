@@ -377,6 +377,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: '音频分类', link: 'audio_classification' },
+      { text: '原神派蒙语音克隆', link: 'genshin-paimon-cosyvoice-sft' },
     ]
   },
   {
