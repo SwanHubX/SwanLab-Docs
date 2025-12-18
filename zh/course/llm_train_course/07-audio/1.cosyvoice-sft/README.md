@@ -10,13 +10,15 @@
 - **模型**：[CosyVoice2-0.5B](https://www.modelscope.cn/models/iic/CosyVoice2-0.5B)
 - **SwanLab**：[cosyvoice-sft](https://swanlab.cn/@LiXinYu/cosyvoice-sft/overview)
 
-本次模型训练的数据集来源于`ModelScope`上`AI Hobbyist`提供的原神语音数据集，特此感谢作者🙏
+本次模型训练的数据集来源于`ModelScope`上[`AI Hobbyist`](https://www.modelscope.cn/organization/aihobbyist?tab=dataset)提供的原神语音数据集，特此感谢作者提供的数据🙏
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
     <img src="./cosyvoice/paimon21.png" style="width:100%">
   </figure>
 </div>
+
+## 目录
 
 [[toc]]
 
@@ -34,7 +36,7 @@
 
 > 特此声明：本次教程仅作为AI模型训练，数据集均来自开源数据集。
 
-派蒙是《原神》的标志性角色，也是旅行者在提瓦特大陆的伙伴与向导。她有着白色齐肩发与蓝色眼睛，身披带星空纹理的小披风，以漂浮姿态伴旅行者左右。她是被旅行者从水中钓起后结伴同行的。
+**派蒙**是《原神》的标志性角色，也是旅行者在提瓦特大陆的伙伴与向导。她有着白色齐肩发与蓝色眼睛，身披带星空纹理的小披风，以漂浮姿态伴旅行者左右。她是被旅行者从水中钓起后结伴同行的。
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -56,32 +58,32 @@
   </thead>
   <tbody>
     <tr>
-      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fff; font-size: 14px;"><strong>文本内容</strong>：等等，算起来…今天是不是就是连续打工的第三天了？现在正是午饭时间！</td>
-      <td style="padding: 12px 15px;  border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #fff;">
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; font-size: 14px;"><strong>文本内容</strong>：等等，算起来…今天是不是就是连续打工的第三天了？现在正是午饭时间！</td>
+      <td style="padding: 12px 15px;  border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word;">
         <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
           <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_7265.wav" type="audio/wav">
         </audio><br>
       </td>
     </tr>
     <tr>
-      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #ecececff; font-size: 14px;"><strong>文本内容</strong>：累死了，除了打工就是打工，我的身体已经彻底透支了啊…</td>
-      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #ecececff;">
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; font-size: 14px;"><strong>文本内容</strong>：累死了，除了打工就是打工，我的身体已经彻底透支了啊…</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word;">
         <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
           <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_7264.wav" type="audio/wav">
         </audio> <br>
       </td>
     </tr>
     <tr>
-      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fff; font-size: 14px;"><strong>文本内容</strong>：那种地方不太可能会有人吧？</td>
-      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #fff;">
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; font-size: 14px;"><strong>文本内容</strong>：那种地方不太可能会有人吧？</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; ">
         <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
           <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_6834.wav" type="audio/wav">
         </audio> <br>
       </td>
     </tr>
     <tr>
-      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #ecececff; font-size: 14px;"><strong>文本内容</strong>：似乎都是些常见的魔术道具，没有我们要找的线索…我们再往深处看看吧！</td>
-      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #ecececff;">
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; font-size: 14px;"><strong>文本内容</strong>：似乎都是些常见的魔术道具，没有我们要找的线索…我们再往深处看看吧！</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; ">
         <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
           <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/gamevoice/1_10002.wav" type="audio/wav">
         </audio> <br>
@@ -110,10 +112,10 @@
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_0.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px; background-color: #ecececff"><strong>现实文本：</strong>现代科技让世界变得更加紧密相连。</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_1.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/paimon_sft_inference_1.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_1.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px; "><strong>现实文本：</strong>现代科技让世界变得更加紧密相连。</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; "><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/zero_shot_1.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; "><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/paimon_sft_inference_1.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0; "><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_1.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>情绪化文本：</strong>啊啊啊！真是让人生气！他怎么可以这样说！我明明不是那样的人！</td>
@@ -122,10 +124,10 @@
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/zero_shot_2.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;background-color: #ecececff"><strong>方言文本：</strong>用四川话说：走哦兄弟，楼下新开的火锅店巴适得板，味道绝了，我们整起，保证吃得你肚皮圆滚滚！</td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
-          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;background-color: #ecececff"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/cosyvoice3-instruct.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>方言文本：</strong>用四川话说：走哦兄弟，楼下新开的火锅店巴适得板，味道绝了，我们整起，保证吃得你肚皮圆滚滚！</td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice2sft/instruction_zero_shot.wav" type="audio/wav">  </audio></td>
+          <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/examples/cosyvoice3/cosyvoice3-instruct.wav" type="audio/wav">  </audio></td>
         </tr>
         <tr>
           <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; min-width: 250px;"><strong>跨语言文本：</strong>Has the author of my issue seen it?</td>
@@ -143,6 +145,8 @@
 ## CosyVoice原理
 
 目前CosyVoice论文已经出到了3，本次教程重点针对1和2来讲述，3的话简单说明一下，大体结构和前两个类似，因此本次教程重点是讲述CosyVoice的整体架构理论。
+
+### CosyVoice
 
 首先是第一篇👉[《CosyVoice: A Scalable Multilingual Zero-shot Text-to-speech Synthesizer based on Supervised Semantic Tokens》](https://funaudiollm.github.io/pdf/CosyVoice_v1.pdf)。
 
@@ -172,7 +176,7 @@ CosyVoice在多语言语音生成、零样本语音生成、跨语言语音克�
 
 这张图是cosyVoice的架构原理图，从左到右我认为就是我上面说的三个问题的解决，（a）是Speech Tokenizer训练原理，用于生成包含语义信息的Speech Tokens；（b）是整体的训练和推理的原理，其中`x-vector`就是输入的参考音色，让生成的语音包含说话人(speaker)的语音特色；（c）则是Flow Matching模型将LLM生成的speech tokens转换成对应的梅尔频谱图，后续将梅尔频谱图通过声码器转换成实际语音。
 
-### Speech Tokenizer
+#### 1. Speech Tokenizer
 
 首先我们来看Speech Tokenizer部分，这部分是在ASR模型编码器中插入向量量化层VQ，将连续的语音信号转换成离散的包含语义信息的tokens。
 
@@ -222,7 +226,7 @@ $$P(Y|X)=ASRDecoder(\tilde{H},Y^{Z-1})$$
 
 这些Speech Tokens构成了CosyVoice后续语音合成的核心中间表示。在合成阶段，LLM将以文本编码和说话人嵌入为条件，自回归地预测出对应的Speech Token序列。
 
-### CosyVoice LM
+#### 2. CosyVoice LM
 
 对于Text-to-token LM部分，本质是根据prompt自回归生成后续的speech tokens，因此对于该阶段，最重要的其实就是prompt的构建，和怎么生成tokens的，其实理解起来也很简单，论文中已经给出：
 
@@ -257,7 +261,7 @@ $\{\mu_l\}_{l\in [1:L]}$代表语音语义token序列，长度是L，无论是�
 
 这种方式使模型能够从少量参考示例中学习音色与风格，并推广到新的文本内容，实现**零样本语音克隆**。
 
-### Flow Matching
+#### 3. Flow Matching
 
 经过LLM的文本到语音tokens生成，我们得到了包含语义信息的离散token序列。然而，要合成最终可听的语音波形，还需要将这些tokens转换回连续的声学特征表示——梅尔频谱图。CosyVoice采用了最优传输条件流匹配（Optimal-Transport Conditional Flow Matching，OT-CFM）模型来完成这一关键转换。
 
@@ -294,7 +298,7 @@ $$\tilde{v}_t=(1+\beta)\cdot v_t(条件)-\beta\cdot v_t(无条件)$$
   </figure>
 </div>
 
-**CodeBook的利用率提升至100%**
+#### 1. CodeBook的利用率提升至100%
 
 对于Supervised speech tokenizer，在FSQ模块中，中间表示H首先被投影到一个D维低秩空间，每个维度的值通过有界舍入操作被量化到[−K, K]区间。
 
@@ -310,7 +314,7 @@ $$\mu_i = \sum_{j=0}^{D-1}\bar{h}_{i,j}\cdot (2K+1)^j$$
 
 由于每个维度都必须被使用，而且所有可能的整数组合都会出现，因此码本的每一个“位置”都会被充分利用，利用率自然达到100%。这不仅让语音表示更紧凑、信息更完整，也让后续的语音合成更准确、更自然——因为每个token都承载了实实在在的语义信息，没有“闲置”或“浪费”的编码。
 
-**简化LM结构**
+#### 2. 简化LM结构
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -337,7 +341,7 @@ $$\mu_i = \sum_{j=0}^{D-1}\bar{h}_{i,j}\cdot (2K+1)^j$$
 
 简言之，CosyVoice 2通过去除冗余模块和统一生成模式，实现了更轻量、更灵活且性能更强的语音合成架构。
 
-**支持流式/非流式统一合成**
+#### 3. 支持流式/非流式统一合成
 
 这个是CosyVoice2中最核心的改动，相比于Cosyvoice1中需要输入完整的文本和参考语音，等生成完speech tokens才能去做后续的tokens转梅尔频谱然后生成音频，整个过程需要花费很长时间，
 
@@ -380,7 +384,7 @@ $$\mu_i = \sum_{j=0}^{D-1}\bar{h}_{i,j}\cdot (2K+1)^j$$
 ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体的streaming生成逻辑是一样的。
 
 
-**设计块感知flow match模型**
+#### 4. 设计块感知flow match模型
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -392,15 +396,15 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 实现这一能力的关键在于对模型中注意力机制的掩码（Mask）进行精心设计。CosyVoice 2 共定义了四种掩码策略，每种策略对应不同的上下文感知范围，从而在生成质量与推理延迟之间提供灵活的权衡：
 
-1. 非因果掩码（Non-causal Mask）：允许模型在生成当前帧时，关注输入序列的所有过去和未来帧。这种掩码用于非流式（离线）模式，能够获取最完整的全局信息，从而生成质量最高、韵律最自然的语音，但无法满足低延迟要求。
+1. `非因果掩码（Non-causal Mask）`：允许模型在生成当前帧时，关注输入序列的所有过去和未来帧。这种掩码用于非流式（离线）模式，能够获取最完整的全局信息，从而生成质量最高、韵律最自然的语音，但无法满足低延迟要求。
 
-2. 全因果掩码（Full-causal Mask）：生成当前帧时，仅允许关注该帧之前的所有帧（过去上下文），严格禁止看到任何未来信息。这种掩码提供了最低的生成延迟，适用于对实时性要求极高的场景（如实时语音对话），但由于上下文信息最受限，生成质量通常有一定牺牲。
+2. `全因果掩码（Full-causal Mask）`：生成当前帧时，仅允许关注该帧之前的所有帧（过去上下文），严格禁止看到任何未来信息。这种掩码提供了最低的生成延迟，适用于对实时性要求极高的场景（如实时语音对话），但由于上下文信息最受限，生成质量通常有一定牺牲。
 
-3. 块-M掩码（Chunk-M Mask）：这是一种折衷方案。模型在生成当前帧时，除了可以访问所有过去帧，还能额外看到未来 M 帧 的信息。这模拟了流式合成中“适度向前看”的能力。该掩码特别适用于流式生成的首个语音块，能在可接受的额外延迟内，显著提升开头部分语音的自然度和稳定性。
+3. `块-M掩码（Chunk-M Mask）`：这是一种折衷方案。模型在生成当前帧时，除了可以访问所有过去帧，还能额外看到未来 M 帧 的信息。这模拟了流式合成中“适度向前看”的能力。该掩码特别适用于流式生成的首个语音块，能在可接受的额外延迟内，显著提升开头部分语音的自然度和稳定性。
 
-4. 块-2M掩码（Chunk-2M Mask）：在块-M掩码的基础上，将可感知的未来上下文扩展至 2M 帧。这进一步逼近了离线模式的生成质量，通常用于流式合成中后续的语音块生成。由于在生成后续块时，前面的音频已经输出，允许稍长的“向前看”延迟对整体体验影响较小，却能换来整体合成质量的显著提升。
+4. `块-2M掩码（Chunk-2M Mask）`：在块-M掩码的基础上，将可感知的未来上下文扩展至 2M 帧。这进一步逼近了离线模式的生成质量，通常用于流式合成中后续的语音块生成。由于在生成后续块时，前面的音频已经输出，允许稍长的“向前看”延迟对整体体验影响较小，却能换来整体合成质量的显著提升。
 
-在训练阶段，模型会随机抽样使用这四种掩码之一，使得单一模型同时学会了如何处理不同范围的上下文。这种设计带来两大优势：一是部署简化，一个模型即可应对多种延迟要求的场景；二是隐式自蒸馏，在训练中，能够看到更多上下文的掩码（如块-2M）其学习到的特征和生成模式，会间接地帮助看到较少上下文的掩码（如全因果）提升表现，实现了知识在模型内部的迁移。
+在训练阶段，模型会随机抽样使用这四种掩码之一，使得单一模型同时学会了如何处理不同范围的上下文。这种设计带来两大优势：**一是部署简化**，一个模型即可应对多种延迟要求的场景；**二是隐式自蒸馏**，在训练中，能够看到更多上下文的掩码（如块-2M）其学习到的特征和生成模式，会间接地帮助看到较少上下文的掩码（如全因果）提升表现，实现了知识在模型内部的迁移。
 
 ### CosyVoice3
 
@@ -408,17 +412,17 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 由于CosyVoice3才刚出不久，作者还没来得及做训练等，因此这里参考[CosyVoice三部曲深度解析【论文精读】](https://www.bilibili.com/opus/1136165016148377601)，仅简单讲述下优化的点：
 
-1. 提出多任务监督语音tokenizer，融合多模态信息：基于大尺度语音理解模型 MinMo，引入有监督多任务学习（ASR、语言识别、情感识别、音频事件检测、说话人分析）构建语音 tokenizer。相较于 CosyVoice 2 使用的 ASR 模型，MinMo 在 140 万小时语音数据上预训练，具备更强的跨任务泛化能力；tokenizer 输出的离散 token 不仅包含语义信息，还融合了情感、口音、语种等多维副语言特征，显著提升合成语音的韵律自然度与风格可控性。
+1. `提出多任务监督语音tokenizer，融合多模态信息`：基于大尺度语音理解模型 MinMo，引入有监督多任务学习（ASR、语言识别、情感识别、音频事件检测、说话人分析）构建语音 tokenizer。相较于 CosyVoice 2 使用的 ASR 模型，MinMo 在 140 万小时语音数据上预训练，具备更强的跨任务泛化能力；tokenizer 输出的离散 token 不仅包含语义信息，还融合了情感、口音、语种等多维副语言特征，显著提升合成语音的韵律自然度与风格可控性。
 
-2. 引入可微分奖励优化DiffRO，提升生成鲁棒性：通过类似 ASR 的 Token2Text 模型生成后验概率作为奖励信号，结合 Gumbel-Softmax 采样与 KL 散度约束，在提升内容一致性的同时保持生成稳定性；进一步支持多任务奖励建模（MTR），实现对情感、音频质量等多属性的联合优化。
+2. `引入可微分奖励优化DiffRO，提升生成鲁棒性`：通过类似 ASR 的 Token2Text 模型生成后验概率作为奖励信号，结合 Gumbel-Softmax 采样与 KL 散度约束，在提升内容一致性的同时保持生成稳定性；进一步支持多任务奖励建模（MTR），实现对情感、音频质量等多属性的联合优化。
 
-3. 数据规模扩展至100万小时，覆盖9种语言和18种方言：训练数据从万小时级扩展至 100 万小时，涵盖 9 种主流语言与 18 种汉语方言/口音，覆盖电商、导航、教育、对话、朗诵等多种领域与文本格式。
+3. `数据规模扩展至100万小时，覆盖9种语言和18种方言`：训练数据从万小时级扩展至 100 万小时，涵盖 9 种主流语言与 18 种汉语方言/口音，覆盖电商、导航、教育、对话、朗诵等多种领域与文本格式。
 
-4. 模型参数增至1.5B，增强复杂文本理解能力：更大容量的语言模型增强了对复杂文本、多音词与长尾表达的理解能力；DiT 架构简化了模型结构，去除冗余的文本编码与长度规整模块，通过插值解决帧率不匹配问题，提升训练效率与生成质量。
+4. `模型参数增至1.5B，增强复杂文本理解能力`：更大容量的语言模型增强了对复杂文本、多音词与长尾表达的理解能力；DiT 架构简化了模型结构，去除冗余的文本编码与长度规整模块，通过插值解决帧率不匹配问题，提升训练效率与生成质量。
 
-5. 支持发音修复和文本归一化，适配真实场景：支持混合输入单词与音素，通过替换单音字/词为拼音/音素构建辅助训练集，提升对多音词与罕见词的发音准确性。指令跟随数据扩展至 5,000 小时，覆盖 100+ 种风格（情感、语速、方言、角色扮演等），支持自然语言指令与细粒度标签控制。
+5. `支持发音修复和文本归一化，适配真实场景`：支持混合输入单词与音素，通过替换单音字/词为拼音/音素构建辅助训练集，提升对多音词与罕见词的发音准确性。指令跟随数据扩展至 5,000 小时，覆盖 100+ 种风格（情感、语速、方言、角色扮演等），支持自然语言指令与细粒度标签控制。
 
-6. 构建全新评估基准 CV3-Eval，推动野外场景语音生成评测：提出针对零样本语音合成的多语言、多场景评估基准，包含多语言语音克隆、跨语言克隆、情感克隆等客观任务，以及表达性语音克隆、语音续写、方言克隆等主观任务。
+6. `构建全新评估基准 CV3-Eval，推动野外场景语音生成评测`：提出针对零样本语音合成的多语言、多场景评估基准，包含多语言语音克隆、跨语言克隆、情感克隆等客观任务，以及表达性语音克隆、语音续写、方言克隆等主观任务。
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -429,21 +433,21 @@ ICL和SFT的不同在于SFT不需要参考语音和参考文本，但是整体�
 
 前两个模型难以处理方言混杂，网络热词和噪声环境。
 
-cosyvoice3的核心idea是通过大规模数据和多任务学习，让TTS模型适应野外场景，如上图所示，多任务监督tokenizer在原有语义基础上，融合里情绪识别SER，语言识别LID等任务信息，让tokens不仅携带文字含义，还包括开心，四川方言等风格特征。
+- cosyvoice3的核心idea是通过大规模数据和多任务学习，让TTS模型适应野外场景，如上图所示，多任务监督tokenizer在原有语义基础上，融合里情绪识别SER，语言识别LID等任务信息，让tokens不仅携带文字含义，还包括开心，四川方言等风格特征。
 
-数据规模从10万小时扩展至100万小时，相当于让模型读遍全球书籍，见过更多罕见表达。
+- 数据规模从10万小时扩展至**100万小时**，相当于让模型读遍全球书籍，见过更多罕见表达。
 
-1.5B参数的LLM增强了语义理解能力，可处理多音词。
+- **1.5B参数的LLM**增强了语义理解能力，可处理多音词。
 
-可微分奖励DiffRO是另一突破。通过ASR模型的识别结果作为反馈，自动修正发音错误。就像让模型自己听自己说的话并纠错，在噪声环境中也能保持清晰。
+- **可微分奖励DiffRO**是另一突破。通过ASR模型的识别结果作为反馈，自动修正发音错误。就像让模型自己听自己说的话并纠错，在噪声环境中也能保持清晰。
 
-*Cosyvoice的演进呈现3个清晰方向：*
+***Cosyvoice的演进呈现3个清晰方向：***
 
-WER性能提升
+- WER性能提升
 
-1. 内容一致性提升，这得益于从监督tokens到多任务tokens的技术升级，让语音和文本的对齐越来越精准
+1. `内容一致性提升`，这得益于从监督tokens到多任务tokens的技术升级，让语音和文本的对齐越来越精准
 
-2. 场景扩展：从仅支持非流式合成适合新闻播报，到cosyvoice2的流式，非流式统一支持实时对话，再到cosyvoice3的真实场景适配，支持方言，噪声环境。模型参数从0.5B到1.5B。VQ到FSQ再到增强FSQ，逐步释放语音细节的表达能力，这是音质提升的关键。
+2. `场景扩展`：从仅支持非流式合成适合新闻播报，到cosyvoice2的流式，非流式统一支持实时对话，再到cosyvoice3的真实场景适配，支持方言，噪声环境。模型参数从0.5B到1.5B。VQ到FSQ再到增强FSQ，逐步释放语音细节的表达能力，这是音质提升的关键。
 
 下面是三个模型的优化对比一览：
 
@@ -496,15 +500,14 @@ stop_stage=0
 }
 ```
 
-`paimon`:你的说话人身份，这里按照名字来识别会比较方便
+| 参数名称   | 描述 |
+|:------------------- |:-----|
+| paimon |你的**说话人身份(也就是spk_id)**，这里按照名字来识别会比较方便| 
+| zero-shot |推理类型为**零样本生成**对应的文本| 
+| cross-lingual |推理类型为**跨语言生成**对应的文本(我的例子里是中文->英文)| 
+| instruction-zero-shot |推理类型为**方言生成**对应的文本| 
+| sft_inference |推理类型为**微调后的模型**推理文本| 
 
-`zero-shot`:推理类型为零样本生成对应的文本
-
-`cross-lingual`:推理类型为跨语言生成对应的文本
-
-`instruction-zero-shot`:推理类型为方言生成对应的文本
-
-`sft_inference`:推理类型为微调后的模型推理文本
 
 - `--model_dir`:你的模型地址，这里用原始模型地址
 
@@ -1071,17 +1074,18 @@ shutil.copyfile(target_model_path, final_model_path)
 
 其中零样本推理使用的是完全没有微调过的原始模型，SFT则是将`llm`和`flow`都微调过后的结果。下面依次展示原始训练数据中的派蒙语音和零样本推理、微调音频效果对照表。
 
-<table style="width: 100%; border-collapse: collapse;">
+<h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #050505ff; border-bottom: 1px solid #787878ff; width: 100%; font-size: 22px;">游戏内派蒙语音举例参照</h3>
+<table style="width: 100% !important; border-collapse: collapse;">
   <thead>
     <tr>
-      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; min-width: 150px; font-size: 16px;">原始数据编号</th>
-      <th style="padding: 12px 15px; text-align: left; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; min-width: 480px; font-size: 16px; ">音频效果演示 & 游戏文本</th>
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; width: 15%; font-size: 16px;color: #050505ff">原始数据编号</th>
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f8f8f8; font-weight: 600; width: 85%; font-size: 17px; color: #050505ff">音频效果演示 & 游戏文本</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fff; font-size: 16px;">1_4</td>
-      <td style="padding: 12px 15px;  border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #fff;">
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fff; font-size: 16px; width: 15%;">1_4</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-all; background: #fff; width: 85%;">
         <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
           <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/train_data/1_4.wav" type="audio/wav">
         </audio> <br>
@@ -1089,8 +1093,8 @@ shutil.copyfile(target_model_path, final_model_path)
       </td>
     </tr>
     <tr>
-      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fafafa; font-size: 16px;">1_12</td>
-      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-word; background: #fafafa;">
+      <td style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #fafafa; font-size: 16px; width: 15%;">1_12</td>
+      <td style="padding: 12px 15px; border: 1px solid #e0e0e0; word-wrap: break-word; word-break: break-all; background: #fafafa; width: 85%;">
         <audio controls style="width: 100%; max-width: 400px; margin-bottom: 8px;">
           <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/train_data/1_12.wav" type="audio/wav">
         </audio> <br>
@@ -1102,41 +1106,35 @@ shutil.copyfile(target_model_path, final_model_path)
 
 ---
 
-<!-- 外层容器：控制滚动+基础样式（兼容大部分平台） -->
-
-<div style="overflow-x: auto; max-width: 100%; border: 1px solid #cdccccff;">
-<!-- 标题嵌入容器内 -->
-  <h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #333; border-bottom: 1px solid #787878ff;">零样本&微调音频效果对照表</h3>
-  <!-- 表格：标准化写法，避免渲染异常 -->
-  <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
-    <!-- 表头 -->
-    <thead>
-      <tr style="background: #f5f5f5;">
-        <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0;">Text</th>
-        <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0;">Zero-Shot</th>
-        <th style="padding: 8px 12px; text-align: left; border: 1px solid #e0e0e0;">SFT(llm+flow)</th>
-      </tr>
-    </thead>
-    <!-- 表体 -->
-    <tbody>
-      <tr>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 230px;">卖唱的怎么又跑去喝酒了！</td>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/zero-shot/zero_shot_0.wav" type="audio/wav">  </audio></td>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/llm_flow/paimon_sft_inference_0.wav" type="audio/wav">  </audio></td>
-      </tr>
-      <tr>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 230px;">你知道昨天那个新闻吗？</td>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/zero-shot/zero_shot_1.wav" type="audio/wav">  </audio></td>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/llm_flow/paimon_sft_inference_1.wav" type="audio/wav">  </audio></td>
-      </tr>
-      <tr>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 230px;">音频大模型是用海量声音数据训练、能一次性听懂生成说话音乐噪声的“万能声学大脑”。</td>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/zero-shot/zero_shot_2.wav" type="audio/wav">  </audio></td>
-        <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/llm_flow/paimon_sft_inference_2.wav" type="audio/wav">  </audio></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<h3 style="padding: 12px 16px; margin: 0; text-align: center; color: #050505ff; border-bottom: 1px solid #787878ff; width: 100%; font-size: 22px;">零样本&微调音频效果对照表</h3>
+<table style="width: 100%; border-collapse: collapse;">
+  <!-- 表头 -->
+  <thead>
+    <tr style="background: #f5f5f5;">
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: 600; min-width: 200px; font-size: 16px;color: #050505ff">Text</th>
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: 600; min-width: 200px; font-size: 16px;color: #050505ff">Zero-Shot</th>
+      <th style="padding: 12px 15px; text-align: center; border: 1px solid #e0e0e0; background: #f5f5f5; font-weight: 600; min-width: 200px; font-size: 16px;color: #050505ff">SFT(llm+flow)</th>
+    </tr>
+  </thead>
+  <!-- 表体 -->
+  <tbody>
+    <tr>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 230px;">卖唱的怎么又跑去喝酒了！</td>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/zero-shot/zero_shot_0.wav" type="audio/wav">  </audio></td>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/llm_flow/paimon_sft_inference_0.wav" type="audio/wav">  </audio></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 230px;">你知道昨天那个新闻吗？</td>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/zero-shot/zero_shot_1.wav" type="audio/wav">  </audio></td>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/llm_flow/paimon_sft_inference_1.wav" type="audio/wav">  </audio></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;word-wrap: break-word; word-break: break-all; max-width: 230px;">音频大模型是用海量声音数据训练、能一次性听懂生成说话音乐噪声的“万能声学大脑”。</td>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/zero-shot/zero_shot_2.wav" type="audio/wav">  </audio></td>
+      <td style="padding: 8px 12px; border: 1px solid #e0e0e0;"><audio controls style="width: 280px;"> <source src="https://github.com/828Tina/cosyvoice-paimon-sft/raw/main/examples/audios/paimon_inference/llm_flow/paimon_sft_inference_2.wav" type="audio/wav">  </audio></td>
+    </tr>
+  </tbody>
+</table>
 
 以上三段文字都是我写的自定义文本：
 
