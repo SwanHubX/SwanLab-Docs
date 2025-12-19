@@ -304,6 +304,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
         { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
         { text: 'Ray', link: 'integration-ray' },
+        { text: 'RLinf', link: 'integration-rlinf' },
         { text: 'ROLL', link: 'integration-roll' },
         { text: 'Sentence Transformers', link: 'integration-sentence-transformers' },
         { text: 'Specforge', link: 'integration-specforge' },

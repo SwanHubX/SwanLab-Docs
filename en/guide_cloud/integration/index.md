@@ -43,6 +43,7 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [AReaL](/en/guide_cloud/integration/integration-areal.html)
 - [ROLL](/en/guide_cloud/integration/integration-roll.html)
 - [NVIDIA-NeMo/RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
+- [RLinf](/en/guide_cloud/integration/integration-rlinf.html)      
 
 ## Others:
 - [Tensorboard](/en/guide_cloud/integration/integration-tensorboard.html)
@@ -54,3 +55,4 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [Omegaconf](/en/guide_cloud/integration/integration-omegaconf.html)
 - [OpenAI](/en/guide_cloud/integration/integration-openai.html)
 - [ZhipuAI](/en/guide_cloud/integration/integration-zhipuai.html)
+- [Specforge](/en/guide_cloud/integration/integration-specforge.html)
