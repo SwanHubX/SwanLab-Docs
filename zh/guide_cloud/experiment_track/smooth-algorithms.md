@@ -10,14 +10,14 @@
 
 SwanLab支持多种平滑算法：
 
--  [指数移动平均 (EMA) 平滑](#time-weighted-ema)
--  [高斯平滑](#gaussian-smoothing)
--  [运行平均平滑](#running-average-smoothing)
+- [时间加权指数移动平均 (EMA) 平滑](#time-weighted-ema)
+- [高斯平滑](#gaussian-smoothing)
+- [运行平均平滑](#running-average-smoothing)
 
 
 ## Time Weighted EMA
 
-时间加权指数移动平均 (Time Weighted EMA) 平滑算法是一种通过指数衰减先前数据点的权重来平滑时间序列数据的技术。有关该技术的详细信息，请参阅指数平滑 。权重值范围为 0 到 1。该算法还添加了一个去偏项，以避免时间序列中早期值偏向于零。
+时间加权指数移动平均 (Time Weighted EMA) 平滑算法是一种通过指数衰减先前数据点的权重来平滑时间序列数据的技术。有关该技术的详细信息，请参阅[指数平滑](https://en.wikipedia.org/wiki/Exponential_smoothing)。权重值范围为 0 到 1。该算法还添加了一个去偏项，以避免时间序列中早期值偏向于零。
 
 TWEMA 算法考虑了线上的点密度（`x` 轴上单位范围内 `y` 值的数量）。这使得在同时显示多条具有不同特征的线时，能够实现一致的平滑效果。
 
@@ -47,7 +47,7 @@ return yValues.map((yPoint, index) => {
 
 ## Running Average
 
-移动平均是一种平滑算法，它将给定 `x` 值前后窗口内点的平均值替换为当前点。参见维基百科上的[“箱型滤波器”](https://en.wikipedia.org/wiki/Moving_average) 。移动平均的选定参数告诉权重和偏差在计算移动平均时要考虑的点数。
+移动平均是一种平滑算法，它将给定 `x` 值前后窗口内点的平均值替换为当前点。参见维基百科上的[“箱型滤波器”](https://en.wikipedia.org/wiki/Moving_average)。移动平均的选定参数告诉权重和偏差在计算移动平均时要考虑的点数。
 
 如果你的点在 `x` 轴上分布不均匀，可以考虑使用高斯平滑法。
 

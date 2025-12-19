@@ -13,7 +13,7 @@
 
 > 参考文档：https://docs.sglang.io/SpecForge/basic_usage/training.html#experiment-tracking
 
-只需要在SpecFoge提供的 shell 脚本的命令行中添加 `--report-to` 参数，并传入 `swanlab` 即可。
+只需要在SpecForge提供的 shell 脚本的命令行中添加 `--report-to` 参数，并传入 `swanlab` 即可。
 
 ```bash {13}
 torchrun \

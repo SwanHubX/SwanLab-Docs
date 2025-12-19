@@ -16,7 +16,7 @@ SwanLab supports various smoothing algorithms:
 
 ## Time-Weighted EMA
 
-The Time-Weighted Exponential Moving Average (Time-Weighted EMA) smoothing algorithm is a technique that smooths time-series data by exponentially decaying the weight of previous data points. For detailed information about this technique, refer to Exponential Smoothing. The weight value ranges from 0 to 1. This algorithm also includes a debias term to prevent early values in the time series from being biased toward zero.
+The Time-Weighted Exponential Moving Average (Time-Weighted EMA) smoothing algorithm is a technique that smooths time-series data by exponentially decaying the weight of previous data points. For detailed information about this technique, refer to [Exponential Smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing). The weight value ranges from 0 to 1. This algorithm also includes a debias term to prevent early values in the time series from being biased toward zero.
 
 The TWEMA algorithm takes into account the point density on the line (the number of `y` values per unit range on the `x`-axis). This ensures consistent smoothing when displaying multiple lines with different characteristics simultaneously.
 
