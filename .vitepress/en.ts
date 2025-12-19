@@ -269,7 +269,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Specforge', link: 'integration-specforge'},
       { text: 'Stable Baseline3', link: 'integration-sb3' },
       { text: 'Tensorboard', link: 'integration-tensorboard'},
-      { text: 'Torch-rechub', link: 'integration-torch-rechub'},
     ]
   },
   {
