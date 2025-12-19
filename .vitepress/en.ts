@@ -154,13 +154,13 @@ function sidebarGuideCloud(): SidebarItemEx[] {
           { text: 'Log Confusion Matrix', link: 'experiment_track/compute_metric/log-confusion-matrix' },
         ]
       },
+      { text: 'Smooth line plots', link: 'experiment_track/smooth-algorithms' },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },
       { text: 'Jupyter Notebook', link: 'experiment_track/jupyter-notebook' },
-      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
       { text: 'Limitations and Performance', link: 'experiment_track/limit-and-performance' },
       { text: 'FAQ', link: 'experiment_track/FAQ' },
     ]
@@ -175,6 +175,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
       { text: 'Avoid API key conflicts', link: 'experiment_track/api-key-conflict' },
       { text: 'Use OpenAPI to get experiment data', link: 'experiment_track/use-openapi' },
       { text: 'Webhook setup', link: 'experiment_track/webhook-setup' },
+      { text: 'Experiment metadata', link: 'experiment_track/experiment-metadata' },
     ]
   },
   {
