@@ -5,11 +5,13 @@ SwanLab在跟踪实验的过程中，会**自动监控**机器的硬件资源情
 | 硬件 | 信息记录 | 资源监控 | 脚本 |
 | --- | --- | --- | --- |
 | 英伟达GPU | ✅ | ✅ | [nvidia.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/nvidia.py) |
+| AMD GPU | ✅ | ✅ | [amd.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/amd.py) |
 | 昇腾NPU | ✅ | ✅ | [ascend.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/npu/ascend.py) |
 | 寒武纪MLU | ✅ | ✅ | [cambricon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/mlu/cambricon.py) |
 | 昆仑芯XPU | ✅ | ✅ | [kunlunxin.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/xpu/kunlunxin.py) |
 | 摩尔线程GPU | ✅ | ✅ | [moorethreads.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/moorethreads.py) |
 | 沐曦GPU | ✅ | ✅ | [metax.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/metax.py) |
+| 天数智芯GPU | ✅ | ✅ | [tianshuchip.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/gpu/tianshuchip.py) |
 | 海光DCU | ✅ | ✅ | [hygon.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/dcu/hygon.py) |
 | CPU | ✅ | ✅ | [cpu.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/cpu.py) |
 | 内存 | ✅ | ✅ | [memory.py](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/run/metadata/hardware/memory.py) |
@@ -49,6 +51,22 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 | GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
 | GPU Power Usage (W) | **GPU 功耗**，表示此GPU的功耗，以瓦特为单位。|
 | GPU Time Spent Accessing Memory (%) | **GPU 内存访问时间**，表示此GPU在执行任务时，花费在访问 GPU 内存（显存）上的时间百分比。|
+
+<br>
+
+## GPU（AMD）
+
+<img src="./system-monitor/amd.png" alt="AMD GPU" width="50%">
+
+> 在多卡机器上，每个GPU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |  
+|--------|------------|  
+| GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
+| GPU Memory Allocated (MB) | **GPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
+| GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
+| GPU Power Usage (W) | **GPU 功耗**，表示此GPU的功耗，以瓦特为单位。|
 
 <br>
 
@@ -121,6 +139,23 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 ![](./system-monitor/metax.png)
 
 > 在多卡机器上，每个沐曦GPU的资源情况都会单独记录，最终在图表中展示多条图线。
+
+| 指标 | 描述 |     
+|--------|------------|  
+| GPU Utilization (%) | **GPU 利用率**，表示此GPU的计算资源占用百分比。|
+| GPU Memory Allocated (MB) | **GPU 显存使用率**，表示此GPU的显存占用量，以MB为单位。该指标对应图表的纵坐标上限为所有GPU中的最大总显存。|
+| GPU Memory Allocated (%) | **GPU 显存使用率**，表示此GPU的显存占用百分比。|
+| GPU Temperature (℃) | **GPU 温度**，表示此GPU的温度，以摄氏度为单位。|
+| GPU Power (W) | **GPU 功率**，表示此GPU的功率，以瓦特为单位。|
+
+<br>
+
+## GPU（天数智芯）
+
+![](./system-monitor/tianshuchip.png)
+
+> 在多卡机器上，每个天数智芯GPU的资源情况都会单独记录，最终在图表中展示多条图线。
+
 
 | 指标 | 描述 |     
 |--------|------------|  
