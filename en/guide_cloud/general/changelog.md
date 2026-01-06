@@ -5,6 +5,14 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.7.6 - 2026.01.06
+
+**🚀 New Features**
+- Added support for AMD ROCm hardware monitoring
+- Added support for TianShu hardware monitoring
+- Optimized SDK connection performance, improving stability
+
+
 ## v0.7.4 - 2025.12.14
 
 Released SwanLab Kubernetes version, deployment instructions see [this document](/en/guide_cloud/self_host/kubernetes-deploy.md)

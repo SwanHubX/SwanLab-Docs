@@ -88,7 +88,7 @@ As shown above, `self-hosted` cannot be directly accessed via an external networ
 Here is an example of accessing it locally; open a terminal and execute:
 
 ```bash
-kubectl port-forward --namespace self-hosted svc/self-hosted 8080:80
+kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 ```
 
 Then you can access it in your browser at: `http://127.0.0.1:8080` to see the SwanLab page:
@@ -409,16 +409,16 @@ helm rollback self-hosted x.x.x -n xxx
 
 SwanLab's application services currently do not support integration with `Prometheus`. This feature is under development, please stay tuned!
 
-### 4. FAQ
+## 4. FAQ
 
-#### Does deploying the service require elevated permissions (such as deploying CRDs or Controllers)?
+### Does deploying the service require elevated permissions (such as deploying CRDs or Controllers)?
 No.
 
-#### Can the original service remain online during data migration?
+### Can the original service remain online during data migration?
 The original service must be stopped during migration. If the original service is not stopped, data gaps will occur.  
 In such cases, you may consider using [swanlab sync](/en/api/cli-swanlab-sync.md) to upload data to the new service.
 
-#### If the cluster cannot access the public internet, how can images be downloaded and updated?
+### If the cluster cannot access the public internet, how can images be downloaded and updated?
 You can manually download the swanlab service images and upload them to an internal image registry, including:
 
 - `service.gateway.image`: SwanLab gateway service, the entry point for the entire application  
@@ -435,7 +435,7 @@ You can manually download the swanlab service images and upload them to an inter
 - `dependencies.s3.image`: MinIO object storage image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
 - `dependencies.clickhouse.image`: ClickHouse database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)
 
-#### What storage components are used by SwanLab and what are their purposes?
+### What storage components are used by SwanLab and what are their purposes?
 All SwanLab storage components and their purposes are as follows:
 
 - `service.house.persistence`  

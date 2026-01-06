@@ -57,7 +57,7 @@ export const en = defineConfig({
         activeMatch: '/en/api/',
         },
       { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
-      { text: 'v0.7.4',  items: [
+      { text: 'v0.7.6',  items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
         { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -155,8 +155,10 @@ function sidebarGuideCloud(): SidebarItemEx[] {
         ]
       },
       { text: 'Smooth line plots', link: 'experiment_track/smooth-algorithms' },
+      { text: 'Log distributed training metric', link: 'experiment_track/log-distributed-training' },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
+      { text: 'Group experiments', link: 'experiment_track/grouping' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },

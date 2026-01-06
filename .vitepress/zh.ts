@@ -70,7 +70,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.7.4',  items: [
+      { text: 'v0.7.6',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -182,10 +182,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
             { text: '混淆矩阵', link: 'experiment_track/compute_metric/log-confusion-matrix' },
           ]
         },
-        { text: '折线图平滑', link: 'experiment_track/smooth-algorithms' },
-        { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag'},
+        { text: '记录分布式训练指标', link: 'experiment_track/log-distributed-training'},
         { text: '查看实验结果', link: 'experiment_track/view-result' },
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+        { text: '折线图平滑', link: 'experiment_track/smooth-algorithms' },
+        { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag'},
+        { text: '分组管理实验', link: 'experiment_track/grouping' },
         { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
         { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
