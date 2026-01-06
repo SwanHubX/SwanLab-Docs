@@ -56,17 +56,3 @@ To group experiments by one or more columns:
 2. Click the name of one or more columns.
 
 ![](./grouping/ui-set-grouping.png)
-
-## Moving Experiments Between Groups
-
-### 1. Move a Single Experiment's Group
-
-SwanLab supports configuring an experiment's group by clicking on the `Group` column for that experiment.
-
-<video controls src="./grouping/move-grouping.mp4"></video>
-
-### 2. Batch Move Multiple Experiments' Groups
-
-SwanLab supports quick batch move operations on the `Group` column for multiple experiments.
-
-<video controls src="./grouping/batch-move-grouping.mp4"></video>
