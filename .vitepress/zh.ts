@@ -182,6 +182,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
             { text: '混淆矩阵', link: 'experiment_track/compute_metric/log-confusion-matrix' },
           ]
         },
+        { text: '记录分布式训练指标', link: 'experiment_track/log-distributed-training'},
         { text: '查看实验结果', link: 'experiment_track/view-result' },
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
         { text: '折线图平滑', link: 'experiment_track/smooth-algorithms' },

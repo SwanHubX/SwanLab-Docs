@@ -155,8 +155,10 @@ function sidebarGuideCloud(): SidebarItemEx[] {
         ]
       },
       { text: 'Smooth line plots', link: 'experiment_track/smooth-algorithms' },
+      { text: 'Log distributed training metric', link: 'experiment_track/log-distributed-training' },
       { text: 'System Hardware Monitoring', link: 'experiment_track/system-monitor' },
       { text: 'Set tag', link: 'experiment_track/set-experiment-tag' },
+      { text: 'Group experiments', link: 'experiment_track/grouping' },
       { text: 'View result', link: 'experiment_track/view-result' },
       { text: 'Finish experiment', link: 'experiment_track/finish-experiment' },
       { text: 'Email Notifications', link: 'experiment_track/send-notification' },

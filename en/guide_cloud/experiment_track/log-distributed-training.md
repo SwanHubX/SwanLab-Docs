@@ -1,19 +1,19 @@
 # Logging Distributed Training Metrics
 
-SwanLab supports logging distributed training experiments, helping you track training processes across multiple GPUs or machines.
+SwanLab supports logging metrics from distributed training experiments, helping you track training progress across multiple GPUs or machines.
 
 ## Distributed Training Scenarios
 
-In distributed training, training tasks typically run concurrently across multiple processes, GPUs, or even multiple machines. SwanLab provides the following methods for logging these training metrics:
+In distributed training, training tasks typically run simultaneously across multiple processes, GPUs, or even multiple machines. SwanLab provides the following methods to log these training metrics:
 
-1. **Log main process only**: Only log metrics from rank 0 (main/coordinator process)
-2. **Log each process separately**: Each process creates its own run, using the `group` parameter to associate them into the same experiment
+1. **Log only from the main process**: Only log metrics from rank 0 (main/coordinator process)
+2. **Log separately from each process**: Each process creates its own experiment, using the `group` parameter to associate them under the same experiment
 
-> **Note**: SwanLab does not support logging all processes to a single run. Each process must be logged as a separate run.
+> **Note**: SwanLab will support logging all processes to a single experiment in the future. Currently, all processes need to be logged as separate experiments.
 
-## Method 1: Log Main Process Only
+## Method 1: Log Only from Main Process
 
-In distributed training frameworks like PyTorch DDP, you typically only need to log metrics from the main process (rank 0), as loss values, gradients, and parameters are available on rank 0.
+In distributed training frameworks like PyTorch DDP, you typically only need to log metrics from the main process (rank 0), since loss values, gradients, and parameters are available on the main process.
 
 ```python
 import os
@@ -28,25 +28,25 @@ def main():
     local_rank = int(os.environ['LOCAL_RANK'])
     torch.cuda.set_device(local_rank)
 
-    # Only initialize SwanLab on the main process
+    # Initialize SwanLab only on main process
     if local_rank == 0:
         swanlab.init(
-            experiment="distributed_training",
-            experiment_id="exp_001"
+            project="distributed_training",
+            experiment_name="distributed_training",
         )
 
     # Training loop
     for epoch in range(10):
         # ... training code ...
 
-        # Only log metrics on the main process
+        # Log metrics only on main process
         if local_rank == 0:
             swanlab.log({
                 "loss": loss.item(),
                 "accuracy": accuracy.item()
             })
 
-    # Training finished
+    # Training complete
     if local_rank == 0:
         swanlab.finish()
 
@@ -54,9 +54,9 @@ if __name__ == "__main__":
     main()
 ```
 
-## Method 2: Log Each Process Separately
+## Method 2: Log Separately from Each Process
 
-Each process creates its own run, using the `group` parameter to associate them into the same experiment group, and the `job_type` parameter to distinguish different types of nodes (e.g., "main" and "worker").
+Each process creates its own experiment, using the `group` parameter to associate them under the same experiment group, and the `job_type` parameter to distinguish different types of nodes (e.g., "main" and "worker").
 
 ```python
 import os
@@ -71,7 +71,7 @@ def setup(rank, world_size):
     dist.init_process_group(backend='nccl', rank=rank, world_size=world_size)
 
 def cleanup():
-    """Cleanup distributed training environment"""
+    """Clean up distributed training environment"""
     dist.destroy_process_group()
 
 def train(rank, world_size, group_name):
@@ -79,9 +79,10 @@ def train(rank, world_size, group_name):
     setup(rank, world_size)
     torch.cuda.set_device(rank)
 
-    # Each process initializes its own run
+    # Each process initializes its own experiment
     swanlab.init(
-        experiment="distributed_experiment",
+        project="distributed_training",
+        experiment_name="distributed_experiment",
         group=group_name,  # Use the same group name to associate with the same experiment
         job_type="train" if rank == 0 else "worker"  # Distinguish main process from worker processes
     )
@@ -102,7 +103,7 @@ def train(rank, world_size, group_name):
 
 def main():
     world_size = 2  # Use 2 processes
-    group_name = f"exp_{swanlab.run.get_uuid()[:8]}"
+    group_name = f"exp_{swanlab.run.public.run_id[:8]}"
 
     # Launch using torchrun or mpirun
     import torch.multiprocessing as mp
@@ -124,7 +125,7 @@ In addition to setting in code, you can also use environment variables to config
 ```python
 import os
 
-# Set in the main process
+# Set in main process
 os.environ["SWANLAB_GROUP"] = "distributed_exp_001"
 os.environ["SWANLAB_JOB_TYPE"] = "train"
 
@@ -132,14 +133,14 @@ import swanlab
 swanlab.init(experiment="distributed_experiment")
 ```
 
-Supported environment variables for distributed training:
+Supported distributed training environment variables:
 
 | Environment Variable | Description |
 |---------------------|-------------|
-| `SWANLAB_GROUP` | Experiment group name, used to associate multiple runs |
-| `SWANLAB_JOB_TYPE` | Task type, such as "train", "eval", "inference" |
-| `SWANLAB_NAME` | Run name |
-| `SWANLAB_DESCRIPTION` | Run description |
+| `SWANLAB_GROUP` | Experiment group name for associating multiple experiments |
+| `SWANLAB_JOB_TYPE` | Job type, e.g., "train", "eval", "inference" |
+| `SWANLAB_NAME` | Experiment name |
+| `SWANLAB_DESCRIPTION` | Experiment description |
 
 ## Multi-Node Training
 
@@ -170,19 +171,19 @@ swanlab.finish()
 
 ### 1. Metric Logging Order
 
-SwanLab does not guarantee ordered metric logging across processes. It is recommended to handle synchronization logic at the application layer.
+SwanLab does not guarantee the order of multi-process metric logging. It is recommended to handle synchronization logic at the application layer.
 
-### 2. Hanging at Startup
+### 2. Stuck at Startup
 
-Ensure that `swanlab.finish()` is correctly called in all processes to end logging.
+Ensure `swanlab.finish()` is correctly called in all processes to end logging.
 
 ### 3. Resource Usage
 
-In multi-process scenarios, each process creates a separate network connection. Ensure the system has enough file descriptors and network resources.
+In multi-process scenarios, each process creates its own network connection. Ensure the system has sufficient file descriptors and network resources.
 
 ## Best Practices
 
 1. **Use consistent group names**: Ensure all processes in the same distributed training task use the same group
 2. **Set job_type**: Use job_type to distinguish different types of processes for easier filtering and analysis
 3. **Log rank information**: Include rank information in logs to distinguish metrics from different processes
-4. **End runs properly**: Call `swanlab.finish()` after training to ensure data is uploaded correctly
+4. **End experiments properly**: Call `swanlab.finish()` after training to ensure data is uploaded correctly
