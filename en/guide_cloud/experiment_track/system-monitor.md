@@ -155,8 +155,6 @@ SwanLab monitors GPU, NPU, CPU, system memory, disk I/O, and network metrics rel
 
 ## GPU (Iluvatar)
 
-![](./system-monitor/iluvatar.png)
-
 > On multi-GPU machines, each GPU's metrics are recorded separately.
 
 | Metric | Description |  

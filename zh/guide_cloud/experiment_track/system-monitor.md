@@ -152,8 +152,6 @@ SwanLab 采集的硬件资源情况涵盖了GPU、NPU、CPU、系统内存、硬
 
 ## GPU（天数智芯）
 
-![](./system-monitor/tianshuchip.png)
-
 > 在多卡机器上，每个天数智芯GPU的资源情况都会单独记录，最终在图表中展示多条图线。
 
 
