@@ -111,7 +111,7 @@ swanlab convert -t mlflow --mlflow-url <MLFLOW_URL> --mlflow-exp <MLFLOW_EXPERIM
 - `-t`: 转换类型，可选wandb、tensorboard和mlflow。
 - `-p`: SwanLab项目名。
 - `-w`: SwanLab工作空间名。
-- `--cloud`: (bool) 是否上传模式为"cloud"，默认为True
+- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
 - `-l`: logdir路径。
 - `--mlflow-url`: mlflow服务的url链接。
 - `--mlflow-exp`: mlflow实验ID。
@@ -134,5 +134,5 @@ mlflow_converter.run(tracking_uri="http://127.0.0.1:5000", experiment="1")
 
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
-- `cloud`: (bool) 是否上传模式为"cloud"，默认为True。
-- `logdir`: wandb Run（项目下的某一个实验）的id。
+- `mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]。
+- `logdir`: logdir路径。

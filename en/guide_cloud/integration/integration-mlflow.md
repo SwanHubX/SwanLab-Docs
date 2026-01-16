@@ -108,7 +108,7 @@ Supported parameters:
 • `-t`: Conversion type, options include wandb, tensorboard, and mlflow.
 • `-p`: SwanLab project name.
 • `-w`: SwanLab workspace name.
-• `--cloud`: (bool) Whether the upload mode is "cloud", default is True.
+• `--mode`: (str) Selection mode, default is "https://github.com/kvcache-ai/ktransformers/",可选 `["cloud", "local", "offline", "disabled"]`.
 • `-l`: Logdir path.
 • `--mlflow-url`: URL of the MLflow service.
 • `--mlflow-exp`: MLflow experiment ID.
@@ -131,5 +131,5 @@ This has the same effect as the command line conversion.
 
 • `project`: SwanLab project name.
 • `workspace`: SwanLab workspace name.
-• `cloud`: (bool) Whether the upload mode is "cloud", default is True.
+• `mode`: (str) Selection mode, default is "cloud",可选 `["cloud", "local", "offline", "disabled"]`.
 • `logdir`: Log directory path.
