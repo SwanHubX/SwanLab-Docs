@@ -177,6 +177,7 @@ SwanLab 面向人工智能研究者，设计了友好的Python API 和漂亮的U
 - [AReaL](/guide_cloud/integration/integration-areal.html)
 - [ROLL](/guide_cloud/integration/integration-roll.html)
 - [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
+- [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
 
 
 **其他框架：**

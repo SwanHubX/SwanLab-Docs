@@ -164,7 +164,7 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [AReaL](/guide_cloud/integration/integration-areal.html)  
 - [ROLL](/guide_cloud/integration/integration-roll.html)  
 - [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
-
+- [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
 
 **Other Frameworks**:  
 - [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)  
