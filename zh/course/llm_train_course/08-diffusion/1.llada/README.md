@@ -43,9 +43,69 @@
 
 ## LLaDA原理
 
+本次教程我们使用`LLaDA`模型作为基座模型来实现预训练和微调，在查看`LLaDA`原文的时候，发现了另一篇讲述`diffusion`模型在数据量有限的情况下如何和`autoregressive`模型靠齐，甚至更优，因此原理篇我们会分别讲述`LLaDA`原文以及`Data-Constrained Scaling Laws`角度来讲述，分别参考如下论文，有兴趣的小伙伴可以看看原文：
 
+- [Large Language Diffusion Models](https://arxiv.org/abs/2502.09992)
+- [Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/abs/2507.15857)
+- [Scaling Data-Constrained Language Models](https://arxiv.org/abs/2305.16264)
 
 ### LLaDA原文解读
+
+关于扩散模型，我们最常用的还是图像领域的扩散模型，通常来说，图像领域的扩散模型有两个过程，分别是反向加噪过程和正向扩散过程
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example13.png" style="width:100%">
+  </figure>
+</div>
+
+图像领域都是像素级的扩散，并且加噪过程会根据时间随机添加高斯噪声，但是在文本领域，扩散模型很少应用，传统的以及最新的、SOTA模型基本都是自回归架构，因此论文作者思考扩散模型是否能够应用到文本领域。
+
+事实上，作者认为，自回归模型表现出的强大的指令遵从和上下文学习能力应该并不是自回归模型的专属，其他模型也可以做到，但是由于自回归模型体现出的性能太超模了，导致下意识的以为“指令遵从和上下文学习”是自回归模型带来的，因此作者验证了扩散模型在指令遵从和上下文学习能力上也可以做到自回归模型能做到的。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example8.png" style="width:100%">
+  </figure>
+</div>
+
+和图像领域的扩散模型相似，`LLaDA`在训练过程中也是反向加噪以及正向去噪的过程，不过有所区别的是，`LLaDA`无论是预训练还是微调，加噪过程都是一次性完成的，而且和图像加噪不同，`LLaDA`是针对tokens来进行随机加噪，或者说覆盖`[MASK]`标签，论文中给出的原理图已经很清晰的描述了出来：
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example9.png" style="width:100%">
+  </figure>
+</div>
+
+推理就是将所有的`[MASK]`标签按照**低置信度重掩码**的方式生成`[MASK]`标签部分。**低置信度重掩码**简单来说就是每个step生成的tokens会计算其置信度，即使历史steps中生成的tokens也会因为置信度不符合要求会被要求重新生成，也就是我们说的***纠错***，这是自回归架构做不到的。
+
+
+*下面我们分别按照预训练、微调以及推理部分详细说明其原理*：
+
+#### 预训练
+
+我们知道对于自回归模型，LLMs 的目标是通过最大似然估计优化模型分布$p_{\theta}(\cdot)$或等价地最小化两个分布之间的 KL 散度，从而捕捉真实但未知的语言分布$p_{data}(\cdot)$，也就是论文中公式（1）：
+$$\max_{\theta}\mathbb{E}_{p_{data}(x)}\log{p_{\theta}}(x)\Leftrightarrow \min_{\theta} \mathrm{KL}(p_{data}(x)||p_{\theta}(x))$$
+
+主流方法依赖于自回归建模（ARM）—— 通常被称为 “下一个 token 预测” 范式 —— 来定义模型分布，其表达式为：
+
+$$p_{\theta}(x)=p_{\theta}(x^1)\prod_{i=2}^{L}p_{\theta}(x^i|x^1,...,x^{i-1})$$
+
+LLaDA核心是一个掩码预测器，是一个参数化模型$p_{\theta}(\cdot|x_t)$，以$x_t$作为输入，其中$x_t$就是训练时的文本内容，预训练是`text`，微调则是`response`部分，该部分可同时预测所有被掩码的标记（记为 M）。
+
+同时预测所有被掩码的标记并不意味着一次性会全部预测，事实上，这是一个循序渐进的过程，经过多轮`steps`之后，消除`[MASK]`，不过每一轮`step`具体预测哪一个`[MASK]`并不固定，这是和自回归不一样的，因为我们知道自回归模型只会预测下一个token。
+
+模型仅在被掩码标记上计算的交叉熵损失进行训练，公式如下：
+
+$$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,x_0,x_t}\left [  \frac{1}{t}\sum^{L}_{i=1} \mathbf{1}[x_t^i=\mathrm{M}]\log p_{\theta}(x_0^i|x_t)\right ] $$
+
+其中，$x_0$​ 为训练样本，t是从[0, 1]区间均匀采样的连续随机变量，$x_t$来自前向过程的采样结果，L 为序列长度。指示函数$\mathbf{1}[\cdot]$确保损失仅针对被掩码的标记进行计算。
+
+训练过程中，对于训练序列$x_0$，通过在$t\in [0,1]$的概率中随机采样，以t的概率对序列中每个token进行独立掩码操作，得到$x_t$，并通过蒙特卡洛方法估计损失，用于随机梯度下降。
+
+#### 微调
+
+#### 推理
 
 ### DS模型训练scaling law论文解读
 
