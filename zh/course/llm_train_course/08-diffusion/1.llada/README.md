@@ -30,7 +30,11 @@
 
 ## 简介
 
-缺图
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example7.png" style="width:100%">
+  </figure>
+</div>
 
 在前面的章节中，我们展示了很多关于自回归模型的训练方法，哪怕是多模态模型，其中LLM部分也是基于自回归模型的（第六章）。在我们的课程里并没有完整的关于diffusion模型，也就是扩散模型的训练方法。本次教程我们就来实现diffusion模型的预训练以及微调，其中**微调为核心，预训练仅做尝试以及验证相关论文中的论点即可。**
 
@@ -38,6 +42,8 @@
 
 
 ## LLaDA原理
+
+
 
 ### LLaDA原文解读
 
@@ -59,7 +65,7 @@ cd llada-pretrain-sft
 - 安装环境
 
 ```bash
-pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 - 硬件要求
@@ -456,7 +462,40 @@ save_total_limit: 2
 其中预训练和`llada`一样，设置一个100M参数量的模型来进行训练，步骤和`llada`的一样，只不过要运行下面的代码：
 
 ```bash
-缺代码
+bash scripts/train-qwen-pt.sh
+```
+
+需要注意的是，由于`Qwen`和`llada`结构不一致，因此在设计100M参数量的时候可能会稍微有点区别，因此这里给出我的`config.json`文件的参数设置：
+
+```json
+{
+  "architectures": [
+    "Qwen2ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "bos_token_id": 151643,
+  "eos_token_id": 151643,
+  "hidden_act": "silu",
+  "hidden_size": 448,
+  "initializer_range": 0.02,
+  "intermediate_size": 768,
+  "max_position_embeddings": 2048,
+  "max_window_layers": 6,
+  "model_type": "qwen2",
+  "num_attention_heads": 7,
+  "num_hidden_layers": 6,
+  "num_key_value_heads": 7,
+  "rms_norm_eps": 1e-06,
+  "rope_theta": 10000.0,
+  "sliding_window": 2048,
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.40.1",
+  "use_cache": true,
+  "use_mrope": false,
+  "use_sliding_window": false,
+  "vocab_size": 152064
+}
 ```
 
 其次是微调，对于`Qwen`模型的微调我们已经设置了很多教程，如果有兴趣的小伙伴可以查看我的另外一篇专门讲[lora训练](https://docs.swanlab.cn/course/llm_train_course/03-sft/7.deepseek-lora/README.html)的文章，这里只需要运行下面的启动文件就行：
