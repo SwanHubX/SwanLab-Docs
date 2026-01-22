@@ -1,6 +1,6 @@
 # RLinf
 
-[RLinf](https://github.com/RLinf-Team/RLinf) is an open-source framework for Reinforcement Learning training, focused on supporting the reinforcement learning training of large language models (LLMs) and vision-language models (VLAs). RLinf provides advanced features such as unified programming interfaces, flexible execution modes, automatic scheduling, and elastic communication, supporting various reinforcement learning algorithms like PPO and GRPO.
+[RLinf](https://github.com/RLinf/RLinf) is an open-source framework for Reinforcement Learning training, focused on supporting the reinforcement learning training of large language models (LLMs) and vision-language models (VLAs). RLinf provides advanced features such as unified programming interfaces, flexible execution modes, automatic scheduling, and elastic communication, supporting various reinforcement learning algorithms like PPO and GRPO.
 
 ![rlinf-logo](./rlinf/logo.svg)
 

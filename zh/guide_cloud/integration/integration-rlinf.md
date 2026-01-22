@@ -1,6 +1,6 @@
 # RLinf
 
-[RLinf](https://github.com/RLinf-Team/RLinf) 是一个用于强化学习（Reinforcement Learning）训练的开源框架，专注于支持大规模语言模型（LLM）和视觉语言模型（VLA）的强化学习训练。RLinf 提供了统一的编程接口、灵活的执行模式、自动调度和弹性通信等高级特性，支持多种强化学习算法如 PPO、GRPO 等。
+[RLinf](https://github.com/RLinf/RLinf) 是一个用于强化学习（Reinforcement Learning）训练的开源框架，专注于支持大规模语言模型（LLM）和视觉语言模型（VLA）的强化学习训练。RLinf 提供了统一的编程接口、灵活的执行模式、自动调度和弹性通信等高级特性，支持多种强化学习算法如 PPO、GRPO 等。
 
 ![rlinf-logo](./rlinf/logo.svg)
 
