@@ -33,13 +33,18 @@
 | `SWANLAB_TAGS` | 实验标签，效果等价于 `swanlab.init(tags=[...])`，如果你想要添加多个tags，写法为`SWANLAB_TAGS="tag1,tag2,tag3"` |
 | `SWANLAB_GROUP` | 实验分组，用于将实验分组以便管理和区分 |
 | `SWANLAB_JOB_TYPE` | 实验任务类型，用于标识当前实验的任务类型（如分类、回归等） |
-| `SWANLAB_DISABLE_GIT` | 是否禁用Git，可选值为 `True`、`False`，当设置为 `True` 时，将不会记录Git信息 |
 
 ## 登录认证
 
 | 环境变量 | 描述 |
 | --- | --- | 
 | `SWANLAB_API_KEY` | 云端 API Key。登录时会首先查找此环境变量，如果不存在，判断用户是否已登录，未登录则进入登录流程。<br>- 如果 `login` 接口传入字符串，此环境变量无效<br>- 如果用户已登录，此环境变量的优先级高于本地存储的登录信息 |
+
+## 行为控制
+
+| 环境变量 | 描述 |
+| --- | --- |
+| `SWANLAB_DISABLE_GIT` | 是否禁用Git，可选值为 `True`、`False`，当设置为 `True` 时，将不会记录Git信息 |
 
 ## 其他
 

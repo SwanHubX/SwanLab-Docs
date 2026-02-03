@@ -33,13 +33,18 @@
 | `SWANLAB_TAGS` | Experiment tags, equivalent to `swanlab.init(tags=[...])`. If you want to add multiple tags, write it as `SWANLAB_TAGS="tag1,tag2,tag3"` |
 | `SWANLAB_GROUP` | Experiment group, used to categorize experiments into different groups for better management and differentiation |
 | `SWANLAB_JOB_TYPE` | Experiment task type, used to identify the current experiment's task type (e.g., classification, regression, etc.) |
-| `SWANLAB_DISABLE_GIT` | Whether to disable Git, possible values: `True`, `False`. When set to `True`, Git information will not be recorded. |
 
 ## Login Authentication
 
 | Environment Variable | Description |
 | --- | --- | 
 | `SWANLAB_API_KEY` | Cloud API Key. During login, this environment variable is checked first. If it doesn't exist, the system checks if the user is already logged in. If not, the login process is initiated.<br>- If a string is passed to the `login` interface, this environment variable is ignored.<br>- If the user is already logged in, this environment variable takes precedence over locally stored login information. |
+
+## Behavior Control
+
+| Environment Variable | Description |
+| --- | --- |
+| `SWANLAB_DISABLE_GIT` | Whether to disable Git, possible values: `True`, `False`. When set to `True`, Git information will not be recorded. |
 
 ## Others
 
