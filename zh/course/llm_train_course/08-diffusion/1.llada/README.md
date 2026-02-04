@@ -36,14 +36,16 @@
   </figure>
 </div>
 
-在前面的章节中，我们展示了很多关于自回归模型的训练方法，哪怕是多模态模型，其中LLM部分也是基于自回归模型的（第六章）。在我们的课程里并没有完整的关于diffusion模型，也就是扩散模型的训练方法。本次教程我们就来实现diffusion模型的预训练以及微调，其中**微调为核心，预训练仅做尝试以及验证相关论文中的论点即可。**
+在前面的章节中，我们展示了很多关于自回归模型的训练方法，哪怕是多模态模型，其中LLM部分也是基于自回归模型的（第六章）。在我们的课程里并没有完整的关于diffusion模型，也就是扩散模型的训练方法。本次教程我们就来实现diffusion模型的预训练以及微调，其中**微调为核心，预训练仅做尝试即可。**
 
 其中扩散模型我们选择LLaDA模型，微调数据集还是采用经典的instruct数据集alpaca，预训练数据集经过多次试验，我们采用C4数据集来进行训练。
 
 
 ## LLaDA原理
 
-本次教程我们使用`LLaDA`模型作为基座模型来实现预训练和微调，在查看`LLaDA`原文的时候，发现了另一篇讲述`diffusion`模型在数据量有限的情况下如何和`autoregressive`模型靠齐，甚至更优，因此原理篇我们会分别讲述`LLaDA`原文以及`Data-Constrained Scaling Laws`角度来讲述，分别参考如下论文，有兴趣的小伙伴可以看看原文：
+本次教程我们使用`LLaDA`模型作为基座模型来实现预训练和微调，在查看`LLaDA`原文的时候，发现了另一篇讲述`diffusion`模型在数据量有限的情况下如何和`autoregressive`模型靠齐，甚至更优，感觉挺有意思的。
+
+因此原理篇我们会分别讲述`LLaDA`原文以及`Data-Constrained Scaling Laws`也就是数据量有限的情况下`diffusion`模型的`scaling law`法则角度来讲述，分别参考如下论文，有兴趣的小伙伴可以看看原文：
 
 - [Large Language Diffusion Models](https://arxiv.org/abs/2502.09992)
 - [Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/abs/2507.15857)
@@ -229,11 +231,11 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 - `steps=2`：进行两轮迭代，从全掩码到无掩码
 - `block_size=4`：表示的是每一块中有多少tokens，正好对应我们给的例子
 
-而根据上述例子中给的结果，总共的`block`数量为$8{\div}4=2$，每个块内都是迭代2两次，具体生成效果就是我们封面展示的：
+而根据上述例子中给的结果，总共的`block`数量为$8{\div}4=2$，每个块内都是迭代2两次，具体生成效果就是我们封面展示的，不过为了适配NPU生成，我按照相同的逻辑自己重新写了一个生成代码，是单轮对话，效果如下：
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example2.gif" style="width:100%">
+    <img src="./picture/output.gif" style="width:100%">
   </figure>
 </div>
 
@@ -263,12 +265,42 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 - 硬件要求
 
-1. $5090个数 \ge 1$
-2. `Pytorch` $\ge$ 2.7，CUDA适应自己的版本，我的是12.8
+1. $NPU个数 \ge 1$
+2. `Pytorch` $\ge$ 2.7，我们要用到`torch_npu`来适应NPU的使用，和`torch`版本要配套
 
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
-由于5090是比较新的GPU，安装环境的时候会有比较多的问题，我在<a href="http://localhost:5173/course/llm_train_course/07-audio/1.cosyvoice-sft/README.html#_1-%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85" target="_blank" rel="noopener">CosyVoice</a>一篇中已经汇总了解决办法，可以前往查看。
+这里我简单说下如何安装<strong>torch和torch_npu</strong>
 </div>
+
+假设我安装的是2.9.0版本的torch，那么运行下面的代码：
+
+```bash
+pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0
+```
+
+然后要找对应配套版本的torch_npu，也就是2.9.0版本的torch_npu，点击这里👉[torch_npu](https://gitcode.com/Ascend/pytorch/releases/v7.3.0-pytorch2.9.0)
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example17.png" style="width:100%">
+  </figure>
+</div>
+
+> 这里需要注意下载torch_npu的时候看清楚python版本
+
+然后在实际使用的时候，直接`import torch_npu`就行，代码如下：
+
+```python
+...
+
+import torch
+import torch_npu
+
+...
+
+```
+
+
 
 ### 2. 数据处理
 
@@ -281,7 +313,9 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">如果想直接预处理数据集的小伙伴，可以直接运行<a href="https://github.com/828Tina/llada-pretrain-sft/blob/main/data.ipynb"target="_blank" rel="noopener">notebook</a>中的代码，原理步骤如下：
 </div>
 
-**SFT训练**下载数据格式参考Alpaca数据集格式:
+**SFT训练**
+
+下载数据格式参考Alpaca数据集格式:
 
 ```python
 Dataset({
@@ -312,6 +346,8 @@ Dataset({
 
 然后保存成Arrow格式到本地磁盘，等训练时可以直接调用。
 
+**预训练**
+
 对于预训练数据集，只要下载的数据集里有`text`标签，可以直接保存到本地不用转换，代码如下：
 
 ```python
@@ -324,7 +360,7 @@ output_path='/data/lxy/diffusion/data/c4-en-train'
 c4_dataset.save_to_disk(output_path)
 ```
 
-预训练之所以可以直接保存text形式内容，是因为在数据预处理阶段直接自动转换成tokens格式，而SFT由于我有个参数`load_preprocessed_data`设置为`True`了（官方默认为False），导致不会自动转换tokens，我不想改源代码，因此直接把数据集在下载阶段就转换好保存的。
+预训练之所以可以直接保存text形式内容，是因为在数据预处理阶段直接自动转换成tokens格式，而SFT由于我有个参数`load_preprocessed_data`设置为`True`了（官方默认为False），意思是提前处理好了，所以不会自动转换tokens，我不想改源代码，因此直接把数据集在下载阶段就转换好保存的。
 
 *我们看下`dllm`的关于数据处理部分的代码：*
 
@@ -381,9 +417,9 @@ dataset = dllm.data.load_sft_dataset(
 
 ### 3. 训练代码
 
-本次教程核心是学会微调，数据集采用经典Alpaca数据集，预训练采用部分C4英文数据集。我们希望教程能够教会完整的训练流程以及测试流程，因此数据集均采用经典通用的数据集。
+本次教程核心是学会`微调`，数据集采用经典Alpaca数据集，`预训练`采用部分C4英文数据集。我们希望教程能够教会完整的训练流程以及测试流程，因此数据集均采用经典通用的数据集。
 
-我将分成两个模块来，为了符合正常的训练流程，教程依次是预训练和微调，代码地址👉[ours](https://github.com/828Tina/llada-pretrain-sft/tree/main)
+我将分成两个模块来，为了符合正常的训练流程，教程依次是`预训练`和`微调`，代码地址👉[ours](https://github.com/828Tina/llada-pretrain-sft/tree/main)
 
 另外，如果有小伙伴想对比自回归模型和掩码扩散模型的区别，可以训练llama模型或者qwen模型作为对比。之所以可以训练llama模型来对比是因为llada的主体部分其实是llama结构，然后掩码不采用自回归模型的上三角形式，我们在[模型文件](https://www.modelscope.cn/models/GSAI-ML/LLaDA-8B-Base/file/view/master/modeling_llada.py?status=1#L659)中可以看到：
 
@@ -411,34 +447,38 @@ return F.scaled_dot_product_attention(
 
 主体的block采用`llama`结构，那么采用`llama`模型对比是很合适的。
 
-而`qwen`作为比较通用的模型，我们经常使用，采用标准自回归模型结构，因此也可以作为对比模型测试对比效果。
+而`qwen`作为比较通用的模型，我们经常使用，采用标准自回归模型结构，因此也可以作为对比模型测试对比效果。本次教程我们使用的就是Qwen模型作为对比模型。
 
 那么接下来我们就开始训练吧，由于我已经整理过代码，因此可以直接运行脚本文件实现，下面简要说下每个文件的含义和用法：
 
 ```python
 ├── configs
-│   ├── llada-8b-sft.yaml
-│   ├── llada-100M-pt.yaml
-│   ├── qwen2.5-7b-alpaca.yaml
-│   ├── ddp.yaml
+│   ├── llada-100M-pt-npu.yaml          # llada预训练超参数设置
+│   ├── llada-8b-sft-npu.yaml           # llada微调超参数设置
+│   ├── qwen2.5-100M-pt-npu.yaml        # qwen预训练超参数设置
+│   ├── qwen2.5-7b-alpaca-npu.yaml      # qwen微调超参数设置
+│   ├── ddp.yaml      # 数据并行分布式训练参数设置
 │   ├── zero2.yaml
+│   ├── multi-npu.yaml   # NPU分布式训练参数设置
 │   └── ...
 ├── dllm
 ├── scripts
-│   ├── train-sft.sh
-│   ├── train-pt.sh
-│   ├── train-qwen.sh
-│   ├── eval.sh
-│   └── ...
+│   ├── train-llada-pt-multinpu.sh      # llada预训练启动
+│   ├── train-llada-sft-multinpu.sh     # llada微调训练启动
+│   ├── train-qwen-pt-multinpu.sh       # qwen预训练启动
+│   ├── train-qwen-sft-multinpu.sh      # qwen微调训练启动
+│   ├── eval-llada.sh     # llada批量测试启动
+│   └── eval-qwen.sh      # qwen批量测试启动
 ├── examples
 │   ├── llada
 │   │   ├── pt.py
 │   │   ├── sft.py
-│   │   ├── chat.py
-│   │   └── sample.py
+│   │   ├── chat.py      # 终端交互式对话
+│   │   └── generate.py  # llada推理代码
 │   ├── qwen
+│   │   ├── pt.py
 │   │   ├── sft.py
-│   │   ├── chat.py
+│   │   ├── chat.py      # 终端交互式对话
 │   │   └── utils.py
 ```
 
@@ -557,10 +597,10 @@ print(model.num_parameters())
 然后预训练启动代码如下：
 
 ```bash
-bash scripts/train-pt.sh
+bash scripts/train-llada-pt-multinpu.sh
 ```
 
-对应超参数设置为`configs/llada-100M-pt.yaml`，具体的参数设置如下：
+对应超参数设置为`configs/llada-100M-pt-npu.yaml`，具体的参数设置如下：
 
 ```yaml
 # ModelArguments
@@ -601,10 +641,10 @@ save_total_limit: 2
 在下载好模型并且数据集预处理后，运行下面的代码即可：
 
 ```bash
-bash scripts/train-sft.sh
+bash scripts/train-llada-sft-multinpu.sh
 ```
 
-如果要修改超参数等，那么对`configs/llada-8b-sft.yaml`的内容进行修改：
+如果要修改超参数等，那么对`configs/llada-8b-sft-npu.yaml`的内容进行修改：
 
 ```yaml
 # ModelArguments
@@ -655,7 +695,7 @@ save_total_limit: 2
 其中预训练和`llada`一样，设置一个100M参数量的模型来进行训练，步骤和`llada`的一样，只不过要运行下面的代码：
 
 ```bash
-bash scripts/train-qwen-pt.sh
+bash scripts/train-qwen-pt-multinpu.sh
 ```
 
 需要注意的是，由于`Qwen`和`llada`结构不一致，因此在设计100M参数量的时候可能会稍微有点区别，因此这里给出我的`config.json`文件的参数设置：
@@ -694,10 +734,10 @@ bash scripts/train-qwen-pt.sh
 其次是微调，对于`Qwen`模型的微调我们已经设置了很多教程，如果有兴趣的小伙伴可以查看我的另外一篇专门讲[lora训练](https://docs.swanlab.cn/course/llm_train_course/03-sft/7.deepseek-lora/README.html)的文章，这里只需要运行下面的启动文件就行：
 
 ```bash
-bash scripts/train-qwen.sh
+bash scripts/train-qwen-sft-multinpu.sh
 ```
 
-超参数设置在`configs/qwen2.5-7b-alpaca.yaml`
+超参数设置在`configs/qwen2.5-7b-alpaca-npu.yaml`
 
 > 该部分仅作为llada模型结果的对比
 
@@ -720,14 +760,20 @@ python /home/lxy/diffusion_project/llada-sft/examples/llada/merge.py \
         --merge_path /data/lxy/diffusion/output/merge-llada-8b-alpaca-zh-gpt-epoch-3
 ```
 
-然后如果要单次推理，要使用`chat.py`文件，运行下面的代码：
+然后如果想直接推理，`llada`模型有连个可以使用的代码：
+
+1. `chat.py`：终端交互式对话
+2. `generate.py`：代码中修改，并在终端打印结果
+
+
+如果想在终端进行互动，可以运行下面的代码：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python -u examples/llada/chat.py \
-    --model_name_or_path /data/lxy/diffusion/output/llada-lora \
+ASCEND_RT_VISIBLE_DEVICES=0 python examples/llada/chat.py \
+    --model_name_or_path "/root/models/LLaDA/output/merge-llada-8b-epoch-3-lr-2e-5" \
     --steps 128 \
     --max_length 128 \
-    --block_size 32
+    --block_length 32
 ```
 
 - `steps`：在扩散模型的反向生成过程中，从 `t=1（全掩码）`到 `t=0（无掩码）`需要执行的迭代次数。每一步对应一个离散的 `t` 值，模型在该步骤预测掩码位置的内容。
@@ -751,6 +797,41 @@ CUDA_VISIBLE_DEVICES=0 python -u examples/llada/chat.py \
     <img src="./picture/example6.png" style="width:80%">
   </figure>
 </div>
+
+然后最终的推理效果和之前说的动图一样，在生成`tokens`的时候会不断的消除`[MASK]`，diffusion模型和自回归模型很不一样的地方在于，消除的`[MASK]`并不一定是按照顺序的，有可能会反复确认并生成：
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/output.gif" style="width:100%">
+  </figure>
+</div>
+
+当然也可以直接运行下面的代码，然后终端打印结果，如果想要修改提示词，请在`generate.py`的代码中修改`prompt`：
+
+```bash
+python examples/llada/generate.py
+```
+
+<div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
+然后为了展示自回归模型和diffusion模型的区别，我这里也做了自回归模型一样的效果，代码运行和上面类似，只不过llada换成qwen就行
+</div>
+
+```bash
+# 运行该代码
+ASCEND_RT_VISIBLE_DEVICES=0 python examples/qwen/chat.py \
+        --model_name_or_path /root/models/Qwen/qwen2.5-7b-it \
+        --max_new_tokens 256
+```
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/output1.gif" style="width:100%">
+  </figure>
+</div>
+
+---
+
+从效果上看，`Qwen`模型生成的时候是按照从前往后的顺序依次生成`tokens`，和diffusion模型不同，它并不会对已经给出的历史记录进行修改，因此在训练的时候，diffusion之类的模型能够更加理解话语中的深层含义，自回归模型容易沿着错误的生成结果一直生成。
 
 ### 批量测试
 
