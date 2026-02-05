@@ -63,5 +63,9 @@
 | 7.1 用CosyVoice2实现派蒙语音的微调 |CosyVoice2模型来SFT微调原神中的派蒙语音| [教程](../07-audio/1.cosyvoice-sft/README.md) |[代码](https://github.com/828Tina/cosyvoice-paimon-sft/tree/main)|
 
 
+### 第八章 扩散模型
 
+| 教程名称    | 描述 | 地址 | 代码 |
+|:------------------- |:-----|:--------:|:-----:|
+| 8.1 LLaDA预训练和微调 |LLaDA是文本类的扩散模型，本节实现其预训练和微调| [教程](../08-diffusion/1.llada/README.md) |[代码](https://gitee.com/tina_3592874/llada-npu-test)|
 
