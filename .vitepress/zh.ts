@@ -595,7 +595,7 @@ function sidebarCourseLLMTrain(): DefaultTheme.SidebarItem[] {
           { text: '7.1 CosyVoice微调派蒙语音', link: '07-audio/1.cosyvoice-sft/README.md' },
       ]},
       { text: '第八章 扩散模型', items: [
-        { text: '8.1 LLaDA预训练和微调', link: '08-diffusion/1.llada/README.md' },
+        { text: '8.1 LLaDA模型预训练和微调', link: '08-diffusion/1.llada/README.md' },
       ]}
       ]
     }

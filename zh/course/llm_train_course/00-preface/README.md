@@ -67,5 +67,5 @@
 
 | 教程名称    | 描述 | 地址 | 代码 |
 |:------------------- |:-----|:--------:|:-----:|
-| 8.1 LLaDA预训练和微调 |LLaDA是文本类的扩散模型，本节实现其预训练和微调| [教程](../08-diffusion/1.llada/README.md) |[代码]()|
+| 8.1 LLaDA预训练和微调 |LLaDA是文本类的扩散模型，本节实现其预训练和微调| [教程](../08-diffusion/1.llada/README.md) |[代码](https://gitee.com/tina_3592874/llada-npu-test)|
 

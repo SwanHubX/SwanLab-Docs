@@ -1,4 +1,4 @@
-# LLaDA模型预训练与微调实战
+# 玩转扩散语言模型——教你一招学会如何用LLaDA模型做训练任务
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -11,12 +11,130 @@
 
 **📚资料**
 
-- **代码**：[llada-pretrian-sft](https://github.com/828Tina/llada-pretrain-sft)
+- **代码**：[llada-pretrian-sft](https://gitee.com/tina_3592874/llada-npu-test)
 - **数据集**：[pretrain](https://www.modelscope.cn/datasets/allenai/c4)，[sft](https://www.modelscope.cn/datasets/AI-ModelScope/alpaca-gpt4-data-zh)
 - **模型**：[llada-8b](https://www.modelscope.cn/models/GSAI-ML/LLaDA-8B-Base)
-- **SwanLab**：[llada-swanlab](https://swanlab.cn/@LiXinYu/llada-sft/overview)
+- **框架**：[dllm](https://github.com/ZHZisZZ/dllm)
+- **SwanLab**：[llada-swanlab](https://swanlab.cn/@LiXinYu/llada-npu-sft/overview)
 
-本次教程代码源于[dllm](https://github.com/ZHZisZZ/dllm)，里面有完整的llada模型预训练以及微调方法，在此感谢作者开源llada训练框架🙏。
+
+
+## ✍️ 写在前面
+
+<div style="background:#efefef;color:#000;padding:12px 16px;border-left:4px solid #cfcfcf;">
+大模型我们熟知的比如Qwen、LLaMA等都是自回归模型，主要体现为不断根据前文按顺序挨个生成后面的token，那是否有别的范式呢？
+</div>
+
+
+有的兄弟，有的😁
+
+在我们的印象中，语言是离散的，所以适合用**自回归模型**来生成；而图像是连续的，所以适合用**扩散模型**来生成。
+
+在生成模型发展早期，这种刻板印象广泛存在于很多研究者的脑海中。但最近，这种印象正被打破。更多的研究者开始探索在图像生成中引入自回归（如 GPT-4o），在***语言生成中引入扩散***。
+
+以迭代去噪为核心的扩散模型正在迅速崛起，二者性能相当，逐渐成为重要的生成范式。其通过逐步添加和去除噪声来生成数据，在图像、音频甚至跨模态任务上展现出卓越能力。
+
+举几个例子：Dream-7B、LLaDA-8B、openPangu-R-7B-Diffusion等等
+
+
+**Dream-7B**
+
+香港大学和华为诺亚方舟实验室的一项研究就是其中之一。他们发布的扩散推理模型`Dream 7B`拿下了开源扩散语言模型的新`SOTA`，在各方面都大幅超越现有的扩散语言模型。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example22.png" style="width:100%">
+  </figure>
+</div>
+
+在通用能力、数学推理和编程任务上，这个模型展现出了与同等规模顶尖自回归模型（Qwen2.5 7B、LLaMA3 8B）相媲美的卓越性能，在**某些情况下甚至优于最新的 Deepseek V3 671B（0324）**。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example23.png" style="width:100%">
+  </figure>
+</div>
+
+同时，它还在规划能力和推理灵活性方面表现出独特优势，彰显了**扩散建模在自然语言处理领域**的广阔前景。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example24.png" style="width:100%">
+  </figure>
+</div>
+
+
+**LLaDA-8B**
+
+人大高瓴人工智能研究院、蚂蚁共同提出LLaDA（a Large Language Diffusion with mAsking）。
+
+LLaDA-8B在上下文学习方面与LLaMA3-8B能力相当，而且在反转诗歌任务中超越GPT-4o。
+
+在大语言模型领域，反转诗歌是一个特殊任务，它用来评估模型在处理语言模型的双向依赖关系和逻辑推理能力。
+
+比如让大模型写出“一行白鹭上青天”的上一句。
+
+通常情况，自回归模型（如GPT）根据下文推断上文的表现上总是不够好。这是因为自回归模型的原理就是利用序列中前面的元素来预测当前元素，即预测下一个token。
+
+**而LLaDA是基于扩散模型的双向模型，天然能够更好捕捉文本的双向依赖关系。**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/output5.gif" style="width:100%">
+  </figure>
+</div>
+
+在语言理解、数学、代码和中文等多样化任务中，表现如下：
+
+- 强大可扩展性：LLaDA 能够有效扩展到10²³ FLOPs计算资源上，在六个任务（例如MMLU和GSM8K）上，与在相同数据上训练的自建自回归基线模型结果相当。
+
+- 上下文学习：值得注意的是，LLaDA-8B 在几乎所有 15 个标准的零样本/少样本学习任务上都超越了 LLaMA2-7B，并且与 LLaMA3-8B表现相当。
+
+- 指令遵循：LLaDA在SFT后显著增强了指令遵循能力，这在多轮对话等案例研究中得到了展示。
+
+- 反转推理：LLaDA有效地打破了反转诅咒，在正向和反转任务上表现一致。特别是在反转诗歌完成任务中，LLaDA 的表现优于 GPT-4o。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example8.png" style="width:100%">
+  </figure>
+</div>
+
+LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，LLaDA的transformer不使用因果掩码（Causal Mask），因此它可以同时看到输入序列中的所有token。
+
+模型参数量与传统大语言模型（如GPT）相当，但架构细节（如多头注意力的设置）略有不同，以适应掩码预测任务。
+
+**openPangu-R-7B-Diffusion**
+
+华为近日正式发布`openPangu-R-7B-Diffusion`，基于`openPangu-Embedded-7B`进行少量数据（800B tokens）续训练，成功将扩散语言模型的上下文长度扩展至 32K。
+
+在「慢思考」能力的加持下，该模型在多个权威基准中创下了 7B 参数量级的全新 SOTA 纪录：
+
+- `多学科知识（MMLU-Pro）`：超越 16B 参数量的 LLaDA 2.0-mini-preview 22%。
+- `数学推理（MATH）`：得分 84.26，大幅领先同类模型。
+- `代码生成（MBPP）`：得分 84.05，展现出卓越的逻辑泛化能力。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example25.png" style="width:100%">
+  </figure>
+</div>
+
+它在注意力机制上创新性地融合了自回归的前文因果注意力掩码，从架构层面解决了适配难题。训练策略上延续了BlockDiffusion的思路，但进行了关键优化，拼接带掩码的Block与无掩码的Context，展现出更强的适应性和效率。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example26.png" style="width:100%">
+  </figure>
+</div>
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/images_openPangu-R-7B-Diffusion.gif" style="width:100%">
+  </figure>
+</div>
+
+本教程基于**昇腾910B3-64GB**复现`LLaDA模型的训练`，代码使用[dllm](https://github.com/ZHZisZZ/dllm)框架。框架中有完整的llada模型预训练以及微调方法，在此感谢作者开源的diffusion模型训练框架🙏。
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -43,15 +161,12 @@
 
 ## LLaDA原理
 
-本次教程我们使用`LLaDA`模型作为基座模型来实现预训练和微调，在查看`LLaDA`原文的时候，发现了另一篇讲述`diffusion`模型在数据量有限的情况下如何和`autoregressive`模型靠齐，甚至更优，感觉挺有意思的。
-
-因此原理篇我们会分别讲述`LLaDA`原文以及`Data-Constrained Scaling Laws`也就是数据量有限的情况下`diffusion`模型的`scaling law`法则角度来讲述，分别参考如下论文，有兴趣的小伙伴可以看看原文：
+本次教程我们使用`LLaDA`模型作为基座模型来实现预训练和微调，我在实验的时候查看了下面的这些论文，有兴趣的小伙伴可以看看原文：
 
 - [Large Language Diffusion Models](https://arxiv.org/abs/2502.09992)
 - [Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/abs/2507.15857)
 - [Scaling Data-Constrained Language Models](https://arxiv.org/abs/2305.16264)
 
-### LLaDA原文解读
 
 关于扩散模型，我们最常用的还是图像领域的扩散模型，通常来说，图像领域的扩散模型有两个过程，分别是反向加噪过程和正向扩散过程
 
@@ -82,7 +197,7 @@
 
 *下面我们分别按照预训练、微调以及推理部分详细说明其原理*：
 
-#### 预训练
+### 预训练
 
 我们知道对于自回归模型，LLMs 的目标是通过最大似然估计优化模型分布$p_{\theta}(\cdot)$或等价地最小化两个分布之间的 KL 散度，从而捕捉真实但未知的语言分布$p_{data}(\cdot)$，也就是论文中公式（1）：
 $$\max_{\theta}\mathbb{E}_{p_{data}(x)}\log{p_{\theta}}(x)\Leftrightarrow \min_{\theta} \mathrm{KL}(p_{data}(x)||p_{\theta}(x))$$
@@ -127,7 +242,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,x_0,x_t}\left [  \frac{1}{t}\sum^
 </div>
 
 
-#### 微调
+### 微调
 
 对于监督微调过程，整体的核心逻辑和预训练相似，有几个区别：
 
@@ -140,7 +255,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 其中$L'$代表后文指定的动态长度，其他所有符号含义与前文一致。
 
-#### 推理
+### 推理
 
 推理采用的掩码和扩散生成和训练阶段有所不同，训练阶段掩码是随机比例掩码，但是推理的时候是全掩码，然后扩散生成。
 
@@ -240,12 +355,6 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 </div>
 
 
-### DS模型训练scaling law论文解读
-
-
-
-### 总结
-
 ## 完整训练
 
 ### 1. 环境安装
@@ -253,7 +362,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 - 克隆代码
 
 ```bash
-git clone https://github.com/828Tina/llada-pretrain-sft.git
+git clone https://gitee.com/tina_3592874/llada-npu-test.git
 cd llada-pretrain-sft
 ```
 
@@ -301,7 +410,6 @@ import torch_npu
 ```
 
 
-
 ### 2. 数据处理
 
 在简介中我们强调，SFT是核心，因此我会按照SFT需要的数据集格式来讲述，预训练其实遵循的是同样的步骤，只不过预训练需要的是text数据而已。
@@ -310,7 +418,7 @@ import torch_npu
 
 上述过程主要使用`save_to_disk`和`load_from_disk`保存和加载数据集，不过如果磁盘空间有限，建议还是直接用`load_dataset`。
 
-<div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">如果想直接预处理数据集的小伙伴，可以直接运行<a href="https://github.com/828Tina/llada-pretrain-sft/blob/main/data.ipynb"target="_blank" rel="noopener">notebook</a>中的代码，原理步骤如下：
+<div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">如果想直接预处理数据集的小伙伴，可以直接运行<a href="https://gitee.com/tina_3592874/llada-npu-test/blob/master/data.ipynb"target="_blank" rel="noopener">notebook</a>中的代码，原理步骤如下：
 </div>
 
 **SFT训练**
@@ -419,7 +527,7 @@ dataset = dllm.data.load_sft_dataset(
 
 本次教程核心是学会`微调`，数据集采用经典Alpaca数据集，`预训练`采用部分C4英文数据集。我们希望教程能够教会完整的训练流程以及测试流程，因此数据集均采用经典通用的数据集。
 
-我将分成两个模块来，为了符合正常的训练流程，教程依次是`预训练`和`微调`，代码地址👉[ours](https://github.com/828Tina/llada-pretrain-sft/tree/main)
+我将分成两个模块来，为了符合正常的训练流程，教程依次是`预训练`和`微调`，代码地址👉[ours](https://gitee.com/tina_3592874/llada-npu-test)
 
 另外，如果有小伙伴想对比自回归模型和掩码扩散模型的区别，可以训练llama模型或者qwen模型作为对比。之所以可以训练llama模型来对比是因为llada的主体部分其实是llama结构，然后掩码不采用自回归模型的上三角形式，我们在[模型文件](https://www.modelscope.cn/models/GSAI-ML/LLaDA-8B-Base/file/view/master/modeling_llada.py?status=1#L659)中可以看到：
 
@@ -684,7 +792,7 @@ save_total_limit: 2
 
 1. `dataset_args`是你的数据集保存地址，由于我下面的`load_preprocessed_data`设置为`true`，也就是提前处理了数据集的意思，因此保存的数据集内容要求是tokens形式。
 2. 最好将`max_steps`改成`num_train_epochs`，然后微调2-3个epoch即可。如果是`max_steps`最好提前计算下选择多少steps较为合适。
-3. `SwanLab`是我们的训练观测工具，由于`dllm`继承了`Transformers`父类，而且`Transformers`已经集成`SwanLab`，因此我们直接令`report_to=swanlab`，唯一需要注意的是，如果想修改项目名称的话，需要提前设置环境变量，我在这里进行设置👉[project](https://github.com/828Tina/llada-pretrain-sft/blob/main/dllm/utils/configs.py#L7)
+3. `SwanLab`是我们的训练观测工具，由于`dllm`继承了`Transformers`父类，而且`Transformers`已经集成`SwanLab`，因此我们直接令`report_to=swanlab`，唯一需要注意的是，如果想修改项目名称的话，需要提前设置环境变量，我在这里进行设置👉[project](https://gitee.com/tina_3592874/llada-npu-test/blob/master/dllm/utils/configs.py#L7)
 
 
 
@@ -743,7 +851,66 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 ## SwanLab观测结果
 
+**LLaDA微调结果**
 
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example18.png" style="width:100%">
+  </figure>
+</div>
+
+**Qwen模型微调结果**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example27.png" style="width:100%">
+  </figure>
+</div>
+
+**微调结果对比**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example19.png" style="width:100%">
+  </figure>
+</div>
+
+微调我使用的是经典`alpaca`数据集，用了前3000条数据作为训练集，都是训练了3个`epoch`，
+
+在`epoch=3`的时候，`Qwen`模型表现出来的效果还是比较好的，但是如果更多的`epoch`可能会导致`Qwen`模型的过拟合，相比较而言`llada`模型还有下降的空间。
+
+**LLaDA预训练结果**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example20.png" style="width:100%">
+  </figure>
+</div>
+
+**Qwen预训练结果**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example28.png" style="width:100%">
+  </figure>
+</div>
+
+**预训练结果对比**
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/example21.png" style="width:100%">
+  </figure>
+</div>
+
+
+预训练我使用的是`C4-en`中的一部分，模型我设置为100M的大小，分别对比了`epoch=2`和`epoch=10`的情况。
+
+其中`epoch=2`的时候，我使用了前100万条数据，通过计算得知，每条数据平均有大约`500 tokens`左右，因此总共的计算量应该有`500M tokens`；
+
+然后`epoch=10`，我设置数据集为前20万，计算量保持一致；
+
+之所以这样设置，我只是想观测`unque`数据和计算量两个会不会影响结果，但是从图表显示并没有什么变化，不过也可能是因为我的模型参数量设置的太小的缘故。
 
 ## 结果测试
 
@@ -852,7 +1019,7 @@ export TORCH_NCCL_ASYNC_ERROR_HANDLING=1    # Enable async error handling for mu
 export NCCL_DEBUG=warn                      # Show NCCL warnings for better diagnosis without flooding logs
 export TORCH_DISTRIBUTED_DEBUG=DETAIL       # Provide detailed logging for PyTorch distributed debugging
 
-CUDA_VISIBLE_DEVICES=0 accelerate launch --num_processes 1 \
+accelerate launch --num_processes 1 \
     dllm/pipelines/llada/eval.py \
     --tasks cmmlu \
     --model llada \
@@ -865,8 +1032,25 @@ CUDA_VISIBLE_DEVICES=0 accelerate launch --num_processes 1 \
 
 如果要进行别的task测试任务，修改其中的`tasks`即可，需要注意的是，dllm使用`lm_eval`来测试的，因此`tasks`要选择该框架中有的，具体可以查看👉[tasks列表](https://github.com/EleutherAI/lm-evaluation-harness/tree/main/lm_eval/tasks)
 
+<div style="background:#ffeae4ff;color:#000;padding:12px 16px;border-left:4px solid #fc592cff;">
+<strong>注意：</strong></br>
+lm_eval好像只能从huggingface下载对应数据集，如果huggingface下载不了，本地下载好像没有接口使用，因此这种情况可以使用evalscope框架，因为llada估计没有在evalscope的模型库中，因此可以使用API的方法进行测评，具体可以参考我的这篇👉<a href="https://docs.swanlab.cn/course/llm_train_course/05-eval/1.evalscope/README.html#%E6%A8%A1%E5%9E%8Bapi%E6%9C%8D%E5%8A%A1%E8%AF%84%E6%B5%8B" target="_blank" rel="noopener">API评测方法</a>
+
+</div>
+
+
 ## 参考文献
 
+[1].[7B扩散LLM，居然能跟671B的DeepSeek V3掰手腕，扩散vs自回归，谁才是未来？](https://zhuanlan.zhihu.com/p/1892191130092816211)
 
+[2].[开源盘古-R-7B-Diffusion](https://ai.gitcode.com/ascend-tribe/openPangu-R-7B-Diffusion)
 
+[3].[嚯！大语言扩散模型来了，何必只预测下一个token | 人大高瓴&蚂蚁](https://news.qq.com/rain/a/20250218A03XSU00)
 
+[4].[Large Language Diffusion Models](https://arxiv.org/abs/2502.09992)
+
+[5].[Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/abs/2507.15857)
+
+[6].[Scaling Data-Constrained Language Models](https://arxiv.org/abs/2305.16264)
+
+[7].[https://github.com/ML-GSAI/LLaDA](https://github.com/ML-GSAI/LLaDA)
