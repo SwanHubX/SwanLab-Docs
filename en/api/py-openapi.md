@@ -1,4 +1,8 @@
-# swanlab.OpenApi
+# swanlab.OpenApi (Deprecated)
+
+::: warning Version Note
+`swanlab.OpenApi` will be deprecated in version `0.8.0`, please use [`swanlab.Api`](/en/api/py-api.md) instead.
+:::
 
 Based on SwanLab's cloud capabilities, the SDK provides access to **Open API** functionality, allowing users to programmatically operate and retrieve resources related to experiments, projects, and workspaces in the cloud environment from their local environment.
 

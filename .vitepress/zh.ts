@@ -421,7 +421,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       text: '开发',
       // collapsed: false,
       items: [
-        { text: '开放接口', link: 'py-openapi' },
+        { text: '开放接口', link: 'py-api' },
+        { text: '开放接口（旧版）', link: 'py-openapi' },
         { text: '环境变量', link: 'environment-variable' },
       ]
   },  
