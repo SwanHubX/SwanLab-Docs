@@ -365,6 +365,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'NER命名实体识别', link: 'ner' },
       { text: 'Qwen3医学模型微调', link: 'qwen3-medical' },
       { text: '通过微调给Qwen3起新名字', link: 'mlx_lm_finetune' },
+      { text: '扩散语言模型', link: 'diffusion_language_model' },
     ]
   },
   {

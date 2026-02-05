@@ -2,7 +2,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example2.gif" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example2.gif" style="width:100%">
   </figure>
 </div>
 
@@ -47,7 +47,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example22.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example22.png" style="width:100%">
   </figure>
 </div>
 
@@ -55,7 +55,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example23.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example23.png" style="width:100%">
   </figure>
 </div>
 
@@ -63,7 +63,7 @@
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example24.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example24.png" style="width:100%">
   </figure>
 </div>
 
@@ -84,7 +84,7 @@ LLaDA-8B在上下文学习方面与LLaMA3-8B能力相当，而且在反转诗歌
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/output5.gif" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/output5.gif" style="width:100%">
   </figure>
 </div>
 
@@ -100,7 +100,7 @@ LLaDA-8B在上下文学习方面与LLaMA3-8B能力相当，而且在反转诗歌
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example8.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example8.png" style="width:100%">
   </figure>
 </div>
 
@@ -120,7 +120,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example25.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example25.png" style="width:100%">
   </figure>
 </div>
 
@@ -128,13 +128,13 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example26.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example26.png" style="width:100%">
   </figure>
 </div>
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/images_openPangu-R-7B-Diffusion.gif" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/images_openPangu-R-7B-Diffusion.gif" style="width:100%">
   </figure>
 </div>
 
@@ -142,7 +142,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/logo.gif" style="width:80%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/logo.gif" style="width:80%">
   </figure>
 </div>
 
@@ -154,7 +154,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example7.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example7.png" style="width:100%">
   </figure>
 </div>
 
@@ -176,7 +176,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example13.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example13.png" style="width:100%">
   </figure>
 </div>
 
@@ -186,7 +186,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example8.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example8.png" style="width:100%">
   </figure>
 </div>
 
@@ -194,7 +194,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example9.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example9.png" style="width:100%">
   </figure>
 </div>
 
@@ -241,7 +241,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,x_0,x_t}\left [  \frac{1}{t}\sum^
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example14.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example14.png" style="width:100%">
   </figure>
 </div>
 
@@ -268,7 +268,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example16.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example16.png" style="width:100%">
   </figure>
 </div>
 
@@ -340,7 +340,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example15.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example15.png" style="width:100%">
   </figure>
 </div>
 
@@ -354,7 +354,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/output.gif" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/output.gif" style="width:100%">
   </figure>
 </div>
 
@@ -395,7 +395,7 @@ pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example17.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example17.png" style="width:100%">
   </figure>
 </div>
 
@@ -617,7 +617,7 @@ return F.scaled_dot_product_attention(
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example3.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example3.png" style="width:100%">
   </figure>
 </div>
 
@@ -627,7 +627,7 @@ return F.scaled_dot_product_attention(
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example4.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example4.png" style="width:100%">
   </figure>
 </div>
 
@@ -859,7 +859,7 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example18.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example18.png" style="width:100%">
   </figure>
 </div>
 
@@ -867,7 +867,7 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example27.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example27.png" style="width:100%">
   </figure>
 </div>
 
@@ -875,7 +875,7 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example19.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example19.png" style="width:100%">
   </figure>
 </div>
 
@@ -887,7 +887,7 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example20.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example20.png" style="width:100%">
   </figure>
 </div>
 
@@ -895,7 +895,7 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example28.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example28.png" style="width:100%">
   </figure>
 </div>
 
@@ -903,7 +903,7 @@ bash scripts/train-qwen-sft-multinpu.sh
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example21.png" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example21.png" style="width:100%">
   </figure>
 </div>
 
@@ -965,7 +965,7 @@ ASCEND_RT_VISIBLE_DEVICES=0 python examples/llada/chat.py \
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/example6.png" style="width:80%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/example6.png" style="width:80%">
   </figure>
 </div>
 
@@ -973,7 +973,7 @@ ASCEND_RT_VISIBLE_DEVICES=0 python examples/llada/chat.py \
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/output.gif" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/output.gif" style="width:100%">
   </figure>
 </div>
 
@@ -996,7 +996,7 @@ ASCEND_RT_VISIBLE_DEVICES=0 python examples/qwen/chat.py \
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
-    <img src="./picture/output1.gif" style="width:100%">
+    <img src="/zh/course/llm_train_course/08-diffusion/1.llada/picture/output1.gif" style="width:100%">
   </figure>
 </div>
 
