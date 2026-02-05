@@ -54,6 +54,19 @@ Specifically, the **OpenApi** authentication logic is as follows:
 1. If the `api_key` parameter is explicitly provided, it will be used for authentication. You can find your API key [here](https://swanlab.cn/space/~/settings).
 2. Otherwise, local authentication information will be used.
 
+::: warning Using OpenAPI for Private Deployment
+
+For private deployment of SwanLab, you can use `swanlab.login` to log in to the private deployment version before using `OpenApi`.
+
+```python
+from swanlab import OpenApi
+import swanlab
+
+swanlab.login(api_key='your-api-key', host='your-host')
+my_api = OpenApi()
+```
+:::
+
 ## Common Parameters
 
 ### Experiment ID `exp_id`

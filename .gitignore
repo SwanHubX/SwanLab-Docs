@@ -12,3 +12,7 @@ playground/
 # lock file
 yarn.lock
 pnpm-lock.yaml
+
+#claude
+claude.md
+.claude/

@@ -88,7 +88,7 @@ Get the application URL by running these commands:
 下面是一个在本机访问的例子，打开终端并执行：
 
 ```bash
-kubectl port-forward --namespace self-hosted svc/self-hosted 8080:80
+kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 ```
 
 然后你可以在浏览器中访问：`http://127.0.0.1:8080`，即可看到SwanLab的页面：
@@ -410,16 +410,16 @@ helm rollback self-hosted x.x.x -n xxx
 
 SwanLab的应用服务暂不支持接入`Prometheus`，此功能正在开发中，敬请期待！
 
-### 4. FAQ
+## 4. FAQ
 
-#### 部署服务是否需要较高部署权限（如部署 CRD 或 Controller）？
+### 部署服务是否需要较高部署权限（如部署 CRD 或 Controller）？
 不需要。
 
-#### 迁移数据时能否保证原服务不停机？
+### 迁移数据时能否保证原服务不停机？
 迁移过程中必须停机原服务。如果不停止原服务会出现数据 gap。  
 此时可考虑使用[swanlab sync](/api/cli-swanlab-sync.md)将数据上传至新服务。
 
-#### 集群无法连接外网，如何下载、更新镜像？
+### 集群无法连接外网，如何下载、更新镜像？
 您可手动下载 swanlab 系列服务镜像，并上传至内网镜像仓库，包括：
 
 - `service.gateway.image`：swanlab 网关服务，整个应用服务入口  
@@ -436,7 +436,7 @@ SwanLab的应用服务暂不支持接入`Prometheus`，此功能正在开发中�
 - `dependencies.s3.image`：MinIO 对象存储镜像（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）  
 - `dependencies.clickhouse.image`：ClickHouse 数据库镜像（选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)可忽略此项）
 
-#### SwanLab 用到的所有存储组件及用途有哪些？
+### SwanLab 用到的所有存储组件及用途有哪些？
 swanlab所有存储组件与用途如下：
 
 - `service.house.persistence`  

@@ -43,6 +43,8 @@
 - [AReaL](/guide_cloud/integration/integration-areal.html)
 - [ROLL](/guide_cloud/integration/integration-roll.html)
 - [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
+- [RLinf](/guide_cloud/integration/integration-rlinf.html)      
+- [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
 
 ## 其他框架
 - [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
@@ -54,3 +56,4 @@
 - [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)
 - [OpenAI](/guide_cloud/integration/integration-openai.html)
 - [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)
+- [Specforge](/guide_cloud/integration/integration-specforge.html)

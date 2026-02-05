@@ -53,7 +53,21 @@ print(other_api.list_workspaces().data)
 具体来说, **OpenApi**的认证逻辑如下：
 
 1. 如果显式提供了`api_key`参数, 则优先使用该`api_key`进行身份认证, 可以在[这里](https://swanlab.cn/space/~/settings)查看自己的 API 密钥；
-2. 否则,使用本地的认证信息。
+2. 否则，使用本地的认证信息。
+
+
+::: warning 私有化部署使用OpenAPI
+
+对于私有化部署的SwanLab，可以使用在`OpenApi`前通过`swanlab.login`登录到私有化部署版，然后使用`OpenApi`即可。
+
+```python
+from swanlab import OpenApi
+import swanlab
+
+swanlab.login(api_key='your-api-key', host='your-host')
+my_api = OpenApi()
+```
+:::
 
 ## 常用参数
 

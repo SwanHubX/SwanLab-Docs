@@ -38,21 +38,21 @@ export const zh = defineConfig({
         // activeMatch: '/guide_cloud/',
       },
       {
+        text: '案例',
+        link: base_path_examples + '/mnist',
+        activeMatch: '/examples/',
+      },
+      {
         text: '集成', items: [
           { text: '全部40+框架', link: base_path_guide_cloud + '/integration' },
           { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
           { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
           { text: 'LLaMA-Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory' },
-          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift' },
+          { text: 'MS-Swift', link: base_path_guide_cloud + '/integration/integration-swift' },
           { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl' },
           { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics' },
           { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3' },
         ]
-      },
-      {
-        text: '案例',
-        link: base_path_examples + '/mnist',
-        activeMatch: '/examples/',
       },
       {
         text: '课程',items:[
@@ -70,7 +70,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.7.4',  items: [
+      { text: 'v0.7.6',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -182,13 +182,15 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
             { text: '混淆矩阵', link: 'experiment_track/compute_metric/log-confusion-matrix' },
           ]
         },
-        { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag' },
+        { text: '记录分布式训练指标', link: 'experiment_track/log-distributed-training'},
         { text: '查看实验结果', link: 'experiment_track/view-result' },
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
+        { text: '折线图平滑', link: 'experiment_track/smooth-algorithms' },
+        { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag'},
+        { text: '分组管理实验', link: 'experiment_track/grouping' },
         { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-        { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },  
-        { text: '实验元数据', link: 'experiment_track/experiment-metadata' },
+        { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
         { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
         { text: '常见问题', link: 'experiment_track/FAQ' },
 
@@ -202,7 +204,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
         { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
         { text: '使用OpenAPI获取实验数据', link: 'experiment_track/use-openapi' },
-        { text: 'Webhook设置', link: 'experiment_track/webhook-setup' },
+        { text: '更多技巧', 
+          collapsed: true,
+          items: [
+          { text: 'Webhook设置', link: 'experiment_track/webhook-setup' },
+          { text: '获取实验元数据', link: 'experiment_track/experiment-metadata' },
+        ]},
     ] },
     {
       text: '🚀 自托管',
@@ -276,6 +283,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'LightGBM', link: 'integration-lightgbm' },
         { text: 'LLaMA-Factory', link: 'integration-llama-factory' },
         { text: 'LLaMA-Factory Online', link: 'integration-llama-factory-online' },
+        { text: 'MindSpeed-RL', link: 'integration-mindspeed-rl' },
         { text: 'MLFlow', link: 'integration-mlflow' },
         { text: 'MLX LM', link: 'integration-mlx-lm' },
         { text: 'MMEngine', link: 'integration-mmengine' },
@@ -299,8 +307,10 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'PyTorch Lightning', link: 'integration-pytorch-lightning' },
         { text: 'PyTorch torchtune', link: 'integration-pytorch-torchtune' },
         { text: 'Ray', link: 'integration-ray' },
+        { text: 'RLinf', link: 'integration-rlinf' },
         { text: 'ROLL', link: 'integration-roll' },
         { text: 'Sentence Transformers', link: 'integration-sentence-transformers' },
+        { text: 'Specforge', link: 'integration-specforge' },
         { text: 'Stable Baseline3', link: 'integration-sb3' },
         { text: 'Tensorboard', link: 'integration-tensorboard' },
       ]
