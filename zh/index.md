@@ -2,12 +2,12 @@
 layout: home
 
 title: SwanLab官方文档
-titleTemplate: 先进的AI团队协作与模型创新引擎
+titleTemplate: 先进的AI训练分析平台，为顶尖模型团队而生
 
 hero:
   name: SwanLab
-  text: 开源、现代化设计<br>训练跟踪与可视化工具
-  tagline: 深度学习训练跟踪与可视化工具，同时支持云端/离线使用，适配40+主流AI训练框架
+  text: AI训练分析平台
+  tagline: 顶尖的AI训练分析平台，深度洞察百万指标，加速模型迭代，与50+主流AI训练框架集成
   actions:
     - theme: alt
       text: 使用指南
