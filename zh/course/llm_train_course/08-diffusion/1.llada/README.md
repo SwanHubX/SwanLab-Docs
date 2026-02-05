@@ -11,7 +11,7 @@
 
 **📚资料**
 
-- **代码**：[llada-pretrian-sft](https://gitee.com/tina_3592874/llada-npu-test)
+- **代码**：[llada-pretrain-sft](https://gitee.com/tina_3592874/llada-npu-test)
 - **数据集**：[pretrain](https://www.modelscope.cn/datasets/allenai/c4)，[sft](https://www.modelscope.cn/datasets/AI-ModelScope/alpaca-gpt4-data-zh)
 - **模型**：[llada-8b](https://www.modelscope.cn/models/GSAI-ML/LLaDA-8B-Base)
 - **框架**：[dllm](https://github.com/ZHZisZZ/dllm)
@@ -367,7 +367,7 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 ```bash
 git clone https://gitee.com/tina_3592874/llada-npu-test.git
-cd llada-pretrain-sft
+cd llada-npu-test
 ```
 
 - 安装环境
@@ -931,7 +931,7 @@ python /home/lxy/diffusion_project/llada-sft/examples/llada/merge.py \
         --merge_path /data/lxy/diffusion/output/merge-llada-8b-alpaca-zh-gpt-epoch-3
 ```
 
-然后如果想直接推理，`llada`模型有连个可以使用的代码：
+然后如果想直接推理，`llada`模型有两个可以使用的代码：
 
 1. `chat.py`：终端交互式对话
 2. `generate.py`：代码中修改，并在终端打印结果
