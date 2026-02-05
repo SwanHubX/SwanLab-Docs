@@ -1,4 +1,4 @@
-# 玩转扩散语言模型——教你一招学会如何用LLaDA模型做训练任务
+# 玩转扩散语言模型——教你学会如何用LLaDA模型做训练任务
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -17,16 +17,13 @@
 - **框架**：[dllm](https://github.com/ZHZisZZ/dllm)
 - **SwanLab**：[llada-swanlab](https://swanlab.cn/@LiXinYu/llada-npu-sft/overview)
 
-
+> 本次教程llada微调的时候显存占用$\le35 GB$，因此32GB的卡最好用两块，64GB的一块；预训练由于参数量较小（100M），单卡足矣。
 
 ## ✍️ 写在前面
 
 <div style="background:#efefef;color:#000;padding:12px 16px;border-left:4px solid #cfcfcf;">
 大模型我们熟知的比如Qwen、LLaMA等都是自回归模型，主要体现为不断根据前文按顺序挨个生成后面的token，那是否有别的范式呢？
 </div>
-
-
-有的兄弟，有的😁
 
 在我们的印象中，语言是离散的，所以适合用**自回归模型**来生成；而图像是连续的，所以适合用**扩散模型**来生成。
 
@@ -36,6 +33,13 @@
 
 举几个例子：Dream-7B、LLaDA-8B、openPangu-R-7B-Diffusion等等
 
+<div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
+💡我们使用扩散模型进行训练，得益于以下几点优势：<br/>
+1. <strong>在数据受限场景下表现更稳健</strong><br/>
+当我们难以获取足够多的高质量训练数据时，扩散模型通过在训练过程中对 tokens 进行随机掩码，实现隐式的数据增强。这有助于模型更全面地理解每个 token 的语义，提升泛化能力。<br/>
+2. <strong>推理过程具备纠错与容错能力</strong><br/>
+得益于双向生成机制，扩散模型在推理时能够动态调整生成路径，避免像自回归模型那样一旦出现错误即持续累积的情况。这一特点不仅提高了生成结果的可靠性，也减少了因错误路径导致的无效计算，从而提升推理效率。
+</div>
 
 **Dream-7B**
 
@@ -374,7 +378,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 - 硬件要求
 
-1. $NPU个数 \ge 1$
+1. $昇腾NPU(910B) \ge 1$
 2. `Pytorch` $\ge$ 2.7，我们要用到`torch_npu`来适应NPU的使用，和`torch`版本要配套
 
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
