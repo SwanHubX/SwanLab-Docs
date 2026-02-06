@@ -70,7 +70,7 @@ export const zh = defineConfig({
         link: base_path_plugin + '/plugin-index',
         activeMatch: '/plugin/',
       },
-      { text: 'v0.7.6',  items: [
+      { text: 'v0.7.8',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
@@ -365,6 +365,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       { text: 'NER命名实体识别', link: 'ner' },
       { text: 'Qwen3医学模型微调', link: 'qwen3-medical' },
       { text: '通过微调给Qwen3起新名字', link: 'mlx_lm_finetune' },
+      { text: '扩散语言模型', link: 'diffusion_language_model' },
     ]
   },
   {
@@ -421,7 +422,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       text: '开发',
       // collapsed: false,
       items: [
-        { text: '开放接口', link: 'py-openapi' },
+        { text: '开放接口', link: 'py-api' },
+        { text: '开放接口（旧版）', link: 'py-openapi' },
         { text: '环境变量', link: 'environment-variable' },
       ]
   },  

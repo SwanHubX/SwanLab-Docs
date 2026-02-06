@@ -1,5 +1,9 @@
 # swanlab.OpenApi
 
+::: warning 版本提示
+`swanlab.OpenApi` 将在`0.8.0`版本废弃，请使用 [`swanlab.Api`](/api/py-api.md) 替代。
+:::
+
 基于 SwanLab 云端功能, 在 SDK 端提供访问 **开放 API（OpenAPI）** 的能力, 允许用户通过编程方式在本地环境中操作云端 **实验/项目/工作空间** 资源。
 
 ![](./py-openapi/logo.jpg)

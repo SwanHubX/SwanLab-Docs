@@ -5,6 +5,21 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.7.8 - 2026.02.06
+
+**🚀 New Features & Improvements**
+- ⚡️ LightningBoard (Lightning Board) is now available, designed for extremely large chart scenarios like pre-training of large models
+- 📊 New chart embedding link, now you can embed your charts into online documents (e.g., Notion, Feishu Cloud Docs)
+- 📊 New chart pinning to first position in group
+- 📊 Charts Table supports CSV download
+- 🌸 Project share button moved to top header area
+
+**🔧 Bug Fixes**
+- Fixed issue where horizontal axis was not displayed completely when downloading chart PNG
+- Fixed issue where clicking the "Apply" button in the chart configuration panel would cause a lag when the chart was zoomed in
+- Fixed a series of other issues
+
+
 ## v0.7.6 - 2026.01.06
 
 **🚀 New Features**

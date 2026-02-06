@@ -16,18 +16,16 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 1. 打开Bark App
 2. 在「服务器」页面，复制URL（url的格式为`https://api.day.app/XXXXXXX`），记下来
-3. 在「设置」页面，复制Device Token，记下来
 
 
 ## 基本用法
 
-使用Bark通知插件的方法非常简单，只需要初始化1个`BarkCallback`对象，将准备工作中的URL和Device Token填入：
+使用Bark通知插件的方法非常简单，只需要初始化1个`BarkCallback`对象，将准备工作中的URL填入：
 
 ```python
 from swanlab.plugin.notification import BarkCallback
 
 bark_callback = BarkCallback(
-    key='你的Device Token',
     url='你的URL', 
 )
 ```

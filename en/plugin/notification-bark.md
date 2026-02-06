@@ -16,17 +16,15 @@ SwanLab plugins are open source. You can view the [Github source code](https://g
 
 1.  Open the Bark App.
 2.  On the "Server" page, copy the URL (the URL format is `https://api.day.app/XXXXXXX`) and note it down.
-3.  On the "Settings" page, copy the Device Token and note it down.
 
 ## Basic Usage
 
-Using the Bark notification plugin is very simple. You just need to initialize a `BarkCallback` object and fill in the URL and Device Token from the prerequisites:
+Using the Bark notification plugin is very simple. You just need to initialize a `BarkCallback` object and fill in the URL from the prerequisites:
 
 ```python
 from swanlab.plugin.notification import BarkCallback
 
 bark_callback = BarkCallback(
-    key='Your Device Token',
     url='Your URL',
 )
 ```

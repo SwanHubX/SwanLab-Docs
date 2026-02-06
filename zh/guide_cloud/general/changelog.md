@@ -5,6 +5,23 @@
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
 
+
+## v0.7.8 - 2026.02.06
+
+**🚀新增功能与优化**
+- ⚡️ LightningBoard（闪电看板）现已上线，专为大模型预训练等超大图表数量级场景打造
+- 🔧 新版开放接口`swanlab.Api`，支持通过API获取SwanLab数据，[文档](/api/py-api.md)
+- 📊 新增图表嵌入链接，现在可以把你的图表嵌入到在线文档当中（如Notion、飞书云文档等）
+- 📊 新增图表置于分组首位功能
+- 📊 Charts Table支持CSV下载
+- 🌸 项目分享按钮移动到顶部Header区域
+
+**🔧修复**
+- 修复了下载图表PNG时，横轴显示不完全问题
+- 修复了图标放大状态下，配置图表面板，点击「应用」按钮卡顿的问题
+- 修复了一系列其他问题
+
+
 ## v0.7.6 - 2026.01.06
 
 **🚀新增功能**
@@ -304,115 +321,3 @@ Github: https://github.com/SwanHubX/SwanLab
 **🔌插件**：
 - 新增**通知类插件**，支持在训练结束时使用**邮件、飞书、钉钉、企业微信**进行通知
 - 新增**记录类插件**，支持在训练过程中将元数据、配置、指标写入到**本地CSV文件**
-
-
-
-## v0.4.12 - 2025.3.8
-
-**优化**
-- 修复了一些问题
-
-## v0.4.11 - 2025.3.5
-
-**优化**
-- 修复了部分版本W&B格式转换报错的问题
-- 修复了一些交互问题
-
-## v0.4.10 - 2025.3.4
-
-**🚀新增功能**
-- 新增了和[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)的集成, [文档](/guide_cloud/integration/integration-diffsynth-studio.md)
-- 新增支持转换 **MLFlow** 实验到 SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
-- 新增**项目描述**，支持给你的项目记一些简短的笔记
-
-**优化**
-- 修复了在OpenEuler系统上无法正确记录CPU型号的问题
-
-## v0.4.9 - 2025.2.28
-
-**🚀新增功能**
-- 新增了`移动实验`功能
-- 对一些集成Callback类增加了`update_config`方法
-- `run`新增`get_url()`和`get_project_url()`方法，支持获取实验和项目的URL
-
-**优化**
-- 修复了在部分Linux系统上CPU品牌获取不到的问题
-
-## v0.4.8 - 2025.2.16
-
-**🚀新增功能**
-- 新增了和Modelscope Swift的集成，[文档](/guide_cloud/integration/integration-swift.md)
-- 新增了`添加分组`和`移动图表到其他分组`功能
-
-**优化**
-- 修复了sdk的一些问题
-
-## v0.4.7 - 2025.2.11
-
-**🚀新增功能**
-- `swanlab.log`支持了参数`print_to_console`，开启后可以将`swanlab.log`的`key`、`value`以字典的形式打印到终端
-- `swanlab.init`支持了对`name`、`notes`参数的适配，等价于`experiment_name`和`description`
-
-
-## v0.4.6 - 2025.2.3
-
-**🚀新增功能**
-- 新增与LLM强化学习框架[verl](https://github.com/volcengine/verl)的集成，[文档](/guide_cloud/integration/integration-verl.md)
-- `swanlab.log`支持了嵌套字典传入
-
-**优化**
-- 优化了在PyTorch Lightning框架下的分布式训练优化
-
-
-## v0.4.5 - 2025.1.22
-
-**🚀新增功能**
-- 新增`swanlab.sync_tensorboardX()`和`swanlab.sync_tensorboard_torch()`：支持使用TensorboardX或PyTorch.utils.tensorboard跟踪实验时，同步指标到SwanLab
-
-**优化**
-- 优化了`sync_wandb()`的代码兼容性
-
-## v0.4.3 - 2025.1.17
-
-**🚀新增功能**
-- 新增`swanlab.sync_wandb()`：支持使用Weights&Biases跟踪实验时，同步指标到SwanLab，[文档](/guide_cloud/integration/integration-wandb.md)
-- 新增在使用框架集成时，配置项将记录所使用的框架
-
-**优化**
-- 改进了表格视图的交互，增加了行列拖拽、筛选、排序交互
-- 大幅优化了工作区加载的性能
-- 大幅优化了日志渲染的性能
-- 改进了在未登录的计算机上，执行`swanlab.init()`的交互
-- 修复了一些已知问题
-
-## 元旦节更新
-
-**🚀新增功能**
-- 升级了图表平滑，网页刷新后状态将仍然保留
-- 更新了图表大小修改，现在可以通过拖拽图表的右下角来改变大小
-
-**⚙️问题修复**
-- 修复了没有实验时，项目设置不显示删除的bug
-
-
-## v0.4.2 - 2024.12.24
-
-**🚀新增功能**
-- 新增密码登录
-- 新增项目设置页
-
-**优化**
-- 修复在一些设备上运行硬件监控会warning的问题
-
-## v0.4.0 - 2024.12.15
-
-🎉万众期待的硬件监控功能（云端版）已经上线，支持**CPU、NPU、GPU**的系统级信息监控：
-
-- **CPU**：利用率、线程数
-- **内存**：利用率、进程利用率、可用内存
-- **Nvidia GPU**：利用率、显存分配、温度、功耗
-- **Ascend NPU**：利用率、HBM分配、温度
-
-更多信息的监控已经在路上！
-
-by Cunyue
