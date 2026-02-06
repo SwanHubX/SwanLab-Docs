@@ -159,14 +159,15 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '更新日志', link: 'general/changelog' },
       ]
     },
-    {
-      text: '📚 实验跟踪',
+  {
+      text: '📚 实验记录与分析',
       // collapsed: false,
       items: [
-        { text: '什么是实验跟踪', link: 'experiment_track/what-is-experiment-track'},
+        { text: '什么是实验记录', link: 'experiment_track/what-is-experiment-track'},
         { text: '创建一个实验', link: 'experiment_track/create-experiment' },
         { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
         { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
+        { text: '折线图平滑', link: 'experiment_track/smooth-algorithms' },
         {
           text: '记录多维数据', 
           collapsed: true,
@@ -186,31 +187,39 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '记录分布式训练指标', link: 'experiment_track/log-distributed-training'},
         { text: '查看实验结果', link: 'experiment_track/view-result' },
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
-        { text: '折线图平滑', link: 'experiment_track/smooth-algorithms' },
-        { text: '设置实验Tag', link: 'experiment_track/set-experiment-tag'},
-        { text: '分组管理实验', link: 'experiment_track/grouping' },
-        { text: '系统硬件监控', link: 'experiment_track/system-monitor' },
+        { text: 'GPU监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-        { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
         { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
         { text: '常见问题', link: 'experiment_track/FAQ' },
-
       ]
     },
-    { text: '🚢 技巧', 
+    {
+      text: '🦄 实验管理',
+      items: [
+        { text: '实验标签', link: 'experiment_track/set-experiment-tag'},
+        { text: '实验分组', link: 'experiment_track/grouping' },
+      ]
+    },
+    { text: '📈 高级特性', 
       items: [
         { text: '恢复实验/断点续训', link: 'experiment_track/resume-experiment' },
         { text: '上传离线实验数据', link: 'experiment_track/sync-logfile' },
         { text: '添加项目协作者', link: 'experiment_track/add-collaborator' },
+        { text: '使用API获取实验数据', link: 'experiment_track/use-openapi' },
+      ]
+    },
+    {
+      text: '🚄 技巧',
+      items: [
         { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
         { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
-        { text: '使用OpenAPI获取实验数据', link: 'experiment_track/use-openapi' },
         { text: '手机看实验', link: 'general/app'},
         { text: '更多技巧', 
           collapsed: true,
           items: [
           { text: 'Webhook设置', link: 'experiment_track/webhook-setup' },
           { text: '获取实验元数据', link: 'experiment_track/experiment-metadata' },
+          { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
         ]},
     ] },
     {
