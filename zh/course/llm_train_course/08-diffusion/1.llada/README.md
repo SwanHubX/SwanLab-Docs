@@ -601,7 +601,7 @@ return F.scaled_dot_product_attention(
 预训练和微调的训练方式可能会稍微有点不一样，原因如下：
 
 1. 教程仅做为示例，核心还是微调
-2. 我想验证下[Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/pdf/2507.15857)这篇文章的观点，因此会采用小参数量的模型，和少规模tokens的数据集作为训练资源
+2. 我想验证下[Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/pdf/2507.15857)这篇文章的观点，因此会采用小参数量的模型，和小规模tokens的数据集作为训练资源
 
 💡从原因上大家也能看出，和微调不一样的是，**`小参数量模型`** 作为基座模型。那么如何构建`小参数量模型`呢？
 
