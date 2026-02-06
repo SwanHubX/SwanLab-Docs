@@ -376,7 +376,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 - 硬件要求
 
-1. $昇腾NPU(910B) \ge 1$
+1. 昇腾NPU(910B) $\ge 1$
 2. `Pytorch` $\ge$ 2.7，我们要用到`torch_npu`来适应NPU的使用，和`torch`版本要配套
 
 <div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">
