@@ -59,52 +59,45 @@ function goToGithub() {
 
 <style scoped>
 .github-button {
-  background-color: #ffffff;
-  color: #374a52;
-  border: 1px solid #e0e0e0;
-  padding: 4px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-  height: 28px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: auto;
-  margin-bottom: auto;
-  gap: 6px;
+  gap: var(--sl-space-sm);
+  height: 32px;
+  padding: 0 var(--sl-space-md);
+  font-size: var(--sl-font-size-button);
+  font-weight: var(--sl-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  background-color: var(--sl-button-bg);
+  color: var(--sl-button-text);
+  border: 1px solid var(--sl-button-border);
+  border-radius: var(--sl-radius-sm);
+  cursor: pointer;
+  transition: all var(--sl-transition-base);
+  margin-left: var(--sl-space-sm);
+  vertical-align: middle;
 }
 
 .github-button:hover {
-  background-color: #f2f2f2;
-  color: #397b89;
+  background-color: var(--sl-button-hover-bg);
+  border-color: var(--sl-button-hover-border);
+  color: var(--sl-button-hover-text);
+  transform: translateY(-1px);
+}
+
+.github-button:active {
+  transform: translateY(0);
 }
 
 .button-icon {
   width: 16px;
   height: 16px;
-}
-
-.button-text {
-  font-weight: 500;
+  flex-shrink: 0;
 }
 
 .star-count {
   font-weight: 600;
-}
-
-/* 黑夜模式样式 */
-:root.dark .github-button {
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  border: 1px solid #3a3a3a;
-}
-
-:root.dark .github-button:hover {
-  background-color: #3a3a3a;
-  color: #48a8b5;
+  font-variant-numeric: tabular-nums;
 }
 </style> 

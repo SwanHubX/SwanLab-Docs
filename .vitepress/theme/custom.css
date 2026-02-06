@@ -1,4 +1,44 @@
 :root {
+    /* ===== SwanLab 设计系统变量 ===== */
+
+    /* Header 布局 */
+    --sl-nav-height: 64px;
+    --sl-nav-padding-mobile: 0 12px 0 24px;
+    --sl-nav-padding-desktop: 0 32px;
+
+    /* 字体系统 */
+    --sl-font-size-nav: 13px;
+    --sl-font-size-button: 13px;
+    --sl-font-weight-medium: 500;
+
+    /* 间距系统 */
+    --sl-space-sm: 8px;
+    --sl-space-md: 12px;
+
+    /* 圆角 */
+    --sl-radius-sm: 6px;
+    --sl-radius-md: 8px;
+
+    /* 过渡 */
+    --sl-transition-base: 0.25s ease;
+
+    /* 亮色模式颜色 */
+    --sl-nav-bg: #ffffff;
+    --sl-nav-text: #2c3e50;
+    --sl-nav-text-hover: #107d8b;
+    --sl-nav-border: rgba(60, 60, 67, 0.12);
+
+    --sl-button-bg: transparent;
+    --sl-button-border: rgba(60, 60, 67, 0.15);
+    --sl-button-text: #2c3e50;
+    --sl-button-hover-bg: rgba(16, 125, 139, 0.06);
+    --sl-button-hover-border: #107d8b;
+    --sl-button-hover-text: #107d8b;
+
+    /* 阴影 */
+    --sl-shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
+
+    /* ===== VitePress 原有变量 ===== */
     --vp-c-brand-1: #107d8b;
     --vp-layout-max-width:1660px;
     --vp-sidebar-bg-color: var(--vp-c-bg-alt);
@@ -9,7 +49,155 @@
 
 
 .dark {
+    /* ===== SwanLab 暗色模式变量 ===== */
+
+    /* 暗色模式颜色 */
+    --sl-nav-bg: #1b1b1f;
+    --sl-nav-text: rgba(255, 255, 245, 0.86);
+    --sl-nav-text-hover: #2e9dac;
+    --sl-nav-border: rgba(82, 82, 89, 0.32);
+
+    --sl-button-bg: transparent;
+    --sl-button-border: rgba(82, 82, 89, 0.32);
+    --sl-button-text: rgba(255, 255, 245, 0.86);
+    --sl-button-hover-bg: rgba(46, 157, 172, 0.12);
+    --sl-button-hover-border: #2e9dac;
+    --sl-button-hover-text: #2e9dac;
+
+    --sl-shadow-dropdown: 0 16px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    /* ===== VitePress 原有变量 ===== */
     --vp-c-brand-1: #2e9dac;
+}
+
+/* ===== VitePress Nav Bar 覆盖 ===== */
+
+/* Header 高度和边框 */
+.VPNav {
+    background-color: var(--sl-nav-bg);
+}
+
+.VPNavBar {
+    height: var(--sl-nav-height);
+    border-bottom: 1px solid var(--sl-nav-border);
+}
+
+/* 确保导航栏内所有层级的容器都垂直居中 */
+.VPNavBar .container,
+.VPNavBar .content,
+.VPNavBar .content-body {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* Header 左右对齐布局 */
+.VPNavBar .container {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.VPNavBar .content {
+    justify-content: flex-end;
+}
+
+/* Logo 和搜索框容器 */
+.VPNavBar .title {
+    flex-shrink: 0;
+}
+
+/* 导航菜单向右对齐 */
+.VPNavBar .content-body {
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+/* 响应式 padding */
+.VPNav .container {
+    max-width: var(--vp-layout-max-width);
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .VPNav .container {
+        padding: var(--sl-nav-padding-mobile);
+    }
+}
+
+@media (min-width: 769px) {
+    .VPNav .container {
+        padding: var(--sl-nav-padding-desktop);
+    }
+}
+
+/* Logo hover 效果 */
+.VPNavBarTitle {
+    transition: opacity var(--sl-transition-base);
+}
+
+.VPNavBarTitle:hover {
+    opacity: 0.6;
+}
+
+/* 导航链接样式 */
+.VPNavBarMenu .VPNavBarMenuLink {
+    font-size: var(--sl-font-size-nav);
+    font-weight: var(--sl-font-weight-medium);
+    padding: 0 var(--sl-space-md);
+    color: var(--sl-nav-text);
+    transition: color var(--sl-transition-base);
+}
+
+.VPNavBarMenu .VPNavBarMenuLink:hover {
+    color: var(--sl-nav-text-hover);
+}
+
+/* Active 状态底部边框 */
+.VPNavBarMenu .VPNavBarMenuLink.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: var(--sl-space-md);
+    right: var(--sl-space-md);
+    height: 1px;
+    background-color: var(--vp-c-brand-1);
+}
+
+/* 下拉菜单样式 */
+.VPFlyout .menu {
+    border-radius: var(--sl-radius-md);
+    padding: var(--sl-space-md) 0;
+    min-width: 192px;
+    box-shadow: var(--sl-shadow-dropdown);
+}
+
+/* 自定义组件容器垂直居中 */
+.VPNavBarMenuGroup,
+.VPNavBarMenuLink,
+.VPNavBar .content > * {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 确保导航栏右侧内容垂直居中 */
+.VPNavBar .content-body {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.VPNavBar .VPNavBarMenu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* 确保自定义组件按钮垂直居中 */
+.VPNavBarMenu > .VPMenuGroup,
+.VPNavBarMenu > .VPMenuLink {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 /* .VPSidebar {
@@ -30,10 +218,10 @@
 
 /* 调整搜索框位置 */
 div.VPNavBarSearch.search {
-    padding: 0px;
-    margin-left: 20px;
-    margin-right: 20px;
-    flex-grow: 1;
+    padding: 0;
+    margin-left: var(--sl-space-md);
+    margin-right: auto;
+    flex-grow: 0;
 }
 
 
@@ -63,4 +251,40 @@ div.VPNavBarSearch.search {
 
 .medium-zoom-image {
     z-index: 31;
+}
+
+/* ===== 动画优化 ===== */
+
+/* 下拉菜单入场动画 */
+.VPFlyout .menu {
+    animation: dropdown-appear var(--sl-transition-base) ease-out;
+}
+
+@keyframes dropdown-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 焦点可见性（键盘导航） */
+.header-button:focus-visible,
+.vp-header-doc-helper-btn:focus-visible,
+.github-button:focus-visible {
+    outline: 2px solid var(--vp-c-brand-1);
+    outline-offset: 2px;
+}
+
+/* 减少动画（用户偏好） */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
