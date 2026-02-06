@@ -72,29 +72,54 @@
 
 /* ===== VitePress Nav Bar 覆盖 ===== */
 
-/* Header 高度和边框 */
+/* Header 高度和边框 - 应用到所有页面类型 */
 .VPNav {
-    background-color: var(--sl-nav-bg);
+    background-color: var(--sl-nav-bg) !important;
+    border-bottom: 1px solid var(--sl-nav-border) !important;
+    backdrop-filter: blur(8px);
+    overflow: visible !important; /* 允许 dropdown 菜单显示 */
+}
+
+/* 确保主页和文档页的导航栏样式一致 */
+.VPHome .VPNav,
+.VPDoc .VPNav,
+.VPNav.has-sidebar {
+    background-color: var(--sl-nav-bg) !important;
+    border-bottom: 1px solid var(--sl-nav-border) !important;
 }
 
 .VPNavBar {
-    height: var(--sl-nav-height);
-    border-bottom: 1px solid var(--sl-nav-border);
+    height: var(--sl-nav-height) !important;
+    border-bottom: none !important; /* 边框已在 .VPNav 上设置 */
+    background-color: transparent !important;
+    overflow: visible !important; /* 允许 dropdown 显示 */
 }
 
 /* 确保导航栏内所有层级的容器都垂直居中 */
 .VPNavBar .container,
-.VPNavBar .content,
-.VPNavBar .content-body {
-    display: flex;
-    align-items: center;
-    height: 100%;
+.VPNavBar .content {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    overflow: visible !important; /* 允许 dropdown 显示 */
+}
+
+/* 确保主页和文档页的导航栏容器样式一致 */
+.VPHome .VPNavBar .container,
+.VPHome .VPNavBar .content,
+.VPDoc .VPNavBar .container,
+.VPDoc .VPNavBar .content {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    overflow: visible !important; /* 允许 dropdown 显示 */
 }
 
 /* Header 左右对齐布局 */
 .VPNavBar .container {
     width: 100%;
     display: flex;
+    border: none !important; /* 确保容器没有边框 */
 }
 
 /* Logo 在最左侧 */
@@ -106,17 +131,42 @@
 .VPNavBar .content {
     flex: 1;
     display: flex;
+    border: none !important; /* 确保 content 没有边框 */
 }
 
 /* content-body 占据剩余空间，使用flex布局 */
 .VPNavBar .content-body {
-    flex: 1;
+    flex: 1 !important;
     display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
     gap: 0;
+    border: none !important; /* 移除可能的边框 */
+    overflow: visible !important; /* 允许 dropdown 显示在外部 */
+}
+
+/* 确保 content-body 及其子元素没有边框 */
+.VPNavBar .content-body::before,
+.VPNavBar .content-body::after {
+    display: none !important;
+}
+
+/* 移除 VitePress 可能添加的分隔线 */
+.VPNavBar .divider,
+.VPNavBar .divider-line {
+    display: none !important;
+}
+
+/* 确保导航栏内部元素没有底部边框 */
+.VPNavBar .container > *,
+.VPNavBar .content > *,
+.VPNavBar .content-body > * {
+    border-bottom: none !important;
 }
 
 /* 搜索框在content-body内第一位 - 使用负数order */
-.VPNavBar .content-body .VPNavBarSearch {
+.VPNavBar .content-body .VPNavBarSearch,
+.VPNavBar .content-body .VPNavBarSearch.search {
     order: -1 !important;
     flex-shrink: 0 !important;
     margin-left: var(--sl-space-sm) !important;
@@ -125,27 +175,40 @@
 }
 
 /* 导航菜单在右侧 - 使用margin-left: auto推到右边 */
-.VPNavBar .content-body .VPNavBarMenu {
-    order: 0;
+.VPNavBar .content-body .VPNavBarMenu,
+.VPNavBar .content-body .VPNavBarMenu.menu {
+    order: 0 !important;
     margin-left: auto !important;
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
 }
 
 /* 响应式 padding */
-.VPNav .container {
-    max-width: var(--vp-layout-max-width);
-    margin: 0 auto;
+.VPNav .container,
+.VPNavBar .container {
+    max-width: var(--vp-layout-max-width) !important;
+    margin: 0 auto !important;
+}
+
+/* 确保主页和文档页的容器宽度一致 */
+.VPHome .VPNav .container,
+.VPHome .VPNavBar .container,
+.VPDoc .VPNav .container,
+.VPDoc .VPNavBar .container {
+    max-width: var(--vp-layout-max-width) !important;
+    margin: 0 auto !important;
 }
 
 @media (max-width: 768px) {
-    .VPNav .container {
-        padding: var(--sl-nav-padding-mobile);
+    .VPNav .container,
+    .VPNavBar .container {
+        padding: var(--sl-nav-padding-mobile) !important;
     }
 }
 
 @media (min-width: 769px) {
-    .VPNav .container {
-        padding: var(--sl-nav-padding-desktop);
+    .VPNav .container,
+    .VPNavBar .container {
+        padding: var(--sl-nav-padding-desktop) !important;
     }
 }
 
@@ -160,6 +223,7 @@
 
 /* 导航链接样式 */
 .VPNavBarMenu .VPNavBarMenuLink {
+    position: relative; /* 为 active 指示器提供定位上下文 */
     font-size: var(--sl-font-size-nav);
     font-weight: var(--sl-font-weight-medium);
     padding: 0 var(--sl-space-md);
@@ -171,39 +235,141 @@
     color: var(--sl-nav-text-hover);
 }
 
-/* Active 状态底部边框 */
+/* 移除 Active 状态底部边框 */
 .VPNavBarMenu .VPNavBarMenuLink.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: var(--sl-space-md);
-    right: var(--sl-space-md);
-    height: 1px;
-    background-color: var(--vp-c-brand-1);
+    display: none !important;
 }
 
 /* 下拉菜单样式 */
 .VPFlyout .menu {
     border-radius: var(--sl-radius-md);
-    padding: var(--sl-space-md) 0;
-    min-width: 192px;
+    /* padding: var(--sl-space-md) 0; */
+    min-width: 160px;
     box-shadow: var(--sl-shadow-dropdown);
+}
+
+/* 移除 VPFlyout 可能的伪元素和渐变效果 */
+.VPFlyout::before,
+.VPFlyout::after,
+.VPFlyout .menu::before,
+.VPFlyout .menu::after {
+    display: none !important;
+}
+
+/* 确保 dropdown 容器本身没有半透明背景 */
+.VPFlyout {
+    background: transparent !important;
+}
+
+.VPFlyout .menu {
+    background: var(--vp-c-bg) !important;
+}
+
+/* 移除可能的渐变遮罩效果 */
+.VPFlyout .menu .items::before,
+.VPFlyout .menu .items::after {
+    display: none !important;
+}
+
+.VPFlyout .menu .items {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    background: transparent !important;
+}
+
+/* 移除所有可能的渐变和遮罩 */
+.VPFlyout .top-mask,
+.VPFlyout .bottom-mask,
+.VPFlyout .menu .top-mask,
+.VPFlyout .menu .bottom-mask {
+    display: none !important;
+}
+
+/* 移除 VPMenu 相关的遮罩效果 */
+.VPMenu::before,
+.VPMenu::after,
+.VPMenu .VPMenuGroup::before,
+.VPMenu .VPMenuGroup::after {
+    display: none !important;
+}
+
+/* 移除 VPMenu 的 mask-image 渐变效果 */
+.VPMenu {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    background: var(--vp-c-bg) !important;
+}
+
+/* 移除 VPMenu 内部所有可能的渐变和遮罩 */
+.VPMenu > div,
+.VPMenu .group,
+.VPMenu .items {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    background: transparent !important;
+}
+
+.VPMenu > div::before,
+.VPMenu > div::after,
+.VPMenu .group::before,
+.VPMenu .group::after {
+    display: none !important;
+}
+
+/* 强制移除 VPMenu 内所有元素的 mask 和渐变 */
+.VPMenu *,
+.VPMenu *::before,
+.VPMenu *::after {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+}
+
+.VPMenu *::before,
+.VPMenu *::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 移除可能的滚动容器的渐变效果 */
+.VPFlyout .scroller,
+.VPMenu .scroller,
+.VPFlyout .scroll-container,
+.VPMenu .scroll-container {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+}
+
+.VPFlyout .scroller::before,
+.VPFlyout .scroller::after,
+.VPMenu .scroller::before,
+.VPMenu .scroller::after {
+    display: none !important;
+}
+
+/* 确保菜单项容器没有渐变背景 */
+.VPFlyout .menu > *,
+.VPMenu > * {
+    background: transparent !important;
+    position: relative !important;
+}
+
+.VPFlyout .menu > *::before,
+.VPFlyout .menu > *::after,
+.VPMenu > *::before,
+.VPMenu > *::after {
+    display: none !important;
 }
 
 /* 自定义组件容器垂直居中 */
 .VPNavBarMenuGroup,
 .VPNavBarMenuLink,
 .VPNavBar .content > * {
+    position: relative; /* 为可能的 active 指示器提供定位上下文 */
     display: inline-flex;
     align-items: center;
 }
 
-/* 确保导航栏右侧内容垂直居中 */
-.VPNavBar .content-body {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
+/* 确保导航栏右侧内容垂直居中 - 已合并到上面的 .VPNavBar .content-body 规则中 */
 
 .VPNavBar .VPNavBarMenu {
     display: flex;
@@ -214,9 +380,16 @@
 /* 确保自定义组件按钮垂直居中 */
 .VPNavBarMenu > .VPMenuGroup,
 .VPNavBarMenu > .VPMenuLink {
+    position: relative; /* 为可能的 active 指示器提供定位上下文 */
     display: flex;
     align-items: center;
     height: 100%;
+}
+
+/* 移除所有 active 状态的指示器 */
+.VPNavBarMenu .VPMenuGroup.active::after,
+.VPNavBarMenu .VPMenuLink.active::after {
+    display: none !important;
 }
 
 /* .VPSidebar {
