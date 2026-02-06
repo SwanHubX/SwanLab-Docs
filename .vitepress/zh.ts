@@ -157,7 +157,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '快速开始', link: 'general/quick-start' },
         { text: '团队使用', link: 'general/organization' },
         { text: '更新日志', link: 'general/changelog' },
-        { text: '🔥手机看实验', link: 'general/app'},
       ]
     },
     {
@@ -169,7 +168,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '设置实验配置', link: 'experiment_track/set-experiment-config' },
         { text: '记录指标', link: 'experiment_track/log-experiment-metric' },
         {
-          text: '记录多维数据', items: [
+          text: '记录多维数据', 
+          collapsed: true,
+          items: [
             { text: '媒体类型', link: 'experiment_track/log-media' },
             { text: '自定义图表', link: 'experiment_track/log-custom-chart' },
             { text: '自定义3D图表', link: 'experiment_track/log-custom-3dchart'},
@@ -204,6 +205,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
         { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
         { text: '使用OpenAPI获取实验数据', link: 'experiment_track/use-openapi' },
+        { text: '手机看实验', link: 'general/app'},
         { text: '更多技巧', 
           collapsed: true,
           items: [
