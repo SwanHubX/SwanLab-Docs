@@ -93,23 +93,42 @@
 
 /* Header 左右对齐布局 */
 .VPNavBar .container {
-    justify-content: space-between;
     width: 100%;
+    display: flex;
 }
 
-.VPNavBar .content {
-    justify-content: flex-end;
-}
-
-/* Logo 和搜索框容器 */
-.VPNavBar .title {
+/* Logo 在最左侧 */
+.VPNavBar .title,
+.VPNavBarTitle {
     flex-shrink: 0;
 }
 
-/* 导航菜单向右对齐 */
+.VPNavBar .content {
+    flex: 1;
+    display: flex;
+}
+
+/* content-body 占据剩余空间，使用flex布局 */
 .VPNavBar .content-body {
-    justify-content: flex-end;
-    margin-left: auto;
+    flex: 1;
+    display: flex !important;
+    gap: 0;
+}
+
+/* 搜索框在content-body内第一位 - 使用负数order */
+.VPNavBar .content-body .VPNavBarSearch {
+    order: -1 !important;
+    flex-shrink: 0 !important;
+    margin-left: var(--sl-space-sm) !important;
+    margin-right: 0 !important;
+    padding-left: 4px !important;  /* 这个参数用于控制搜索框和Logo的距离 */
+}
+
+/* 导航菜单在右侧 - 使用margin-left: auto推到右边 */
+.VPNavBar .content-body .VPNavBarMenu {
+    order: 0;
+    margin-left: auto !important;
+    flex-shrink: 0;
 }
 
 /* 响应式 padding */
@@ -216,12 +235,9 @@
     border-bottom: transparent !important;
 }
 
-/* 调整搜索框位置 */
-div.VPNavBarSearch.search {
-    padding: 0;
-    margin-left: var(--sl-space-md);
-    margin-right: auto;
-    flex-grow: 0;
+/* DocSearch 按钮样式 */
+.DocSearch.DocSearch-Button {
+    margin: 0;
 }
 
 
