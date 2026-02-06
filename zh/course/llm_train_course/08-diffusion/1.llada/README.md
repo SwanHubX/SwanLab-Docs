@@ -365,8 +365,8 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 - 克隆代码
 
 ```bash
-git clone https://gitee.com/tina_3592874/llada-npu-test.git
-cd llada-npu-test
+git clone https://gitcode.com/windytina1/llada-npu
+cd llada-npu
 ```
 
 - 安装环境
