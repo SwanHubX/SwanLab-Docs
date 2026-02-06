@@ -17,7 +17,13 @@
 - **框架**：[dllm](https://github.com/ZHZisZZ/dllm)
 - **SwanLab**：[llada-swanlab](https://swanlab.cn/@LiXinYu/llada-npu-sft/overview)
 
-> 本次教程llada微调的时候显存占用$\le35 GB$，因此32GB的卡最好用两块，64GB的一块；预训练由于参数量较小（100M），单卡足矣。
+本教程基于**昇腾910B3-64GB**复现`LLaDA模型的训练`，代码使用[dllm](https://github.com/ZHZisZZ/dllm)框架。框架中有完整的llada模型预训练以及微调方法，在此感谢作者开源的diffusion模型训练框架🙏。
+
+<div style="display:flex;justify-content:center;">
+  <figure style="text-align:center;margin:0;">
+    <img src="./picture/logo.gif" style="width:80%">
+  </figure>
+</div>
 
 ## ✍️ 写在前面
 
@@ -135,14 +141,6 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
     <img src="./picture/images_openPangu-R-7B-Diffusion.gif" style="width:100%">
-  </figure>
-</div>
-
-本教程基于**昇腾910B3-64GB**复现`LLaDA模型的训练`，代码使用[dllm](https://github.com/ZHZisZZ/dllm)框架。框架中有完整的llada模型预训练以及微调方法，在此感谢作者开源的diffusion模型训练框架🙏。
-
-<div style="display:flex;justify-content:center;">
-  <figure style="text-align:center;margin:0;">
-    <img src="./picture/logo.gif" style="width:80%">
   </figure>
 </div>
 
