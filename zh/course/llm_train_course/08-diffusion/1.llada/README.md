@@ -11,8 +11,8 @@
 
 **📚资料**
 
-- **代码**：[llada-pretrain-sft](https://gitee.com/tina_3592874/llada-npu-test)
-- **数据集**：[pretrain](https://www.modelscope.cn/datasets/allenai/c4)，[sft](https://www.modelscope.cn/datasets/AI-ModelScope/alpaca-gpt4-data-zh)
+- **代码**：[llada-npu](https://atomgit.com/windytina1/llada-npu)
+- **数据集**：[C4(pretrain)](https://www.modelscope.cn/datasets/allenai/c4)，[alpaca(sft)](https://www.modelscope.cn/datasets/AI-ModelScope/alpaca-gpt4-data-zh)
 - **模型**：[llada-8b](https://www.modelscope.cn/models/GSAI-ML/LLaDA-8B-Base)
 - **框架**：[dllm](https://github.com/ZHZisZZ/dllm)
 - **SwanLab**：[llada-swanlab](https://swanlab.cn/@LiXinYu/llada-npu-sft/overview)
@@ -365,8 +365,8 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 - 克隆代码
 
 ```bash
-git clone https://gitee.com/tina_3592874/llada-npu-test.git
-cd llada-npu-test
+git clone https://atomgit.com/windytina1/llada-npu.git
+cd llada-npu
 ```
 
 - 安装环境
@@ -390,7 +390,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0
 ```
 
-然后要找对应配套版本的torch_npu，也就是2.9.0版本的torch_npu，点击这里👉[torch_npu](https://gitcode.com/Ascend/pytorch/releases/v7.3.0-pytorch2.9.0)
+然后要找对应配套版本的torch_npu，也就是2.9.0版本的torch_npu，点击这里👉[torch_npu](https://atomgit.com/Ascend/pytorch/releases/v7.3.0-pytorch2.9.0)
 
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
@@ -421,7 +421,7 @@ import torch_npu
 
 上述过程主要使用`save_to_disk`和`load_from_disk`保存和加载数据集，不过如果磁盘空间有限，建议还是直接用`load_dataset`。
 
-<div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">如果想直接预处理数据集的小伙伴，可以直接运行<a href="https://gitee.com/tina_3592874/llada-npu-test/blob/master/data.ipynb"target="_blank" rel="noopener">notebook</a>中的代码，原理步骤如下：
+<div style="background:#e7f8ff;color:#000;padding:12px 16px;border-left:4px solid #20c0ff;">如果想直接预处理数据集的小伙伴，可以直接运行<a href="https://atomgit.com/windytina1/llada-npu/blob/main/data.ipynb"target="_blank" rel="noopener">notebook</a>中的代码，原理步骤如下：
 </div>
 
 **SFT训练**
@@ -530,7 +530,7 @@ dataset = dllm.data.load_sft_dataset(
 
 本次教程核心是学会`微调`，数据集采用经典Alpaca数据集，`预训练`采用部分C4英文数据集。我们希望教程能够教会完整的训练流程以及测试流程，因此数据集均采用经典通用的数据集。
 
-我将分成两个模块来，为了符合正常的训练流程，教程依次是`预训练`和`微调`，代码地址👉[ours](https://gitee.com/tina_3592874/llada-npu-test)
+我将分成两个模块来，为了符合正常的训练流程，教程依次是`预训练`和`微调`，代码地址👉[ours](https://atomgit.com/windytina1/llada-npu)
 
 另外，如果有小伙伴想对比自回归模型和掩码扩散模型的区别，可以训练llama模型或者qwen模型作为对比。之所以可以训练llama模型来对比是因为llada的主体部分其实是llama结构，然后掩码不采用自回归模型的上三角形式，我们在[模型文件](https://www.modelscope.cn/models/GSAI-ML/LLaDA-8B-Base/file/view/master/modeling_llada.py?status=1#L659)中可以看到：
 
@@ -795,7 +795,7 @@ save_total_limit: 2
 
 1. `dataset_args`是你的数据集保存地址，由于我下面的`load_preprocessed_data`设置为`true`，也就是提前处理了数据集的意思，因此保存的数据集内容要求是tokens形式。
 2. 最好将`max_steps`改成`num_train_epochs`，然后微调2-3个epoch即可。如果是`max_steps`最好提前计算下选择多少steps较为合适。
-3. `SwanLab`是我们的训练观测工具，由于`dllm`继承了`Transformers`父类，而且`Transformers`已经集成`SwanLab`，因此我们直接令`report_to=swanlab`，唯一需要注意的是，如果想修改项目名称的话，需要提前设置环境变量，我在这里进行设置👉[project](https://gitee.com/tina_3592874/llada-npu-test/blob/master/dllm/utils/configs.py#L7)
+3. `SwanLab`是我们的训练观测工具，由于`dllm`继承了`Transformers`父类，而且`Transformers`已经集成`SwanLab`，因此我们直接令`report_to=swanlab`，唯一需要注意的是，如果想修改项目名称的话，需要提前设置环境变量，我在这里进行设置👉[project_name](https://atomgit.com/windytina1/llada-npu/blob/main/dllm/utils/configs.py#L7)
 
 
 
@@ -1038,7 +1038,6 @@ accelerate launch --num_processes 1 \
 <div style="background:#ffeae4ff;color:#000;padding:12px 16px;border-left:4px solid #fc592cff;">
 <strong>注意：</strong></br>
 lm_eval好像只能从huggingface下载对应数据集，如果huggingface下载不了，本地下载好像没有接口使用，因此这种情况可以使用evalscope框架，因为llada估计没有在evalscope的模型库中，因此可以使用API的方法进行测评，具体可以参考我的这篇👉<a href="https://docs.swanlab.cn/course/llm_train_course/05-eval/1.evalscope/README.html#%E6%A8%A1%E5%9E%8Bapi%E6%9C%8D%E5%8A%A1%E8%AF%84%E6%B5%8B" target="_blank" rel="noopener">API评测方法</a>
-
 </div>
 
 
@@ -1046,7 +1045,7 @@ lm_eval好像只能从huggingface下载对应数据集，如果huggingface下载
 
 [1].[7B扩散LLM，居然能跟671B的DeepSeek V3掰手腕，扩散vs自回归，谁才是未来？](https://zhuanlan.zhihu.com/p/1892191130092816211)
 
-[2].[开源盘古-R-7B-Diffusion](https://ai.gitcode.com/ascend-tribe/openPangu-R-7B-Diffusion)
+[2].[开源盘古-R-7B-Diffusion](https://ai.atomgit.com/ascend-tribe/openPangu-R-7B-Diffusion)
 
 [3].[嚯！大语言扩散模型来了，何必只预测下一个token | 人大高瓴&蚂蚁](https://news.qq.com/rain/a/20250218A03XSU00)
 
