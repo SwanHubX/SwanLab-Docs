@@ -189,7 +189,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: '结束一个实验', link: 'experiment_track/finish-experiment' },
         { text: 'GPU监控', link: 'experiment_track/system-monitor' },
         { text: '邮件/第三方通知', link: 'experiment_track/send-notification' },
-        { text: '限制与性能', link: 'experiment_track/limit-and-performance' },
         { text: '常见问题', link: 'experiment_track/FAQ' },
       ]
     },
@@ -211,9 +210,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
     {
       text: '🚄 技巧',
       items: [
-        { text: '内网计算节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
-        { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
         { text: '手机看实验', link: 'general/app'},
+        { text: '内网节点访问SwanLab', link: 'experiment_track/ssh-portforwarding' },
+        { text: '多人共用服务器避免密钥冲突', link: 'experiment_track/api-key-conflict' },
         { text: '更多技巧', 
           collapsed: true,
           items: [
