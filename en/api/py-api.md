@@ -321,8 +321,6 @@ The `filters` parameter supports the following conditions:
 - `state`: Run state, options: `FINISHED`, `RUNNING`, `CRASHED`, `ABORTED`
 - `config.<config_name>`: Configuration name, requires `config.` prefix; filters runs where the config value equals the specified value. Supports nested keys, e.g., `config.data.run_id`
 
-![config](./py-api/filter_config.png)
-
 ## metrics
 
 Gets the metric data for a run. The return value type is `pd.DataFrame`.

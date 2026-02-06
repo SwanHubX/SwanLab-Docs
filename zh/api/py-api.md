@@ -326,8 +326,6 @@ runs = api.runs(
 - `state`：实验状态，可选：`FINISHED`、`RUNNING`、`CRASHED`、`ABORTED`
 - `config.<配置名>`：配置名，需要`config.`前缀；会筛选出与配置值相等的实验，支持多层嵌套，如`config.data.run_id`
 
-![config](./py-api/filter_config.png)
-
 ## metrics
 
 获取实验的指标数据，返回值的类型为`pd.DataFrame`。
