@@ -171,6 +171,15 @@ for run in runs:
     print(run.name)
     print(run.url)
 ```
+
+```python [Delete Project]
+import swanlab
+
+api = swanlab.Api()
+
+project = api.project(path='username/project_name')
+project.delete()
+```
 :::
 
 Parameters for `projects`:
@@ -204,6 +213,7 @@ Attributes and Methods of a `project` object:
 | `visibility` | `str` | Project visibility: `PUBLIC` or `PRIVATE` |
 | `count` | `dict` | Project statistics, includes number of runs, collaborators, etc. |
 | `runs()` | - | Gets run objects under this project |
+| `delete()` | - | Deletes the project |
 | `json()` | - | Gets all project information, returns a `dict` |
 
 ## run
@@ -259,6 +269,15 @@ print(run.profile.metadata)
 # Get the run's Python environment information
 print(run.profile.requirements)
 ```
+
+```python [Delete Run]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path='username/project_name/experiment_id')
+run.delete()
+```
 :::
 
 Parameters for `runs`:
@@ -295,6 +314,7 @@ Attributes of a `run` object:
 | `show` | `bool` | Run visibility in the chart comparison view: `True` or `False` |
 | `user` | `dict` | Run user, format: `{'is_self': True, 'username': 'username'}` |
 | `metrics()` | - | Gets the run's metric data, returns a `pd.DataFrame` |
+| `delete()` | - | Deletes the run |
 | `json()` | - | Gets all run information, returns a `dict` |
 
 ## runs filters

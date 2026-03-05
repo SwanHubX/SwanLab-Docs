@@ -174,6 +174,15 @@ for run in runs:
     print(run.name)
     print(run.url)
 ```
+
+```python [删除项目]
+import swanlab
+
+api = swanlab.Api()
+
+project = api.project(path='username/project_name')
+project.delete()
+```
 :::
 
 `projects`的参数：
@@ -208,6 +217,7 @@ for run in runs:
 | `visibility` | `str` | 项目可见性，`PUBLIC` 或 `PRIVATE` |
 | `count` | `dict` | 项目统计信息，包含实验个数、协作者数量等 |
 | `runs()` | - | 获取项目下的实验对象 |
+| `delete()` | - | 删除项目 |
 | `json()` | - | 获取全部的项目信息，返回`dict` |
 
 ## run
@@ -263,6 +273,15 @@ print(run.profile.metadata)
 # 获取实验的Python环境信息
 print(run.profile.requirements)
 ```
+
+```python [删除实验]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path='username/project_name/experiment_id')
+run.delete()
+```
 :::
 
 `runs`的参数：
@@ -300,6 +319,7 @@ print(run.profile.requirements)
 | `show` | `bool` | 实验在图表对比视图的显示状态，`True` 或 `False` |
 | `user` | `dict` | 实验用户，格式为`{'is_self': True, 'username': 'username'}` |
 | `metrics()` | - | 获取实验的指标数据，返回`pd.DataFrame` |
+| `delete()` | - | 删除实验 |
 | `json()` | - | 获取全部的实验信息，返回`dict` |
 
 ## runs filters
