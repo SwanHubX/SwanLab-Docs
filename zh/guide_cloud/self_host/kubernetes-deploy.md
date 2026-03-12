@@ -29,7 +29,7 @@
 | 软件/基础设施 | 版本/配置要求 | 必要性说明 |
 | --- | --- | --- |
 | kubernetes | v1.24 及以上 | 官方测试验证覆盖了 v1.24+ 版本。为确保 API 兼容性与系统稳定性，不建议在低于此版本的集群中部署。 |
-| helm | version>=3.9 | SwanLab 采用 Helm v3 标准构建 Chart 包，不兼容 Helm v2（Tiller 模式）。 |
+| helm | version>=3.9 | SwanLab Chart 包依赖于 Helm v3.9+ 的新特性，与早期版本不兼容，也不兼容 Helm v2（Tiller 模式）。 |
 | RBAC 权限 | Namespace Admin | 部署账户需具备当前命名空间下的**写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。 |
 | 网络访问 (Egress) | *.swanlab.cn | 集群节点需具备访问公网的能力（或配置 NAT 网关）：<br>1. `repo.swanlab.cn`：用于拉取应用镜像。  <br>2. `api.swanlab.cn`：用于 License 在线激活与校验。 |
 
