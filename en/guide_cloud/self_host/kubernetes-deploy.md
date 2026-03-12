@@ -29,7 +29,7 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 | Software/Infrastructure | Version/Configuration Requirement | Necessity Explanation |
 | --- | --- | --- |
 | kubernetes | v1.24 and above | Official testing and validation cover v1.24+ versions. To ensure API compatibility and system stability, it is not recommended to deploy in clusters with versions lower than this. |
-| helm | version>=3 | SwanLab Chart packages are built using the Helm v3 standard and are not compatible with Helm v2 (Tiller mode). |
+| helm | version>=3.9 | SwanLab Chart packages are built using the Helm v3 standard and are not compatible with Helm v2 (Tiller mode). |
 | RBAC Permissions | Namespace Admin | The deploying account needs to have **write permissions** within the current namespace. Core resources include: `Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`, etc. |
 | Network Access (Egress) | *.swanlab.cn | Cluster nodes need to have the ability to access the public internet (or have a configured NAT gateway):<br>1. `repo.swanlab.cn`: Used to pull application images.<br>2. `api.swanlab.cn`: Used for online License activation and validation. |
 
