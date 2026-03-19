@@ -20,6 +20,7 @@ init(
     id: str = None,
     resume: Union[Literal['must', 'allow', 'never'], bool] = None,
     reinit: bool = None,
+    parallel: str = None,
     **kwargs,
 )
 ```
@@ -43,10 +44,11 @@ init(
 | notes           | (str) Same effect as `description`. Lower priority than `description`.                                                                                                                                                                                                                                                                                                                                      |
 | tags            | (list) Tags for the experiment.                                                                                                                                                                                                                                                                                                                                                                             |
 | settings        | (dict) Settings for the experiment. Supports passing a `swanlab.Settings` object.                                                                                                                                                                                                                                                                                                                           |
-| id              | (str) The ID of the last experiment. Used to resume the last experiment. Must be a 21-character string.                                                                                                                                                                                                                                                                                                     |
+| id              | (str) The ID of the last experiment. Used to resume the last experiment. Supports 1–64 custom characters; characters `/ \ # ? % :` are not allowed.                                                                                                                                                                                                                                                         |
 | color           | (str) The color for the experiment, used to distinguish different experiments in the dashboard. Supports three formats: preset color names (e.g., `"green"`, `"blue"`), RGB strings (e.g., `"rgb(82,141,89)"`), or hex color codes (e.g., `"#528d59"` or `"528d59"`). Defaults to None (random color). Invalid formats will trigger a warning and fall back to a random color.                              |
 | resume          | (str) Resume mode. Can be "must", "allow", "never", or True/False. Default is None.<br>`must`: You must pass the `id` parameter, and the experiment must exist.<br>`allow`: If an experiment exists, it will be resumed. Otherwise, a new experiment will be created.<br>`never`: The `id` parameter cannot be passed, and a new experiment will be created. (This is equivalent to not enabling `resume`.) |
 | reinit          | (bool) Whether to reinitialize the experiment. If True, the last experiment will be `finish`ed every time `swanlab.init()` is called; default is None.                                                                                                                                                                                                                                                      |
+| parallel        | (str) Parallel mode. Options are `"none"` or `"shared"`. Defaults to `"none"`.<br>`"shared"`: Shared parallel mode, allowing multiple distributed processes to upload metrics to the same experiment simultaneously. Automatically forces `mode='cloud'` and `resume='allow'`, and auto-generates an 8-character random `id` if none is provided.                                                           |
 
 ## Introduction
 
@@ -165,14 +167,37 @@ swanlab.init(
 )
 ```
 
-### Resume Training
+### Parallel Mode
+
+`parallel="shared"` is designed for multi-process distributed training, where multiple processes upload metrics to the same experiment simultaneously:
+
+```python
+# Multiple distributed processes use the same id, and metrics are aggregated under one experiment
+swanlab.init(
+    parallel="shared",
+    id="my-distributed-run",  # All processes use the same id
+)
+```
+
+If no `id` is provided, SwanLab auto-generates an 8-character random ID:
+
+```python
+import os
+
+# Share the same id across all processes via an environment variable
+RUN_ID = os.environ.get("RUN_ID", swanlab.util.generate_id())
+swanlab.init(
+    parallel="shared",
+    id=RUN_ID,
+)
+```
 
 "Resume Training" refers to the ability to resume training from a previous state. If you previously had an experiment with the status of `completed` or `interrupted`, and you need to add more experimental data, you can use the `resume` and `id` parameters to restore this experiment.
 
 ```python
 swanlab.init(
     resume=True,
-    id="14pk4qbyav4toobziszli",  # id must be a 21-character string
+    id="14pk4qbyav4toobziszli",  # supports 1-64 custom characters
 )
 ```
 

@@ -20,6 +20,7 @@ init(
     id: str = None,
     resume: Union[Literal['must', 'allow', 'never'], bool] = None,
     reinit: bool = None,
+    parallel: str = None,
     **kwargs,
 )
 ```
@@ -42,10 +43,11 @@ init(
 | name            | (str) 与experiment_name效果一致，优先级低于experiment_name。                                                                                                                                                                                                                                                                                              |
 | notes           | (str) 与description效果一致，优先级低于description。                                                                                                                                                                                                                                                                                                      |
 | settings        | (dict) 实验配置。支持传入1个`swanlab.Settings`对象。                                                                                                                                                                                                                                                                                                      |
-| id              | (str) 上次实验的运行ID，用于恢复上次实验。ID必须为21位字符串。                                                                                                                                                                                                                                                                                            |
+| id              | (str) 上次实验的运行ID，用于恢复上次实验。支持1-64位自定义字符，不可含有 `/ \ # ? % :` 等特殊字符。                                                                                                                                                                                                                                                       |
 | color           | (str) 实验颜色，用于在看板中区分不同实验。支持三种格式：预设颜色名称（如`"green"`、`"blue"`）、RGB字符串（如`"rgb(82,141,89)"`）、十六进制颜色码（如`"#528d59"` 或 `"528d59"`）。默认为None即随机分配颜色，无效格式将触发警告并回退到随机颜色。                                                                                                           |
 | resume          | (str) 断点续训模式，可选True、False、"must"、"allow"、"never"，默认取None。<br>`True`： 效果同`resume="allow"`。<br>`False`：效果同`resume="never"`。<br>`must`：你必须传递 `id` 参数，并且实验必须存在。<br>`allow`：如果存在实验，则会resume该实验，否则将创建新的实验。<br>`never`：你不能传递 `id` 参数，将会创建一个新的实验。(即不开启resume的效果) |
 | reinit          | (bool) 是否重新创建实验，如果为True，则每次调用`swanlab.init()`时，会把上一次实验`finish`掉；默认取None。                                                                                                                                                                                                                                                 |
+| parallel        | (str) 并行模式，可选`"none"`、`"shared"`，默认为`"none"`。<br>`"shared"`：共享并行模式，多个分布式进程可同时上传指标到同一个实验。启用后自动强制 `mode='cloud'` 和 `resume='allow'`，若未提供 `id` 则自动生成一个8位随机ID。                                                                                                                              |
 
 ## 介绍
 
@@ -165,6 +167,31 @@ swanlab.init(
 )
 ```
 
+### 并行模式
+
+`parallel="shared"` 适用于多进程分布式训练场景，多个进程同时向同一实验上传指标：
+
+```python
+# 多个分布式进程使用相同的 id，指标将汇聚到同一个实验下
+swanlab.init(
+    parallel="shared",
+    id="my-distributed-run",  # 所有进程使用相同的 id
+)
+```
+
+若不指定 `id`，SwanLab 会自动生成一个8位随机ID：
+
+```python
+import os
+
+# 通过环境变量在所有进程间共享同一个 id
+RUN_ID = os.environ.get("RUN_ID", swanlab.util.generate_id())
+swanlab.init(
+    parallel="shared",
+    id=RUN_ID,
+)
+```
+
 ### 断点续训
 
 断点续训的意思是，如果你之前有一个状态为`完成`或`中断`的实验，需要补一些实验数据，那么你可以通过`resume`和`id`参数来恢复这个实验。
@@ -172,7 +199,7 @@ swanlab.init(
 ```python
 swanlab.init(
     resume=True,
-    id="14pk4qbyav4toobziszli",  # id必须为21位字符串
+    id="14pk4qbyav4toobziszli",  # 支持1-64位自定义字符
 )
 ```
 

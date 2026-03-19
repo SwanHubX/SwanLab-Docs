@@ -22,18 +22,19 @@
 
 ## 实验配置
 
-| 环境变量              | 描述                                                                                                           |
-| --------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `SWANLAB_PROJ_NAME`   | 项目名称，效果等价于 `swanlab.init(project="...")`                                                             |
-| `SWANLAB_WORKSPACE`   | 工作空间名称，效果等价于 `swanlab.init(workspace="...")`                                                       |
-| `SWANLAB_EXP_NAME`    | 实验名称，效果等价于 `swanlab.init(experiment_name="...")`                                                     |
-| `SWANLAB_RUN_ID`      | 实验运行ID，效果等价于 `swanlab.init(id="...")`                                                                |
-| `SWANLAB_RESUME`      | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `must`、`allow`、`never`                         |
-| `SWANLAB_DESCRIPTION` | 实验描述，效果等价于 `swanlab.init(description="...")`                                                         |
-| `SWANLAB_TAGS`        | 实验标签，效果等价于 `swanlab.init(tags=[...])`，如果你想要添加多个tags，写法为`SWANLAB_TAGS="tag1,tag2,tag3"` |
-| `SWANLAB_GROUP`       | 实验分组，用于将实验分组以便管理和区分                                                                         |
-| `SWANLAB_JOB_TYPE`    | 实验任务类型，用于标识当前实验的任务类型（如分类、回归等）                                                     |
-| `SWANLAB_EXP_COLOR`   | 实验颜色，效果等价于 `swanlab.init(color="...")`，支持预设颜色名称、RGB字符串或十六进制颜色码                  |
+| 环境变量               | 描述                                                                                                           |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `SWANLAB_PROJ_NAME`    | 项目名称，效果等价于 `swanlab.init(project="...")`                                                             |
+| `SWANLAB_WORKSPACE`    | 工作空间名称，效果等价于 `swanlab.init(workspace="...")`                                                       |
+| `SWANLAB_EXP_NAME`     | 实验名称，效果等价于 `swanlab.init(experiment_name="...")`                                                     |
+| `SWANLAB_RUN_ID`       | 实验运行ID，效果等价于 `swanlab.init(id="...")`                                                                |
+| `SWANLAB_RESUME`       | 是否断点续训，效果等价于 `swanlab.init(resume=...)`，可选值为 `must`、`allow`、`never`                         |
+| `SWANLAB_DESCRIPTION`  | 实验描述，效果等价于 `swanlab.init(description="...")`                                                         |
+| `SWANLAB_TAGS`         | 实验标签，效果等价于 `swanlab.init(tags=[...])`，如果你想要添加多个tags，写法为`SWANLAB_TAGS="tag1,tag2,tag3"` |
+| `SWANLAB_GROUP`        | 实验分组，用于将实验分组以便管理和区分                                                                         |
+| `SWANLAB_JOB_TYPE`     | 实验任务类型，用于标识当前实验的任务类型（如分类、回归等）                                                     |
+| `SWANLAB_EXP_COLOR`    | 实验颜色，效果等价于 `swanlab.init(color="...")`，支持预设颜色名称、RGB字符串或十六进制颜色码                  |
+| `SWANLAB_RUN_PARALLEL` | 并行模式，效果等价于 `swanlab.init(parallel="...")`，可选值为 `shared`                                         |
 
 ## 登录认证
 
