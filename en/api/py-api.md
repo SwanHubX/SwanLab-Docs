@@ -17,6 +17,7 @@ Through the OpenAPI form, users can in their local programming environment:
 Leveraging this feature can greatly enhance the flexibility and extensibility of the SDK, facilitating the construction of advanced usage patterns or extension systems.
 
 ## Core Terminology
+
 - **Workspace**: A collection of projects, corresponding to a development team (e.g., "SwanLab"). It is divided into Personal Workspace (PERSON) and Organizational Workspace (TEAM).
 - **Project**: A collection of experiments, corresponding to a development task (e.g., "Image Classification").
 - **Run (Experiment)**: A single training/inference task, containing metrics, configurations, logs, and other data.
@@ -56,6 +57,7 @@ import swanlab
 
 api = swanlab.Api(api_key='your-api-key', host='your-host')
 ```
+
 :::
 
 ## workspace
@@ -104,29 +106,29 @@ for project in projects:
 
 Parameters for `workspaces`:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type  | Description                                                                        |
+| ---------- | ----- | ---------------------------------------------------------------------------------- |
 | `username` | `str` | Workspace username, i.e., the unique ID. Defaults to the currently logged-in user. |
 
 ---
 
 Parameters for `workspace`:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type  | Description                                                                        |
+| ---------- | ----- | ---------------------------------------------------------------------------------- |
 | `username` | `str` | Workspace username, i.e., the unique ID. Defaults to the currently logged-in user. |
 
 Attributes and Methods of a `workspace` object:
 
-| Attribute/Method | Type | Description |
-| --- | --- | --- |
-| `username` | `str` | Workspace username, i.e., the unique ID |
-| `name` | `str` | Workspace name |
-| `role` | `str` | The role of the current logged-in user in this workspace: `OWNER` or `MEMBER` |
-| `profile` | `dict` | Workspace introduction information, includes bio, url, institution, email |
-| `workspace_type` | `str` | Workspace type, either Personal or Organizational: `PERSON` or `TEAM` |
-| `projects()` | - | Gets project objects under this workspace |
-| `json()` | - | Gets all workspace information, returns a `dict` |
+| Attribute/Method | Type   | Description                                                                   |
+| ---------------- | ------ | ----------------------------------------------------------------------------- |
+| `username`       | `str`  | Workspace username, i.e., the unique ID                                       |
+| `name`           | `str`  | Workspace name                                                                |
+| `role`           | `str`  | The role of the current logged-in user in this workspace: `OWNER` or `MEMBER` |
+| `profile`        | `dict` | Workspace introduction information, includes bio, url, institution, email     |
+| `workspace_type` | `str`  | Workspace type, either Personal or Organizational: `PERSON` or `TEAM`         |
+| `projects()`     | -      | Gets project objects under this workspace                                     |
+| `json()`         | -      | Gets all workspace information, returns a `dict`                              |
 
 ## project
 
@@ -180,41 +182,42 @@ api = swanlab.Api()
 project = api.project(path='username/project_name')
 project.delete()
 ```
+
 :::
 
 Parameters for `projects`:
 
-| Parameter | Type | Description |
-|---|---|---|
-| `path` | `str` | Workspace path (username), format: `username`. Used to filter all projects under a specified workspace. |
-| `sort` | `str` | Sorting method, options: `created_at` (creation time), `updated_at` (update time) |
-| `search` | `str` | Search keyword, fuzzy matches project names |
-| `detail` | `bool` | Whether to return detailed project information (e.g., description, tags). Default is `True`. |
+| Parameter | Type   | Description                                                                                             |
+| --------- | ------ | ------------------------------------------------------------------------------------------------------- |
+| `path`    | `str`  | Workspace path (username), format: `username`. Used to filter all projects under a specified workspace. |
+| `sort`    | `str`  | Sorting method, options: `created_at` (creation time), `updated_at` (update time)                       |
+| `search`  | `str`  | Search keyword, fuzzy matches project names                                                             |
+| `detail`  | `bool` | Whether to return detailed project information (e.g., description, tags). Default is `True`.            |
 
 ---
 
 Parameters for `project`:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `path` | `str` | Project path, format: `username/project_name` |
+| Parameter | Type  | Description                                   |
+| --------- | ----- | --------------------------------------------- |
+| `path`    | `str` | Project path, format: `username/project_name` |
 
 Attributes and Methods of a `project` object:
 
-| Attribute/Method | Type | Description |
-| --- | --- | --- |
-| `name` | `str` | Project name |
-| `path` | `str` | Project path, format: `username/project_name` |
-| `description` | `str` | Project description |
-| `labels` | `list` | Project tags, format: `[label1, label2, ...]` |
-| `created_at` | `str` | Project creation time, format: ISO 8601 UTC, e.g., `2025-12-09T17:57:38.224Z` |
-| `updated_at` | `str` | Project update time, format same as `created_at` |
-| `url` | `str` | Project URL |
-| `visibility` | `str` | Project visibility: `PUBLIC` or `PRIVATE` |
-| `count` | `dict` | Project statistics, includes number of runs, collaborators, etc. |
-| `runs()` | - | Gets run objects under this project |
-| `delete()` | - | Deletes the project |
-| `json()` | - | Gets all project information, returns a `dict` |
+| Attribute/Method | Type   | Description                                                                   |
+| ---------------- | ------ | ----------------------------------------------------------------------------- |
+| `name`           | `str`  | Project name                                                                  |
+| `path`           | `str`  | Project path, format: `username/project_name`                                 |
+| `description`    | `str`  | Project description                                                           |
+| `labels`         | `list` | Project tags, format: `[label1, label2, ...]`                                 |
+| `created_at`     | `str`  | Project creation time, format: ISO 8601 UTC, e.g., `2025-12-09T17:57:38.224Z` |
+| `updated_at`     | `str`  | Project update time, format same as `created_at`                              |
+| `url`            | `str`  | Project URL                                                                   |
+| `visibility`     | `str`  | Project visibility: `PUBLIC` or `PRIVATE`                                     |
+| `count`          | `dict` | Project statistics, includes number of runs, collaborators, etc.              |
+| `runs()`         | -      | Gets run objects under this project                                           |
+| `delete()`       | -      | Deletes the project                                                           |
+| `json()`         | -      | Gets all project information, returns a `dict`                                |
 
 ## run
 
@@ -278,44 +281,45 @@ api = swanlab.Api()
 run = api.run(path='username/project_name/experiment_id')
 run.delete()
 ```
+
 :::
 
 Parameters for `runs`:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `path` | `str` | Project path, format: `username/project_name` |
+| Parameter | Type   | Description                                                                 |
+| --------- | ------ | --------------------------------------------------------------------------- |
+| `path`    | `str`  | Project path, format: `username/project_name`                               |
 | `filters` | `dict` | Filter conditions, e.g., `{'state': 'FINISHED', 'config.batch_size': '64'}` |
 
 ---
 
 Parameters for `run`:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `path` | `str` | Run path, format: `username/project_name/experiment_id` |
+| Parameter | Type  | Description                                             |
+| --------- | ----- | ------------------------------------------------------- |
+| `path`    | `str` | Run path, format: `username/project_name/experiment_id` |
 
 Attributes of a `run` object:
 
-| Attribute/Method | Type | Description |
-| --- | --- | --- |
-| `name` | `str` | Run name |
-| `path` | `str` | Run path, format: `username/project_name/experiment_id` |
-| `description` | `str` | Run description |
-| `id` | `str` | Run ID (Experiment ID) |
-| `state` | `str` | Run state: `FINISHED`, `RUNNING`, `CRASHED`, `ABORTED` |
-| `group` | `list` | Run group, format: `['A', 'B', 'C']` |
-| `labels` | `list` | Run tags, format: `[label1, label2, ...]` |
-| `created_at` | `str` | Run creation time, format: ISO 8601 UTC, e.g., `2025-12-09T17:57:38.224Z` |
-| `finished_at` | `str` | Run finish time, format same as `created_at`; if the run has not finished, this field is `None` |
-| `url` | `str` | Run URL |
-| `job_type` | `str` | Job type, format: `job_name` |
-| `profile` | `dict` | Run configuration information, includes `conda`, `config`, `metadata`, `requirements` attributes |
-| `show` | `bool` | Run visibility in the chart comparison view: `True` or `False` |
-| `user` | `dict` | Run user, format: `{'is_self': True, 'username': 'username'}` |
-| `metrics()` | - | Gets the run's metric data, returns a `pd.DataFrame` |
-| `delete()` | - | Deletes the run |
-| `json()` | - | Gets all run information, returns a `dict` |
+| Attribute/Method | Type   | Description                                                                                      |
+| ---------------- | ------ | ------------------------------------------------------------------------------------------------ |
+| `name`           | `str`  | Run name                                                                                         |
+| `path`           | `str`  | Run path, format: `username/project_name/experiment_id`                                          |
+| `description`    | `str`  | Run description                                                                                  |
+| `id`             | `str`  | Run ID (Experiment ID)                                                                           |
+| `state`          | `str`  | Run state: `FINISHED`, `RUNNING`, `CRASHED`, `ABORTED`                                           |
+| `group`          | `list` | Run group, format: `['A', 'B', 'C']`                                                             |
+| `labels`         | `list` | Run tags, format: `[label1, label2, ...]`                                                        |
+| `created_at`     | `str`  | Run creation time, format: ISO 8601 UTC, e.g., `2025-12-09T17:57:38.224Z`                        |
+| `finished_at`    | `str`  | Run finish time, format same as `created_at`; if the run has not finished, this field is `None`  |
+| `url`            | `str`  | Run URL                                                                                          |
+| `job_type`       | `str`  | Job type, format: `job_name`                                                                     |
+| `profile`        | `dict` | Run configuration information, includes `conda`, `config`, `metadata`, `requirements` attributes |
+| `show`           | `bool` | Run visibility in the chart comparison view: `True` or `False`                                   |
+| `user`           | `dict` | Run user, format: `{'is_self': True, 'username': 'username'}`                                    |
+| `metrics()`      | -      | Gets the run's metric data, returns a `pd.DataFrame`                                             |
+| `delete()`       | -      | Deletes the run                                                                                  |
+| `json()`         | -      | Gets all run information, returns a `dict`                                                       |
 
 ## runs filters
 
@@ -340,12 +344,18 @@ The `filters` parameter supports the following conditions:
 
 - `state`: Run state, options: `FINISHED`, `RUNNING`, `CRASHED`, `ABORTED`
 - `config.<config_name>`: Configuration name, requires `config.` prefix; filters runs where the config value equals the specified value. Supports nested keys, e.g., `config.data.run_id`
+- `username`: Filter by the username of the run creator, type: `str`
+- `group`: Filter by experiment group name, type: `str`
+- `tags`: Filter by associated tags, type: `list[str]`, e.g., `['tag1', 'tag2']`
+- `name`: Filter by exact run name, type: `str`
+- `job_type`: Filter by job type, type: `str`
 
 ## metrics
 
 Gets the metric data for a run. The return value type is `pd.DataFrame`.
 
 :::code-group
+
 ```python [Get Data for One Metric]
 import swanlab
 
@@ -389,19 +399,21 @@ metrics = run.metrics(keys=['loss'], sample=100)
 
 print(metrics)
 ```
+
 :::
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `keys` | `list[str]` | `None` | List of metric names to retrieve, e.g., `['loss', 'acc']`. If not provided, returns an empty DataFrame. |
-| `x_axis` | `str` | `step` | X-axis dimension, options: `step` (step number), or a metric name (e.g., `acc`) |
-| `sample` | `int` | `None` | Sample count, limits the number of returned rows. If not provided, returns all data. |
+| Parameter | Type        | Default | Description                                                                                             |
+| --------- | ----------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| `keys`    | `list[str]` | `None`  | List of metric names to retrieve, e.g., `['loss', 'acc']`. If not provided, returns an empty DataFrame. |
+| `x_axis`  | `str`       | `step`  | X-axis dimension, options: `step` (step number), or a metric name (e.g., `acc`)                         |
+| `sample`  | `int`       | `None`  | Sample count, limits the number of returned rows. If not provided, returns all data.                    |
 
 ## user
 
 > This operation is limited to super administrators on private deployments.
 
 :::code-group
+
 ```python [List All Users]
 import swanlab
 
@@ -456,15 +468,15 @@ user.delete_api_key(api_key=new_api_key)
 
 Parameters for `user`:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type  | Description                                         |
+| ---------- | ----- | --------------------------------------------------- |
 | `username` | `str` | Username, defaults to the currently logged-in user. |
 
 Attributes of a `user` object:
 
-| Attribute | Type | Description |
-| --- | --- | --- |
-| `username` | `str` | Username |
-| `is_self` | `bool` | Whether this user is the currently logged-in user |
-| `teams` | `list` | Teams the user belongs to |
+| Attribute  | Type   | Description                                                                                   |
+| ---------- | ------ | --------------------------------------------------------------------------------------------- |
+| `username` | `str`  | Username                                                                                      |
+| `is_self`  | `bool` | Whether this user is the currently logged-in user                                             |
+| `teams`    | `list` | Teams the user belongs to                                                                     |
 | `api_keys` | `list` | List of the user's API keys. Only supports getting API keys for the currently logged-in user. |

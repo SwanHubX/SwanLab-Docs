@@ -16,8 +16,8 @@
 
 利用好此特性可极大提升 SDK 的灵活性和可扩展性, 方便构建高级用法或扩展体系
 
-
 ## 核心术语
+
 - **空间（workspace）**：项目的集合，对应一个研发团队（如“SwanLab”），分为个人空间（PERSON）和组织空间（TEAM）；
 - **项目（project）**：实验的集合，对应一个研发任务（如“图像分类”）；
 - **实验（run）**：单次训练/推理任务，包含指标、配置、日志等数据；
@@ -57,6 +57,7 @@ import swanlab
 
 api = swanlab.Api(api_key='your-api-key', host='your-host')
 ```
+
 :::
 
 ## workspace
@@ -103,33 +104,31 @@ for project in projects:
 
 :::
 
-
 `workspaces`的参数：
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
+| 参数       | 类型  | 描述                                     |
+| ---------- | ----- | ---------------------------------------- |
 | `username` | `str` | 空间用户名，即唯一ID，默认为当前登录用户 |
 
 ---
 
 `workspace`的参数：
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
+| 参数       | 类型  | 描述                                     |
+| ---------- | ----- | ---------------------------------------- |
 | `username` | `str` | 空间用户名，即唯一ID，默认为当前登录用户 |
 
 `workspace`的属性与方法：
 
-| 属性 | 类型 | 描述 |
-| --- | --- | --- |
-| `username` | `str` | 空间用户名，即唯一ID |
-| `name` | `str` | 空间名称 |
-| `role` | `str` | 当前登录用户在该空间中的角色，`OWNER` 或 `MEMBER` |
-| `profile` | `dict` | 空间的介绍信息，包含简介、url、机构、邮箱 |
-| `workspace_type` | `str` | 空间类型，分为个人空间和组织空间，`PERSON` 或 `TEAM` |
-| `projects()` | - | 获取空间下的项目对象 |
-| `json()` | - | 获取全部的空间信息，返回`dict` |
-
+| 属性             | 类型   | 描述                                                 |
+| ---------------- | ------ | ---------------------------------------------------- |
+| `username`       | `str`  | 空间用户名，即唯一ID                                 |
+| `name`           | `str`  | 空间名称                                             |
+| `role`           | `str`  | 当前登录用户在该空间中的角色，`OWNER` 或 `MEMBER`    |
+| `profile`        | `dict` | 空间的介绍信息，包含简介、url、机构、邮箱            |
+| `workspace_type` | `str`  | 空间类型，分为个人空间和组织空间，`PERSON` 或 `TEAM` |
+| `projects()`     | -      | 获取空间下的项目对象                                 |
+| `json()`         | -      | 获取全部的空间信息，返回`dict`                       |
 
 ## project
 
@@ -183,42 +182,42 @@ api = swanlab.Api()
 project = api.project(path='username/project_name')
 project.delete()
 ```
+
 :::
 
 `projects`的参数：
 
-| 参数 | 类型 | 描述 |
-|---|---|---|
-| `path` | `str` | 空间路径（用户名），格式为`username`，用于筛选指定空间下的所有项目 |
-| `sort` | `str` | 排序方式，可选：`created_at`（创建时间）、`updated_at`（更新时间） |
-| `search` | `str` | 搜索关键词，模糊匹配项目名 |
-| `detail` | `bool` | 是否返回项目详细信息（如描述、标签），默认为`True` |
+| 参数     | 类型   | 描述                                                               |
+| -------- | ------ | ------------------------------------------------------------------ |
+| `path`   | `str`  | 空间路径（用户名），格式为`username`，用于筛选指定空间下的所有项目 |
+| `sort`   | `str`  | 排序方式，可选：`created_at`（创建时间）、`updated_at`（更新时间） |
+| `search` | `str`  | 搜索关键词，模糊匹配项目名                                         |
+| `detail` | `bool` | 是否返回项目详细信息（如描述、标签），默认为`True`                 |
 
 ---
 
 `project`的参数：
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
+| 参数   | 类型  | 描述                                    |
+| ------ | ----- | --------------------------------------- |
 | `path` | `str` | 项目路径，格式为`username/project_name` |
-
 
 `project`的属性与方法：
 
-| 属性 | 类型 | 描述 |
-| --- | --- | --- | 
-| `name` | `str` | 项目名 |
-| `path` | `str` | 项目路径，格式为`username/project_name` |
-| `description` | `str` | 项目描述 |
-| `labels` | `list` | 项目标签，格式为`[label1, label2, ...]` |
-| `created_at` | `str` | 项目创建时间，格式为ISO 8601 标准的 UTC 时间格式，如`2025-12-09T17:57:38.224Z` |
-| `updated_at` | `str` | 项目更新时间，格式同`created_at` |
-| `url` | `str` | 项目URL |
-| `visibility` | `str` | 项目可见性，`PUBLIC` 或 `PRIVATE` |
-| `count` | `dict` | 项目统计信息，包含实验个数、协作者数量等 |
-| `runs()` | - | 获取项目下的实验对象 |
-| `delete()` | - | 删除项目 |
-| `json()` | - | 获取全部的项目信息，返回`dict` |
+| 属性          | 类型   | 描述                                                                           |
+| ------------- | ------ | ------------------------------------------------------------------------------ |
+| `name`        | `str`  | 项目名                                                                         |
+| `path`        | `str`  | 项目路径，格式为`username/project_name`                                        |
+| `description` | `str`  | 项目描述                                                                       |
+| `labels`      | `list` | 项目标签，格式为`[label1, label2, ...]`                                        |
+| `created_at`  | `str`  | 项目创建时间，格式为ISO 8601 标准的 UTC 时间格式，如`2025-12-09T17:57:38.224Z` |
+| `updated_at`  | `str`  | 项目更新时间，格式同`created_at`                                               |
+| `url`         | `str`  | 项目URL                                                                        |
+| `visibility`  | `str`  | 项目可见性，`PUBLIC` 或 `PRIVATE`                                              |
+| `count`       | `dict` | 项目统计信息，包含实验个数、协作者数量等                                       |
+| `runs()`      | -      | 获取项目下的实验对象                                                           |
+| `delete()`    | -      | 删除项目                                                                       |
+| `json()`      | -      | 获取全部的项目信息，返回`dict`                                                 |
 
 ## run
 
@@ -282,45 +281,45 @@ api = swanlab.Api()
 run = api.run(path='username/project_name/experiment_id')
 run.delete()
 ```
+
 :::
 
 `runs`的参数：
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `path` | `str` | 项目路径，格式为`username/project_name` |
+| 参数      | 类型   | 描述                                                             |
+| --------- | ------ | ---------------------------------------------------------------- |
+| `path`    | `str`  | 项目路径，格式为`username/project_name`                          |
 | `filters` | `dict` | 筛选条件，比如`{'state': 'FINISHED', 'config.batch_size': '64'}` |
 
 ---
 
 `run`的参数：
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
+| 参数   | 类型  | 描述                                                  |
+| ------ | ----- | ----------------------------------------------------- |
 | `path` | `str` | 实验路径，格式为`username/project_name/experiment_id` |
-
 
 `run`对象的属性如下：
 
-| 属性 | 类型 | 描述 |
-| --- | --- | --- | 
-| `name` | `str` | 实验名 |
-| `path` | `str` | 实验路径，格式为`username/project_name/experiment_id` |
-| `description` | `str` | 实验描述 |
-| `id` | `str` | 实验ID |
-| `state` | `str` | 实验状态，`FINISHED`、`RUNNING`、`CRASHED`、`ABORTED`|
-| `group` | `list` | 实验组，格式为`['A', 'B', 'C']` |
-| `labels` | `list` | 实验标签，格式为`[label1, label2, ...]` |
-| `created_at` | `str` | 实验创建时间，格式为ISO 8601 标准的 UTC 时间格式，如`2025-12-09T17:57:38.224Z` |
-| `finished_at` | `str` | 实验结束时间，格式同`created_at`；如果实验未结束，则该字段为`None` |
-| `url` | `str` | 实验URL |
-| `job_type` | `str` | 任务类型（job_type），格式为`job_name` |
-| `profile` | `dict` | 实验配置信息，包含`conda`、`config`、`metadata`、`requirements`属性 |
-| `show` | `bool` | 实验在图表对比视图的显示状态，`True` 或 `False` |
-| `user` | `dict` | 实验用户，格式为`{'is_self': True, 'username': 'username'}` |
-| `metrics()` | - | 获取实验的指标数据，返回`pd.DataFrame` |
-| `delete()` | - | 删除实验 |
-| `json()` | - | 获取全部的实验信息，返回`dict` |
+| 属性          | 类型   | 描述                                                                           |
+| ------------- | ------ | ------------------------------------------------------------------------------ |
+| `name`        | `str`  | 实验名                                                                         |
+| `path`        | `str`  | 实验路径，格式为`username/project_name/experiment_id`                          |
+| `description` | `str`  | 实验描述                                                                       |
+| `id`          | `str`  | 实验ID                                                                         |
+| `state`       | `str`  | 实验状态，`FINISHED`、`RUNNING`、`CRASHED`、`ABORTED`                          |
+| `group`       | `list` | 实验组，格式为`['A', 'B', 'C']`                                                |
+| `labels`      | `list` | 实验标签，格式为`[label1, label2, ...]`                                        |
+| `created_at`  | `str`  | 实验创建时间，格式为ISO 8601 标准的 UTC 时间格式，如`2025-12-09T17:57:38.224Z` |
+| `finished_at` | `str`  | 实验结束时间，格式同`created_at`；如果实验未结束，则该字段为`None`             |
+| `url`         | `str`  | 实验URL                                                                        |
+| `job_type`    | `str`  | 任务类型（job_type），格式为`job_name`                                         |
+| `profile`     | `dict` | 实验配置信息，包含`conda`、`config`、`metadata`、`requirements`属性            |
+| `show`        | `bool` | 实验在图表对比视图的显示状态，`True` 或 `False`                                |
+| `user`        | `dict` | 实验用户，格式为`{'is_self': True, 'username': 'username'}`                    |
+| `metrics()`   | -      | 获取实验的指标数据，返回`pd.DataFrame`                                         |
+| `delete()`    | -      | 删除实验                                                                       |
+| `json()`      | -      | 获取全部的实验信息，返回`dict`                                                 |
 
 ## runs filters
 
@@ -332,7 +331,7 @@ import swanlab
 api = swanlab.Api()
 
 runs = api.runs(
-    path='username/project_name', 
+    path='username/project_name',
     filters={
         'state': 'FINISHED',
         'config.batch_size': '64',
@@ -345,12 +344,18 @@ runs = api.runs(
 
 - `state`：实验状态，可选：`FINISHED`、`RUNNING`、`CRASHED`、`ABORTED`
 - `config.<配置名>`：配置名，需要`config.`前缀；会筛选出与配置值相等的实验，支持多层嵌套，如`config.data.run_id`
+- `username`：筛选指定用户名创建的实验，类型为`str`
+- `group`：筛选指定实验组的实验，类型为`str`
+- `tags`：筛选包含指定标签的实验，类型为`list[str]`，如`['tag1', 'tag2']`
+- `name`：筛选实验名等于指定值的实验，类型为`str`
+- `job_type`：筛选指定任务类型的实验，类型为`str`
 
 ## metrics
 
 获取实验的指标数据，返回值的类型为`pd.DataFrame`。
 
 :::code-group
+
 ```python [获取1个指标数据]
 import swanlab
 
@@ -394,19 +399,21 @@ metrics = run.metrics(keys=['loss'], sample=100)
 
 print(metrics)
 ```
+
 :::
 
-| 参数 | 类型 | 默认值 | 描述 |
-|---|---|---|---|
-| `keys` | `list[str]` | `None` | 要获取的指标名称列表，如 `['loss', 'acc']`；不传则返回空DataFrame |
-| `x_axis` | `str` | `step` | X轴维度，可选：`step`（步数）、指标名（如 `acc`） |
-| `sample` | `int` | `None` | 采样数量，限制返回的行数；不传则返回全部数据 |
+| 参数     | 类型        | 默认值 | 描述                                                              |
+| -------- | ----------- | ------ | ----------------------------------------------------------------- |
+| `keys`   | `list[str]` | `None` | 要获取的指标名称列表，如 `['loss', 'acc']`；不传则返回空DataFrame |
+| `x_axis` | `str`       | `step` | X轴维度，可选：`step`（步数）、指标名（如 `acc`）                 |
+| `sample` | `int`       | `None` | 采样数量，限制返回的行数；不传则返回全部数据                      |
 
 ## user
 
 > 此操作仅限于私有化部署的超级管理员使用
 
 :::code-group
+
 ```python [列出所有用户]
 import swanlab
 
@@ -461,15 +468,15 @@ user.delete_api_key(api_key=new_api_key)
 
 `user`的参数：
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
+| 参数       | 类型  | 描述                       |
+| ---------- | ----- | -------------------------- |
 | `username` | `str` | 用户名，默认为当前登录用户 |
 
 `user`对象的属性如下：
 
-| 属性 | 类型 | 描述 |
-| --- | --- | --- |
-| `username` | `str` | 用户名 |
-| `is_self` | `bool` | 是否为当前登录用户 |
-| `teams` | `list` | 用户所属团队 |
+| 属性       | 类型   | 描述                                             |
+| ---------- | ------ | ------------------------------------------------ |
+| `username` | `str`  | 用户名                                           |
+| `is_self`  | `bool` | 是否为当前登录用户                               |
+| `teams`    | `list` | 用户所属团队                                     |
 | `api_keys` | `list` | 用户API密钥列表，仅支持获取当前登录用户的API密钥 |
