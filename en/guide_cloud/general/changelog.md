@@ -5,9 +5,22 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.7.12 - 2026.03.19
+
+**🚀 New Features**
+- 🦜 **Experiment Duplicate** feature is now available, improving the experience of comparing baseline experiments across multiple projects
+- 🪓 **Parallel Mode** is now available, allowing multiple distributed processes to upload metrics to the same experiment at the same time
+- 🪓 **Write Rate Upgrade**, now SwanLab supports higher SDK metric write rates
+- 🦄 **resume id** now supports custom characters
+- 🪓 **SDK supports specifying experiment color**
+
+**🔧 Bug Fixes**
+- Fixed a bug where adding tags would cause a lag
+- Fixed a series of other issues
+
 ## v0.7.8 - 2026.02.06
 
-**🚀 New Features & Improvements**
+**🚀 New Features**
 - ⚡️ LightningBoard (Lightning Board) is now available, designed for extremely large chart scenarios like pre-training of large models
 - 📊 New chart embedding link, now you can embed your charts into online documents (e.g., Notion, Feishu Cloud Docs)
 - 📊 New chart pinning to first position in group
