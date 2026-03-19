@@ -11,11 +11,12 @@ init(
     tags: List[str] = None,
     config: Union[dict, str] = None,
     logdir: str = None,
-    mode: MODES = None,    
+    mode: MODES = None,
     load: str = None,
     public: bool = None,
     callbacks: List[SwanKitCallback] = None,
     settings: Settings = None,
+    color: str = None,
     id: str = None,
     resume: Union[Literal['must', 'allow', 'never'], bool] = None,
     reinit: bool = None,
@@ -23,29 +24,29 @@ init(
 )
 ```
 
-| Parameter         | Description |
-|-------------------|-------------|
-| project           | (str) The name of the project. If not specified, the name of the current working directory will be used. |
-| workspace         | (str) The workspace. By default, experiments are synchronized to your personal space. If you want to upload to an organization, specify the organization's username. |
-| experiment_name   | (str) The name of the experiment. If not specified, it will default to a format like "swan-1" (animal name + sequence number). |
-| job_type          | (str) The type of job. If not specified, it will default to empty string. |
-| group             | (str) The group of the experiment. If not specified, it will default to None. |
-| tags              | (list) Tags for the experiment. Can pass a list of strings, and the tags will be displayed in the tag bar at the top of the experiment. |
-| description       | (str) A description of the experiment. If not specified, it defaults to None. |
-| config            | (dict, str) Configuration for the experiment. You can record hyperparameters and other information here. Supports passing a configuration file path (yaml or json). |
-| logdir            | (str) The path to store offline dashboard log files. Defaults to `swanlog`. |
-| mode              | (str) Sets the mode for creating SwanLab experiments. Options are "cloud", "local", "offline", or "disabled". Default is "cloud".<br>`cloud`: Uploads the experiment to the cloud (public or private deployment).<br>`offline`: Only records experiment data locally.<br>`local`: Does not upload to the cloud but records experiment information locally.<br>`disabled`: Neither uploads nor records. |
-| load              | (str) The path to a configuration file to load. Supports yaml and json files. |
-| public            | (bool) Sets the visibility of the SwanLab project created directly via code. Default is False (private). |
-| callbacks         | (list) Sets experiment callback functions. Supports subclasses of `swanlab.toolkit.callback.SwanKitCallback`. |
-| name              | (str) Same effect as `experiment_name`. Lower priority than `experiment_name`. |
-| notes             | (str) Same effect as `description`. Lower priority than `description`. |
-| tags              | (list) Tags for the experiment. |
-| settings          | (dict) Settings for the experiment. Supports passing a `swanlab.Settings` object. |
-| id                | (str) The ID of the last experiment. Used to resume the last experiment. Must be a 21-character string. |
-| resume            | (str) Resume mode. Can be "must", "allow", "never", or True/False. Default is None.<br>`must`: You must pass the `id` parameter, and the experiment must exist.<br>`allow`: If an experiment exists, it will be resumed. Otherwise, a new experiment will be created.<br>`never`: The `id` parameter cannot be passed, and a new experiment will be created. (This is equivalent to not enabling `resume`.) |
-| reinit            | (bool) Whether to reinitialize the experiment. If True, the last experiment will be `finish`ed every time `swanlab.init()` is called; default is None. |
-
+| Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| project         | (str) The name of the project. If not specified, the name of the current working directory will be used.                                                                                                                                                                                                                                                                                                    |
+| workspace       | (str) The workspace. By default, experiments are synchronized to your personal space. If you want to upload to an organization, specify the organization's username.                                                                                                                                                                                                                                        |
+| experiment_name | (str) The name of the experiment. If not specified, it will default to a format like "swan-1" (animal name + sequence number).                                                                                                                                                                                                                                                                              |
+| job_type        | (str) The type of job. If not specified, it will default to empty string.                                                                                                                                                                                                                                                                                                                                   |
+| group           | (str) The group of the experiment. If not specified, it will default to None.                                                                                                                                                                                                                                                                                                                               |
+| tags            | (list) Tags for the experiment. Can pass a list of strings, and the tags will be displayed in the tag bar at the top of the experiment.                                                                                                                                                                                                                                                                     |
+| description     | (str) A description of the experiment. If not specified, it defaults to None.                                                                                                                                                                                                                                                                                                                               |
+| config          | (dict, str) Configuration for the experiment. You can record hyperparameters and other information here. Supports passing a configuration file path (yaml or json).                                                                                                                                                                                                                                         |
+| logdir          | (str) The path to store offline dashboard log files. Defaults to `swanlog`.                                                                                                                                                                                                                                                                                                                                 |
+| mode            | (str) Sets the mode for creating SwanLab experiments. Options are "cloud", "local", "offline", or "disabled". Default is "cloud".<br>`cloud`: Uploads the experiment to the cloud (public or private deployment).<br>`offline`: Only records experiment data locally.<br>`local`: Does not upload to the cloud but records experiment information locally.<br>`disabled`: Neither uploads nor records.      |
+| load            | (str) The path to a configuration file to load. Supports yaml and json files.                                                                                                                                                                                                                                                                                                                               |
+| public          | (bool) Sets the visibility of the SwanLab project created directly via code. Default is False (private).                                                                                                                                                                                                                                                                                                    |
+| callbacks       | (list) Sets experiment callback functions. Supports subclasses of `swanlab.toolkit.callback.SwanKitCallback`.                                                                                                                                                                                                                                                                                               |
+| name            | (str) Same effect as `experiment_name`. Lower priority than `experiment_name`.                                                                                                                                                                                                                                                                                                                              |
+| notes           | (str) Same effect as `description`. Lower priority than `description`.                                                                                                                                                                                                                                                                                                                                      |
+| tags            | (list) Tags for the experiment.                                                                                                                                                                                                                                                                                                                                                                             |
+| settings        | (dict) Settings for the experiment. Supports passing a `swanlab.Settings` object.                                                                                                                                                                                                                                                                                                                           |
+| id              | (str) The ID of the last experiment. Used to resume the last experiment. Must be a 21-character string.                                                                                                                                                                                                                                                                                                     |
+| color           | (str) The color for the experiment, used to distinguish different experiments in the dashboard. Supports three formats: preset color names (e.g., `"green"`, `"blue"`), RGB strings (e.g., `"rgb(82,141,89)"`), or hex color codes (e.g., `"#528d59"` or `"528d59"`). Defaults to None (random color). Invalid formats will trigger a warning and fall back to a random color.                              |
+| resume          | (str) Resume mode. Can be "must", "allow", "never", or True/False. Default is None.<br>`must`: You must pass the `id` parameter, and the experiment must exist.<br>`allow`: If an experiment exists, it will be resumed. Otherwise, a new experiment will be created.<br>`never`: The `id` parameter cannot be passed, and a new experiment will be created. (This is equivalent to not enabling `resume`.) |
+| reinit          | (bool) Whether to reinitialize the experiment. If True, the last experiment will be `finish`ed every time `swanlab.init()` is called; default is None.                                                                                                                                                                                                                                                      |
 
 ## Introduction
 
@@ -116,6 +117,19 @@ The following code demonstrates how to save log files to a custom directory:
 swanlab.init(
     logdir="path/to/my_custom_dir",
 )
+```
+
+### Setting Experiment Color
+
+```python
+# Using a preset color name
+swanlab.init(color="green")
+
+# Using a hex color code
+swanlab.init(color="#528d59")
+
+# Using an RGB string
+swanlab.init(color="rgb(82,141,89)")
 ```
 
 ### Adding Experiment Metadata to the Configuration
