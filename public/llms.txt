@@ -1,0 +1,117 @@
+# SwanLab
+
+> SwanLab is an open-source, lightweight AI model training tracking and visualization tool. It provides a platform for tracking, recording, comparing, and collaborating on machine learning experiments, with both cloud and self-hosted deployment options.
+
+## What SwanLab Can Do
+
+- **Experiment Tracking**: Integrate into ML pipelines to track metrics, hyperparameters, and metadata in real time.
+- **Training Visualization**: Intuitive UI with line charts, media viewers, 3D point clouds, custom ECharts, and more.
+- **Hyperparameter Logging**: Record config dictionaries (or YAML/JSON files) alongside each experiment run.
+- **Media Logging**: Log images, audio, video, text (with Markdown), 3D point clouds, and biochemical molecules.
+- **Automatic Background Logging**: Captures hardware environment, Git info, Python packages, and directory structure automatically.
+- **Hardware Monitoring**: Real-time tracking of CPU, GPU (NVIDIA, AMD, MetaX, MooreThread), NPU (Ascend), MLU (Cambricon), XPU (KunlunX), memory, disk, and network.
+- **Experiment Comparison**: Compare hyperparameters and metrics across runs via tables and overlaid charts.
+- **Resume Training**: Continue logging to an existing experiment after interruption or completion.
+- **Distributed Training**: Shared parallel mode allows multiple processes to upload metrics to the same experiment simultaneously.
+- **Multi-User Collaboration**: Sync experiments in real time, share persistent URLs, and manage experiments within organizations.
+- **Self-Hosting**: Community edition supports offline/private dashboards deployable via Docker or Kubernetes.
+- **Framework Integrations**: 40+ integrations including PyTorch, HuggingFace Transformers, LLaMA Factory, Ultralytics, MMDetection, Stable Baselines3, veRL, XGBoost, LightGBM, TensorBoard, Weights & Biases, MLflow, OpenAI, and more.
+- **Plugin Extensions**: Extend with notification plugins (Lark, Slack, Email) and data-export plugins (CSV logger).
+- **Open API / Python SDK**: Programmatically query workspaces, projects, experiments, metrics, and summaries.
+- **CLI Tools**: Login, mode switching, offline board, log conversion, and sync commands.
+
+## Getting Started
+
+- [Quick Start](https://docs.swanlab.cn/en/guide_cloud/general/quick-start.html): Install and run your first tracked experiment in 5 minutes.
+- [What is SwanLab](https://docs.swanlab.cn/en/guide_cloud/general/what-is-swanlab.html): Full overview of features and comparisons with TensorBoard and Weights & Biases.
+
+## Python SDK API Reference
+
+- [swanlab.init](https://docs.swanlab.cn/en/api/py-init.html): Initialize an experiment run (project, config, mode, resume, parallel, etc.).
+- [swanlab.log](https://docs.swanlab.cn/en/api/py-log.html): Log scalar metrics and media data to the current run.
+- [swanlab.Image](https://docs.swanlab.cn/en/api/py-Image.html): Wrap image data (file path, numpy array, or PIL image) for logging.
+- [swanlab.Audio](https://docs.swanlab.cn/en/api/py-Audio.html): Wrap audio data for logging.
+- [swanlab.Text](https://docs.swanlab.cn/en/api/py-Text.html): Wrap text (with optional Markdown rendering) for logging.
+- [swanlab.Video](https://docs.swanlab.cn/en/api/py-video.html): Wrap video data for logging.
+- [swanlab.ECharts](https://docs.swanlab.cn/en/api/py-echarts.html): Log custom Apache ECharts visualizations (bar, scatter, pie, heatmap, radar, etc.).
+- [swanlab.Object3D](https://docs.swanlab.cn/en/api/py-object3d.html): Log 3D point cloud data.
+- [swanlab.Molecule](https://docs.swanlab.cn/en/api/py-molecule.html): Log biochemical molecule structures.
+- [swanlab.pr_curve](https://docs.swanlab.cn/en/api/py-pr_curve.html): Log precision-recall curves.
+- [swanlab.roc_curve](https://docs.swanlab.cn/en/api/py-roc_curve.html): Log ROC curves.
+- [swanlab.confusion_matrix](https://docs.swanlab.cn/en/api/py-confusion_matrix.html): Log confusion matrices.
+- [swanlab.login](https://docs.swanlab.cn/en/api/py-login.html): Authenticate programmatically with an API key.
+- [swanlab.Api (OpenAPI)](https://docs.swanlab.cn/en/api/py-api.html): Query and manage workspaces, projects, experiments, and metrics via Python.
+- [swanlab.Settings](https://docs.swanlab.cn/en/api/py-settings.html): Configure SDK-level settings.
+- [swanlab.run](https://docs.swanlab.cn/en/api/py-run.html): The SwanLabRun object returned by `swanlab.init`.
+- [swanlab.convert](https://docs.swanlab.cn/en/api/py-converter.html): Convert TensorBoard / MLflow / W&B logs to SwanLab format.
+- [swanlab.sync_wandb](https://docs.swanlab.cn/en/api/py-sync-wandb.html): Sync Weights & Biases runs into SwanLab.
+- [Integration helpers](https://docs.swanlab.cn/en/api/py-integration.html): Callback utilities for framework integrations.
+
+## CLI Reference
+
+- [swanlab login](https://docs.swanlab.cn/en/api/cli-swanlab-login.html): Log in to SwanLab cloud.
+- [swanlab logout](https://docs.swanlab.cn/en/api/cli-swanlab-logout.html): Log out of SwanLab cloud.
+- [swanlab watch](https://docs.swanlab.cn/en/api/cli-swanlab-watch.html): Launch the offline experiment dashboard.
+- [swanlab sync](https://docs.swanlab.cn/en/api/cli-swanlab-sync.html): Sync local logs to SwanLab cloud or a private deployment.
+- [swanlab convert](https://docs.swanlab.cn/en/api/cli-swanlab-convert.html): Convert external log files to SwanLab projects.
+- [swanlab local](https://docs.swanlab.cn/en/api/cli-swanlab-local.html): Switch SDK to local mode.
+- [swanlab online](https://docs.swanlab.cn/en/api/cli-swanlab-online.html): Switch SDK to cloud mode.
+- [swanlab offline](https://docs.swanlab.cn/en/api/cli-swanlab-offline.html): Switch SDK to offline mode.
+- [swanlab disabled](https://docs.swanlab.cn/en/api/cli-swanlab-disabled.html): Disable SwanLab logging entirely.
+- [Environment Variables](https://docs.swanlab.cn/en/api/environment-variable.html): All supported environment variables.
+
+## Experiment Tracking Guides
+
+- [Create an Experiment](https://docs.swanlab.cn/en/guide_cloud/experiment_track/create-experiment.html)
+- [Log Metrics](https://docs.swanlab.cn/en/guide_cloud/experiment_track/log-experiment-metric.html)
+- [Log Media (Images, Audio, Text, Video)](https://docs.swanlab.cn/en/guide_cloud/experiment_track/log-media.html)
+- [Log Custom Charts (ECharts)](https://docs.swanlab.cn/en/guide_cloud/experiment_track/log-custom-chart.html)
+- [System Hardware Monitoring](https://docs.swanlab.cn/en/guide_cloud/experiment_track/system-monitor.html)
+- [Resume an Experiment](https://docs.swanlab.cn/en/guide_cloud/experiment_track/resume-experiment.html)
+- [Distributed Training Logging](https://docs.swanlab.cn/en/guide_cloud/experiment_track/log-distributed-training.html)
+- [Experiment Grouping](https://docs.swanlab.cn/en/guide_cloud/experiment_track/grouping.html)
+- [Set Experiment Config](https://docs.swanlab.cn/en/guide_cloud/experiment_track/set-experiment-config.html)
+- [Experiment Comparison](https://docs.swanlab.cn/en/guide_cloud/experiment_track/view-result.html)
+- [Jupyter Notebook Support](https://docs.swanlab.cn/en/guide_cloud/experiment_track/jupyter-notebook.html)
+- [Use OpenAPI](https://docs.swanlab.cn/en/guide_cloud/experiment_track/use-openapi.html)
+
+## Framework Integrations
+
+- [PyTorch](https://docs.swanlab.cn/en/guide_cloud/integration/integration-pytorch.html)
+- [HuggingFace Transformers](https://docs.swanlab.cn/en/guide_cloud/integration/integration-huggingface-transformers.html)
+- [HuggingFace Accelerate](https://docs.swanlab.cn/en/guide_cloud/integration/integration-huggingface-accelerate.html)
+- [HuggingFace TRL](https://docs.swanlab.cn/en/guide_cloud/integration/integration-huggingface-trl.html)
+- [PyTorch Lightning](https://docs.swanlab.cn/en/guide_cloud/integration/integration-pytorch-lightning.html)
+- [LLaMA Factory](https://docs.swanlab.cn/en/guide_cloud/integration/integration-llama-factory.html)
+- [Modelscope Swift](https://docs.swanlab.cn/en/guide_cloud/integration/integration-swift.html)
+- [Ultralytics (YOLO)](https://docs.swanlab.cn/en/guide_cloud/integration/integration-ultralytics.html)
+- [MMEngine / MMDetection / MMSegmentation](https://docs.swanlab.cn/en/guide_cloud/integration/integration-mmengine.html)
+- [Stable Baselines3](https://docs.swanlab.cn/en/guide_cloud/integration/integration-sb3.html)
+- [veRL](https://docs.swanlab.cn/en/guide_cloud/integration/integration-verl.html)
+- [EasyR1](https://docs.swanlab.cn/en/guide_cloud/integration/integration-easyr1.html)
+- [Keras](https://docs.swanlab.cn/en/guide_cloud/integration/integration-keras.html)
+- [XGBoost](https://docs.swanlab.cn/en/guide_cloud/integration/integration-xgboost.html)
+- [LightGBM](https://docs.swanlab.cn/en/guide_cloud/integration/integration-lightgbm.html)
+- [MLX-LM](https://docs.swanlab.cn/en/guide_cloud/integration/integration-mlx-lm.html)
+- [TensorBoard (sync)](https://docs.swanlab.cn/en/guide_cloud/integration/integration-tensorboard.html)
+- [Weights & Biases (sync)](https://docs.swanlab.cn/en/guide_cloud/integration/integration-wandb.html)
+- [MLflow (sync)](https://docs.swanlab.cn/en/guide_cloud/integration/integration-mlflow.html)
+- [OpenAI](https://docs.swanlab.cn/en/guide_cloud/integration/integration-openai.html)
+- [All integrations](https://docs.swanlab.cn/en/guide_cloud/integration/index.html)
+
+## Self-Hosting
+
+- [Docker Deployment](https://docs.swanlab.cn/en/guide_cloud/self_host/docker-deploy.html)
+- [Kubernetes Deployment](https://docs.swanlab.cn/en/guide_cloud/self_host/kubernetes-deploy.html)
+- [Offline Board (no cloud)](https://docs.swanlab.cn/en/guide_cloud/self_host/offline-board.html)
+
+## Examples
+
+- [MNIST Handwritten Digit Recognition](https://docs.swanlab.cn/en/examples/mnist.html)
+
+## Links
+
+- [Official Website](https://swanlab.cn)
+- [GitHub](https://github.com/swanhubx/swanlab)
+- [PyPI](https://pypi.org/project/swanlab/)
+- [Online Support](https://docs.swanlab.cn/en/guide_cloud/community/online-support.html)
