@@ -1,0 +1,26 @@
+.DS_Store
+node_modules
+/.vitepress/dist
+/.vitepress/cache
+.idea
+.vscode/
+*.py
+logs/
+docker_push.sh
+playground/
+runs/
+*db/
+
+# lock file
+yarn.lock
+pnpm-lock.yaml
+
+#AI CLI
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+CODEBUDDY.md
+GEMINI.md
+QWEN.md
+
