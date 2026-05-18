@@ -189,6 +189,17 @@ features:
 <!-- 分割线 -->
 <div style="text-align: center; margin-top: 120px; padding: 10px; color: var(--vp-c-text-2); font-size: 14px;">
   <div style="border-top: 1px solid var(--vp-c-divider); margin: 20px 0;"></div>
-  <p style="margin: 0 0;">Emotion Machine (Beijing) Technology Co., Ltd.</p>
-  <p style="margin: 0 0;">Copyright © 2024 SwanLab</p>
+  <p style="margin: 0 0;">◎ 2025 Emotion Machine (Beijing) Technology Co., Ltd.</p>
+  <p style="margin: 0 0;"><a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-text-2); text-decoration: none; font-weight: normal;">京ICP备2024101706号-1</a> · <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502056567" target="_blank" style="color: var(--vp-c-text-2); text-decoration: none; font-weight: normal;">京公网安备11010502056567号</a></p>
+  <p style="margin: 0 0;" id="en-copyright"></p>
 </div>
+
+<script setup>
+import { onMounted, nextTick } from 'vue'
+onMounted(async () => {
+  await nextTick()
+  const year = new Date().getFullYear()
+  const el = document.getElementById('en-copyright')
+  if (el) el.textContent = `Copyright © 2024-${year} SwanLab`
+})
+</script>
