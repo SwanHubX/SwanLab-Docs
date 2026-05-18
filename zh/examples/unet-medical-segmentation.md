@@ -162,7 +162,7 @@ class UNet(nn.Module):
 
 [SwanLab](https://github.com/swanhubx/swanlab) 是一个开源的模型训练记录工具。SwanLab面向AI研究者，提供了训练可视化、自动日志记录、超参数记录、实验对比、多人协同等功能。在SwanLab上，研究者能基于直观的可视化图表发现训练问题，对比多个实验找到研究灵感，并通过在线链接的分享与基于组织的多人协同训练，打破团队沟通的壁垒。
 
-<video controls src="../guide_cloud/general/what_is_swanlab/demo.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/general/what_is_swanlab/demo.mp4"></video>
 
 在本次训练中，我们设置swanlab的项目为`Unet-Medical-Segmentation`，实验名称为`bs32-epoch40`，并设置超参数如下：
 

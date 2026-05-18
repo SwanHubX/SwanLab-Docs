@@ -94,7 +94,7 @@ swanlab.log({"examples": obj})
 :::
 
 
-<video controls src="./py-object3d/video.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/api/py-object3d/video.mp4"></video>
 
 <br>
 

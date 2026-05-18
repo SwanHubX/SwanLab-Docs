@@ -38,7 +38,7 @@ Using SwanLab, researchers can document every training experience, seamlessly co
 
 Video Demo:  
 
-<video controls src="./what_is_swanlab/demo.mp4"></video>  
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/general/what_is_swanlab/demo.mp4"></video>  
 
 ## What Can SwanLab Do?  
 

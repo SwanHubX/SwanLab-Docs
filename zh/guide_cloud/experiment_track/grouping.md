@@ -63,10 +63,10 @@ SwanLab 支持按任意列对实验进行动态分组，包括隐藏的列。例
 
 SwanLab 支持通过鼠标对实验的`组`这一列的点击，配置该实验的分组。
 
-<video controls src="./grouping/move-grouping.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/grouping/move-grouping.mp4"></video>
 
 ### 2. 批量移动多个实验的分组
 
 SwanLab 支持通过对实验的`组`这一列，执行快捷的批量移动操作。
 
-<video controls src="./grouping/batch-move-grouping.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/grouping/batch-move-grouping.mp4"></video>
