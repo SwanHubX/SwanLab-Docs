@@ -10,7 +10,7 @@ PaddleNLP是一款基于飞桨深度学习框架的大语言模型(LLM)开发套
 
 <div align="center">
   <figure>
-  <img src=".\paddlenlp\image-20250528222259280.png" alt="image-20250528222259280.png"  width="800" />
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/paddlenlp/image-20250528222259280.png" alt="image-20250528222259280.png"  width="800" />
   </figure>
 </div>
 
@@ -73,7 +73,7 @@ pip install swanlab accelerate pandas addict
 
 <div align="center">
   <figure>
-  <img src=".\paddlenlp\image-20250528160518297.png" alt="image-20250528160518297.png"  width="1200" />
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/paddlenlp/image-20250528160518297.png" alt="image-20250528160518297.png"  width="1200" />
   </figure>
 </div>
 
@@ -983,7 +983,7 @@ if __name__ == "__main__":
 
 <div align="center">
   <figure>
-  <img src=".\paddlenlp\image-20250529174428668.png" alt="image-20250529174428668.png"  width="1200" />
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/paddlenlp/image-20250529174428668.png" alt="image-20250529174428668.png"  width="1200" />
   </figure>
 </div>
 
@@ -995,7 +995,7 @@ if __name__ == "__main__":
 
 <div align="center">
   <figure>
-  <img src=".\paddlenlp\image-20250529174820372.png" alt="image-20250529174820372.png"  width="1200" />
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/paddlenlp/image-20250529174820372.png" alt="image-20250529174820372.png"  width="1200" />
   </figure>
 </div>
 

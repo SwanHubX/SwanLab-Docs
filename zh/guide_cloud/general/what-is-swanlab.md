@@ -38,7 +38,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 视频Demo：
 
-<video controls src="./what_is_swanlab/demo.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/general/what_is_swanlab/demo.mp4"></video>
 
 ## SwanLab能做什么？
 
