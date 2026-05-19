@@ -155,7 +155,7 @@ pip install -U vllm
 
 开启一个终端，运行下面的代码
 
-```Bash
+```bash
 vllm serve /your/path/of/model
 ```
 
@@ -190,7 +190,7 @@ results = utils.openai_completion(
 
 *对应的工具utils的* *openai_completion函数*：
 
-```Python
+```python
 def openai_completion(
     prompts: Union[str, Sequence[str], Sequence[dict[str, str]], dict[str, str]],
     decoding_args: OpenAIDecodingArguments,

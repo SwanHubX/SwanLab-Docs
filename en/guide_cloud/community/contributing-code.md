@@ -96,7 +96,7 @@ The necessary Python dependencies are centrally recorded in `requirements.txt` i
 
 Start the terminal in the project root directory and run the following command to install the dependencies:
 
-```Bash
+```bash
 # Packages required by swanlab
 pip install -r requirements.txt
 pip install -r requirements-media.txt
@@ -104,7 +104,7 @@ pip install -r requirements-media.txt
 
 Additional dependencies are required for compilation, development, unit testing, etc.:
 
-```Bash
+```bash
 # Packages required for compilation, unit testing, etc.
 pip install -r requirements-dev.txt
 ```
@@ -143,7 +143,7 @@ After completing your changes, you can place your Python test script in the root
 
 You can perform unit testing through [VSCode Scripts](#debugging-scripts) or by running the following command in the project root directory:
 
-```Bash
+```bash
 export PYTHONPATH=. && pytest test/unit
 ```
 

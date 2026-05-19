@@ -37,13 +37,13 @@
 
 **1、安装ms-swift（>=3.1.1）：**
 
-```Bash
+```bash
 pip install ms-swift
 ```
 
 **2、安装swanlab：**
 
-```Bash
+```bash
 pip install swanlab
 ```
 
@@ -51,13 +51,13 @@ pip install swanlab
 
 如果采用单机多卡分布式训练方式，可以选择DeepSpeed ZeRO2/ZeRO3。
 
-```Bash
+```bash
 pip install deepspeed
 ```
 
 **也可以直接使用下面的代码设置环境**
 
-```Bash
+```bash
 pip install -r requirement.txt
 ```
 
@@ -89,7 +89,7 @@ https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data
 
 其中包含四种标准格式，我们使用标准格式：
 
-```JSON
+```json
 {"messages": 
     [
         {"role": "system", "content": "<system>"}, 
@@ -103,7 +103,7 @@ https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data
 
 在训练代码执行时，会将`think`和`answer`按下面这样的格式组合成一条完整回复：
 
-```Plain
+```plaintext
 <think>嗯，用户的问题是关于病人出现活动性出血时应采取哪些一般处理措施，...</think>
 首先，您父亲需要卧床休息，活动性出血期间暂时不要进食。为了...
 ```
@@ -112,7 +112,7 @@ https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data
 
 这个流程非常简单，执行下面的代码即可：
 
-```Bash
+```bash
 python data.py
 ```
 
@@ -137,13 +137,13 @@ python data.py
 
 第一个文件是在单卡3090上对Qwen3-0.6B进行自我认知微调，总计11分钟，启动训练代码如下所示：
 
-```Bash
+```bash
 bash train.sh
 ```
 
 第二个文件是多卡3090上基于deepspeed zero2进行分布式训练，总计两分钟，启动代码如下：
 
-```Bash
+```bash
 bash train_deepspeed.sh
 ```
 
@@ -171,13 +171,13 @@ bash train_deepspeed.sh
 
 启动代码如下：
 
-```Bash
+```bash
 bash inference.sh
 ```
 
 如果推理速度过慢，也可以使用vllm进行推理加速，代码如下：
 
-```Bash
+```bash
 # merge-lora并使用vLLM进行推理加速
 CUDA_VISIBLE_DEVICES=0 \
 swift infer \
@@ -239,7 +239,7 @@ TypeError: Value.__init__() missing 1 required positional argument: 'dtype'
 
 modelscope和datasets如果版本对不上，会报环境的错误
 
-```pyt
+```python
 ImportError: cannot import name 'OfflineModeIsEnabled' from 'datasets.utils.file_utils' 
 ```
 

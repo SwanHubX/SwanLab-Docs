@@ -21,13 +21,13 @@
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/prompt_engineering_course/07-multimodal_prompt/picture/fapiao.png" alt="普通发票" style="zoom:50%;" />
 
-```Plain
+```plaintext
 请提取发票中的信息，并按照json格式输出
 ```
 
 *结果* ：
 
-```Plain
+```plaintext
 {
   "发票号码": "243xxxx344",
   "开票日期": "2024年01月02日",
@@ -60,13 +60,13 @@
 
 *准确的提示词* ：
 
-```Plain
+```plaintext
 请提取发票中的给出的合计的金额，并按照json格式输出
 ```
 
 *结果* ：
 
-```Plain
+```plaintext
 {
   "合计金额": "4716.98"
 }
@@ -80,7 +80,7 @@
 
 *提示词* ：
 
-```Plain
+```plaintext
 请你解释红框中的原理
 ```
 
@@ -90,7 +90,7 @@
 <summary>点击展开完整回答内容</summary>
 
 
-```Plain
+```plaintext
 红框部分展示了大脑的内部工作原理，具体包括记忆、知识存储、决策制定和推理等过程。以下是这些部分的详细解释：
 
 1. **记忆（Memory）**：
@@ -154,7 +154,7 @@
 
 不过该部分仅涉及视频中某帧对应的图像的分析，而不是连贯的视频的分析，如果想分析完整的视频，需要去[视觉理解](https://bailian.console.aliyun.com/console?tab=doc#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2845871.html%2380dbf6ca8fh6s)中找到对应的API调用代码，其中接口和OpenAI兼容，我们只需要输入对应的视频的链接即可：
 
-```Python
+```python
 ### 视频推理
 import os
 from openai import OpenAI
@@ -182,7 +182,7 @@ print(completion.choices[0].message.content)
 
 *回答* ：
 
-```Plain
+```plaintext
 这段视频展示了一位年轻女性的特写镜头。她有着短发，面带微笑，看起来非常开心和友好。她的穿着是一件粉色的针织开衫搭配白色的内搭，整体风格显得很清新自然。背景模糊，但可以看出是在户外，可能是一个校园或住宅区。
 
 视频中的女性表情生动，笑容灿烂，给人一种温暖和愉快的感觉。她的目光时而直视镜头，时而微微侧头，展现出不同的神态。整个视频传达出一种积极向上的氛围，可能是用于宣传、教育或其他正面主题的内容。
