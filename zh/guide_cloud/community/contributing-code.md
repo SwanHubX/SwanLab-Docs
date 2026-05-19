@@ -100,7 +100,7 @@ SwanLab 项目环境需要`python>=3.8`的支持。
 
 同样在项目根目录启动终端，运行以下命令安装依赖：
 
-```Bash
+```bash
 # swanlab所依赖的包
 pip install -r requirements.txt
 pip install -r requirements-media.txt
@@ -108,7 +108,7 @@ pip install -r requirements-media.txt
 
 编译、开发、单元测试等工作需要使用以下命令额外安装依赖：
 
-```Bash
+```bash
 # 编译、单元测试等功能需要使用的包
 pip install -r requirements-dev.txt
 ```
@@ -148,7 +148,7 @@ Ps: 如果你不想使用 VSCode 进行开发，可以前往`.vscode/launch.json
 
 可以通过[VSCode 脚本](#调试脚本)或者在项目根目录下运行以下命令进行单元测试：
 
-```Bash
+```bash
 export PYTHONPATH=. && pytest test/unit
 ```
 

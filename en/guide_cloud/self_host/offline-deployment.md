@@ -59,7 +59,7 @@ $ sftp username@remote_host
 ```  
 
 - Upload the file:  
-```sftp  
+```bash
 > put swanlab_images.tar swanlab_images.tar  
 ```  
 

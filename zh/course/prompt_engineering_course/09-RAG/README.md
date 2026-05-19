@@ -28,7 +28,7 @@
 
 话不多说，我们看下代码：
 
-```Python
+```python
 ### 1、加载embedding模型
 from sentence_transformers import SentenceTransformer
 
@@ -38,7 +38,7 @@ embedding_model = SentenceTransformer(embedding_model_path)
 
 <div style="background:#fff3cd;color:#000;padding:12px 16px;border-left:4px solid #ffeaa7;">   ⚠️ 加载模型的代码不能重复运行，否则会累积显存 </div>
 
-```Python
+```python
 ### 2、构建向量数据库
 import numpy as np
 from typing import List, Dict, Optional
@@ -126,7 +126,7 @@ class VectorStorage:
 
 我们存入一个向量内容：
 
-```Python
+```python
 ### 存入向量数据库
 vb= VectorStorage()
 
@@ -146,7 +146,7 @@ print(f"存储的向量数量: {len(vb)}")
 
 *回答* ：
 
-```Plain
+```plaintext
 向量1: [1,2,3], 元数据: {"index":1,"chunk":"你好"}
 存储的向量数量: 1
 ```
@@ -164,7 +164,7 @@ print(f"存储的向量数量: {len(vb)}")
 
 因此我们可以按照句号来划分、或者按照字数来划分，比如500字分成一条信息，我们举一个简单的例子：
 
-```Python
+```python
 ### 3、文档加载和分块
 import PyPDF2
 from typing import List, Tuple, Dict
@@ -215,7 +215,7 @@ chunks
 <details>
 <summary>完整信息</summary>
 
-```Plain
+```plaintext
 ['《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》\n前作展开，以计划建造1万座行星发动机的时代为背景\n在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地\n球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”\n和“数字生命计划”进入论证阶段',
  '“移山计划”由中国提出，旨在建造1万座行星\n发动机推动地球前往新家园；“方舟计划”是美国提议的在地球同步轨道建立空间站以带\n领人类逃离；“逐月计划”由俄罗斯提出，想改造月球为逃生舱，后因月球结构等问题并\n入“移山计划”；“数字生命计划”则是将人类意识数字化，实现永生，但最终被伦理委\n员会禁止经过考量，“移山计划”被选定，人类开始着手建造行星发动机，同时准备建\n造卫星发动机以放逐月球，摆脱月球引力',
  '\n然而，计划推进过程中危机四伏2044年，太空电梯基地遭遇危机，处在9万公里高度\n的方舟空间站爆炸坠落，引发连锁反应，导致太空电梯基地被摧毁，流浪地球计划面临重大\n挑战影片中，满腔赤诚的刘培强（吴京饰）历经层层考验成为航天员大队的一员，他与韩\n朵朵（王智饰）在此过程中相知相恋，而刘培强也在后续故事中为了地球和家人，不断经历\n着艰难抉择与挑战',
@@ -233,7 +233,7 @@ chunks
 
 我们看下实现代码：
 
-```Python
+```python
 ### 4、载入向量数据库
 vb = VectorStorage()
 
@@ -253,7 +253,7 @@ print(f"存储的向量数量: {len(vb)}")
 
 关于`检索`，最重要的是根据用户的问题找到相似度最高的几个对应的文档切片，最重要的当然就是相似度计算，原始的我们通常采用余弦相似度，不过Qwen3提供了embedding模型直接可以计算相似度，我们可以在其[官网](https://www.modelscope.cn/models/Qwen/Qwen3-Embedding-0.6B)找到推理代码，为了方便起见，我们使用`sentence-transformers`库来实现相似度计算，代码如下：
 
-```Python
+```python
 from sentence_transformers import SentenceTransformer
 
 # Load the model
@@ -282,7 +282,7 @@ print(similarity)
 
 至于如何检索，我们使用向量数据库里的`search`函数：
 
-```Python
+```python
 ### 5、检索向量数据库
 query="《流浪地球2》是由谁导演的？"
 
@@ -292,7 +292,7 @@ print(results)
 
 *回答* ：
 
-```JSON
+```json
 [(0, 0.8075547814369202, {'index': 0, 'chunk': '《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》\n前作展开，以计划建造1万座行星发动机的时代为背景\n在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地\n球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”\n和“数字生命计划”进入论证阶段'}), 
 (6, 0.7484183311462402, {'index': 6, 'chunk': '\n《流浪地球2》通过展现刘培强、图恒宇、周喆直等众多角色的经历，以及全球人类在末\n日危机下的挣扎与抗争，呈现了一个宏大而震撼的科幻世界，探讨了人类面对绝境时的生存\n选择、亲情、责任与勇气等主题，传达出“人类命运共同体”理念和“没有人的文明，\n毫无意义”的深刻内涵，以其壮观的视效和动人的情节，成为中国科幻电影的重要代表作'})]
 ```
@@ -310,7 +310,7 @@ print(results)
 
 *提示词* ：
 
-```Python
+```python
 ### 6、提示词增强
 query=query
 context = "\n".join([f"{i+1}. {result[2]['chunk']}" for i, result in enumerate(results)])
@@ -327,7 +327,7 @@ print(prompt.format(query=query, context=context))
 
 *回答* ：
 
-```Plain
+```plaintext
 你是一个非常专业的AI智能助手，请你根据下面的“问题”，结合给出的“文本”内容，生成合理的回答，如果文本中没有相关内容，请回答“无法回答”。
 问题: 《流浪地球2》是由谁导演的？
 文本: 1. 《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》
@@ -353,7 +353,7 @@ print(prompt.format(query=query, context=context))
 
 *提示词* ：
 
-```Plain
+```plaintext
 你是一个非常专业的AI智能助手，请你根据下面的“问题”，结合给出的“文本”内容，生成合理的回答，如果文本中没有相关内容，请回答“无法回答”。
 问题: 《流浪地球2》是由谁导演的？
 文本: 1. 《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》
@@ -371,7 +371,7 @@ print(prompt.format(query=query, context=context))
 
 *回答* ：
 
-```Plain
+```plaintext
 《流浪地球2》是由郭帆执导的。
 ```
 
@@ -379,7 +379,7 @@ print(prompt.format(query=query, context=context))
 
 *提示词* ：
 
-```Plain
+```plaintext
 你是一个非常专业的AI智能助手，请你根据下面的“问题”，结合给出的“文本”内容，生成合理的回答，如果文本中没有相关内容，请回答“无法回答”。
 问题: 《黑客帝国》是由谁导演的？
 文本: 1. 《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》
@@ -397,7 +397,7 @@ print(prompt.format(query=query, context=context))
 
 *回答* ：
 
-```Plain
+```plaintext
 无法回答。根据提供的文本内容，没有提到《黑客帝国》这部电影及其导演信息。文本主要描述了《流浪地球2》的相关信息以及一个科幻灾难电影的故事梗概。
 ```
 

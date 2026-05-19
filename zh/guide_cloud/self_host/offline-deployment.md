@@ -63,7 +63,7 @@ $ sftp username@remote_host
 
 - 上传文件
 
-```sftp
+```bash
 > put swanlab_images.tar swanlab_images.tar
 ```
 

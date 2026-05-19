@@ -3,6 +3,8 @@ import { zh } from './zh'
 import { en } from './en'
 
 export default defineConfig({
+  srcExclude: ['playground/**'],
+
   rewrites: {
     'zh/:rest*': ':rest*'
   },
