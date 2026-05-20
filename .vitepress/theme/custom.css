@@ -6,28 +6,14 @@
     --vp-sidebar-padding-left: 16px;
 }
 
-
 .dark {
     --vp-c-brand-1: #2e9dac;
-}
-
-/* .VPSidebar {
-    padding-left: 32px !important;
-} */
-
-.VPDoc.has-aside .content-container {
-    max-width: none !important;
-}
-
-.VPDoc.has-aside .content {
-    max-width: none !important;
 }
 
 .title {
     border-bottom: transparent !important;
 }
 
-/* 调整搜索框位置 */
 div.VPNavBarSearch.search {
     padding: 0px;
     margin-left: 20px;
@@ -35,24 +21,34 @@ div.VPNavBarSearch.search {
     flex-grow: 1;
 }
 
+/* 宽屏布局：content 居中，aside 贴右 */
+.VPDoc.has-aside .content {
+    max-width: none !important;
+}
 
-/* 调整右侧导航栏的定位 */
+.VPDoc.has-aside .content-container {
+    max-width: 56rem !important;
+    margin: 0 auto;
+    flex: 0 1 auto;
+}
+
 .VPDoc.has-aside .aside {
     position: sticky;
     top: var(--vp-header-height);
     width: 240px;
+    flex: 0 0 240px;
     max-height: calc(100vh - var(--vp-header-height));
     overflow-y: auto;
-    margin-left: 32px;
+    padding-right: 32px;
 }
 
-/* 确保在小屏幕上右侧导航栏不会重叠 */
 @media (max-width: 1280px) {
     .VPDoc.has-aside .aside {
         position: static;
         width: 100%;
+        flex: none;
         margin-top: 24px;
-        margin-left: 0;
+        padding-right: 0;
     }
 }
 
