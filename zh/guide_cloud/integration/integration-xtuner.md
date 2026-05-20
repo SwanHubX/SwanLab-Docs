@@ -1,4 +1,4 @@
-# Xtuner
+# XTuner
 
 [XTuner](https://github.com/InternLM/xtuner) 是一个高效、灵活、全能的轻量化大模型微调工具库。
 
@@ -6,15 +6,15 @@
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integration-xtuner.png" width=440>
 </div>
 
-Xtuner支持与书生·浦语（InternLM）、Llama等多款开源大模型的适配，可执行增量预训练、指令微调、工具类指令微调等任务类型。硬件要求上，在Tesla T4、A100等传统数据中心之外，开发者最低使用消费级显卡便可进行训练，实现大模型特定需求能力。
+XTuner支持与书生·浦语（InternLM）、Llama等多款开源大模型的适配，可执行增量预训练、指令微调、工具类指令微调等任务类型。硬件要求上，在Tesla T4、A100等传统数据中心之外，开发者最低使用消费级显卡便可进行训练，实现大模型特定需求能力。
 
 <div align="center">
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integration-xtuner-intro.png">
 </div>
 
-Xtuner 支持通过 MMEngine 使用 SwanLab 进行在线跟踪，只需在配置文件中添加几行代码，就可以跟踪和可视化损失、显存占用等指标。
+XTuner 支持通过 MMEngine 使用 SwanLab 进行在线跟踪，只需在配置文件中添加几行代码，就可以跟踪和可视化损失、显存占用等指标。
 
-## 使用SwanLab可视化跟踪Xtuner微调进展
+## 使用SwanLab可视化跟踪XTuner微调进展
 
 打开要训练的配置文件（比如[qwen1_5_7b_chat_full_alpaca_e3.py](https://github.com/InternLM/xtuner/blob/main/xtuner/configs/qwen/qwen1_5/qwen1_5_7b_chat/qwen1_5_7b_chat_full_alpaca_e3.py)）），找到`visualizer`参数的位置，将它替换成：
 

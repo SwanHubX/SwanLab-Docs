@@ -16,11 +16,11 @@
 
 > 全参数微调需要大约32GB显存，如果你的显存大小不足，可以使用Qwen3-0.6b，或Lora微调。
 
-- **代码**：[Github](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT)，或直接看本文第5节
+- **代码**：[GitHub](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT)，或直接看本文第5节
 
 - **实验日志过程**：[qwen3-1.7B-linear - SwanLab](https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart)，或 [SwanLab基线社区](https://swanlab.cn/benchmarks) 搜索“qwen3-sft-medical”
 
-- **模型**：[Modelscope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)
+- **模型**：[ModelScope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)
 
 - **数据集**：[delicate_medical_r1_data](https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data)
 
@@ -165,7 +165,7 @@ model = AutoModelForCausalLM.from_pretrained("./Qwen/Qwen3-1.7B", device_map="au
 
 我们使用SwanLab来监控整个训练过程，并评估最终的模型效果。
 
-SwanLab 是一款开源、轻量的 AI 模型训练跟踪与可视化工具，面向人工智能与深度学习开发者，提供了一个跟踪、记录、比较、和协作实验的平台，常被称为"中国版 Weights & Biases + Tensorboard"。SwanLab同时支持云端和离线使用，并适配了从PyTorch、Transformers、Lightning再到LLaMA Factory、veRL等40+ AI训练框架。
+SwanLab 是一款开源、轻量的 AI 模型训练跟踪与可视化工具，面向人工智能与深度学习开发者，提供了一个跟踪、记录、比较、和协作实验的平台，常被称为"中国版 Weights & Biases + TensorBoard"。SwanLab同时支持云端和离线使用，并适配了从PyTorch、Transformers、Lightning再到LLaMA Factory、veRL等40+ AI训练框架。
 
 ![09-05](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/4.qwen3-medical-finetune/qwen3/05.png)
 ![09-06](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/4.qwen3-medical-finetune/qwen3/06.png)
@@ -491,9 +491,9 @@ print(response)
 
 ## 相关链接
 
-- 代码：完整代码直接看本文第5节 或 [Github](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT)
+- 代码：完整代码直接看本文第5节 或 [GitHub](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT)
 - 实验日志过程：[qwen3-1.7B-linear - SwanLab](https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart)，或 [SwanLab基线社区](https://swanlab.cn/benchmarks) 搜索“qwen3-sft-medical”
-- 模型：[Modelscope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)
+- 模型：[ModelScope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)
 - 数据集：[delicate_medical_r1_data](https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
 

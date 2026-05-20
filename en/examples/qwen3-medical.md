@@ -16,9 +16,9 @@ In this article, we will fine-tune the [Qwen3-1.7b](https://www.modelscope.cn/mo
 
 > Full-parameter fine-tuning requires approximately **32GB of GPU memory**. If your GPU memory is insufficient, consider using Qwen3-0.6b or LoRA fine-tuning.  
 
-- **Code**: [Github](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT) (or see Section 5 below)  
+- **Code**: [GitHub](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT) (or see Section 5 below)  
 - **Training Logs**: [qwen3-1.7B-linear - SwanLab](https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart) (or search "qwen3-sft-medical" in [SwanLab Benchmark Community](https://swanlab.cn/benchmarks))  
-- **Model**: [Modelscope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)  
+- **Model**: [ModelScope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)  
 - **Dataset**: [delicate_medical_r1_data](https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data)  
 - **SwanLab**: [https://swanlab.cn](https://swanlab.cn)  
 
@@ -155,7 +155,7 @@ model = AutoModelForCausalLM.from_pretrained("./Qwen/Qwen3-1.7B", device_map="au
 
 We use **SwanLab** to monitor training and evaluate model performance.  
 
-SwanLab is an open-source, lightweight AI training tracking and visualization tool, often called the "Chinese Weights & Biases + Tensorboard." It supports cloud/offline use and integrates with 40+ frameworks (PyTorch, Transformers, etc.).  
+SwanLab is an open-source, lightweight AI training tracking and visualization tool, often called the "Chinese Weights & Biases + TensorBoard." It supports cloud/offline use and integrates with 40+ frameworks (PyTorch, Transformers, etc.).  
 
 ![09-05](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/qwen3/05.png)  
 ![09-06](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/qwen3/06.png)  
@@ -348,7 +348,7 @@ print(predict(messages, model, tokenizer))
 
 ## References  
 
-- **Code**: [Github](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT)  
+- **Code**: [GitHub](https://github.com/Zeyi-Lin/Qwen3-Medical-SFT)  
 - **Training Logs**: [SwanLab](https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart)  
 - **Model**: [ModelScope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)  
 - **Dataset**: [delicate_medical_r1_data](https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data)  

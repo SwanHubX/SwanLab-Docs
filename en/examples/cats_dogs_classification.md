@@ -11,7 +11,7 @@ Cat and dog classification is one of the most fundamental tasks in computer visi
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/01.png)
 
 - You can view the experiment process on this webpage: [Cat and Dog Classification | SwanLab](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
-- Code: [Github](https://github.com/Zeyi-Lin/Resnet50-cats_vs_dogs)
+- Code: [GitHub](https://github.com/Zeyi-Lin/Resnet50-cats_vs_dogs)
 - Online Demo: [HuggingFace](https://huggingface.co/spaces/TheEeeeLin/Resnet50-cats_vs_dogs)
 - Dataset: [Baidu Cloud](https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ) Extraction code: 1ybm
 - Three open-source libraries: [SwanLab](https://github.com/swanhubx/swanlab), [Gradio](https://github.com/gradio-app/gradio), [PyTorch](https://github.com/pytorch/pytorch)
@@ -46,7 +46,7 @@ Their respective functions are:
 
 ### 1.3 Download the Cat and Dog Classification Dataset
 
-The dataset source is the [Cat and Dog Classification Dataset](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary) on Modelscope, which contains 275 images for training and 70 images for testing, totaling less than 10MB.
+The dataset source is the [Cat and Dog Classification Dataset](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary) on ModelScope, which contains 275 images for training and 70 images for testing, totaling less than 10MB.
 I have organized the data, so it is recommended to download it using the following Baidu Netdisk link:
 > Baidu Netdisk: Link: https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ Extraction code: 1ybm
 
@@ -216,7 +216,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 ### 2.6 Initialize SwanLab
 
 In training, we use the `swanlab` library as the experiment management and metric visualization tool.
-[swanlab](https://github.com/SwanHubX/SwanLab) is an open-source training chart visualization library similar to Tensorboard, with a lighter volume and more friendly API. In addition to recording metrics, it can automatically record training logs, hardware environment, Python environment, training time, and other information.
+[swanlab](https://github.com/SwanHubX/SwanLab) is an open-source training chart visualization library similar to TensorBoard, with a lighter volume and more friendly API. In addition to recording metrics, it can automatically record training logs, hardware environment, Python environment, training time, and other information.
 
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/07.png)
 
@@ -544,8 +544,8 @@ If this was helpful, please give it a thumbs up and save it!
 ## 4. Related Links
 
 - View the experiment process online: [Cat and Dog Classification · SwanLab](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
-- SwanLab: [Github](https://github.com/SwanHubX/SwanLab)
-- Cat and Dog Classification Code: [Github](https://github.com/xiaolin199912/Resnet50-cats_vs_dogs)
+- SwanLab: [GitHub](https://github.com/SwanHubX/SwanLab)
+- Cat and Dog Classification Code: [GitHub](https://github.com/xiaolin199912/Resnet50-cats_vs_dogs)
 - Online Demo: [HuggingFace](https://huggingface.co/spaces/TheEeeeLin/Resnet50-cats_vs_dogs)
 - Cat and Dog Classification Dataset (300 images): [ModelScope](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary)
   - Baidu Cloud Download: [Link](https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ) Extraction code: 1ybm

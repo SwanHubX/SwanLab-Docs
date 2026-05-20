@@ -12,9 +12,9 @@
 
 在本文中，我们会使用 [Qwen2-1.5b-Instruct](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary) 模型在 [中文NER](https://huggingface.co/datasets/qgyd2021/chinese_ner_sft) 数据集上做指令微调训练，同时使用[SwanLab](https://swanlab.cn)监控训练过程、评估模型效果。
 
-- 代码：完整代码直接看本文第5节 或 [Github](https://github.com/Zeyi-Lin/LLM-Finetune)
+- 代码：完整代码直接看本文第5节 或 [GitHub](https://github.com/Zeyi-Lin/LLM-Finetune)
 - 实验日志过程：[Qwen2-1.5B-NER-Fintune - SwanLab](https://swanlab.cn/@ZeyiLin/Qwen2-NER-fintune/runs/9gdyrkna1rxjjmz0nks2c/chart)
-- 模型：[Modelscope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
+- 模型：[ModelScope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
 - 数据集：[chinese_ner_sft](https://huggingface.co/datasets/qgyd2021/chinese_ner_sft)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
 
@@ -455,8 +455,8 @@ print(response)
 
 ## 相关链接
 
-- 代码：完整代码直接看本文第5节 或 [Github](https://github.com/Zeyi-Lin/LLM-Finetune)
+- 代码：完整代码直接看本文第5节 或 [GitHub](https://github.com/Zeyi-Lin/LLM-Finetune)
 - 实验日志过程：[Qwen2-1.5B-NER-Fintune - SwanLab](https://swanlab.cn/@ZeyiLin/Qwen2-NER-fintune/runs/9gdyrkna1rxjjmz0nks2c/chart)
-- 模型：[Modelscope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
+- 模型：[ModelScope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
 - 数据集：[chinese_ner_sft](https://huggingface.co/datasets/qgyd2021/chinese_ner_sft)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)

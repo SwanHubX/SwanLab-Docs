@@ -1,9 +1,9 @@
-# Modelscope Swift
+# ModelScope Swift
 
 > SwanLab has been officially integrated with Swift, see: [#3142](https://github.com/modelscope/ms-swift/pull/3142)  
 > Online Demo: [swift-robot](https://swanlab.cn/@ZeyiLin/swift-robot/runs/9lc9rmmwm4hh7ay1vkzd7/chart)
 
-[Modelscope](https://modelscope.cn/)'s [Swift](https://github.com/modelscope/swift) is a framework that integrates model training, fine-tuning, inference, and deployment.
+[ModelScope](https://modelscope.cn/)'s [Swift](https://github.com/modelscope/swift) is a framework that integrates model training, fine-tuning, inference, and deployment.
 
 ![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/swift/logo.png)
 

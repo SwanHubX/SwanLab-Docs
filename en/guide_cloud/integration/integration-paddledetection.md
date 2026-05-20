@@ -123,7 +123,7 @@ if self.cfg.get('use_swanlab', False) or 'swanlab' in self.cfg:
     self._callbacks.append(SwanLabCallback(self))
 ```
 
-With this, you have completed the integration of SwanLab with PaddleYolo! Next, simply add `use_swanlab: True` to the training configuration file to start visualizing and tracking the training.
+With this, you have completed the integration of SwanLab with PaddleYOLO! Next, simply add `use_swanlab: True` to the training configuration file to start visualizing and tracking the training.
 
 ## 3. Modify the Configuration File
 

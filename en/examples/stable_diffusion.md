@@ -12,7 +12,7 @@ Using SD1.5 as a pre-trained model, fine-tuning a Naruto-style text-to-image mod
 
 In this article, we will use the [SD-1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5) model to train on the [Naruto](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions) dataset, while monitoring the training process and evaluating model performance using [SwanLab](https://swanlab.cn).
 
-- Code: [Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
+- Code: [GitHub](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
 - Experiment Log: [SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)
 - Model: [runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - Dataset: [lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
@@ -93,7 +93,7 @@ If this is your first time using SwanLab, you need to register an account at htt
 
 ## 5. Start Training
 
-Since the training code is relatively long, I have placed it on [Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example/tree/main). Please clone the code:
+Since the training code is relatively long, I have placed it on [GitHub](https://github.com/Zeyi-Lin/Stable-Diffusion-Example/tree/main). Please clone the code:
 
 ```bash
 git clone https://github.com/Zeyi-Lin/Stable-Diffusion-Example.git
@@ -228,7 +228,7 @@ image.save("result.png")
 
 ## Related Links
 
-- Code: [Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
+- Code: [GitHub](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
 - Experiment Log: [SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)
 - Model: [runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - Dataset: [lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)

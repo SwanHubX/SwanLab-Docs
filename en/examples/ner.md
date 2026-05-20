@@ -12,9 +12,9 @@ Using Qwen2 as the base model, we perform high-precision Named Entity Recognitio
 
 In this tutorial, we'll fine-tune the [Qwen2-1.5b-Instruct](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary) model on the [Chinese NER](https://huggingface.co/datasets/qgyd2021/chinese_ner_sft) dataset while monitoring the training process and evaluating model performance using [SwanLab](https://swanlab.cn).
 
-• Code: See Section 5 or [Github](https://github.com/Zeyi-Lin/LLM-Finetune)
+• Code: See Section 5 or [GitHub](https://github.com/Zeyi-Lin/LLM-Finetune)
 • Training logs: [Qwen2-1.5B-NER-Fintune - SwanLab](https://swanlab.cn/@ZeyiLin/Qwen2-NER-fintune/runs/9gdyrkna1rxjjmz0nks2c/chart)
-• Model: [Modelscope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
+• Model: [ModelScope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
 • Dataset: [chinese_ner_sft](https://huggingface.co/datasets/qgyd2021/chinese_ner_sft)
 • SwanLab: [https://swanlab.cn](https://swanlab.cn)
 
@@ -114,7 +114,7 @@ Download the dataset from [chinese_ner_sft - huggingface](https://huggingface.co
 
 ## 3. Load the Model
 
-We'll download the Qwen2-1.5B-Instruct model via Modelscope (which has stable domestic speeds in China) and load it into Transformers for training:
+We'll download the Qwen2-1.5B-Instruct model via ModelScope (which has stable domestic speeds in China) and load it into Transformers for training:
 
 ```python
 from modelscope import snapshot_download, AutoTokenizer
@@ -123,7 +123,7 @@ from transformers import AutoModelForCausalLM, TrainingArguments, Trainer, DataC
 model_id = "qwen/Qwen2-1.5B-Instruct"    
 model_dir = "./qwen/Qwen2-1___5B-Instruct"
 
-# Download Qwen model from Modelscope
+# Download Qwen model from ModelScope
 model_dir = snapshot_download(model_id, cache_dir="./", revision="master")
 
 # Load model weights into Transformers
@@ -443,8 +443,8 @@ Output:
 
 ## Related Links
 
-- Code: See Section 5 or [Github](https://github.com/Zeyi-Lin/LLM-Finetune)
+- Code: See Section 5 or [GitHub](https://github.com/Zeyi-Lin/LLM-Finetune)
 - Training logs: [Qwen2-1.5B-NER-Fintune - SwanLab](https://swanlab.cn/@ZeyiLin/Qwen2-NER-fintune/runs/9gdyrkna1rxjjmz0nks2c/chart)
-- Model: [Modelscope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
+- Model: [ModelScope](https://modelscope.cn/models/qwen/Qwen2-1.5B-Instruct/summary)
 - Dataset: [chinese_ner_sft](https://huggingface.co/datasets/qgyd2021/chinese_ner_sft)
 - SwanLab: [https://swanlab.cn](https://swanlab.cn)

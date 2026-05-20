@@ -1,6 +1,6 @@
 # 欢迎使用SwanLab 
 
-[快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/index.md) · [Github](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
+[快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/index.md) · [GitHub](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
 ::: warning 🎉 私有化部署Kubernetes版正式上线！
 私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/guide_cloud/self_host/kubernetes-deploy.md)
@@ -63,7 +63,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - **断点续训记录**：支持在训练完成/中断后，补充新的指标数据到同个实验中
 
 
-**2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetetion、LightGBM、XGBoost、Keras、Tensorboard、Weights&Biases、OpenAI、Swift、XTuner、Stable Baseline3、Hydra 在内的 **40+** 框架
+**2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetection、LightGBM、XGBoost、Keras、TensorBoard、Weights & Biases、OpenAI、Swift、XTuner、Stable Baselines3、Hydra 在内的 **40+** 框架
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integrations.png)
 
@@ -113,13 +113,13 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 ## 与熟悉产品的对比
 
-### Tensorboard vs SwanLab
+### TensorBoard vs SwanLab
 
 - **☁️支持在线使用**：
-  通过SwanLab可以方便地将训练实验在云端在线同步与保存，便于远程查看训练进展、管理历史项目、分享实验链接、发送实时消息通知、多端看实验等。而Tensorboard是一个离线的实验跟踪工具。
+  通过SwanLab可以方便地将训练实验在云端在线同步与保存，便于远程查看训练进展、管理历史项目、分享实验链接、发送实时消息通知、多端看实验等。而TensorBoard是一个离线的实验跟踪工具。
 
 - **👥多人协作**：
-  在进行多人、跨团队的机器学习协作时，通过SwanLab可以轻松管理多人的训练项目、分享实验链接、跨空间交流讨论。而Tensorboard主要为个人设计，难以进行多人协作和分享实验。
+  在进行多人、跨团队的机器学习协作时，通过SwanLab可以轻松管理多人的训练项目、分享实验链接、跨空间交流讨论。而TensorBoard主要为个人设计，难以进行多人协作和分享实验。
 
 - **💻持久、集中的仪表板**：
   无论你在何处训练模型，无论是在本地计算机上、在实验室集群还是在公有云的GPU实例中，你的结果都会记录到同一个集中式仪表板中。而使用TensorBoard需要花费时间从不同的机器复制和管理 TFEvent文件。
@@ -148,7 +148,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
 - [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
 - [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
-- [Modelscope Swift](/guide_cloud/integration/integration-swift.html)
+- [ModelScope Swift](/guide_cloud/integration/integration-swift.html)
 - [DiffSynth-Studio](/guide_cloud/integration/integration-diffsynth-studio.html)
 - [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
 - [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
@@ -170,9 +170,9 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
 
 **强化学习**
-- [Stable Baseline3](/guide_cloud/integration/integration-sb3.html)
+- [Stable Baselines3](/guide_cloud/integration/integration-sb3.html)
 - [veRL](/guide_cloud/integration/integration-verl.html)
-- [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)
+- [HuggingFace TRL](/guide_cloud/integration/integration-huggingface-trl.html)
 - [EasyR1](/guide_cloud/integration/integration-easyr1.html)
 - [AReaL](/guide_cloud/integration/integration-areal.html)
 - [ROLL](/guide_cloud/integration/integration-roll.html)
@@ -181,12 +181,12 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 
 **其他框架：**
-- [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)
-- [Weights&Biases](/guide_cloud/integration/integration-wandb.html)
-- [MLFlow](/guide_cloud/integration/integration-mlflow.html)
+- [TensorBoard](/guide_cloud/integration/integration-tensorboard.html)
+- [Weights & Biases](/guide_cloud/integration/integration-wandb.html)
+- [MLflow](/guide_cloud/integration/integration-mlflow.html)
 - [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
 - [Hydra](/guide_cloud/integration/integration-hydra.html)
-- [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)
+- [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)
 - [OpenAI](/guide_cloud/integration/integration-openai.html)
 - [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)
 

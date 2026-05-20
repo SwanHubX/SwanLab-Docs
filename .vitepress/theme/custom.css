@@ -1,10 +1,9 @@
 :root {
     --vp-c-brand-1: #107d8b;
-    --vp-layout-max-width:1660px;
+    --vp-layout-max-width: 100%;
     --vp-sidebar-bg-color: var(--vp-c-bg-alt);
     --vp-sidebar-width: 320px;
     --vp-sidebar-padding-left: 16px;
-    /* --vp-layout-max-width: 65%; */
 }
 
 
@@ -17,11 +16,11 @@
 } */
 
 .VPDoc.has-aside .content-container {
-    max-width: 800px !important;
+    max-width: none !important;
 }
 
 .VPDoc.has-aside .content {
-    max-width: 800px !important;
+    max-width: none !important;
 }
 
 .title {

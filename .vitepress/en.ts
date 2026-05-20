@@ -43,7 +43,7 @@ export const en = defineConfig({
           { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
           { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
           { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
-          { text: 'Sb3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+          { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3'},
         ]
       },
       { 
@@ -62,7 +62,7 @@ export const en = defineConfig({
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
         { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
-        { text: 'Docs Github', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
+        { text: 'Docs GitHub', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
       {
         component: 'HeaderDocHelperButtonEN',
@@ -206,7 +206,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
     // collapsed: false,
     items: [
       { text: 'Online support', link: 'community/online-support'},
-      { text: 'Github badge', link: 'community/github-badge'},
+      { text: 'GitHub badge', link: 'community/github-badge'},
       { text: 'Paper citation', link: 'community/paper-cite'},
       { text: 'Contributing code', link: 'community/contributing-code'},
       { text: 'Contributing docs', link: 'community/contributing-docs'},
@@ -225,7 +225,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Argparse', link:'integration-argparse' },
       { text: 'Areal', link: 'integration-areal' },
       { text: 'Ascend NPU & MindSpore', link: 'integration-ascend' },
-      { text: 'Catboost', link: 'integration-catboost'},
+      { text: 'CatBoost', link: 'integration-catboost'},
       { text: 'DiffSynth-Studio', link: 'integration-diffsynth-studio' },
       { text: 'EasyR1', link: 'integration-easyr1' },
       { text: 'EvalScope', link: 'integration-evalscope' },
@@ -238,20 +238,20 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'HuggingFace Accelerate', link: 'integration-huggingface-accelerate' },
       { text: 'HuggingFace Transformers', link: 'integration-huggingface-transformers' },
-      { text: 'HuggingFace Trl', link: 'integration-huggingface-trl' },
+      { text: 'HuggingFace TRL', link: 'integration-huggingface-trl' },
       { text: 'Hydra', link: 'integration-hydra' },
       { text: 'Keras', link: 'integration-keras' },
       { text: 'LightGBM', link: 'integration-lightgbm'},
       { text: 'LLaMA Factory', link: 'integration-llama-factory'},
       { text: 'LLaMA Factory Online', link: 'integration-llama-factory-online' },
       { text: 'MindSpeed-RL', link: 'integration-mindspeed-rl' },
-      { text: 'MLFlow', link: 'integration-mlflow'},
+      { text: 'MLflow', link: 'integration-mlflow'},
       { text: 'MLX LM', link: 'integration-mlx-lm' },
       { text: 'MMEngine', link: 'integration-mmengine' },
       { text: 'MMPretrain', link: 'integration-mmpretrain' },
       { text: 'MMDetection', link: 'integration-mmdetection' },
       { text: 'MMSegmentation', link: 'integration-mmsegmentation' },
-      { text: 'Modelscope Swift', link: 'integration-swift' },
+      { text: 'ModelScope Swift', link: 'integration-swift' },
       { text: 'NVIDIA-NeMo RL', link: 'integration-nvidia-nemo-rl' },
     ]
   },
@@ -260,7 +260,7 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
     // collapsed: false,
     items: [
       { text: 'OpenAI', link: 'integration-openai' },
-      { text: 'Omegaconf', link: 'integration-omegaconf' },
+      { text: 'OmegaConf', link: 'integration-omegaconf' },
       { text: 'PaddleDetection', link: 'integration-paddledetection' },
       { text: 'PaddleNLP', link: 'integration-paddlenlp' },
       { text: 'PaddleYOLO', link: 'integration-paddleyolo' },
@@ -271,9 +271,9 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'RLinf', link: 'integration-rlinf'},
       { text: 'ROLL', link: 'integration-roll' },
       { text: 'Sentence Transformers', link: 'integration-sentence-transformers'},
-      { text: 'Specforge', link: 'integration-specforge'},
-      { text: 'Stable Baseline3', link: 'integration-sb3' },
-      { text: 'Tensorboard', link: 'integration-tensorboard'},
+      { text: 'SpecForge', link: 'integration-specforge'},
+      { text: 'Stable Baselines3', link: 'integration-sb3' },
+      { text: 'TensorBoard', link: 'integration-tensorboard'},
     ]
   },
   {

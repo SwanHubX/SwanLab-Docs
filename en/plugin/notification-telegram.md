@@ -3,7 +3,7 @@
 If you wish to receive immediate [Telegram](https://web.telegram.org) notifications upon training completion or errors, the Telegram Notification plugin is highly recommended.
 
 :::warning Improve the Plugin
-SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
+SwanLab plugins are open-source. You can view the [GitHub source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
 :::
 [[toc]]
 

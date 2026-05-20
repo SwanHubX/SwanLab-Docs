@@ -12,7 +12,7 @@
 
 AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanlab.cn/)
 
-方案开源Github仓库链接：https://github.com/EmotionMachine/swanlab-rag
+方案开源GitHub仓库链接：https://github.com/EmotionMachine/swanlab-rag
 
 Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
 
@@ -71,7 +71,7 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
  }
 ```
 
-### Github API及其使用方法
+### GitHub API及其使用方法
 
 GitHub API 是一种用于与 GitHub 平台交互的编程接口，允许开发者通过编写代码来访问 GitHub 上的资源和数据。https://api.github.com/repos/ 是其中一个重要的端点，用户可以对 GitHub 上的代码仓库资源进行获取。
 
@@ -84,7 +84,7 @@ API 的核心功能是为用户提供一种以编程方式访问和操作 GitHub
   </figure>
 </div>															
 
-在代码中Github API的具体使用方法：
+在代码中GitHub API的具体使用方法：
 
 ```python
 #scrape_swanlab_docs_Internet.py
@@ -523,7 +523,7 @@ Swanlab官网中提供两个文档助手入口，或者直接访问链接[SwanLa
 
 AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanlab.cn/)
 
-方案开源Github仓库链接：https://github.com/EmotionMachine/swanlab-rag
+方案开源GitHub仓库链接：https://github.com/EmotionMachine/swanlab-rag
 
 Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
 

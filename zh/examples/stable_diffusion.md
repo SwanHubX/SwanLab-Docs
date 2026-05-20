@@ -15,7 +15,7 @@
 
 在本文中，我们会使用[SD-1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5)模型在[火影忍者](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)数据集上做训练，同时使用[SwanLab](https://swanlab.cn)监控训练过程、评估模型效果。
 
-- 代码：[Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
+- 代码：[GitHub](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
 - 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr)
 - 模型：[runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - 数据集：[lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
@@ -92,7 +92,7 @@ pip install swanlab diffusers datasets accelerate torchvision transformers
 
 ## 5.开始训练
 
-由于训练的代码比较长，所以我把它放到了[Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example/tree/main)里，请Clone里面的代码：
+由于训练的代码比较长，所以我把它放到了[GitHub](https://github.com/Zeyi-Lin/Stable-Diffusion-Example/tree/main)里，请Clone里面的代码：
 
 ```bash
 git clone https://github.com/Zeyi-Lin/Stable-Diffusion-Example.git
@@ -229,7 +229,7 @@ image.save("result.png")
 
 ## 相关链接
 
-- 代码：[Github](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
+- 代码：[GitHub](https://github.com/Zeyi-Lin/Stable-Diffusion-Example)
 - 实验日志过程：[SD-naruto - SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)
 - 模型：[runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - 数据集：[lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)

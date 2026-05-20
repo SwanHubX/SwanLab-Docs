@@ -1,4 +1,4 @@
-# Stable-Baseline3
+# Stable Baselines3
 
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/colab.svg)](https://colab.research.google.com/drive/1JfU4oCKCS7FQE_AXqZ3k9Bt1vmK-6pMO?usp=sharing)
 

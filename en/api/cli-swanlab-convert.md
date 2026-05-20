@@ -11,7 +11,7 @@ swanlab convert [OPTIONS]
 | `-w`, `--workspace` | Set the workspace where the SwanLab project is located, default is None. |
 | `-l`, `--logdir` | Set the log file save path for the SwanLab project, default is None. |
 | `--cloud` | Set whether the SwanLab project logs are uploaded to the cloud, default is True. |
-| `--tb-logdir` | Path to the Tensorboard log files (tfevent) to be converted. |
+| `--tb-logdir` | Path to the TensorBoard log files (tfevent) to be converted. |
 | `--wb-project` | Name of the Wandb project to be converted. |
 | `--wb-entity` | Entity where the Wandb project to be converted is located. |
 | `--wb-runid` | ID of the Wandb Run to be converted. |
@@ -19,13 +19,13 @@ swanlab convert [OPTIONS]
 ## Introduction
 
 Convert content from other logging tools into SwanLab projects.  
-Supported tools for conversion include: `Tensorboard`, `Weights & Biases`.
+Supported tools for conversion include: `TensorBoard`, `Weights & Biases`.
 
 ## Usage Examples
 
-### Tensorboard
+### TensorBoard
 
-[Integration - Tensorboard](/en/guide_cloud/integration/integration-tensorboard.md)
+[Integration - TensorBoard](/en/guide_cloud/integration/integration-tensorboard.md)
 
 ### Weights & Biases
 

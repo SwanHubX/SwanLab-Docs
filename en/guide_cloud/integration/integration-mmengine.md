@@ -25,7 +25,7 @@ Frameworks using MMEngine can all use the following methods to introduce SwanLab
 
 > You can check out which excellent frameworks are available under the [OpenMMLab official GitHub account](https://github.com/open-mmlab).
 
-Some frameworks, such as [Xtuner](https://github.com/InternLM/xtuner), are not fully compatible with MMEngine and require some simple modifications. You can refer to [SwanLab's Xtuner Integration](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-xtuner.html) to see how to use SwanLab in Xtuner.
+Some frameworks, such as [XTuner](https://github.com/InternLM/xtuner), are not fully compatible with MMEngine and require some simple modifications. You can refer to [SwanLab's XTuner Integration](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-xtuner.html) to see how to use SwanLab in XTuner.
 
 There are two methods to introduce SwanLab for experiment visualization tracking using MMEngine:
 

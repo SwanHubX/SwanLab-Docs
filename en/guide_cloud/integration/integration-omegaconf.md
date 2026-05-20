@@ -1,4 +1,4 @@
-# Omegaconf
+# OmegaConf
 
 OmegaConf is a Python library for handling configurations, especially useful in scenarios that require flexible configurations and configuration merging.
 Integrating OmegaConf with swanlab is very simple; just pass the `omegaconf` object to `swanlab.config` to record it as hyperparameters:

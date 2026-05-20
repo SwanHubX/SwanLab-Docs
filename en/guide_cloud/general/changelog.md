@@ -314,7 +314,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Introduced `swanlab.register_callback()`, enabling the registration of callback functions outside of `init`. [Documentation](/api/py-register-callback.html)
 - Upgraded `swanlab.login()` with new parameters `host`, `web_host`, and `save`, adapting to the characteristics of self-hosted deployment services and supporting the option to not write user login credentials locally for shared server scenarios. [Documentation](/zh/api/py-login.md)
 - Upgraded `swanlab login` with new parameters `host`, `web_host`, and `api-key`. [Documentation](/zh/api/cli-swanlab-login.md)
-- Added support for using `swanlab.sync_mlflow()` to synchronize MLFlow projects to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md)
+- Added support for using `swanlab.sync_mlflow()` to synchronize MLflow projects to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md)
 
 **🤔 Optimizations**
 - We have significantly optimized the SDK architecture, improving its performance in scenarios with a large number of metrics.
@@ -343,7 +343,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **🚀 New Features**
 
 • Added integration with [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), [Documentation](/en/guide_cloud/integration/integration-diffsynth-studio.md).  
-• Added support for converting **MLFlow** experiments to SwanLab. [Documentation](/en/guide_cloud/integration/integration-mlflow.md).  
+• Added support for converting **MLflow** experiments to SwanLab. [Documentation](/en/guide_cloud/integration/integration-mlflow.md).  
 • Introduced **Project Descriptions**, allowing you to add short notes to your projects.  
 
 **Improvements**
@@ -364,7 +364,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 ## v0.4.8 - 2025.2.16
 
 **🚀 New Features**
-- Added integration with Modelscope Swift, [Docs](/en/guide_cloud/integration/integration-swift.md)
+- Added integration with ModelScope Swift, [Docs](/en/guide_cloud/integration/integration-swift.md)
 - Added `Add Group` and `Move Chart to Another Group` functions
 
 **Optimizations**
@@ -389,7 +389,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 ## v0.4.5 - 2025.1.22
 
 **🚀New Features**
-- Added `swanlab.sync_tensorboardX()` and `swanlab.sync_tensorboard_torch()`: Supports synchronizing metrics to SwanLab when using TensorboardX or PyTorch.utils.tensorboard for experiment tracking. [Docs](/en/guide_cloud/integration/integration-tensorboard.md)
+- Added `swanlab.sync_tensorboardX()` and `swanlab.sync_tensorboard_torch()`: Supports synchronizing metrics to SwanLab when using TensorBoardX or PyTorch.utils.tensorboard for experiment tracking. [Docs](/en/guide_cloud/integration/integration-tensorboard.md)
 
 **Optimizations**
 - Optimized the code compatibility of `sync_wandb()`
@@ -398,7 +398,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 ## v0.4.3 - 2025.1.17
 
 **🚀 New Features**
-- Added `swanlab.sync_wandb()`: Supports synchronizing metrics to SwanLab when using Weights&Biases for experiment tracking. [Docs](/en/guide_cloud/integration/integration-wandb.md)
+- Added `swanlab.sync_wandb()`: Supports synchronizing metrics to SwanLab when using Weights & Biases for experiment tracking. [Docs](/en/guide_cloud/integration/integration-wandb.md)
 - Added framework integration: Configuration items will now record the framework being used.
 
 **Optimizations**

@@ -1,4 +1,4 @@
-# 🤗HuggingFace Trl
+# 🤗HuggingFace TRL
 
 [TRL](https://github.com/huggingface/trl) (Transformers Reinforcement Learning) is a leading Python library designed to optimize foundational models through advanced techniques such as Supervised Fine-Tuning (SFT), Proximal Policy Optimization (PPO), and Direct Preference Optimization (DPO). Built on top of the 🤗 Transformers ecosystem, TRL supports multiple model architectures and modalities, and can scale across various hardware configurations.
 

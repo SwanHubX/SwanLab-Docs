@@ -359,11 +359,11 @@ features:
 
 
 <!-- 分割线 -->
-<div style="text-align: center; margin-top: 60px; padding: 10px; color: var(--vp-c-text-2); font-size: 13px;">
-  <div style="border-top: 1px solid var(--vp-c-divider); margin: 20px 0;"></div>
-  <p style="margin: 0 0;">◎ 情感机器（北京）科技有限公司</p>
-  <p style="margin: 0 0;"><a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502056567" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; color: var(--vp-c-text-2); text-decoration: none; font-weight: normal;"><img src="/swanlab-beian.png" alt="" style="width: 14px; height: auto; flex: 0 0 auto;" />京公网安备11010502056567号</a> · <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-text-2); text-decoration: none; font-weight: normal;">京ICP备2024101706号-1</a>  </p>
-  <p style="margin: 0 0;" id="zh-copyright"></p>
+<div style="text-align: center; margin-top: 60px; padding: 0 10px 10px; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.2;">
+  <div style="border-top: 1px solid var(--vp-c-divider); margin: 20px 0 8px;"></div>
+  <p style="margin: 0; padding: 0; line-height: 1.1;">◎ 情感机器（北京）科技有限公司</p>
+  <p style="margin: 0; padding: 0; line-height: 1.1;"><a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502056567" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; color: var(--vp-c-text-2); text-decoration: none; font-weight: normal;"><img src="/swanlab-beian.png" alt="" style="width: 14px; height: auto; flex: 0 0 auto;" />京公网安备11010502056567号</a> · <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-text-2); text-decoration: none; font-weight: normal;">京ICP备2024101706号-1</a></p>
+  <p style="margin: 0; padding: 0; line-height: 1.1;" id="zh-copyright"></p>
 </div>
 
 <script setup>
