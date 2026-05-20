@@ -346,7 +346,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: '入门',
     // collapsed: false,
     items: [
-      { text: 'Hello_World', link: 'hello_world' },
+      { text: 'Hello World', link: 'hello_world' },
       { text: 'MNIST手写体识别', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'CIFAR10图像分类', link: 'cifar10' },

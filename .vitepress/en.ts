@@ -297,7 +297,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
     text: 'Quick Start',
     // collapsed: false,
     items: [
-      { text: 'Hello_World', link: 'hello_world' },
+      { text: 'Hello World', link: 'hello_world' },
       { text: 'MNIST', link: 'mnist' },
       { text: 'FashionMNIST', link: 'fashionmnist' },
       { text: 'CIFAR10', link: 'cifar10' },
