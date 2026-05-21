@@ -187,10 +187,9 @@ features:
 
 
 <!-- 分割线 -->
-<div style="text-align: center; margin-top: 120px; padding: 10px; color: var(--vp-c-text-2); font-size: 13px;">
-  <div style="border-top: 1px solid var(--vp-c-divider); margin: 20px 0;"></div>
-  <p style="margin: 0 0;">◎ Emotion Machine (Beijing) Technology Co., Ltd.</p>
-  <p style="margin: 0 0;" id="en-copyright"></p>
+<div style="text-align: center; margin-top: 48px; padding: 0 24px 16px; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.8;">
+  <div style="border-top: 1px solid var(--vp-c-divider); margin: 0 0 10px;"></div>
+  <p style="margin: 0; padding: 0;">◎ Emotion Machine (Beijing) Technology Co., Ltd. · <span id="en-copyright"></span></p>
 </div>
 
 <script setup>
@@ -199,6 +198,6 @@ onMounted(async () => {
   await nextTick()
   const year = new Date().getFullYear()
   const el = document.getElementById('en-copyright')
-  if (el) el.textContent = `Copyright © 2024-${year}.SwanLab. All Rights Reserved.`
+  if (el) el.textContent = `Copyright © 2024-${year}. SwanLab. All Rights Reserved.`
 })
 </script>

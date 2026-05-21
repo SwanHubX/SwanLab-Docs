@@ -14,7 +14,7 @@ UNet是一种基于卷积神经网络（CNN）的医学影像分割模型，由R
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/unet-medical-segmentation/train_image.png)
 
 
-- 代码：完整代码直接看本文第5节 或 [Github](https://github.com/Zeyi-Lin/UNet-Medical)
+- 代码：完整代码直接看本文第5节 或 [GitHub](https://github.com/Zeyi-Lin/UNet-Medical)
 - 实验日志过程：[Unet-Medical-Segmentation - SwanLab](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)
 - 模型：UNet（Pytorch代码直接写）
 - 数据集：[brain-tumor-image-dataset-semantic-segmentation - Kagggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)
@@ -630,7 +630,7 @@ if __name__ == '__main__':
 
 ## 参考
 
-- 代码：完整代码直接看本文第5节 或 [Github](https://github.com/Zeyi-Lin/UNet-Medical)
+- 代码：完整代码直接看本文第5节 或 [GitHub](https://github.com/Zeyi-Lin/UNet-Medical)
 - 实验日志过程：[Unet-Medical-Segmentation - SwanLab](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)
 - 模型：UNet（Pytorch代码直接写）
 - 数据集：[brain-tumor-image-dataset-semantic-segmentation - Kagggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)

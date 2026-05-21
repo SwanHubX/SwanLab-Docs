@@ -12,7 +12,7 @@ In current audio classification applications, it is often used for audio annotat
 
 In this article, we will train a ResNet series model on the GTZAN dataset using the PyTorch framework, and use [SwanLab](https://swanlab.cn) to monitor the training process and evaluate the model's performance.
 
-* Github: [https://github.com/Zeyi-Lin/PyTorch-Audio-Classification](https://github.com/Zeyi-Lin/PyTorch-Audio-Classification)
+* GitHub: [https://github.com/Zeyi-Lin/PyTorch-Audio-Classification](https://github.com/Zeyi-Lin/PyTorch-Audio-Classification)
 * Dataset: [https://pan.baidu.com/s/14CTI_9MD1vXCqyVxmAbeMw?pwd=1a9e](https://pan.baidu.com/s/14CTI_9MD1vXCqyVxmAbeMw?pwd=1a9e) Extraction Code: 1a9e
 * SwanLab Experiment Logs: [https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification-simple/charts](https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification-simple/charts)
 * More Experiment Logs: [https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification/charts](https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification/charts)

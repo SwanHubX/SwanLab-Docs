@@ -1,14 +1,14 @@
-# PaddleYolo
+# PaddleYOLO
 
-[PaddleYolo](https://github.com/PaddlePaddle/PaddleYOLO) is an object detection library under the PaddlePaddle framework, primarily used for object detection in images and videos. PaddleYOLO contains code related to the YOLO series models, supporting models such as YOLOv3, PP-YOLO, PP-YOLOv2, PP-YOLOE, PP-YOLOE+, RT-DETR, YOLOX, YOLOv5, YOLOv6, YOLOv7, YOLOv8, YOLOv5u, YOLOv7u, YOLOv6Lite, RTMDet, etc.
+[PaddleYOLO](https://github.com/PaddlePaddle/PaddleYOLO) is an object detection library under the PaddlePaddle framework, primarily used for object detection in images and videos. PaddleYOLO contains code related to the YOLO series models, supporting models such as YOLOv3, PP-YOLO, PP-YOLOv2, PP-YOLOE, PP-YOLOE+, RT-DETR, YOLOX, YOLOv5, YOLOv6, YOLOv7, YOLOv8, YOLOv5u, YOLOv7u, YOLOv6Lite, RTMDet, etc.
 
-You can use PaddleYolo to quickly train object detection models while using SwanLab for experiment tracking and visualization.
+You can use PaddleYOLO to quickly train object detection models while using SwanLab for experiment tracking and visualization.
 
 [Demo](https://swanlab.cn/@ZeyiLin/PaddleYOLO/runs/10zy8zickn2062kubch34/chart)
 
 ## 1. Import SwanLabCallback
 
-First, in your cloned PaddleYolo project, find the `ppdet/engine/callbacks.py` file and add the following code at the bottom:
+First, in your cloned PaddleYOLO project, find the `ppdet/engine/callbacks.py` file and add the following code at the bottom:
 
 ```python
 class SwanLabCallback(Callback):
@@ -123,7 +123,7 @@ if self.cfg.get('use_swanlab', False) or 'swanlab' in self.cfg:
     self._callbacks.append(SwanLabCallback(self))
 ```
 
-With this, you have completed the integration of SwanLab with PaddleYolo! Next, simply add `use_swanlab: True` to the training configuration file to start visualizing and tracking the training.
+With this, you have completed the integration of SwanLab with PaddleYOLO! Next, simply add `use_swanlab: True` to the training configuration file to start visualizing and tracking the training.
 
 ## 3. Modify the Configuration File
 

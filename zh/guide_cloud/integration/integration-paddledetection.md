@@ -123,7 +123,7 @@ if self.cfg.get('use_swanlab', False) or 'swanlab' in self.cfg:
     self._callbacks.append(SwanLabCallback(self))
 ```
 
-至此，你已经完成了SwanLab与PaddleYolo的集成！接下来，只需要在训练的配置文件中添加`use_swanlab: True`，即可开始可视化跟踪训练。
+至此，你已经完成了SwanLab与PaddleYOLO的集成！接下来，只需要在训练的配置文件中添加`use_swanlab: True`，即可开始可视化跟踪训练。
 
 ## 3. 修改配置文件
 

@@ -13,7 +13,7 @@
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/01.png)
 
 - 实验过程可看这个网页：[猫狗分类｜SwanLab](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
-- 代码：[Github](https://github.com/Zeyi-Lin/Resnet50-cats_vs_dogs) 
+- 代码：[GitHub](https://github.com/Zeyi-Lin/Resnet50-cats_vs_dogs) 
 - 在线Demo：[HuggingFace](https://huggingface.co/spaces/TheEeeeLin/Resnet50-cats_vs_dogs)
 - 数据集：[百度云](https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ) 提取码: 1ybm
 - 三个开源库：[SwanLab](https://github.com/swanhubx/swanlab)、[Gradio](https://github.com/gradio-app/gradio)、[PyTorch](https://github.com/pytorch/pytorch)
@@ -48,7 +48,7 @@ pip install torch>=1.12.0 torchvision>=0.13.0 swanlab gradio
 
 ### 1.3 下载猫狗分类数据集
 
-数据集来源是Modelscope上的[猫狗分类数据集](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary)，包含275张图像的数据集和70张图像的测试集，一共不到10MB。
+数据集来源是ModelScope上的[猫狗分类数据集](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary)，包含275张图像的数据集和70张图像的测试集，一共不到10MB。
 我对数据做了一些整理，所以更推荐使用下面的百度网盘链接下载：
 > 百度网盘：链接: https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ 提取码: 1ybm
 
@@ -217,7 +217,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 ### 2.6 初始化SwanLab
 
 在训练中我们使用`swanlab`库作为实验管理与指标可视化工具。
-[swanlab](https://github.com/SwanHubX/SwanLab)是一个类似Tensorboard的开源训练图表可视化库，有着更轻量的体积与更友好的API，除了能记录指标，还能自动记录训练的logging、硬件环境、Python环境、训练时间等信息。
+[swanlab](https://github.com/SwanHubX/SwanLab)是一个类似TensorBoard的开源训练图表可视化库，有着更轻量的体积与更友好的API，除了能记录指标，还能自动记录训练的logging、硬件环境、Python环境、训练时间等信息。
 
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/07.png)
 
@@ -544,8 +544,8 @@ if __name__ == "__main__":
 ## 4. 相关链接
 
 - 在线看实验过程：[猫狗分类 · SwanLab](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
-- SwanLab：[Github](https://github.com/SwanHubX/SwanLab)
-- 猫狗分类代码：[Github](https://github.com/xiaolin199912/Resnet50-cats_vs_dogs)
+- SwanLab：[GitHub](https://github.com/SwanHubX/SwanLab)
+- 猫狗分类代码：[GitHub](https://github.com/xiaolin199912/Resnet50-cats_vs_dogs)
 - 在线Demo：[HuggingFace](https://huggingface.co/spaces/TheEeeeLin/Resnet50-cats_vs_dogs)
 - 猫狗分类数据集（300张图像）：[ModelScope](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary)
   - 百度云下载：[链接](https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ) 提取码: 1ybm

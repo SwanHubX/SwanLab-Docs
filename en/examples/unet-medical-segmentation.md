@@ -12,7 +12,7 @@ UNet is a convolutional neural network (CNN)-based model for medical image segme
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/unet-medical-segmentation/train_image.png)  
 
-• **Code**: Full code available in Section 5 or on [Github](https://github.com/Zeyi-Lin/UNet-Medical)  
+• **Code**: Full code available in Section 5 or on [GitHub](https://github.com/Zeyi-Lin/UNet-Medical)  
 • **Training Logs**: [Unet-Medical-Segmentation - SwanLab](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)  
 • **Model**: UNet (implemented directly in PyTorch)  
 • **Dataset**: [brain-tumor-image-dataset-semantic-segmentation - Kaggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)  
@@ -603,7 +603,7 @@ GPU memory usage was **6.124 GB**, meaning any GPU with ≥6GB VRAM can run this
 
 ## References  
 
-• **Code**: Full code in Section 5 or on [Github](https://github.com/Zeyi-Lin/UNet-Medical)  
+• **Code**: Full code in Section 5 or on [GitHub](https://github.com/Zeyi-Lin/UNet-Medical)  
 • **Training Logs**: [Unet-Medical-Segmentation - SwanLab](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)  
 • **Model**: UNet (PyTorch implementation)  
 • **Dataset**: [brain-tumor-image-dataset-semantic-segmentation - Kaggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)  

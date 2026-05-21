@@ -5,7 +5,7 @@
 如果你希望在训练完成/发生错误时，第一时间发送飞书信息通知你，那么非常推荐你使用飞书通知插件。
 
 :::warning 改进插件
-SwanLab插件均为开源代码，你可以在[Github源代码](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py)中查看，欢迎提交你的建议和PR！
+SwanLab插件均为开源代码，你可以在[GitHub源代码](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py)中查看，欢迎提交你的建议和PR！
 :::
 
 [[toc]]

@@ -1,6 +1,6 @@
-# MLFlow
+# MLflow
 
-[MLFlow](https://github.com/mlflow/mlflow) 是一个开源的机器学习生命周期管理平台，由 Databricks 创建并维护。它旨在帮助数据科学家和机器学习工程师更高效地管理机器学习项目的整个生命周期，包括实验跟踪、模型管理、模型部署和协作。MLflow 的设计是模块化的，可以与任何机器学习库、框架或工具集成。
+[MLflow](https://github.com/mlflow/mlflow) 是一个开源的机器学习生命周期管理平台，由 Databricks 创建并维护。它旨在帮助数据科学家和机器学习工程师更高效地管理机器学习项目的整个生命周期，包括实验跟踪、模型管理、模型部署和协作。MLflow 的设计是模块化的，可以与任何机器学习库、框架或工具集成。
 
 ![mlflow](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/mlflow/logo.png)
 

@@ -5,7 +5,7 @@
 If you wish to receive immediate notifications via [DingTalk](https://www.dingtalk.com/) when training completes or an error occurs, the DingTalk notification plugin is highly recommended.
 
 :::warning Plugin Improvement
-SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Your suggestions and PRs are welcome!
+SwanLab plugins are open-source. You can view the [GitHub source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Your suggestions and PRs are welcome!
 :::
 
 [[toc]]

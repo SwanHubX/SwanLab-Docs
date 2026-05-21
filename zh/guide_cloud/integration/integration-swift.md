@@ -1,9 +1,9 @@
-# Modelscope Swift
+# ModelScope Swift
 
 > SwanLab已经与Swift官方集成，见：[#3142](https://github.com/modelscope/ms-swift/pull/3142)  
 > 可视化在线Demo：[swift-robot](https://swanlab.cn/@ZeyiLin/swift-robot/runs/9lc9rmmwm4hh7ay1vkzd7/chart)
 
-[Modelscope魔搭社区](https://modelscope.cn/) 的 [Swift](https://github.com/modelscope/swift) 是一个集模型训练、微调、推理、部署于一体的框架。
+[ModelScope魔搭社区](https://modelscope.cn/) 的 [Swift](https://github.com/modelscope/swift) 是一个集模型训练、微调、推理、部署于一体的框架。
 
 ![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/swift/logo.png)
 

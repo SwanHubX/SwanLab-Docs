@@ -8,7 +8,7 @@
 
 | Feishu Group |
 | --- |
-| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/feishu-QR-Code.png" width=300></div> |
+| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/support/img_v3_0211s_aa16c3c7-617e-4007-8a33-f186603063fg.jpg" width=300></div> |
 
 
 ## 📧 Contact us via Github or email

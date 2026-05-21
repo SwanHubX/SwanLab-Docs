@@ -1,4 +1,4 @@
-# Specforge
+# SpecForge
 
 [SpecForge](https://github.com/sgl-project/SpecForge) 是由 SGLang 团队开发的生态系统项目。它是一个用于训练 speculative decoding models 的框架，以便开发者可以平滑地将它们移植到 SGLang 服务框架，从而加快推理速度。
 
@@ -9,7 +9,7 @@
 你可以使用SpecForge快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
 
-## 将Specforge集成SwanLab
+## 将SpecForge集成SwanLab
 
 > 参考文档：https://docs.sglang.io/SpecForge/basic_usage/training.html#experiment-tracking
 

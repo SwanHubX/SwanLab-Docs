@@ -1,6 +1,6 @@
 # Welcome to SwanLab  
 
-[Official Website](https://swanlab.cn) · [Framework Integration](/guide_cloud/integration/integration-huggingface-transformers.html) · [Github](https://github.com/swanhubx/swanlab) · [Quick Start](/guide_cloud/general/quick-start.md) · [Sync WandB](/guide_cloud/integration/integration-wandb.md#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)  
+[Official Website](https://swanlab.cn) · [Framework Integration](/guide_cloud/integration/integration-huggingface-transformers.html) · [GitHub](https://github.com/swanhubx/swanlab) · [Quick Start](/guide_cloud/general/quick-start.md) · [Sync WandB](/guide_cloud/integration/integration-wandb.md#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)  
 
 ::: warning 🎉 Self-Hosted Kubernetes Version Officially Released!  
 The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](/en/guide_cloud/self_host/kubernetes-deploy.md).  
@@ -62,7 +62,7 @@ Video Demo:
 - **Automatic Background Logging**: Logging, hardware environment, Git repo, Python environment, Python library list, project directory.  
 - **Resume Training Logging**: Supports adding new metric data to the same experiment after training completes/interrupts.  
 
-**2. ⚡️ Comprehensive Framework Integration**: Supports **40+** frameworks including PyTorch, 🤗HuggingFace Transformers, PyTorch Lightning, 🦙LLaMA Factory, MMDetection, Ultralytics, PaddleDetection, LightGBM, XGBoost, Keras, Tensorboard, Weights&Biases, OpenAI, Swift, XTuner, Stable Baseline3, and Hydra.  
+**2. ⚡️ Comprehensive Framework Integration**: Supports **40+** frameworks including PyTorch, 🤗HuggingFace Transformers, PyTorch Lightning, 🦙LLaMA Factory, MMDetection, Ultralytics, PaddleDetection, LightGBM, XGBoost, Keras, TensorBoard, Weights & Biases, OpenAI, Swift, XTuner, Stable Baselines3, and Hydra.  
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integrations.png)  
 
@@ -110,12 +110,12 @@ We hope this guide helps you understand SwanLab—we believe it can assist you.
 
 ## Comparison with Familiar Tools  
 
-### Tensorboard vs. SwanLab  
+### TensorBoard vs. SwanLab  
 
-- **☁️ Online Usage**: SwanLab syncs experiments to the cloud for remote monitoring, sharing, and collaboration. Tensorboard is offline-only.  
-- **👥 Collaboration**: SwanLab simplifies team training management, while Tensorboard is designed for individual use.  
-- **💻 Centralized Dashboard**: SwanLab aggregates results from any machine; Tensorboard requires manual TFEvent file management.  
-- **💪 Powerful Tables**: SwanLab tables support searching/filtering thousands of model versions. Tensorboard struggles with large projects.  
+- **☁️ Online Usage**: SwanLab syncs experiments to the cloud for remote monitoring, sharing, and collaboration. TensorBoard is offline-only.  
+- **👥 Collaboration**: SwanLab simplifies team training management, while TensorBoard is designed for individual use.  
+- **💻 Centralized Dashboard**: SwanLab aggregates results from any machine; TensorBoard requires manual TFEvent file management.  
+- **💪 Powerful Tables**: SwanLab tables support searching/filtering thousands of model versions. TensorBoard struggles with large projects.  
 
 ### W&B vs. SwanLab  
 
@@ -135,7 +135,7 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)  
 - [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)  
 - [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)  
-- [Modelscope Swift](/guide_cloud/integration/integration-swift.html)  
+- [ModelScope Swift](/guide_cloud/integration/integration-swift.html)  
 - [DiffSynth-Studio](/guide_cloud/integration/integration-diffsynth-studio.html)  
 - [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)  
 - [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)  
@@ -157,9 +157,9 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)  
 
 **Reinforcement Learning**  
-- [Stable Baseline3](/guide_cloud/integration/integration-sb3.html)  
+- [Stable Baselines3](/guide_cloud/integration/integration-sb3.html)  
 - [veRL](/guide_cloud/integration/integration-verl.html)  
-- [HuggingFace trl](/guide_cloud/integration/integration-huggingface-trl.html)  
+- [HuggingFace TRL](/guide_cloud/integration/integration-huggingface-trl.html)  
 - [EasyR1](/guide_cloud/integration/integration-easyr1.html)  
 - [AReaL](/guide_cloud/integration/integration-areal.html)  
 - [ROLL](/guide_cloud/integration/integration-roll.html)  
@@ -167,12 +167,12 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
 
 **Other Frameworks**:  
-- [Tensorboard](/guide_cloud/integration/integration-tensorboard.html)  
-- [Weights&Biases](/guide_cloud/integration/integration-wandb.html)  
-- [MLFlow](/guide_cloud/integration/integration-mlflow.html)  
+- [TensorBoard](/guide_cloud/integration/integration-tensorboard.html)  
+- [Weights & Biases](/guide_cloud/integration/integration-wandb.html)  
+- [MLflow](/guide_cloud/integration/integration-mlflow.html)  
 - [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)  
 - [Hydra](/guide_cloud/integration/integration-hydra.html)  
-- [Omegaconf](/guide_cloud/integration/integration-omegaconf.html)  
+- [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)  
 - [OpenAI](/guide_cloud/integration/integration-openai.html)  
 - [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)  
 

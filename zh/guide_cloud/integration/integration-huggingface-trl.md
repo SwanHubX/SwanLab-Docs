@@ -1,4 +1,4 @@
-# 🤗HuggingFace Trl
+# 🤗HuggingFace TRL
 
 [TRL](https://github.com/huggingface/trl) (Transformers Reinforcement Learning，用强化学习训练Transformers模型) 是一个领先的Python库，旨在通过监督微调（SFT）、近端策略优化（PPO）和直接偏好优化（DPO）等先进技术，对基础模型进行训练后优化。TRL 建立在 🤗 Transformers 生态系统之上，支持多种模型架构和模态，并且能够在各种硬件配置上进行扩展。
 

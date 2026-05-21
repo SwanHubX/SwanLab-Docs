@@ -1,19 +1,19 @@
 # Weights & Biases
 
-Weights & Biases (Wandb) is a platform for experiment tracking, model optimization, and collaboration in machine learning and deep learning projects. W&B provides powerful tools to log and visualize experimental results, helping data scientists and researchers better manage and share their work.
+Weights & Biases (W&B) is a platform for experiment tracking, model optimization, and collaboration in machine learning and deep learning projects. W&B provides powerful tools to log and visualize experimental results, helping data scientists and researchers better manage and share their work.
 
 ![wandb](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/ig-wandb.png)  
 
 :::warning Synchronization Tutorials for Other Tools  
 
 - [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)  
-- [MLFlow](/guide_cloud/integration/integration-mlflow.md)  
+- [MLflow](/guide_cloud/integration/integration-mlflow.md)  
 :::  
 
-**You can sync projects from Wandb to SwanLab in three ways:**
+**You can sync projects from W&B to SwanLab in three ways:**
 
 1. **Real-time Syncing**: If your current project uses wandb for experiment tracking, you can use the `swanlab.sync_wandb()` command to simultaneously log metrics to SwanLab while running your training script.
-2. **Convert existing projects from the wandb website**: If you want to copy projects from the wandb server (wandb.ai or privately deployed wandb) to SwanLab, you can use `swanlab convert` to transform existing Wandb projects into SwanLab projects.
+2. **Convert existing projects from the W&B website**: If you want to copy projects from the wandb server (wandb.ai or privately deployed wandb) to SwanLab, you can use `swanlab convert` to transform existing W&B projects into SwanLab projects.
 3. **Convert existing projects from local wandb log files**: If you want to upload local wandb log files to SwanLab, you can use `swanlab convert` to transform local wandb log files into SwanLab projects.
 
 ::: info  
@@ -26,7 +26,7 @@ The current version only supports converting scalar charts.
 
 ### 1.1 Add the `sync_wandb` Command  
 
-Add the `swanlab.sync_wandb()` command anywhere in your code before `wandb.init()` to synchronize Wandb metrics to SwanLab during training.  
+Add the `swanlab.sync_wandb()` command anywhere in your code before `wandb.init()` to synchronize W&B metrics to SwanLab during training.  
 
 ```python  
 import swanlab  
@@ -45,7 +45,7 @@ With this implementation, `wandb.init()` will simultaneously initialize SwanLab,
 **`sync_wandb` supports two parameters:**  
 
 - `mode`: SwanLab logging mode, supporting `cloud`, `local`, and `disabled`.  
-- `wandb_run`: If set to **False**, data will not be uploaded to Wandb (equivalent to `wandb.init(mode="offline")`).  
+- `wandb_run`: If set to **False**, data will not be uploaded to W&B (equivalent to `wandb.init(mode="offline")`).  
 
 :::  
 
@@ -106,7 +106,7 @@ Location of `runid`:
 
 ### 2.2 Method 1: Command-Line Conversion  
 
-First, ensure you are logged into Wandb and have access to the target project.  
+First, ensure you are logged into W&B and have access to the target project.  
 
 Conversion command:  
 
@@ -121,9 +121,9 @@ Supported parameters:
 - `-w`: SwanLab workspace name.  
 - `--mode`: (str) Logging mode (default: `"cloud"`), options: `["cloud", "local", "offline", "disabled"]`.  
 - `-l`: Log directory path.  
-- `--wb-project`: Wandb project name to convert.  
-- `--wb-entity`: Wandb entity (username/team) where the project resides.  
-- `--wb-runid`: Wandb Run ID (specific experiment under the project).  
+- `--wb-project`: W&B project name to convert.  
+- `--wb-entity`: W&B entity (username/team) where the project resides.  
+- `--wb-runid`: W&B Run ID (specific experiment under the project).  
 
 If `--wb-runid` is omitted, all Runs under the project will be converted. If specified, only the selected Run will be converted.  
 
@@ -167,8 +167,8 @@ This achieves the same result as command-line conversion.
 `WandbConverter.run` parameters:  
 
 - `wb_project`: Wandb project name.  
-- `wb_entity`: Wandb entity (username/team).  
-- `wb_runid`: Wandb Run ID (specific experiment).  
+- `wb_entity`: W&B entity (username/team).  
+- `wb_runid`: W&B Run ID (specific experiment).  
 
 **Asynchronous Conversion (Download Data Locally First, Then Upload to SwanLab)**  
 

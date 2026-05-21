@@ -1,4 +1,4 @@
-# Xtuner
+# XTuner
 
 [XTuner](https://github.com/InternLM/xtuner) is a highly efficient, flexible, and versatile tool library for fine-tuning large models.
 
@@ -6,15 +6,15 @@
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integration-xtuner.png" width=440>
 </div>
 
-Xtuner supports adaptation with multiple open-source large models such as InternLM and Llama, and can perform tasks such as incremental pre-training, instruction fine-tuning, and tool-based instruction fine-tuning. In terms of hardware requirements, developers can train with the lowest consumer-grade graphics cards, such as Tesla T4 and A100, to achieve specific demand capabilities of large models.
+XTuner supports adaptation with multiple open-source large models such as InternLM and Llama, and can perform tasks such as incremental pre-training, instruction fine-tuning, and tool-based instruction fine-tuning. In terms of hardware requirements, developers can train with the lowest consumer-grade graphics cards, such as Tesla T4 and A100, to achieve specific demand capabilities of large models.
 
 <div align="center">
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integration-xtuner-intro.png">
 </div>
 
-Xtuner supports online tracking using SwanLab through MMEngine. By adding a few lines of code to the configuration file, you can track and visualize metrics such as loss and memory usage.
+XTuner supports online tracking using SwanLab through MMEngine. By adding a few lines of code to the configuration file, you can track and visualize metrics such as loss and memory usage.
 
-## Visualizing and Tracking Xtuner Fine-Tuning Progress with SwanLab
+## Visualizing and Tracking XTuner Fine-Tuning Progress with SwanLab
 
 Open the configuration file you want to train (for example, [qwen1_5_7b_chat_full_alpaca_e3.py](https://github.com/InternLM/xtuner/blob/main/xtuner/configs/qwen/qwen1_5/qwen1_5_7b_chat/qwen1_5_7b_chat_full_alpaca_e3.py)), find the `visualizer` parameter, and replace it with:
 

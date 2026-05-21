@@ -7,7 +7,7 @@ You can think of it as a "privately customized" push service, similar to IFTTT o
 If you want to be notified via a Bark message as soon as training is complete or an error occurs, it is highly recommended that you use the Bark notification plugin.
 
 :::warning Improving the Plugin
-SwanLab plugins are open source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). We welcome your suggestions and PRs!
+SwanLab plugins are open source. You can view the [GitHub source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). We welcome your suggestions and PRs!
 :::
 
 [[toc]]

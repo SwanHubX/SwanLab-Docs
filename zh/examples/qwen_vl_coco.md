@@ -16,7 +16,7 @@ Qwen2-VL是阿里通义实验室推出的多模态大模型。本文我们将简
 Lora 是一种高效微调方法，深入了解其原理可参见博客：[知乎|深入浅出 Lora](https://zhuanlan.zhihu.com/p/650197598)。
 
 - 训练过程：[Qwen2-VL-finetune](https://swanlab.cn/@ZeyiLin/Qwen2-VL-finetune/runs/pkgest5xhdn3ukpdy6kv5/chart)
-- Github：[代码仓库](https://github.com/Zeyi-Lin/LLM-Finetune/tree/main/qwen2_vl)、[self-llm](https://github.com/datawhalechina/self-llm)
+- GitHub：[代码仓库](https://github.com/Zeyi-Lin/LLM-Finetune/tree/main/qwen2_vl)、[self-llm](https://github.com/datawhalechina/self-llm)
 - 数据集：[coco_2014_caption](https://modelscope.cn/datasets/modelscope/coco_2014_caption/summary)
 - 模型：[Qwen2-VL-2B-Instruct](https://modelscope.cn/models/Qwen/Qwen2-VL-2B-Instruct)
 
@@ -82,7 +82,7 @@ pip install qwen-vl-utils==0.0.8
 **数据集下载与处理方式**
 
 1. **我们需要做四件事情：**
-    - 通过Modelscope下载coco_2014_caption数据集
+    - 通过ModelScope下载coco_2014_caption数据集
     - 加载数据集，将图像保存到本地
     - 将图像路径和描述文本转换为一个csv文件
     - 将csv文件转换为json文件

@@ -140,7 +140,7 @@ class RnnClsNet(nn.Module):
 
 ## 完整训练代码获取与运行
 
-完整训练代码可以通过Github查看（后文也附了训练代码，防止有读者无法访问github，见[#附录：训练代码](#附录：训练代码)
+完整训练代码可以通过GitHub查看（后文也附了训练代码，防止有读者无法访问github，见[#附录：训练代码](#附录：训练代码)
 
 * GitHub链接：<https://github.com/ShaohonChen/tutorial_with_rnn>
 

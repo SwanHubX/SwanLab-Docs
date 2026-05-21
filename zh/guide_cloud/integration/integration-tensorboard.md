@@ -1,4 +1,4 @@
-# Tensorboard
+# TensorBoard
 
 [TensorBoard](https://github.com/tensorflow/tensorboard) 是 Google TensorFlow 提供的一个可视化工具，用于帮助理解、调试和优化机器学习模型。它通过图形界面展示训练过程中的各种指标和数据，让开发者更直观地了解模型的性能和行为。
 
@@ -7,13 +7,13 @@
 :::warning 其他工具的同步教程
 
 - [Wandb](/guide_cloud/integration/integration-wandb.md)
-- [MLFlow](/guide_cloud/integration/integration-mlflow.md)
+- [MLflow](/guide_cloud/integration/integration-mlflow.md)
 :::
 
-**你可以用两种方式将使用Tensorboard跟踪的项目同步到SwanLab：**
+**你可以用两种方式将使用TensorBoard跟踪的项目同步到SwanLab：**
 
-- **同步跟踪**：如果你现在的项目使用了Tensorboard进行实验跟踪，你可以使用`swanlab.sync_tensorboardX()`或`swanlab.sync_tensorboard_torch()`命令，在运行训练脚本时同步记录指标到SwanLab。
-- **转换已存在的项目**：如果你想要将Tensorboard上的项目复制到SwanLab，你可以使用`swanlab convert`，将存放TFevent文件的目录转换成SwanLab项目。
+- **同步跟踪**：如果你现在的项目使用了TensorBoard进行实验跟踪，你可以使用`swanlab.sync_tensorboardX()`或`swanlab.sync_tensorboard_torch()`命令，在运行训练脚本时同步记录指标到SwanLab。
+- **转换已存在的项目**：如果你想要将TensorBoard上的项目复制到SwanLab，你可以使用`swanlab convert`，将存放TFevent文件的目录转换成SwanLab项目。
 
 ::: info
 在当前版本暂仅支持转换标量和图像图表。
@@ -23,9 +23,9 @@
 
 ## 1. 同步跟踪
 
-### 1.1 TensorboardX: 添加sync_tensorboardX命令
+### 1.1 TensorBoardX: 添加sync_tensorboardX命令
 
-如果你使用的是TensorboardX，可以在代码执行`tensorboardX.SummaryWriter()`之前的任何位置，添加一行`swanlab.sync_tensorboardX()`命令，即可在训练时同步记录指标到SwanLab。
+如果你使用的是TensorBoardX，可以在代码执行`tensorboardX.SummaryWriter()`之前的任何位置，添加一行`swanlab.sync_tensorboardX()`命令，即可在训练时同步记录指标到SwanLab。
 
 ```python
 import swanlab
@@ -55,7 +55,7 @@ writer = torch.utils.tensorboard.SummaryWriter(log_dir='./runs')
 
 ::: code-group
 
-```python [TensorboardX]
+```python [TensorBoardX]
 import swanlab
 from tensorboardX import SummaryWriter
 
@@ -84,7 +84,7 @@ writer = SummaryWriter(log_dir='./runs')
 
 ::: code-group
 
-```python [TensorboardX]
+```python [TensorBoardX]
 import swanlab
 from tensorboardX import SummaryWriter
 
@@ -145,9 +145,9 @@ swanlab convert -t tensorboard --tb_logdir [TFEVENT_LOGDIR]
 - `-w`: SwanLab工作空间名。
 - `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
 - `-l`: logdir路径。
-- `--tb_logdir`: Tensorboard日志文件路径。
+- `--tb_logdir`: TensorBoard日志文件路径。
 
-这里的`[TFEVENT_LOGDIR]`是指你先前用Tensorboard记录实验时，生成的日志文件路径。
+这里的`[TFEVENT_LOGDIR]`是指你先前用TensorBoard记录实验时，生成的日志文件路径。
 
 SwanLab Converter将会自动检测文件路径及其子目录下的`tfevent`文件（默认子目录深度为3），并为每个`tfevent`文件创建一个SwanLab实验。
 
@@ -179,7 +179,7 @@ from swanlab.converter import TFBConverter
 
 tfb_converter = TFBConverter(
     convert_dir="./runs",
-    project="Tensorboard-Converter",
+    project="TensorBoard-Converter",
     workspace="SwanLab",
     logdir="./logs",
     )
@@ -188,15 +188,15 @@ tfb_converter.run()
 
 与之作用相同的CLI：
 ```bash
-swanlab convert -t tensorboard --tb_logdir ./runs -p Tensorboard-Converter -w SwanLab -l ./logs
+swanlab convert -t tensorboard --tb_logdir ./runs -p TensorBoard-Converter -w SwanLab -l ./logs
 ```
 
-执行上面的脚本，将会在`SwanLab`空间下，创建一个名为`Tensorboard-Converter`的项目，将`./runs`目录下tfevent文件创建为一个个swanlab实验，并将swanlab运行时产生的日志保存在`./logs`目录下。
+执行上面的脚本，将会在`SwanLab`空间下，创建一个名为`TensorBoard-Converter`的项目，将`./runs`目录下tfevent文件创建为一个个swanlab实验，并将swanlab运行时产生的日志保存在`./logs`目录下。
 
 
 ## 3. API映射表
 
-| 功能 | Tensorboard | SwanLab | 
+| 功能 | TensorBoard | SwanLab | 
 | ---- | ---------- | --------------------- | 
 | 创建实验    |  writer = SummaryWriter(logdir="./runs")   | swanlab.init(logdir="./runs")    | 
 | 记录标量指标 | writer.add_scalar(key, value, step) | swanlab.log({key, value}, step=step) |

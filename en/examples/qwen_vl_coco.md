@@ -15,7 +15,7 @@ Qwen2-VL is a multimodal large model developed by Alibaba's Tongyi Lab. This art
 LoRA is an efficient fine-tuning method. For a deeper understanding of its principles, refer to the blog: [Zhihu | An In-Depth Explanation of LoRA](https://zhuanlan.zhihu.com/p/650197598).
 
 • Training Process: [Qwen2-VL-finetune](https://swanlab.cn/@ZeyiLin/Qwen2-VL-finetune/runs/pkgest5xhdn3ukpdy6kv5/chart)
-• Github: [Code Repository](https://github.com/Zeyi-Lin/LLM-Finetune/tree/main/qwen2_vl), [self-llm](https://github.com/datawhalechina/self-llm)
+• GitHub: [Code Repository](https://github.com/Zeyi-Lin/LLM-Finetune/tree/main/qwen2_vl), [self-llm](https://github.com/datawhalechina/self-llm)
 • Dataset: [coco_2014_caption](https://modelscope.cn/datasets/modelscope/coco_2014_caption/summary)
 • Model: [Qwen2-VL-2B-Instruct](https://modelscope.cn/models/Qwen/Qwen2-VL-2B-Instruct)
 
@@ -80,7 +80,7 @@ Here, "from" represents the role (`user` for human, `assistant` for the model), 
 **Dataset Download and Processing Steps**
 
 1. **We need to do four things:**
-    ◦ Download the coco_2014_caption dataset via Modelscope.
+    ◦ Download the coco_2014_caption dataset via ModelScope.
     ◦ Load the dataset and save the images locally.
     ◦ Convert the image paths and captions into a CSV file.
     ◦ Convert the CSV file into a JSON file.
@@ -99,7 +99,7 @@ MAX_DATA_NUMBER = 500
 
 # Check if the directory already exists
 if not os.path.exists('coco_2014_caption'):
-    # Download the COCO 2014 image caption dataset from Modelscope
+    # Download the COCO 2014 image caption dataset from ModelScope
     ds = MsDataset.load('modelscope/coco_2014_caption', subset_name='coco_2014_caption', split='train')
     print(len(ds))
     # Set the maximum number of images to process
@@ -187,14 +187,14 @@ With this, the dataset preparation is complete.
 
 ## 3. Model Download and Loading
 
-Here, we use Modelscope to download the Qwen2-VL-2B-Instruct model and load it into Transformers for training:
+Here, we use ModelScope to download the Qwen2-VL-2B-Instruct model and load it into Transformers for training:
 
 ```python
 from modelscope import snapshot_download, AutoTokenizer
 from transformers import TrainingArguments, Trainer, DataCollatorForSeq2Seq, Qwen2VLForConditionalGeneration, AutoProcessor
 import torch
 
-# Download the Qwen2-VL model from Modelscope to a local directory
+# Download the Qwen2-VL model from ModelScope to a local directory
 model_dir = snapshot_download("Qwen/Qwen2-VL-2B-Instruct", cache_dir="./", revision="master")
 
 # Load the model weights using Transformers
@@ -365,7 +365,7 @@ def predict(messages, model):
     return output_text[0]
 
 
-# Download the Qwen2-VL model from Modelscope to a local directory
+# Download the Qwen2-VL model from ModelScope to a local directory
 model_dir = snapshot_download("Qwen/Qwen2-VL-2B-Instruct", cache_dir="./", revision="master")
 
 # Load the model weights using Transformers

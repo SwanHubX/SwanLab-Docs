@@ -8,7 +8,7 @@
 
 无论您在哪里训练模型 —— **自己的电脑、实验室的服务器集群、还是云上的实例**，我们都能轻松收集与汇总您的训练数据，并且随时随地访问训练进展，哪怕是在手机上。
 
-您也无需花时间将终端的输出截图或粘贴到Excel，也无需管理来自不同计算机的Tensorboard文件，用SwanLab就能轻松搞定。
+您也无需花时间将终端的输出截图或粘贴到Excel，也无需管理来自不同计算机的TensorBoard文件，用SwanLab就能轻松搞定。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/view-result/cloud.jpg)
 

@@ -1,14 +1,14 @@
-# PaddleYolo
+# PaddleYOLO
 
-[PaddleYolo](https://github.com/PaddlePaddle/PaddleYOLO) 是飞桨（PaddlePaddle）框架下的一个目标检测库，主要用于图像和视频中的物体检测。PaddleYOLO包含YOLO系列模型的相关代码，支持YOLOv3、PP-YOLO、PP-YOLOv2、PP-YOLOE、PP-YOLOE+、RT-DETR、YOLOX、YOLOv5、YOLOv6、YOLOv7、YOLOv8、YOLOv5u、YOLOv7u、YOLOv6Lite、RTMDet等模型
+[PaddleYOLO](https://github.com/PaddlePaddle/PaddleYOLO) 是飞桨（PaddlePaddle）框架下的一个目标检测库，主要用于图像和视频中的物体检测。PaddleYOLO包含YOLO系列模型的相关代码，支持YOLOv3、PP-YOLO、PP-YOLOv2、PP-YOLOE、PP-YOLOE+、RT-DETR、YOLOX、YOLOv5、YOLOv6、YOLOv7、YOLOv8、YOLOv5u、YOLOv7u、YOLOv6Lite、RTMDet等模型
 
-你可以使用PaddleYolo快速进行目标检测模型训练，同时使用SwanLab进行实验跟踪与可视化。
+你可以使用PaddleYOLO快速进行目标检测模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
 [Demo](https://swanlab.cn/@ZeyiLin/PaddleYOLO/runs/10zy8zickn2062kubch34/chart)
 
 ## 1. 引入SwanLabCallback
 
-首先在你clone的PaddleYolo项目中，找到`ppdet/engine/callbacks.py`文件，在代码的底部添加如下代码：
+首先在你clone的PaddleYOLO项目中，找到`ppdet/engine/callbacks.py`文件，在代码的底部添加如下代码：
 
 ```python
 class SwanLabCallback(Callback):
@@ -123,7 +123,7 @@ if self.cfg.get('use_swanlab', False) or 'swanlab' in self.cfg:
     self._callbacks.append(SwanLabCallback(self))
 ```
 
-至此，你已经完成了SwanLab与PaddleYolo的集成！接下来，只需要在训练的配置文件中添加`use_swanlab: True`，即可开始可视化跟踪训练。
+至此，你已经完成了SwanLab与PaddleYOLO的集成！接下来，只需要在训练的配置文件中添加`use_swanlab: True`，即可开始可视化跟踪训练。
 
 ## 3. 修改配置文件
 

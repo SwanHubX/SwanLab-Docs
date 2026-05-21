@@ -5,7 +5,7 @@
 If you wish to receive immediate Lark notifications upon training completion or errors, the Lark Notification plugin is highly recommended.
 
 :::warning Improve the Plugin
-SwanLab plugins are open-source. You can view the [Github source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
+SwanLab plugins are open-source. You can view the [GitHub source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
 :::
 
 [[toc]]
