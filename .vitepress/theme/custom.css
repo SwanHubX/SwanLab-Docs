@@ -4,24 +4,237 @@
     --vp-sidebar-bg-color: var(--vp-c-bg-alt);
     --vp-sidebar-width: 280px;
     --vp-sidebar-padding-left: 16px;
+    --swanlab-nav-search-max-width: 420px;
+    --swanlab-nav-search-min-width: 180px;
+    --swanlab-nav-title-width: 208px;
 }
 
 .dark {
     --vp-c-brand-1: #2e9dac;
 }
 
+/* ===== Header: always fixed, consistent across all pages ===== */
+.VPNav {
+    position: fixed !important;
+    z-index: 30;
+}
+
+.VPNavBar {
+    border-bottom: 0 !important;
+}
+
+.VPNavBar::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    height: 1px;
+    background-color: var(--vp-c-divider);
+    content: "";
+    pointer-events: none;
+}
+
+.VPNavBar .divider {
+    display: none;
+}
+
+.VPNavBar .container {
+    max-width: none !important;
+}
+
 .title {
     border-bottom: transparent !important;
 }
 
-div.VPNavBarSearch.search {
-    padding: 0px;
-    margin-left: 20px;
-    margin-right: 20px;
-    flex-grow: 1;
+/* Logo: ensure the horizontal logo image renders at proper size in header */
+.VPNavBarTitle .title {
+    min-width: 0;
 }
 
-/* 宽屏布局：content 居中，aside 贴右 */
+.VPNavBarTitle .logo {
+    display: block;
+    height: 28px;
+    width: auto;
+    max-width: none;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+/* Sidebar clearly below header */
+.VPSidebar {
+    top: var(--vp-nav-height) !important;
+    bottom: 0 !important;
+    max-height: calc(100vh - var(--vp-nav-height));
+    box-sizing: border-box;
+    border-right: 1px solid var(--vp-c-divider);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+@media (min-width: 960px) {
+    .VPNavBar:not(.has-sidebar) .wrapper {
+        padding: 0;
+    }
+
+    .VPNavBar .container > .title,
+    .VPNavBar.has-sidebar .container > .title {
+        width: var(--swanlab-nav-title-width) !important;
+        height: var(--vp-nav-height);
+        padding: 0 24px !important;
+        flex-shrink: 0;
+    }
+
+    .VPNavBarTitle .title {
+        padding: 0 !important;
+    }
+
+    .VPNavBar.has-sidebar .content {
+        padding-left: var(--swanlab-nav-title-width) !important;
+        padding-right: 24px !important;
+    }
+
+    .VPNavBar:not(.has-sidebar) .content {
+        padding-left: 0 !important;
+        padding-right: 24px !important;
+    }
+
+    .VPSidebar {
+        padding-top: 24px !important;
+    }
+
+    .VPSidebar .curtain {
+        display: none;
+    }
+}
+
+/* ===== Search bar: fixed desktop rhythm, responsive smaller screens ===== */
+div.VPNavBarSearch.search {
+    padding: 0;
+    margin-left: 24px;
+    margin-right: 18px;
+    min-width: var(--swanlab-nav-search-min-width);
+    width: var(--swanlab-nav-search-max-width);
+    max-width: var(--swanlab-nav-search-max-width);
+    flex: 0 1 var(--swanlab-nav-search-max-width);
+}
+
+/* Header nav content: keep homepage and docs pages on the same baseline */
+.VPNavBar .content {
+    max-width: none !important;
+    min-width: 0;
+}
+
+.VPNavBar .content-body {
+    min-width: 0;
+}
+
+.VPNavBarSearchButton {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.VPNavBarSearchButton .text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.VPNavBarSearchButton .keys {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+@media (min-width: 1280px) and (max-width: 1439px) {
+    .VPNavBar .content-body {
+        justify-content: flex-start !important;
+    }
+
+    .VPNavBarMenuLink,
+    .VPFlyout .button {
+        padding-right: 8px !important;
+        padding-left: 8px !important;
+    }
+
+    .header-button,
+    .vp-header-doc-helper-btn,
+    .github-button {
+        margin-left: 6px !important;
+        padding-right: 8px !important;
+        padding-left: 8px !important;
+    }
+}
+
+@media (max-width: 1759px) {
+    div.VPNavBarSearch.search {
+        width: 300px;
+        max-width: 300px;
+        flex-basis: 300px;
+    }
+}
+
+@media (max-width: 1439px) {
+    div.VPNavBarSearch.search {
+        width: 260px;
+        max-width: 260px;
+        flex-basis: 260px;
+    }
+}
+
+@media (min-width: 1280px) and (max-width: 1320px) {
+    div.VPNavBarSearch.search {
+        min-width: 160px;
+        width: 160px;
+        max-width: 160px;
+        margin-left: 16px;
+        margin-right: 12px;
+        flex-basis: 160px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+    .VPNavBarMenu,
+    .VPNavBarTranslations,
+    .VPNavBarAppearance,
+    .VPNavBarSocialLinks,
+    .VPNavBarExtra {
+        display: none !important;
+    }
+
+    .VPNavBarHamburger {
+        display: flex !important;
+    }
+
+    .VPNavScreen {
+        display: block !important;
+    }
+
+    div.VPNavBarSearch.search {
+        min-width: 160px;
+        width: clamp(180px, 36vw, 360px);
+        max-width: 360px;
+        margin-left: 24px;
+        margin-right: 8px;
+        flex: 1 1 280px;
+    }
+}
+
+@media (max-width: 767px) {
+    div.VPNavBarSearch.search {
+        min-width: 0;
+        max-width: none;
+        margin-left: auto;
+        margin-right: 0;
+        flex: 0 0 auto;
+    }
+
+    .VPNavBarSearchButton {
+        width: auto;
+    }
+}
+
+/* ===== 宽屏布局：content 居中，aside 贴右 ===== */
 .VPDoc.has-aside .content {
     max-width: none !important;
 }
@@ -34,10 +247,10 @@ div.VPNavBarSearch.search {
 
 .VPDoc.has-aside .aside {
     position: sticky;
-    top: var(--vp-header-height);
+    top: var(--vp-nav-height);
     width: 240px;
     flex: 0 0 240px;
-    max-height: calc(100vh - var(--vp-header-height));
+    max-height: calc(100vh - var(--vp-nav-height));
     overflow-y: auto;
     padding-right: 32px;
 }
@@ -49,6 +262,19 @@ div.VPNavBarSearch.search {
         flex: none;
         margin-top: 24px;
         padding-right: 0;
+    }
+}
+
+/* ===== High-resolution screen ===== */
+@media (min-width: 1440px) {
+    .VPDoc.has-aside .content-container {
+        max-width: 60rem !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPDoc.has-aside .content-container {
+        max-width: 64rem !important;
     }
 }
 
