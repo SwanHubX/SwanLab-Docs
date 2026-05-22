@@ -10,5 +10,5 @@
 
 **公司**：情感机器（北京）科技有限公司  
 **工作地点**：北京市朝阳区关庄路2号院1号楼中关村科技服务大厦4层A402室  
-**联系我们**：contact@swanlab.cn  
+**联系我们**：[contact@swanlab.cn](mailto:contact@swanlab.cn)  
 **交流群**：[微信](/guide_cloud/community/online-support.md)
