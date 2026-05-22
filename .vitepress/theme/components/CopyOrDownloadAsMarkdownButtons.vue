@@ -49,8 +49,6 @@ const iconClaude =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.5 4.5 19.5"/><path d="m12 3.5 7.5 16"/><path d="M7 14h10"/><path d="M9.6 8.4 14.4 19.5"/></svg>'
 const iconCopy =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>'
-const iconDownload =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>'
 const iconExternal =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>'
 const iconMarkdown =
@@ -81,7 +79,6 @@ const aiProviders = [
 
 const isOpen = ref(false)
 const copied = ref(false)
-const downloaded = ref(false)
 const dropdownContainer = ref()
 const isRendered = ref(false)
 const dropdownMenu = ref()
@@ -132,6 +129,81 @@ function getMarkdownURL() {
   return resolveMarkdownPageURL(getCurrentURL())
 }
 
+async function fetchMarkdownText(markdownUrl) {
+  const response = await fetch(markdownUrl)
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch markdown: ${response.status} ${response.statusText}`)
+  }
+
+  const buffer = await response.arrayBuffer()
+
+  return new TextDecoder('utf-8').decode(buffer)
+}
+
+function getMarkdownFilename(markdownUrl) {
+  const { pathname } = new URL(markdownUrl)
+
+  return decodeURIComponent(pathname.split('/').pop() || 'page.md')
+}
+
+function escapeHTML(value) {
+  return value.replace(/[&<>]/g, (char) => {
+    if (char === '&') {
+      return '&amp;'
+    }
+
+    if (char === '<') {
+      return '&lt;'
+    }
+
+    return '&gt;'
+  })
+}
+
+function renderMarkdownViewer(viewer, title, markdownText) {
+  const escapedTitle = escapeHTML(title)
+  const escapedMarkdown = escapeHTML(markdownText)
+
+  viewer.document.open()
+  viewer.document.write(`<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapedTitle}</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      background: Canvas;
+      color: CanvasText;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    pre {
+      box-sizing: border-box;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <pre>${escapedMarkdown}</pre>
+</body>
+</html>`)
+  viewer.document.close()
+}
+
 function toggleDropdown() {
   if (isOpen.value) {
     isOpen.value = false
@@ -157,8 +229,7 @@ function toggleDropdown() {
 
 async function copyAsMarkdown() {
   try {
-    const response = await fetch(getMarkdownURL())
-    const text = await response.text()
+    const text = await fetchMarkdownText(getMarkdownURL())
     await navigator.clipboard.writeText(text)
 
     copied.value = true
@@ -172,9 +243,26 @@ async function copyAsMarkdown() {
   isOpen.value = false
 }
 
-function viewAsMarkdown() {
-  window.open(getMarkdownURL(), '_blank')
+async function viewAsMarkdown() {
+  const markdownUrl = getMarkdownURL()
+  const viewer = window.open('', '_blank')
   isOpen.value = false
+
+  if (!viewer) {
+    return
+  }
+
+  const filename = getMarkdownFilename(markdownUrl)
+  viewer.opener = null
+  renderMarkdownViewer(viewer, filename, 'Loading Markdown...')
+
+  try {
+    const text = await fetchMarkdownText(markdownUrl)
+    renderMarkdownViewer(viewer, filename, text)
+  } catch (error) {
+    console.error('Error viewing markdown:', error)
+    renderMarkdownViewer(viewer, filename, `Unable to load Markdown.\n\n${String(error)}`)
+  }
 }
 
 function openInAI(provider) {
@@ -183,35 +271,6 @@ function openInAI(provider) {
 
   window.open(provider.promptUrl + encodeURIComponent(prompt), '_blank')
   isOpen.value = false
-}
-
-function downloadFile(filename, content, blobType = 'text/plain') {
-  const blob = content instanceof Blob ? content : new Blob([content], { type: blobType })
-  const url = URL.createObjectURL(blob)
-
-  Object.assign(document.createElement('a'), {
-    download: filename,
-    href: url,
-  }).click()
-
-  URL.revokeObjectURL(url)
-}
-
-async function downloadMarkdown() {
-  try {
-    const markdownUrl = getMarkdownURL()
-    const response = await fetch(markdownUrl)
-    const text = await response.text()
-    const filename = markdownUrl.split('/').pop() || 'page.md'
-
-    downloadFile(filename, text, 'text/markdown')
-    downloaded.value = true
-    setTimeout(() => {
-      downloaded.value = false
-    }, animationDuration)
-  } catch (error) {
-    console.error('Error downloading markdown:', error)
-  }
 }
 
 function handleClickOutside(event) {
@@ -245,8 +304,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 }
 
 .copy-page,
-.open-page,
-.download-btn {
+.open-page {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -328,11 +386,6 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   flex-basis: 18px;
 }
 
-.download-btn {
-  width: 30px;
-  padding-inline: 0;
-}
-
 .chevron.open {
   transform: rotate(180deg);
 }
@@ -353,8 +406,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   .copy-page,
   .open-page,
   .dropdown-item,
-  .dropdown-item .icon.external,
-  .download-btn {
+  .dropdown-item .icon.external {
     transition:
       background-color 0.16s ease,
       border-color 0.16s ease,
@@ -364,8 +416,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   }
 
   .copy-page:hover,
-  .open-page:hover,
-  .download-btn:hover {
+  .open-page:hover {
     background: color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
     border-color: color-mix(in srgb, var(--vp-c-brand-1) 40%, transparent);
     color: var(--vp-c-brand-1);
