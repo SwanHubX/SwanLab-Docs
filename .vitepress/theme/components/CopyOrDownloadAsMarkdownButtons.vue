@@ -3,6 +3,7 @@
     <div class="markdown-copy-buttons-inner">
       <div class="dropdown-container" ref="dropdownContainer">
         <button class="open-page" :aria-expanded="isOpen" @click.stop="toggleDropdown">
+          <span v-html="iconSparkle" class="icon"></span>
           <span class="label">Ask AI</span>
           <span v-html="iconChevron" class="icon chevron" :class="{ open: isOpen }"></span>
         </button>
@@ -55,6 +56,8 @@ const iconMarkdown =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15V9l3 3 3-3v6"/><path d="m17 9 2 3-2 3"/><path d="M19 12h-4"/></svg>'
 const iconKimi =
   '<svg version="1.1" role="img" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M842.1632 246.4512c6.9376-8.9344 13.056-17.0752 19.4816-24.96 2.9952-3.712 2.7392-6.528-0.1536-10.4192-27.9552-36.736-30.592-77.5168-14.5152-118.912 12.0832-31.1552 38.784-45.7472 71.424-48.8448 20.352-1.92 40.32 0.1536 58.8288 10.0608 24.32 13.0048 38.5024 32.8448 43.1104 60.2368 3.6608 21.8624 2.9696 43.1872-3.2 64.3584-10.9824 37.4528-37.888 56.8576-74.8032 61.7728-30.6432 4.096-61.696 4.608-92.5952 6.7072-2.3808 0.1536-4.8128 0-7.5776 0z" fill="#027AFF"></path><path d="M766.3872 78.6688h-184.576L435.6608 411.904h-206.592V80.128H64v858.5472h165.12V576.9728h291.1488a129.0752 129.0752 0 0 0 117.0432-74.6496v436.352h165.12V576.9728a165.12 165.12 0 0 0-153.088-164.6848v-0.4352h-90.6752a168.1152 168.1152 0 0 0 99.1232-90.4448l108.5952-242.7392z" fill="#000000"></path></svg>'
+const iconSparkle =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>'
 
 const aiProviders = [
   {
@@ -117,12 +120,24 @@ function resolveMarkdownPageURL(url) {
   return `${cleanedURL}.md`
 }
 
+function normalizeLegacyZhPathname(pathname) {
+  if (pathname === '/zh') {
+    return '/'
+  }
+
+  if (pathname.startsWith('/zh/')) {
+    return pathname.slice(3)
+  }
+
+  return pathname
+}
+
 function getCurrentURL() {
   if (typeof window === 'undefined') {
     return ''
   }
 
-  return window.location.origin + window.location.pathname
+  return window.location.origin + normalizeLegacyZhPathname(window.location.pathname)
 }
 
 function getMarkdownURL() {
@@ -287,8 +302,8 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .markdown-copy-buttons {
   width: 100%;
   display: flex;
-  margin: 4px 0 20px;
-  padding-bottom: 20px;
+  margin: 10px 0 20px;
+  padding-bottom: 14px;
   border-bottom: 1px solid color-mix(in srgb, var(--vp-c-divider) 50%, transparent);
 }
 
