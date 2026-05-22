@@ -156,69 +156,6 @@ async function fetchMarkdownText(markdownUrl) {
   return new TextDecoder('utf-8').decode(buffer)
 }
 
-function getMarkdownFilename(markdownUrl) {
-  const { pathname } = new URL(markdownUrl)
-
-  return decodeURIComponent(pathname.split('/').pop() || 'page.md')
-}
-
-function escapeHTML(value) {
-  return value.replace(/[&<>]/g, (char) => {
-    if (char === '&') {
-      return '&amp;'
-    }
-
-    if (char === '<') {
-      return '&lt;'
-    }
-
-    return '&gt;'
-  })
-}
-
-function renderMarkdownViewer(viewer, title, markdownText) {
-  const escapedTitle = escapeHTML(title)
-  const escapedMarkdown = escapeHTML(markdownText)
-
-  viewer.document.open()
-  viewer.document.write(`<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapedTitle}</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      background: Canvas;
-      color: CanvasText;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    }
-
-    body {
-      margin: 0;
-    }
-
-    pre {
-      box-sizing: border-box;
-      min-height: 100vh;
-      margin: 0;
-      padding: 24px;
-      font: inherit;
-      font-size: 14px;
-      line-height: 1.7;
-      overflow-wrap: break-word;
-      white-space: pre-wrap;
-    }
-  </style>
-</head>
-<body>
-  <pre>${escapedMarkdown}</pre>
-</body>
-</html>`)
-  viewer.document.close()
-}
-
 function toggleDropdown() {
   if (isOpen.value) {
     isOpen.value = false
@@ -260,24 +197,8 @@ async function copyAsMarkdown() {
 
 async function viewAsMarkdown() {
   const markdownUrl = getMarkdownURL()
-  const viewer = window.open('', '_blank')
+  window.open(markdownUrl, '_blank')
   isOpen.value = false
-
-  if (!viewer) {
-    return
-  }
-
-  const filename = getMarkdownFilename(markdownUrl)
-  viewer.opener = null
-  renderMarkdownViewer(viewer, filename, 'Loading Markdown...')
-
-  try {
-    const text = await fetchMarkdownText(markdownUrl)
-    renderMarkdownViewer(viewer, filename, text)
-  } catch (error) {
-    console.error('Error viewing markdown:', error)
-    renderMarkdownViewer(viewer, filename, `Unable to load Markdown.\n\n${String(error)}`)
-  }
 }
 
 function openInAI(provider) {
