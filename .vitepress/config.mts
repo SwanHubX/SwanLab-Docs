@@ -109,6 +109,6 @@ export default defineConfig({
   },
 
   head: [
-    ['script', { defer: '', src: 'https://umami.dev101.swanlab.cn/script.js', 'data-website-id': process.env.UMAMI_WEBSITE_ID ?? '' }]
+    ['script', { defer: '', src: 'https://umami.swanlab.cn/script.js', 'data-website-id': process.env.UMAMI_WEBSITE_ID ?? '' }]
   ]
 })

@@ -12,6 +12,7 @@
     "medium-zoom": "^1.1.0"
   },
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "oxc-minify": "0.132.0",
     "vite": "8.0.13",
     "vitepress": "2.0.0-alpha.17",
