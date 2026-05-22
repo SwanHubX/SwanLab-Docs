@@ -2,20 +2,10 @@
   <div class="markdown-copy-buttons">
     <div class="markdown-copy-buttons-inner">
       <div class="dropdown-container" ref="dropdownContainer">
-        <div class="dropdown-trigger">
-          <button class="copy-page" @click="copyAsMarkdown">
-            <span v-html="copied ? iconCheck : iconCopy" class="icon"></span>
-            <span class="label">
-              {{ copied ? 'Copied' : 'Copy page' }}
-            </span>
-          </button>
-
-          <span class="divider"></span>
-
-          <button class="chevron-wrapper" @click.stop="toggleDropdown">
-            <span v-html="iconChevron" class="icon chevron" :class="{ open: isOpen }"></span>
-          </button>
-        </div>
+        <button class="open-page" :aria-expanded="isOpen" @click.stop="toggleDropdown">
+          <span class="label">Ask AI</span>
+          <span v-html="iconChevron" class="icon chevron" :class="{ open: isOpen }"></span>
+        </button>
 
         <div v-if="isRendered" ref="dropdownMenu" class="dropdown-menu" :class="{ open: isOpen }">
           <button class="dropdown-item" @click="viewAsMarkdown">
@@ -36,9 +26,11 @@
           </button>
         </div>
       </div>
-
-      <button class="download-btn" @click="downloadMarkdown">
-        <span v-html="downloaded ? iconCheck : iconDownload" class="icon"></span>
+      <button class="copy-page" @click="copyAsMarkdown">
+        <span v-html="copied ? iconCheck : iconCopy" class="icon"></span>
+        <span class="label">
+          {{ copied ? 'Copied' : 'Copy Markdown' }}
+        </span>
       </button>
     </div>
   </div>
@@ -236,13 +228,15 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .markdown-copy-buttons {
   width: 100%;
   display: flex;
-  margin-bottom: 16px;
+  margin: 4px 0 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--vp-c-divider) 50%, transparent);
 }
 
 .markdown-copy-buttons-inner {
-  margin: 16px 0;
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   position: relative;
 }
 
@@ -250,66 +244,45 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   position: relative;
 }
 
-.dropdown-trigger {
-  display: flex;
-  align-items: stretch;
-  background: transparent;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  color: var(--vp-c-text-1);
-  font-size: 14px;
-  padding: 0;
-  overflow: hidden;
-}
-
-.copy-page {
+.copy-page,
+.open-page,
+.download-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  white-space: nowrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 5px 10px;
   background: transparent;
-  border: none;
-  color: inherit;
+  border: 1.5px solid color-mix(in srgb, var(--vp-c-divider) 72%, transparent);
+  border-radius: 6px;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .label {
   white-space: nowrap;
 }
 
-.divider {
-  width: 1px;
-  height: 25px;
-  align-self: center;
-  background: var(--vp-c-divider);
-  opacity: 0.6;
-}
-
-.chevron-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  color: inherit;
-}
-
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px);
   left: 0;
-  min-width: 240px;
+  width: 222px;
+  padding: 4px;
   background: var(--vp-c-bg-elv);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  overflow: hidden;
-  z-index: 100;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  z-index: 30;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08);
   opacity: 0;
-  transform: translateY(-6px) scale(0.96);
+  transform: translateY(-4px) scale(0.98);
   pointer-events: none;
 }
 
@@ -324,12 +297,15 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px;
   background: transparent;
   border: none;
+  border-radius: 8px;
   color: var(--vp-c-text-1);
   font-size: 14px;
+  line-height: 20px;
   cursor: pointer;
   text-align: left;
 }
@@ -339,21 +315,22 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   opacity: 0.6;
 }
 
-.download-btn {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  background: transparent;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  color: var(--vp-c-text-1);
-  cursor: pointer;
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: var(--vp-c-text-2);
 }
 
-.icon {
+.dropdown-item .icon {
   width: 18px;
   height: 18px;
-  flex: 0 0 18px;
+  flex-basis: 18px;
+}
+
+.download-btn {
+  width: 30px;
+  padding-inline: 0;
 }
 
 .chevron.open {
@@ -373,45 +350,29 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
     transform-origin: top;
   }
 
-  .copy-page:hover,
-  .chevron-wrapper:hover,
-  .download-btn:hover {
-    background: var(--vp-c-bg-soft);
-  }
-
-  .dropdown-trigger,
   .copy-page,
-  .chevron-wrapper,
+  .open-page,
   .dropdown-item,
   .dropdown-item .icon.external,
   .download-btn {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      background-color 0.16s ease,
+      border-color 0.16s ease,
+      color 0.16s ease,
+      transform 0.16s ease,
+      opacity 0.16s ease;
   }
 
-  .dropdown-trigger:hover,
+  .copy-page:hover,
+  .open-page:hover,
   .download-btn:hover {
-    border-color: var(--vp-c-brand-1);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .dropdown-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 100%;
-    background: var(--vp-c-brand-1);
-    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
+    border-color: color-mix(in srgb, var(--vp-c-brand-1) 40%, transparent);
+    color: var(--vp-c-brand-1);
   }
 
   .dropdown-item:hover {
-    padding-left: 20px;
-  }
-
-  .dropdown-item:hover::before {
-    width: 3px;
+    background: var(--vp-c-bg-soft);
   }
 
   .chevron {
