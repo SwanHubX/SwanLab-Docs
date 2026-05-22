@@ -9,6 +9,7 @@ import HeaderButtonEN from './components/HeaderButtonEN.vue'
 import HeaderGithubButton from './components/HeaderGithubButton.vue'
 import HeaderDocHelperButton from './components/HeaderDocHelperButton.vue'
 import HeaderDocHelperButtonEN from './components/HeaderDocHelperButtonEN.vue'
+import CopyOrDownloadAsMarkdownButtons from './components/CopyOrDownloadAsMarkdownButtons.vue'
 
 export default {
   ...DefaultTheme,
@@ -18,6 +19,7 @@ export default {
     app.component('HeaderGithubButton', HeaderGithubButton)
     app.component('HeaderDocHelperButton', HeaderDocHelperButton)
     app.component('HeaderDocHelperButtonEN', HeaderDocHelperButtonEN)
+    app.component('CopyOrDownloadAsMarkdownButtons', CopyOrDownloadAsMarkdownButtons)
     DefaultTheme.enhanceApp({ app })
   },
   setup() {
