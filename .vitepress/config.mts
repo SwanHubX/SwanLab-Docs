@@ -1,9 +1,14 @@
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
+import { copyOrDownloadAsMarkdownButtons } from 'vitepress-plugin-llms'
 import { zh } from './zh'
 import { en } from './en'
 
 export default defineConfig({
   srcExclude: ['playground/**'],
+  vite: {
+    plugins: [llmstxt()],
+  },
 
   rewrites: {
     'zh/:rest*': ':rest*'
@@ -24,6 +29,9 @@ export default defineConfig({
   },
 
   markdown: {
+    config(md) {
+      md.use(copyOrDownloadAsMarkdownButtons)
+    },
     image: {
       lazyLoading: true
     },
