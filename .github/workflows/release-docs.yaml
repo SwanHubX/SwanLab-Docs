@@ -9,7 +9,6 @@ concurrency:
 
 env:
   ACR_REGISTRY: swanlab-registry.cn-hangzhou.cr.aliyuncs.com
-  ACR_API_ENDPOINT: cr.cn-hangzhou.aliyuncs.com
   ACR_NAMESPACE: internal
   ACR_REPO: swanlab-docs
   ACR_INSTANCE_ID: cri-f7m7skbp7fbf0fsq
@@ -52,8 +51,8 @@ jobs:
           echo "New version: $NEW_VERSION"
 
           # Check if this version already exists in ACR → skip everything
+          # 不传 --endpoint，让 CLI 通过 ALIBABA_CLOUD_REGION_ID 自动解析端点
           REPO_ID=$(aliyun cr get-repository \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
@@ -66,7 +65,6 @@ jobs:
           fi
 
           EXISTING=$(aliyun cr list-repo-tag \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --tag-name "$NEW_VERSION" \
@@ -106,7 +104,6 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           REPO_ID=$(aliyun cr get-repository \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
@@ -120,7 +117,6 @@ jobs:
 
           # Get build rule ID
           RULE_ID=$(aliyun cr list-repo-build-rule \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --quiet \
@@ -130,7 +126,6 @@ jobs:
 
           # Update build-args from GitHub Secrets (UMAMI_WEBSITE_ID may change)
           aliyun cr update-build-rule \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --build-rule-id "$RULE_ID" \
@@ -140,7 +135,6 @@ jobs:
 
           # Trigger build manually
           BUILD_RECORD=$(aliyun cr create-build-record-by-rule \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --build-rule-id "$RULE_ID" \
@@ -155,7 +149,6 @@ jobs:
           for i in $(seq 1 60); do
             sleep 10
             STATUS=$(aliyun cr get-repo-build-record-status \
-              --endpoint "$ACR_API_ENDPOINT" \
               --instance-id "$ACR_INSTANCE_ID" \
               --repo-id "$REPO_ID" \
               --build-record-id "$BUILD_RECORD" \
@@ -179,7 +172,6 @@ jobs:
 
           # Tag: latest -> version
           aliyun cr create-repo-tag \
-            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
