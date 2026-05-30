@@ -1,7 +1,7 @@
-FROM swanlab-registry-vpc.cn-hangzhou.cr.aliyuncs.com/builder/node:20.17.0-alpine3.20 AS builder
+FROM swanlab-registry-vpc.cn-hangzhou.cr.aliyuncs.com/builder/node:20-bookworm AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install
 COPY . .
 
 ARG UMAMI_WEBSITE_ID
