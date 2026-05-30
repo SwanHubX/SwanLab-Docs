@@ -1,6 +1,11 @@
 name: 'Docs Image Release'
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'VERSION'
   workflow_dispatch:
 
 concurrency:
@@ -16,15 +21,22 @@ env:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: 📖 Read Version
+        id: version
+        run: |
+          VERSION=$(cat VERSION | tr -d '[:space:]')
+          echo "Version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: 🔧 Install aliyun CLI & CR plugin
         env:
@@ -33,57 +45,34 @@ jobs:
           /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
           aliyun plugin install --names cr
 
-      - name: 📖 Read & Bump Version
-        id: version
+      - name: 🔍 Check ACR Tag
+        id: check
         env:
-          # ACR_USERNAME / ACR_PASSWORD 实际存储的是 RAM AccessKey ID / Secret
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
           ALIBABA_CLOUD_REGION_ID: cn-hangzhou
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
         run: |
-          CURRENT=$(cat VERSION | tr -d '[:space:]')
-          echo "Current version: $CURRENT"
-          MAJOR=$(echo "$CURRENT" | cut -d. -f1)
-          MINOR=$(echo "$CURRENT" | cut -d. -f2)
-          PATCH=$(echo "$CURRENT" | cut -d. -f3)
-          NEW_PATCH=$((PATCH + 1))
-          NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
-          echo "New version: $NEW_VERSION"
-
-          # Check if this version already exists in ACR → skip everything
+          VERSION="${{ steps.version.outputs.version }}"
           EXISTING=$(aliyun cr list-repo-tag \
             --endpoint "$ACR_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$ACR_REPO_ID" \
-            --tag-name "$NEW_VERSION" \
+            --tag-name "$VERSION" \
             --page-no 1 \
             --page-size 1 \
             --quiet \
             --cli-query "Tags[0].Tag" 2>/dev/null || echo "")
 
           if [ -n "$EXISTING" ]; then
-            echo "⏭️ Tag $NEW_VERSION already exists in ACR, skipping entire release"
+            echo "⏭️ Tag $VERSION already exists in ACR, skipping build"
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            exit 0
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-          echo "$NEW_VERSION" > VERSION
-          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
-          echo "skip=false" >> "$GITHUB_OUTPUT"
-
-      - name: 📝 Commit
-        if: steps.version.outputs.skip != 'true'
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git add VERSION
-          git commit -m "release: v${VERSION}"
-          git push origin main
-
       - name: 🔨 Trigger ACR Build
-        if: steps.version.outputs.skip != 'true'
+        if: steps.check.outputs.skip != 'true'
         id: build
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
@@ -164,7 +153,7 @@ jobs:
           echo "✅ Tagged: $ACR_ENDPOINT/$ACR_NAMESPACE/$ACR_REPO:$VERSION"
 
       - name: 🏷️ Push Git Tag
-        if: steps.version.outputs.skip != 'true'
+        if: steps.check.outputs.skip != 'true'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           git tag "v${VERSION}"
@@ -173,7 +162,7 @@ jobs:
       - name: 📦 Summary
         if: always()
         run: |
-          if [ "${{ steps.version.outputs.skip }}" = "true" ]; then
+          if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
             echo "## ⏭️ Skipped" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "Image tag already exists in ACR, no build needed." >> "$GITHUB_STEP_SUMMARY"
