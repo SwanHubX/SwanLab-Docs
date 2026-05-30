@@ -203,10 +203,14 @@ jobs:
             echo "## ⏭️ Skipped" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "Image tag already exists in ACR, no build needed." >> "$GITHUB_STEP_SUMMARY"
-          else
+          elif [ "${{ steps.build.outcome }}" = "success" ]; then
             VERSION="${{ steps.version.outputs.version }}"
             echo "## 🚀 Release v${VERSION}" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "- Image: \`${ACR_REGISTRY}/${ACR_NAMESPACE}/${ACR_REPO}:${VERSION}\`" >> "$GITHUB_STEP_SUMMARY"
             echo "- Also tagged: \`${ACR_REGISTRY}/${ACR_NAMESPACE}/${ACR_REPO}:latest\`" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## ❌ Release Failed" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "ACR build did not complete successfully. Check the build step logs for details." >> "$GITHUB_STEP_SUMMARY"
           fi
