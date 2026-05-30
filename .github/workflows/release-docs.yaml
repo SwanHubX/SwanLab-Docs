@@ -1,0 +1,191 @@
+name: 'Docs Image Release'
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  ACR_REGISTRY: swanlab-registry.cn-hangzhou.cr.aliyuncs.com
+  ACR_NAMESPACE: internal
+  ACR_REPO: swanlab-docs
+  ACR_INSTANCE_ID: cri-f7m7skbp7fbf0fsq
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📖 Read & Bump Version
+        id: version
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
+          ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
+        run: |
+          # Install aliyun CLI (needed for version check)
+          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
+
+          CURRENT=$(cat VERSION | tr -d '[:space:]')
+          echo "Current version: $CURRENT"
+          MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+          MINOR=$(echo "$CURRENT" | cut -d. -f2)
+          PATCH=$(echo "$CURRENT" | cut -d. -f3)
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+          echo "New version: $NEW_VERSION"
+
+          # Check if this version already exists in ACR → skip everything
+          REPO_ID=$(aliyun cr get-repository \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --repo-namespace-name "$ACR_NAMESPACE" \
+            --repo-name "$ACR_REPO" \
+            --quiet \
+            --cli-query "RepoId")
+
+          EXISTING=$(aliyun cr list-repo-tag \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --repo-id "$REPO_ID" \
+            --tag-name "$NEW_VERSION" \
+            --page-no 1 \
+            --page-size 1 \
+            --quiet \
+            --cli-query "Tags[0].Tag" 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING" ]; then
+            echo "⏭️ Tag $NEW_VERSION already exists in ACR, skipping entire release"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "$NEW_VERSION" > VERSION
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: 🛠️ Commit & Tag
+        if: steps.version.outputs.skip != 'true'
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add VERSION
+          git commit -m "release: v${VERSION}"
+          git tag "v${VERSION}"
+          git push origin main --follow-tags
+
+      - name: 🔨 Trigger ACR Build
+        if: steps.version.outputs.skip != 'true'
+        id: build
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
+          ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # Install aliyun CLI
+          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
+
+          REPO_ID=$(aliyun cr get-repository \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --repo-namespace-name "$ACR_NAMESPACE" \
+            --repo-name "$ACR_REPO" \
+            --quiet \
+            --cli-query "RepoId")
+
+          # Get build rule ID
+          RULE_ID=$(aliyun cr list-repo-build-rule \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --repo-id "$REPO_ID" \
+            --quiet \
+            --cli-query "BuildRules[0].BuildRuleId")
+
+          echo "Rule ID: $RULE_ID"
+
+          # Update build-args from GitHub Secrets (UMAMI_WEBSITE_ID may change)
+          aliyun cr update-build-rule \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --repo-id "$REPO_ID" \
+            --build-rule-id "$RULE_ID" \
+            --build-env "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
+            --build-args "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
+            --quiet
+
+          # Trigger build (auto-build on tag may already fire, this is explicit)
+          BUILD_RECORD=$(aliyun cr create-build-record-by-rule \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --repo-id "$REPO_ID" \
+            --build-rule-id "$RULE_ID" \
+            --quiet \
+            --cli-query "BuildRecordId")
+
+          echo "Build Record ID: $BUILD_RECORD"
+          echo "build_record=$BUILD_RECORD" >> "$GITHUB_OUTPUT"
+
+          # Poll build status
+          echo "Waiting for ACR build to complete..."
+          for i in $(seq 1 60); do
+            sleep 10
+            STATUS=$(aliyun cr get-repo-build-record-status \
+              --endpoint "$ACR_REGISTRY" \
+              --instance-id "$ACR_INSTANCE_ID" \
+              --repo-id "$REPO_ID" \
+              --build-record-id "$BUILD_RECORD" \
+              --quiet \
+              --cli-query "BuildStatus")
+            echo "  [$i] Status: $STATUS"
+            if [ "$STATUS" = "SUCCESS" ]; then
+              echo "✅ Build succeeded"
+              break
+            fi
+            if [ "$STATUS" = "FAILED" ] || [ "$STATUS" = "CANCELED" ]; then
+              echo "::error::Build $STATUS"
+              exit 1
+            fi
+          done
+
+          if [ "$STATUS" != "SUCCESS" ]; then
+            echo "::error::Build did not complete within 10 minutes"
+            exit 1
+          fi
+
+          # Tag: latest -> version
+          aliyun cr create-repo-tag \
+            --endpoint "$ACR_REGISTRY" \
+            --instance-id "$ACR_INSTANCE_ID" \
+            --namespace-name "$ACR_NAMESPACE" \
+            --repo-name "$ACR_REPO" \
+            --from-tag "latest" \
+            --to-tag "$VERSION" \
+            --quiet
+
+          echo "✅ Tagged: $ACR_REGISTRY/$ACR_NAMESPACE/$ACR_REPO:$VERSION"
+
+      - name: 📦 Summary
+        if: always()
+        run: |
+          if [ "${{ steps.version.outputs.skip }}" = "true" ]; then
+            echo "## ⏭️ Skipped" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Image tag already exists in ACR, no build needed." >> "$GITHUB_STEP_SUMMARY"
+          else
+            VERSION="${{ steps.version.outputs.version }}"
+            echo "## 🚀 Release v${VERSION}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Image: \`${ACR_REGISTRY}/${ACR_NAMESPACE}/${ACR_REPO}:${VERSION}\`" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Also tagged: \`${ACR_REGISTRY}/${ACR_NAMESPACE}/${ACR_REPO}:latest\`" >> "$GITHUB_STEP_SUMMARY"
+          fi
