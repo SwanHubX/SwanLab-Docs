@@ -38,42 +38,49 @@ jobs:
           echo "Version: $VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: 🔧 Install aliyun CLI & CR plugin
-        env:
-          ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
-        run: |
-          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
-          aliyun plugin install --names cr
-
-      - name: 🔍 Check ACR Tag
-        id: check
+      # ACR auto-builds on main push → produces :latest tag.
+      # We just wait for it to finish, then alias :latest → :<version>.
+      - name: ⏳ Wait for ACR auto-build
+        id: build
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
           ALIBABA_CLOUD_REGION_ID: cn-hangzhou
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          EXISTING=$(aliyun cr list-repo-tag \
-            --endpoint "$ACR_ENDPOINT" \
-            --instance-id "$ACR_INSTANCE_ID" \
-            --repo-id "$ACR_REPO_ID" \
-            --tag-name "$VERSION" \
-            --page-no 1 \
-            --page-size 1 \
-            --quiet \
-            --cli-query "Tags[0].Tag" 2>/dev/null || echo "")
+          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
+          aliyun plugin install --names cr
 
-          if [ -n "$EXISTING" ]; then
-            echo "⏭️ Tag $VERSION already exists in ACR, skipping build"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
+          COMMIT_SHA="${{ github.sha }}"
+          echo "Waiting for ACR build triggered by commit ${COMMIT_SHA:0:7}..."
 
-      - name: 🔨 Trigger ACR Build
-        if: steps.check.outputs.skip != 'true'
-        id: build
+          for i in $(seq 1 60); do
+            sleep 10
+            RECORDS=$(aliyun cr list-repo-build-record \
+              --endpoint "$ACR_ENDPOINT" \
+              --instance-id "$ACR_INSTANCE_ID" \
+              --repo-id "$ACR_REPO_ID" \
+              --page-no 1 \
+              --page-size 5 \
+              --output cols=BuildRecordId,SourceCommit,BuildStatus rows=BuildRecords[])
+            echo "  [$i] $RECORDS"
+
+            # Check if our commit has a SUCCESS record
+            if echo "$RECORDS" | grep -q "$COMMIT_SHA.*SUCCESS\|${COMMIT_SHA:0:7}.*SUCCESS"; then
+              echo "✅ Build succeeded"
+              echo "done=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if echo "$RECORDS" | grep -q "$COMMIT_SHA.*FAILED\|${COMMIT_SHA:0:7}.*FAILED"; then
+              echo "::error::ACR build FAILED"
+              exit 1
+            fi
+          done
+
+          echo "::error::ACR build did not complete within 10 minutes"
+          exit 1
+
+      - name: 🏷️ Tag image version
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
@@ -81,66 +88,6 @@ jobs:
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          # Get build rule ID
-          RULE_ID=$(aliyun cr list-repo-build-rule \
-            --endpoint "$ACR_ENDPOINT" \
-            --instance-id "$ACR_INSTANCE_ID" \
-            --repo-id "$ACR_REPO_ID" \
-            --quiet \
-            --cli-query "BuildRules[0].BuildRuleId")
-
-          echo "Rule ID: $RULE_ID"
-
-          # Update build-args from GitHub Secrets (UMAMI_WEBSITE_ID may change)
-          aliyun cr update-build-rule \
-            --endpoint "$ACR_ENDPOINT" \
-            --instance-id "$ACR_INSTANCE_ID" \
-            --repo-id "$ACR_REPO_ID" \
-            --build-rule-id "$RULE_ID" \
-            --build-env "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
-            --build-args "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
-            --quiet
-
-          # Trigger build manually
-          BUILD_RECORD=$(aliyun cr create-build-record-by-rule \
-            --endpoint "$ACR_ENDPOINT" \
-            --instance-id "$ACR_INSTANCE_ID" \
-            --repo-id "$ACR_REPO_ID" \
-            --build-rule-id "$RULE_ID" \
-            --quiet \
-            --cli-query "BuildRecordId")
-
-          echo "Build Record ID: $BUILD_RECORD"
-          echo "build_record=$BUILD_RECORD" >> "$GITHUB_OUTPUT"
-
-          # Poll build status
-          echo "Waiting for ACR build to complete..."
-          for i in $(seq 1 60); do
-            sleep 10
-            STATUS=$(aliyun cr get-repo-build-record-status \
-              --endpoint "$ACR_ENDPOINT" \
-              --instance-id "$ACR_INSTANCE_ID" \
-              --repo-id "$ACR_REPO_ID" \
-              --build-record-id "$BUILD_RECORD" \
-              --quiet \
-              --cli-query "BuildStatus")
-            echo "  [$i] Status: $STATUS"
-            if [ "$STATUS" = "SUCCESS" ]; then
-              echo "✅ Build succeeded"
-              break
-            fi
-            if [ "$STATUS" = "FAILED" ] || [ "$STATUS" = "CANCELED" ]; then
-              echo "::error::Build $STATUS"
-              exit 1
-            fi
-          done
-
-          if [ "$STATUS" != "SUCCESS" ]; then
-            echo "::error::Build did not complete within 10 minutes"
-            exit 1
-          fi
-
-          # Tag: latest -> version
           aliyun cr create-repo-tag \
             --endpoint "$ACR_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
@@ -149,11 +96,9 @@ jobs:
             --from-tag "latest" \
             --to-tag "$VERSION" \
             --quiet
-
           echo "✅ Tagged: $ACR_ENDPOINT/$ACR_NAMESPACE/$ACR_REPO:$VERSION"
 
       - name: 🏷️ Push Git Tag
-        if: steps.check.outputs.skip != 'true'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           git tag "v${VERSION}"
@@ -162,11 +107,7 @@ jobs:
       - name: 📦 Summary
         if: always()
         run: |
-          if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
-            echo "## ⏭️ Skipped" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "Image tag already exists in ACR, no build needed." >> "$GITHUB_STEP_SUMMARY"
-          elif [ "${{ steps.build.outcome }}" = "success" ]; then
+          if [ "${{ steps.build.outcome }}" = "success" ]; then
             VERSION="${{ steps.version.outputs.version }}"
             echo "## 🚀 Release v${VERSION}" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -175,5 +116,5 @@ jobs:
           else
             echo "## ❌ Release Failed" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "ACR build did not complete successfully. Check the build step logs for details." >> "$GITHUB_STEP_SUMMARY"
+            echo "ACR auto-build did not complete. Check logs." >> "$GITHUB_STEP_SUMMARY"
           fi
