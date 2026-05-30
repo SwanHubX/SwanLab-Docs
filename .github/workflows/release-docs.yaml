@@ -9,6 +9,7 @@ concurrency:
 
 env:
   ACR_REGISTRY: swanlab-registry.cn-hangzhou.cr.aliyuncs.com
+  ACR_API_ENDPOINT: cr.cn-hangzhou.aliyuncs.com
   ACR_NAMESPACE: internal
   ACR_REPO: swanlab-docs
   ACR_INSTANCE_ID: cri-f7m7skbp7fbf0fsq
@@ -25,16 +26,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🔧 Install aliyun CLI & CR plugin
+        env:
+          ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
+        run: |
+          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
+          aliyun plugin install --names cr
+
       - name: 📖 Read & Bump Version
         id: version
         env:
+          # ACR_USERNAME / ACR_PASSWORD 实际存储的是 RAM AccessKey ID / Secret
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
         run: |
-          # Install aliyun CLI (needed for version check)
-          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
-
           CURRENT=$(cat VERSION | tr -d '[:space:]')
           echo "Current version: $CURRENT"
           MAJOR=$(echo "$CURRENT" | cut -d. -f1)
@@ -46,15 +52,20 @@ jobs:
 
           # Check if this version already exists in ACR → skip everything
           REPO_ID=$(aliyun cr get-repository \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
             --quiet \
             --cli-query "RepoId")
 
+          if [ -z "$REPO_ID" ]; then
+            echo "::error::Repository $ACR_NAMESPACE/$ACR_REPO not found in ACR"
+            exit 1
+          fi
+
           EXISTING=$(aliyun cr list-repo-tag \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --tag-name "$NEW_VERSION" \
@@ -73,7 +84,7 @@ jobs:
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
           echo "skip=false" >> "$GITHUB_OUTPUT"
 
-      - name: 🛠️ Commit & Tag
+      - name: 📝 Commit
         if: steps.version.outputs.skip != 'true'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
@@ -81,8 +92,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git add VERSION
           git commit -m "release: v${VERSION}"
-          git tag "v${VERSION}"
-          git push origin main --follow-tags
+          git push origin main
 
       - name: 🔨 Trigger ACR Build
         if: steps.version.outputs.skip != 'true'
@@ -93,20 +103,22 @@ jobs:
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          # Install aliyun CLI
-          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
-
           REPO_ID=$(aliyun cr get-repository \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
             --quiet \
             --cli-query "RepoId")
 
+          if [ -z "$REPO_ID" ]; then
+            echo "::error::Repository not found in ACR"
+            exit 1
+          fi
+
           # Get build rule ID
           RULE_ID=$(aliyun cr list-repo-build-rule \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --quiet \
@@ -116,7 +128,7 @@ jobs:
 
           # Update build-args from GitHub Secrets (UMAMI_WEBSITE_ID may change)
           aliyun cr update-build-rule \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --build-rule-id "$RULE_ID" \
@@ -124,9 +136,9 @@ jobs:
             --build-args "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
             --quiet
 
-          # Trigger build (auto-build on tag may already fire, this is explicit)
+          # Trigger build manually
           BUILD_RECORD=$(aliyun cr create-build-record-by-rule \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --build-rule-id "$RULE_ID" \
@@ -141,7 +153,7 @@ jobs:
           for i in $(seq 1 60); do
             sleep 10
             STATUS=$(aliyun cr get-repo-build-record-status \
-              --endpoint "$ACR_REGISTRY" \
+              --endpoint "$ACR_API_ENDPOINT" \
               --instance-id "$ACR_INSTANCE_ID" \
               --repo-id "$REPO_ID" \
               --build-record-id "$BUILD_RECORD" \
@@ -165,7 +177,7 @@ jobs:
 
           # Tag: latest -> version
           aliyun cr create-repo-tag \
-            --endpoint "$ACR_REGISTRY" \
+            --endpoint "$ACR_API_ENDPOINT" \
             --instance-id "$ACR_INSTANCE_ID" \
             --namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
@@ -174,6 +186,13 @@ jobs:
             --quiet
 
           echo "✅ Tagged: $ACR_REGISTRY/$ACR_NAMESPACE/$ACR_REPO:$VERSION"
+
+      - name: 🏷️ Push Git Tag
+        if: steps.version.outputs.skip != 'true'
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
 
       - name: 📦 Summary
         if: always()
