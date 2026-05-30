@@ -1,4 +1,4 @@
-FROM swanlab-registry-vpc.cn-hangzhou.cr.aliyuncs.com/builder/node:20-bookworkm AS builder
+FROM swanlab-registry-vpc.cn-hangzhou.cr.aliyuncs.com/builder/node:20-bookworm AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
