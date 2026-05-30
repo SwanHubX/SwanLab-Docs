@@ -30,12 +30,10 @@ jobs:
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
-          ALIBABA_CLOUD_REGION_ID: cn-hangzhou
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
         run: |
           # Install aliyun CLI (needed for version check)
           /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
-          aliyun plugin install --names cr
 
           CURRENT=$(cat VERSION | tr -d '[:space:]')
           echo "Current version: $CURRENT"
@@ -48,7 +46,7 @@ jobs:
 
           # Check if this version already exists in ACR → skip everything
           REPO_ID=$(aliyun cr get-repository \
-            --region cn-hangzhou \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
@@ -56,7 +54,7 @@ jobs:
             --cli-query "RepoId")
 
           EXISTING=$(aliyun cr list-repo-tag \
-            --region cn-hangzhou \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --tag-name "$NEW_VERSION" \
@@ -92,16 +90,14 @@ jobs:
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
-          ALIBABA_CLOUD_REGION_ID: cn-hangzhou
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           # Install aliyun CLI
           /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
-          aliyun plugin install --names cr
 
           REPO_ID=$(aliyun cr get-repository \
-            --region cn-hangzhou \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
@@ -110,7 +106,7 @@ jobs:
 
           # Get build rule ID
           RULE_ID=$(aliyun cr list-repo-build-rule \
-            --region cn-hangzhou \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --quiet \
@@ -119,17 +115,18 @@ jobs:
           echo "Rule ID: $RULE_ID"
 
           # Update build-args from GitHub Secrets (UMAMI_WEBSITE_ID may change)
-          aliyun cr update-repo-build-rule \
-            --region cn-hangzhou \
+          aliyun cr update-build-rule \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --build-rule-id "$RULE_ID" \
+            --build-env "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
             --build-args "UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }}" \
             --quiet
 
           # Trigger build (auto-build on tag may already fire, this is explicit)
           BUILD_RECORD=$(aliyun cr create-build-record-by-rule \
-            --region cn-hangzhou \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --repo-id "$REPO_ID" \
             --build-rule-id "$RULE_ID" \
@@ -144,7 +141,7 @@ jobs:
           for i in $(seq 1 60); do
             sleep 10
             STATUS=$(aliyun cr get-repo-build-record-status \
-              --region cn-hangzhou \
+              --endpoint "$ACR_REGISTRY" \
               --instance-id "$ACR_INSTANCE_ID" \
               --repo-id "$REPO_ID" \
               --build-record-id "$BUILD_RECORD" \
@@ -168,7 +165,7 @@ jobs:
 
           # Tag: latest -> version
           aliyun cr create-repo-tag \
-            --region cn-hangzhou \
+            --endpoint "$ACR_REGISTRY" \
             --instance-id "$ACR_INSTANCE_ID" \
             --namespace-name "$ACR_NAMESPACE" \
             --repo-name "$ACR_REPO" \
