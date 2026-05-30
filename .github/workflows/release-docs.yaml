@@ -35,6 +35,7 @@ jobs:
         run: |
           # Install aliyun CLI (needed for version check)
           /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
+          aliyun plugin install --names cr
 
           CURRENT=$(cat VERSION | tr -d '[:space:]')
           echo "Current version: $CURRENT"
@@ -97,6 +98,7 @@ jobs:
         run: |
           # Install aliyun CLI
           /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
+          aliyun plugin install --names cr
 
           REPO_ID=$(aliyun cr get-repository \
             --endpoint "$ACR_REGISTRY" \
