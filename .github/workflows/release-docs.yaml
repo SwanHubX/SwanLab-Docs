@@ -30,6 +30,7 @@ jobs:
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
+          ALIBABA_CLOUD_REGION_ID: cn-hangzhou
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
         run: |
           # Install aliyun CLI (needed for version check)
@@ -90,6 +91,7 @@ jobs:
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
+          ALIBABA_CLOUD_REGION_ID: cn-hangzhou
           ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
           VERSION: ${{ steps.version.outputs.version }}
         run: |
