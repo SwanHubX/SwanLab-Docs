@@ -70,17 +70,26 @@ export default {
         return
       }
 
-      if (!navSearchPlaceholder) {
+      if (!navSearchPlaceholder || !document.body.contains(navSearchPlaceholder)) {
         navSearchPlaceholder = document.createComment('swanlab-nav-search-position')
         const placeholderTarget = search.parentElement === contentBody ? search : menu
-        contentBody.insertBefore(navSearchPlaceholder, placeholderTarget)
+
+        if (placeholderTarget.parentNode) {
+          placeholderTarget.parentNode.insertBefore(navSearchPlaceholder, placeholderTarget)
+        }
       }
 
       if (window.innerWidth >= 1280) {
-        const firstRightAction = menu.querySelector('.vp-header-doc-helper-btn, .header-button, .github-button')
+        let firstRightAction = menu.querySelector('.vp-header-doc-helper-btn, .header-button, .github-button')
+
+        while (firstRightAction && firstRightAction.parentElement !== menu) {
+          firstRightAction = firstRightAction.parentElement
+        }
 
         if (firstRightAction) {
           menu.insertBefore(search, firstRightAction)
+        } else {
+          menu.appendChild(search)
         }
 
         return
