@@ -37,13 +37,26 @@ export const en = defineConfig({
       {
         text: 'Integration',  items: [
           { text: 'All 40+ Frameworks', link: base_path_guide_cloud + '/integration'},
-          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
-          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
-          { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
-          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
-          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
-          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
-          { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+          {
+            text: 'Training Frameworks',
+            items: [
+              { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
+              { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
+              { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
+              { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+              { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+              { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
+              { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+            ]
+          },
+          {
+            text: 'Notification Plugins',
+            items: [
+              { text: 'Discord', link: base_path_plugin + '/notification-discord'},
+              { text: 'Slack', link: base_path_plugin + '/notification-slack'},
+              { text: 'Telegram', link: base_path_plugin + '/notification-telegram'},
+            ]
+          },
         ]
       },
       { 
@@ -51,12 +64,29 @@ export const en = defineConfig({
         link: base_path_examples + '/mnist',
         activeMatch: '/en/examples/',
       },
-      { 
+      {
+        text: 'Self-Hosted', items: [
+          {
+            text: 'Kubernetes',
+            items: [
+              { text: 'Quick Start', link: base_path_guide_cloud + '/self_host/kubernetes/deploy' },
+              { text: 'FAQ', link: base_path_guide_cloud + '/self_host/kubernetes/faq' },
+            ]
+          },
+          {
+            text: 'Docker',
+            items: [
+              { text: 'Quick Start', link: base_path_guide_cloud + '/self_host/docker/deploy' },
+              { text: 'FAQ', link: base_path_guide_cloud + '/self_host/docker/faq' },
+            ]
+          },
+        ]
+      },
+      {
         text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
       { text: 'v0.7.12', items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },

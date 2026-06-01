@@ -45,13 +45,26 @@ export const zh = defineConfig({
       {
         text: '集成', items: [
           { text: '全部40+框架', link: base_path_guide_cloud + '/integration' },
-          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
-          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
-          { text: 'LLaMA-Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory' },
-          { text: 'MS-Swift', link: base_path_guide_cloud + '/integration/integration-swift' },
-          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl' },
-          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics' },
-          { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3' },
+          {
+            text: '训练框架',
+            items: [
+              { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
+              { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
+              { text: 'LLaMA-Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory' },
+              { text: 'MS-Swift', link: base_path_guide_cloud + '/integration/integration-swift' },
+              { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl' },
+              { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics' },
+              { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3' },
+            ]
+          },
+          {
+            text: '通知插件',
+            items: [
+              { text: '飞书', link: base_path_plugin + '/notification-lark' },
+              { text: '钉钉', link: base_path_plugin + '/notification-dingtalk' },
+              { text: '企业微信', link: base_path_plugin + '/notification-wxwork' },
+            ]
+          },
         ]
       },
       {
@@ -61,14 +74,27 @@ export const zh = defineConfig({
         ],
       },
       {
+        text: '私有化部署', items: [
+          {
+            text: 'Kubernetes',
+            items: [
+              { text: '快速开始', link: base_path_guide_cloud + '/self_host/kubernetes/deploy' },
+              { text: '常见问题', link: base_path_guide_cloud + '/self_host/kubernetes/faq' },
+            ]
+          },
+          {
+            text: 'Docker',
+            items: [
+              { text: '快速开始', link: base_path_guide_cloud + '/self_host/docker/deploy' },
+              { text: '常见问题', link: base_path_guide_cloud + '/self_host/docker/faq' },
+            ]
+          },
+        ]
+      },
+      {
         text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
-      },
-      {
-        text: '插件',
-        link: base_path_plugin + '/plugin-index',
-        activeMatch: '/plugin/',
       },
       { text: 'v0.7.12',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
