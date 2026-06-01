@@ -3,7 +3,7 @@
 [Official Website](https://swanlab.cn) · [Framework Integration](/guide_cloud/integration/integration-huggingface-transformers.html) · [GitHub](https://github.com/swanhubx/swanlab) · [Quick Start](/guide_cloud/general/quick-start.md) · [Sync WandB](/guide_cloud/integration/integration-wandb.md#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)  
 
 ::: warning 🎉 Self-Hosted Kubernetes Version Officially Released!  
-The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](/en/guide_cloud/self_host/kubernetes-deploy.md).  
+The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](/en/guide_cloud/self_host/kubernetes/deploy.md).  
 :::  
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)  
@@ -105,7 +105,7 @@ We hope this guide helps you understand SwanLab—we believe it can assist you.
 - [Quick Start](/guide_cloud/general/quick-start.md): A 5-minute tutorial for experiment tracking!  
 - [API Docs](/api/api-index.md): Complete API documentation.  
 - [Online Support](/guide_cloud/community/online-support.md): Join the community, report issues, and contact us.  
-- [Self-Hosting](/guide_cloud/self_host/docker-deploy.md): Guide for self-hosted (private deployment) usage.  
+- [Self-Hosting](/guide_cloud/self_host/docker/deploy.md): Guide for self-hosted (private deployment) usage.  
 - [Examples](/examples/mnist.md): Case studies of SwanLab with various deep learning tasks.  
 
 ## Comparison with Familiar Tools  

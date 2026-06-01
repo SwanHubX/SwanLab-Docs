@@ -222,23 +222,40 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         ]},
     ] },
     {
-      text: '🚀 自托管',
+      text: '🚀 私有化部署',
       // collapsed: false,
       items: [
-        { text: 'Kubernetes部署（推荐）', link: 'self_host/kubernetes-deploy' },
-        { text: "Docker部署", link: "self_host/docker-deploy" },
-        { text: '从Docker迁移至K8S', link: 'self_host/migration-docker-kubernetes' },
-        { text: "纯离线环境部署", link: "self_host/offline-deployment" },
-        { text: '团队/企业版', link: 'self_host/enterprise-version' },
         {
-          text: "第三方部署",
+          text: '使用 Kubernetes部署（推荐）',
+          collapsed: true,
+          items: [
+            { text: '快速开始', link: 'self_host/kubernetes/deploy' },
+            { text: '自定义配置', link: 'self_host/kubernetes/configuration' },
+            { text: '更新与回滚', link: 'self_host/kubernetes/upgrade' },
+            { text: '数据迁移', link: 'self_host/kubernetes/data-migration' },
+            { text: '常见问题', link: 'self_host/kubernetes/faq' },
+          ]
+        },
+        {
+          text: '使用 Docker部署',
+          collapsed: true,
+          items: [
+            { text: '快速开始', link: 'self_host/docker/deploy' },
+            { text: '纯离线环境部署', link: 'self_host/docker/offline-deployment' },
+            { text: '从Docker迁移至K8S', link: 'self_host/docker/migration-docker-kubernetes' },
+            { text: '常见问题', link: 'self_host/docker/faq' },
+          ]
+        },
+        
+        {
+          text: "Docker第三方部署",
           collapsed: true,
           items: [
             { text: '阿里云计算巢', link: 'self_host/alibabacloud-computenest' },
             { text: '腾讯云云应用', link: 'self_host/tencentcloud-app' },
           ]
         },
-        { text: '常见问题', link: 'self_host/faq' },
+        { text: '团队/企业版', link: 'self_host/enterprise-version' },
       ]
     },
     {

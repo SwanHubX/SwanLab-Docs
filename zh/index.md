@@ -49,7 +49,7 @@ features:
 
   - title: 💻 私有化部署
     details: 离线查看实验结果，支持Docker部署
-    link: /guide_cloud/self_host/docker-deploy.md
+    link: /guide_cloud/self_host/docker/deploy.md
 
 ---
 

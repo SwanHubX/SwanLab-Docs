@@ -137,4 +137,4 @@ After logging in to the SwanLab website, the API Key will be displayed on the [u
 
 ### 2. Can I use SwanLab offline?
 
-Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/docker-deploy.md) section for the specific process.
+Yes, please refer to the [self-hosting](/en/guide_cloud/self_host/docker/deploy.md) section for the specific process.

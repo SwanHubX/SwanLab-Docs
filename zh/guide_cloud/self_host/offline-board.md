@@ -4,7 +4,7 @@
 
 离线看板是SwanLab的历史功能，现阶段仅做简单维护，不再更新。
 
-如果您有私有化部署的需求，推荐使用[Docker版](/guide_cloud/self_host/docker-deploy)。
+如果您有私有化部署的需求，推荐使用[Docker版](/guide_cloud/self_host/docker/deploy)。
 
 :::
 

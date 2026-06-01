@@ -48,7 +48,7 @@ features:
 
   - title: 💻 Self-hosted
     details: Docker deployment and enterprise version.
-    link: /en/guide_cloud/self_host/docker-deploy.md
+    link: /en/guide_cloud/self_host/docker/deploy.md
 
 ---
 

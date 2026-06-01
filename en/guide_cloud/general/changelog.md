@@ -43,7 +43,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 ## v0.7.4 - 2025.12.14
 
-Released SwanLab Kubernetes version, deployment instructions see [this document](/en/guide_cloud/self_host/kubernetes-deploy.md)
+Released SwanLab Kubernetes version, deployment instructions see [this document](/en/guide_cloud/self_host/kubernetes/deploy.md)
 
 ![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/logo.png)
 
@@ -305,9 +305,9 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 
 ## v0.5.0 - 2025.3.12
 
-![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/swanlab-docker.jpg)
+![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker/docker-deploy/swanlab-docker.jpg)
 
-**🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/guide_cloud/self_host/docker-deploy.md)
+**🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/guide_cloud/self_host/docker/deploy.md)
 
 **🚀 New Features**
 - Added the `callbacks` parameter to `swanlab.init`, allowing the registration of callback functions during initialization to support various custom plugin classes.

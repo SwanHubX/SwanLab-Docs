@@ -184,12 +184,29 @@ function sidebarGuideCloud(): SidebarItemEx[] {
     text: '🚀 Self-hosted',
     // collapsed: false,
     items: [
-      { text: 'Kubernetes deployment', link: 'self_host/kubernetes-deploy' },
-      { text: 'Docker deployment', link: 'self_host/docker-deploy' }, 
-      { text: 'Migration from Docker to Kubernetes', link: 'self_host/migration-docker-kubernetes' },
-      { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
+      {
+        text: 'Kubernetes deployment',
+        collapsed: true,
+        items: [
+          { text: 'Quick Start', link: 'self_host/kubernetes/deploy' },
+          { text: 'Custom Configuration', link: 'self_host/kubernetes/configuration' },
+          { text: 'Update & Rollback', link: 'self_host/kubernetes/upgrade' },
+          { text: 'Data Migration', link: 'self_host/kubernetes/data-migration' },
+          { text: 'FAQ', link: 'self_host/kubernetes/faq' },
+        ]
+      },
+      {
+        text: 'Docker deployment',
+        collapsed: true,
+        items: [
+          { text: 'Quick Start', link: 'self_host/docker/deploy' },
+          { text: 'Offline Deployment', link: 'self_host/docker/offline-deployment' },
+                { text: 'Migration from Docker to Kubernetes', link: 'self_host/docker/migration-docker-kubernetes' },
+          { text: 'FAQ', link: 'self_host/docker/faq' },
+        ]
+      },
+
       { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
-      { text: 'FAQ', link: 'self_host/faq' },
     ]
   },
   {

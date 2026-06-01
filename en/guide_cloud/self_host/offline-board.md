@@ -4,7 +4,7 @@
 
 The offline dashboard is a legacy feature of SwanLab and is currently maintained with minimal updates. It is no longer actively developed.
 
-For private deployment needs, we recommend using the [Docker version](/guide_cloud/self_host/docker-deploy).
+For private deployment needs, we recommend using the [Docker version](/guide_cloud/self_host/docker/deploy).
 
 :::
 
