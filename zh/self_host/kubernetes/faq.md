@@ -63,6 +63,69 @@ SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构
 | swanlab-cloud | 1 | 【按需修改】SwanLab 前端实验页面 |
 
 
+## 【节点指定】如何将 SwanLab 私有化服务 Pod 调度到指定节点？
+
+在 `values.yaml` 中，所有服务均支持通过 `customNodeSelector` 字段指定节点选择器，Kubernetes 只会将 Pod 调度到满足对应标签的节点上。
+
+**给节点打标签**：
+
+```bash
+kubectl label nodes <node-name> swanlab=true
+```
+
+**示例**：将 SwanLab Server 调度到带有 `swanlab=true` 标签的节点：
+
+```yaml
+service:
+  server:
+    customNodeSelector: { "swanlab": "true" }
+```
+
+网关同样支持：
+
+```yaml
+gateway:
+  customNodeSelector: { "swanlab": "true" }
+```
+
+如需在存在污点（Taint）的节点上运行，可配合 `customTolerations` 一起使用：
+
+```yaml
+service:
+  server:
+    customNodeSelector: { "swanlab": "true" }
+    customTolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "swanlab"
+        effect: "NoSchedule"
+```
+
+::: tip
+`customNodeSelector` 与 `customTolerations` 为所有服务的通用字段，包括应用服务（`gateway`、`vector`、`service.server`、`service.house`、`service.cloud`、`service.next`）和基础服务（`dependencies.postgres`、`dependencies.redis`、`dependencies.clickhouse`、`dependencies.s3`），按需为各服务单独配置即可。
+:::
+
+
+## 【资源限制】如何限制 SwanLab 服务的 CPU 和 内存用量？
+
+在 `values.yaml` 中，所有应用服务均支持通过 `resources` 字段设置 CPU 和内存的 Requests / Limits，格式与 Kubernetes 原生 `resources` 一致。
+
+**示例**：限制 SwanLab Server 的资源用量：
+
+```yaml
+service:
+  server:
+    resources:
+      requests:
+        cpu: "2"
+        memory: "2Gi"
+      limits:
+        cpu: "4"
+        memory: "4Gi"
+```
+
+各服务均可按需配置，未设置时默认不限制。基础服务（`dependencies.postgres`、`dependencies.redis`、`dependencies.clickhouse`、`dependencies.s3`）同样支持 `resources` 字段。
+
 
 ## 【镜像类】集群无法连接外网，如何下载、更新镜像？
 
@@ -72,12 +135,12 @@ SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构
 ## 【高可用】如何保障服务高可用与数据安全性？
 根据数据库配置，主要针对两种情况进行分别设置：
 
-「**推荐**」针对使用本地数据库的情况：
+「✅ **推荐**」针对使用本地数据库的情况：
 
 - 部署过程中，每一个 PVC 申请对应一块**独立云SSD硬盘**，支持无感扩容。
 - 由云硬盘本身做持久化存储，配置以天为单位的 **快照策略**，TTL 过期时间建议设置 2~7 天，保证每日数据可靠性。
 
-「**暂不推荐**」针对外接云数据库的情况：
+「⚠️ **暂不推荐**」针对外接云数据库的情况：
 - 可由 IaaS 公有云本身的数据库主从同步进行保障，可联系各公有云厂商的云数据库产品技术支持、或自建集群的 DBA 进行相关对接配置。
 
 
