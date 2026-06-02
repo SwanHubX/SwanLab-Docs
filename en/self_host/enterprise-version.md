@@ -15,4 +15,4 @@ The **Community Edition** is intended for individual use and does not include ad
 
 For professional AI R&D teams, we provide **SwanLab Enterprise**. The primary differences between the Community and Enterprise editions are summarized in the table below:
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/enterprise/table.png" width="500"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/enterprise/table.png" width="500"/>

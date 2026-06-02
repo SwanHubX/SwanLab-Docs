@@ -78,20 +78,20 @@ export const zh = defineConfig({
           {
             text: 'Kubernetes',
             items: [
-              { text: '快速开始', link: base_path_guide_cloud + '/self_host/kubernetes/deploy' },
-              { text: '常见问题', link: base_path_guide_cloud + '/self_host/kubernetes/faq' },
+              { text: '快速开始', link: '/self_host/kubernetes/deploy' },
+              { text: '常见问题', link: '/self_host/kubernetes/faq' },
             ]
           },
           {
             text: 'Docker',
             items: [
-              { text: '快速开始', link: base_path_guide_cloud + '/self_host/docker/deploy' },
-              { text: '常见问题', link: base_path_guide_cloud + '/self_host/docker/faq' },
+              { text: '快速开始', link: '/self_host/docker/deploy' },
+              { text: '常见问题', link: '/self_host/docker/faq' },
             ]
           },
           {
             text: '团队/企业版',
-            link: base_path_guide_cloud + '/self_host/enterprise-version',
+            link: '/self_host/enterprise-version',
           },
         ]
       },
@@ -164,7 +164,7 @@ export const zh = defineConfig({
       '/guide_cloud/integration/': { base: '/guide_cloud/integration/', items: sidebarIntegration(), },
       '/api/': { base: '/api/', items: sidebarAPI(), },
       '/plugin/': { base: '/plugin/', items: sidebarPlugin(), },
-      '/guide_cloud/self_host/': { base: '/guide_cloud/self_host/', items: sidebarSelfHosted(), },
+      '/self_host/': { base: '/self_host/', items: sidebarSelfHosted(), },
       '/course/prompt_engineering_course/': { base: '/course/prompt_engineering_course/', items: sidebarCoursePromptEngineering(), },
       '/course/llm_train_course/': { base: '/course/llm_train_course/', items: sidebarCourseLLMTrain(), },
     },
@@ -257,9 +257,9 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
       text: '💻 离线看板',
       collapsed: true,
       items: [
-        { text: '使用离线看板', link: 'self_host/offline-board' },
-        { text: '远程访问离线看板', link: 'self_host/remote-view' },
-        { text: '离线看板接口文档', link: 'self_host/offline-board-api' },
+        { text: '使用离线看板', link: 'offline-board' },
+        { text: '远程访问离线看板', link: 'remote-view' },
+        { text: '离线看板接口文档', link: 'offline-board-api' },
       ]
     },
     {

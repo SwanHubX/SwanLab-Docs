@@ -132,7 +132,7 @@ export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cl
 swanlab watch
 ```
 
-更多详细可以参考[SwanLab离线看板模式](https://docs.swanlab.cn/guide_cloud/self_host/offline-board.html)
+更多详细可以参考[SwanLab离线看板模式](https://docs.swanlab.cn/self_host/offline-board.html)
 
 服务器设置端口号可以查看[离线看板端口号](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7)
 

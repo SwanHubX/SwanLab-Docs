@@ -69,15 +69,15 @@ export const en = defineConfig({
           {
             text: 'Kubernetes',
             items: [
-              { text: 'Quick Start', link: base_path_guide_cloud + '/self_host/kubernetes/deploy' },
-              { text: 'FAQ', link: base_path_guide_cloud + '/self_host/kubernetes/faq' },
+              { text: 'Quick Start', link: '/en/self_host/kubernetes/deploy' },
+              { text: 'FAQ', link: '/en/self_host/kubernetes/faq' },
             ]
           },
           {
             text: 'Docker',
             items: [
-              { text: 'Quick Start', link: base_path_guide_cloud + '/self_host/docker/deploy' },
-              { text: 'FAQ', link: base_path_guide_cloud + '/self_host/docker/faq' },
+              { text: 'Quick Start', link: '/en/self_host/docker/deploy' },
+              { text: 'FAQ', link: '/en/self_host/docker/faq' },
             ]
           },
         ]
@@ -134,6 +134,7 @@ export const en = defineConfig({
       '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
       '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
       '/en/plugin/':{base: '/en/plugin/', items: sidebarPlugin(),},
+      '/en/self_host/':{base: '/en/self_host/', items: sidebarSelfHosted(),},
     },
 
     // 页脚配置
@@ -211,41 +212,12 @@ function sidebarGuideCloud(): SidebarItemEx[] {
     ]
   },
   {
-    text: '🚀 Self-hosted',
-    // collapsed: false,
-    items: [
-      {
-        text: 'Kubernetes deployment',
-        collapsed: true,
-        items: [
-          { text: 'Quick Start', link: 'self_host/kubernetes/deploy' },
-          { text: 'Custom Configuration', link: 'self_host/kubernetes/configuration' },
-          { text: 'Update & Rollback', link: 'self_host/kubernetes/upgrade' },
-          { text: 'Data Migration', link: 'self_host/kubernetes/data-migration' },
-          { text: 'FAQ', link: 'self_host/kubernetes/faq' },
-        ]
-      },
-      {
-        text: 'Docker deployment',
-        collapsed: true,
-        items: [
-          { text: 'Quick Start', link: 'self_host/docker/deploy' },
-          { text: 'Offline Deployment', link: 'self_host/docker/offline-deployment' },
-                { text: 'Migration from Docker to Kubernetes', link: 'self_host/docker/migration-docker-kubernetes' },
-          { text: 'FAQ', link: 'self_host/docker/faq' },
-        ]
-      },
-
-      { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
-    ]
-  },
-  {
     text: '💻 Offline board',
     // collapsed: true,
     items: [
-      { text: 'Offline board', link: 'self_host/offline-board' },
-      { text: 'Remote access tutorial', link: 'self_host/remote-view' },
-      { text: 'Offline board API', link: 'self_host/offline-board-api' },
+      { text: 'Offline board', link: 'offline-board' },
+      { text: 'Remote access tutorial', link: 'remote-view' },
+      { text: 'Offline board API', link: 'offline-board-api' },
     ]
   },
   {
@@ -508,4 +480,36 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
     ]
   },
 ]
+}
+
+function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '🚀 Self-Hosted',
+      items: [
+        {
+          text: 'Kubernetes deployment',
+          collapsed: true,
+          items: [
+            { text: 'Quick Start', link: 'kubernetes/deploy' },
+            { text: 'Custom Configuration', link: 'kubernetes/configuration' },
+            { text: 'Update & Rollback', link: 'kubernetes/upgrade' },
+            { text: 'Data Migration', link: 'kubernetes/data-migration' },
+            { text: 'FAQ', link: 'kubernetes/faq' },
+          ]
+        },
+        {
+          text: 'Docker deployment',
+          collapsed: true,
+          items: [
+            { text: 'Quick Start', link: 'docker/deploy' },
+            { text: 'Offline Deployment', link: 'docker/offline-deployment' },
+            { text: 'Migration from Docker to Kubernetes', link: 'docker/migration-docker-kubernetes' },
+            { text: 'FAQ', link: 'docker/faq' },
+          ]
+        },
+        { text: 'Team/Enterprise', link: 'enterprise-version' },
+      ]
+    },
+  ]
 }

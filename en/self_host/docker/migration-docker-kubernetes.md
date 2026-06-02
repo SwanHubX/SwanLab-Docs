@@ -1,8 +1,8 @@
 # Migrating from Docker Version to K8S Version
 
-![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/migration.png)
+![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/kubernetes/migration.png)
 
-This guide is for migrating data from the SwanLab Docker version to the **SwanLab Kubernetes (K8S)** version. It **only applies to scenarios where external services are integrated into the SwanLab Kubernetes (K8S)** version (refer to [Customizing Basic Service Resources](/en/guide_cloud/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)).
+This guide is for migrating data from the SwanLab Docker version to the **SwanLab Kubernetes (K8S)** version. It **only applies to scenarios where external services are integrated into the SwanLab Kubernetes (K8S)** version (refer to [Customizing Basic Service Resources](/en/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)).
 
 If you wish to migrate to managed services provided by cloud vendors or to self-deployed cloud-native high-availability services, this guide can serve as a reference. Please also refer to the official migration documentation of the respective cloud vendor or cloud-native project, and ensure database names, table names, and object storage bucket names are correct during migration.
 
@@ -12,7 +12,7 @@ If you wish to migrate to managed services provided by cloud vendors or to self-
 
 **This solution requires:**
 1. Migrating data first, then deploying the service.
-2. You use the [Customizing Basic Service Resources](/en/guide_cloud/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源) feature.
+2. You use the [Customizing Basic Service Resources](/en/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源) feature.
 3. You have a busybox image for implementing migration tasks.
 4. Ensure your Storage Class's reclaim policy does **not** delete data when Pods are removed.
 
@@ -47,7 +47,7 @@ Please identify the storage locations of various basic service resources in the 
 3. Minio data is stored in `self-hosted/docker/swanlab/data/minio`
 4. Redis data is stored in `self-hosted/docker/swanlab/data/redis`
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/datadir.png" alt="Data Directory" width=300>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/kubernetes/datadir.png" alt="Data Directory" width=300>
 
 <br>
 
@@ -343,7 +343,7 @@ dependencies:
 
 After completing the above four steps, you can begin deploying the SwanLab Kubernetes service.
 
-> For basic operations on deploying the Kubernetes service, see: [Deploying with Kubernetes](/en/guide_cloud/self_host/kubernetes/deploy.md).
+> For basic operations on deploying the Kubernetes service, see: [Deploying with Kubernetes](/en/self_host/kubernetes/deploy.md).
 
 You only need to modify the `dependencies` section based on the original [values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
@@ -379,4 +379,4 @@ helm install swanlab-self-hosted swanlab/self-hosted -f values.yaml
 
 > After deployment, if you are already logged into the **SwanLab Docker version** in your browser and the domain name remains the same before and after migration, you do not need to log in again.
 
-For more detailed operations on Kubernetes deployment, please refer to: [Deploying with Kubernetes](/en/guide_cloud/self_host/kubernetes/deploy.md).
+For more detailed operations on Kubernetes deployment, please refer to: [Deploying with Kubernetes](/en/self_host/kubernetes/deploy.md).

@@ -32,7 +32,7 @@
 
 ### 存储组件基础设施镜像
 
-> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](/guide_cloud/self_host/kubernetes-deploy.md#_3-1-自定义基础服务资源)时，以下对应镜像可忽略（使用自建的外部服务）。
+> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)时，以下对应镜像可忽略（使用自建的外部服务）。
 
 ::: warning
 SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构上会有变更。**为保证架构与测试行为的一致性**，除 **S3 对象存储** 外，我们 **暂不推荐使用云数据库**进行接入，推荐使用 **云硬盘SSD** 作为对应基础服务的 PVC 存储资源的 storageClass 。
@@ -69,7 +69,7 @@ SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构
 此类问题与 `S3对象存储` 配置问题强相关，可以在 `swanlab-house` 对应的 pod 中定位到对应的服务报错日志，推荐排查顺序:
 
 ###  `value.yaml` 配置校验
-- 首先校验一下 `integrations.s3` 中的配置是否正确，详见 [外部 S3 集成配置](/guide_cloud/self_host/kubernetes/configuration.md#外部-s3-集成-integrations-s3)
+- 首先校验一下 `integrations.s3` 中的配置是否正确，详见 [外部 S3 集成配置](/self_host/kubernetes/configuration.md#外部-s3-集成-integrations-s3)
 
 
 ### 存储桶跨域规则配置

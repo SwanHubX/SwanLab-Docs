@@ -130,7 +130,7 @@ If you are using the local dashboard mode, you can open the local dashboard with
 swanlab watch
 ```
 
-For more details, refer to [SwanLab Offline Dashboard Mode](https://docs.swanlab.cn/guide_cloud/self_host/offline-board.html).
+For more details, refer to [SwanLab Offline Dashboard Mode](https://docs.swanlab.cn/self_host/offline-board.html).
 
 To set the port number on the server, refer to [Offline Dashboard Port Number](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7).
 

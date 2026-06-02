@@ -45,9 +45,9 @@ Github: https://github.com/SwanHubX/SwanLab
 
 ## v0.7.4 - 2025.12.14
 
-发布 SwanLab Kubernetes版本，部署方式见[此文档](/guide_cloud/self_host/kubernetes/deploy.md)
+发布 SwanLab Kubernetes版本，部署方式见[此文档](/self_host/kubernetes/deploy.md)
 
-![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
+![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/kubernetes/logo.png)
 
 **🚀新增功能**
 - 适配SwanLab Kubernetes版本
@@ -171,7 +171,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 
 **生态**
-- 阿里云计算巢服务上架：[指引](/guide_cloud/self_host/alibabacloud-computenest.md)
+- 阿里云计算巢服务上架：[指引](/self_host/alibabacloud-computenest.md)
 
 
 ## v0.6.4 - 2025.6.18
@@ -247,7 +247,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 优化了个人主页的一系列交互
 
 **生态**
-- 腾讯云云应用上架：[指引](/zh/guide_cloud/self_host/tencentcloud-app.md)
+- 腾讯云云应用上架：[指引](/zh/self_host/tencentcloud-app.md)
 
 
 ## v0.5.6 - 2025.4.23
@@ -315,9 +315,9 @@ Github: https://github.com/SwanHubX/SwanLab
 
 ## v0.5.0 - 2025.3.12
 
-![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker/docker-deploy/swanlab-docker.jpg)
+![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/swanlab-docker.jpg)
 
-**🎉🎉SwanLab私有化部署（社区版）现已重磅发布！！**[部署文档](/guide_cloud/self_host/docker/deploy.md)
+**🎉🎉SwanLab私有化部署（社区版）现已重磅发布！！**[部署文档](/self_host/docker/deploy.md)
 
 **🚀新增功能**
 - `swanlab.init`新增参数`callbacks`，支持在初始化时注册回调函数，以支持各式各样的自定义插件类

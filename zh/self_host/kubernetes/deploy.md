@@ -1,11 +1,11 @@
 # 使用Kubernetes进行部署
 
-> 如需要从Docker版本迁移至Kubernetes版本，请参考[此文档](/guide_cloud/self_host/migration-docker-kubernetes.md)。  
+> 如需要从Docker版本迁移至Kubernetes版本，请参考[此文档](/self_host/docker/migration-docker-kubernetes.md)。  
 > Kubernetes版本支持的SwanLab Python SDK版本为 >= 0.7.4
 
 如果你想要使用 [Kubernetes](https://kubernetes.io/) 进行 SwanLab 私有化部署，请按照下面的流程进行安装。
 
-![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
+![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/kubernetes/logo.png)
 
 ---
 
@@ -80,10 +80,10 @@ Get the application URL by running these commands:
    If you wish to expose this service, you need to configure a LoadBalancer manually or use an Ingress Controller.
    
    Please refer to the official documentation for configuration details:
-   https://docs.swanlab.cn/guide_cloud/self_host/kubernetes-deploy.html
+   https://docs.swanlab.cn/self_host/kubernetes/deploy.html
 ```
 
-如上所示，`self-hosted`默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。如果您希望**开启外部访问（通过IP或域名）**，请参考[3.6 配置应用访问入口](/guide_cloud/self_host/kubernetes-deploy.md#_3-6-配置应用访问入口)。
+如上所示，`self-hosted`默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。如果您希望**开启外部访问（通过IP或域名）**，请参考[3.6 配置应用访问入口](/self_host/kubernetes/deploy.md#_3-6-配置应用访问入口)。
 
 下面是一个在本机访问的例子，打开终端并执行：
 
@@ -93,15 +93,15 @@ kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
 然后你可以在浏览器中访问：`http://127.0.0.1:8080`，即可看到SwanLab的页面：
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker/docker-deploy/create-account.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/create-account.png)
 
 现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个，位置在 「设置」-「账户与许可证」。
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker/docker-deploy/apply-license.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/apply-license.png)
 
 拿到License后，回到激活页面，填写用户名、密码、确认密码和License，点击激活即可完成创建。
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker/docker-deploy/quick-start.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/quick-start.png)
 
 
 ## 2. 资源清单
@@ -371,7 +371,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n self-hosted
 
 ### 3.8 更新、回滚服务
 
-如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](/guide_cloud/self_host/kubernetes/upgrade)文档。
+如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](/self_host/kubernetes/upgrade)文档。
 
 ### 3.9 接入Prometheus
 

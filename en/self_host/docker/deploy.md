@@ -2,7 +2,7 @@
 
 To deploy SwanLab Community Edition privately, follow the installation steps below.
 
-![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/swanlab-docker.jpg)
+![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/swanlab-docker.jpg)
 
 ## Prerequisites
 
@@ -49,10 +49,10 @@ cd self-hosted
 ## 2. One-Click Installation
 
 > If you are using Windows, please make sure you have installed and enabled WSL2 and Docker Desktop.
-> <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/wsl-dockerinfo.png" width="600"/>
+> <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/wsl-dockerinfo.png" width="600"/>
 
 > Execute the `.sh` installation script in the WSL2 filesystem.
-> <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/wsl-bash.png" width="600"/>
+> <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/wsl-bash.png" width="600"/>
 
 The default installation script is located at `docker/install.sh`. Execute it to install all required containers and perform initial configurations.
 
@@ -75,7 +75,7 @@ SwanLab Community Edition uses port `8000` by default. If using the default conf
 
 > If the community edition is deployed on a different port, open Docker Desktop, locate the port mapping for the `traefik` container (e.g., `64703:80`), and access `http://localhost:64703`.
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/create-account.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/create-account.png)
 
 Now, activate your primary account. Activation requires 1 License, which can be obtained for free from the [SwanLab Official Website](https://swanlab.cn) for personal use.
 
@@ -85,11 +85,11 @@ In versions > `v1.1` of private deployment, it supports verifying the License in
 
 :::
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/apply-license.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/apply-license.png)
 
 Once you have the License, return to the activation page, enter your username, password, confirm password, and License, then click "Activate" to complete the setup.
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/quick-start.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/quick-start.png)
 
 ## 4. Start Your First Experiment
 
@@ -142,7 +142,7 @@ swanlab.finish()
 
 View the experiment on the web after running:
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/test-experiment.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/test-experiment.png)
 
 ## Upgrade Version
 
@@ -156,4 +156,4 @@ cd ./docker
 
 Command-line output after a successful upgrade:
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/upgrade.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker-deploy/upgrade.png)

@@ -140,4 +140,4 @@ for epoch in range(2, run.config.epochs):
 
 ### 2. 我可以离线使用SwanLab吗？
 
-可以，具体流程请查看[自托管部分](/guide_cloud/self_host/docker/deploy.md)。
+可以，具体流程请查看[自托管部分](/self_host/docker/deploy.md)。
