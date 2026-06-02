@@ -89,6 +89,10 @@ export const zh = defineConfig({
               { text: '常见问题', link: base_path_guide_cloud + '/self_host/docker/faq' },
             ]
           },
+          {
+            text: '团队/企业版',
+            link: base_path_guide_cloud + '/self_host/enterprise-version',
+          },
         ]
       },
       {
@@ -103,6 +107,7 @@ export const zh = defineConfig({
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         { text: '交流群', link: base_path_guide_cloud + '/community/online-support' },
+        { text: '关于我们', link: base_path_guide_cloud + '/community/emotion-machine' },
       ]
       },
       {
@@ -159,6 +164,7 @@ export const zh = defineConfig({
       '/guide_cloud/integration/': { base: '/guide_cloud/integration/', items: sidebarIntegration(), },
       '/api/': { base: '/api/', items: sidebarAPI(), },
       '/plugin/': { base: '/plugin/', items: sidebarPlugin(), },
+      '/guide_cloud/self_host/': { base: '/guide_cloud/self_host/', items: sidebarSelfHosted(), },
       '/course/prompt_engineering_course/': { base: '/course/prompt_engineering_course/', items: sidebarCoursePromptEngineering(), },
       '/course/llm_train_course/': { base: '/course/llm_train_course/', items: sidebarCourseLLMTrain(), },
     },
@@ -247,43 +253,6 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           { text: 'Notebook跟踪实验', link: 'experiment_track/jupyter-notebook' },
         ]},
     ] },
-    {
-      text: '🚀 私有化部署',
-      // collapsed: false,
-      items: [
-        {
-          text: '使用 Kubernetes部署（推荐）',
-          collapsed: true,
-          items: [
-            { text: '快速开始', link: 'self_host/kubernetes/deploy' },
-            { text: '自定义配置', link: 'self_host/kubernetes/configuration' },
-            { text: '更新与回滚', link: 'self_host/kubernetes/upgrade' },
-            { text: '数据迁移', link: 'self_host/kubernetes/data-migration' },
-            { text: '常见问题', link: 'self_host/kubernetes/faq' },
-          ]
-        },
-        {
-          text: '使用 Docker部署',
-          collapsed: true,
-          items: [
-            { text: '快速开始', link: 'self_host/docker/deploy' },
-            { text: '纯离线环境部署', link: 'self_host/docker/offline-deployment' },
-            { text: '从Docker迁移至K8S', link: 'self_host/docker/migration-docker-kubernetes' },
-            { text: '常见问题', link: 'self_host/docker/faq' },
-          ]
-        },
-        
-        {
-          text: "Docker第三方部署",
-          collapsed: true,
-          items: [
-            { text: '阿里云计算巢', link: 'self_host/alibabacloud-computenest' },
-            { text: '腾讯云云应用', link: 'self_host/tencentcloud-app' },
-          ]
-        },
-        { text: '团队/企业版', link: 'self_host/enterprise-version' },
-      ]
-    },
     {
       text: '💻 离线看板',
       collapsed: true,
@@ -566,6 +535,46 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
       items: [
         { text: '文件记录器', link: 'writer-filelogdir' },
         { text: 'CSV表格', link: 'writer-csv' },
+      ]
+    },
+  ]
+}
+
+function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '🚀 私有化部署',
+      items: [
+        {
+          text: '使用 Kubernetes部署（推荐）',
+          collapsed: true,
+          items: [
+            { text: '快速开始', link: 'kubernetes/deploy' },
+            { text: '自定义配置', link: 'kubernetes/configuration' },
+            { text: '更新与回滚', link: 'kubernetes/upgrade' },
+            { text: '数据迁移', link: 'kubernetes/data-migration' },
+            { text: '常见问题', link: 'kubernetes/faq' },
+          ]
+        },
+        {
+          text: '使用 Docker部署',
+          collapsed: true,
+          items: [
+            { text: '快速开始', link: 'docker/deploy' },
+            { text: '纯离线环境部署', link: 'docker/offline-deployment' },
+            { text: '从Docker迁移至K8S', link: 'docker/migration-docker-kubernetes' },
+            { text: '常见问题', link: 'docker/faq' },
+          ]
+        },
+        {
+          text: 'Docker第三方部署',
+          collapsed: true,
+          items: [
+            { text: '阿里云计算巢', link: 'alibabacloud-computenest' },
+            { text: '腾讯云云应用', link: 'tencentcloud-app' },
+          ]
+        },
+        { text: '团队/企业版', link: 'enterprise-version' },
       ]
     },
   ]
