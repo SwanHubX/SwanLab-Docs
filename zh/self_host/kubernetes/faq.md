@@ -41,6 +41,28 @@ SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构
 | MinIO MC | `repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-08-13T08-35-41Z` | — | MinIO 客户端工具（初始化 bucket 等） |
 
 
+## 【副本数】SwanLab 私有化服务推荐的服务副本数如何设置？
+
+以下是根据线上运维经验给出的推荐副本配置最佳实践，在 `values.yaml` 中通过修改对应服务的 `replicas` 字段即可调整：
+
+::: warning
+当前 `swanlab-self-hosted` 部署方案中，`postgres` 和 `clickhouse` 均采用**单副本方案**。数据库主从复制涉及较大的架构变动，在当前私有化部署版本中**暂不支持**，请勿调整数据库相关的服务副本数量。
+:::
+
+
+| 服务名 | 副本数量 | 说明 |
+|--------|---------|------|
+| clickhouse | 1 | 【不可修改】列数据库，负责实验指标存储 |
+| postgres | 1 | 关系型数据库，负责元数据和关系记录 |
+| redis | 1 | 【不可修改】内存数据库，缓存会话数据 |
+| vector | 2 | 【不可修改】clickhouse 指标写入缓冲队列 |
+| traefik | 2 | 【按需修改】主网关，分发服务流量 |
+| swanlab-server | 4 | 【按需修改】SwanLab 核心服务，根据服务负载动态调整 |
+| swanlab-house | 4 | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整 |
+| swanlab-next | 2 | 【按需修改】SwanLab 前端框架 |
+| swanlab-cloud | 1 | 【按需修改】SwanLab 前端实验页面 |
+
+
 
 ## 【镜像类】集群无法连接外网，如何下载、更新镜像？
 
@@ -82,3 +104,5 @@ SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构
 
 - 「**权限控制**」 ->  「**读写权限**」，开启公有读的 Bucket ACL
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260602121636204.png" width="80%"/>
+
+

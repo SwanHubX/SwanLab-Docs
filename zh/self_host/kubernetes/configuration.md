@@ -1,4 +1,4 @@
-# 自定义配置
+# 自定义 Value 配置说明
 
 > 本文档说明 `values.yaml` 中各字段的含义与配置方式。完整配置示例请参阅 [Kubernetes 部署指引](https://rcnpx636fedp.feishu.cn/wiki/KNHrwP796iscZOkMGldcSuPKnNb)。
 
@@ -49,7 +49,7 @@
 
 ## 应用服务（`service`）
 
-### Server（后端核心服务）
+### SwanLab-Server（后端核心服务）
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
@@ -57,7 +57,7 @@
 | `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址 |
 | `service.server.image.tag` | string | `""` | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
 
-### House（后端指标 OLAP 服务）
+### SwanLab-House（后端实验指标 OLAP 服务）
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
@@ -67,7 +67,7 @@
 | `service.house.persistence.storageClass` | string | `""` | StorageClass |
 | `service.house.persistence.storageSize` | string | `10Gi` | 存储卷大小 |
 
-### Cloud（前端服务 - 旧版）
+### SwanLab-Cloud（前端图表渲染）
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
@@ -75,7 +75,7 @@
 | `service.cloud.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-cloud` | 镜像地址 |
 | `service.cloud.image.tag` | string | `""` | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
 
-### Next（前端服务 - 新版）
+### SwanLab-Next（前端UI）
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
@@ -93,7 +93,7 @@
 | `*.customAnnotations` | object | `{}` | 自定义 Service 注解 |
 | `*.customPodLabels` | object | `{}` | 自定义 Pod 标签 |
 | `*.customPodAnnotations` | object | `{}` | 自定义 Pod 注解 |
-| `*.customTolerations` | list | `[]` | 自定义容忍（Toleration） |
+| `*.customTolerations` | list | `[]` | 自定义容忍度（Toleration） |
 | `*.customNodeSelector` | object | `{}` | 节点选择器，JSON 格式，例如 `{ swanlab: "true" }` |
 | `*.resources` | object | `{}` | 资源限制（requests/limits），例如 `{ requests: { cpu: "500m", memory: "512Mi" } }` |
 
@@ -185,10 +185,9 @@
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `private.ssl` | bool | `true` | 是否启用 SSL |
-| `private.endpoint` | string | `""` | S3 接入点，**不带 bucket 前缀** |
-| `private.region` | string | `""` | S3 地域 |
+| `private.endpoint` | string | `""` | S3 接入点，**不带 bucket 前缀**，例如 `oss-cn-beijing.aliyuncs.com` |
+| `private.region` | string | `""` | S3 地域，例如 `cn-beijing` |
 | `private.port` | int | `443` | 端口号 |
-| `private.pathStyle` | bool | `true` | 路径访问方式 |
+| `private.pathStyle` | bool | `false` | 路径访问方式，公有云对象存储通常设为 `false` |
 | `private.bucket` | string | `""` | 桶名称 |
 
-> **建议**：Public 桶和 Private 桶分离使用。如云厂商对 S3 endpoint 访问做了区分，请特别注意填写正确的 `endpoint`。
