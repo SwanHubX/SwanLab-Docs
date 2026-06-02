@@ -5,7 +5,7 @@
 
 如果你想要使用 [Kubernetes](https://kubernetes.io/) 进行 SwanLab 私有化部署，请按照下面的流程进行安装。
 
-![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/kubernetes/logo.png)
+![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
 ---
 
@@ -93,15 +93,15 @@ kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
 然后你可以在浏览器中访问：`http://127.0.0.1:8080`，即可看到SwanLab的页面：
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/create-account.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/create-account.png)
 
 现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个，位置在 「设置」-「账户与许可证」。
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/apply-license.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/apply-license.png)
 
 拿到License后，回到激活页面，填写用户名、密码、确认密码和License，点击激活即可完成创建。
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/quick-start.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/quick-start.png)
 
 
 ## 2. 资源清单

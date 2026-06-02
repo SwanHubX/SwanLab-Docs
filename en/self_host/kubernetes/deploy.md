@@ -5,7 +5,7 @@
 
 If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployment of SwanLab, please follow the installation process below.
 
-![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/kubernetes/logo.png)
+![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
 ---
 
@@ -93,15 +93,15 @@ kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
 Then you can access it in your browser at: `http://127.0.0.1:8080` to see the SwanLab page:
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker/docker-deploy/create-account.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/create-account.png)
 
 Now, you need to activate your main account. Activation requires 1 License. For personal use, you can apply for a free one on the [SwanLab official website](https://swanlab.cn) under 「Settings」-「Account & License」.
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker/docker-deploy/apply-license.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/apply-license.png)
 
 After obtaining the License, return to the activation page, fill in the username, password, confirm password, and License, then click activate to complete the creation.
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker/docker-deploy/quick-start.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/quick-start.png)
 
 
 ## 2. Resource Inventory
