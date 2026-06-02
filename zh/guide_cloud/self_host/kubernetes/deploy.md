@@ -371,40 +371,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n self-hosted
 
 ### 3.8 更新、回滚服务
 
-#### 更新
-
-我们会更新helm chart版本，这将包含一些新功能和错误修复，您可以选择在适当的时机更新您部署的服务。
-
-:::warning 
-在更新前，请您确保已备份对应的PVC数据！
-:::
-
-您可以运行如下命令升级您的本地repo，其中应该包含swanlab repo：
-
-```bash
-# 更新仓库
-helm repo update
-
-# 列出所有版本
-helm search repo swanlab/self-hosted --versions
-```
-
-然后选择您所需的版本号完成更新：
-
-```bash
-helm upgrade self-hosted swanlab-charts/self-hosted \
-  --version x.x.x \
-  -f my-values.yaml \
-  --namespace xxx
-```
-
-#### 回滚
-
-如果在更新后发现服务无法启动（如 CrashLoopBackOff），请通过以下命令立即回滚至上一个稳定版本：
-
-```bash
-helm rollback self-hosted x.x.x -n xxx
-```
+如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](/guide_cloud/self_host/kubernetes/upgrade)文档。
 
 ### 3.9 接入Prometheus
 
