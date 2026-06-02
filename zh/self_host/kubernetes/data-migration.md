@@ -68,24 +68,28 @@
 >
 > **迁移前必须停机！**
 
-### Step 0: 【所有集群】修改配置文件
+### 1. 修改配置文件
 
-创建 S3 配置（ConfigMap + Secret），分别在源集群和目标集群的命名空间下各执行一次：
+- 操作位置：<span style="color: red"><strong>源集群、目标集群</strong></span>
+
+创建 S3 配置（ConfigMap + Secret），需要**复制为两份**，**分别填写源集群和目标集群的命名空间，并各自执行**：
+
+::: details config-export.yaml/config-import.yaml
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-backup-storage-config
-  namespace: <original_namespace>      # 必填：K8s 命名空间
+  namespace: <original_namespace>               # 必填：K8s 命名空间，源集群命名空间和目标集群命名空间分别填写
 data:
-  S3_REGION: "cn-beijing"              # 必填：对象存储地域
-  S3_BUCKET: "swanlab-backup-demo"     # 必填：存储桶名称
-  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com"  # 必填：S3 Endpoint
-  S3_PATH_PREFIX: "origin-backup-datas"
-  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres"
-  HOST_CLICKHOUSE_PATH: "/var/lib/swanlab-clickhouse"
-  HOST_REDIS_PATH: "/var/lib/swanlab-redis"
+  S3_REGION: "cn-beijing"                       # 必填：对象存储地域，示例为北京地区
+  S3_BUCKET: "xxxxx"                            # 必填：存储桶名称
+  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com"   # 必填：S3 Endpoint，示例为 火山 TOS 的 S3 endpoint
+  S3_PATH_PREFIX: "origin-backup-datas"         # 选填：备份文件存储前缀，不填则默认将备份用压缩包上传到备份存储桶的根目录下
+  HOST_POSTGRES_PATH: "/var/lib/postgres"       # 「选填」：单机 PV 下的 postgres 持久化数据存储路径
+  HOST_CLICKHOUSE_PATH: "/var/lib/clickhouse"   # 「选填」：单机 PV 下的 clickhouse 持久化数据存储路径
+  HOST_REDIS_PATH: "/var/lib/redis"             # 「选填」：单机 PV 下的 redis 持久化数据存储路径
 ---
 apiVersion: v1
 kind: Secret
@@ -98,49 +102,74 @@ stringData:
   S3_SK: "xxx"                        # 必填：对象存储 SecretKey
 ```
 
-```bash
-# 源集群
+:::
+
+::: code-group
+
+```bash [源集群]
 kubectl apply -f config-export.yaml
-# 目标集群
+```
+
+```bash [目标集群]
 kubectl apply -f config-import.yaml
 ```
+
+:::
 
 同时修改导出/导入 Job YAML 中的以下字段：
 - `namespace`：对应的 K8s 命名空间
 - `claimName`：对应的 PVC 名称
 - `nodeSelector`：本机部署场景需指定节点
 
-### Step 1: 【所有集群】停服
+### 2. 停服
 
-务必按照顺序停服，操作位置：**原始集群和目标集群**。
+- 操作位置：<span style="color: red"><strong>源集群、目标集群</strong></span>
 
-```bash
-# 1. 停网关（切断所有外部流量）
+务必按照顺序停服。
+
+::: code-group
+
+```bash [1. 停网关]
+# 切断所有外部流量
 kubectl scale deployment swanlab-self-hosted --replicas=0 -n <your_namespace>
+```
 
-# 2. 停应用层
-kubectl scale deployment swanlab-self-hosted-house --replicas=0 -n <your_namespace>
+```bash [2. 停应用层]
+# 停后端核心服务
 kubectl scale deployment swanlab-self-hosted-server --replicas=0 -n <your_namespace>
+# 停后端指标OLAP服务
+kubectl scale deployment swanlab-self-hosted-house --replicas=0 -n <your_namespace>
+```
 
-# 3. 等 Vector 缓冲区消费完（看 logs 无新写入后 Ctrl+C）
+```bash [3. 停 Vector]
+# 先等缓冲区消费完（看 logs 无新写入后 Ctrl+C）
 kubectl logs -f swanlab-self-hosted-vector-0 -n <your_namespace> --tail=20
 kubectl logs -f swanlab-self-hosted-vector-1 -n <your_namespace> --tail=20
 
-# 4. 停 Vector
+# 停 Vector
 kubectl scale statefulset swanlab-self-hosted-vector --replicas=0 -n <your_namespace>
+```
 
-# 5. 停数据库
+```bash [4. 停数据库]
 kubectl scale deployment swanlab-self-hosted-postgres --replicas=0 -n <your_namespace>
 kubectl scale deployment swanlab-self-hosted-clickhouse --replicas=0 -n <your_namespace>
 kubectl scale deployment swanlab-self-hosted-redis --replicas=0 -n <your_namespace>
+```
 
-# 6.【如有 MiniO，外接 S3 则忽略】停 S3
+```bash [「可选」5. 停 S3]
+# 「可选」通常外接 S3 对象存储可忽略，如您使用 template 自集成的 MinIO 则需要停服
 kubectl scale deployment swanlab-self-hosted-s3 --replicas=0 -n <your_namespace>
 ```
 
-### Step 2: 【原始集群】导出 DB 数据
+:::
+
+### 3. 导出 DB 数据
+
+- 操作位置：<span style="color: red"><strong>源集群</strong></span>
 
 每个数据库的迁移被封装为独立的 Job，可并行执行。以下以 PostgreSQL 为例，ClickHouse、Redis、Vector 同理：
+
+::: details export-postgres Job YAML
 
 ```yaml
 apiVersion: batch/v1
@@ -204,6 +233,8 @@ spec:
             claimName: swanlab-postgres-pvc  # 必填：PVC 名称
 ```
 
+:::
+
 ```bash
 # 并行执行所有导出 Job
 kubectl apply -f export/
@@ -217,37 +248,21 @@ kubectl logs -f job/swanlab-export-redis -n <your_namespace>
 kubectl get jobs -n <your_namespace>
 ```
 
-### Step 3（可选）: 【原始集群】导出 S3 数据
+### 4. 导出 S3 数据（可选）
+
+- 操作位置：<span style="color: red"><strong>源集群</strong></span>
 
 #### 情况 1：原始集群已集成 S3 URL
 
-如果原本已经挂载好 S3 接入点，只需换一下 Value 中的接入点并将密钥转移即可：
+如果原本已经挂载好 S3 接入点，只需配置源集群 `value.yaml` 中相同的 S3接入点配置，详见 [外部 S3 集成配置](/self_host/kubernetes/configuration.md#外部-s3-集成-integrations-s3)。
 
-```yaml
-# values.yaml
-s3:
-  enabled: true
-  public:
-    ssl: true
-    endpoint: "cos.ap-beijing.myqcloud.com"
-    region: "ap-beijing"
-    port: 443
-    domain: "https://<public_bucket_name>.cos.ap-beijing.myqcloud.com"
-    pathStyle: true
-    bucket: "<public_bucket_name>"
-  private:
-    ssl: true
-    endpoint: "cos.ap-beijing.myqcloud.com"
-    region: "ap-beijing"
-    port: 443
-    pathStyle: true
-    bucket: "<private_bucket_name>"
-  existingSecret: "<secret_name>"
-```
+
 
 #### 情况 2：原始集群使用 MiniO 挂载 PVC
 
 MiniO 采用分片存储，直接上传 COS 不可取，需要 `rclone` 处理后同步到公有云对象存储：
+
+::: details export-s3-pod YAML
 
 ```yaml
 apiVersion: v1
@@ -318,6 +333,8 @@ spec:
           sleep 864000
 ```
 
+:::
+
 ```bash
 kubectl apply -f export-s3-pod.yaml -n <your_namespace>
 
@@ -325,9 +342,13 @@ kubectl apply -f export-s3-pod.yaml -n <your_namespace>
 kubectl logs -f export-s3-pod -c rclone-worker
 ```
 
-### Step 4: 【目标集群】导入 DB 数据
+### 5. 导入 DB 数据
+
+- 操作位置：<span style="color: red"><strong>目标集群</strong></span>
 
 与导出类似，每个数据库有独立的导入 Job。以下以 PostgreSQL 为例：
+
+::: details import-postgres Job YAML
 
 ```yaml
 apiVersion: batch/v1
@@ -396,6 +417,8 @@ spec:
             claimName: swanlab-postgres-pvc  # 必填：目标集群 PVC 名称
 ```
 
+:::
+
 ```bash
 # 并行执行所有导入 Job
 kubectl apply -f import/
@@ -409,36 +432,47 @@ kubectl logs -f job/swanlab-import-redis -n <your_namespace>
 kubectl get jobs -n <your_namespace>
 ```
 
-### Step 5: 【目标集群】重新开服
+### 6. 重新开服
 
-务必按照顺序开服，操作位置：**目标集群**。
+- 操作位置：<span style="color: red"><strong>目标集群</strong></span>
 
-```bash
-# 1. 恢复数据库
+务必按照顺序开服。
+
+::: code-group
+
+```bash [1. 恢复数据库]
+# 恢复数据库服务 (replicas 必须为 1)
 kubectl scale deployment swanlab-self-hosted-clickhouse --replicas=1 -n <your_namespace>
 kubectl scale deployment swanlab-self-hosted-postgres --replicas=1 -n <your_namespace>
 kubectl scale deployment swanlab-self-hosted-redis --replicas=1 -n <your_namespace>
 
 # 确认数据库就绪
 kubectl get pods -n <your_namespace> -w
-
-# 2. 恢复 Vector（StatefulSet，双副本）
-kubectl scale statefulset swanlab-self-hosted-vector --replicas=2 -n <your_namespace>
-
-# 3. 恢复应用层
-kubectl scale deployment swanlab-self-hosted-house --replicas=1 -n <your_namespace>
-kubectl scale deployment swanlab-self-hosted-server --replicas=1 -n <your_namespace>
-
-# 4. 恢复网关
-kubectl scale deployment swanlab-self-hosted --replicas=2 -n <your_namespace>
-
-# 5.【如有 MiniO】恢复 S3
-kubectl scale deployment swanlab-self-hosted-s3 --replicas=1 -n <your_namespace>
-
-# 6. 确认所有服务就绪
-kubectl get pods -n <your_namespace>
 ```
 
+```bash [2. 恢复 Vector]
+# StatefulSet，双副本
+kubectl scale statefulset swanlab-self-hosted-vector --replicas=2 -n <your_namespace>
+```
+
+```bash [3. 恢复应用层]
+# 先恢复副本，再按需扩容
+kubectl scale deployment swanlab-self-hosted-house --replicas=1 -n <your_namespace>
+kubectl scale deployment swanlab-self-hosted-server --replicas=1 -n <your_namespace>
+```
+
+```bash [4. 恢复网关]
+# 恢复网关
+kubectl scale deployment swanlab-self-hosted --replicas=2 -n <your_namespace>
+```
+
+```bash [「可选」5. 恢复 S3]
+# 「可选」如外接 S3 可忽略，如果使用 template 内置 MinIO 需要手动恢复 S3
+kubectl scale deployment swanlab-self-hosted-s3 --replicas=1 -n <your_namespace>
+```
+:::
+
+恢复后可以观测 pod 健康状况与线上服务验证数据恢复情况。
 
 
 ## 🧹 Job 清理
