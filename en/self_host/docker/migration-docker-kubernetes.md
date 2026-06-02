@@ -1,6 +1,6 @@
 # Migrating from Docker Version to K8S Version
 
-![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/kubernetes/migration.png)
+![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/migration.png)
 
 This guide is for migrating data from the SwanLab Docker version to the **SwanLab Kubernetes (K8S)** version. It **only applies to scenarios where external services are integrated into the SwanLab Kubernetes (K8S)** version (refer to [Customizing Basic Service Resources](/en/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)).
 
@@ -47,7 +47,7 @@ Please identify the storage locations of various basic service resources in the 
 3. Minio data is stored in `self-hosted/docker/swanlab/data/minio`
 4. Redis data is stored in `self-hosted/docker/swanlab/data/redis`
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/kubernetes/datadir.png" alt="Data Directory" width=300>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/datadir.png" alt="Data Directory" width=300>
 
 <br>
 

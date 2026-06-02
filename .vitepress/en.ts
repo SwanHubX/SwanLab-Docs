@@ -80,6 +80,10 @@ export const en = defineConfig({
               { text: 'FAQ', link: '/en/self_host/docker/faq' },
             ]
           },
+          {
+            text: 'Team/Enterprise Plan',
+            link: '/en/self_host/enterprise-version',
+          },
         ]
       },
       {

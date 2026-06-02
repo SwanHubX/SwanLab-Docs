@@ -1,6 +1,6 @@
 # 从Docker版本迁移至K8S版本
 
-![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/kubernetes/migration.png)
+![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/migration.png)
 
 本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)）。
 
@@ -47,7 +47,7 @@
 3. Minio的数据存储在`self-hosted/docker/swanlab/data/minio`
 4. Redis数据存储在`self-hosted/docker/swanlab/data/redis`
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/kubernetes/datadir.png" alt="数据目录" width=300>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/datadir.png" alt="数据目录" width=300>
 
 <br>
 

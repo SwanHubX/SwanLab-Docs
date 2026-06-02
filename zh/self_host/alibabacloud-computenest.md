@@ -33,14 +33,14 @@ SwanLab社区版在计算巢部署的费用主要涉及：
 
 1. 访问计算巢SwanLab社区版[部署链接](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-cb2da57160444c3ebdbf)
 ，按提示填写部署参数：
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/alibabacloud-computenest/deploy_service_instance.jpg" width="800"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/alibabacloud-computenest/deploy_service_instance.jpg" width="800"/>
 
 2. 参数填写完成后可以看到对应询价明细，确认参数后点击**下一步：确认订单**。
 
 3. 确认订单完成后同意服务协议并点击**立即创建**进入部署阶段。
 
 4. 等待部署完成后就可以开始使用服务，进入服务实例详情点击服务地址。
-   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/alibabacloud-computenest/get_service_instance.jpg" width="800"/>
+   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/alibabacloud-computenest/get_service_instance.jpg" width="800"/>
 
 5. 访问服务地址注册账号并使用SwanLab服务。
-   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/alibabacloud-computenest/swanlab_service.jpg" width="800"/>
+   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/alibabacloud-computenest/swanlab_service.jpg" width="800"/>

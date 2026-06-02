@@ -8,7 +8,7 @@
 
 目前 SwanLab 自托管版本已上线腾讯云应用市场，欢迎各位训练师通过腾讯云开箱使用~
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/head.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/head.png)
 
 - [SwanLab 腾讯云应用](https://app.cloud.tencent.com/detail/SPU_BHEEJEJCDD1984)
 
@@ -21,11 +21,11 @@
     - 境内：南京; 北京; 广州; 成都; 上海; 重庆; 成都
     - 境外：中国香港; 新加坡; 硅谷; 圣保罗; 法兰克福
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/setup-vpc.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/setup-vpc.png" width="600"/>
 
 以`南京`区域为例，CIDR与子网可以按需修改，必填项只有`名称`、`子网名称`与`可用区`
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/setup-vpc-option.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/setup-vpc-option.png" width="600"/>
 
 
 ## 安装教程
@@ -36,10 +36,10 @@
 1. 进入 [SwanLab 腾讯云应用](https://app.cloud.tencent.com/detail/SPU_BHEEJEJCDD1984) 页面，
 勾选 `我已阅读并同意《腾讯云云应用通用商品用户协议》`，并点击 `安装应用`，跳转到控制台界面
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/intro.png" width="800"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/intro.png" width="800"/>
 
 2. 在控制台界面，只需要配置 `目标网络`、`云服务器类型` 以及 `数据盘大小` 三项云资源设置：
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/resource-option.png" width="800"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/resource-option.png" width="800"/>
 
 各云资源代表的含义如下：
 
@@ -51,20 +51,20 @@
 
 云资源配置完成之后，点击 `下一步：确定资源`
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/resource-confirm.png" width="800"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/resource-confirm.png" width="800"/>
 
 3. 接着进入`确认订单信息`信息界面，腾讯云会根据上一步选用的云资源整理账单费用，此时需要确保腾讯云账号中有一定的余额。确认订单无误后，点击`允许服务角色调用其他云服务接口`，并点击 `下一步：安装应用`
 
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/resource-setupapp.png" width="800"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/resource-setupapp.png" width="800"/>
 
 4. 接下来进入应用安装界面，需要等待所有资源创建并启动，需要等待 5 分钟左右
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/app-setup.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/app-setup.png" width="600"/>
 
 5. 完成之后，即可在腾讯云控制台界面看到已创建完成的云应用，点击 `打开应用`，即可使用自托管版的SwanLab
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/open-app.png" width="800"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/open-app.png" width="800"/>
 
 
 :::info 提示
@@ -77,17 +77,17 @@
 
 现在，你可以在腾讯云上使用自托管版本的 SwanLab
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/swanlab-hello.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/swanlab-hello.png" width="600"/>
 
 个人使用可以免费在 [SwanLab官网](https://swanlab.cn) 申请一个License，位置在 「设置」-「账户与许可证」。
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/swanlab-license-1.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/swanlab-license-1.png" width="600"/>
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/swanlab-license-2.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/swanlab-license-2.png" width="600"/>
 
 输入账号、密码、License 后即可激活自托管版的 SwanLab
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/swanlab-main.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/swanlab-main.png" width="600"/>
 
 ## 启动实验
 
@@ -140,7 +140,7 @@ swanlab.finish()
 
 运行后，可在网页查看实验
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/tencentcloud-app/swanlab-dashboard.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/tencentcloud-app/swanlab-dashboard.png" width="600"/>
 
 
 :::info 提示

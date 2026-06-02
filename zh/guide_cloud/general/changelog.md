@@ -47,7 +47,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 发布 SwanLab Kubernetes版本，部署方式见[此文档](/self_host/kubernetes/deploy.md)
 
-![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/kubernetes/logo.png)
+![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
 **🚀新增功能**
 - 适配SwanLab Kubernetes版本
@@ -315,7 +315,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 ## v0.5.0 - 2025.3.12
 
-![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/self_host/docker/docker-deploy/swanlab-docker.jpg)
+![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/swanlab-docker.jpg)
 
 **🎉🎉SwanLab私有化部署（社区版）现已重磅发布！！**[部署文档](/self_host/docker/deploy.md)
 

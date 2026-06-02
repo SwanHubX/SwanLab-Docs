@@ -45,7 +45,7 @@ Github: https://github.com/SwanHubX/SwanLab
 
 Released SwanLab Kubernetes version, deployment instructions see [this document](/en/self_host/kubernetes/deploy.md)
 
-![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/kubernetes/logo.png)
+![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/logo.png)
 
 **🚀 New Features**
 - Adapted to SwanLab Kubernetes version
@@ -305,7 +305,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 
 ## v0.5.0 - 2025.3.12
 
-![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/self_host/docker/docker-deploy/swanlab-docker.jpg)
+![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker/docker-deploy/swanlab-docker.jpg)
 
 **🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/self_host/docker/deploy.md)
 
