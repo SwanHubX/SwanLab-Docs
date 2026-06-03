@@ -175,6 +175,19 @@ export const zh = defineConfig({
       { icon: 'wechat', link: '/guide_cloud/community/online-support.html' },
       // { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
     ],
+
+    // 搜索配置
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索文档',
+            buttonAriaLabel: '搜索文档'
+          }
+        }
+      }
+    },
   }
 })
 

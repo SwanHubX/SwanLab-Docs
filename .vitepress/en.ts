@@ -149,7 +149,15 @@ export const en = defineConfig({
 
     // 搜索配置
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: 'Search Docs',
+            buttonAriaLabel: 'Search Docs'
+          }
+        }
+      }
     }
   }
 })

@@ -110,6 +110,7 @@
 
 /* ===== Search bar: fixed desktop rhythm, responsive smaller screens ===== */
 div.VPNavBarSearch.search {
+    order: 2;
     padding: 0;
     margin-left: 24px;
     margin-right: 18px;
@@ -127,6 +128,30 @@ div.VPNavBarSearch.search {
 
 .VPNavBar .content-body {
     min-width: 0;
+}
+
+.VPNavBarMenu.menu {
+    order: 1;
+}
+
+.VPNavBarTranslations {
+    order: 4;
+}
+
+.VPNavBarAppearance {
+    order: 5;
+}
+
+.VPNavBarSocialLinks {
+    order: 6;
+}
+
+.VPNavBarExtra {
+    order: 7;
+}
+
+.VPNavBarHamburger {
+    order: 8;
 }
 
 .VPNavBarSearchButton {
@@ -151,6 +176,10 @@ div.VPNavBarSearch.search {
         justify-content: flex-start !important;
     }
 
+    .VPNavBarSocialLinks {
+        display: none !important;
+    }
+
     .VPNavBarMenuLink,
     .VPFlyout .button {
         padding-right: 8px !important;
@@ -166,21 +195,26 @@ div.VPNavBarSearch.search {
     }
 }
 
+.header-button,
+.vp-header-doc-helper-btn,
+.github-button {
+    order: 3;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
 @media (min-width: 1280px) {
     .VPNavBar .content-body {
         justify-content: flex-start !important;
     }
 
     .VPNavBarMenu.menu {
-        flex: 1 1 auto;
-        min-width: 0;
-        align-items: center;
+        display: contents;
     }
 
-    .VPNavBarMenu.menu > div.VPNavBarSearch.search {
+    div.VPNavBarSearch.search {
         margin-left: auto;
         margin-right: 8px;
-        flex-shrink: 1;
     }
 }
 
