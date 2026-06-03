@@ -1,7 +1,7 @@
 // .vitepress/theme/index.js
 import DefaultTheme from 'vitepress/theme'
 import mediumZoom from 'medium-zoom'
-import { onMounted, watch, nextTick } from 'vue'
+import { onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vitepress'
 import './custom.css'
 import HeaderButton from './components/HeaderButton.vue'
@@ -24,6 +24,8 @@ export default {
   },
   setup() {
     const route = useRoute()
+    let navSearchPlaceholder
+    let navSearchAnimationFrame = 0
 
     const shouldZoomImage = (img) => {
       // 1. Check if there are clear exclusion marks
@@ -55,13 +57,81 @@ export default {
       })
     }
 
+    const arrangeNavSearch = () => {
+      if (typeof window === 'undefined') {
+        return
+      }
+
+      const contentBody = document.querySelector('.VPNavBar .content-body')
+      const menu = document.querySelector('.VPNavBarMenu.menu')
+      const search = document.querySelector('.VPNavBarSearch.search')
+
+      if (!contentBody || !menu || !search) {
+        return
+      }
+
+      if (!navSearchPlaceholder || !document.body.contains(navSearchPlaceholder)) {
+        navSearchPlaceholder = document.createComment('swanlab-nav-search-position')
+        const placeholderTarget = search.parentElement === contentBody ? search : menu
+
+        if (placeholderTarget.parentNode) {
+          placeholderTarget.parentNode.insertBefore(navSearchPlaceholder, placeholderTarget)
+        }
+      }
+
+      if (window.innerWidth >= 1280) {
+        let firstRightAction = menu.querySelector('.vp-header-doc-helper-btn, .header-button, .github-button')
+
+        while (firstRightAction && firstRightAction.parentElement !== menu) {
+          firstRightAction = firstRightAction.parentElement
+        }
+
+        if (firstRightAction) {
+          menu.insertBefore(search, firstRightAction)
+        } else {
+          menu.appendChild(search)
+        }
+
+        return
+      }
+
+      if (navSearchPlaceholder.parentNode) {
+        navSearchPlaceholder.parentNode.insertBefore(search, navSearchPlaceholder.nextSibling)
+      }
+    }
+
+    const scheduleNavSearchArrangement = () => {
+      if (typeof window === 'undefined') {
+        return
+      }
+
+      window.cancelAnimationFrame(navSearchAnimationFrame)
+      navSearchAnimationFrame = window.requestAnimationFrame(arrangeNavSearch)
+    }
+
     onMounted(() => {
       initZoom()
+      nextTick(() => {
+        arrangeNavSearch()
+        window.addEventListener('resize', scheduleNavSearchArrangement)
+      })
+    })
+
+    onUnmounted(() => {
+      if (typeof window === 'undefined') {
+        return
+      }
+
+      window.removeEventListener('resize', scheduleNavSearchArrangement)
+      window.cancelAnimationFrame(navSearchAnimationFrame)
     })
 
     watch(
       () => route.path,
-      () => nextTick(() => initZoom())
+      () => nextTick(() => {
+        initZoom()
+        arrangeNavSearch()
+      })
     )
   }
 }

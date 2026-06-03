@@ -1,11 +1,11 @@
 # Deploying with Kubernetes
 
-> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/en/guide_cloud/self_host/migration-docker-kubernetes.md).  
+> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/en/self_host/docker/migration-docker-kubernetes.md).  
 > The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.4
 
 If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployment of SwanLab, please follow the installation process below.
 
-![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/kubernetes/logo.png)
+![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
 ---
 
@@ -80,10 +80,10 @@ Get the application URL by running these commands:
    If you wish to expose this service, you need to configure a LoadBalancer manually or use an Ingress Controller.
    
    Please refer to the official documentation for configuration details:
-   https://docs.swanlab.cn/guide_cloud/self_host/kubernetes-deploy.html
+   https://docs.swanlab.cn/self_host/kubernetes/deploy.html
 ```
 
-As shown above, `self-hosted` cannot be directly accessed via an external network by default. You can access this service locally using the `port-forward` functionality. If you wish to **enable external access (via IP or domain name)**, please refer to [3.6 Configuring the Application Access Entrypoint](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-6-configuring-the-application-access-entrypoint).
+As shown above, `self-hosted` cannot be directly accessed via an external network by default. You can access this service locally using the `port-forward` functionality. If you wish to **enable external access (via IP or domain name)**, please refer to [3.6 Configuring the Application Access Entrypoint](/en/self_host/kubernetes/deploy.md#_3-6-configuring-the-application-access-entrypoint).
 
 Here is an example of accessing it locally; open a terminal and execute:
 
@@ -93,15 +93,15 @@ kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
 Then you can access it in your browser at: `http://127.0.0.1:8080` to see the SwanLab page:
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/create-account.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/create-account.png)
 
 Now, you need to activate your main account. Activation requires 1 License. For personal use, you can apply for a free one on the [SwanLab official website](https://swanlab.cn) under 「Settings」-「Account & License」.
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/apply-license.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/apply-license.png)
 
 After obtaining the License, return to the activation page, fill in the username, password, confirm password, and License, then click activate to complete the creation.
 
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker-deploy/quick-start.png)
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/quick-start.png)
 
 
 ## 2. Resource Inventory
@@ -430,26 +430,26 @@ You can manually download the swanlab service images and upload them to an inter
 - `service.house.fbImage`: Auxiliary image for the swanlab-house service  
 - `service.cloud.image`: SwanLab frontend service; image tag corresponds to the Chart AppVersion  
 - `service.next.image`: SwanLab frontend service; image tag corresponds to the Chart AppVersion  
-- `dependencies.postgres.image`: Postgres database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
-- `dependencies.redis.image`: Redis database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
-- `dependencies.s3.image`: MinIO object storage image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)  
-- `dependencies.clickhouse.image`: ClickHouse database image (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used)
+- `dependencies.postgres.image`: Postgres database image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)  
+- `dependencies.redis.image`: Redis database image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)  
+- `dependencies.s3.image`: MinIO object storage image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)  
+- `dependencies.clickhouse.image`: ClickHouse database image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)
 
 ### What storage components are used by SwanLab and what are their purposes?
 All SwanLab storage components and their purposes are as follows:
 
 - `service.house.persistence`  
   Assists the SwanLab data writing service in achieving high availability and will be removed in future versions.  
-  When performing [service migration](/en/guide_cloud/self_host/migration-docker-kubernetes.md), this volume does not need to be migrated.
+  When performing [service migration](/en/self_host/docker/migration-docker-kubernetes.md), this volume does not need to be migrated.
 
 - `dependencies.postgres.persistence`  
-  Used for Postgres database persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+  Used for Postgres database persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
 
 - `dependencies.redis.persistence`  
-  Used for Redis database persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+  Used for Redis database persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
 
 - `dependencies.s3.persistence`  
-  Used for object storage service persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+  Used for object storage service persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
 
 - `dependencies.clickhouse.persistence`  
-  Used for ClickHouse database persistence (can be ignored if [custom base services](/en/guide_cloud/self_host/kubernetes-deploy.md#_3-1-customizing-basic-service-resources) are used).
+  Used for ClickHouse database persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).

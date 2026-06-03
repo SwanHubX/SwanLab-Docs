@@ -1,4 +1,4 @@
-# Team / Enterprise plan
+# Team / Enterprise Plan
 
 SwanLab offers an Enterprise Edition designed for organizations and companies that require **high performance**, **enhanced security**, and **dedicated support**.
 
@@ -15,4 +15,12 @@ The **Community Edition** is intended for individual use and does not include ad
 
 For professional AI R&D teams, we provide **SwanLab Enterprise**. The primary differences between the Community and Enterprise editions are summarized in the table below:
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/enterprise/table.png" width="500"/>
+| Feature \ Version | Community Edition | Enterprise Edition |
+| :--- | :---: | :---: |
+| Offline Deployment | ✅ | ✅ |
+| Docker / K8S Deployment | ✅ | ✅ |
+| Multi-User Collaboration | ❌ | ✅ |
+| Team Creation | ❌ | ✅ |
+| Role-Based Access Control | ❌ | ✅ |
+| Admin Dashboard | ❌ | ✅ |
+| Official Team Support | ❌ | ✅ |

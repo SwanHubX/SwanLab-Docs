@@ -3,7 +3,7 @@
 [快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/index.md) · [GitHub](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
 ::: warning 🎉 私有化部署Kubernetes版正式上线！
-私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/guide_cloud/self_host/kubernetes-deploy.md)
+私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/self_host/kubernetes/deploy.md)
 :::
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)
@@ -108,7 +108,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [快速开始](/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
 - [API文档](/api/api-index.md): 完整的API文档
 - [在线支持](/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
-- [自托管](/guide_cloud/self_host/docker-deploy.md): 自托管（私有化部署）使用方式教程
+- [自托管](/self_host/docker/deploy.md): 自托管（私有化部署）使用方式教程
 - [案例](/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
 
 ## 与熟悉产品的对比

@@ -37,13 +37,26 @@ export const en = defineConfig({
       {
         text: 'Integration',  items: [
           { text: 'All 40+ Frameworks', link: base_path_guide_cloud + '/integration'},
-          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
-          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
-          { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
-          { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
-          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
-          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
-          { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+          {
+            text: 'Training Frameworks',
+            items: [
+              { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers'},
+              { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning'},
+              { text: 'LLaMA Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory'},
+              { text: 'Swift', link: base_path_guide_cloud + '/integration/integration-swift'},
+              { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics'},
+              { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl'},
+              { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3'},
+            ]
+          },
+          {
+            text: 'Notification Plugins',
+            items: [
+              { text: 'Discord', link: base_path_plugin + '/notification-discord'},
+              { text: 'Slack', link: base_path_plugin + '/notification-slack'},
+              { text: 'Telegram', link: base_path_plugin + '/notification-telegram'},
+            ]
+          },
         ]
       },
       { 
@@ -51,12 +64,33 @@ export const en = defineConfig({
         link: base_path_examples + '/mnist',
         activeMatch: '/en/examples/',
       },
-      { 
+      {
+        text: 'Self-Hosted', items: [
+          {
+            text: 'Kubernetes',
+            items: [
+              { text: 'Quick Start', link: '/en/self_host/kubernetes/deploy' },
+              { text: 'FAQ', link: '/en/self_host/kubernetes/faq' },
+            ]
+          },
+          {
+            text: 'Docker',
+            items: [
+              { text: 'Quick Start', link: '/en/self_host/docker/deploy' },
+              { text: 'FAQ', link: '/en/self_host/docker/faq' },
+            ]
+          },
+          {
+            text: 'Team/Enterprise Plan',
+            link: '/en/self_host/enterprise-version',
+          },
+        ]
+      },
+      {
         text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'Plugin', link: base_path_plugin + '/plugin-index'},
       { text: 'v0.7.12', items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
@@ -104,6 +138,7 @@ export const en = defineConfig({
       '/en/examples/':{base: '/en/examples/', items: sidebarExamples(),},
       '/en/api/':{base: '/en/api/', items: sidebarAPI(),},
       '/en/plugin/':{base: '/en/plugin/', items: sidebarPlugin(),},
+      '/en/self_host/':{base: '/en/self_host/', items: sidebarSelfHosted(),},
     },
 
     // 页脚配置
@@ -181,24 +216,12 @@ function sidebarGuideCloud(): SidebarItemEx[] {
     ]
   },
   {
-    text: '🚀 Self-hosted',
-    // collapsed: false,
-    items: [
-      { text: 'Kubernetes deployment', link: 'self_host/kubernetes-deploy' },
-      { text: 'Docker deployment', link: 'self_host/docker-deploy' }, 
-      { text: 'Migration from Docker to Kubernetes', link: 'self_host/migration-docker-kubernetes' },
-      { text: 'Offline Deployment', link: 'self_host/offline-deployment' },
-      { text: 'Team/Enterprise', link: 'self_host/enterprise-version' },
-      { text: 'FAQ', link: 'self_host/faq' },
-    ]
-  },
-  {
     text: '💻 Offline board',
     // collapsed: true,
     items: [
-      { text: 'Offline board', link: 'self_host/offline-board' },
-      { text: 'Remote access tutorial', link: 'self_host/remote-view' },
-      { text: 'Offline board API', link: 'self_host/offline-board-api' },
+      { text: 'Offline board', link: 'offline-board' },
+      { text: 'Remote access tutorial', link: 'remote-view' },
+      { text: 'Offline board API', link: 'offline-board-api' },
     ]
   },
   {
@@ -461,4 +484,36 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
     ]
   },
 ]
+}
+
+function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '🚀 Self-Hosted',
+      items: [
+        {
+          text: 'Kubernetes deployment',
+          collapsed: true,
+          items: [
+            { text: 'Quick Start', link: 'kubernetes/deploy' },
+            { text: 'Custom Configuration', link: 'kubernetes/configuration' },
+            { text: 'Update & Rollback', link: 'kubernetes/upgrade' },
+            { text: 'Data Migration', link: 'kubernetes/data-migration' },
+            { text: 'FAQ', link: 'kubernetes/faq' },
+          ]
+        },
+        {
+          text: 'Docker deployment',
+          collapsed: true,
+          items: [
+            { text: 'Quick Start', link: 'docker/deploy' },
+            { text: 'Offline Deployment', link: 'docker/offline-deployment' },
+            { text: 'Migration from Docker to Kubernetes', link: 'docker/migration-docker-kubernetes' },
+            { text: 'FAQ', link: 'docker/faq' },
+          ]
+        },
+        { text: 'Team/Enterprise', link: 'enterprise-version' },
+      ]
+    },
+  ]
 }

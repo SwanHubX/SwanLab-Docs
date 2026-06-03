@@ -45,13 +45,26 @@ export const zh = defineConfig({
       {
         text: '集成', items: [
           { text: '全部40+框架', link: base_path_guide_cloud + '/integration' },
-          { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
-          { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
-          { text: 'LLaMA-Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory' },
-          { text: 'MS-Swift', link: base_path_guide_cloud + '/integration/integration-swift' },
-          { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl' },
-          { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics' },
-          { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3' },
+          {
+            text: '训练框架',
+            items: [
+              { text: 'Transformers', link: base_path_guide_cloud + '/integration/integration-huggingface-transformers' },
+              { text: 'Lightning', link: base_path_guide_cloud + '/integration/integration-pytorch-lightning' },
+              { text: 'LLaMA-Factory', link: base_path_guide_cloud + '/integration/integration-llama-factory' },
+              { text: 'MS-Swift', link: base_path_guide_cloud + '/integration/integration-swift' },
+              { text: 'veRL', link: base_path_guide_cloud + '/integration/integration-verl' },
+              { text: 'Ultralytics', link: base_path_guide_cloud + '/integration/integration-ultralytics' },
+              { text: 'SB3', link: base_path_guide_cloud + '/integration/integration-sb3' },
+            ]
+          },
+          {
+            text: '通知插件',
+            items: [
+              { text: '飞书', link: base_path_plugin + '/notification-lark' },
+              { text: '钉钉', link: base_path_plugin + '/notification-dingtalk' },
+              { text: '企业微信', link: base_path_plugin + '/notification-wxwork' },
+            ]
+          },
         ]
       },
       {
@@ -61,14 +74,31 @@ export const zh = defineConfig({
         ],
       },
       {
+        text: '私有化部署', items: [
+          {
+            text: 'Kubernetes',
+            items: [
+              { text: '快速开始', link: '/self_host/kubernetes/deploy' },
+              { text: '常见问题', link: '/self_host/kubernetes/faq' },
+            ]
+          },
+          {
+            text: 'Docker',
+            items: [
+              { text: '快速开始', link: '/self_host/docker/deploy' },
+              { text: '常见问题', link: '/self_host/docker/faq' },
+            ]
+          },
+          {
+            text: '团队/企业版',
+            link: '/self_host/enterprise-version',
+          },
+        ]
+      },
+      {
         text: 'API',
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
-      },
-      {
-        text: '插件',
-        link: base_path_plugin + '/plugin-index',
-        activeMatch: '/plugin/',
       },
       { text: 'v0.7.12',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
@@ -77,6 +107,7 @@ export const zh = defineConfig({
         { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         { text: '交流群', link: base_path_guide_cloud + '/community/online-support' },
+        { text: '关于我们', link: base_path_guide_cloud + '/community/emotion-machine' },
       ]
       },
       {
@@ -133,6 +164,7 @@ export const zh = defineConfig({
       '/guide_cloud/integration/': { base: '/guide_cloud/integration/', items: sidebarIntegration(), },
       '/api/': { base: '/api/', items: sidebarAPI(), },
       '/plugin/': { base: '/plugin/', items: sidebarPlugin(), },
+      '/self_host/': { base: '/self_host/', items: sidebarSelfHosted(), },
       '/course/prompt_engineering_course/': { base: '/course/prompt_engineering_course/', items: sidebarCoursePromptEngineering(), },
       '/course/llm_train_course/': { base: '/course/llm_train_course/', items: sidebarCourseLLMTrain(), },
     },
@@ -222,32 +254,12 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         ]},
     ] },
     {
-      text: '🚀 自托管',
-      // collapsed: false,
-      items: [
-        { text: 'Kubernetes部署（推荐）', link: 'self_host/kubernetes-deploy' },
-        { text: "Docker部署", link: "self_host/docker-deploy" },
-        { text: '从Docker迁移至K8S', link: 'self_host/migration-docker-kubernetes' },
-        { text: "纯离线环境部署", link: "self_host/offline-deployment" },
-        { text: '团队/企业版', link: 'self_host/enterprise-version' },
-        {
-          text: "第三方部署",
-          collapsed: true,
-          items: [
-            { text: '阿里云计算巢', link: 'self_host/alibabacloud-computenest' },
-            { text: '腾讯云云应用', link: 'self_host/tencentcloud-app' },
-          ]
-        },
-        { text: '常见问题', link: 'self_host/faq' },
-      ]
-    },
-    {
       text: '💻 离线看板',
       collapsed: true,
       items: [
-        { text: '使用离线看板', link: 'self_host/offline-board' },
-        { text: '远程访问离线看板', link: 'self_host/remote-view' },
-        { text: '离线看板接口文档', link: 'self_host/offline-board-api' },
+        { text: '使用离线看板', link: 'offline-board' },
+        { text: '远程访问离线看板', link: 'remote-view' },
+        { text: '离线看板接口文档', link: 'offline-board-api' },
       ]
     },
     {
@@ -523,6 +535,46 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
       items: [
         { text: '文件记录器', link: 'writer-filelogdir' },
         { text: 'CSV表格', link: 'writer-csv' },
+      ]
+    },
+  ]
+}
+
+function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '🚀 私有化部署',
+      items: [
+        {
+          text: '使用 Kubernetes部署（推荐）',
+          collapsed: true,
+          items: [
+            { text: '快速开始', link: 'kubernetes/deploy' },
+            { text: '自定义配置', link: 'kubernetes/configuration' },
+            { text: '更新与回滚', link: 'kubernetes/upgrade' },
+            { text: '数据迁移', link: 'kubernetes/data-migration' },
+            { text: '常见问题', link: 'kubernetes/faq' },
+          ]
+        },
+        {
+          text: '使用 Docker部署',
+          collapsed: true,
+          items: [
+            { text: '快速开始', link: 'docker/deploy' },
+            { text: '纯离线环境部署', link: 'docker/offline-deployment' },
+            { text: '从Docker迁移至K8S', link: 'docker/migration-docker-kubernetes' },
+            { text: '常见问题', link: 'docker/faq' },
+          ]
+        },
+        {
+          text: 'Docker第三方部署',
+          collapsed: true,
+          items: [
+            { text: '阿里云计算巢', link: 'alibabacloud-computenest' },
+            { text: '腾讯云云应用', link: 'tencentcloud-app' },
+          ]
+        },
+        { text: '团队/企业版', link: 'enterprise-version' },
       ]
     },
   ]
