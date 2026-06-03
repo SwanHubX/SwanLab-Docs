@@ -98,9 +98,10 @@ export const en = defineConfig({
         { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
         { text: 'Docs GitHub', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
       ] },
-      {
-        component: 'HeaderDocHelperButtonEN',
-      },
+      // Deprecated: Docs Copilot / 文档助手 is offline; keep the component code for rollback.
+      // {
+      //   component: 'HeaderDocHelperButtonEN',
+      // },
       {
         component: 'HeaderButtonEN',
       },
@@ -149,7 +150,15 @@ export const en = defineConfig({
 
     // 搜索配置
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: 'Search Docs',
+            buttonAriaLabel: 'Search Docs'
+          }
+        }
+      }
     }
   }
 })

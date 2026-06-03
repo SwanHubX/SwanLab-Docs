@@ -44,7 +44,7 @@ helm search repo swanlab/self-hosted --versions
 :::
 
 1. **已配置 PVC 及快照策略**：请确认用于存储资源服务的 PVC 已成功创建，并已配置好相应的快照策略以保障数据安全。
-2. **确认镜像仓库可达**：您需要保证集群可以访问 `repo.swanlab.cn`，以保证能够正常拉取镜像 （否则您需要将已知的镜像拉取下来推送到私有仓库）。详见[SwanLab 私有化版用到了哪些镜像？](/self_host/kubernetes/faq#【镜像类】swanlab-私有化版用到了哪些镜像)。
+2. **确认镜像仓库可达**：您需要保证集群可以访问 `repo.swanlab.cn`，以保证能够正常拉取镜像 （否则您需要将已知的镜像拉取下来推送到私有仓库）。详情见 [SwanLab 私有化版资源清单](/self_host/kubernetes/deploy#🧾-资源清单)
 3. **检查镜像 tag 配置**：在您的 `values.yaml` 中，确保以下应用的镜像 **tag 为空字符串或指定版本 tag**，而非 `latest`：
    - `swanlab-cloud`
    - `swanlab-next`

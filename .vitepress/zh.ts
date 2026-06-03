@@ -110,9 +110,10 @@ export const zh = defineConfig({
         { text: '关于我们', link: base_path_guide_cloud + '/community/emotion-machine' },
       ]
       },
-      {
-        component: 'HeaderDocHelperButton',
-      },
+      // Deprecated: 文档助手 / Docs Copilot 已下线，组件代码暂时保留用于回滚。
+      // {
+      //   component: 'HeaderDocHelperButton',
+      // },
       {
         component: 'HeaderButton',
       },
@@ -175,6 +176,19 @@ export const zh = defineConfig({
       { icon: 'wechat', link: '/guide_cloud/community/online-support.html' },
       // { icon: 'github', link: 'https://github.com/swanhubx/swanlab' },
     ],
+
+    // 搜索配置
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索文档',
+            buttonAriaLabel: '搜索文档'
+          }
+        }
+      }
+    },
   }
 })
 

@@ -1,6 +1,6 @@
 # Deploying with Kubernetes
 
-> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/en/self_host/docker/migration-docker-kubernetes.md).  
+> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/self_host/docker/migration-docker-kubernetes.md).  
 > The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.4
 
 If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployment of SwanLab, please follow the installation process below.
@@ -17,12 +17,12 @@ If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployme
 
 **Resources and Concepts:**
 
-- [SwanHubX/charts](https://github.com/SwanHubX/charts/tree/main/charts/self-hosted): SwanLab's Kubernetes Helm Chart repository
-- `self-hosted`: The deployed SwanLab Kubernetes cluster
+- [SwanHubX/charts - Self-Hosted Service Releases](https://github.com/SwanHubX/charts/releases): SwanLab's Kubernetes Helm Chart repository
+- `swanlab-self-hosted`: The **default RELEASE name** for the SwanLab self-hosted service deployed in the cluster
+- `<your_namespace>`: The namespace for the SwanLab self-hosted service deployed in the cluster, please replace with the actual namespace used for deployment
 
 
-
-## Prerequisites
+## 🧱 Prerequisites
 
 To deploy the self-hosted version of SwanLab using Kubernetes, please ensure your Kubernetes and related infrastructure meet the following requirements:
 
@@ -30,30 +30,386 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 | --- | --- | --- |
 | kubernetes | v1.24 and above | Official testing and validation cover v1.24+ versions. To ensure API compatibility and system stability, it is not recommended to deploy in clusters with versions lower than this. |
 | helm | version>=3.9 | SwanLab Chart packages require features from Helm v3.9 or newer, and are not compatible with earlier versions or Helm v2 (Tiller mode). |
-| RBAC Permissions | Namespace Admin | The deploying account needs to have **write permissions** within the current namespace. Core resources include: `Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`, etc. |
-| Network Access (Egress) | *.swanlab.cn | Cluster nodes need to have the ability to access the public internet (or have a configured NAT gateway):<br>1. `repo.swanlab.cn`: Used to pull application images.<br>2. `api.swanlab.cn`: Used for online License activation and validation. |
+| RBAC Permissions | Namespace Admin | The deploying account needs to have **write permissions** within the namespace for the SwanLab self-hosted service. Core resources include: `Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`, etc. |
+| Network Access (Egress) | *.swanlab.cn | Cluster nodes need to have the ability to access the public internet (or have a configured NAT gateway):<br>1. `repo.swanlab.cn`: Used to pull application images.  <br>2. `api.swanlab.cn`: Used for online License activation and validation. |
+| Object Storage | AWS S3 protocol compatible | Media resources and other files reported by SwanLab are stored in object storage by default. To save storage costs, **external object storage integration** is recommended, ensuring S3 API compatibility |
 
-## 1. Quick Start
+## 🧾 Resource Inventory
+### Application Service Images
+> ⚠️ Note: The `values.yaml` image tags **are set to empty strings by default**, which automatically syncs the latest version number from the template as the image tag. Generally, no modification is needed. Special hotfix patch version images require manual tag filling.
 
-You can install the K8S version of the SwanLab self-hosted service via [helm](https://helm.sh/).
+| Component | Image Address | values.yaml Config Path | Description |
+|------|----------|---------------------|------|
+| swanlab-server | `repo.swanlab.cn/self-hosted/swanlab-server:<APP_VERSION>` | `service.server.image` | Backend core service |
+| swanlab-house | `repo.swanlab.cn/self-hosted/swanlab-house:<APP_VERSION>` | `service.house.image` | Backend experiment metrics OLAP service |
+| swanlab-cloud | `repo.swanlab.cn/self-hosted/swanlab-cloud:<APP_VERSION>` | `service.cloud.image` | Frontend experiment chart rendering component |
+| swanlab-next | `repo.swanlab.cn/self-hosted/swanlab-next:<APP_VERSION>` | `service.next.image` | Frontend UI |
 
-First, add the local repository mapping:
+### Infrastructure Images
+> ⚠️Note: When a storage component chooses to [customize base service resources](/self_host/kubernetes/deploy.md#_3-1-customizing-base-service-resources), the corresponding images below can be ignored (using self-built external services).
+
+::: warning
+The **database of the SwanLab self-hosted service uses a single-instance mode**, and there will be architectural changes in the future. **To ensure consistency between architecture and testing behavior**, except for **S3 object storage**, we **do not recommend using cloud databases** for integration. We recommend using **cloud SSD disks** as the storageClass for the corresponding base service PVC storage resources.
+:::
+
+| Component | Image Address | values.yaml Config Path | Description |
+|------|----------|---------------------|------|
+| Traefik | `repo.swanlab.cn/public/traefik:3.6` | `service.gateway.` | Reverse proxy / gateway entry |
+| Identify | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2` | `service.gateway.identifyImage` | Gateway authentication auxiliary image |
+| Busybox | `repo.swanlab.cn/public/busybox:1.37.0` | `helper.image` | Deployment auxiliary init container |
+| Vector | `repo.swanlab.cn/public/vector:0.51.1-debian` | `vector.image` | Experiment metrics collection buffer queue |
+| PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1` | `dependencies.postgres.image` | PostgreSQL relational database (users, projects, experiment metadata) |
+| Redis | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8` | `dependencies.redis.image` | Cache and session storage |
+| ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3` | `dependencies.clickhouse.image` | Experiment metrics and logs column database |
+| MinIO | `repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-09-07T16-13-09Z` | `dependencies.s3.image` | S3 compatible object storage (experiment media resources and exported log files) |
+| MinIO MC | `repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-08-13T08-35-41Z` | `dependencies.s3.mcImage` | MinIO client tool (bucket initialization, etc.) |
+
+
+
+## 🪜 Installation Guide
+::: info
+This guide follows the best practices for SwanLab K8s self-hosted service installation. The recommended approach is **[External S3 Object Storage Integration] + [Cluster Databases via PVC-mounted Cloud Disks]**. If you have special integration requirements, please refer to [Custom Value Configuration](/self_host/kubernetes/configuration.md) for modifications.
+:::
+
+### 1. Create S3 Secret
+It is recommended to use an existing online object storage service (must be compatible with AWS S3 protocol). Please ensure you have created **AK/SK with write permissions**, refer to the following yaml:
+::: details swanlab-self-hosted-secret.yaml Template
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: swanlab-self-hosted-secret-s3
+  namespace: <your_namespace> # Please replace with the actual namespace
+type: Opaque
+stringData:
+  accessKey: xxxx
+  secretKey: xxxx
+
+```
+:::
+
+```bash
+# Create secret in the cluster
+kubectl apply -f swanlab-self-hosted-secret.yaml
+
+# View secret
+kubectl get secret swanlab-self-hosted-secret-s3 -n <your_namespace>
+```
+
+### 2. Create PVC
+
+The SwanLab self-hosted service mainly depends on the following base service storage resources:
+
+| Base Resource | PVC Name | Recommended Storage Size |
+|---------|----------|-------------|
+| Redis | `swanlab-redis-pvc` | ≥ 50G |
+| PostgreSQL | `swanlab-postgres-pvc` | ≥ 100G |
+| ClickHouse | `swanlab-clickhouse-pvc` | ≥ 1000G |
+| Vector | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | Each replica ≥ 60G, two independent storage volumes |
+| 「**Optional**」MinIO | `swanlab-minio-pvc` | ≥ 1000G, online object storage is preferred |
+
+::: warning
+- `storageClassName` should be based on **the cloud disk type mounted in your cluster** (e.g., Tencent Cloud's default cloud disk `cbs`), requiring **support for dynamic expansion and snapshot policies**
+- Vector is deployed as a `StatefulSet`, PVC names are **not modifiable** by default
+- Ensure that all PVCs related to `postgres/redis/clickhouse` are in **Bound** status before proceeding with subsequent installation steps
+:::
+
+::: details swanlab-self-hosted-pvc.yaml Template
+
+```yaml
+# ----------------------------
+# PersistentVolumeClaim for Redis
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swanlab-redis-pvc
+  namespace: <your_namespace> # Replace with actual namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""      # Replace with the actual storageClass in your cluster
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for PostgreSQL
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swanlab-postgres-pvc
+  namespace: <your_namespace> # Replace with actual namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: ""      # Replace with the actual storageClass in your cluster
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for ClickHouse
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swanlab-clickhouse-pvc
+  namespace: <your_namespace> # Replace with actual namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+  storageClassName: ""      # Replace with the actual storageClass in your cluster
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for Vector-0
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-swanlab-self-hosted-vector-0
+  namespace: <your_namespace> # Replace with actual namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 60Gi
+  storageClassName: ""      # Replace with the actual storageClass in your cluster
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for Vector-1
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-swanlab-self-hosted-vector-1
+  namespace: <your_namespace> # Replace with actual namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 60Gi
+  storageClassName: ""      # Replace with the actual storageClass in your cluster
+  volumeMode: Filesystem
+```
+
+:::
+
+```bash
+# Create PVC
+kubectl apply -f swanlab-self-hosted-pvc.yaml
+
+# Verify PVC status (ensure all except vector are Bound)
+kubectl get pvc -n <your_namespace>
+```
+
+
+
+### 3. Fill in Values
+
+For the complete `values.yaml` configuration options, please refer to the [Custom Value Configuration](/self_host/kubernetes/configuration.md) documentation.
+
+You can view the original value template used by `swanlab-self-hosted` at [values.yaml template](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml), or view it with the following command:
+
+```bash
+helm show values swanlab/self-hosted
+```
+
+We **strongly recommend saving the `values.yaml` used for deployment to ensure smooth upgrades later**. Below are the related `values.yaml` modification instructions:
+
+#### 3.1 PVC Binding
+
+The `existingClaim` of each component under the `dependencies` field must match the PVC names created in Step 2:
+
+| Component | values.yaml Path | Corresponding PVC Name |
+|------|-----------------|--------------|
+| PostgreSQL | `dependencies.postgres.persistence.existingClaim` | `swanlab-postgres-pvc` |
+| Redis | `dependencies.redis.persistence.existingClaim` | `swanlab-redis-pvc` |
+| ClickHouse | `dependencies.clickhouse.persistence.existingClaim` | `swanlab-clickhouse-pvc` |
+
+Modification example:
+
+::: details dependencies PVC Modification Example
+
+::: code-group
+
+```yaml [PostgreSQL]
+dependencies:
+  postgres: # PostgreSQL database configuration
+    fullnameOverride: ""
+
+    image: # Image configuration
+      # Full image repository path (e.g., ghcr.io/cloudnative-pg/postgresql)
+      repository: repo.swanlab.cn/self-hosted/postgres
+      # Image tag/version. SwanLab recommends 16.x and above
+      tag: "16.1"
+      # Kubernetes image pull policy (Always, IfNotPresent, Never)
+      pullPolicy: "IfNotPresent"
+
+    username: ""
+    password: ""
+
+    persistence: # Persistent storage configuration
+      # Kubernetes StorageClass for dynamic provisioning
+      storageClass: "disk-cloud-auto"
+      # Database storage volume size
+      storageSize: "10Gi"
+
+      # Use an existing PVC (leave empty to auto-create a new PVC)
+      existingClaim: "swanlab-postgres-pvc" # ⚠️: Usually only this name needs to be modified to match the created postgres PVC name
+
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
+```
+
+```yaml [Redis]
+  redis: # Redis configuration
+    fullnameOverride: ""
+
+    image: # Image configuration
+      # Full image repository path (e.g., redis/redis-stack)
+      repository: repo.swanlab.cn/self-hosted/redis-stack
+      # Image tag/version
+      tag: "7.4.0-v8"
+      # Kubernetes image pull policy (Always, IfNotPresent, Never)
+      pullPolicy: "IfNotPresent"
+
+    persistence: # Persistent storage configuration
+      storageClass: "disk-cloud-auto"
+      storageSize: "10Gi"
+
+      # Use an existing PVC (leave empty to auto-create a new PVC)
+      existingClaim: "swanlab-redis-pvc" # ⚠️: Usually only this name needs to be modified to match the created redis PVC name
+
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
+```
+
+```yaml [ClickHouse]
+  clickhouse: # ClickHouse configuration
+    fullnameOverride: ""
+
+    image: # Image configuration
+      # Full image repository path (e.g., clickhouse/clickhouse-server)
+      repository: repo.swanlab.cn/self-hosted/clickhouse-server
+      # Image tag/version
+      tag: "24.3"
+      pullPolicy: "IfNotPresent"
+
+    # Authentication credentials
+    # Leave empty if using existingSecret
+    username: ""
+    password: ""
+
+    persistence: # Persistent storage configuration
+      storageClass: "disk-cloud-auto"
+      storageSize: "20Gi"
+
+      # Use an existing PVC (leave empty to auto-create a new PVC)
+      existingClaim: "swanlab-clickhouse-pvc" # ⚠️: Usually only this name needs to be modified to match the created clickhouse PVC name
+
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
+```
+
+:::
+
+
+
+#### 3.2 Application Image Tags
+The `tag` of the four application images under `service` (server / house / cloud / next) should be set to **empty strings**, and the Chart will automatically inject the correct version number during rendering.
+
+#### 3.3 Vector Storage
+`vector.persistence.storageClass` and `vector.persistence.storageSize` should be consistent with the size when creating the vector PVC. The default size needs to be changed to `60Gi`.
+
+
+#### 3.4 External S3 Integration Configuration
+
+The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](/self_host/kubernetes/configuration.md#external-object-storage-s3-integrations-s3) section.
+
+### 4. Add Helm Repository
+You can install the SwanLab self-hosted K8S service via [helm](https://helm.sh/).
+
+First, set up local repository mapping:
 
 ```bash
 helm repo add swanlab https://helm.swanlab.cn
+# Update repository
+helm repo update
+# List all chart versions
+helm search repo swanlab/self-hosted --versions
+
 ```
 
-The `swanlab` repository will contain all official open-source Charts from SwanLab. You can install the SwanLab self-hosted service with the following command:
+### 5. Execute Installation
+You can choose one of the following installation methods based on your cluster's network environment.
+
+#### Option 1: Helm Repository Installation
+
+If your **cluster nodes can directly access the Helm repository** (i.e., cluster nodes can directly access `github.com`), you can execute the installation with the following commands:
+> ⚠️ Note: The chart packages at https://helm.swanlab.cn are indexed by version tags in [GitHub Release](https://github.com/SwanHubX/charts/releases). **Please confirm network connectivity in advance!**
 
 ```bash
-helm install swanlab-self-hosted swanlab/self-hosted
+# It is recommended to use --dry-run first to verify template compatibility
+helm install swanlab-self-hosted swanlab/self-hosted \
+  -f <your_own_values.yaml> \
+  --namespace <your_namespace> \
+  --dry-run
+```
+- After confirming there are no errors, remove the `--dry-run` option to execute the installation
+
+
+#### Option 2: Local Chart Package Installation
+
+If your **cluster nodes cannot directly access the Helm repository** (i.e., cluster nodes cannot directly access `github.com`), you can pull the chart package to local via OCI method and then execute the installation:
+
+> If you encounter a 401 authentication failure, you can clear any existing helm login state on your machine with `helm registry logout xxx.com`.
+
+```bash
+# Pull chart package to local
+helm pull oci://swanlab-registry.cn-hangzhou.cr.aliyuncs.com/chart/self-hosted --version <latest_chart_version>
+# Extract chart package, expecting only one self-hosted/ folder
+tar -zxvf self-hosted-<latest_chart_version>.tgz
 ```
 
-:::warning Tip
-You can view all configurable options for `self-hosted` [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). Meanwhile, we recommend that you save your `values.yaml`.
-:::
+Then use the local chart package to verify:
+```bash
+# It is recommended to use --dry-run first to verify template compatibility
+helm install swanlab-self-hosted ./self-hosted/ \
+  -f <your_own_values.yaml> \
+  --namespace <your_namespace> \
+  --dry-run
+```
+- After confirming there are no errors, remove the `--dry-run` option to execute the installation
 
-By installing `swanlab/self-hosted` (referred to below as `self-hosted`), you can install the self-hosted version of the SwanLab application on k8s. The installation results will be printed in the terminal:
+---
+
+By installing `swanlab/self-hosted`, you can install the SwanLab self-hosted application on k8s. The installation result will print similar information in the terminal:
 
 ```bash
 Release "swanlab-self-hosted" has been upgraded. Happy Helming!
@@ -83,7 +439,10 @@ Get the application URL by running these commands:
    https://docs.swanlab.cn/self_host/kubernetes/deploy.html
 ```
 
-As shown above, `self-hosted` cannot be directly accessed via an external network by default. You can access this service locally using the `port-forward` functionality. If you wish to **enable external access (via IP or domain name)**, please refer to [3.6 Configuring the Application Access Entrypoint](/en/self_host/kubernetes/deploy.md#_3-6-configuring-the-application-access-entrypoint).
+As shown above, the `swanlab-self-hosted` self-hosted service cannot be directly accessed via external network by default. You can access this service locally using the `port-forward` functionality.
+If you wish to **enable external access (via IP or domain name)**, please refer to [Configuring Application Access Entrypoint](/self_host/kubernetes/configuration.md#configuring-application-access-entrypoint).
+
+---
 
 Here is an example of accessing it locally; open a terminal and execute:
 
@@ -95,7 +454,9 @@ Then you can access it in your browser at: `http://127.0.0.1:8080` to see the Sw
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/create-account.png)
 
-Now, you need to activate your main account. Activation requires 1 License. For personal use, you can apply for a free one on the [SwanLab official website](https://swanlab.cn) under 「Settings」-「Account & License」.
+## 📖 License Activation
+### Personal Edition Activation
+Now, you need to activate your main account. Activation requires 1 License. For personal use, you can apply for a free one on the [SwanLab official website](https://swanlab.cn) under "Settings" - "Account & License".
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/apply-license.png)
 
@@ -103,353 +464,88 @@ After obtaining the License, return to the activation page, fill in the username
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/quick-start.png)
 
+### Enterprise Edition Activation
+If you need to test enterprise edition capabilities, please contact [contact@swanlab.cn](mailto:contact@swanlab.cn), and we will send a test License to that email.
 
-## 2. Resource Inventory
 
-To help you better understand the service status of SwanLab, this section will list all deployment resources included in the SwanLab service operation and their corresponding characteristics. `self-hosted` roughly contains two types of resources: basic service resources and application service resources.
+## ⚙️ Verification Testing
+After deployment is complete, you can use the following Python code to verify scalar and media metrics reporting
 
-### 2.1 Basic Service Resources
+::: details Metrics Reporting Test
+```python
+import swanlab
+import random
+import numpy as np  # Add NumPy import
 
-Basic service resources refer to necessary resources that the SwanLab application depends on, such as databases, object storage, etc. They include:
+swanlab.login(
+    api_key="xxxxx",
+    host="https://xxxxx" 
+)
 
-1. **PostgreSQL Single Instance**: Stores SwanLab core data.
-2. **redis Single Instance**: Stores service cache.
-3. **clickhouse Single Instance**: Stores experiment log resources.
-4. **minio Single Instance**: Stores media resources.
-5. **traefik Single Instance**: Gateway and application entrypoint.
+# Create a SwanLab project
+swanlab.init(
+    # Set project name
+    project="my-first-project",
+    experiment_name="my-first-experiment",
+    # Set hyperparameters
+    config={
+        "learning_rate": 0.02,
+        "architecture": "CNN",
+        "dataset": "CIFAR-100",
+        "epochs": 10
+    }
+)
 
-### 2.2 Application Service Resources
+# Simulate a training session
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+    acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+    loss = 2 ** -epoch + random.random() / epoch + offset
+    swanlab.log({
+        "step_time": acc,
+        "speed": loss
+    })
 
-Application service resources refer to SwanLab's core business resources — the images for these services will change with `self-hosted` version updates. They include:
+# Generate random noise image (64x64 RGB, random pixel values)
+random_noise = np.random.randint(0, 255, (64, 64, 3), dtype=np.uint8)
+img = swanlab.Image(random_noise, caption="Random Noise")
+swanlab.log({
+    "image": img
+})
 
-1. **SwanLab-Server**: SwanLab core backend service.
-2. **SwanLab-House**: SwanLab metric calculation and analysis service.
-3. **SwanLab-Cloud**: SwanLab frontend display component.
-4. **SwanLab-Next**: SwanLab frontend display component.
-5. **Traefik-Proxy**: Gateway component based on Traefik.
+# [Optional] Finish training, this is necessary in notebook environments
+swanlab.finish()
 
-Typically, you can freely modify the replica count of these application service resources. All configurable fields can be obtained with the following command:
-
-```bash
-helm show values swanlab/self-hosted
 ```
-
-
-## 3. Configuring Custom Resources
-
-You can view all configurable items for self-hosted [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). This section will explain some commonly used and SwanLab-officially-recommended configuration practices.
-
-
-### 3.1 Customizing Basic Service Resources
-
-As you can see, all basic services deployed by `self-hosted` are single instances. If you are seeking enterprise-level stability, this may not meet your needs. Therefore, `self-hosted` supports linking to external basic service resources — you can configure them via the `integrations` section. Next, we will explain how to use various basic service resources.
-
-We have written detailed comments and key data structure explanations in [values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). Note that if you enable any integrated basic service resource (e.g., set `integrations.postgres.enabled` to `true`), the single-instance service deployed by `self-hosted` will be destroyed.
-
-
-#### 3.1.1 Postgres
-
-If you wish to use your own deployed cnpg cluster or a cloud provider's service, you simply need to:
-
-1. Set `integrations.postgres.enabled` to `true`.
-2. Create a Secret and pass its name via `integrations.postgres.existingSecret`. The secret should contain the following information:
-
-| `.data.<keys>` | Explanation |
-| --- | --- |
-| `username` | Read-write username. |
-| `password` | Read-write user password. |
-| `primaryUrl` | Read-write database connection string, format similar to: `postgresql://{username}:${password}@postgres:5432/app?schema=public`. |
-| `replicaUrl` | Read-only database connection string, generally used for load balancing and identical to primaryUrl except for credentials. If a read-only user/cluster is not configured, the read-write connection string can be used instead. |
-
-3. Configure other settings for `integrations.postgres` via `values.yaml`.
-
-Final configuration example:
-```yaml
-integrations:
-  postgres:
-    enabled: true
-    host: "example.postgres"
-    port: 5432
-    database: "app"
-    existingSecret: integration-postgres
-```
-
-> Please ensure the above configuration corresponds with the information in the secret.
-
-
-#### 3.1.2 Redis
-
-If you wish to use your own deployed redis cluster or a cloud provider's service, you simply need to:
-1. Set `integrations.redis.enabled` to `true`.
-2. Create a Secret and pass its name via `integrations.redis.existingSecret`. The secret should contain the following information:
-
-| `.data.<keys>` | Explanation |
-| --- | --- |
-| `url` | Database connection string, format similar to: `redis://{username}:${password}@redis:6379`. |
-
-3. Configure other settings for `integrations.redis` via `values.yaml`.
-
-Final configuration example:
-
-```yaml
-integrations:
-  redis:
-    enabled: true
-    host: "example.redis"
-    port: 6379
-    database: "0"
-    existingSecret: integration-redis
-```
-
-> Please ensure the above configuration corresponds with the information in the secret.
-
-
-#### 3.1.3 Clickhouse
-
-If you wish to use your own deployed clickhouse cluster or a cloud provider's service, you simply need to:
-1. Set `integrations.clickhouse.enabled` to `true`.
-2. Create a Secret and pass its name via `integrations.clickhouse.existingSecret`. The secret should contain the following information:
-
-| `.data.<keys>` | Explanation |
-| --- | --- |
-| `username` | Read-write username. |
-| `password` | Read-write user password. |
-
-3. Configure other settings for `integrations.clickhouse` via `values.yaml`.
-
-Final configuration example:
-
-```yaml
-integrations:
-  clickhouse:
-    enabled: true
-    host: "example.clickhouse"
-    httpPort: 8123
-    tcpPort: 9000
-    database: "app"
-    existingSecret: integration-clickhouse
-```
-
-> Please ensure the above configuration corresponds with the information in the secret.
-
-    
-#### 3.1.4 Object Storage
-
-If you wish to use your own deployed minio cluster or a cloud provider's service (must be S3 protocol compatible), you simply need to:
-1. Set `integrations.s3.enabled` to `true`.
-2. Create a Secret and pass its name via `integrations.s3.existingSecret`. The secret should contain the following information:
-
-| `.data.<keys>` | Explanation |
-| --- | --- |
-| `accessKey` | Object storage access key. |
-| `secretKey` | Object storage secret key. |
-
-3. Configure other settings for `integrations.s3` via `values.yaml`.
-Final configuration example:
-```yaml
-integrations:
-  s3:
-    enabled: true
-    public:
-      ssl: true
-      endpoint: "xxx.s3.com"
-      region: "cn-beijing"
-      pathStyle: false
-      port: 443
-      domain: "https://xxx.xxxx.s3.com"
-      bucket: "swanlab-public"
-    private:
-      ssl: true
-      endpoint: "xxx.s3.com"
-      region: "cn-beijing"
-      pathStyle: false
-      port: 443
-      bucket: "swanlab-private"
-    existingSecret: integration-s3
-```
-
-> Please ensure the above configuration corresponds with the information in the secret.
-
-:::warning
-- The permission for the publicBucket is **public read, private write**. The permission for the privateBucket is **private read-write**.
-- When you choose a custom object storage service, please ensure your object storage service can be accessed directly from outside (via IP or domain name).
-- Your object storage secret key must have write permissions and S3 signing permissions for both the **publicBucket** and **privateBucket**.
 :::
 
+Expected result is shown below⬇️：
 
-### 3.2 Customizing Storage Resources
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260603151219153.png"  style="width:60%"/>
 
-If you wish to use the single-instance basic services deployed by `self-hosted`, we recommend that you declare your own `storage-class` to support data persistence.
+You can verify the following features:
+- ⬜ Check if metrics can be reported normally
+- ⬜ Check if images can be uploaded and displayed normally
+- ⬜ Check if metric CSV downloads work smoothly
+- ⬜ Check if user avatars can be displayed normally
 
-Before customizing the storage class for basic resources, please ensure:
-1. The `integrations` are not enabled for this basic service resource.
-2. Ensure your `storage-class` or `claim` exists in the cluster.
+##  🧱 Additional Notes
 
+You can view all configurable options for `swanlab-self-hosted` [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
-#### 3.2.1 Storage Class for Basic Service Resources
+For detailed field descriptions and configuration practices, please refer to the [Custom Value Configuration](/self_host/kubernetes/configuration) documentation, which covers:
 
-> For the definition of basic service resources, please refer to section 2.1 of this document.
+- **Global Configuration**: Pod anti-affinity, login domain, etc.
+- **Application Services**: Replica count, resource limits, labels and annotations, etc.
+- **Gateway Configuration**: Application access entrypoint, ports, etc.
+- **Built-in Base Services**: PostgreSQL / Redis / ClickHouse / MinIO storage resource configuration
+- **External Service Integration**: Connecting external PostgreSQL, Redis, ClickHouse, S3 object storage
 
-You can configure basic service resources via the `dependencies` section. Taking `postgres` as an example:
+### Updates and Rollback
 
-1. If you want `self-hosted` to generate a PersistentVolumeClaim, you can configure the `storageClass` and `storageSize` under `dependencies.postgres.persistence` to set the storage class type and size.
-2. If you already have a PersistentVolumeClaim, you can configure an existing claim via `dependencies.postgres.persistence.existingClaim`.
+To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](/self_host/kubernetes/upgrade) documentation.
 
-Typically, configuring `dependencies.postgres.persistence.existingClaim` is a recommended practice, as it ensures the storage resources are managed by you.
+### Prometheus Observability Integration Guide
 
-
-#### 3.2.2 Storage Class for Application Service Resources
-
-> For the definition of application service resources, please refer to section 2.2 of this document.
-
-Due to current technical limitations, `swanlab-house` is deployed as a `StatefulSet`, so you need to mount a PersistentVolume for it. Similar to configuring basic service resources, you need to configure the fields under `service.house.persistence`. Note that `existingClaim` is not allowed here.
-
-:::warning
-`swanlab-house` will store some metric intermediate products in the PersistentVolume. Generally, you do not need to care about the data in this volume.
-We plan to remove this design in the future.
-:::
-
-
-### 3.3 Increasing Application Replicas to Improve Service Quality
-
-We provide a `replicas` interface for all services under the `service` field. You can freely change their count. Based on SwanLab's operational experience, in most scenarios:
-1. The replica count for the `server` service is 3.
-2. The replica count for the `house` service is 3.
-3. The replica count for the `next` service is 2.
-4. The replica count for the `cloud` service is 1.
-Of course, application performance is a complex calculation metric, and it also typically depends on resource limits. We also provide interfaces such as `resources` to allow you to configure the resource usage of applications.
-
-### 3.4 Changing Pod Anti-Affinity
-
-You can set Pod anti-affinity to improve disaster recovery capabilities by setting `global.podAntiAffinityPreset`:
-
-```yaml
-global:
-  # Kubernetes Pod Affinity/Anti-Affinity settings
-  # We use Topology Spread Constraints to achieve pod distribution across nodes.
-  podAntiAffinityPreset: "soft" # soft, hard, or none
-```
-The default is `soft`, which means all Pods will be evenly distributed across Nodes. You can set it to `hard` to ensure Pods of the same service are not scheduled on the same Node, or set it to `none` to disable Pod anti-affinity.
-
-
-### 3.5 Defining Declarations, Labels, and Other Metadata
-
-For any service, we define the following interfaces to facilitate your scheduling of SwanLab application containers:
-
-1. `resources`: Limits the CPU and RAM resources required by the service.
-2. `customLabels`: Custom application labels.
-3. `customAnnotations`: Custom application annotations.
-4. `customTolerations`: Custom tolerations.
-5. `customNodeSelector`: Custom node selector.
-
-You can use these resources to freely manage and schedule SwanLab applications.
-
-### 3.6 Configuring the Application Access Entrypoint
-
-The domain name of the application service within the cluster is the release name you deployed. For example, assuming your `cluster domain` is `cluster.local` and the deployment command is:
-
-```bash
-helm install swanlab-self-hosted swanlab/self-hosted -n self-hosted
-```
-
-- The domain name of the application within the `self-hosted` namespace is `swanlab-self-hosted`.
-- The domain name of the application within the `kubernetes` cluster is: `swanlab-self-hosted.self-hosted.svc.cluster.local`
-
-You can write your load balancing strategy based on the above information. It is generally recommended to prioritize using **dedicated domain names (Host-based)** to configure access policies to avoid routing conflicts caused by complex or changing path rules.
-
-**Based on the principle of architectural decoupling**, Self-hosted does not have a built-in Ingress controller. You need to configure the external access entrypoint on the cluster's load balancer (or Ingress), which is also responsible for **TLS termination (HTTPS offloading)**.
-
-**Regarding security policies**, the application trusts all `X-Forwarded-*` request headers by default. If you need stricter header validation or forwarding control, be sure to implement it uniformly at the load balancing layer — this may affect the effectiveness of internal S3 signatures. If you use an external object storage service, you don't need to worry about this.
-
-
-### 3.7 Changing the Domain Name Displayed in swanlab.login
-
-By default, the **login host** displayed on the `<Your Host>/space/~/quick-start` page automatically uses the domain name `<Your Host>` you are currently using to access the frontend.
-
-If you need to modify this value, you can specify it to your desired domain name by configuring `global.settings.loginHost`. **Please note**, this setting does not affect the actual backend service address; you need to configure the corresponding forwarding rules yourself.
-
-### 3.8 Updating and Rolling Back Services
-
-#### Update
-
-We will update the helm chart version, which will include new features and bug fixes. You can choose to update your deployed service at an appropriate time.
-
-:::warning 
-Before updating, please ensure you have backed up the corresponding PVC data!
-:::
-
-You can run the following command to update your local repos, which should include the swanlab repo:
-
-```bash
-# Update repositories
-helm repo update
-
-# List all versions
-helm search repo swanlab/self-hosted --versions
-```
-
-Then choose the version number you need to complete the update:
-
-```bash
-helm upgrade self-hosted swanlab-charts/self-hosted \
-  --version x.x.x \
-  -f my-values.yaml \
-  --namespace xxx
-```
-
-#### Rollback
-
-If the service fails to start after an update (e.g., CrashLoopBackOff), immediately roll back to the previous stable version with the following command:
-
-```bash
-helm rollback self-hosted x.x.x -n xxx
-```
-
-### 3.9 Integrating with Prometheus
-
-SwanLab's application services currently do not support integration with `Prometheus`. This feature is under development, please stay tuned!
-
-## 4. FAQ
-
-### Does deploying the service require elevated permissions (such as deploying CRDs or Controllers)?
-No.
-
-### Can the original service remain online during data migration?
-The original service must be stopped during migration. If the original service is not stopped, data gaps will occur.  
-In such cases, you may consider using [swanlab sync](/en/api/cli-swanlab-sync.md) to upload data to the new service.
-
-### If the cluster cannot access the public internet, how can images be downloaded and updated?
-You can manually download the swanlab service images and upload them to an internal image registry, including:
-
-- `service.gateway.image`: SwanLab gateway service, the entry point for the entire application  
-- `service.gateway.identifyImage`: Auxiliary image for the SwanLab gateway  
-- `service.helper`: Used to assist with deploying SwanLab services; essentially a busybox image  
-- `service.server.image`: SwanLab backend service; image tag corresponds to the Chart AppVersion  
-- `service.house.image`: SwanLab backend service; image tag corresponds to the Chart AppVersion  
-- `service.house.logImage`: Auxiliary image for the swanlab-house service  
-- `service.house.fbImage`: Auxiliary image for the swanlab-house service  
-- `service.cloud.image`: SwanLab frontend service; image tag corresponds to the Chart AppVersion  
-- `service.next.image`: SwanLab frontend service; image tag corresponds to the Chart AppVersion  
-- `dependencies.postgres.image`: Postgres database image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)  
-- `dependencies.redis.image`: Redis database image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)  
-- `dependencies.s3.image`: MinIO object storage image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)  
-- `dependencies.clickhouse.image`: ClickHouse database image (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used)
-
-### What storage components are used by SwanLab and what are their purposes?
-All SwanLab storage components and their purposes are as follows:
-
-- `service.house.persistence`  
-  Assists the SwanLab data writing service in achieving high availability and will be removed in future versions.  
-  When performing [service migration](/en/self_host/docker/migration-docker-kubernetes.md), this volume does not need to be migrated.
-
-- `dependencies.postgres.persistence`  
-  Used for Postgres database persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
-
-- `dependencies.redis.persistence`  
-  Used for Redis database persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
-
-- `dependencies.s3.persistence`  
-  Used for object storage service persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
-
-- `dependencies.clickhouse.persistence`  
-  Used for ClickHouse database persistence (can be ignored if [custom base services](/en/self_host/kubernetes/deploy.md#_3-1-customizing-basic-service-resources) are used).
+Documentation pending update, stay tuned.

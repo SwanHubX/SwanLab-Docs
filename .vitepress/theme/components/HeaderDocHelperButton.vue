@@ -1,4 +1,5 @@
 <script setup>
+// Deprecated: 文档助手 / Docs Copilot 已下线，组件暂时保留用于回滚。
 import { useData } from 'vitepress'
 const { isDark } = useData()
 </script>
