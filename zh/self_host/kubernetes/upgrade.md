@@ -67,7 +67,7 @@ helm search repo swanlab/self-hosted --versions
 ### 选项一：Helm 仓库更新
 
 如果您的**集群节点可以直接访问 Helm 仓库**（即集群节点可以直接访问 `github.com`），可以参考如下命令执行更新：
-> ⚠️ 注意：https://helm.swanlab.cn 的 chart 包在 GitHub Release 页面做索引 https://github.com/SwanHubX/charts/releases ， 请提前确认网络连通性
+> ⚠️ 注意：https://helm.swanlab.cn 的 chart 包在 [GitHub Release](https://github.com/SwanHubX/charts/releases )做版本 tag 索引 ， **请提前确认网络连通性!**
 
 ```bash
 # 建议先使用 --dry-run 验证模板兼容性

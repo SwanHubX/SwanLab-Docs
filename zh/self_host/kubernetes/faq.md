@@ -10,36 +10,6 @@
 迁移过程中必须停机原服务。如果不停止原服务会出现数据 gap。  
 此时可考虑使用[swanlab sync](/api/cli-swanlab-sync.md)将数据上传至新服务。
 
-## 【镜像类】SwanLab 私有化版用到了哪些镜像？
-### SwanLab 应用服务镜像
-> ⚠️ 注意： `value.yaml` 应用镜像的 tag **默认设置为空字符串**，可以从 template 中自动同步最新的版本号作为镜像标签，一般无需修改。特殊热更新补丁版本镜像需要手动填充 tag。
-
-| 组件 | 镜像地址 | values.yaml 配置路径 | 说明 |
-|------|----------|---------------------|------|
-| swanlab-server | `repo.swanlab.cn/self-hosted/swanlab-server:<APP_VERSION>` | `service.server.image` | 后端核心服务 |
-| swanlab-house | `repo.swanlab.cn/self-hosted/swanlab-house:<APP_VERSION>` | `service.house.image` | 后端实验指标OLAP服务 |
-| swanlab-cloud | `repo.swanlab.cn/self-hosted/swanlab-cloud:<APP_VERSION>` | `service.cloud.image` | 前端实验图表渲染组件 |
-| swanlab-next | `repo.swanlab.cn/self-hosted/swanlab-next:<APP_VERSION>` | `service.next.image` | 前端UI |
-
-### SwanLab 基础设施镜像
-> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)时，以下对应镜像可忽略（使用自建的外部服务）。
-
-::: warning
-SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构上会有变更。**为保证架构与测试行为的一致性**，除 **S3 对象存储** 外，我们 **暂不推荐使用云数据库**进行接入，推荐使用 **云硬盘SSD** 作为对应基础服务的 PVC 存储资源的 storageClass 。
-:::
-
-| 组件 | 镜像地址 | values.yaml 配置路径 | 说明 |
-|------|----------|---------------------|------|
-| Traefik | `repo.swanlab.cn/public/traefik:3.6` | `service.gateway.image` | 反向代理 / 网关入口 |
-| Identify Helper | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2` | `service.gateway.identifyImage` | 网关鉴权辅助镜像 |
-| Busybox | `repo.swanlab.cn/public/busybox:1.37.0` | `service.helper` | 部署辅助初始化容器 |
-| Vector | `repo.swanlab.cn/public/vector:0.51.1-debian` | — | 实验指标采集缓冲队列 |
-| PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1` | `dependencies.postgres.image` | PostgreSQL关系型数据库（用户、项目、实验元数据） |
-| Redis | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8` | `dependencies.redis.image` | 缓存与会话存储 |
-| ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3` | `dependencies.clickhouse.image` | 实验指标与日志列数据库 |
-| MinIO | `repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-09-07T16-13-09Z` | `dependencies.s3.image` | S3 兼容对象存储（实验媒体资源与导出日志文件） |
-| MinIO MC | `repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-08-13T08-35-41Z` | — | MinIO 客户端工具（初始化 bucket 等） |
-
 
 ## 【副本数】SwanLab 私有化服务推荐的服务副本数如何设置？
 
@@ -57,8 +27,8 @@ SwanLab 私有化版本服务的数据库采用单实例模式，未来在架构
 | redis | 1 | 【不可修改】内存数据库，缓存会话数据 |
 | vector | 2 | 【不可修改】clickhouse 指标写入缓冲队列 |
 | traefik | 2 | 【按需修改】主网关，分发服务流量 |
-| swanlab-server | 4 | 【按需修改】SwanLab 核心服务，根据服务负载动态调整 |
-| swanlab-house | 4 | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整 |
+| swanlab-server | ≥ 3 | 【按需修改】SwanLab 核心服务，根据服务负载动态调整 |
+| swanlab-house | ≥ 3 | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整 |
 | swanlab-next | 2 | 【按需修改】SwanLab 前端框架 |
 | swanlab-cloud | 1 | 【按需修改】SwanLab 前端实验页面 |
 

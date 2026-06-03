@@ -17,12 +17,12 @@
 
 **资源和概念：**
 
-- [SwanHubX/charts](https://github.com/SwanHubX/charts/tree/main/charts/self-hosted)：SwanLab的Kubernetes Helm Chart仓库
-- `self-hosted`：部署好的SwanLab Kubernetes集群
+- [SwanHubX/charts - 私有化服务发布地址](https://github.com/SwanHubX/charts/releases)：SwanLab的Kubernetes Helm Chart仓库
+- `swanlab-self-hosted`: 在集群中部署的 SwanLab 私有化服务的**默认 RELEASE 名称** 
+- `<your_namespace>`: 在集群中部署的 SwanLab 私有化服务的命名空间，请替换为部署使用的
 
 
-
-## 先决条件
+## 🧱 先决条件
 
 使用 Kubernetes 部署 SwanLab 私有化版本，请确保您的 Kubernetes 和相关基础设施满足如下要求：
 
@@ -30,30 +30,386 @@
 | --- | --- | --- |
 | kubernetes | v1.24 及以上 | 官方测试验证覆盖了 v1.24+ 版本。为确保 API 兼容性与系统稳定性，不建议在低于此版本的集群中部署。 |
 | helm | version>=3.9 | SwanLab Chart 包依赖于 Helm v3.9+ 的新特性，与早期版本不兼容，也不兼容 Helm v2（Tiller 模式）。 |
-| RBAC 权限 | Namespace Admin | 部署账户需具备当前命名空间下的**写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。 |
+| RBAC 权限 | Namespace Admin | 账户需具备部署 **SwanLab私有化服务对应命名空间下的写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。 |
 | 网络访问 (Egress) | *.swanlab.cn | 集群节点需具备访问公网的能力（或配置 NAT 网关）：<br>1. `repo.swanlab.cn`：用于拉取应用镜像。  <br>2. `api.swanlab.cn`：用于 License 在线激活与校验。 |
+| 对象存储 | 兼容 AWS S3 协议 | SwanLab 上报的媒体资源等文件默认保存在对象存储中，为节约存储成本，推荐**外部集成对象存储**，确保兼容 S3 API |
 
-## 1. 快速开始
+## 🧾 资源清单
+### 应用服务镜像
+> ⚠️ 注意： `value.yaml` 应用镜像的 tag **默认设置为空字符串**，可以从 template 中自动同步最新的版本号作为镜像标签，一般无需修改。特殊热更新补丁版本镜像需要手动填充 tag。
 
+| 组件 | 镜像地址 | values.yaml 配置路径 | 说明 |
+|------|----------|---------------------|------|
+| swanlab-server | `repo.swanlab.cn/self-hosted/swanlab-server:<APP_VERSION>` | `service.server.image` | 后端核心服务 |
+| swanlab-house | `repo.swanlab.cn/self-hosted/swanlab-house:<APP_VERSION>` | `service.house.image` | 后端实验指标OLAP服务 |
+| swanlab-cloud | `repo.swanlab.cn/self-hosted/swanlab-cloud:<APP_VERSION>` | `service.cloud.image` | 前端实验图表渲染组件 |
+| swanlab-next | `repo.swanlab.cn/self-hosted/swanlab-next:<APP_VERSION>` | `service.next.image` | 前端UI |
+
+### 基础设施镜像
+> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](/self_host/kubernetes/deploy.md#_3-1-自定义基础服务资源)时，以下对应镜像可忽略（使用自建的外部服务）。
+
+::: warning
+SwanLab 私有化版本服务的**数据库采用单实例模式**，未来在架构上会有变更。**为保证架构与测试行为的一致性**，除 **S3 对象存储** 外，我们 **暂不推荐使用云数据库**进行接入，推荐使用 **云硬盘SSD** 作为对应基础服务的 PVC 存储资源的 storageClass 。
+:::
+
+| 组件 | 镜像地址 | values.yaml 配置路径 | 说明 |
+|------|----------|---------------------|------|
+| Traefik | `repo.swanlab.cn/public/traefik:3.6` | `service.gateway.` | 反向代理 / 网关入口 |
+| Identify | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2` | `service.gateway.identifyImage` | 网关鉴权辅助镜像 |
+| Busybox | `repo.swanlab.cn/public/busybox:1.37.0` | `helper.image` | 部署辅助初始化容器 |
+| Vector | `repo.swanlab.cn/public/vector:0.51.1-debian` | `vector.image` | 实验指标采集缓冲队列 |
+| PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1` | `dependencies.postgres.image` | PostgreSQL关系型数据库（用户、项目、实验元数据） |
+| Redis | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8` | `dependencies.redis.image` | 缓存与会话存储 |
+| ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3` | `dependencies.clickhouse.image` | 实验指标与日志列数据库 |
+| MinIO | `repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-09-07T16-13-09Z` | `dependencies.s3.image` | S3 兼容对象存储（实验媒体资源与导出日志文件） |
+| MinIO MC | `repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-08-13T08-35-41Z` | `dependencies.s3.mcImage` | MinIO 客户端工具（初始化 bucket 等） |
+
+
+
+## 🪜 安装指引
+::: info
+本指引按照 SwanLab K8s 私有化服务的最佳实践进行安装，推荐 **【外部集成 S3 对象存储】 + 【集群数据库通过 PVC 挂载云硬盘】** 的方案。如您有特殊集成需求，可参考 [自定义 value 配置](/self_host/kubernetes/configuration.md) 进行修改
+:::
+
+### 1. 创建 S3 Secret
+推荐使用已有的在线对象存储服务（必须兼容AWS S3协议），请确保您已创建好**具有可写权限的 AK/SK**，参考下列 yaml: 
+::: details swanlab-self-hosted-secret.yaml 模板
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: swanlab-self-hosted-secret-s3
+  namespace: <your_namespace> # 请替换为实际使用的命名空间
+type: Opaque
+stringData:
+  accessKey: xxxx
+  secretKey: xxxx
+
+```
+:::
+
+```bash
+# 在集群中创建 secret
+kubectl apply -f swanlab-self-hosted-secret.yaml
+
+# 查看 secret
+kubectl get secret swanlab-self-hosted-secret-s3 -n <your_namespace>
+```
+
+### 2. 创建 PVC
+
+SwanLab 私有化服务中，主要依赖以下基础服务的存储资源：
+
+| 基础资源 | PVC 命名 | 存储大小推荐 |
+|---------|----------|-------------|
+| Redis | `swanlab-redis-pvc` | ≥ 50G |
+| PostgreSQL | `swanlab-postgres-pvc` | ≥ 100G |
+| ClickHouse | `swanlab-clickhouse-pvc` | ≥ 1000G |
+| Vector | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | 每个副本各自 ≥ 60G， 两块独立存储|
+| 「**可选**」MinIO | `swanlab-minio-pvc` / `data-swanlab-self-hosted-vector-1` | ≥ 1000G，建议优先使用在线对象存储 |
+
+::: warning
+- `storageClassName` 应以**您集群中挂载的云硬盘类型为准**（例如：腾讯云默认的云硬盘 `cbs`），要求**支持动态扩容与快照策略**
+- Vector 部署为 `StatefulSet`，PVC名称默认**不可修改**
+- 务必确保 `postgresr/redis/clickhouse` 相关的 PVC 均已处于 **Bound** 状态后再执行后续安装步骤
+:::
+
+::: details swanlab-self-hosted-pvc.yaml 模板
+
+```yaml
+# ----------------------------
+# PersistentVolumeClaim for Redis
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swanlab-redis-pvc
+  namespace: <your_namespace> # 替换为实际命名空间
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""      # 替换为您集群中实际的 storageClass
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for PostgreSQL
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swanlab-postgres-pvc
+  namespace: <your_namespace> # 替换为实际命名空间
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: ""      # 替换为您集群中实际的 storageClass
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for ClickHouse
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swanlab-clickhouse-pvc
+  namespace: <your_namespace> # 替换为实际命名空间
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+  storageClassName: ""      # 替换为您集群中实际的 storageClass
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for Vector-0
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-swanlab-self-hosted-vector-0
+  namespace: <your_namespace> # 替换为实际命名空间
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 60Gi
+  storageClassName: ""      # 替换为您集群中实际的 storageClass
+  volumeMode: Filesystem
+---
+# ----------------------------
+# PersistentVolumeClaim for Vector-1
+# ----------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-swanlab-self-hosted-vector-1
+  namespace: <your_namespace> # 替换为实际命名空间
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 60Gi
+  storageClassName: ""      # 替换为您集群中实际的 storageClass
+  volumeMode: Filesystem
+```
+
+:::
+
+```bash
+# 创建 PVC
+kubectl apply -f swanlab-self-hosted-pvc.yaml
+
+# 验证 PVC 状态（务必确保除 vector 外全部 Bound）
+kubectl get pvc -n <your_namespace>
+```
+
+
+
+### 3. value 填写
+
+完整的 `value.yaml` 配置项可参考 [自定义 Value 配置说明](/self_host/kubernetes/configuration.md) 文档。
+
+您可以在 [values.yaml 模板](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml) 查看 `swanlab-self-hosted` 使用的原始 value 模板，也可以通过下列指令查看：
+
+```bash
+helm show values swanlab/self-hosted
+```
+
+我们 **强烈建议您保存好部署使用的 `values.yaml`，以便后续正常升级**，以下是相关的 `value.yaml` 修改说明: 
+
+#### 3.1 PVC 绑定
+
+`dependencies` 字段下各组件的 `existingClaim` 需与第 2 步已创建的 PVC 名称对齐：
+
+| 组件 | values.yaml 路径 | 对应 PVC 名称 |
+|------|-----------------|--------------|
+| PostgreSQL | `dependencies.postgres.persistence.existingClaim` | `swanlab-postgres-pvc` |
+| Redis | `dependencies.redis.persistence.existingClaim` | `swanlab-redis-pvc` |
+| ClickHouse | `dependencies.clickhouse.persistence.existingClaim` | `swanlab-clickhouse-pvc` |
+
+修改示例: 
+
+::: details dependencies PVC 修改示例
+
+::: code-group
+
+```yaml [PostgreSQL]
+dependencies:
+  postgres: # PostgreSQL 数据库配置
+    fullnameOverride: ""
+
+    image: # 镜像配置
+      # 完整镜像仓库路径（例如 ghcr.io/cloudnative-pg/postgresql）
+      repository: repo.swanlab.cn/self-hosted/postgres
+      # 镜像标签/版本。建议 SwanLab 使用 16.x 及以上版本
+      tag: "16.1"
+      # Kubernetes 镜像拉取策略（Always、IfNotPresent、Never）
+      pullPolicy: "IfNotPresent"
+
+    username: ""
+    password: ""
+
+    persistence: # 持久化存储配置
+      # 用于动态供应的 Kubernetes StorageClass
+      storageClass: "disk-cloud-auto"
+      # 数据库存储卷大小
+      storageSize: "10Gi"
+
+      # 使用已有的 PVC（留空则自动创建新的 pvc）
+      existingClaim: "swanlab-postgres-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 postgres PVC 名称
+
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
+```
+
+```yaml [Redis]
+  redis: # Redis 配置
+    fullnameOverride: ""
+
+    image: # 镜像配置
+      # 完整镜像仓库路径（例如 redis/redis-stack）
+      repository: repo.swanlab.cn/self-hosted/redis-stack
+      # 镜像标签/版本
+      tag: "7.4.0-v8"
+      # Kubernetes 镜像拉取策略（Always、IfNotPresent、Never）
+      pullPolicy: "IfNotPresent"
+
+    persistence: # 持久化存储配置
+      storageClass: "disk-cloud-auto"
+      storageSize: "10Gi"
+
+      # 使用已有的 PVC（留空则自动创建新的 pvc）
+      existingClaim: "swanlab-redis-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 redis PVC 名称
+
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
+```
+
+```yaml [ClickHouse]
+  clickhouse: # ClickHouse 配置
+    fullnameOverride: ""
+
+    image: # 镜像配置
+      # 完整镜像仓库路径（例如 clickhouse/clickhouse-server）
+      repository: repo.swanlab.cn/self-hosted/clickhouse-server
+      # 镜像标签/版本
+      tag: "24.3"
+      pullPolicy: "IfNotPresent"
+
+    # 认证凭据
+    # 如果使用 existingSecret 则留空
+    username: ""
+    password: ""
+
+    persistence: # 持久化存储配置
+      storageClass: "disk-cloud-auto"
+      storageSize: "20Gi"
+
+      # 使用已有的 PVC（留空则自动创建新的 pvc）
+      existingClaim: "swanlab-clickhouse-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 clickhouse PVC 名称
+
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
+```
+
+:::
+
+
+
+#### 3.2 应用镜像标签
+`service` 下的四个应用镜像（server / house / cloud / next）的 `tag` 应设置为**空字符串**，Chart 会在渲染时自动注入正确的版本号。
+
+#### 3.3 Vector 存储
+`vector.persistence.storageClass` 和 `vector.persistence.storageSize`，与创建 vector PVC 时的大小保持一致，默认size 需修改为 `60Gi`。
+
+
+#### 3.4 外部 S3 集成配置
+
+`integrations.s3` 字段需要根据您使用的对象存储服务手动填写，推荐 public 桶和 private 桶分离。如您的云厂商对 S3 协议的 endpoint 访问做了区分，请特别注意应填写 S3 endpoint。详细的字段说明与配置示例，请参阅 [外部 S3 集成](/self_host/kubernetes/configuration.md#外部对象存储-s3-integrations-s3) 章节。
+
+### 4. 添加 helm 仓库
 您可以通过[helm](https://helm.sh/)安装SwanLab私有化服务K8S版。
 
 首先建立本地仓库映射：
 
 ```bash
 helm repo add swanlab https://helm.swanlab.cn
+# 更新仓库
+helm repo update
+# 列出所有 chart 版本
+helm search repo swanlab/self-hosted --versions
+
 ```
 
-`swanlab`这个仓库将包含SwanLab官方开源的所有Charts，你可以使用如下命令安装SwanLab私有化服务：
+### 5. 执行安装
+您可以根据集群网络环境选择以下两种安装方式之一。
+
+#### 选项一：Helm 仓库安装
+
+如果您的**集群节点可以直接访问 Helm 仓库**（即集群节点可以直接访问 `github.com`），可以参考如下命令执行安装：
+> ⚠️ 注意：https://helm.swanlab.cn 的 chart 包在 [GitHub Release](https://github.com/SwanHubX/charts/releases )做版本 tag 索引 ， **请提前确认网络连通性!**
 
 ```bash
-helm install swanlab-self-hosted swanlab/self-hosted
+# 建议先使用 --dry-run 验证模板兼容性
+helm install swanlab-self-hosted swanlab/self-hosted \
+  -f <your_own_values.yaml> \
+  --namespace <your_namespace> \
+  --dry-run
+```
+- 确认无报错后，去掉 `--dry-run` 选项执行安装
+
+
+#### 选项二：本地 Chart 包安装
+
+如果您的**集群节点无法直接访问 Helm 仓库**（即集群节点无法直接访问 `github.com`），可以通过 OCI 方式拉取 chart 包到本地后执行安装：
+
+> 如遇到 401 认证失败问题，可以通过 `helm registry logout xxx.com` 的形式清除本机此前存在的 helm 登录态。
+
+```bash
+# 拉取 chart 包到本地
+helm pull oci://swanlab-registry.cn-hangzhou.cr.aliyuncs.com/chart/self-hosted --version <latest_chart_version>
+# 解压 chart 包，预期只有一个 self-hosted/ 文件夹
+tar -zxvf self-hosted-<latest_chart_version>.tgz
 ```
 
-:::warning 提示
-您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看`self-hosted`的所有可配置项，于此同时我们建议您保存好您的`values.yaml`
-:::
+然后使用本地 chart 包更新验证：
+```bash
+# 建议先使用 --dry-run 验证模板兼容性
+helm install swanlab-self-hosted ./self-hosted/ \
+  -f <your_own_values.yaml> \
+  --namespace <your_namespace> \
+  --dry-run
+```
+- 确认无报错后，去掉 `--dry-run` 选项执行安装
 
-通过安装 `swanlab/self-hosted`（下面简称`self-hosted`），即可在k8s上安装SwanLab私有化部署版应用，安装结果会在终端打印：
+---
+
+通过安装 `swanlab/self-hosted`，即可在k8s上安装SwanLab私有化部署版应用，安装结果会在终端打印类似如下信息：
 
 ```bash
 Release "swanlab-self-hosted" has been upgraded. Happy Helming!
@@ -83,7 +439,10 @@ Get the application URL by running these commands:
    https://docs.swanlab.cn/self_host/kubernetes/deploy.html
 ```
 
-如上所示，`self-hosted`默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。如果您希望**开启外部访问（通过IP或域名）**，请参考[3.6 配置应用访问入口](/self_host/kubernetes/deploy.md#_3-6-配置应用访问入口)。
+如上所示，`swanlab-self-hosted` 私有化服务默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。
+如果您希望**开启外部访问（通过IP或域名）**，请参考 [配置应用访问入口](/self_host/kubernetes/configuration.md#配置应用访问入口)。
+
+---
 
 下面是一个在本机访问的例子，打开终端并执行：
 
@@ -95,6 +454,8 @@ kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/create-account.png)
 
+## 📖 License 激活
+### 个人版激活
 现在，你需要激活你的主账号。激活需要1个License，个人使用可以免费在[SwanLab官网](https://swanlab.cn)申请一个，位置在 「设置」-「账户与许可证」。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/apply-license.png)
@@ -103,277 +464,89 @@ kubectl port-forward --namespace self-hosted svc/swanlab-self-hosted 8080:80
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/quick-start.png)
 
+### 企业版激活
+如您需要测试企业版能力，请联系 [contact@swanlab.cn](mailto:contact@swanlab.cn)，我们会将测试 License 发送到该email中。
 
-## 2. 资源清单
 
-为了您更好理解SwanLab的服务状态本部分将列出SwanLab服务运行包含的所有部署资源和对应特征——`self-hosted`大致包含两种资源：基础服务资源以及应用服务资源。
+## ⚙️ 验证测试
+部署完成后，可通过下面 Python 代码用于验证标量与媒体的指标上报
 
-### 2.1 基础服务资源
+::: details 指标上报测试
+```python
+import swanlab
+import random
+import numpy as np  # 添加 NumPy 导入
 
-基础服务资源指的是数据库、对象存储等SwanLab应用依赖的必要资源，他们包括：
+swanlab.login(
+    api_key="xxxxx",
+    host="https://xxxxx" 
+)
 
-1. **PostgreSQL单实例**：存储SwanLab核心数据
-2. **redis单实例**：存储服务cache
-3. **clickhouse单实例**：存储实验日志资源
-4. **minio单实例**：存储媒体资源
-5. **traefik单实例**：网关和应用入口
+# 创建一个SwanLab项目
+swanlab.init(
+    # 设置项目名
+    project="my-first-project",
+    experiment_name="my-first-experiment",
+    # 设置超参数
+    config={
+        "learning_rate": 0.02,
+        "architecture": "CNN",
+        "dataset": "CIFAR-100",
+        "epochs": 10
+    }
+)
 
-### 2.2 应用服务资源
+# 模拟一次训练
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+    acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+    loss = 2 ** -epoch + random.random() / epoch + offset
+    swanlab.log({
+        "step_time": acc,
+        "speed": loss
+    })
 
-应用服务资源指的是SwanLab核心的业务资源——这些服务的镜像会跟随`self-hosted`版本更新变动——他们包括：
+# 生成随机噪声图像（64x64 RGB，随机像素值）
+random_noise = np.random.randint(0, 255, (64, 64, 3), dtype=np.uint8)
+img = swanlab.Image(random_noise, caption="Random Noise")
+swanlab.log({
+    "image": img
+})
 
-1. **SwanLab-Server**：SwanLab核心后端服务
-2. **SwanLab-House**：SwanLab指标计算与分析服务
-3. **SwanLab-Cloud**：SwanLab前端展示组件
-4. **SwanLab-Next**：SwanLab前端展示组件
-5. **Traefik-Proxy**：基于Traefik封装的网关组件
+# [可选] 完成训练，这在notebook环境中是必要的
+swanlab.finish()
 
-通常情况下，您可以随意改动这些应用服务资源的副本数量，所有的可配置字段都可以通过如下命令获取：
-
-```bash
-helm show values swanlab/self-hosted
 ```
-
-
-## 3. 配置自定义资源
-
-您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看self-hosted的所有可配置项。在本部分将说明一些常用的、SwanLab官方推荐的配置实践。
-
-
-### 3.1 自定义基础服务资源
-
-如您所见，`self-hosted`部署的所有基础服务都为单实例，如果您在寻求企业级稳定性，这并不能满足需求。因此`self-hosted`支持外挂基础服务资源链接——你可以通过`integrations`部分配置他们。接下来分别讲述如何使用各种基础服务资源。
-
-我们在[values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)中撰写了详细的注释和密钥数据结构说明。需要注意的是，如果您将任一集成基础服务资源开启（例如设置`integrations.postgres.enabled`为`true`），`self-hosted`部署的单实例服务将被销毁。
-
-
-#### 3.1.1 Postgres
-
-如果您希望使用自己部署的cnpg集群或者使用云厂商的服务，您只需要：
-
-1. 将`integrations.postgres.enabled`设置为`true`
-2. 设置一个Secret，通过`integrations.postgres.existingSecret`传入此密钥名称，密钥的信息包括：
-
-| `.data.<keys>` | 解释 |
-| --- | --- |
-| `username` | 可读可写用户名称 |
-| `password` | 可读可写用户密码 |
-| `primaryUrl` | 可读可写数据库连接串，格式类似于： `postgresql://{username}:${password}@postgres:5432/app?schema=public` |
-| `replicaUrl` | 只读数据库连接串，一般用于负载均衡并且除了账号密码以外全部与primaryUrl相同。如果并没有配置只读用户/集群，可使用可读可写数据库连接串代替 |
-
-3. 通过`values.yaml`设置`integrations.postgres`的其他配置
-
-最终配置示例如下：
-```yaml
-integrations:
-  postgres:
-    enabled: true
-    host: "example.postgres"
-    port: 5432
-    database: "app"
-    existingSecret: integration-postgres
-```
-
-> 请保证上述配置与secret中能对应上
-
-
-#### 3.1.2 Redis
-
-如果您希望使用自己部署的redis集群或者使用云厂商的服务，您只需要：
-1. 将`integrations.redis.enabled`设置为`true`
-2. 设置一个Secret，通过`integrations.redis.existingSecret`传入此密钥名称，密钥的信息包括：
-
-| `.data.<keys>` | 解释 |
-| --- | --- |
-| `url` | 数据库连接串，格式类似于： `redis://{username}:${password}@redis:6379` |
-
-3. 通过`values.yaml`设置`integrations.redis`的其他配置
-
-最终配置示例如下：
-
-```yaml
-integrations:
-  redis:
-    enabled: true
-    host: "example.redis"
-    port: 6379
-    database: "0"
-    existingSecret: integration-redis
-```
-
-> 请保证上述配置与secret中能对应上
-
-
-#### 3.1.3 Clickhouse
-
-如果您希望使用自己部署的clickhouse集群或者使用云厂商的服务，您只需要：
-1. 将`integrations.clickhouse.enabled`设置为`true`
-2. 设置一个Secret，通过`integrations.clickhouse.existingSecret`传入此密钥名称，密钥的信息包括：
-
-| `.data.<keys>` | 解释 |
-| --- | --- |
-| `username` | 可读可写用户名称 |
-| `password` | 可读可写用户密码 |
-
-3. 通过`values.yaml`设置`integrations.clickhouse`的其他配置
-
-最终配置示例如下：
-
-```yaml
-integrations:
-  clickhouse:
-    enabled: true
-    host: "example.clickhouse"
-    httpPort: 8123
-    tcpPort: 9000
-    database: "app"
-    existingSecret: integration-clickhouse
-```
-
-> 请保证上述配置与secret中能对应上
-
-    
-#### 3.1.4 对象存储
-
-如果您希望使用自己部署的minio集群或者使用云厂商的服务（必须兼容S3协议），您只需要：
-1. 将`integrations.s3.enabled`设置为`true`
-2. 设置一个Secret，通过`integrations.s3.existingSecret`传入此密钥的名称，密钥信息包括：
-
-| `.data.<keys>` | 解释 |
-| --- | --- |
-| `accessKey` | 对象存储访问密钥 |
-| `secretKey` | 对象存储密钥 |
-
-3. 通过`values.yaml`设置`integrations.s3`的其他配置
-最终配置示例如下：
-```yaml
-integrations:
-  s3:
-    enabled: true
-    public:
-      ssl: true
-      endpoint: "xxx.s3.com"
-      region: "cn-beijing"
-      pathStyle: false
-      port: 443
-      domain: "https://xxx.xxxx.s3.com"
-      bucket: "swanlab-public"
-    private:
-      ssl: true
-      endpoint: "xxx.s3.com"
-      region: "cn-beijing"
-      pathStyle: false
-      port: 443
-      bucket: "swanlab-private"
-    existingSecret: integration-s3
-```
-
-> 请保证上述配置与secret中能对应上
-
-:::warning
-- publicBucket的权限为**公有读私有写**，privateBucket的权限为**私有读写**
-- 当您选择自定义对象存储服务时，请保证您的对象存储服务在可以直接通过外部访问（通过IP或域名）
-- 您的对象存储密钥必须对 **publicBucket** 和 **privateBucket** 同时有写权限和S3签名权限
-
 :::
 
+预期效果如下图所示⬇️：
 
-### 3.2 自定义存储资源
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260603151219153.png"  style="width:60%"/>
 
-如果您希望使用`self-hosted`部署的单实例基础服务，那么我们建议您自己声明`storage-class`以支持数据持久化。
+可以检查如下功能：
+- ⬜ 查看指标是否能够正常上报
+- ⬜ 查看图像是否正常上传并显示
+- ⬜ 查看 metric 的 csv 下载是否都顺利
+- ⬜ 查看用户头像是否能够正常显示
 
-在进行自定义基础资源的存储类之前，请确保：
-1. 这个基础服务资源并没有开启`integrations`
-2. 确保您的`storage-class`或者`claim`存在于集群中
+##  🧱 额外说明
 
+您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看 `self-hosted` 的所有可配置项。
 
-#### 3.2.1 基础服务资源的存储类
+详细的字段说明与配置实践，请参阅 [自定义 Value 配置说明](/self_host/kubernetes/configuration) 文档，其中涵盖：
 
-> 基础服务资源的定义，请见本文档 2.1
+- **全局配置**：Pod 反亲和性、登录域名等
+- **应用服务**：副本数量、资源限制、标签与注解等
+- **网关配置**：应用访问入口、端口等
+- **内置基础服务**：PostgreSQL / Redis / ClickHouse / MinIO 的存储资源配置
+- **外部服务集成**：接入外部 PostgreSQL、Redis、ClickHouse、S3 对象存储
 
-你可以通过`dependencies`部分配置基础服务资源。以`postgres`为例：
-
-1. 如果您希望`self-hosted`生成存储卷，可以通过配置`dependencies.postgres.persistence`下的`storageClass`和`storageSize`配置存储卷类型和大小
-2. 如果您已经有存储卷，可以通过`dependencies.postgres.persistence.existingClaim`配置一个已经存在的存储卷
-
-通常，配置`dependencies.postgres.persistence.existingClaim`是一个比较推荐的做法，这将确保存储资源由您自己管理。
-
-
-#### 3.2.2 应用服务资源的存储类
-
-> 应用服务资源的定义，请见本文档 2.2
-
-由于目前技术限制，`swanlab-house`以`StatefulSet`部署，因此您需要为它挂载存储卷。与配置基础服务资源类似，您需要配置`service.house.persistence`下的字段。需要注意的是，这里并不允许配置`existingClaim`。
-
-:::warning
-`swanlab-house`会在存储卷下存储一些指标中间产物，一般情况下您不需要关心此存储卷中的数据。
-我们会在未来移除这一设计。
-:::
-
-
-### 3.3 增加应用副本以提高服务质量
-
-我们为`service`字段下的所有服务提供了`replicas`接口，您可以自由更改其数量，根据SwanLab的运维经验，绝大多数场景下：
-1. `server`服务的副本数量为3
-2. `house`服务的副本数量为3
-3. `next`服务的副本数量为2
-4. `cloud`服务的副本数量为1
-当然，应用性能是一个复杂的计算指标，通常它还取决于资源限制，我们也提供了`resources`等接口允许您配置应用的资源用量。
-
-### 3.4 更改Pod反亲和性
-
-您可以通过设置`global.podAntiAffinityPreset`来设置Pod反亲和性以提升容灾能力：
-
-```yaml
-global:
-  # Kubernetes Pod Affinity/Anti-Affinity settings
-  # We use Topology Spread Constraints to achieve pod distribution across nodes.
-  podAntiAffinityPreset: "soft" # soft, hard, or none
-```
-默认情况为`soft`，这意味着所有Pod将均匀分布在各个Node上。您可以将其设置为`hard`以确保同一服务Pod不会分布在同一Node上，或者设置为`none`以禁用Pod反亲和性。
-
-
-### 3.5 定义声明、标签等元数据
-
-对于任一服务，我们定义了如下接口以方便您调度SwanLab应用容器：
-
-1. `resources`：限定服务所需CPU和RAM资源
-2. `customLabels`：自定义应用标签
-3. `customAnnotations`：自定义应用注解
-4. `customTolerations`：自定义容忍度
-5. `customNodeSelector`：自定义节点选择器
-
-您可以通过这些资源自由管理和调度SwanLab应用。
-
-### 3.6 配置应用访问入口
-
-应用服务在集群中的域名为您部署的release名称，举个例子，假设您的`cluster domain`为`cluster.local`，部署命令为：
-
-```bash
-helm install swanlab-self-hosted swanlab/self-hosted -n self-hosted
-```
-
-- 应用在`self-hosted`命名空间下的域名为`swanlab-self-hosted`
-- 应用在`kubernetes`集群下的域名为：`swanlab-self-hosted.self-hosted.svc.cluster.local`
-
-您可以基于如上信息编写负载均衡策略。通常建议您优先使用 **独立域名（Host-based）** 来配置访问策略，以规避因路径规则复杂或变更导致的路由冲突。
-
-**基于架构解耦原则**，Self-hosted 不内置 Ingress 控制器。您需要在集群的负载均衡器（或 Ingress）上配置外部访问入口，并由其负责 **TLS 终止（HTTPS 卸载）**。
-
-**在安全策略方面**，应用默认信任所有的 `X-Forwarded-*` 请求头。如果您需要更严格的头部校验或转发控制，请务必在负载均衡层统一实施——这有可能影响到内部S3的签名效果，如果您使用外部对象存储服务，则不需要有这方面担忧。
-
-
-### 3.7 更改swanlab.login显示的域名
-
-默认情况下，`<Your Host>/space/~/quick-start` 页面中显示的 **login host** 会自动使用您当前访问前端的域名 `<Your Host>`。
-
-如果您需要修改此值，可以通过配置 `global.settings.loginHost` 将其指定为您期望的域名。**请注意**，此设置不会影响实际的后端服务地址，您需要自己配置对应的转发规则。
-
-### 3.8 更新、回滚服务
+### 3.1 更新、回滚服务
 
 如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](/self_host/kubernetes/upgrade)文档。
 
-### 3.9 接入Prometheus
+### 3.2 接入Prometheus
 
-SwanLab的应用服务暂不支持接入`Prometheus`，此功能正在开发中，敬请期待！
+文档待更新，敬请期待。
 
