@@ -532,7 +532,7 @@ swanlab.finish()
 
 ##  🧱 额外说明
 
-您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看 `self-hosted` 的所有可配置项。
+您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看 `swanlab-self-hosted` 的所有可配置项。
 
 详细的字段说明与配置实践，请参阅 [自定义 Value 配置说明](/self_host/kubernetes/configuration) 文档，其中涵盖：
 
@@ -542,11 +542,11 @@ swanlab.finish()
 - **内置基础服务**：PostgreSQL / Redis / ClickHouse / MinIO 的存储资源配置
 - **外部服务集成**：接入外部 PostgreSQL、Redis、ClickHouse、S3 对象存储
 
-### 3.1 更新、回滚服务
+### 更新与回滚
 
 如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](/self_host/kubernetes/upgrade)文档。
 
-### 3.2 接入Prometheus
+### Prometheus 可观测接入指引
 
 文档待更新，敬请期待。
 

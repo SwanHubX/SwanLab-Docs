@@ -1,6 +1,6 @@
 # 自定义 Value 配置说明
 
-> 本文档说明 `values.yaml` 中各字段的含义与配置方式。完整配置示例请参阅 [Kubernetes 部署指引](https://rcnpx636fedp.feishu.cn/wiki/KNHrwP796iscZOkMGldcSuPKnNb)。
+> 本文档说明 `values.yaml` 中各字段的含义与配置方式。
 
 ## 全局配置（`global`）
 
