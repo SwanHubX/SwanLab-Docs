@@ -1,4 +1,5 @@
 <script setup>
+// Deprecated: Docs Copilot / 文档助手 is offline; keep this component for rollback.
 import { useData } from 'vitepress'
 const { isDark } = useData()
 </script>

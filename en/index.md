@@ -18,9 +18,10 @@ hero:
     - theme: github
       text: GitHub
       link: https://github.com/SwanHubX/SwanLab
-    - theme: ai-assistant
-      text: Docs Copilot
-      link: https://chat.swanlab.cn/
+    # Deprecated: Docs Copilot / 文档助手 is offline; keep the home action commented for rollback.
+    # - theme: ai-assistant
+    #   text: Docs Copilot
+    #   link: https://chat.swanlab.cn/
   image:
     src: /page.png
     alt: VitePress
@@ -127,7 +128,7 @@ features:
   background-color:rgb(39, 39, 39);
 }
 
-/* AI文档助手按钮样式 */
+/* Deprecated: AI docs assistant button styles are offline; keep for rollback. */
 .VPButton.ai-assistant {
   position: relative;
   color: white;

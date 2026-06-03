@@ -110,9 +110,10 @@ export const zh = defineConfig({
         { text: '关于我们', link: base_path_guide_cloud + '/community/emotion-machine' },
       ]
       },
-      {
-        component: 'HeaderDocHelperButton',
-      },
+      // Deprecated: 文档助手 / Docs Copilot 已下线，组件代码暂时保留用于回滚。
+      // {
+      //   component: 'HeaderDocHelperButton',
+      // },
       {
         component: 'HeaderButton',
       },

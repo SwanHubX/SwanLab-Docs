@@ -18,9 +18,10 @@ hero:
     - theme: github
       text: GitHub
       link: https://github.com/SwanHubX/SwanLab
-    - theme: ai-assistant
-      text: 文档助手
-      link: https://chat.swanlab.cn/
+    # Deprecated: 文档助手 / Docs Copilot 已下线，首页入口暂时保留注释用于回滚。
+    # - theme: ai-assistant
+    #   text: 文档助手
+    #   link: https://chat.swanlab.cn/
 
   image:
     src: /page.png
@@ -195,7 +196,7 @@ features:
   background-color:rgb(39, 39, 39);
 }
 
-/* AI文档助手按钮样式 */
+/* Deprecated: AI文档助手按钮样式已下线，暂时保留用于回滚。 */
 .VPButton.ai-assistant {
   position: relative;
   color: white;

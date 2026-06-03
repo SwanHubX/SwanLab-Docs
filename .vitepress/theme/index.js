@@ -7,6 +7,7 @@ import './custom.css'
 import HeaderButton from './components/HeaderButton.vue'
 import HeaderButtonEN from './components/HeaderButtonEN.vue'
 import HeaderGithubButton from './components/HeaderGithubButton.vue'
+// Deprecated: Docs Copilot / 文档助手 is offline; keep components registered for temporary rollback.
 import HeaderDocHelperButton from './components/HeaderDocHelperButton.vue'
 import HeaderDocHelperButtonEN from './components/HeaderDocHelperButtonEN.vue'
 import CopyOrDownloadAsMarkdownButtons from './components/CopyOrDownloadAsMarkdownButtons.vue'
@@ -17,6 +18,7 @@ export default {
     app.component('HeaderButton', HeaderButton)
     app.component('HeaderButtonEN', HeaderButtonEN)
     app.component('HeaderGithubButton', HeaderGithubButton)
+    // Deprecated: not used in nav while Docs Copilot / 文档助手 is offline.
     app.component('HeaderDocHelperButton', HeaderDocHelperButton)
     app.component('HeaderDocHelperButtonEN', HeaderDocHelperButtonEN)
     app.component('CopyOrDownloadAsMarkdownButtons', CopyOrDownloadAsMarkdownButtons)
