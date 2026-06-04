@@ -93,10 +93,12 @@ export const en = defineConfig({
         },
       { text: 'v0.7.12', items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
-        { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
-        { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
-        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
         { text: 'Docs GitHub', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
+        { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
+        { text: 'Online Support', link: base_path_guide_cloud + '/community/online-support' },
+        { text: 'Feedback', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI' },
+        { text: 'Join Us', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
+        { text: 'About Us', link: base_path_guide_cloud + '/community/emotion-machine' },
       ] },
       // Deprecated: Docs Copilot / 文档助手 is offline; keep the component code for rollback.
       // {

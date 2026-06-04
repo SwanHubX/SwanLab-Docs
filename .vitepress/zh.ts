@@ -102,11 +102,11 @@ export const zh = defineConfig({
       },
       { text: 'v0.7.12',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
-        { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
-        { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
-        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
+        { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
         { text: '交流群', link: base_path_guide_cloud + '/community/online-support' },
+        { text: '建议反馈', link: 'https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI'},
+        { text: '加入我们', link: 'https://rcnpx636fedp.feishu.cn/wiki/BxtVwAc0siV0xrkCbPTcldBEnNP' },
         { text: '关于我们', link: base_path_guide_cloud + '/community/emotion-machine' },
       ]
       },
@@ -560,7 +560,7 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
       text: '🚀 私有化部署',
       items: [
         {
-          text: '使用 Kubernetes部署（推荐）',
+          text: '使用 Kubernetes部署',
           collapsed: true,
           items: [
             { text: '快速开始', link: 'kubernetes/deploy' },
