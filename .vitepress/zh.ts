@@ -560,7 +560,7 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
       text: '🚀 私有化部署',
       items: [
         {
-          text: '使用 Kubernetes部署（推荐）',
+          text: '使用 Kubernetes部署',
           collapsed: true,
           items: [
             { text: '快速开始', link: 'kubernetes/deploy' },
