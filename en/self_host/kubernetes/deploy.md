@@ -1,5 +1,7 @@
 # Deploying with Kubernetes
 
+
+
 > If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/self_host/docker/migration-docker-kubernetes.md).  
 > The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.4
 
@@ -20,6 +22,10 @@ If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployme
 - [SwanHubX/charts - Self-Hosted Service Releases](https://github.com/SwanHubX/charts/releases): SwanLab's Kubernetes Helm Chart repository
 - `swanlab-self-hosted`: The **default RELEASE name** for the SwanLab self-hosted service deployed in the cluster
 - `<your_namespace>`: The namespace for the SwanLab self-hosted service deployed in the cluster, please replace with the actual namespace used for deployment
+
+::: info
+**Current APP_VERSION: v2.8.0**
+:::
 
 
 ## 🧱 Prerequisites

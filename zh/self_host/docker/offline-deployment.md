@@ -31,10 +31,10 @@ images=(
   "ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0"
   "ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z"
   "ccr.ccs.tencentyun.com/self-hosted/minio-mc:RELEASE.2025-04-08T15-39-49Z"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v1.1.1"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v1.1"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v1.1"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v1.1"
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v2.8.0"
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v2.8.0"
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v2.8.0"
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v2.8.0"
 )
 
 # 下载镜像
@@ -88,10 +88,10 @@ $ docker load -i swanlab_images.tar
 ```bash
 (base) root@swanlab:~# docker images
 REPOSITORY                                              TAG                            IMAGE ID       CREATED         SIZE
-ccr.ccs.tencentyun.com/self-hosted/swanlab-server       v1.1.1                         a2b992161a68   8 days ago      1.46GB
-ccr.ccs.tencentyun.com/self-hosted/swanlab-next         v1.1                           7a33e5b1afc5   3 weeks ago     265MB
-ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud        v1.1                           0bc15f138d79   3 weeks ago     53.3MB
-ccr.ccs.tencentyun.com/self-hosted/swanlab-house        v1.1                           007b252f5b6c   3 weeks ago     48.5MB
+ccr.ccs.tencentyun.com/self-hosted/swanlab-server       v2.8.0                         a2b992161a68   8 days ago      1.46GB
+ccr.ccs.tencentyun.com/self-hosted/swanlab-next         v2.8.0                         7a33e5b1afc5   3 weeks ago     265MB
+ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud        v2.8.0                         0bc15f138d79   3 weeks ago     53.3MB
+ccr.ccs.tencentyun.com/self-hosted/swanlab-house        v2.8.0                         007b252f5b6c   3 weeks ago     48.5MB
 ccr.ccs.tencentyun.com/self-hosted/minio-mc             RELEASE.2025-04-08T15-39-49Z   f33e36a42eec   5 weeks ago     84.1MB
 ccr.ccs.tencentyun.com/self-hosted/clickhouse           24.3                           6ffc1e932ef1   2 months ago    942MB
 ccr.ccs.tencentyun.com/self-hosted/fluent-bit           3.0                            97e65b999a4d   2 months ago    84.9MB
@@ -129,7 +129,7 @@ $ ./docker/install.sh
   ____) \ V  V / (_| | | | | |___| (_| | |_) |
  |_____/ \_/\_/ \__,_|_| |_|______\__,_|_.__/ 
                                               
- Self-Hosted Docker v1.1 - @SwanLab
+ Self-Hosted Docker v2.8.0 - @SwanLab
 
 🎉 Wow, the installation is complete. Everything is perfect.
 🥰 Congratulations, self-hosted SwanLab can be accessed using {IP}:8000
@@ -156,15 +156,15 @@ $ ./docker/install.sh
 $ docker compose ps -a                                                                                                                                             
 NAME                 IMAGE                                                                   COMMAND                  SERVICE          CREATED          STATUS                    PORTS
 swanlab-clickhouse   ccr.ccs.tencentyun.com/self-hosted/clickhouse:24.3                      "/entrypoint.sh"         clickhouse       22 minutes ago   Up 22 minutes (healthy)   8123/tcp, 9000/tcp, 9009/tcp
-swanlab-cloud        ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v1                     "/docker-entrypoint.…"   swanlab-cloud    22 minutes ago   Up 21 minutes             80/tcp
+swanlab-cloud        ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v2.8.0                   "/docker-entrypoint.…"   swanlab-cloud    22 minutes ago   Up 21 minutes             80/tcp
 swanlab-fluentbit    ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0                       "/fluent-bit/bin/flu…"   fluent-bit       22 minutes ago   Up 22 minutes             2020/tcp
-swanlab-house        ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v1                     "./app"                  swanlab-house    22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-house        ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v2.8.0                   "./app"                  swanlab-house    22 minutes ago   Up 21 minutes (healthy)   3000/tcp
 swanlab-logrotate    ccr.ccs.tencentyun.com/self-hosted/logrotate:v1                         "/sbin/tini -- /usr/…"   logrotate        22 minutes ago   Up 22 minutes             
 swanlab-minio        ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z   "/usr/bin/docker-ent…"   minio            22 minutes ago   Up 22 minutes (healthy)   9000/tcp
-swanlab-next         ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v1                      "docker-entrypoint.s…"   swanlab-next     22 minutes ago   Up 21 minutes             3000/tcp
+swanlab-next         ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v2.8.0                    "docker-entrypoint.s…"   swanlab-next     22 minutes ago   Up 21 minutes             3000/tcp
 swanlab-postgres     ccr.ccs.tencentyun.com/self-hosted/postgres:16.1                        "docker-entrypoint.s…"   postgres         22 minutes ago   Up 22 minutes (healthy)   5432/tcp
 swanlab-redis        ccr.ccs.tencentyun.com/self-hosted/redis-stack-server:7.2.0-v15         "/entrypoint.sh"         redis            22 minutes ago   Up 22 minutes (healthy)   6379/tcp
-swanlab-server       ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v1                    "docker-entrypoint.s…"   swanlab-server   22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-server       ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v2.8.0                  "docker-entrypoint.s…"   swanlab-server   22 minutes ago   Up 21 minutes (healthy)   3000/tcp
 swanlab-traefik      ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0                         "/entrypoint.sh trae…"   traefik          22 minutes ago   Up 22 minutes (healthy)   0.0.0.0:8000->80/tcp, [::]:8000->80/tcp
 ```
 

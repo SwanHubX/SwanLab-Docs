@@ -1,120 +1,102 @@
-name: 'Docs Image Release'
+name: 'Verify APP_VERSION'
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'VERSION'
+      - 'APP_VERSION'
+      - 'zh/self_host/docker/offline-deployment.md'
+      - 'en/self_host/docker/offline-deployment.md'
+      - 'zh/self_host/docker/deploy.md'
+      - 'zh/self_host/kubernetes/deploy.md'
+      - 'en/self_host/kubernetes/deploy.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'APP_VERSION'
+      - 'zh/self_host/docker/offline-deployment.md'
+      - 'en/self_host/docker/offline-deployment.md'
+      - 'zh/self_host/docker/deploy.md'
+      - 'zh/self_host/kubernetes/deploy.md'
+      - 'en/self_host/kubernetes/deploy.md'
   workflow_dispatch:
 
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
 
-env:
-  ACR_ENDPOINT: swanlab-registry.cn-hangzhou.cr.aliyuncs.com
-  ACR_NAMESPACE: internal
-  ACR_REPO: swanlab-docs
-  ACR_INSTANCE_ID: ${{ secrets.ACR_INSTANCE_ID }}
-  ACR_REPO_ID: ${{ secrets.ACR_REPO_ID }}
-
 jobs:
-  release:
-    permissions:
-      contents: write
+  verify-version:
     runs-on: ubuntu-latest
-
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: 📖 Read Version
-        id: version
+      - name: 🔍 Verify APP_VERSION consistency
         run: |
-          VERSION=$(cat VERSION | tr -d '[:space:]')
-          echo "Version: $VERSION"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          APP_VERSION=$(cat APP_VERSION | tr -d '[:space:]')
+          echo "APP_VERSION: $APP_VERSION"
 
-      # ACR auto-builds on main push → produces :latest tag.
-      # We just wait for it to finish, then alias :latest → :<version>.
-      - name: ⏳ Wait for ACR auto-build
-        id: build
-        env:
-          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
-          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
-          ALIBABA_CLOUD_REGION_ID: cn-hangzhou
-          ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
-        run: |
-          /bin/bash -c "$(curl -fsSL --connect-timeout 10 --max-time 120 https://aliyuncli.alicdn.com/setup.sh)"
-          aliyun plugin install --names cr
+          if [ -z "$APP_VERSION" ]; then
+            echo "::error::APP_VERSION file is empty"
+            exit 1
+          fi
 
-          COMMIT_SHA="${{ github.sha }}"
-          echo "Waiting for ACR build triggered by commit ${COMMIT_SHA:0:7}..."
+          # Files to check
+          FILES=(
+            "zh/self_host/docker/offline-deployment.md"
+            "en/self_host/docker/offline-deployment.md"
+            "zh/self_host/kubernetes/deploy.md"
+            "en/self_host/kubernetes/deploy.md"
+          )
 
-          for i in $(seq 1 60); do
-            sleep 10
-            RECORDS=$(aliyun cr list-repo-build-record \
-              --endpoint "$ACR_ENDPOINT" \
-              --instance-id "$ACR_INSTANCE_ID" \
-              --repo-id "$ACR_REPO_ID" \
-              --page-no 1 \
-              --page-size 5 \
-              --output cols=BuildRecordId,SourceCommit,BuildStatus rows=BuildRecords[])
-            echo "  [$i] $RECORDS"
-
-            # Check if our commit has a SUCCESS record
-            if echo "$RECORDS" | grep -q "$COMMIT_SHA.*SUCCESS\|${COMMIT_SHA:0:7}.*SUCCESS"; then
-              echo "✅ Build succeeded"
-              echo "done=true" >> "$GITHUB_OUTPUT"
-              exit 0
+          FAILED=0
+          for f in "${FILES[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "::warning::File not found: $f"
+              continue
             fi
-            if echo "$RECORDS" | grep -q "$COMMIT_SHA.*FAILED\|${COMMIT_SHA:0:7}.*FAILED"; then
-              echo "::error::ACR build FAILED"
-              exit 1
+
+            # Check swanlab-* image versions
+            MISMATCH=$(grep -nE 'swanlab-(server|house|cloud|next):v[0-9]' "$f" | grep -v "$APP_VERSION" || true)
+            if [ -n "$MISMATCH" ]; then
+              echo "::error::Version mismatch in $f:"
+              echo "$MISMATCH"
+              FAILED=1
+            fi
+
+            # Check banner version
+            BANNER_MISMATCH=$(grep -n 'Self-Hosted Docker v' "$f" | grep -v "$APP_VERSION" || true)
+            if [ -n "$BANNER_MISMATCH" ]; then
+              echo "::error::Banner version mismatch in $f:"
+              echo "$BANNER_MISMATCH"
+              FAILED=1
+            fi
+
+            # Check header version (当前/Current APP_VERSION)
+            HEADER_MISMATCH=$(grep -nE '\*\*(当前|Current)APP_VERSION: v[0-9]' "$f" | grep -v "$APP_VERSION" || true)
+            if [ -n "$HEADER_MISMATCH" ]; then
+              echo "::error::Header version mismatch in $f:"
+              echo "$HEADER_MISMATCH"
+              FAILED=1
             fi
           done
 
-          echo "::error::ACR build did not complete within 10 minutes"
-          exit 1
+          if [ "$FAILED" = "1" ]; then
+            echo ""
+            echo "Run 'make bump-version V=$APP_VERSION' to fix."
+            exit 1
+          fi
 
-      - name: 🏷️ Tag image version
-        env:
-          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ACR_USERNAME }}
-          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ACR_PASSWORD }}
-          ALIBABA_CLOUD_REGION_ID: cn-hangzhou
-          ALIBABA_CLOUD_USER_AGENT: AlibabaCloud-Agent-Skills
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          aliyun cr create-repo-tag \
-            --endpoint "$ACR_ENDPOINT" \
-            --instance-id "$ACR_INSTANCE_ID" \
-            --namespace-name "$ACR_NAMESPACE" \
-            --repo-name "$ACR_REPO" \
-            --from-tag "latest" \
-            --to-tag "$VERSION" \
-            --quiet
-          echo "✅ Tagged: $ACR_ENDPOINT/$ACR_NAMESPACE/$ACR_REPO:$VERSION"
-
-      - name: 🏷️ Push Git Tag
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          git tag "v${VERSION}"
-          git push origin "v${VERSION}"
+          echo "✅ All docs match APP_VERSION=$APP_VERSION"
 
       - name: 📦 Summary
         if: always()
         run: |
-          if [ "${{ steps.build.outcome }}" = "success" ]; then
-            VERSION="${{ steps.version.outputs.version }}"
-            echo "## 🚀 Release v${VERSION}" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "- Image: \`${ACR_ENDPOINT}/${ACR_NAMESPACE}/${ACR_REPO}:${VERSION}\`" >> "$GITHUB_STEP_SUMMARY"
-            echo "- Also tagged: \`${ACR_ENDPOINT}/${ACR_NAMESPACE}/${ACR_REPO}:latest\`" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "## ❌ Release Failed" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "ACR auto-build did not complete. Check logs." >> "$GITHUB_STEP_SUMMARY"
-          fi
+          APP_VERSION=$(cat APP_VERSION | tr -d '[:space:]')
+          echo "## 🔍 APP_VERSION Verification" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **APP_VERSION**: \`$APP_VERSION\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Status**: ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"

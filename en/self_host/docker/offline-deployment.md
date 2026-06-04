@@ -29,10 +29,10 @@ images=(
   "ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0"  
   "ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z"  
   "ccr.ccs.tencentyun.com/self-hosted/minio-mc:RELEASE.2025-04-08T15-39-49Z"  
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v1.1.1"  
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v1.1"  
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v1.1"  
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v1.1"  
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v2.8.0"  
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v2.8.0"  
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v2.8.0"  
+  "ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v2.8.0"  
 )  
 
 # Pull images  
@@ -80,8 +80,8 @@ Verify loaded images with `docker images`:
 ```bash  
 (base) root@swanlab:~# docker images  
 REPOSITORY                                              TAG                            IMAGE ID       CREATED         SIZE  
-ccr.ccs.tencentyun.com/self-hosted/swanlab-server       v1.1.1                         a2b992161a68   8 days ago      1.46GB  
-ccr.ccs.tencentyun.com/self-hosted/swanlab-next         v1.1                           7a33e5b1afc5   3 weeks ago     265MB  
+ccr.ccs.tencentyun.com/self-hosted/swanlab-server       v2.8.0                         a2b992161a68   8 days ago      1.46GB  
+ccr.ccs.tencentyun.com/self-hosted/swanlab-next         v2.8.0                         7a33e5b1afc5   3 weeks ago     265MB  
 ... [truncated for brevity]  
 ```  
 
@@ -111,7 +111,7 @@ $ ./docker/install.sh
   ____) \ V  V / (_| | | | | |___| (_| | |_) |  
  |_____/ \_/\_/ \__,_|_| |_|______\__,_|_.__/   
                                                 
- Self-Hosted Docker v1.1 - @SwanLab  
+ Self-Hosted Docker v2.8.0 - @SwanLab  
 
 🎉 Wow, the installation is complete. Everything is perfect.  
 🥰 Congratulations, self-hosted SwanLab can be accessed using {IP}:8000  
