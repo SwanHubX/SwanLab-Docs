@@ -9,6 +9,8 @@
 目前 SwanLab 社区版本已上线阿里云计算巢服务市场，欢迎各位训练师通过阿里云一键部署使用~
 
 
+- [SwanLab 阿里云计算巢应用](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-cb2da57160444c3ebdbf)
+
 ## ⚠️ 前提条件
 
 部署 SwanLab 社区版服务实例，需要对部分阿里云资源进行访问和创建操作。因此您的账号需要包含如下资源的权限。
