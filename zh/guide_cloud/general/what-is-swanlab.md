@@ -63,7 +63,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - **断点续训记录**：支持在训练完成/中断后，补充新的指标数据到同个实验中
 
 
-**2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetection、LightGBM、XGBoost、Keras、TensorBoard、Weights & Biases、OpenAI、Swift、XTuner、Stable Baselines3、Hydra 在内的 **40+** 框架
+**2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetection、LightGBM、XGBoost、Keras、TensorBoard、Weights & Biases、Swift、XTuner、Stable Baselines3、Hydra 在内的 **40+** 框架
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integrations.png)
 
@@ -187,7 +187,6 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
 - [Hydra](/guide_cloud/integration/integration-hydra.html)
 - [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)
-- [OpenAI](/guide_cloud/integration/integration-openai.html)
 
 [更多集成](/guide_cloud/integration/integration-pytorch-lightning.html)
 

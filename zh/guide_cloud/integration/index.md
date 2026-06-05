@@ -54,5 +54,4 @@
 - [Ray](/guide_cloud/integration/integration-ray.html)
 - [Hydra](/guide_cloud/integration/integration-hydra.html)
 - [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)
-- [OpenAI](/guide_cloud/integration/integration-openai.html)
 - [SpecForge](/guide_cloud/integration/integration-specforge.html)
