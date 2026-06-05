@@ -5,6 +5,36 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.8.0 - 2026.06.05
+
+**🚀 New Features**
+- ⚡️ Complete SwanLab SDK refactor, significantly improved performance and usability
+- 🪓 Added `swanlab ping` to check network connectivity and runtime environment info
+- 🪓 Added `swanlab.async_log()` for asynchronous metric logging
+- 🪓 Added OpenAPI CLI support — query experiment logs directly via the `swanlab api` CLI
+- 🪓 SwanLab official Skill is now available: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary), install with:
+:::code-group
+```bash [npm]
+npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
+```
+
+```bash [bun]
+bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
+```
+:::
+
+- 🦄 **Private deployment only**: Added `swanlab.save()` file save interface. Not available on the public cloud version.
+- 🔧 Added new configurable environment variables
+
+
+**💥 Breaking Changes**
+- 😈 **v0.8.0 is no longer compatible with the `backup.swanlab` log format from previous versions. Historical logs must be read or processed using the corresponding older versions!!**
+- 😈 Some OpenAPI usage patterns have changed — please plan your migration accordingly
+- 😈 Removed several legacy framework integrations
+
+**🔧 Bug Fixes**
+- Fixed a large number of performance issues
+
 ## v0.7.12 - 2026.03.19
 
 **🚀 New Features**

@@ -91,7 +91,7 @@ export const en = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'v0.7.12', items: [
+      { text: 'v0.8.0', items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Docs GitHub', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
