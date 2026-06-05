@@ -1,4 +1,4 @@
-# swanlab.roc_curve
+# swanlab.echarts.roc_curve
 
 [Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/custom_charts/metrics.py)
 
@@ -46,7 +46,7 @@ swanlab.init(project="ROC-Curve-Demo", experiment_name="ROC-Curve-Example")
 
 # Log ROC curve
 swanlab.log({
-    "roc_curve": swanlab.roc_curve(y_test, y_pred_proba, title=True)
+    "roc_curve": swanlab.echarts.roc_curve(y_test, y_pred_proba, title=True)
 })
 
 swanlab.finish()
@@ -58,15 +58,15 @@ swanlab.finish()
 
 ```python
 # Don't show title (default)
-roc_curve = swanlab.roc_curve(y_test, y_pred_proba, title=False)
+roc_curve = swanlab.echarts.roc_curve(y_test, y_pred_proba, title=False)
 swanlab.log({"roc_curve_no_title": roc_curve})
 
 # Show title
-roc_curve = swanlab.roc_curve(y_test, y_pred_proba, title=True)
+roc_curve = swanlab.echarts.roc_curve(y_test, y_pred_proba, title=True)
 swanlab.log({"roc_curve_with_title": roc_curve})
 
 # Custom title
-roc_curve = swanlab.roc_curve(y_test, y_pred_proba, title="demo")
+roc_curve = swanlab.echarts.roc_curve(y_test, y_pred_proba, title="demo")
 swanlab.log({"roc_curve_with_custom_title": roc_curve})
 ```
 
@@ -77,8 +77,8 @@ import swanlab
 
 # Log multiple ML metrics
 swanlab.log({
-    "roc_curve": swanlab.roc_curve(y_test, y_pred_proba),
-    "pr_curve": swanlab.pr_curve(y_test, y_pred_proba),
+    "roc_curve": swanlab.echarts.roc_curve(y_test, y_pred_proba),
+    "pr_curve": swanlab.echarts.pr_curve(y_test, y_pred_proba),
     "accuracy": accuracy_score(y_test, y_pred),
     "f1_score": f1_score(y_test, y_pred)
 })

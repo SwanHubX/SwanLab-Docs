@@ -4,7 +4,7 @@ PR曲线展示了在不同阈值下精确率（Precision）和召回率（Recall
 
 PR曲线也特别适用于处理不平衡数据集，能够更好地评估模型在少数类上的表现。
 
-你可以使用`swanlab.pr_curve`来记录PR曲线。
+你可以使用`swanlab.echarts.pr_curve`来记录PR曲线。
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/35snhyn3wndz58r4j8d4h/chart#ZTIwZm1s-aVI2S1ZCQl8=)
 
@@ -34,7 +34,7 @@ swanlab.init(project="PR-Curve-Demo", experiment_name="PR-Curve-Example")
 
 # 记录PR曲线
 swanlab.log({
-    "pr_curve": swanlab.pr_curve(y_test, y_pred_proba, title=True)
+    "pr_curve": swanlab.echarts.pr_curve(y_test, y_pred_proba, title=True)
 })
 
 swanlab.finish()
@@ -44,15 +44,15 @@ swanlab.finish()
 
 ```python
 # 不显示标题(默认)
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title=False)
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title=False)
 swanlab.log({"pr_curve_no_title": pr_curve})
 
 # 显示标题
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title=True)
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title=True)
 swanlab.log({"pr_curve_with_title": pr_curve})
 
 # 自定义标题
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title="demo")
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title="demo")
 swanlab.log({"pr_curve_with_custom_title": pr_curve})
 ```
 

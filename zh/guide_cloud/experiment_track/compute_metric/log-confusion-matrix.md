@@ -4,7 +4,7 @@
 
 混淆矩阵是评估分类模型性能的基础工具，特别适用于多分类问题。
 
-你可以使用`swanlab.confusion_matrix`来记录混淆矩阵。
+你可以使用`swanlab.echarts.confusion_matrix`来记录混淆矩阵。
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
@@ -39,7 +39,7 @@ swanlab.init(project="Confusion-Matrix-Demo", experiment_name="Confusion-Matrix-
 
 # 记录混淆矩阵
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, class_names)
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, class_names)
 })
 
 swanlab.finish()
@@ -52,7 +52,7 @@ swanlab.finish()
 custom_class_names = ["类别A", "类别B", "类别C"]
 
 # 记录混淆矩阵
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred, custom_class_names)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred, custom_class_names)
 swanlab.log({"confusion_matrix_custom": confusion_matrix})
 ```
 
@@ -60,7 +60,7 @@ swanlab.log({"confusion_matrix_custom": confusion_matrix})
 
 ```python
 # 不指定类别名称，将使用数字索引
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred)
 swanlab.log({"confusion_matrix_default": confusion_matrix})
 ```
 
@@ -87,7 +87,7 @@ y_pred = model.predict(X_test)
 
 # 记录混淆矩阵
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, ["负类", "正类"])
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, ["负类", "正类"])
 })
 ```
 

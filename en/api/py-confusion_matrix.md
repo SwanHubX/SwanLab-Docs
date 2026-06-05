@@ -1,4 +1,4 @@
-# swanlab.confusion_matrix
+# swanlab.echarts.confusion_matrix
 
 [Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/custom_charts/metrics.py)
 
@@ -51,7 +51,7 @@ swanlab.init(project="Confusion-Matrix-Demo", experiment_name="Confusion-Matrix-
 
 # Log confusion matrix
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, class_names)
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, class_names)
 })
 
 swanlab.finish()
@@ -66,7 +66,7 @@ swanlab.finish()
 custom_class_names = ["Class A", "Class B", "Class C"]
 
 # Log confusion matrix
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred, custom_class_names)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred, custom_class_names)
 swanlab.log({"confusion_matrix_custom": confusion_matrix})
 ```
 
@@ -74,7 +74,7 @@ swanlab.log({"confusion_matrix_custom": confusion_matrix})
 
 ```python
 # Don't specify class names, numeric indices will be used
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred)
 swanlab.log({"confusion_matrix_default": confusion_matrix})
 ```
 
@@ -100,7 +100,7 @@ y_pred = model.predict(X_test)
 
 # Log confusion matrix
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, ["Negative", "Positive"])
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, ["Negative", "Positive"])
 })
 ```
 

@@ -4,7 +4,7 @@ A confusion matrix is a chart used to evaluate the performance of a classificati
 
 The confusion matrix is a fundamental tool for evaluating classification models, especially suitable for multi-class classification problems.
 
-You can use `swanlab.confusion_matrix` to log a confusion matrix.
+You can use `swanlab.echarts.confusion_matrix` to log a confusion matrix.
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
@@ -39,7 +39,7 @@ swanlab.init(project="Confusion-Matrix-Demo", experiment_name="Confusion-Matrix-
 
 # Log the confusion matrix
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, class_names)
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, class_names)
 })
 
 swanlab.finish()
@@ -52,7 +52,7 @@ swanlab.finish()
 custom_class_names = ["Class A", "Class B", "Class C"]
 
 # Log confusion matrix with custom names
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred, custom_class_names)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred, custom_class_names)
 swanlab.log({"confusion_matrix_custom": confusion_matrix})
 ```
 
@@ -60,7 +60,7 @@ swanlab.log({"confusion_matrix_custom": confusion_matrix})
 
 ```python
 # Without specifying class names, numeric indices will be used
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred)
 swanlab.log({"confusion_matrix_default": confusion_matrix})
 ```
 
@@ -86,7 +86,7 @@ y_pred = model.predict(X_test)
 
 # Log confusion matrix
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, ["Negative", "Positive"])
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, ["Negative", "Positive"])
 })
 ```
 
