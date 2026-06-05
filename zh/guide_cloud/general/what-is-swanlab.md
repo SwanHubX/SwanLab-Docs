@@ -188,7 +188,6 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [Hydra](/guide_cloud/integration/integration-hydra.html)
 - [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)
 - [OpenAI](/guide_cloud/integration/integration-openai.html)
-- [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)
 
 [更多集成](/guide_cloud/integration/integration-pytorch-lightning.html)
 

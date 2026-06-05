@@ -174,7 +174,6 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [Hydra](/guide_cloud/integration/integration-hydra.html)  
 - [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)  
 - [OpenAI](/guide_cloud/integration/integration-openai.html)  
-- [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)  
 
 [More Integrations](/guide_cloud/integration/integration-pytorch-lightning.html)  
 

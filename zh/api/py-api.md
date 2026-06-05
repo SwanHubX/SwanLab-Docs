@@ -7,7 +7,7 @@
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/api/py-openapi/logo.jpg)
 
 - 新版开放接口使用 **OOP 风格**，所有操作通过 `Api` 入口获取实体对象，实体支持懒加载（访问属性时才发起请求），并统一通过 `.json()` 序列化为 `dict`。
-- 所有操作均可通过 [`swanlab api`](./cli-swanlab-api.md) **以 CLI 命令行方式调用**，适用于脚本、CI/CD 或无需编写 Python 代码的场景。
+- 所有操作均可通过 [`swanlab api`](/api/cli-swanlab-api.md) **以 CLI 命令行方式调用**，适用于脚本、CI/CD 或无需编写 Python 代码的场景。
 
 
 > 认证优先级：显式传入的 `api_key` / `host` > `swanlab.login()` 登录态 > 环境变量 `SWANLAB_API_KEY` / `SWANLAB_API_HOST`

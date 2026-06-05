@@ -16,5 +16,4 @@
 
 ## 📝 记录类
 
-- [文件记录器](writer-filelogdir)
 - [CSV表格](writer-csv)
