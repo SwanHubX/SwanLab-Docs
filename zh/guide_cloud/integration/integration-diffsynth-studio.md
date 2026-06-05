@@ -71,7 +71,7 @@ modelscope download --model=AI-ModelScope/sdxl-vae-fp16-fix --local_dir models/k
 CUDA_VISIBLE_DEVICES="0" python examples/train/kolors/train_kolors_lora.py \
 ...
 --use_swanlab \  # [!code ++]
---swanlab_mode "cloud"  # [!code ++]
+--swanlab_mode "online"  # [!code ++]
 ```
 
 ## 开启训练
@@ -90,7 +90,7 @@ CUDA_VISIBLE_DEVICES="0" python examples/train/kolors/train_kolors_lora.py \
 --use_gradient_checkpointing \
 --precision "16-mixed" \
 --use_swanlab \
---swanlab_mode "cloud"
+--swanlab_mode "online"
 ```
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/diffsynth/ui-1.png)
