@@ -14,6 +14,7 @@
 
 1. **Sync Tracking**: If your current project uses MLflow for experiment tracking, you can use the `swanlab.sync_mlflow()` command to synchronize metrics to SwanLab while running the training script.
 2. **Convert Existing Projects**: If you want to replicate a project from MLflow to SwanLab, you can use `swanlab convert` to convert an existing MLflow project into a SwanLab project.
+3. **Sync Tracking** also supports selecting the logging mode via the `mode` parameter (`"online"` | `"local"` | `"offline"` | `"disabled"`), default is `"online"`.
 
 ::: info
 The current version only supports converting scalar charts.
@@ -30,7 +31,8 @@ Add the `swanlab.sync_mlflow()` command anywhere before `mlflow.start_run()` in 
 ```python
 import swanlab
 
-swanlab.sync_mlflow()
+swanlab.sync_mlflow()  # Default mode="online"
+# Or specify a mode: swanlab.sync_mlflow(mode="local")
 
 ...
 
@@ -108,7 +110,7 @@ Supported parameters:
 • `-t`: Conversion type, options include wandb, tensorboard, and mlflow.
 • `-p`: SwanLab project name.
 • `-w`: SwanLab workspace name.
-• `--mode`: (str) Selection mode, default is "https://github.com/kvcache-ai/ktransformers/",可选 `["cloud", "local", "offline", "disabled"]`.
+• `--mode`: (str) Selection mode, default is "online", options: `["online", "local", "offline", "disabled"]`.
 • `-l`: Logdir path.
 • `--mlflow-url`: URL of the MLflow service.
 • `--mlflow-exp`: MLflow experiment ID.
@@ -118,18 +120,28 @@ If `--mlflow-exp` is not specified, all experiments under the project will be co
 ### 2.3 Method 2: Conversion Within Code
 
 ```python
-from swanlab.converter import MLFLowConverter
+from swanlab.converter import MLFlowConverter
 
-mlflow_converter = MLFLowConverter(project="mlflow_converter")
-# mlflow_exp is optional
+mlflow_converter = MLFlowConverter(project="mlflow_converter")
+# experiment can be either experiment ID or experiment name
 mlflow_converter.run(tracking_uri="http://127.0.0.1:5000", experiment="1")
+# You can also convert a specific run only
+# mlflow_converter.run(tracking_uri="http://127.0.0.1:5000", experiment="1", run_id="abc123")
 ```
 
 This has the same effect as the command line conversion.
 
-`MLFLowConverter` supported parameters:
+`MLFlowConverter` supported parameters:
 
 • `project`: SwanLab project name.
 • `workspace`: SwanLab workspace name.
-• `mode`: (str) Selection mode, default is "cloud",可选 `["cloud", "local", "offline", "disabled"]`.
-• `logdir`: Log directory path.
+• `mode`: (str) Selection mode, default is "online", options: `["online", "local", "offline", "disabled"]`.
+• `log_dir`: Log directory path.
+• `tags`: (list[str]) Tag list.
+• `resume`: (bool) Whether to resume mode, default is `False`.
+
+`run()` method supported parameters:
+
+• `tracking_uri`: URL of the MLflow service.
+• `experiment`: MLflow experiment ID or experiment name.
+• `run_id`: (str, optional) Specify the run ID to convert. If not provided, all runs under the experiment will be converted.

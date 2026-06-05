@@ -69,7 +69,7 @@ If you need offline recording, you can add `--swanlab_mode "local"`.
 CUDA_VISIBLE_DEVICES="0" python examples/train/kolors/train_kolors_lora.py \
 ...
 --use_swanlab \
---swanlab_mode "cloud"
+--swanlab_mode "online"
 ```
 
 ## Starting the Training
@@ -88,7 +88,7 @@ CUDA_VISIBLE_DEVICES="0" python examples/train/kolors/train_kolors_lora.py \
 --use_gradient_checkpointing \
 --precision "16-mixed" \
 --use_swanlab \
---swanlab_mode "cloud"
+--swanlab_mode "online"
 ```
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/diffsynth/ui-1.png)

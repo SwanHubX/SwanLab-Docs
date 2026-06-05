@@ -44,7 +44,7 @@ With this implementation, `wandb.init()` will simultaneously initialize SwanLab,
 
 **`sync_wandb` supports two parameters:**  
 
-- `mode`: SwanLab logging mode, supporting `cloud`, `local`, and `disabled`.  
+- `mode`: SwanLab logging mode, default is `"online"`, options: `["online", "local", "offline", "disabled"]`.  
 - `wandb_run`: If set to **False**, data will not be uploaded to W&B (equivalent to `wandb.init(mode="offline")`).  
 
 :::  
@@ -119,7 +119,7 @@ Supported parameters:
 - `-t`: Conversion type (`wandb` or `tensorboard`).  
 - `-p`: SwanLab project name.  
 - `-w`: SwanLab workspace name.  
-- `--mode`: (str) Logging mode (default: `"cloud"`), options: `["cloud", "local", "offline", "disabled"]`.  
+- `--mode`: (str) Logging mode (default: `"online"`), options: `["online", "local", "offline", "disabled"]`.  
 - `-l`: Log directory path.  
 - `--wb-project`: W&B project name to convert.  
 - `--wb-entity`: W&B entity (username/team) where the project resides.  
@@ -161,7 +161,7 @@ This achieves the same result as command-line conversion.
 
 - `project`: SwanLab project name.  
 - `workspace`: SwanLab workspace name.  
-- `mode`: (str) Logging mode (default: `"cloud"`), options: `["cloud", "local", "offline", "disabled"]`.  
+- `mode`: (str) Logging mode (default: `"online"`), options: `["online", "local", "offline", "disabled"]`.  
 - `logdir`: Log directory path.  
 
 `WandbConverter.run` parameters:  
@@ -212,7 +212,7 @@ Supported parameters are as follows:
 - `-t`: Conversion type. Options: wandb, tensorboard, mlflow, wandb-local.
 - `-p`: SwanLab project name.
 - `-w`: SwanLab workspace name.
-- `--mode`: (str) Selection mode. Default is "cloud". Options: ["cloud", "local", "offline", "disabled"]
+- `--mode`: (str) Selection mode. Default is "online". Options: `["online", "local", "offline", "disabled"]`
 - `-l`: logdir path.
 - `--wb-dir`: The wandb log directory to be converted.
 - `--wb-run-dir`: The specific wandb run's directory name. If this parameter is omitted, all runs within the wb-dir will be uploaded.
@@ -235,7 +235,7 @@ Parameters supported by `WandbLocalConverter`:
 
 - `project`: SwanLab project name.
 - `workspace`: SwanLab workspace name.
-- `mode`: (str) Selection mode. Default is "cloud". Options: ["cloud", "local", "offline", "disabled"]
+- `mode`: (str) Selection mode. Default is "online". Options: `["online", "local", "offline", "disabled"]`
 - `logdir`: logdir path.
 
 Parameters supported by `WandbLocalConverter.run`:

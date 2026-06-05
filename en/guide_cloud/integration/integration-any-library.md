@@ -117,7 +117,7 @@ You can configure SwanLab's startup mode using the `mode` parameter:
 
 ```python [Cloud Mode]
 swanlab.init(
-    mode="cloud",  # Default mode
+    mode="online",  # Default mode
     )
 ```
 
