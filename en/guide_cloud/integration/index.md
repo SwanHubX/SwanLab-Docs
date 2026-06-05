@@ -54,6 +54,4 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [Ray](/en/guide_cloud/integration/integration-ray.html)
 - [Hydra](/en/guide_cloud/integration/integration-hydra.html)
 - [OmegaConf](/en/guide_cloud/integration/integration-omegaconf.html)
-- [OpenAI](/en/guide_cloud/integration/integration-openai.html)
-- [ZhipuAI](/en/guide_cloud/integration/integration-zhipuai.html)
 - [SpecForge](/en/guide_cloud/integration/integration-specforge.html)

@@ -62,7 +62,7 @@ Video Demo:
 - **Automatic Background Logging**: Logging, hardware environment, Git repo, Python environment, Python library list, project directory.  
 - **Resume Training Logging**: Supports adding new metric data to the same experiment after training completes/interrupts.  
 
-**2. ⚡️ Comprehensive Framework Integration**: Supports **40+** frameworks including PyTorch, 🤗HuggingFace Transformers, PyTorch Lightning, 🦙LLaMA Factory, MMDetection, Ultralytics, PaddleDetection, LightGBM, XGBoost, Keras, TensorBoard, Weights & Biases, OpenAI, Swift, XTuner, Stable Baselines3, and Hydra.  
+**2. ⚡️ Comprehensive Framework Integration**: Supports **40+** frameworks including PyTorch, 🤗HuggingFace Transformers, PyTorch Lightning, 🦙LLaMA Factory, MMDetection, Ultralytics, PaddleDetection, LightGBM, XGBoost, Keras, TensorBoard, Weights & Biases, Swift, XTuner, Stable Baselines3, and Hydra.  
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integrations.png)  
 
@@ -173,8 +173,6 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)  
 - [Hydra](/guide_cloud/integration/integration-hydra.html)  
 - [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)  
-- [OpenAI](/guide_cloud/integration/integration-openai.html)  
-- [ZhipuAI](/guide_cloud/integration/integration-zhipuai.html)  
 
 [More Integrations](/guide_cloud/integration/integration-pytorch-lightning.html)  
 
