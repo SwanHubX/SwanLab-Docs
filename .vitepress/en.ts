@@ -444,6 +444,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'init', link: 'py-init' },
       { text: 'log', link: 'py-log' },
+      { text: 'async_log', link: 'py-async-log' },
       { text: 'Settings', link: 'py-settings' },
       { text: 'Media data', items: [
         { text: 'Image', link: 'py-Image' },

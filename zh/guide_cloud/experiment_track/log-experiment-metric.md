@@ -90,6 +90,32 @@ print(swanlab.log({"acc": acc}))
 
 SwanLab在实验期间自动记录以下信息：
 
-- **命令行输出**：标准输出流和标准错误流被自动记录，并显示在实验页面的“日志”选项卡中。
+- **命令行输出**：标准输出流和标准错误流被自动记录，并显示在实验页面的”日志”选项卡中。
 - **实验环境**：记录包括操作系统、硬件配置、Python解释器路径、运行目录、Python库依赖等在内的数十项的环境信息。
 - **训练时间**：记录训练开始时间和总时长。
+
+## 异步记录指标
+
+:::info
+`swanlab.async_log()` 需要 SwanLab SDK **v0.8.0 或更高版本**。
+:::
+
+如果你需要记录需要耗时计算或 I/O 的指标，可以使用 `swanlab.async_log()` 在后台执行计算，不会阻塞训练循环。它接受与 `swanlab.log()` 相同的数据格式，并立即返回一个 `Future`。
+
+```python
+import swanlab
+import time
+
+swanlab.init(project=”my-project”)
+
+def compute_metric():
+    time.sleep(2)  # 模拟耗时计算
+    return {“score”: 0.95}
+
+# 在后台执行，训练继续不会被阻塞
+future = swanlab.async_log(compute_metric, step=1)
+
+swanlab.finish()
+```
+
+`swanlab.async_log()` 支持多种执行模式（`threading`、`asyncio`、`spawn`）。详细用法和所有模式选项请参阅 [async_log API 文档](/api/py-async-log.md)。
