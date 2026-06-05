@@ -293,7 +293,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
     text: 'O-T',
     // collapsed: false,
     items: [
-      { text: 'OpenAI', link: 'integration-openai' },
       { text: 'OmegaConf', link: 'integration-omegaconf' },
       { text: 'PaddleDetection', link: 'integration-paddledetection' },
       { text: 'PaddleNLP', link: 'integration-paddlenlp' },
