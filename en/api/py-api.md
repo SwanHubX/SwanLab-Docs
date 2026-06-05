@@ -819,7 +819,7 @@ print(result.data if result.ok else result.errmsg)
 **ApiResponseType** — Unified response wrapper, all API calls guarantee no exceptions:
 
 ```python
-result = api.export_logs(start=0, rows=500000)
+result = run.export_logs(start=0, rows=500000)
 
 if result.ok:
     print(result.data)   # normal data

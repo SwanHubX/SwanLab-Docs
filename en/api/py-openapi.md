@@ -3,7 +3,7 @@
 ::: danger Deprecation Notice
 `swanlab.OpenApi` is **deprecated** and will be **removed** in version `0.8.0`.
 
-Please migrate to the new [`swanlab.Api`](/en/api/py-api-legacy.md) instead.
+Please migrate to the new [`swanlab.Api`](/en/api/py-api.md) instead.
 
 > This API applies to swanlab versions **< 0.8.0**.
 :::

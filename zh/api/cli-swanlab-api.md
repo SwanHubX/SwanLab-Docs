@@ -6,7 +6,7 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 
 `swanlab api` 是 [开放接口（OpenAPI）](./py-api.md) 的 CLI 实现，允许通过命令行直接操作云端 **工作空间 / 项目 / 实验 / 用户 / 私有化部署** 资源。
 
-> 认证方式与 Python API 一致：显式传入 `--api-key` / `--host`，或使用 `swanlab login` 本地登录态。详见 [认证说明](./py-api.md#认证)。
+> 认证方式与 Python API 一致：显式传入 `--api-key` / `--host`，或使用 `swanlab login` 本地登录态。详见 [认证说明](./py-api.md)。
 
 ## 子命令总览
 

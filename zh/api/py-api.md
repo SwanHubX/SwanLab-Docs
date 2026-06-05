@@ -785,7 +785,7 @@ print(result.data if result.ok else result.errmsg)
 **ApiResponseType** — 统一响应封装，所有 API 调用保证不抛异常：
 
 ```python
-result = api.export_logs(start=0, rows=500)
+result = run.export_logs(start=0, rows=500)
 
 if result.ok:
     print(result.data)   # 正常数据

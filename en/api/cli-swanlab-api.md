@@ -6,7 +6,7 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 
 `swanlab api` is the CLI implementation of the [OpenAPI](./py-api.md), allowing direct manipulation of cloud **workspace / project / experiment / user / self-hosted** resources from the command line.
 
-> Authentication follows the same logic as the Python API: pass `--api-key` / `--host` explicitly, or use the `swanlab login` local session. See [Authentication](./py-api.md#authentication).
+> Authentication follows the same logic as the Python API: pass `--api-key` / `--host` explicitly, or use the `swanlab login` local session. See [Authentication](./py-api.md).
 
 ## Subcommand Overview
 
