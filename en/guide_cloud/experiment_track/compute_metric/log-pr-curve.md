@@ -4,7 +4,7 @@ The PR (Precision-Recall) curve illustrates the relationship between precision a
 
 PR curves are especially suitable for imbalanced datasets, as they provide a better assessment of model performance on the minority class.
 
-You can use `swanlab.pr_curve` to log a PR curve.
+You can use `swanlab.echarts.pr_curve` to log a PR curve.
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/35snhyn3wndz58r4j8d4h/chart#ZTIwZm1s-aVI2S1ZCQl8=)
 
@@ -34,7 +34,7 @@ swanlab.init(project="PR-Curve-Demo", experiment_name="PR-Curve-Example")
 
 # Log the PR curve
 swanlab.log({
-    "pr_curve": swanlab.pr_curve(y_test, y_pred_proba, title=True)
+    "pr_curve": swanlab.echarts.pr_curve(y_test, y_pred_proba, title=True)
 })
 
 swanlab.finish()
@@ -44,15 +44,15 @@ swanlab.finish()
 
 ```python
 # Hide title (default)
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title=False)
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title=False)
 swanlab.log({"pr_curve_no_title": pr_curve})
 
 # Show default title
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title=True)
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title=True)
 swanlab.log({"pr_curve_with_title": pr_curve})
 
 # Custom title
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title="demo")
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title="demo")
 swanlab.log({"pr_curve_with_custom_title": pr_curve})
 ```
 

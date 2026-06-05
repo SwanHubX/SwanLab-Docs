@@ -1,13 +1,16 @@
 # API Docs
 
 ## Develop
-- [Open API](/en/api/py-openapi.md)
+- [Open API](/en/api/py-api.md)
 - [Environment Variables](/en/api/environment-variable.md)
 
 ## CLI
+- [swanlab ping](/en/api/cli-swanlab-ping.md): Connectivity and environment diagnostics
+- [swanlab api](/en/api/cli-swanlab-api.md): Manage cloud workspaces/projects/experiments via CLI
 - [swanlab watch](/en/api/cli-swanlab-watch.md): Start offline experiment board
 - [swanlab login](/en/api/cli-swanlab-login.md): Login to SwanLab
-- [swanlab logout](/en/api/cli-swanlab-logout.md): Logout to SwanLab
+- [swanlab logout](/en/api/cli-swanlab-logout.md): Logout from SwanLab
+- [swanlab verify](/en/api/cli-swanlab-verify.md): Verify login status
 - [swanlab convert](/en/api/cli-swanlab-convert.md): Convert external logs to SwanLab project
 - [swanlab sync](/en/api/cli-swanlab-sync.md): Sync local logs to SwanLab cloud/private deployment
 - [swanlab local](/en/api/cli-swanlab-local.md): Set SwanLab to local mode

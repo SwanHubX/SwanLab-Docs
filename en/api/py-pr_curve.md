@@ -1,4 +1,4 @@
-# swanlab.pr_curve
+# swanlab.echarts.pr_curve
 
 [Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/custom_charts/metrics.py)
 
@@ -46,7 +46,7 @@ swanlab.init(project="PR-Curve-Demo", experiment_name="PR-Curve-Example")
 
 # Log PR curve
 swanlab.log({
-    "pr_curve": swanlab.pr_curve(y_test, y_pred_proba, title=True)
+    "pr_curve": swanlab.echarts.pr_curve(y_test, y_pred_proba, title=True)
 })
 
 swanlab.finish()
@@ -58,15 +58,15 @@ swanlab.finish()
 
 ```python
 # Don't show title (default)
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title=False)
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title=False)
 swanlab.log({"pr_curve_no_title": pr_curve})
 
 # Show title
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title=True)
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title=True)
 swanlab.log({"pr_curve_with_title": pr_curve})
 
 # Custom title
-pr_curve = swanlab.pr_curve(y_test, y_pred_proba, title="demo")
+pr_curve = swanlab.echarts.pr_curve(y_test, y_pred_proba, title="demo")
 swanlab.log({"pr_curve_with_custom_title": pr_curve})
 ```
 

@@ -100,7 +100,7 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
       },
-      { text: 'v0.7.12',  items: [
+      { text: 'v0.8.0',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },
@@ -361,7 +361,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: 'Weights & Biases', link: 'integration-wandb' },
         { text: 'XGBoost', link: 'integration-xgboost' },
         { text: 'Xtuner', link: 'integration-xtuner' },
-        { text: 'ZhipuAI', link: 'integration-zhipuai' },
       ]
     }]
 }
@@ -458,8 +457,15 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       text: '开发',
       // collapsed: false,
       items: [
-        { text: '开放接口', link: 'py-api' },
-        { text: '开放接口（旧版）', link: 'py-openapi' },
+        {
+          text: '开放接口',
+          collapsed: true,
+          items: [
+            { text: '开放接口', link: 'py-api' },
+            { text: '开放接口（旧版）', link: 'py-api-legacy' },
+            { text: '开放接口（已废弃）', link: 'py-openapi' },
+          ]
+        },
         { text: '环境变量', link: 'environment-variable' },
       ]
   },  
@@ -467,9 +473,12 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: '命令行',
     // collapsed: false,
     items: [
+      { text: 'swanlab api', link: 'cli-swanlab-api' },
+      { text: 'swanlab ping', link: 'cli-swanlab-ping' },
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
+      { text: 'swanlab verify', link: 'cli-swanlab-verify' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
       { text: 'swanlab sync', link: 'cli-swanlab-sync' },
       { text: 'swanlab offline', link: 'cli-swanlab-offline' },
@@ -485,6 +494,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'init', link: 'py-init' },
       { text: 'log', link: 'py-log' },
+      { text: 'async_log', link: 'py-async-log' },
       { text: 'Settings', link: 'py-settings' },
       {
         text: '多媒体数据', items: [
@@ -506,6 +516,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       },
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
+      { text: 'save', link: 'py-save' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
       {
@@ -516,7 +527,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           { text: 'sync_mlflow', link: 'py-sync-mlflow' },
         ]
       },
-      { text: 'register_callback', link: 'py-register-callback' },
+      { text: 'merge_callbacks', link: 'py-merge-callback' },
+      { text: 'register_callbacks', link: 'py-register-callback' },
       { text: '其他', link: 'py-other' },
     ]
   },
@@ -547,8 +559,7 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
       text: '📝 记录类',
       // collapsed: false,
       items: [
-        { text: '文件记录器', link: 'writer-filelogdir' },
-        { text: 'CSV表格', link: 'writer-csv' },
+      { text: 'CSV表格', link: 'writer-csv' },
       ]
     },
   ]

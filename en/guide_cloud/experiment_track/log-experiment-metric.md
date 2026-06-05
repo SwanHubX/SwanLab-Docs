@@ -93,3 +93,29 @@ SwanLab automatically logs the following information during the experiment:
 - **Command Line Output**: Standard output and standard error streams are automatically recorded and displayed in the "Logs" tab of the experiment page.
 - **Experiment Environment**: Records dozens of environment information including operating system, hardware configuration, Python interpreter path, running directory, Python library dependencies, etc.
 - **Training Time**: Records the start time and total duration of training.
+
+## Asynchronous Logging
+
+:::info
+`swanlab.async_log()` requires SwanLab SDK **v0.8.0 or higher**.
+:::
+
+If you need to log metrics that require expensive computation or I/O, you can use `swanlab.async_log()` to execute the computation in the background without blocking the training loop. It accepts the same data format as `swanlab.log()` and returns a `Future` immediately.
+
+```python
+import swanlab
+import time
+
+swanlab.init(project="my-project")
+
+def compute_metric():
+    time.sleep(2)  # Simulate expensive computation
+    return {"score": 0.95}
+
+# Execute in background, training continues without blocking
+future = swanlab.async_log(compute_metric, step=1)
+
+swanlab.finish()
+```
+
+`swanlab.async_log()` supports multiple execution modes (`threading`, `asyncio`, `spawn`). For detailed usage and all mode options, see the [async_log API documentation](/en/api/py-async-log.md).

@@ -91,7 +91,7 @@ export const en = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/en/api/',
         },
-      { text: 'v0.7.12', items: [
+      { text: 'v0.8.0', items: [
         { text: 'Changelog', link: base_path_guide_cloud + '/general/changelog' },
         { text: 'Docs GitHub', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         { text: 'Community', link: 'https://swanlab.cn/benchmarks' },
@@ -320,7 +320,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Weights & Biases', link: 'integration-wandb'},
       { text: 'XGBoost', link: 'integration-xgboost'},
       { text: 'Xtuner', link: 'integration-xtuner'},
-      { text: 'ZhipuAI', link: 'integration-zhipuai'},
     ]
   }]
 }
@@ -408,8 +407,15 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: 'Develop',
     // collapsed: false,
     items: [
-      { text: 'OpenAPI', link: 'py-api' },
-      { text: 'OpenAPI (Deprecated)', link: 'py-openapi' },
+      {
+        text: 'OpenAPI',
+        collapsed: true,
+        items: [
+          { text: 'OpenAPI', link: 'py-api' },
+          { text: 'OpenAPI (Legacy)', link: 'py-api-legacy' },
+          { text: 'OpenAPI (Deprecated)', link: 'py-openapi' },
+        ]
+      },
       { text: 'Environment Variables', link: 'environment-variable' },
     ]
   },
@@ -417,9 +423,12 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: 'CLI',
     // collapsed: false,
     items: [
+      { text: 'swanlab api', link: 'cli-swanlab-api' },
+      { text: 'swanlab ping', link: 'cli-swanlab-ping' },
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
+      { text: 'swanlab verify', link: 'cli-swanlab-verify' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
       { text: 'swanlab sync', link: 'cli-swanlab-sync' },
       { text: 'swanlab offline', link: 'cli-swanlab-offline' },
@@ -435,6 +444,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     items: [
       { text: 'init', link: 'py-init' },
       { text: 'log', link: 'py-log' },
+      { text: 'async_log', link: 'py-async-log' },
       { text: 'Settings', link: 'py-settings' },
       { text: 'Media data', items: [
         { text: 'Image', link: 'py-Image' },
@@ -454,12 +464,14 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       },
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
+      { text: 'save', link: 'py-save' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
       { text: 'sync_wandb', link: 'py-sync-wandb' },
       { text: 'sync_tensorboard', link: 'py-sync-tensorboard' },
       { text: 'sync_mlflow', link: 'py-sync-mlflow' },
-      { text: 'register_callback', link: 'py-register-callback' },
+      { text: 'merge_callbacks', link: 'py-merge-callback' },
+      { text: 'register_callbacks', link: 'py-register-callback' },
       { text: 'Other', link: 'py-other' },
     ]
   },
@@ -490,7 +502,6 @@ function sidebarPlugin(): DefaultTheme.SidebarItem[] {
     text: '📝 Writer',
     // collapsed: false,
     items: [
-      { text: 'File Logger', link: 'writer-filelogdir' },
       { text: 'CSV Table', link: 'writer-csv' },
     ]
   },

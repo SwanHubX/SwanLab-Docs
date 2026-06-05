@@ -88,7 +88,7 @@ Supported full parameters:
 - `swanlab_project`: SwanLab project
 - `swanlab_workspace`: Default is None, will use the username corresponding to the api-key
 - `swanlab_exp_name`: Experiment name, can be empty, defaults to the value of --output_dir
-- `swanlab_mode`: Optional cloud or local, cloud mode or local mode
+- `swanlab_mode`: Optional online, local, offline, and disabled, default is online
 
 ## 2. WebUI Fine-tuning
 
@@ -114,7 +114,7 @@ You can also fill in more detailed swanlab parameters in other parts of the "Tra
 - `swanlab_project`: SwanLab project
 - `swanlab_workspace`: Default is None, will use the username corresponding to the api-key
 - `swanlab_exp_name`: Experiment name, can be empty, defaults to the value of --output_dir
-- `swanlab_mode`: Optional cloud or local, cloud mode or local mode
+- `swanlab_mode`: Optional online, local, offline, and disabled, default is online
 
 Then, click the "🚀 Start Training" button to start training and use SwanLab to track the experiment:
 

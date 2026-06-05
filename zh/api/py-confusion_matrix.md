@@ -1,4 +1,4 @@
-# swanlab.confusion_matrix
+# swanlab.echarts.confusion_matrix
 
 [Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/custom_charts/metrics.py)
 
@@ -51,7 +51,7 @@ swanlab.init(project="Confusion-Matrix-Demo", experiment_name="Confusion-Matrix-
 
 # 记录混淆矩阵
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, class_names)
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, class_names)
 })
 
 swanlab.finish()
@@ -66,7 +66,7 @@ swanlab.finish()
 custom_class_names = ["类别A", "类别B", "类别C"]
 
 # 记录混淆矩阵
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred, custom_class_names)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred, custom_class_names)
 swanlab.log({"confusion_matrix_custom": confusion_matrix})
 ```
 
@@ -74,7 +74,7 @@ swanlab.log({"confusion_matrix_custom": confusion_matrix})
 
 ```python
 # 不指定类别名称，将使用数字索引
-confusion_matrix = swanlab.confusion_matrix(y_test, y_pred)
+confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred)
 swanlab.log({"confusion_matrix_default": confusion_matrix})
 ```
 
@@ -101,7 +101,7 @@ y_pred = model.predict(X_test)
 
 # 记录混淆矩阵
 swanlab.log({
-    "confusion_matrix": swanlab.confusion_matrix(y_test, y_pred, ["负类", "正类"])
+    "confusion_matrix": swanlab.echarts.confusion_matrix(y_test, y_pred, ["负类", "正类"])
 })
 ```
 

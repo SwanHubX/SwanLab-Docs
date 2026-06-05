@@ -14,6 +14,7 @@
 
 1. **同步跟踪**：如果你现在的项目使用了mlflow进行实验跟踪，你可以使用`swanlab.sync_mlflow()`命令，在运行训练脚本时同步记录指标到SwanLab。
 2. **转换已存在的项目**：如果你想要将mlflow上的项目复制到SwanLab，你可以使用`swanlab convert`，将mlflow上已存在的项目转换成SwanLab项目。
+3. **同步跟踪**还支持通过`mode`参数选择记录模式（`"online"` | `"local"` | `"offline"` | `"disabled"`），默认为`"online"`。
 
 ::: info
 在当前版本暂仅支持转换标量图表。
@@ -26,12 +27,15 @@
 
 ### 1.1 添加sync_mlflow命令
 
-在你的代码执行`mlflow.start_run()`之前的任何位置，添加一行`swanlab.sync()`命令，即可在运行训练脚本时同步记录指标到SwanLab。
+在你的代码执行`mlflow.start_run()`之前的任何位置，添加一行`swanlab.sync_mlflow()`命令，即可在运行训练脚本时同步记录指标到SwanLab。
+
+`sync_mlflow`支持通过`mode`参数选择记录模式，可选`"online"`、`"local"`、`"offline"`、`"disabled"`，默认为`"online"`。
 
 ```python
 import swanlab
 
-swanlab.sync_mlflow()
+swanlab.sync_mlflow()  # 默认 mode="online"
+# 或者指定模式：swanlab.sync_mlflow(mode="local")
 
 ...
 
@@ -61,7 +65,7 @@ import mlflow
 import random
 import swanlab
 
-swanlab.sync_mlflow()
+swanlab.sync_mlflow(mode="online")
 
 mlflow.set_experiment("mlflow_sync_test")
 
@@ -111,7 +115,7 @@ swanlab convert -t mlflow --mlflow-url <MLFLOW_URL> --mlflow-exp <MLFLOW_EXPERIM
 - `-t`: 转换类型，可选wandb、tensorboard和mlflow。
 - `-p`: SwanLab项目名。
 - `-w`: SwanLab工作空间名。
-- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `--mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `-l`: logdir路径。
 - `--mlflow-url`: mlflow服务的url链接。
 - `--mlflow-exp`: mlflow实验ID。
@@ -121,18 +125,28 @@ swanlab convert -t mlflow --mlflow-url <MLFLOW_URL> --mlflow-exp <MLFLOW_EXPERIM
 ### 2.3 方式二：代码内转换
 
 ```python
-from swanlab.converter import MLFLowConverter
+from swanlab.converter import MLFlowConverter
 
-mlflow_converter = MLFLowConverter(project="mlflow_converter")
-# mlflow_exp可选
+mlflow_converter = MLFlowConverter(project="mlflow_converter")
+# experiment 可选填实验ID或实验名称
 mlflow_converter.run(tracking_uri="http://127.0.0.1:5000", experiment="1")
+# 也可以只转换指定的 run
+# mlflow_converter.run(tracking_uri="http://127.0.0.1:5000", experiment="1", run_id="abc123")
 ```
 
 效果与命令行转换一致。
 
-`MLFLowConverter`支持的参数：
+`MLFlowConverter`支持的参数：
 
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
-- `mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]。
-- `logdir`: logdir路径。
+- `mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`。
+- `log_dir`: logdir路径。
+- `tags`: (list[str]) 标签列表。
+- `resume`: (bool) 是否恢复模式，默认为`False`。
+
+`run()`方法支持的参数：
+
+- `tracking_uri`: mlflow服务的url链接。
+- `experiment`: mlflow实验ID或实验名称。
+- `run_id`: (str, 可选) 指定要转换的run ID，不填则转换整个实验下的所有run。

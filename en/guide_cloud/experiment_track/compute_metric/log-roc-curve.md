@@ -4,7 +4,7 @@ Plot the ROC (Receiver Operating Characteristic) curve to evaluate the performan
 
 The ROC curve is an essential tool for assessing classification model performance, providing an intuitive visualization of how the model performs across different decision thresholds.
 
-You can use `swanlab.roc_curve` to log an ROC curve.
+You can use `swanlab.echarts.roc_curve` to log an ROC curve.
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/ComputeMetrics/runs/gvivixdwka8lyutdxt865/chart#NHFwdTEx-Uzk3bUJKMVY=)
 
@@ -34,7 +34,7 @@ swanlab.init(project="ROC-Curve-Demo", experiment_name="ROC-Curve-Example")
 
 # Log the ROC curve
 swanlab.log({
-    "roc_curve": swanlab.roc_curve(y_test, y_pred_proba, title=True)
+    "roc_curve": swanlab.echarts.roc_curve(y_test, y_pred_proba, title=True)
 })
 
 swanlab.finish()
@@ -44,15 +44,15 @@ swanlab.finish()
 
 ```python
 # Hide title (default)
-roc_curve = swanlab.roc_curve(y_test, y_pred_proba, title=False)
+roc_curve = swanlab.echarts.roc_curve(y_test, y_pred_proba, title=False)
 swanlab.log({"roc_curve_no_title": roc_curve})
 
 # Show default title
-roc_curve = swanlab.roc_curve(y_test, y_pred_proba, title=True)
+roc_curve = swanlab.echarts.roc_curve(y_test, y_pred_proba, title=True)
 swanlab.log({"roc_curve_with_title": roc_curve})
 
 # Custom title
-roc_curve = swanlab.roc_curve(y_test, y_pred_proba, title="demo")
+roc_curve = swanlab.echarts.roc_curve(y_test, y_pred_proba, title="demo")
 swanlab.log({"roc_curve_with_custom_title": roc_curve})
 ```
 
@@ -64,8 +64,8 @@ from sklearn.metrics import accuracy_score, f1_score
 
 # Log multiple ML metrics together
 swanlab.log({
-    "roc_curve": swanlab.roc_curve(y_test, y_pred_proba),
-    "pr_curve": swanlab.pr_curve(y_test, y_pred_proba),
+    "roc_curve": swanlab.echarts.roc_curve(y_test, y_pred_proba),
+    "pr_curve": swanlab.echarts.pr_curve(y_test, y_pred_proba),
     "accuracy": accuracy_score(y_test, y_pred),
     "f1_score": f1_score(y_test, y_pred)
 })

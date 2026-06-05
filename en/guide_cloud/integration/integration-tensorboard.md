@@ -156,7 +156,7 @@ This has the same effect as the command line conversion.
 | convert_dir    | -      | Path to Tfevent files       | 
 | project    | -p, --project      | SwanLab project name       |
 | workspace  | -w, --workspace      | SwanLab workspace name |
-| mode    | --mode      | Mode, default is "cloud",可选 `["cloud", "local", "offline", "disabled"]`       | 
+| mode    | --mode      | Mode, default is "online", options: `["online", "local", "offline", "disabled"]`       | 
 | logdir    | -l, --logdir      | Path to save SwanLab log files       | 
 
 Example:

@@ -1,7 +1,11 @@
-# swanlab.OpenApi
+# swanlab.OpenApi（已废弃）
 
-::: warning 版本提示
-`swanlab.OpenApi` 将在`0.8.0`版本废弃，请使用 [`swanlab.Api`](/api/py-api.md) 替代。
+::: danger 废弃提示
+`swanlab.OpenApi` 已于 `0.8.0` 版本**废弃**，将在后续版本中**移除**。
+
+请迁移至新版 [`swanlab.Api`](/zh/api/py-api.md)。
+
+> 此 API 适用于 swanlab **< 0.8.0** 的版本。
 :::
 
 基于 SwanLab 云端功能, 在 SDK 端提供访问 **开放 API（OpenAPI）** 的能力, 允许用户通过编程方式在本地环境中操作云端 **实验/项目/工作空间** 资源。

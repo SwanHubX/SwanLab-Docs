@@ -88,7 +88,7 @@ swift sft \
 - `swanlab_project`: swanlab的project
 - `swanlab_workspace`: 默认为None，会使用api-key对应的username
 - `swanlab_exp_name`: 实验名，可以为空，为空时默认传入--output_dir的值
-- `swanlab_mode`: 可选cloud和local，云模式或者本地模式
+- `swanlab_mode`: 可选online、local、offline和disabled，默认为online
 
 ## 2. WebUI微调
 
@@ -114,7 +114,7 @@ swift web-ui
 - `swanlab_project`: swanlab的project
 - `swanlab_workspace`: 默认为None，会使用api-key对应的username
 - `swanlab_exp_name`: 实验名，可以为空，为空时默认传入--output_dir的值
-- `swanlab_mode`: 可选cloud和local，云模式或者本地模式
+- `swanlab_mode`: 可选online、local、offline和disabled，默认为online
 
 然后，点击「🚀开始训练」按钮，即可启动训练，并使用SwanLab跟踪实验：
 

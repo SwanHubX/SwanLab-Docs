@@ -4,6 +4,36 @@
 升级到最新版：`pip install -U swanlab`  
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
+## v0.8.0 - 2026.06.05
+**🚀 新增功能与优化**
+- ⚡️ 重构了 SwanLab SDK，对训练速度影响降低 **~↓95.4%**，日志空间占用降低  **~↓65.1%**
+- 🪓 新增 `swanlab ping` 检查网络连通性与运行环境信息
+- 🪓 新增 `swanlab.async_log()` 异步打点
+- 🪓 新增`swanlab login --local`命令，优化多人训练场景下的体验
+- 🪓 新增 OpenAPI CLI 支持，可以通过 `swanlab api` 的 CLI 方式直接读取实验日志
+- 🦄 优化错误场景下的报错体验，提供更详细的错误信息
+- 🔨 SwanLab 官方 Skill 已上线，详见: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary)，可通过以下方式安装:
+:::code-group
+```bash [npm]
+npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
+```
+
+```bash [bun]
+bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
+```
+:::
+
+
+**🔧修复**
+- 🐞 修复了在某些情况下实验启动时间过长的问题
+- 🐞 修复了离线sync场景下实验颜色重复的问题
+
+**💥 破坏性更新**
+- 😈 **v0.8.0 不再兼容历史版本的 `backup.swanlab` 日志格式，历史日志需使用对应历史版本读取或处理!!**
+- 😈 部分 OpenAPI 的使用方式发生调整，请做好过渡替换
+- 😈 移除了部分已废弃的历史框架集成
+
+
 
 ## v0.7.12 - 2026.03.19
 
@@ -109,7 +139,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 新增`swanlab local`、`swanlab online`、`swanlab offline`、`swanlab disabled`命令，支持在命令行中快速设置SwanLab模式，[文档](/api/cli-swanlab-offline.md)
 
 
-## v0.6.9 - 2025.9.9
+## v0.6.9 - 2025.09.09
 
 **🚀新增功能**
 - 项目支持添加协作者功能，[文档](/guide_cloud/experiment_track/add-collaborator)
@@ -124,7 +154,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 新增与Apple [MLX LM](https://github.com/ml-explore/mlx-lm)框架的集成，[文档](/guide_cloud/integration/integration-mlx-lm)
 - 新增与SGLang [SpecForge](https://github.com/sgl-project/SpecForge)框架的集成
 
-## v0.6.8 - 2025.7.29
+## v0.6.8 - 2025.07.29
 
 **🚀新增功能**
 - 侧边栏支持**实验筛选、排序**
@@ -139,7 +169,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 实验卡片中的配置表格支持一键折叠/展开
 - 修复了一些问题
 
-## v0.6.7 - 2025.7.17
+## v0.6.7 - 2025.07.17
 
 **🚀新增功能**
 - 更强大的折线图配置，支持灵活配置线型、颜色、粗细、网格和图例位置
@@ -151,7 +181,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 最大实验名提升到250个字符
 - 修复了一些问题
 
-## v0.6.5 - 2025.7.5
+## v0.6.5 - 2025.07.05
 
 **🚀新增功能**
 - 支持**resume断点续训**
@@ -174,7 +204,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 阿里云计算巢服务上架：[指引](/self_host/alibabacloud-computenest.md)
 
 
-## v0.6.4 - 2025.6.18
+## v0.6.4 - 2025.06.18
 
 **🚀新增功能**
 - 新增与[AREAL](https://github.com/inclusionAI/AReaL)框架的集成，[PR](https://github.com/inclusionAI/AReaL/pull/98)
@@ -186,7 +216,7 @@ Github: https://github.com/SwanHubX/SwanLab
 **⚙️修复**
 - 修复了`local`模式下，日志文件无法正确`sync`和`watch`的问题
 
-## v0.6.3 - 2025.6.12
+## v0.6.3 - 2025.06.12
 
 **🚀新增功能**
 - 新增`swnalab.echarts.table`，支持创建表格图表
@@ -196,13 +226,13 @@ Github: https://github.com/SwanHubX/SwanLab
 - 表格视图增加`最新/最大/最小值`切换模块
 
 
-## v0.6.2 - 2025.6.9
+## v0.6.2 - 2025.06.09
 
 **🚀新增功能**
 - 新增`swanlab sync`命令，支持将本地日志同步到SwanLab云端/私有化部署端
 - 支持在本地存储完整的实验日志文件
 
-## v0.6.1 - 2025.6.5
+## v0.6.1 - 2025.06.05
 
 **🚀新增功能**
 - 鼠标放到表头，可以显示缩略的名称了
@@ -214,7 +244,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 优化了HuggigngFace accelerate框架的集成
 - 默认不再打印重复step log warning
 
-## v0.6.0 - 2025.6.1
+## v0.6.0 - 2025.06.01
 
 **🚀新增功能**
 - 支持 **图表自由拖拽**
@@ -223,7 +253,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 集成 [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP) 框架
 
 
-## v0.5.9 - 2025.5.25
+## v0.5.9 - 2025.05.25
 
 **🚀新增功能**
 -  📒 日志记录支持了标准错误流，EvalScope / PyTorch Lightning等这些框架的日志记录体验大幅提升
@@ -231,7 +261,7 @@ Github: https://github.com/SwanHubX/SwanLab
 -  🔐 新增运行命令记录的安全防护功能，API Key将被自动隐藏
 -  ⚙️ 设置新增「默认空间」和「默认可见性」配置，可以指定你的项目默认创建在哪个组织下啦！
 
-## v0.5.8 - 2025.5.13
+## v0.5.8 - 2025.05.13
 
 **🚀新增功能**
 
@@ -250,7 +280,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 腾讯云云应用上架：[指引](/zh/self_host/tencentcloud-app.md)
 
 
-## v0.5.6 - 2025.4.23
+## v0.5.6 - 2025.04.23
 
 **🚀新增功能**
 
@@ -265,7 +295,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 修复了侧边栏一键隐藏实验的一些问题
 
 
-## v0.5.5 - 2025.4.7
+## v0.5.5 - 2025.04.07
 
 **🚀新增功能**
 - 新增`swanlab.Molecule`数据类型，支持生物化学分子可视化，为AlphaFold等AI4Science训练任务提供更好的训练体验
@@ -280,7 +310,7 @@ Github: https://github.com/SwanHubX/SwanLab
 **🤔优化**
 - 优化了网页加载性能
 
-## v0.5.4 - 2025.3.31
+## v0.5.4 - 2025.03.31
 
 **🚀新增功能**
 - 新增`swanlab.Settings`方法，支持更精细化的实验行为控制，进一步增强开放性
@@ -301,7 +331,7 @@ Github: https://github.com/SwanHubX/SwanLab
 - 官方插件增加Slack通知、Discord通知，进一步打通海外生态
 
 
-## v0.5.3 - 2025.3.20
+## v0.5.3 - 2025.03.20
 
 ![swanlab x huggingface](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/general/changelog/hf.png)
 
@@ -313,7 +343,7 @@ Github: https://github.com/SwanHubX/SwanLab
 **优化**
 - 修复了一些问题
 
-## v0.5.0 - 2025.3.12
+## v0.5.0 - 2025.03.12
 
 ![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/docker-deploy/swanlab-docker.jpg)
 

@@ -1,568 +1,828 @@
-# Use OpenAPI to Get Experiment Data
+# swanlab.Api
 
-Based on SwanLab's cloud capabilities, the SDK provides access to **Open API** functionality, allowing users to programmatically operate and retrieve resources related to experiments, projects, and workspaces in the cloud environment from their local environment.
-
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/experiment_track/py-openapi/logo.jpg)
-
-Through Open API, users can:
-
-* Retrieve personal information, workspace details, and project lists
-* Automatically manage experiments (e.g., querying, organizing, editing metadata, etc.)
-* More easily integrate with other tools (e.g., CI/CD, experiment scheduling, etc.)
-
-Making good use of this feature greatly enhances the flexibility and extensibility of the SDK, making it convenient to build advanced workflows or extended systems.
-
-## Supported APIs
-
-The following table lists all methods supported by SwanLab OpenAPI. Clicking on the API name will redirect to the detailed description:
-
-| API Name | Category | Description | Ready |
-|---------|------|----------|------|
-| [`list_workspaces`](#list-workspaces) | WorkSpace | Get the list of all workspaces (organizations) associated with the current user | ✅ |
-| [`list_projects`](#list-projects) | Project | Get the list of all projects in a specified workspace | ✅ |
-| [`delete_project`](#delete-project) | Project | Delete a project | ✅ |
-| [`list_experiments`](#list-experiments) | Experiment | Get the list of experiments in a specified project | ✅ |
-| [`get_experiment`](#get-experiment) | Experiment | Get the detailed information of an experiment (experiment name, configuration, environment, etc.) | ✅ |
-| [`get_summary`](#get-summary) | Experiment | Get the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps | ✅ |
-| [`get_metrics`](#get-metrics) | Experiment | Get the value of an experiment metric | ✅ |
-| [`delete_experiment`](#delete-experiment) | Experiment | Delete an experiment | ✅ |
-
-
-## Introduction
-
-> Prerequisite: You need to have logged into your SwanLab account in your programming environment.
-
-To use SwanLab's Open API, simply instantiate an `OpenApi` object.
-
-```python
-from swanlab import OpenApi
-
-my_api = OpenApi() # Uses local login information
-print(my_api.list_workspaces().data) # Get the list of workspaces for the current user
-```
-
-If you need to access data from another account:
-```python
-from swanlab import OpenApi
-
-other_api = OpenApi(api_key='other_api_key') # Use another account's api_key
-print(other_api.list_workspaces().data)
-```
-
-Specifically, the **OpenApi** authentication logic is as follows:
-
-1. If the `api_key` parameter is explicitly provided, it will be used for authentication. You can find your API key [here](https://swanlab.cn/space/~/settings).
-2. Otherwise, local authentication information will be used.
-
-## Common Parameters
-
-### Experiment ID `exp_id`
-
-The unique identifier for an experiment is the **CUID**, i.e., `exp_id`, which can be obtained via the `list_experiments` method's `cuid` field.
-
-To view the CUID of a specific experiment, go to the "Environment" tab of the experiment on the web version and check the "Experiment ID" row. Click to copy the CUID.
-
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/experiment_track/py-openapi/exp_id.png)
-
-### Workspace Name `username`
-
-The workspace name is `username`, used to identify the workspace:
-
-- For a personal workspace, `username` is the user's username.
-- For an organization workspace, `username` is the organization ID.
-
-You can get the `username` via the `list_workspaces` method; the `username` field in each workspace entry is the workspace name.
-
-Generally, if you do not specify `username` in OpenAPI calls, it **defaults** to your personal workspace.
-
-## Model Definitions
-
-When using Open API, some cloud resources, such as experiments and projects, are too complex to be a Python based data structure.
-
-Therefore, these resources are defined as objects in the SDK, supporting IDE auto-completion and type checking for easier manipulation.
-
-For example, to retrieve the start time of an experiment object, you can use:
-
-```python
-api_response: ApiResponse = my_api.get_experiment(project="project1", exp_cuid="cuid1")
-my_exp: Experiment = api_response.data
-created_time: str = my_exp.createdAt
-```
-
-Or, to retrieve the name of the workspace to which a project object belongs, you can use:
-
-```python
-api_response: ApiResponse = my_api.list_projects()
-my_project: Project = api_response.data[0]
-workspace_name: str = my_project.group["name"]
-```
-
-As a Model, its attributes can be accessed in three ways:
-
-- `my_exp.createdAt`
-- `my_exp["createdAt"]`
-- `my_exp.get("createdAt")`
-
-> Note: The model can be accessed in a dictionary-like manner, but it is not a true dictionary. You can obtain the corresponding dictionary of the model using `my_exp_dict: Dict = my_exp.model_dump()`.
-
-### API Response `ApiResponse`
-
-Each Open API method returns a `swanlab.api.openapi.types.ApiResponse` object, which contains the following fields:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `code` | `int` | HTTP status code |
-| `errmsg` | `str` | Error message, non-empty if the status code is not `2XX` |
-| `data` | `Any` | Specific data returned, as mentioned in the API descriptions below |
-
-### Experiment Model
-
-The experiment object is of type `swanlab.api.openapi.types.Experiment`, containing the following fields:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `cuid` | `str` | Unique identifier for the experiment |
-| `name` | `str` | Name of the experiment |
-| `description` | `str` | Description of the experiment |
-| `state` | `str` | Status of the experiment, such as `FINISHED`, `RUNNING` |
-| `show` | `bool` | Display status |
-| `createdAt` | `str` | Time of experiment creation, formatted as `2024-11-23T12:28:04.286Z` |
-| `finishedAt` | `str` | Time of experiment completion, formatted as `2024-11-23T12:28:04.286Z`, None if not finished |
-| `user` | `Dict[str, str]` | Creator of the experiment, containing `username` and `name` |
-| `profile` | `dict` | Detailed configuration information of the experiment, including user-defined configurations and Python runtime environment, etc. |
-
-### Project Model
-
-The project object is of type `swanlab.api.openapi.types.Project`, containing the following fields:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `cuid` | `str` | Unique identifier for the project |
-| `name` | `str` | Name of the project |
-| `description` | `str` | Description of the project |
-| `visibility` | `str` | Visibility, such as `PUBLIC` or `PRIVATE` |
-| `createdAt` | `str` | Time of project creation, formatted as `2024-11-23T12:28:04.286Z` |
-| `updatedAt` | `str` | Time of project update, formatted as `2024-11-23T12:28:04.286Z` |
-| `group` | `Dict[str, str]` | Workspace information, containing `type`, `username`, and `name` |
-| `count` | `Dict[str, int]` | Project statistics, such as the number of experiments, number of collaborators, etc. |
-
-## OpenAPIs
-
-Each Open API is a method of the `OpenApi` object.
-
-Below is a list of all available SwanLab Open APIs.
-
-### Workspaces
-
-#### `list_workspaces`
-
-Retrieve the list of all workspaces (organizations) associated with the current user.
-
-**Returns**
-
-`data` `(List[Dict])`: A list of workspaces the user has joined. Each element is a dictionary containing basic workspace information:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `name` | `str` | Name of the workspace |
-| `username` | `str` | Unique identifier for the workspace (used in URLs) |
-| `role` | `str` | Role of the user in this workspace, such as `OWNER` or `MEMBER` |
-
-**Example**
-
-::: code-group  
-
-```python [Retrieve the list of workspaces]
-from swanlab import OpenApi
-my_api = OpenApi()
-
-my_api.list_workspaces().data
-"""
-[
-    {
-        "name": "workspace1",
-        "username": "kites-test3",
-        "role": "OWNER"
-    },
-    {
-        "name": "hello-openapi",
-        "username": "kites-test2",
-        "role": "MEMBER"
-    }
-]
-"""
-```
-
-```python [Retrieve the name of the first workspace]
-from swanlab import OpenApi
-my_api = OpenApi()
-
-my_api.list_workspaces().data[0]["name"]
-"""
-"workspace1"
-"""
-```
-
-```python [Retrieve the response code]
-from swanlab import OpenApi
-my_api = OpenApi()
-
-my_api.list_workspaces().code
-"""
-200
-"""
-```
-
+::: warning Version Note
+This documentation applies to swanlab >= `0.8.0`.
 :::
 
-<br>
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/api/py-openapi/logo.jpg)
+
+- The new OpenAPI uses an **OOP style** — all operations start from the `Api` entry point to retrieve entity objects. Entities support lazy loading (requests are sent when properties are accessed) and uniformly serialize to `dict` via `.json()`.
+
+- > All of the operations are also available via the [`swanlab api`](./cli-swanlab-api.md), useful for CLI, scripts, CI/CD, or any scenario where writing Python code is not needed.
+
+
+> Authentication priority: explicitly passed `api_key` / `host` > `swanlab.login()` session > environment variables `SWANLAB_API_KEY` / `SWANLAB_API_HOST`
+
+## Quick Start
+
+```python
+import swanlab
+
+api = swanlab.Api()                                # reads .netrc credentials automatically
+api = swanlab.Api(api_key="your-api-key", host="your-host")  # explicit credentials
+```
+
+Self-hosted deployment:
+
+```python
+api = swanlab.Api(api_key="your-api-key", host="https://your-server.com")
+```
+
+## Path Format
+
+- **Workspace**: `username`
+- **Project**: `username/project-name`
+- **Experiment**: `username/project-name/experiment-id`
+
+## Core Concepts
+
+The new OpenAPI is organized around three core concepts: **Workspace** → **Project** → **Experiment**, forming a clear hierarchy:
+
+```
+Workspace
+ └── Project
+      └── Experiment
+           ├── metrics (scalar / media)
+           ├── columns (metric columns)
+           └── logs
+```
+
+| Concept | Description |
+|---------|-------------|
+| **Workspace** | A collection of projects, corresponding to a team or user. Divided into personal (`PERSON`) and organization (`TEAM`). |
+| **Project** | A collection of experiments, corresponding to a research task, containing metadata like name, description, labels, and visibility. |
+| **Experiment** | A single training/inference run, containing metrics, config, logs, environment info, etc. |
+| **Column** | A metric column under an experiment, such as `loss` or `acc`, supporting FLOAT / STRING / IMAGE and more. |
+
+### Lazy Loading
+
+All entity objects use **lazy loading**: construction only records the path, and HTTP requests are sent when properties (e.g. `.name`, `.profile`) are accessed. This means you can safely construct objects without worrying about unnecessary network overhead.
+
+```python
+# No request sent at construction time
+run = api.run(path="my-team/my-project/abc123")
+
+# Request sent when .name is accessed
+print(run.name)
+```
+
+### Serialization
+
+Every entity provides a `.json()` method that recursively serializes all properties to a `dict`, ready for JSON output or data passing:
+
+```python
+project = api.project(path="my-team/my-project")
+data = project.json()  # → dict
+```
+
+### Iterators
+
+List operations (such as `workspaces`, `projects`, `runs`, `columns`) return **iterators** with auto-pagination support (`all=True`):
+
+```python
+# Auto-paginate to get all projects
+for p in api.projects(path="my-team", all=True):
+    print(p.name)
+```
+
+### Data Types: metrics / medias / logs
+
+Data under an experiment falls into three categories, accessed through different methods:
+
+| Type | Method | Description | Typical Use Case |
+|------|--------|-------------|-----------------|
+| **Scalar metrics** | `run.metrics(keys=[...])` | Numeric metrics (e.g. loss, acc), supports sampling and range queries, returns structured data | Training curve analysis, trend comparison |
+| **Media metrics** | `run.medias(keys=[...])` | Images, audio, video and other unstructured media data, returns presigned URLs | Visual inspection, result preview |
+| **Logs** | `run.logs()` / `run.export_logs()` | Text logs from experiment runtime, supports level filtering | Debugging, troubleshooting, auditing |
+
+```python
+import swanlab
+
+api = swanlab.Api()
+run = api.run(path="my-team/my-project/abc123")
+
+# Scalar metrics: loss, acc, etc.
+scalars = run.metrics(keys=["loss", "acc"], sample=500)
+print(scalars["metrics"])  # [{step: 1, value: 0.9, timestamp: ...}, ...]
+
+# Media metrics: images, audio, etc.
+media = run.medias(keys=["generated_image"], step=10)
+print(media["metrics"])  # [{index: 10, items: [{url: "https://...", ...}]}, ...]
+
+# Logs: text output
+logs = run.logs(offset=0, level="INFO")
+print(logs["logs"])  # [{message: "...", level: "INFO", timestamp: ...}, ...]
+```
+
+**Notes:**
+
+- `metrics()` `sample` parameter defaults to 1500 and is auto-capped; set `all=True` for full data.
+- `range_query` only works for SCALAR type, supports filtering by step or timestamp range.
+- `medias()` returns media data via presigned URLs — download within the validity period.
+- `export_logs()` can export large volumes of logs to `.log` files, suitable for persistent storage.
+
+## Api
+
+`Api` is the entry point for all operations. Authentication is completed at construction time, creating an independent `Client` instance (separate from the SDK runtime).
+
+| Method | Description |
+|--------|-------------|
+| `api.workspace(username)` | Get a single workspace |
+| `api.workspaces(username)` | List workspaces (iterator) |
+| `api.project(path)` | Get a single project |
+| `api.projects(path, ...)` | Paginated project list with search/sort |
+| `api.create_project(username, name, ...)` | Create a project |
+| `api.run(path)` | Get a single experiment |
+| `api.runs(path, filters=...)` | Get experiment list (POST filter mode) |
+| `api.runs_get(path, ...)` | Get experiment list (GET pagination mode) |
+| `api.column(path, key)` | Get a single metric column |
+| `api.columns(path, ...)` | Get metric columns for an experiment |
+| `api.user()` | Get current user info |
+| `api.self_hosted()` | Self-hosted management entry point |
+
 
 ---
 
-### Experiments
+## workspace
 
-#### `list_experiments`
+**Workspace properties:**
 
-Retrieve the list of experiments in a specified project.
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | `str` | Workspace name |
+| `username` | `str` | Workspace username (unique ID) |
+| `workspace_type` | `str` | `PERSON` or `TEAM` |
+| `role` | `str` | Current user role: `OWNER` or `MEMBER` |
+| `profile` | `dict` | Profile info |
+| `comment` | `str` | Workspace description |
 
-**Method Parameters**
+**Workspace methods:**
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `project` | `str` | Project name |
-| `username` | `str` | Username of the workspace, defaults to the current user |
+| Method | Description |
+|--------|-------------|
+| `projects(sort, search, detail, page, size, all)` | Get project list (iterator) |
+| `create_project(name, visibility, description)` | Create project, returns `Project` or `None` |
+| `json()` | Serialize to `dict` |
 
-**Returns**
+**Parameters:**
 
-`data` `(List[Experiment])`: Returns a list of [Experiment](#experiment-model) objects.
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `username` | `str` | current user | Workspace username |
 
-**Example**
+:::code-group
 
-::: code-group
+```python [Get single workspace]
+import swanlab
 
-```python [Retrieve the list of experiments]
-my_api.list_experiments(project="project1").data
-"""
-[
-    {
-        "cuid": "cuid1",
-        "name": "experiment1",
-        "description": "Description 1",
-        "state": "RUNNING",
-        "show": true,
-        "createdAt": "2024-11-23T12:28:04.286Z",
-        "finishedAt": null,
-        "user": {
-            "username": "kites-test3",
-            "name": "Kites Test"
-        },
-        "profile": {
-            "config": {
-                "lr": 0.001,
-                "epochs": 10
-            }
-        }
-    },
-    ...
-]
-"""
+api = swanlab.Api()
+
+ws = api.workspace(username="my-team")
+
+data = ws.json()
+print(data["name"], data["username"], data["workspace_type"])
 ```
 
-```python [Retrieve the CUID of the first experiment]
-my_api.list_experiments(project="project1").data[0].cuid
-"""
-"cuid1"
-"""
-```
+```python [Iterate workspace list]
+import swanlab
 
-```python [Retrieve the name of the first experiment]
-my_api.list_experiments(project="project1").data[0].name
-"""
-"experiment1"
-"""
+api = swanlab.Api()
+
+for ws in api.workspaces("my-team"):
+    print(ws.name)
 ```
 
 :::
-
-<br>
-
-#### `get_experiment`
-
-Retrieve the information of an experiment.
-
-**Method Parameters**
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `project` | `str` | Project name |
-| `exp_id` | `str` | Unique identifier for the experiment (CUID), can be obtained via `list_experiments` or from the "Environment" tab on the web |
-| `username` | `str` | Username of the workspace, defaults to the current user |
-
-**Returns**
-
-`data` `(Experiment)`: Returns an [Experiment](#experiment-model) object containing detailed information about the experiment.
-
-**Example**
-
-::: code-group
-
-```python [Retrieve the information of an experiment]
-my_api.get_experiment(project="project1", exp_id="cuid1").data
-"""
-{
-    "cuid": "cuid1",
-    "name": "experiment1",
-    "description": "This is a test experiment",
-    "state": "FINISHED",
-    "show": true,
-    "createdAt": "2024-11-23T12:28:04.286Z",
-    "finishedAt": "2024-11-25T15:56:48.123Z",
-    "user": {
-        "username": "kites-test3",
-        "name": "Kites Test"
-    },
-    "profile": {
-        "conda": "...",
-        "requirements": "...",
-        ...
-    }
-}
-"""
-```
-
-```python [Retrieve the status of the experiment]
-my_api.get_experiment(project="project1", exp_id="cuid1").data.state
-"""
-"FINISHED"
-"""
-```
-
-```python [Retrieve the creator's username]
-my_api.get_experiment(project="project1", exp_id="cuid1").data.user["username"]
-"""
-"kites-test3"
-"""
-```
-
-:::
-
-<br>
-
-#### `delete_experiment`
-
-Delete an experiment.
-
-**Method Parameters**
-
-| Parameter  | Type   | Description                                                                                   |
-| ---        | ---    | ---                                                                                           |
-| `project`  | `str`  | Project name                                                                                  |
-| `exp_id`   | `str`  | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
-| `username` | `str`  | Username of the workspace, defaults to the current user                                       |
-
-**Returns**
-
-`data` `(dict)`: Empty dictionary, indicating the delete operation was successful
-
-**Example**
-
-::: code-group
-
-```python [Delete an experiment]
-my_api.delete_experiment(project="project1", exp_id="cuid1")
-```
-
-:::
-
-<br>
-
-#### `get_summary`
-
-Retrieve the summary information of an experiment, including the final value and min/max of tracked metrics and their corresponding steps.
-
-**Method Parameters**
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `project` | `str` | Project name |
-| `exp_id` | `str` | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
-| `username` | `str` | Username of the workspace, defaults to the current user |
-
-**Returns**
-
-`data` `(Dict[str, Dict])`: Returns a dictionary containing the summary information of the experiment.
-
-Each key in the dictionary is a metric name, and the value is a dictionary with the following structure:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `step` | `int` | Last step |
-| `value` | `float` | Metric value at the last step |
-| `min` | `Dict[str, float]` | Step and value for the minimum |
-| `max` | `Dict[str, float]` | Step and value for the maximum |
-
-
-**Example**
-
-::: code-group
-
-```python [Retrieve experiment summary information]
-my_api.get_summary(project="project1", exp_id="cuid1").data
-"""
-{
-    "loss": {
-        "step": 47,
-        "value": 0.1907215012216071,
-        "min": {
-            "step": 33,
-            "value": 0.1745886406861026
-        },
-        "max": {
-            "step": 0,
-            "value": 0.7108771095136294
-        }
-    },
-    ...
-}
-"""
-```
-
-
-```python [Retrieve the max value of a metric]
-my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["max"]["value"]
-"""
-0.7108771095136294
-"""
-```
-
-```python [Retrieve the step of the min value of a metric]
-my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step"]
-"""
-33
-"""
-```
-:::
-
-<br>
-
-#### `get_metrics`
-
-Get the value of an experiment metric.
-
-**Method Parameters**
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `exp_id` | `str` | Experiment CUID, unique identifier, can be obtained via `list_experiments` or from the "Environment" tab on the web |
-| `keys` | `Union[str, List[str]]` | Metric name list, i.e., the key in `swanlab.log({key: value})`, can be viewed on the website, or obtained via `get_summary` |
-
-**Returns**
-
-`data` `(DataFrame)`: Returns a DataFrame containing the metric values of the experiment.
-
-**Example**
-
-::: code-group
-
-```python [Get the value of an experiment metric]
-my_api.get_metrics(exp_id="cuid1", keys=["loss", "acc"]).data
-"""
-          loss  loss_timestamp       acc  acc_timestamp
-step                                                   
-1     0.336772   1751712864853  0.670422  1751712864852
-2     0.338035   1751712864858  0.830018  1751712864857
-3     0.282654   1751712864862  0.794594  1751712864862
-4     0.258216   1751712864866  0.832750  1751712864866
-5     0.097542   1751712864871  0.901684  1751712864871
-6     0.092955   1751712864875  0.907544  1751712864875
-7     0.149327   1751712864879  0.942524  1751712864879
-8     0.131631   1751712864884  0.921309  1751712864883
-"""
-```
-
-:::
-
-
-<br>
 
 ---
 
-### Projects
+## project
 
-#### `list_projects`
+**Project properties:**
 
-Retrieve the list of projects in a specified workspace.
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | `str` | Project name |
+| `path` | `str` | Project path `username/project-name` |
+| `description` | `str` | Project description |
+| `labels` | `list` | Project labels |
+| `created_at` | `str` | Creation time (ISO 8601 UTC) |
+| `updated_at` | `str` | Update time |
+| `url` | `str` | Project web page URL |
+| `visibility` | `str` | `PUBLIC` or `PRIVATE` |
+| `count` | `dict` | Stats (experiment count, collaborator count, etc.) |
 
-**Method Parameters**
+**Project methods:**
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `username` | `str` | Username of the workspace, defaults to the current user |
-| `detail` | `bool` | Whether to include project statistics, defaults to True |
+| Method | Description |
+|--------|-------------|
+| `runs(filters)` | Get experiment list (POST filter mode) |
+| `runs_get(page, size, all)` | Get experiment list (GET pagination mode) |
+| `delete_runs(run_ids, commit)` | Batch delete experiments |
+| `delete(commit)` | Delete project |
+| `json()` | Serialize to `dict` |
 
-**Returns**
+**projects parameters:**
 
-`data` `(List[Project])`: Returns a list of [Project](#project-model) objects.
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `path` | `str` | — | Workspace username, e.g. `"my-team"` |
+| `sort` | `str` | — | Sort field: `created_at`, `updated_at`, `name` |
+| `search` | `str` | — | Search keyword (fuzzy match project name) |
+| `detail` | `bool` | `True` | Whether to return detailed info |
+| `page` | `int` | `1` | Start page |
+| `size` | `int` | `20` | Items per page |
+| `all` | `bool` | `False` | Auto-paginate to get all results |
 
-**Example**
+:::code-group
 
-::: code-group
+```python [Get project]
+import swanlab
 
-```python [Retrieve the list of projects]
-my_api.list_projects().data
-"""
-[
-    {
-        "cuid": "project1",
-        "name": "Project 1",
-        "description": "Description 1",
-        "visibility": "PUBLIC",
-        "createdAt": "2024-11-23T12:28:04.286Z",
-        "updatedAt": null,
-        "group": {
-            "type": "PERSON",
-            "username": "kites-test3",
-            "name": "Kites Test"
-        },
-        "count": {
-            "experiments": 4,
-            "contributors": 1,
-            "children": 0,
-            "runningExps": 0
-        }
-    },
-    ...
-]
-"""
+api = swanlab.Api()
+
+project = api.project(path="my-team/my-project")
+
+print(project.name)
+print(project.description)
+print(project.labels)
+print(project.visibility)  # PUBLIC or PRIVATE
+print(project.created_at)
+print(project.url)
+print(project.count)       # experiment count, collaborator count, etc.
+```
+
+```python [Get project list]
+import swanlab
+
+api = swanlab.Api()
+
+for p in api.projects(path="my-team", sort="updated_at", search="image"):
+    print(p.name, p.path)
+```
+
+```python [Get experiment list (filter mode)]
+import swanlab
+
+api = swanlab.Api()
+
+project = api.project(path="my-team/my-project")
+
+for run in project.runs():
+    print(run.name, run.state, run.created_at)
+```
+
+```python [Create project]
+import swanlab
+
+api = swanlab.Api()
+
+project = api.create_project(
+    username="my-team",
+    name="new-project",
+    visibility="PRIVATE",
+    description="Project description",
+)
+```
+
+```python [Delete project]
+import swanlab
+
+api = swanlab.Api()
+
+project = api.project(path="my-team/my-project")
+project.delete(commit=True)  # commit=False only prints pending deletion info
+```
+
+```python [Batch delete experiments]
+import swanlab
+
+api = swanlab.Api()
+
+project = api.project(path="my-team/my-project")
+project.delete_runs(["run_id_1", "run_id_2"], commit=True)
 ```
 
 :::
 
-<br>
+---
 
-#### `delete_project`
+## run
 
-Delete a project.
+**Experiment properties:**
 
-**Method Parameters**
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | `str` | Experiment name |
+| `description` | `str` | Experiment description |
+| `state` | `str` | Experiment state: `RUNNING`, `FINISHED`, `CRASHED`, `ABORTED`, `OFFLINE` |
+| `labels` | `list` | Experiment labels |
+| `group` | `str` | Experiment group name |
+| `job_type` | `str` | Job type |
+| `created_at` | `str` | Creation time |
+| `finished_at` | `str` | End time, `None` if not finished |
+| `url` | `str` | Experiment web page URL |
+| `show` | `bool` | Whether shown in comparison view |
+| `profile` | `dict` | Experiment config, environment, dependencies, etc. |
+| `user` | `dict` | Creator info |
+
+**Experiment methods:**
+
+| Method | Description |
+|--------|-------------|
+| `metrics(keys, sample, all, range_query)` | Get scalar metric data, returns `dict` |
+| `summary(keys)` | Get scalar metric summary stats, returns `dict` |
+| `logs(offset, level)` | Get log data, returns `dict` |
+| `export_logs(start, rows)` | Export logs as `.log` file, returns `ApiResponseType` |
+| `medias(keys, step, all)` | Get media metric data, returns `dict` |
+| `columns(page, size, search, column_type, column_class, all)` | Get metric column list (iterator) |
+| `column(key, column_class, column_type)` | Get a single metric column |
+| `delete(commit)` | Delete experiment |
+| `json()` | Serialize to `dict` |
+
+### Get single experiment
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+data = run.json()
+print(data["name"], data["state"], data["created_at"])
+```
+
+### Get experiment list — Filter mode
+
+Fetch experiment list under a project via conditional filtering.
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+for run in api.runs(path="my-team/my-project"):
+    print(run.name, run.state)
+```
+
+```python
+# With filters
+for run in api.runs(path="my-team/my-project", filters=[
+    {"key": "state", "type": "STABLE", "op": "EQ", "value": ["FINISHED"]},
+]):
+    print(run.name)
+```
 
 | Parameter | Type | Description |
-| --- | --- | --- |
-| `project` | `str` | Project name |
-| `username` | `str` | Username of the workspace, defaults to the current user
+|-----------|------|-------------|
+| `path` | `str` | Project path `username/project` |
+| `filters` | `list[dict]` | Filter rules, each `{key, type, op, value}` |
 
-**Returns**
+**Filter rule fields:**
 
-`data` `(dict)`: Empty dictionary, indicating the delete operation was successful
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `key` | `str` | ✓ | Field name |
+| `type` | `str` | ✓ | Field type: `STABLE`, `CONFIG`, `SCALAR` |
+| `op` | `str` | ✓ | Operator: `EQ`, `NEQ`, `GTE`, `LTE`, `IN`, `NOT IN`, `CONTAIN` |
+| `value` | `list` | ✓ | Comparison value |
 
-**Example**
+**`type` field values:**
 
-::: code-group
+| type | `key` values | `value` |
+|------|-------------|---------|
+| `STABLE` | Experiment built-in fields: `state`, `name`, `description`, `show`, `pin`, `baseline`, `colors`, `cluster`, `job`, `createdAt`, `updatedAt`, `finishedAt`, `pinnedAt`, `labels` | Corresponding field value |
+| `CONFIG` | Config parameter name, e.g. `param_2` (no `config.` prefix) | Config parameter value |
+| `SCALAR` | Scalar metric name | Metric value |
 
-```python [Delete a project]
-my_api.delete_project(project="project1")
+### Get experiment list — Pagination mode
+
+Fetch experiment list via standard pagination, returns minimal info.
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+for run in api.runs_get(path="my-team/my-project", page=1, size=20, all=True):
+    print(run.name, run.state)
+```
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `path` | `str` | — | Project path `username/project` |
+| `page` | `int` | `1` | Start page |
+| `size` | `int` | `20` | Items per page |
+| `all` | `bool` | `False` | Auto-paginate to get all results |
+
+---
+
+### metrics — Scalar metrics
+
+Fetch numeric metrics (e.g. loss, acc), supports sampling control and range queries, returns structured data.
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Get metric data, returns dict
+result = run.metrics(keys=["loss", "acc"])
+print(result["metrics"])  # metric list
+
+# Specify sample count (default 1500, max 1500)
+result = run.metrics(keys=["loss"], sample=500)
+
+# Full data (no sampling limit)
+result = run.metrics(keys=["loss"], all=True)
+
+# Range query
+result = run.metrics(
+    keys=["loss"],
+    range_query={"type": "step", "start": 100, "end": 500},
+)
+
+# Timestamp range query
+result = run.metrics(
+    keys=["loss"],
+    range_query={"type": "timestamp", "start": 1715769600000, "end": 1715773200000},
+)
+```
+
+**Parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `keys` | `list[str]` | — | Metric key list, e.g. `["loss", "acc"]` |
+| `sample` | `int` | `1500` | Sample count (SCALAR max 1500) |
+| `all` | `bool` | `False` | Get full data (no sampling limit) |
+| `range_query` | `dict` or `RangeQuery` | `None` | Range query: `{"type": "step", "start": 100, "end": 500}` |
+| `x_axis` | `str` | `"step"` | X-axis dimension: `step` (step count) |
+| `ignore_timestamp` | `bool` | `False` | Whether to remove timestamp fields |
+
+> `range_query` only works for SCALAR type. Supports two formats: `dict` or `RangeQuery` object.
+
+**RangeQuery usage:**
+
+```python
+from swanlab.api.typings.common import RangeQuery
+
+# By step range
+rq = RangeQuery(type="step", start=100, end=500)
+
+# Last 50 items
+rq = RangeQuery(tail=50)
+
+# By timestamp range (milliseconds)
+rq = RangeQuery(type="timestamp", start=1715769600000, end=1715773200000)
+
+# Or use dict directly
+result = run.metrics(keys=["loss"], range_query={"type": "step", "start": 100})
+```
+
+> `head` and `tail` are mutually exclusive. Timestamps with fewer than 13 digits are auto-padded to millisecond precision.
+
+### summary — Summary stats
+
+Get statistical summary of scalar metrics (min / max / avg / median / latest).
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+summary = run.summary(keys=["loss", "acc"])
+# Returns stats for each key
+print(summary)
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `keys` | `list[str]` | Scalar keys to query, `None` means all keys |
+
+### medias — Media metrics
+
+Fetch images, audio, video and other unstructured media data, returns presigned URLs.
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Get media data at a specific step
+result = run.medias(keys=["generated_image"], step=10)
+print(result)
+
+# Get all media data
+result = run.medias(keys=["generated_image"], all=True)
+print(result)
+```
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `keys` | `list[str]` | — | Media metric key list |
+| `step` | `int` | `0` | Specific step, omit to get latest |
+| `all` | `bool` | `False` | Get all historical media data |
+
+> Returned media data is provided via presigned URLs — download within the validity period.
+
+### logs — Logs
+
+Fetch text logs from experiment runtime, supports level filtering; can also export as `.log` file.
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Get logs
+logs = run.logs(offset=0, level="INFO")
+print(logs)
+
+# Export logs as .log file (returns presigned download URL)
+result = run.export_logs(start=0, rows=500000)
+if result.ok:
+    print(result.data["url"])
+```
+
+**logs parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `offset` | `int` | `0` | Pagination offset |
+| `level` | `str` | `"INFO"` | Log level: `DEBUG`, `INFO`, `WARN`, `ERROR` |
+| `ignore_timestamp` | `bool` | `False` | Whether to remove timestamp fields |
+
+**export_logs parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `start` | `int` | `0` | Export start line (0-based) |
+| `rows` | `int` | `500000` | Number of rows to export, max 500000 |
+
+### columns — Metric columns
+
+Get the list of metric columns under an experiment, or fetch a single column by key.
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Get all metric columns
+for col in run.columns(page=1, size=20, all=True):
+    print(col.name, col.column_type)
+
+# Get a single column
+col = run.column(key="loss", column_type="FLOAT")
+print(col.name, col.column_type, col.created_at)
+print(col.metric())  # get metric data for this column
+```
+
+**columns parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `page` | `int` | `1` | Start page |
+| `size` | `int` | `20` | Items per page |
+| `search` | `str` | `None` | Search keyword (matches column name) |
+| `column_class` | `str` | `None` | Column class: `CUSTOM` or `SYSTEM` |
+| `column_type` | `str` | `None` | Column data type: `FLOAT`, `STRING`, `IMAGE`, etc. |
+| `all` | `bool` | `False` | Auto-paginate to get all results |
+
+**column parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `path` | `str` | — | Experiment path `username/project/run_id` |
+| `key` | `str` | — | Column key, e.g. `"loss"` |
+| `column_class` | `str` | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM` |
+| `column_type` | `str` | `None` | Column data type: `FLOAT`, `STRING`, `IMAGE`, etc. |
+
+### delete — Delete experiment
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+run.delete(commit=True)  # commit=False only prints pending deletion info
+```
+
+---
+
+## column
+
+**column parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `path` | `str` | — | Experiment path `username/project/run_id` |
+| `key` | `str` | — | Column key, e.g. `"loss"` |
+| `column_class` | `str` | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM` |
+| `column_type` | `str` | `None` | Column data type: `FLOAT`, `STRING`, `IMAGE`, `VIDEO`, etc. |
+
+**columns parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `path` | `str` | — | Experiment path `username/project/run_id` |
+| `page` | `int` | `1` | Start page |
+| `size` | `int` | `20` | Items per page |
+| `search` | `str` | `None` | Search keyword (matches column name) |
+| `column_class` | `str` | `None` | Column class: `CUSTOM` or `SYSTEM` |
+| `column_type` | `str` | `None` | Column data type |
+| `all` | `bool` | `False` | Auto-paginate to get all results |
+
+**Column properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | `str` | Column display name |
+| `key` | `str` | Column key |
+| `column_class` | `str` | Column class: `CUSTOM` or `SYSTEM` |
+| `column_type` | `str` | Data type: `FLOAT`, `STRING`, `IMAGE`, `VIDEO`, `OBJECT3D`, etc. |
+| `created_at` | `int` | Creation timestamp |
+| `error` | `dict` | Error info (if any) |
+
+**Column methods:**
+
+| Method | Description |
+|--------|-------------|
+| `metric(sample, metric_type)` | Get metric data for this column, returns `dict` |
+| `export_csv()` | Export SCALAR column as CSV, returns `ApiResponseType` |
+| `json()` | Serialize to `dict` |
+
+:::code-group
+
+```python [Get single column]
+import swanlab
+
+api = swanlab.Api()
+
+col = api.column(
+    path="my-team/my-project/abc123",
+    key="loss",
+    column_type="FLOAT",
+)
+
+data = col.json()
+print(data["name"], data["column_type"], data["created_at"])
+```
+
+```python [Iterate column list]
+import swanlab
+
+api = swanlab.Api()
+
+for col in api.columns(
+    path="my-team/my-project/abc123",
+    page=1,
+    size=20,
+    all=True,
+    column_type="FLOAT",
+):
+    print(col.name)
+```
+
+```python [Export CSV]
+import swanlab
+
+api = swanlab.Api()
+
+col = api.column(path="my-team/my-project/abc123", key="loss")
+result = col.export_csv()
+if result.ok:
+    print(result.data["url"])  # CSV download URL
 ```
 
 :::
 
-<br>
+---
+
+## user
+
+```python
+import swanlab
+
+api = swanlab.Api()
+user = api.user()
+
+data = user.json()
+print(data["username"], data["email"])
+```
+
+**User properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `username` | `str` | Username |
+| `name` | `str` | Display name |
+| `bio` | `str` | Bio |
+| `institution` | `str` | Institution |
+| `school` | `str` | School |
+| `email` | `str` | Email |
+| `location` | `str` | Location |
+| `url` | `str` | Personal website |
+
+---
+
+## self_hosted
+
+> Applies only to self-hosted deployments and requires super admin privileges.
+
+**SelfHosted properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `enabled` | `bool` | Whether self-hosted mode is enabled |
+| `expired` | `bool` | Whether license is expired |
+| `root` | `bool` | Whether current user is super admin |
+| `plan` | `str` | License type: `free` or `commercial` |
+| `seats` | `int` | License seat count |
+
+**SelfHosted methods:**
+
+| Method | Description |
+|--------|-------------|
+| `create_user(username, password)` | Create user (root only), returns `ApiResponseType` |
+| `get_users(page, size, all)` | Paginate user list (root only), returns iterator |
+| `get_projects(page, size, search, sort, state, creator, group, all)` | Paginate all projects (root only), returns iterator |
+| `get_groups(page, size, search, type, sort, all)` | Paginate all workspaces (root only), returns iterator |
+| `get_usage_summary()` | Get system summary (root only), returns `ApiResponseType` |
+
+:::code-group
+
+```python [Instance info]
+import swanlab
+
+api = swanlab.Api()
+sh = api.self_hosted()
+
+data = sh.json()
+print(data["enabled"], data["plan"], data["seats"])
+```
+
+```python [User management]
+import swanlab
+
+api = swanlab.Api()
+sh = api.self_hosted()
+
+sh.create_user(username="newuser", password="pass123")
+
+for user in sh.get_users(page=1, size=20, all=True):
+    print(user)
+```
+
+```python [Project/Workspace management]
+import swanlab
+
+api = swanlab.Api()
+sh = api.self_hosted()
+
+for proj in sh.get_projects(page=1, size=20, all=True, search="image"):
+    print(proj)
+
+for group in sh.get_groups(page=1, size=20, all=True):
+    print(group)
+```
+
+```python [System summary]
+import swanlab
+
+api = swanlab.Api()
+sh = api.self_hosted()
+
+result = sh.get_usage_summary()
+print(result.data if result.ok else result.errmsg)
+```
+
+:::
+
+---
+
+## Type Reference
+
+**ApiResponseType** — Unified response wrapper, all API calls guarantee no exceptions:
+
+```python
+result = run.export_logs(start=0, rows=500000)
+
+if result.ok:
+    print(result.data)   # normal data
+else:
+    print(result.errmsg) # error message
+```

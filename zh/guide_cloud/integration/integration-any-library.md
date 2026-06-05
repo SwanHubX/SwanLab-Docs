@@ -117,7 +117,7 @@ swanlab.init(
 
 ```python [云端模式]
 swanlab.init(
-    mode="cloud",  # 默认模式
+    mode="online",  # 默认模式
     )
 ```
 

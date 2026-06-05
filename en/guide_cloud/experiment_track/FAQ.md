@@ -6,10 +6,31 @@ Refer to this answer: [Link](https://www.zhihu.com/question/720308649/answer/250
 
 ## How to start multiple experiments from a single script?
 
-Add `swanlab.finish()` between multiple experiment creations.
+**Method 1**: Call `swanlab.finish()` between experiments to end the current run before starting a new one.
 
-After executing `swanlab.finish()`, executing `swanlab.init()` again will create a new experiment.  
-If `swanlab.finish()` is not executed, subsequent `swanlab.init()` calls will be ignored.
+```python
+swanlab.init(project="my-project", experiment_name="exp1")
+swanlab.log({"loss": 0.5})
+swanlab.finish()  # End current experiment
+
+swanlab.init(project="my-project", experiment_name="exp2")  # Start new experiment
+swanlab.log({"loss": 0.3})
+swanlab.finish()
+```
+
+> After executing `swanlab.finish()`, executing `swanlab.init()` again will create a new experiment.
+
+**Method 2**: Use the `reinit=True` parameter. The SDK will automatically finish the previous run and start a new one.
+
+```python
+swanlab.init(project="my-project", experiment_name="exp1")
+swanlab.log({"loss": 0.5})
+swanlab.init(reinit=True, project="my-project", experiment_name="exp2")  # Auto-finish previous
+swanlab.log({"loss": 0.3})
+swanlab.finish()
+```
+
+> If `swanlab.finish()` is not executed and `reinit=True` is not used, calling `swanlab.init()` again will raise a `RuntimeError` instead of being silently ignored.
 
 ## How to Upload Data to a Self-Hosted SwanLab?
 
@@ -47,9 +68,9 @@ After completing the login with `swanlab.login`, a configuration file will be ge
 
 **There are two recommended configuration methods:**
 
-**Method 1:** Add `swanlab.login(api_key='Your API Key')` at the beginning of the code.
+**Method 1 (Recommended)**: Add `swanlab.login(api_key='Your API Key')` at the beginning of your code. This uses `save=False` by default, so it will NOT write login credentials to a local config file.
 
-**Method 2:** Before running the code, set the environment variable `SWANLAB_API_KEY="Your API Key"`.
+**Method 2**: Before running the code, set the environment variable `SWANLAB_API_KEY="Your API Key"`.
 
 ## How to view local details of the line chart?
 
@@ -84,21 +105,23 @@ Therefore, if your machine experiences network issues for more than 30 minutes, 
 
 SwanLab records the standard output stream in the process after `swanlab.init()`, which can be viewed in the "Logs" tab of the experiment. If a line of command-line output is too long, it will be truncated. The current default limit is `1024` characters, and the maximum limit is `4096` characters.  
 
-If you want to modify the limit, you can use the following code to adjust it:  
+If you want to modify the limit, you can use the following code to adjust it:
 
-```python  
-import swanlab  
+```python
+import swanlab
 
-# Create a new settings object and modify the max_log_length parameter  
-new_settings = swanlab.Settings(  
-    max_log_length=4096,  
-)  
+# Create a new settings object and modify the terminal.max_length parameter
+new_settings = swanlab.Settings(
+    terminal=swanlab.Settings.Terminal(
+        max_length=4096,
+    )
+)
 
-# Update global settings  
-swanlab.merge_settings(new_settings)  
+# Update global settings
+swanlab.merge_settings(new_settings)
 
-swanlab.init()  
-...  
+swanlab.init()
+...
 ```
 
 ## How to enable experiment smoothing
@@ -128,10 +151,16 @@ Refer to the documentation: [resume](/en/guide_cloud/experiment_track/resume-exp
 
 ## How to disable system hardware monitoring?
 
+Use the `monitor` field under the `probe` settings. Set it to `False` to disable periodic hardware resource monitoring (CPU usage, GPU utilization, memory, etc.). Note this is different from `hardware`: `hardware` controls whether static hardware metadata (GPU model, CPU cores) is collected at startup, while `monitor` controls periodic dynamic metrics collection.
+
 ```python
-swanlab.init(
-    settings=swanlab.Settings(
-        hardware_monitor=False,
-    )
-)
+import swanlab
+
+# Method 1: Using dict
+swanlab.merge_settings({"probe": {"monitor": False}})
+swanlab.init()
+
+# Method 2: Using Settings object
+swanlab.merge_settings(swanlab.Settings(probe=swanlab.Settings.Probe(monitor=False)))
+swanlab.init()
 ```
