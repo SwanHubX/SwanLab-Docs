@@ -8,9 +8,10 @@ Github: https://github.com/SwanHubX/SwanLab
 ## v0.8.0 - 2026.06.05
 
 **🚀 New Features**
-- ⚡️ Complete SwanLab SDK refactor, significantly improved performance and usability
+- ⚡️ Complete SwanLab SDK refactor, reducing training speed overhead by **~↓ 95.4%** and log disk usage by **~↓ 65.1%**
 - 🪓 Added `swanlab ping` to check network connectivity and runtime environment info
 - 🪓 Added `swanlab.async_log()` for asynchronous metric logging
+- 🪓 Added `swanlab login --local` command, improving the experience for multi-user training scenarios
 - 🪓 Added OpenAPI CLI support — query experiment logs directly via the `swanlab api` CLI
 - 🪓 SwanLab official Skill is now available: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary), install with:
 :::code-group
@@ -24,6 +25,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 :::
 
 - 🦄 **Private deployment only**: Added `swanlab.save()` file save interface. Not available on the public cloud version.
+- 🦄 Improved error reporting in error scenarios, providing more detailed error messages
 - 🔧 Added new configurable environment variables
 
 
@@ -33,7 +35,8 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 😈 Removed several legacy framework integrations
 
 **🔧 Bug Fixes**
-- Fixed a large number of performance issues
+- 🐞 Fixed an issue where experiment startup time was excessively long in some scenarios
+- 🐞 Fixed a bug where experiment colors would be duplicated in offline sync scenarios
 
 ## v0.7.12 - 2026.03.19
 
@@ -256,7 +259,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added Log Scale feature for line charts  
 - Added Experiment Group Drag-and-Drop feature  
 - Added Configuration and Metrics table download functionality in experiment cards  
-- Added [Open API](/zh/api/py-openapi.md), supporting data retrieval from SwanLab via API  
+- Added [Open API](/en/api/py-openapi.md), supporting data retrieval from SwanLab via API  
 - Significantly optimized metric transmission performance, improving speed for handling thousands of metrics  
 - Integrated the `paddlenlp` framework  
 
@@ -342,8 +345,8 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **🚀 New Features**
 - Added the `callbacks` parameter to `swanlab.init`, allowing the registration of callback functions during initialization to support various custom plugin classes.
 - Introduced `swanlab.register_callback()`, enabling the registration of callback functions outside of `init`. [Documentation](/api/py-register-callback.html)
-- Upgraded `swanlab.login()` with new parameters `host`, `web_host`, and `save`, adapting to the characteristics of self-hosted deployment services and supporting the option to not write user login credentials locally for shared server scenarios. [Documentation](/zh/api/py-login.md)
-- Upgraded `swanlab login` with new parameters `host`, `web_host`, and `api-key`. [Documentation](/zh/api/cli-swanlab-login.md)
+- Upgraded `swanlab.login()` with new parameters `host`, `web_host`, and `save`, adapting to the characteristics of self-hosted deployment services and supporting the option to not write user login credentials locally for shared server scenarios. [Documentation](/en/api/py-login.md)
+- Upgraded `swanlab login` with new parameters `host`, `web_host`, and `api-key`. [Documentation](/en/api/cli-swanlab-login.md)
 - Added support for using `swanlab.sync_mlflow()` to synchronize MLflow projects to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md)
 
 **🤔 Optimizations**
@@ -403,7 +406,6 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 ## v0.4.7 - 2025.2.11
 
 **🚀 New Features**
-- `swanlab.log` now supports the `print_to_console` parameter. When enabled, the `key` and `value` of `swanlab.log` will be printed to the terminal in dictionary format.
 - `swanlab.init` now supports the `name` and `notes` parameters, which are equivalent to `experiment_name` and `description`, respectively.
 
 ## v0.4.6 - 2025.2.3

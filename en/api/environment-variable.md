@@ -12,8 +12,7 @@
 
 | Environment Variable | Description | Default Value |
 | -------------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
-| `SWANLAB_SAVE_DIR` | Path where SwanLab global folder is saved (deprecated, use [`SWANLAB_ROOT`](#root-directory-configuration) instead) | `.swanlab` folder in the user's home directory |
-| `SWANLAB_ROOT` | Path where SwanLab global folder is saved, the new environment variable replacing `SWANLAB_SAVE_DIR` | `.swanlab` folder in the user's home directory |
+| `SWANLAB_ROOT` | Path where SwanLab global folder is saved | `.swanlab` folder in the user's home directory |
 | `SWANLAB_PUBLIC` | Whether to make experiments public. Accepts `true`, `yes`, `1`; leave empty for private | Private |
 | `SWANLAB_LOGDIR` | Path where SwanLab parsed log files are saved | `swanlog` folder in the current working directory |
 | `SWANLAB_MODE` | SwanLab's parsing mode. Available modes: `local`, `online` (`cloud` is an alias), `offline`, `disabled`. **Case-sensitive** | `online` |
@@ -56,6 +55,7 @@
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `SWANLAB_WEBHOOK`       | Webhook address.<br> When SwanLab initialization is complete, if this environment variable exists, it will be called to send a message.                                                      |
 | `SWANLAB_WEBHOOK_VALUE` | The value passed to the Webhook callback structure. <br> When `SWANLAB_WEBHOOK` exists, if this environment variable exists, it will be sent as the value of the Webhook callback structure. |
+| `SWANLAB_WEBHOOK_TIMEOUT` | Webhook request timeout (seconds) | `5` |
 
 ## Probe Configuration
 

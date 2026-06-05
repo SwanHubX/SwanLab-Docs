@@ -6,10 +6,12 @@ Github: https://github.com/SwanHubX/SwanLab
 ::: 
 ## v0.8.0 - 2026.06.05
 **🚀 新增功能与优化**
-- ⚡️ 重构了 SwanLab SDK，显著提升了性能与可用性
+- ⚡️ 重构了 SwanLab SDK，对训练速度影响降低 **~↓95.4%**，日志空间占用降低  **~↓65.1%**
 - 🪓 新增 `swanlab ping` 检查网络连通性与运行环境信息
 - 🪓 新增 `swanlab.async_log()` 异步打点
+- 🪓 新增`swanlab login --local`命令，优化多人训练场景下的体验
 - 🪓 新增 OpenAPI CLI 支持，可以通过 `swanlab api` 的 CLI 方式直接读取实验日志
+- 🦄 优化错误场景下的报错体验，提供更详细的错误信息
 - 🔨 SwanLab 官方 Skill 已上线，详见: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary)，可通过以下方式安装:
 :::code-group
 ```bash [npm]
@@ -21,17 +23,16 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ```
 :::
 
-- 🦄 「**仅私有化部署版本**」新增 `swanlab.save()` 文件保存接口，公有云版目前不可见，仅私有化版本支持
-- 🔧 新增了一些可配置环境变量
 
+**🔧修复**
+- 🐞 修复了在某些情况下实验启动时间过长的问题
+- 🐞 修复了离线sync场景下实验颜色重复的问题
 
 **💥 破坏性更新**
 - 😈 **v0.8.0 不再兼容历史版本的 `backup.swanlab` 日志格式，历史日志需使用对应历史版本读取或处理!!**
 - 😈 部分 OpenAPI 的使用方式发生调整，请做好过渡替换
-- 😈 移除了部分历史框架集成
+- 😈 移除了部分已废弃的历史框架集成
 
-**🔧修复**
-- 修复了巨量的性能问题
 
 
 ## v0.7.12 - 2026.03.19
