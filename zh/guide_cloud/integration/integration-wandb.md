@@ -45,7 +45,7 @@ wandb.init()
 
 **`sync_wandb`支持设置两个参数：**
 
-- `mode`: swanlab的记录模式，支持cloud、local和disabled三种模式。
+- `mode`: swanlab的记录模式，默认为`"online"`，可选 `["online", "local", "offline", "disabled"]`。
 - `wandb_run`: 如果此参数设置为**False**，则不会将数据上传到 W&B ，等同于设置wandb.init(mode="offline")
 
 :::
@@ -121,7 +121,7 @@ swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_EN
 - `-t`: 转换类型，可选wandb与tensorboard。
 - `-p`: SwanLab项目名。
 - `-w`: SwanLab工作空间名。
-- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `--mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `-l`: logdir路径。
 - `--wb-project`：待转换的 W&B 项目名。
 - `--wb-entity`：W&B 项目所在的空间名。
@@ -164,7 +164,7 @@ wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
-- `mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `logdir`: logdir路径。
 
 `WandbConverter.run`支持的参数：
@@ -215,7 +215,7 @@ swanlab convert -t wandb-local --wb-dir [WANDB_LOG_DIR] --wb-run-dir [WANDB_RUN_
 - `-t`: 转换类型，可选wandb、tensorboard、mlflow、wandb-local。
 - `-p`: SwanLab项目名。
 - `-w`: SwanLab工作空间名。
-- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `--mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `-l`: logdir路径。
 - `--wb-dir`：待转换的wandb日志目录
 - `--wb-run-dir`：指定的wandb run的目录名。如果不写该参数，则将上传整个wb-dir中的run。
@@ -239,7 +239,7 @@ wb_converter.run(root_wandb_dir="WANDB_DIR", wandb_run_dir="WANDB_RUN_DIR")
 
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
-- `mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `logdir`: logdir路径。
 
 `WandbLocalConverter.run`支持的参数：

@@ -143,7 +143,7 @@ swanlab convert -t tensorboard --tb_logdir [TFEVENT_LOGDIR]
 - `-t`: 转换类型，可选wandb、tensorboard和mlflow。
 - `-p`: SwanLab项目名。
 - `-w`: SwanLab工作空间名。
-- `--mode`: (str) 选择模式，默认为"cloud"，可选 ["cloud", "local", "offline", "disabled"]
+- `--mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `-l`: logdir路径。
 - `--tb_logdir`: TensorBoard日志文件路径。
 
@@ -169,7 +169,7 @@ tfb_converter.run()
 | convert_dir    | -      | Tfevent文件路径       | 
 | project    | -p, --project      | SwanLab项目名       |
 | workspace  | -w, --workspace      | SwanLab工作空间名 |
-| mode    | --mode      | 模式，默认为"cloud"，可选 `["cloud", "local", "offline", "disabled"]`       | 
+| mode    | --mode      | 模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`       |
 | logdir    | -l, --logdir      | SwanLab日志文件保存路径       | 
 
 例子：
