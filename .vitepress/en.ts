@@ -320,7 +320,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       { text: 'Weights & Biases', link: 'integration-wandb'},
       { text: 'XGBoost', link: 'integration-xgboost'},
       { text: 'Xtuner', link: 'integration-xtuner'},
-      { text: 'ZhipuAI', link: 'integration-zhipuai'},
     ]
   }]
 }
