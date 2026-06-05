@@ -527,7 +527,8 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           { text: 'sync_mlflow', link: 'py-sync-mlflow' },
         ]
       },
-      { text: 'register_callback', link: 'py-register-callback' },
+      { text: 'merge_callbacks', link: 'py-merge-callback' },
+      { text: 'register_callbacks', link: 'py-register-callback' },
       { text: '其他', link: 'py-other' },
     ]
   },
