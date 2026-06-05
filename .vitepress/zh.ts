@@ -515,6 +515,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
       },
       { text: 'run', link: 'py-run' },
       { text: 'login', link: 'py-login' },
+      { text: 'save', link: 'py-save' },
       { text: 'integration', link: 'py-integration' },
       { text: 'converter', link: 'py-converter' },
       {
