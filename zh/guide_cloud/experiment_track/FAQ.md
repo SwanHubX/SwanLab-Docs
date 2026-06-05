@@ -7,10 +7,31 @@
 
 ## 如何从一个脚本启动多个实验？
 
-在多次创建实验之间增加`swanlab.finish()`即可。
+**方式一**：在多次创建实验之间调用 `swanlab.finish()` 结束当前实验，再启动下一个。
 
-执行了`swanlab.finish()`之后，再次执行`swanlab.init()`就会创建新的实验；  
-如果不执行`swanlab.finish()`的情况下，再次执行`swanlab.init()`，将无视此次执行。
+```python
+swanlab.init(project="my-project", experiment_name="exp1")
+swanlab.log({"loss": 0.5})
+swanlab.finish()  # 结束当前实验
+
+swanlab.init(project="my-project", experiment_name="exp2")  # 创建新实验
+swanlab.log({"loss": 0.3})
+swanlab.finish()
+```
+
+> 执行了 `swanlab.finish()` 之后，再次执行 `swanlab.init()` 就会创建新的实验。
+
+**方式二**：使用 `reinit=True` 参数，SDK 会自动结束上一个实验并启动新实验。
+
+```python
+swanlab.init(project="my-project", experiment_name="exp1")
+swanlab.log({"loss": 0.5})
+swanlab.init(reinit=True, project="my-project", experiment_name="exp2")  # 自动结束上一个
+swanlab.log({"loss": 0.3})
+swanlab.finish()
+```
+
+> 如果不执行 `swanlab.finish()` 且不使用 `reinit=True`，再次调用 `swanlab.init()` 会抛出 `RuntimeError` 错误，提示需要先结束当前实验。
 
 ## 如何将数据上传到私有化部署的SwanLab?
 
@@ -46,9 +67,9 @@ swanlab.init(mode='disabled')
 
 **推荐的配置方式有两种：**
 
-**方式一(推荐)**：在代码开头加上`swanlab.login(api_key='你的API Key')`，这样不会将登录配置文件写入到本地，[文档](/api/py-login)
+**方式一(推荐)**：在代码开头加上 `swanlab.login(api_key='你的API Key')`，此方法默认 `save=False`，不会将登录信息写入本地配置文件。
 
-**方式二**：在运行代码前，设置环境变量`SWANLAB_API_KEY="你的API Key"`
+**方式二**：在运行代码前，设置环境变量 `SWANLAB_API_KEY="你的API Key"`
 
 
 ## 本地的训练已经结束，但SwanLab UI上仍然在运行中，要怎么改变状态？
@@ -96,9 +117,11 @@ SwanLab会记录`swanlab.init()`之后进程中的标准输出流，可以在实
 ```python
 import swanlab
 
-# 创建新的设置对象，修改max_log_length参数
+# 创建新的设置对象，修改 terminal.max_length 参数
 new_settings = swanlab.Settings(
-    max_log_length=4096,
+    terminal=swanlab.Settings.Terminal(
+        max_length=4096,
+    )
 )
 
 # 更新全局设置
@@ -137,10 +160,16 @@ swanlab.init()
 
 ## 如何关闭系统硬件监控？
 
+通过 `probe` 配置项的 `monitor` 参数来控制，将其设为 `False` 即可关闭周期性的硬件资源监控（CPU 使用率、GPU 利用率、内存等）。注意这与 `hardware` 参数不同：`hardware` 控制启动时是否采集静态硬件快照（如 GPU 型号、CPU 核心数），而 `monitor` 控制是否周期性采集动态硬件指标。
+
 ```python
-swanlab.init(
-    settings=swanlab.Settings(
-        hardware_monitor=False,
-    )
-)
+import swanlab
+
+# 方法一：使用字典配置
+swanlab.merge_settings({"probe": {"monitor": False}})
+swanlab.init()
+
+# 方法二：使用 Settings 对象
+swanlab.merge_settings(swanlab.Settings(probe=swanlab.Settings.Probe(monitor=False)))
+swanlab.init()
 ```
