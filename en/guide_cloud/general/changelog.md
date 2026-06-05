@@ -133,7 +133,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added `swanlab local`, `swanlab online`, `swanlab offline`, `swanlab disabled` commands to quickly set SwanLab mode in the command line, [Documentation](/en/api/cli-swanlab-offline.md)
 
 
-## v0.6.9 - 2025.9.9
+## v0.6.9 - 2025.09.09
 
 **🚀 New Features**
 - Projects now support adding collaborators. [Documentation](/en/guide_cloud/experiment_track/add-collaborator)
@@ -148,7 +148,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added integration with Apple's [MLX LM](https://github.com/ml-explore/mlx-lm) framework. [Documentation](/en/guide_cloud/integration/integration-mlx-lm)
 - Added integration with SGLang's [SpecForge](https://github.com/sgl-project/SpecForge) framework.
 
-## v0.6.8 - 2025.7.29
+## v0.6.8 - 2025.07.29
 
 **🚀 New Features**
 - Sidebar now supports **experiment filtering and sorting**
@@ -164,7 +164,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Fixed some issues
 
 
-## v0.6.7 - 2025.7.17
+## v0.6.7 - 2025.07.17
 
 **🚀 New Features**
 - Added support for **more flexible line chart configuration**, including line type, color, thickness, grid, and legend position
@@ -176,7 +176,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Fixed some issues
 
 
-## v0.6.5 - 2025.7.5
+## v0.6.5 - 2025.07.05
 
 **🚀 New Features**
 - Added support for **resuming training from checkpoints (resume断点续训)**
@@ -195,7 +195,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added a new `LogdirFileWriter` plugin, which supports writing files directly into the log directory.
 
 
-## v0.6.4 - 2025.6.18
+## v0.6.4 - 2025.06.18
 
 **🚀 New Features**
 - Added integration with [AREAL](https://github.com/inclusionAI/AReaL), [PR](https://github.com/inclusionAI/AReaL/pull/98)
@@ -207,7 +207,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **⚙️ Bug Fixes**
 - Fixed issues with `local` mode where log files could not be correctly `sync`ed and `watched`
 
-## v0.6.3 - 2025.6.12
+## v0.6.3 - 2025.06.12
 
 **🚀 New Features**
 - Added `swanlab.echarts.table` to support creating table charts
@@ -216,14 +216,14 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added `Public/Private` filtering to workspaces
 - Added `Latest/Max/Min` switch module to table view
 
-## v0.6.2 - 2025.6.9
+## v0.6.2 - 2025.06.09
 
 **🚀 New Features**
 - Added the `swanlab sync` command to support syncing local logs to SwanLab Cloud or private deployment  
 - Supports storing complete experiment log files locally
 
 
-## v0.6.1 - 2025.6.5
+## v0.6.1 - 2025.06.05
 
 **🚀 New Features**  
 - Hovering over the table header now displays a shortened name  
@@ -235,7 +235,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Improved integration with the HuggingFace Accelerate framework  
 - Duplicate step log warnings are no longer printed by default
 
-## v0.6.0 - 2025.6.1  
+## v0.6.0 - 2025.06.01  
 
 **🚀 New Features**  
 - Added support for **free dragging of charts**  
@@ -243,7 +243,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Hardware monitoring now supports **MetaX** GPUs  
 - Integrated the [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP) framework;
 
-## v0.5.9 - 2025.5.25  
+## v0.5.9 - 2025.05.25  
 
 **🚀 New Features**  
 - 📒 Logging now supports standard error streams, significantly improving the logging experience for frameworks like EvalScope/PyTorch Lightning  
@@ -251,7 +251,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - 🔐 Added security protection for command execution logs—API Keys will now be automatically hidden  
 - ⚙️ Settings now include "Default Workspace" and "Default Visibility" configurations, allowing you to specify under which organization new projects are created by default!
 
-## v0.5.8 - 2025.5.13  
+## v0.5.8 - 2025.05.13  
 
 **🚀 New Features**  
 
@@ -271,7 +271,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **🌍 Ecosystem**  
 - Listed on Tencent Cloud App Marketplace: [Guide](/zh/self_host/tencentcloud-app.md)
 
-## v0.5.6 - 2025.4.23  
+## v0.5.6 - 2025.04.23  
 
 **🚀 New Features**  
 - Line charts now support chart configuration, allowing customization of X/Y axis ranges, main title, and X/Y axis titles.  
@@ -285,7 +285,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Fixed issues with the sidebar's one-click experiment hiding feature.  
 
 
-## v0.5.5 - 2025.4.7
+## v0.5.5 - 2025.04.07
 
 **🚀 New Features**
 - Added `swanlab.Molecule` data type to support biochemical molecular visualization, providing better training experience for AI4Science tasks like AlphaFold
@@ -300,7 +300,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **🛠 Improvements**
 - Optimized web page loading performance
 
-## v0.5.4 - 2025.3.31  
+## v0.5.4 - 2025.03.31  
 
 **🚀 New Features**  
 • Added the `swanlab.Settings` method for more granular experiment behavior control, further enhancing openness  
@@ -321,7 +321,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 • Official plugins now include **Slack Notifications** and **Discord Notifications**, further integrating with the global ecosystem
 
 
-## v0.5.3 - 2025.3.20
+## v0.5.3 - 2025.03.20
 
 ![swanlab x huggingface](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/general/changelog/hf.png)
 
@@ -336,7 +336,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 * Fixed several issues.
 
 
-## v0.5.0 - 2025.3.12
+## v0.5.0 - 2025.03.12
 
 ![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker/docker-deploy/swanlab-docker.jpg)
 
@@ -359,19 +359,19 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added **logging plugins**, supporting the writing of metadata, configurations, and metrics to **local CSV files** during training.
 
 
-## v0.4.12 - 2025.3.8
+## v0.4.12 - 2025.03.08
 
 **Optimizations**
 - Fixed some issues
 
-## v0.4.11 - 2025.3.5
+## v0.4.11 - 2025.03.05
 
 **Improvements**
 
 - Fixed the issue of W&B format conversion errors in some versions
 - Fixed some interaction issues
 
-## v0.4.10 - 2025.3.4
+## v0.4.10 - 2025.03.04
 
 **🚀 New Features**
 
@@ -384,7 +384,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 • Fixed an issue where CPU model information could not be correctly recorded on OpenEuler systems.
 
 
-## v0.4.9 - 2025.2.28
+## v0.4.9 - 2025.02.28
 
 **🚀 New Features**
 - Added `Move Experiment` function
@@ -394,7 +394,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **Optimizations**
 - Fixed some issues on Linux systems
 
-## v0.4.8 - 2025.2.16
+## v0.4.8 - 2025.02.16
 
 **🚀 New Features**
 - Added integration with ModelScope Swift, [Docs](/en/guide_cloud/integration/integration-swift.md)
@@ -403,12 +403,12 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 **Optimizations**
 - Fixed some issues with the SDK
 
-## v0.4.7 - 2025.2.11
+## v0.4.7 - 2025.02.11
 
 **🚀 New Features**
 - `swanlab.init` now supports the `name` and `notes` parameters, which are equivalent to `experiment_name` and `description`, respectively.
 
-## v0.4.6 - 2025.2.3
+## v0.4.6 - 2025.02.03
 
 **🚀New Features**
 - Added integration with LLM reinforcement learning framework [verl](https://github.com/volcengine/verl), [Docs](/en/guide_cloud/integration/integration-verl.md)
@@ -418,7 +418,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Optimized distributed training optimization in PyTorch Lightning framework
 
 
-## v0.4.5 - 2025.1.22
+## v0.4.5 - 2025.01.22
 
 **🚀New Features**
 - Added `swanlab.sync_tensorboardX()` and `swanlab.sync_tensorboard_torch()`: Supports synchronizing metrics to SwanLab when using TensorBoardX or PyTorch.utils.tensorboard for experiment tracking. [Docs](/en/guide_cloud/integration/integration-tensorboard.md)
@@ -427,7 +427,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Optimized the code compatibility of `sync_wandb()`
 
 
-## v0.4.3 - 2025.1.17
+## v0.4.3 - 2025.01.17
 
 **🚀 New Features**
 - Added `swanlab.sync_wandb()`: Supports synchronizing metrics to SwanLab when using Weights & Biases for experiment tracking. [Docs](/en/guide_cloud/integration/integration-wandb.md)
