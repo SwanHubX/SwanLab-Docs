@@ -1,6 +1,6 @@
 # Environment Variables
 
-[⚙️Complete Environment Variables 1 -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/env.py)
+[⚙️Complete Environment Variables  -> Github](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/settings/__init__.py)
 
 ## Debug Configuration
 
