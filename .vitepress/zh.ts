@@ -474,9 +474,12 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
     text: '命令行',
     // collapsed: false,
     items: [
+      { text: 'swanlab api', link: 'cli-swanlab-api' },
+      { text: 'swanlab ping', link: 'cli-swanlab-ping' },
       { text: 'swanlab watch', link: 'cli-swanlab-watch' },
       { text: 'swanlab login', link: 'cli-swanlab-login' },
       { text: 'swanlab logout', link: 'cli-swanlab-logout' },
+      { text: 'swanlab verify', link: 'cli-swanlab-verify' },
       { text: 'swanlab convert', link: 'cli-swanlab-convert' },
       { text: 'swanlab sync', link: 'cli-swanlab-sync' },
       { text: 'swanlab offline', link: 'cli-swanlab-offline' },

@@ -6,7 +6,10 @@ This documentation applies to swanlab >= `0.8.0`.
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/api/py-openapi/logo.jpg)
 
-The new OpenAPI uses an **OOP style** — all operations start from the `Api` entry point to retrieve entity objects. Entities support lazy loading (requests are sent when properties are accessed) and uniformly serialize to `dict` via `.json()`.
+- The new OpenAPI uses an **OOP style** — all operations start from the `Api` entry point to retrieve entity objects. Entities support lazy loading (requests are sent when properties are accessed) and uniformly serialize to `dict` via `.json()`.
+
+- > All of the operations are also available via the [`swanlab api`](./cli-swanlab-api.md), useful for CLI, scripts, CI/CD, or any scenario where writing Python code is not needed.
+
 
 > Authentication priority: explicitly passed `api_key` / `host` > `swanlab.login()` session > environment variables `SWANLAB_API_KEY` / `SWANLAB_API_HOST`
 
@@ -136,6 +139,7 @@ print(logs["logs"])  # [{message: "...", level: "INFO", timestamp: ...}, ...]
 | `api.columns(path, ...)` | Get metric columns for an experiment |
 | `api.user()` | Get current user info |
 | `api.self_hosted()` | Self-hosted management entry point |
+
 
 ---
 
