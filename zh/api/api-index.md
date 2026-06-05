@@ -1,13 +1,16 @@
 # API文档
 
 ## Develop
-- [开放接口](/api/py-openapi.md)
+- [开放接口](/api/py-api.md)
 - [环境变量](/api/environment-variable.md)
 
 ## 命令行
+- [swanlab api](/api/cli-swanlab-api.md): 通过命令行操作云端工作空间/项目/实验/用户资源
 - [swanlab watch](/api/cli-swanlab-watch.md): 启动离线实验看板
 - [swanlab login](/api/cli-swanlab-login.md): 登录SwanLab
 - [swanlab logout](/api/cli-swanlab-logout.md): 登出SwanLab
+- [swanlab verify](/api/cli-swanlab-verify.md): 验证登录状态
+- [swanlab ping](/api/cli-swanlab-ping.md): 连通性与环境诊断
 - [swanlab convert](/api/cli-swanlab-convert.md): 将其他产品的日志转换为SwanLab项目
 - [swanlab sync](/api/cli-swanlab-sync.md): 将本地日志同步到SwanLab云端/私有化部署端
 - [swanlab local](/api/cli-swanlab-local.md): 将SwanLab设置为本地模式
