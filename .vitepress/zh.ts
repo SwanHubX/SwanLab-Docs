@@ -577,6 +577,7 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
             { text: '快速开始', link: 'kubernetes/deploy' },
             { text: '自定义配置', link: 'kubernetes/configuration' },
             { text: '更新与回滚', link: 'kubernetes/upgrade' },
+            { text: '监控与日志', link: 'kubernetes/monitor-logging' },
             { text: '数据迁移', link: 'kubernetes/data-migration' },
             { text: '常见问题', link: 'kubernetes/faq' },
           ]
