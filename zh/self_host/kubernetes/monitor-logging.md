@@ -2,172 +2,223 @@
 
 > 本文档介绍了利用 `Prometheus + Grafana` 监测 SwanLab 线上应用的配置方法。
 
-## 架构概述
+## ☀️ 架构概述
 
-SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分并独立运行。整体监控链路如下：
+SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分并独立运行，整体监控链路如下：
 
 1. **Prometheus** 定期抓取 SwanLab 各个服务暴露的 `/metrics` 接口。
 2. **Grafana** 从 Prometheus 读取数据，并渲染 SwanLab 的监控仪表盘和告警面板。
-3. **（可选）Alertmanager** 或您已有的告警系统在 Prometheus 告警规则触发时发送通知。
+3. **「可选」Alertmanager** 或您已有的告警系统在 Prometheus 告警规则触发时发送通知。
 
-## 前置条件
+## 🧱 前置条件
 
 - 已通过 Helm 安装 SwanLab 私有化服务（参考 [Kubernetes 部署指南](./deploy.md)）
-- 应用名称为 `swanlab-self-hosted`，安装命名空间为 `swanlab`（请根据实际情况替换）
+- 应用默认 `release_name` 为 `swanlab-self-hosted`，安装命名空间为 `<your_namespace>`（请根据实际情况替换）
 - 具备访问相关 Kubernetes 资源的权限
 
-## 接口配置信息概览
 
-下表展示了 SwanLab 目前支持访问 metrics 信息的应用和对应接口配置、路由：
+下表为 SwanLab 后端服务目前支持访问 metrics 信息的应用和对应接口配置、路由：
 
 | 服务名称 | 服务说明 | 端口 | 路由 |
 |---------|---------|------|------|
-| SwanLab-Server | 核心业务服务 | 3000 | /metrics |
-| SwanLab-House | 实验数据分析服务 | 3000 | /api/house/metrics |
+| SwanLab-Server | 后端核心业务服务 | 3000 | /metrics |
+| SwanLab-House | 实验指标OLAP服务 | 3000 | /api/house/metrics |
 
-## 验证 Metrics 接口
 
-在配置 Prometheus 抓取任务前，建议先验证 Metrics 接口是否正常。
+在实际配置 Prometheus 抓取任务前，建议先验证各自服务的 Prometheus Metrics 接口是否正常。
 
-### 验证 SwanLab-Server
+- **验证 SwanLab-Server**
 
 ```bash
-# 获取 Server Pod
-kubectl get pods -n swanlab \
-  -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=server
-
-# 访问 Metrics 接口
-kubectl exec -n swanlab -c server "$(
-  kubectl get pod -n swanlab \
+kubectl exec -n <your_namespace> -c server "$(
+  kubectl get pod -n <your_namespace> \
     -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=server \
     -o jsonpath='{.items[0].metadata.name}'
 )" -- wget -qO- http://127.0.0.1:3000/metrics
 ```
 
-### 验证 SwanLab-House
+- **验证 SwanLab-House**
 
 ```bash
-# 获取 House Pod
-kubectl get pods -n swanlab \
-  -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=house
-
-# 访问 Metrics 接口
-kubectl exec -n swanlab -c house "$(
-  kubectl get pod -n swanlab \
+kubectl exec -n <your_namespace> -c house "$(
+  kubectl get pod -n <your_namespace> \
     -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=house \
     -o jsonpath='{.items[0].metadata.name}'
 )" -- wget -qO- http://127.0.0.1:3000/api/house/metrics
 ```
+其中：
+- `app.kubernetes.io/instance=<release_name>` 中，`<release_name>` 使用的是默认的 RELEASE 名称，默认为 `swanlab-self-hosted` ，请按照实际部署情况替换
+- `<your_namespace>` 替换为您实际部署使用的集群命名空间
 
-## 集成监控服务
+
+
+## 📊 集成监控服务
 
 根据您的环境选择合适的配置方式：
 
-- **场景一：集群中没有 Prometheus** — 在 SwanLab 命名空间内独立部署 Prometheus + Grafana
-- **场景二：集群中已有 Prometheus** — 将 SwanLab 接入现有的 Prometheus 监控体系
+- **场景一：集群中【没有】 Prometheus** — 在 SwanLab 私有化服务的命名空间内独立部署 Prometheus + Grafana，并配置可观测指标
+- **场景二：集群中【已有】 Prometheus** — 将 SwanLab 的可观测指标接入现有的 Prometheus 监控体系
 
----
 
-## 场景一：集群中没有 Prometheus
+### 1. 场景一：集群中没有 Prometheus 监控
 
-此场景适用于没有现成 Prometheus 监控的集群，需要在 SwanLab 命名空间内独立部署一套完整的监控栈。
+此场景适用于没有现成 Prometheus 监控的集群，需要在 SwanLab 的命名空间内独立部署一套完整的 `Prometheus + Grafana` 监控栈。
 
-### 第一步：配置 Pod 注解
+如集群中已有成熟的 `Prometheus` 可观测服务，可以跳过本步骤，查看 [配置 Prometheus 抓取任务](./monitor-logging.md#21-配置-prometheus-抓取任务)。
 
-在 SwanLab 的 Helm values 中为 Server 和 House 添加 Prometheus 抓取注解：
 
+
+#### 1.1 创建 swanlab-monitor-PVC
+
+为 Prometheus 和 Grafana 创建持久化存储，示例中以各自 `100Gi` 的存储空间大小进行申请，可根据集群实际使用情况进行申请
+
+::: details swanlab-monitor-pvc.yaml 配置示例
 ```yaml
-# swanlab-values.yaml
-service:
-  server:
-    customPodAnnotations:
-      prometheus.io/scrape: "swanlab"    # SwanLab 专属抓取标识
-      prometheus.io/port: "3000"         # Metrics 端口
-      prometheus.io/path: "/metrics"     # Metrics 路径
+# ============================================================
+# Prometheus + Grafana PVC 配置
+# ============================================================
+# 用于为 Prometheus 和 Grafana 预创建持久化存储
+# 必须在安装 kube-prometheus-stack 之前创建并确保 Bound
+#
+# 使用方式：
+#   kubectl apply -f swanlab-monitor-pvc.yaml
+#
+# 验证状态：
+#   kubectl get pvc -n <namespace>
+#
+# 注意：
+#   - Prometheus PVC 名称必须匹配 Operator 自动生成的格式：
+#     prometheus-<release>-kube-prome-prometheus-<shard>
+#     例如：prometheus-swanlab-monitor-kube-prome-prometheus-0
+#   - Grafana PVC 名称在 values 中通过 existingClaim 引用
+# ============================================================
 
-  house:
-    customPodAnnotations:
-      prometheus.io/scrape: "swanlab"    # SwanLab 专属抓取标识
-      prometheus.io/port: "3000"         # Metrics 端口
-      prometheus.io/path: "/api/house/metrics"  # Metrics 路径
-```
-
-> **注意**：`prometheus.io/port` 和 `prometheus.io/path` 为 SwanLab 服务内置要求，通常无法更改。
-
-### 第二步：创建 PVC
-
-为 Prometheus 和 Grafana 创建持久化存储：
-
-```yaml
-# swanlab-monitor-pvc.yaml
----
 # Prometheus 数据存储
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  # PVC 名称必须匹配 Operator 自动生成的格式
   name: prometheus-swanlab-monitor-kube-prome-prometheus-0
-  namespace: swanlab  # 替换为实际命名空间
+  namespace: <your_namespace> # TODO: 替换为实际的命名空间
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
-  storageClassName: "your-storage-class"  # 替换为实际 StorageClass
+      storage: 100Gi    # TODO: 按需动态扩容
+  storageClassName: <your_storageClassName> # TODO: 替换为实际的存储类名称
   volumeMode: Filesystem
 ---
 # Grafana 数据存储
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  # Grafana PVC 名称在 values 中通过 existingClaim 引用
   name: swanlab-monitor-grafana-pvc
-  namespace: swanlab  # 替换为实际命名空间
+  namespace: <your_namespace>  # TODO: 替换为实际的命名空间
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
-  storageClassName: "your-storage-class"  # 替换为实际 StorageClass
+      storage: 100Gi # TODO: 按需动态扩容
+  storageClassName: <your_storageClassName> # TODO: 替换为实际的存储类名称
   volumeMode: Filesystem
 ```
+:::
 
+使用如下指令申请监控所需的 PVC 存储资源
 ```bash
 kubectl apply -f swanlab-monitor-pvc.yaml
 
 # 验证 PVC 状态（务必确保全部 Bound）
-kubectl get pvc -n swanlab
+kubectl get pvc -n <your_namespace>
 ```
 
-### 第三步：配置 values-monitor.yaml
+#### 1.2 配置 swanlab-monitor-value
 
-编写独立的 values 文件，包含 Prometheus scrape job 配置、PVC 引用和 Grafana 密码：
+编写独立的 `swanlab-monitor-value.yaml`  文件，包含 Prometheus scrape job 配置、PVC 引用：
 
+::: details swanlab-monitor-value.yaml 配置示例
 ```yaml
-# swanlab-monitor-value.yaml
-# kube-prometheus-stack values
+# ============================================================
+# kube-prometheus-stack values — 使用阿里云 ACR 镜像
+# ============================================================
+# 适用于在 SwanLab 命名空间内独立部署 Prometheus + Grafana
+# 通过 Pod Annotation 自动发现 SwanLab 服务
+#
+# 使用方式：
+#   helm install swanlab-monitor prometheus-community/kube-prometheus-stack \
+#     -n <namespace> -f swanlab-monitor-value.yaml
+#
+# 前置条件：
+#   1. 已创建 PVC（见 swanlab-monitor-pvc.yaml）
+#   2. 已添加 Helm 仓库：
+#      helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+# ============================================================
 
 # ---------- Grafana ----------
+# Grafana 用于可视化 Prometheus 数据，提供 SwanLab 监控仪表盘
 grafana:
   persistence:
     enabled: true
+    # 使用预创建的 PVC（必须在安装前创建并 Bound）
     existingClaim: swanlab-monitor-grafana-pvc
-  adminPassword: "your-password"  # 替换为实际密码
+  # Grafana 管理员默认密码（默认用户名为 admin）
+  adminPassword: "swanlab-monitor@default"
+
+  # Grafana 主镜像（阿里云 ACR）
+  image:
+    registry: repo.swanlab.cn
+    repository: public/grafana
+    tag: "13.0.1-security-01"
+
+  # initChownData 容器镜像（用于初始化数据目录权限）
+  initChownData:
+    image:
+      registry: repo.swanlab.cn
+      repository: public/busybox
+      tag: "1.38.0"
+
+  # sidecar 容器镜像（用于自动加载 ConfigMap 中的 dashboard 和 datasource）
+  sidecar:
+    image:
+      registry: repo.swanlab.cn
+      repository: public/k8s-sidecar
+      tag: "2.7.3"
+
+  replicas: 1
 
 # ---------- Prometheus ----------
+# Prometheus 用于采集和存储 SwanLab 的 metrics 数据
 prometheus:
   prometheusSpec:
+    # 允许选择所有 ServiceMonitor（不限于 Helm 管理的）
     serviceMonitorSelectorNilUsesHelmValues: false
+
+    # 持久化存储配置
+    # 使用 volumeClaimTemplate 让 Operator 自动创建 PVC
+    # 自动创建的 PVC 名称为：prometheus-<release>-kube-prome-prometheus-<shard>
+    # 例如：prometheus-swanlab-monitor-kube-prome-prometheus-0
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: your-storage-class  # 替换为实际 StorageClass
+          storageClassName: disk-essd-auto-delete # TODO: 阿里云 默认 SSD 存储类，按照实际使用情况修改
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 20Gi
+              storage: 100Gi # TODO: 保证大小，storageClassName 与 PVC 中对齐即可
+
+    replicas: 1
+
+    # Prometheus 主镜像（阿里云 ACR）
+    image:
+      registry: repo.swanlab.cn
+      repository: public/prometheus
+      tag: "v3.12.0-distroless"
 
     # 自定义抓取配置 —— SwanLab 专属 scrape job
+    # 通过 Pod Annotation 自动发现 SwanLab 服务
     additionalScrapeConfigs:
       - job_name: "swanlab"
         kubernetes_sd_configs:
@@ -197,75 +248,135 @@ prometheus:
             target_label: release
           - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
             target_label: service
-```
 
-### 第四步：安装 Prometheus + Grafana
+# ---------- Alertmanager ----------
+# Alertmanager 用于处理 Prometheus 告警规则并发送通知
+alertmanager:
+  replicas: 1
+  alertmanagerSpec:
+    image:
+      registry: repo.swanlab.cn
+      repository: public/alertmanager
+      tag: "v0.32.2"
+
+# ---------- Prometheus Operator ----------
+# Prometheus Operator 用于管理 Prometheus 和 Alertmanager 实例
+prometheusOperator:
+  replicas: 1
+  image:
+    registry: repo.swanlab.cn
+    repository: public/prometheus-operator
+    tag: "v0.91.0"
+  # admissionWebhook 用于验证 PrometheusRule 和 ServiceMonitor 配置
+  admissionWebhook:
+    image:
+      registry: repo.swanlab.cn
+      repository: public/kube-webhook-certgen
+      tag: "1.8.3"
+    patch:
+      image:
+        registry: repo.swanlab.cn
+        repository: public/kube-webhook-certgen
+        tag: "1.8.3"
+  # prometheusConfigReloader 用于在 ConfigMap 变更时自动重载 Prometheus 配置
+  prometheusConfigReloader:
+    image:
+      registry: repo.swanlab.cn
+      repository: public/prometheus-config-reloader
+      tag: "v0.91.0"
+
+# ---------- Kube State Metrics ----------
+# kube-state-metrics 用于从 Kubernetes API 导出集群资源指标
+kube-state-metrics:
+  replicas: 1
+  image:
+    registry: repo.swanlab.cn
+    repository: public/kube-state-metrics
+    tag: "v2.19.0"
+
+# ---------- Node Exporter (DaemonSet) ----------
+# node-exporter 用于采集节点级别的硬件和操作系统指标
+# 注意：chart 默认 distroless: true，会自动追加 -distroless 后缀
+#       因此 tag 只需写 "v1.11.1"，不要带 -distroless
+prometheus-node-exporter:
+  # 禁用 hostNetwork 避免端口冲突（默认为 true）
+  hostNetwork: false
+  hostPort:
+    enabled: false
+  # 容忍所有 taint，确保 DaemonSet 在所有节点上运行（包括控制面）
+  tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - effect: PreferNoSchedule
+      operator: Exists
+  image:
+    registry: repo.swanlab.cn
+    repository: public/node-exporter
+    tag: "v1.11.1"
+
+```
+:::
+
+#### 1.3 安装 Prometheus + Grafana
+
+类似 [升级与回滚](./upgrade.md) 章节，区分集群能否访问 `github.com`，可以选择不同的安装方式
+
+
+- **集群可以访问 github**
+
+首先添加 prometheus-community 的仓库的 `kube-prometheus-stack` chart:
 
 ```bash
 # 添加 Helm 仓库
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
-# 安装
+# 使用 helm repo 在线安装
 helm install swanlab-monitor prometheus-community/kube-prometheus-stack \
-  -n swanlab \
+  -n <your_namespace> \
   -f swanlab-monitor-value.yaml
-
-# 升级 SwanLab 使注解生效
-helm upgrade swanlab-self-hosted swanlab/self-hosted \
-  -f swanlab-values.yaml \
-  -n swanlab
 ```
 
-### 第五步：验证抓取
+- **集群无法访问 github**
+
+通过 `oci` 的方式将 `kube-prometheus-stack` 的 chart 包拉取到本地，再执行安装
+```bash
+# 1. 拉取 chart 包到本地
+helm pull oci://swanlab-registry.cn-hangzhou.cr.aliyuncs.com/chart/monitoring/kube-prometheus-stack \
+  --version 86.2.1
+# 2. 解压
+tar -zxvf kube-prometheus-stack-86.2.1.tgz
+# 3. 使用本地 chart 安装
+helm install swanlab-monitor ./kube-prometheus-stack \
+  -n <your_namespace> \
+  -f swanlab-monitor-value.yaml
+```
+
+等待所有 `pods` 和 `deployments` 正常
 
 ```bash
-# 访问 Prometheus UI
-kubectl port-forward -n swanlab \
-  svc/swanlab-monitor-kube-prome-prometheus 9090:9090
-# 浏览器打开 http://localhost:9090/targets
-# 查看 swanlab job 状态是否为 UP
+# deployments
+kubectl get deployments -n <your_namespace> | grep monitor
+
+# pods
+kubectl get pods -n <your_namespace> | grep monitor
 ```
 
 
-## 场景二：集群中已有 Prometheus
+
+### 2. 集群中已有 Prometheus
 
 此场景适用于已有成熟 Prometheus 监控的集群，只需将 SwanLab 接入现有的 Prometheus 抓取任务。
 
-### 第一步：配置 Pod 注解
+#### 2.1 配置 Prometheus 抓取任务
 
-在 SwanLab 的 Helm values 中添加 Prometheus 抓取注解：
+在现有的 `prometheus.yaml` 中添加 SwanLab 专属 scrape job，可以直接在 `scrape_configs` 中复制下面名称为 `swanlab` 的 `job_name`：
 
+:::details prometheus.yaml - swanlab scrape job 配置示例
 ```yaml
-# swanlab-values.yaml
-service:
-  server:
-    customPodAnnotations:
-      prometheus.io/scrape: "swanlab"    # SwanLab 专属抓取标识
-      prometheus.io/port: "3000"         # Metrics 端口
-      prometheus.io/path: "/metrics"     # Metrics 路径
-
-  house:
-    customPodAnnotations:
-      prometheus.io/scrape: "swanlab"    # SwanLab 专属抓取标识
-      prometheus.io/port: "3000"         # Metrics 端口
-      prometheus.io/path: "/api/house/metrics"  # Metrics 路径
-```
-
-### 第二步：升级 SwanLab 使注解生效
-
-```bash
-helm upgrade swanlab-self-hosted swanlab/self-hosted \
-  -f swanlab-values.yaml \
-  -n swanlab
-```
-
-### 第三步：配置 Prometheus 抓取任务
-
-在现有的 `prometheus.yml` 中添加 SwanLab 专属 scrape job：
-
-```yaml
-# prometheus.yml
+....
 scrape_configs:
   - job_name: "swanlab"
     kubernetes_sd_configs:
@@ -303,29 +414,97 @@ scrape_configs:
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
         target_label: service
 ```
-
-> **注意**：请特别确认 `namespace`、`__meta_kubernetes_pod_label_app_kubernetes_io_instance` 等参数的设置是否正确，这直接影响 Prometheus 是否能准确抓取对应服务。
-
+:::
 
 
-## 导入 Grafana 仪表盘
+
+### 3. 配置 Pod 注解并更新服务
+
+在 SwanLab 私有化服务的 `swanlab-self-hosted-value.yaml` 中，分别找到`service.server.customPodAnnotations` 和`service.house.customPodAnnotations`，为 `SwanLab-Server` 和 `SwanLab-House` 添加相应的 Prometheus抓取注解: 
+
+:::details swanlab-self-hosted-value.yaml - pod 注解配置示例
+```yaml
+....
+service:
+  server:
+    ....
+    customPodAnnotations:
+      prometheus.io/scrape: "swanlab"    # SwanLab 专属抓取标识
+      prometheus.io/port: "3000"         # Server Metrics 端口
+      prometheus.io/path: "/metrics"     # Server Metrics 路径
+...
+  house:
+    ... 
+    customPodAnnotations:
+      prometheus.io/scrape: "swanlab"    # SwanLab 专属抓取标识
+      prometheus.io/port: "3000"         # House Metrics 端口
+      prometheus.io/path: "/api/house/metrics"  # House Metrics 路径
+    ...
+```
+:::
+
+:::warning
+⚠️ **注意**: `prometheus.io/port` 和 `prometheus.io/path` 为 SwanLab 服务内置要求，通常无法更改。
+:::
+
+仅修改上述两项 service 的 pod 注解，参考 [更新与回滚](./upgrade.md) 章节，执行 value 更新，使 SwanLab 私有化服务的 pod 注解生效
+```bash
+# 在线更新
+helm upgrade swanlab-self-hosted swanlab/self-hosted \
+  -f swanlab-self-hosted-value.yaml \
+  -n <your_namespace>
+
+# 或使用离线 chart 包更新，
+helm upgrade swanlab-self-hosted ./self-hosted \
+  -f swanlab-self-hosted-value.yaml \
+  -n <your_namespace>
+```
+
+
+### 4. 配置 Ingress
+同理，`swanlab-monitor` 服务不包括 ingress 的网关配置，您需要在集群的负载均衡器（或 Ingress）上配置外部访问入口，需要对 `swanlab-monitor-grafana` 该 SVC 对应 pod 的 **80 端口**配置访问入口。
+
+如果您可以配置端口转发，可以通过如下指令配置端口转发，打开 `localhost:3000` 进行配置
+```bash
+kubectl port-forward svc/swanlab-monitor-grafana 3000:80 -n <your_namespace>
+```
+
+### 5. 导入 Grafana 仪表盘
 
 SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控可视化。
 
-### 下载模板
+#### 5.1 下载配置模板
 
-- [SwanLab-Server.json](./SwanLab-Server.json) — Server 服务监控仪表盘
-- [SwanLab-House.json](./SwanLab-House.json) — House 服务监控仪表盘
+- [swanlab-monitor-config-server.json](https://baidu.com) — Server 服务监控仪表盘
+- [swanlab-monitor-config-house.json](https://baidu.com) — House 服务监控仪表盘
 
-### 导入步骤
 
-1. 在 Grafana 中，导航至 **Dashboards → New → Import**
-2. 分别粘贴或上传 `SwanLab-Server.json` 和 `SwanLab-House.json`
-3. 选择对应的 **Prometheus 数据源**
 
-### 配置模板变量
 
-仪表盘使用模板变量自动适配不同的 Prometheus 配置。导入后在顶部下拉菜单中选择：
+#### 5.2 导入步骤
+
+1. 在 Grafana 中，添加对应的 `prometheus` 数据源，可以点击左侧的 `Connections` -> `Data Sources` -> 右上角 `Add new data source`，选择添加 promethues 配置，设置 URL 为您的 prometheus 端点
+
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609202045722.png"/>
+
+以图中为例:
+- `swanlab-monitor-kube-prome-prometheus` 为该 namespace 下的 prometheus 对应的 SVC，暴露端口为 `9090`
+- `tenant-shaobo` 为安装该 `swanlab-self-hosted` 私有化服务的命名空间
+
+那么可以配置 `Prometheus server URL` 为 `http://swanlab-monitor-kube-prome-prometheus.tenant-shaobo:9090/`
+
+> 在 [](场景一) 中与 swanlab-self-hosted 同命名空间安装 prometheus 服务的
+
+
+2. 在 Grafana 中，导航至 **Dashboards → New → Import**
+
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609200709949.png"/>
+
+3. 分别粘贴或上传 `swanlab-monitor-config-server.json` 和 `swanlab-monitor-config-server.json `
+
+4. 选择对应的 **dataSource**, **namespace**, **job** 和 **service**。
+
+仪表盘使用模板变量自动适配不同的 Prometheus 配置。导入后在 **顶部下拉菜单** 中选择：
 
 | 变量 | 说明 | 示例值 |
 |------|------|--------|
@@ -336,9 +515,19 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 
 > **说明**：模板变量会自动从 Prometheus 读取可用值，无需手动输入。
 
----
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201624323.png"/>
 
-## 常见问题
+
+配置正常后可以看到相关的服务检测指标
+- **SwanLab-Server**:
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201132687.png"/>
+
+- **SwanLab-House**:
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201039152.png"/>
+
+
+
+## ❓ 常见问题
 
 ### 为什么 Metrics 接口返回 404？
 
@@ -364,4 +553,5 @@ Metrics 接口没有采集 CPU、内存等硬件指标。
 
 ### 是否支持监控 PostgreSQL、ClickHouse 等基础服务？
 
-PostgreSQL、ClickHouse 有推出对应的 exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)），但是都需要较高的部署权限。SwanLab 会在未来的更新中为 Grafana 面板集成相应的基础服务指标。
+PostgreSQL、ClickHouse 有推出对应的 exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)），但是对部署权限要求较高。
+未来更新中会考虑为 Grafana 面板集成相应的基础服务指标。
