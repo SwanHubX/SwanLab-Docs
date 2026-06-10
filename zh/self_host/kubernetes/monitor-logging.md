@@ -10,6 +10,10 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 2. **Grafana** 从 Prometheus 读取数据，并渲染 SwanLab 的监控仪表盘和告警面板。
 3. **「可选」Alertmanager** 或您已有的告警系统在 Prometheus 告警规则触发时发送通知。
 
+## 🪜 流程示意
+
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-logging-flow.drawio.svg"/>
+
 ## 🧱 前置条件
 
 - 已通过 Helm 安装 SwanLab 私有化服务（参考 [Kubernetes 部署指南](./deploy.md)）
