@@ -3,7 +3,7 @@
 ::: warning 版本提示
 此文档适用于 swanlab **< 0.8.0** 的版本。
 
-swanlab >= `0.8.0` 请参考新版 API 文档：[`py-api`](/zh/api/py-api.md)。
+swanlab >= `0.8.0` 请参考新版 API 文档：[`py-api`](./py-api.md)。
 :::
 
 基于 SwanLab 云端功能, 在 SDK 端提供访问 **开放 API（OpenAPI）** 的能力, 允许用户通过编程方式在本地环境中操作云端 **实验/项目/空间/指标** 资源。
