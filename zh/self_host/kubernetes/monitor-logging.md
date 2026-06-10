@@ -12,7 +12,7 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 
 ## 🪜 流程示意
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/monitor-logging-flow.png"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-logging-flow.drawio.svg"/>
 
 ## 🧱 前置条件
 

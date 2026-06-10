@@ -3,7 +3,7 @@
 ::: warning Legacy Notice
 This documentation applies to swanlab versions **< 0.8.0**.
 
-For swanlab >= `0.8.0`, please refer to the updated API documentation at [`py-api`](/en/api/py-api.md).
+For swanlab >= `0.8.0`, please refer to the updated API documentation at [`OpenAPI(new)`](./py-api.md)。
 :::
 
 Based on SwanLab's cloud capabilities, it provides access to **OpenAPI** on the SDK side, allowing users to programmatically manipulate cloud **experiment/project/workspace/metric** resources in their local environment.
