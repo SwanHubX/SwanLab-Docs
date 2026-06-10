@@ -636,8 +636,8 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 
 #### 5.1 下载配置模板
 
-- [swanlab-monitor-config-server.json](https://baidu.com) — Server 服务监控仪表盘
-- [swanlab-monitor-config-house.json](https://baidu.com) — House 服务监控仪表盘
+- [swanlab-monitor-config-server.json](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/swanlab-monitor-config-server.json) — Server 服务监控仪表盘
+- [swanlab-monitor-config-house.json](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/swanlab-monitor-config-house.json) — House 服务监控仪表盘
 
 
 

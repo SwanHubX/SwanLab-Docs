@@ -9,13 +9,9 @@
 
 ![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
----
-
 [[toc]]
 
 <br>
-
----
 
 **资源和概念：**
 
@@ -414,8 +410,6 @@ helm install swanlab-self-hosted ./self-hosted/ \
 ```
 - 确认无报错后，去掉 `--dry-run` 选项执行安装
 
----
-
 通过安装 `swanlab/self-hosted`，即可在k8s上安装SwanLab私有化部署版应用，安装结果会在终端打印类似如下信息：
 
 ```bash
@@ -448,8 +442,6 @@ Get the application URL by running these commands:
 
 如上所示，`swanlab-self-hosted` 私有化服务默认无法直接通过外部网络访问，您可以通过`port-forward`功能在本地访问此服务。
 如果您希望**开启外部访问（通过IP或域名）**，请参考 [配置应用访问入口](/self_host/kubernetes/configuration.md#配置应用访问入口)。
-
----
 
 下面是一个在本机访问的例子，打开终端并执行：
 
