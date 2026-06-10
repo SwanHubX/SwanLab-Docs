@@ -64,7 +64,7 @@ kubectl exec -n <your_namespace> -c house "$(
 
 此场景适用于没有现成 Prometheus 监控的集群，需要在 SwanLab 的命名空间内独立部署一套完整的 `Prometheus + Grafana` 监控栈。
 
-如集群中已有成熟的 `Prometheus` 可观测服务，可以跳过本步骤，查看 [配置 Prometheus 抓取任务](./monitor-logging.md#21-配置-prometheus-抓取任务)。
+如集群中已有成熟的 `Prometheus` 可观测服务，可以跳过本步骤，查看 [配置 Prometheus 抓取任务](#_2-1-配置-prometheus-抓取任务)。
 
 
 
@@ -165,6 +165,8 @@ grafana:
     # 使用预创建的 PVC（必须在安装前创建并 Bound）
     existingClaim: swanlab-monitor-grafana-pvc
   # Grafana 管理员默认密码（默认用户名为 admin）
+  # ⚠️ 安全提示：此为示例默认密码，安装完成后请立即登录 Grafana 修改，
+  # 或改用 admin.existingSecret 引用 Kubernetes Secret 管理凭据
   adminPassword: "swanlab-monitor@default"
 
   # Grafana 主镜像（阿里云 ACR）
@@ -203,7 +205,7 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: disk-essd-auto-delete # TODO: 阿里云 默认 SSD 存储类，按照实际使用情况修改
+          storageClassName: <your_storageClassName> # TODO: 替换为实际的存储类名称，必须与 swanlab-monitor-pvc.yaml 中的 storageClassName 保持一致
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
@@ -317,6 +319,10 @@ prometheus-node-exporter:
     tag: "v1.11.1"
 
 ```
+:::
+
+:::warning ⚠️ 安全提示
+配置示例中的 Grafana 管理员密码 `swanlab-monitor@default` 仅为默认示例值。安装完成后，请**立即登录 Grafana 修改管理员密码**；生产环境建议改用 `grafana.admin.existingSecret` 引用 Kubernetes Secret 管理凭据，避免密码明文出现在 values 文件中。
 :::
 
 #### 1.3 安装 Prometheus + Grafana
@@ -483,7 +489,7 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 
 #### 5.2 导入步骤
 
-1. 在 Grafana 中，添加对应的 `prometheus` 数据源，可以点击左侧的 `Connections` -> `Data Sources` -> 右上角 `Add new data source`，选择添加 promethues 配置，设置 URL 为您的 prometheus 端点
+1. 在 Grafana 中，添加对应的 `prometheus` 数据源，可以点击左侧的 `Connections` -> `Data Sources` -> 右上角 `Add new data source`，选择添加 prometheus 配置，设置 URL 为您的 prometheus 端点
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609202045722.png"/>
 
@@ -493,14 +499,14 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 
 那么可以配置 `Prometheus server URL` 为 `http://swanlab-monitor-kube-prome-prometheus.tenant-shaobo:9090/`
 
-> 在 [](场景一) 中与 swanlab-self-hosted 同命名空间安装 prometheus 服务的
+> 上述示例适用于按照 [场景一](#_1-场景一-集群中没有-prometheus-监控) 在与 `swanlab-self-hosted` 相同命名空间内安装 Prometheus 的情况。若您的 Prometheus 部署在其他命名空间或集群外，请将 URL 替换为实际可访问的 Prometheus 地址。
 
 
 2. 在 Grafana 中，导航至 **Dashboards → New → Import**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609200709949.png"/>
 
-3. 分别粘贴或上传 `swanlab-monitor-config-server.json` 和 `swanlab-monitor-config-server.json `
+3. 分别粘贴或上传 `swanlab-monitor-config-server.json` 和 `swanlab-monitor-config-house.json`
 
 4. 选择对应的 **dataSource**, **namespace**, **job** 和 **service**。
 
@@ -527,6 +533,15 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 
 
 
+## 📝 日志采集
+
+> 🚧 日志采集（如 `Loki + Promtail`、`ELK` 等方案）的配置指南正在编写中，敬请期待。
+> 在此之前，您可以通过 `kubectl logs` 查看各服务 Pod 的运行日志，或通过公有云自带的集群 Pod 日志服务进行观测：
+>
+> ```bash
+> kubectl logs -n <your_namespace> <pod_name> -c <container_name>
+> ```
+
 ## ❓ 常见问题
 
 ### 为什么 Metrics 接口返回 404？
@@ -535,7 +550,7 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 
 ### Metrics 接口返回的指标分别代表什么？
 
-Metrics 接口遵循 Prometheus 格式规范，通常会返回请求 QPS、请求延迟、请求错误率等信息，同时包含 Node.js、Go 等语言内部运行指标。由于指标数量庞大，很难完全列出所有指标及其含义。通常我们建议您通过 [访问 Metrics](#验证-metrics-接口) 或者在 Prometheus 面板手动获取所有指标信息，然后借助其他工具（如大语言模型）查询对应指标的含义。
+Metrics 接口遵循 Prometheus 格式规范，通常会返回请求 QPS、请求延迟、请求错误率等信息，同时包含 Node.js、Go 等语言内部运行指标。由于指标数量庞大，很难完全列出所有指标及其含义。通常我们建议您通过 [前置条件](#前置条件) 中的验证 Metrics 接口，或者在 Prometheus 面板手动获取所有指标信息，然后借助其他工具（如大语言模型）查询对应指标的含义。
 
 ### Metrics 接口是否返回了 CPU、内存等指标？
 
