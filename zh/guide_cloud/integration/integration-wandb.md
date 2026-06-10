@@ -145,7 +145,7 @@ swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb
 swanlab sync [日志文件夹路径]
 ```
 
-[swanlab sync文档](/zh/api/cli-swanlab-sync.md)
+[swanlab sync文档](../../api/cli-swanlab-sync.md)
 
 
 ### 2.3 方式二：代码内转换
@@ -191,7 +191,7 @@ wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 swanlab sync [日志文件夹路径]
 ```
 
-[swanlab sync文档](/zh/api/cli-swanlab-sync.md)
+[swanlab sync文档](../../api/cli-swanlab-sync.md)
 
 
 ## 3 转换wandb日志文件

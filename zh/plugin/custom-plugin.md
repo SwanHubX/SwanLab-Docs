@@ -147,5 +147,5 @@ for epoch in range(2, epochs):
 
 ## 学习更多插件
 
-- [EmailCallback](/zh/plugin/notification-email.md)：训练完成/发生错误时，发送消息到邮箱
-- [LarkCallback](/zh/plugin/notification-lark.md)：训练完成/发生错误时，发送消息到飞书
+- [EmailCallback](./notification-email.md)：训练完成/发生错误时，发送消息到邮箱
+- [LarkCallback](./notification-lark.md)：训练完成/发生错误时，发送消息到飞书

@@ -9,13 +9,11 @@ If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployme
 
 ![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
----
 
 [[toc]]
 
 <br>
 
----
 
 **Resources and Concepts:**
 
@@ -413,7 +411,6 @@ helm install swanlab-self-hosted ./self-hosted/ \
 ```
 - After confirming there are no errors, remove the `--dry-run` option to execute the installation
 
----
 
 By installing `swanlab/self-hosted`, you can install the SwanLab self-hosted application on k8s. The installation result will print similar information in the terminal:
 
@@ -448,7 +445,6 @@ Get the application URL by running these commands:
 As shown above, the `swanlab-self-hosted` self-hosted service cannot be directly accessed via external network by default. You can access this service locally using the `port-forward` functionality.
 If you wish to **enable external access (via IP or domain name)**, please refer to [Configuring Application Access Entrypoint](/self_host/kubernetes/configuration.md#configuring-application-access-entrypoint).
 
----
 
 Here is an example of accessing it locally; open a terminal and execute:
 

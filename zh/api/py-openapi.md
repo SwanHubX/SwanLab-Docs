@@ -3,7 +3,7 @@
 ::: danger 废弃提示
 `swanlab.OpenApi` 已于 `0.8.0` 版本**废弃**，将在后续版本中**移除**。
 
-请迁移至新版 [`swanlab.Api`](/zh/api/py-api.md)。
+请迁移至新版 [`swanlab.Api`](./py-api.md)。
 
 > 此 API 适用于 swanlab **< 0.8.0** 的版本。
 :::

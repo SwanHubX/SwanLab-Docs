@@ -269,7 +269,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 新增折线图 **Log Scale** 功能
 - 新增 **实验分组拖拽** 功能
 - 新增实验卡片中**配置**与**指标**表格下载功能
-- 新增[开放接口](/zh/api/py-openapi.md)，支持通过API获取SwanLab数据
+- 新增[开放接口](../../api/py-openapi.md)，支持通过API获取SwanLab数据
 - 大幅优化了指标传输性能，提升上千指标的传输速度
 - 集成`paddlenlp`框架
 
@@ -277,7 +277,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 优化了个人主页的一系列交互
 
 **生态**
-- 腾讯云云应用上架：[指引](/zh/self_host/tencentcloud-app.md)
+- 腾讯云云应用上架：[指引](../../self_host/tencentcloud-app.md)
 
 
 ## v0.5.6 - 2025.04.23
@@ -352,8 +352,8 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 **🚀新增功能**
 - `swanlab.init`新增参数`callbacks`，支持在初始化时注册回调函数，以支持各式各样的自定义插件类
 - 新增`swanlab.register_callback()`，支持在`init`外部注册回调函数，[文档](/api/py-register-callback.html)
-- `swanlab.login()`升级，新增`host`、`web_host`、`save`参数，适配了私有化部署服务的特性，同时支持不将用户登录凭证写入本地，以适应共用服务器场景。[文档](/zh/api/py-login.md)
-- `swanlab login`升级，新增`host`、`web_host`、`api-key`参数，[文档](/zh/api/cli-swanlab-login.md)
+- `swanlab.login()`升级，新增`host`、`web_host`、`save`参数，适配了私有化部署服务的特性，同时支持不将用户登录凭证写入本地，以适应共用服务器场景。[文档](../../api/py-login.md)
+- `swanlab login`升级，新增`host`、`web_host`、`api-key`参数，[文档](../../api/cli-swanlab-login.md)
 - 新增支持使用`swanlab.sync_mlflow()`将MLflow项目同步到SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
 
 **🤔优化**

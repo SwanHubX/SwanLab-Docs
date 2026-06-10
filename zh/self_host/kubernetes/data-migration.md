@@ -339,7 +339,6 @@ spec:
 
 :::
 
----
 
 ::: details export-clickhouse
 
@@ -476,7 +475,6 @@ spec:
 
 :::
 
----
 
 ::: details export-redis
 
@@ -613,7 +611,6 @@ spec:
 
 :::
 
----
 
 ::: details export-vector
 
@@ -765,7 +762,6 @@ spec:
 
 :::
 
----
 
 ```bash
 # 并行执行所有导出 Job
@@ -1009,7 +1005,6 @@ spec:
 
 :::
 
----
 
 ::: details import-clickhouse
 
@@ -1140,7 +1135,6 @@ spec:
 
 :::
 
----
 
 ::: details import-redis
 
@@ -1271,7 +1265,6 @@ spec:
 
 :::
 
----
 
 ::: details import-vector
 
@@ -1414,7 +1407,6 @@ spec:
 
 :::
 
----
 
 ```bash
 # 并行执行所有导入 Job

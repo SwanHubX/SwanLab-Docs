@@ -520,6 +520,7 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
             { text: 'Quick Start', link: 'kubernetes/deploy' },
             { text: 'Custom Configuration', link: 'kubernetes/configuration' },
             { text: 'Update & Rollback', link: 'kubernetes/upgrade' },
+            { text: 'Monitor & Logging', link: 'kubernetes/monitor-logging' },
             { text: 'Data Migration', link: 'kubernetes/data-migration' },
             { text: 'FAQ', link: 'kubernetes/faq' },
           ]
