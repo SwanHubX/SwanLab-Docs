@@ -64,13 +64,13 @@ kubectl exec -n <your_namespace> -c house "$(
 
 此场景适用于没有现成 Prometheus 监控的集群，需要在 SwanLab 的命名空间内独立部署一套完整的 `Prometheus + Grafana` 监控栈。
 
-如集群中已有成熟的 `Prometheus` 可观测服务，可以跳过本步骤，查看 [配置 Prometheus 抓取任务](#_2-1-配置-prometheus-抓取任务)。
+如集群中已有成熟的 `Prometheus` 可观测服务，可以跳过本步骤，查看 [配置 Prometheus 抓取任务](#_2-场景二-集群中已有-prometheus)。
 
 
 
 #### 1.1 创建 swanlab-monitor-PVC
 
-为 Prometheus 和 Grafana 创建持久化存储，示例中以各自 `100Gi` 的存储空间大小进行申请，可根据集群实际使用情况进行申请
+为 Prometheus 和 Grafana 创建持久化存储，示例中以各自 `20Gi` 的存储空间大小进行申请，可根据集群实际使用情况进行申请
 
 ::: details swanlab-monitor-pvc.yaml 配置示例
 ```yaml
@@ -87,9 +87,13 @@ kubectl exec -n <your_namespace> -c house "$(
 #   kubectl get pvc -n <namespace>
 #
 # 注意：
-#   - Prometheus PVC 名称必须匹配 Operator 自动生成的格式：
-#     prometheus-<release>-kube-prome-prometheus-<shard>
-#     例如：prometheus-swanlab-monitor-kube-prome-prometheus-0
+#   - Prometheus PVC 名称必须与 Operator（StatefulSet）自动生成的名称完全一致：
+#     prometheus-<CR名>-db-prometheus-<CR名>-<序号>
+#     其中 CR名 = <release>-kube-prome-prometheus（release 名与 chart 名拼接后截断 26 字符）
+#     release 为 swanlab-monitor 时即：
+#     prometheus-swanlab-monitor-kube-prome-prometheus-db-prometheus-swanlab-monitor-kube-prome-prometheus-0
+#     名称不一致时 Operator 会另行自动创建新 PVC，预创建的 PVC 将被闲置
+#     安装后请用 kubectl get pvc -n <namespace> 核对 Prometheus Pod 实际挂载的 PVC
 #   - Grafana PVC 名称在 values 中通过 existingClaim 引用
 # ============================================================
 
@@ -97,15 +101,15 @@ kubectl exec -n <your_namespace> -c house "$(
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  # PVC 名称必须匹配 Operator 自动生成的格式
-  name: prometheus-swanlab-monitor-kube-prome-prometheus-0
+  # PVC 名称必须与 Operator 自动生成的名称完全一致（格式说明见文件头注释）
+  name: prometheus-swanlab-monitor-kube-prome-prometheus-db-prometheus-swanlab-monitor-kube-prome-prometheus-0
   namespace: <your_namespace> # TODO: 替换为实际的命名空间
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi    # TODO: 按需动态扩容
+      storage: 20Gi    # TODO: 按需动态扩容
   storageClassName: <your_storageClassName> # TODO: 替换为实际的存储类名称
   volumeMode: Filesystem
 ---
@@ -121,7 +125,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi # TODO: 按需动态扩容
+      storage: 20Gi # TODO: 按需动态扩容
   storageClassName: <your_storageClassName> # TODO: 替换为实际的存储类名称
   volumeMode: Filesystem
 ```
@@ -199,9 +203,11 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
 
     # 持久化存储配置
-    # 使用 volumeClaimTemplate 让 Operator 自动创建 PVC
-    # 自动创建的 PVC 名称为：prometheus-<release>-kube-prome-prometheus-<shard>
-    # 例如：prometheus-swanlab-monitor-kube-prome-prometheus-0
+    # Operator 按 volumeClaimTemplate 为 StatefulSet 生成 PVC，名称格式为：
+    #   prometheus-<CR名>-db-prometheus-<CR名>-<序号>（CR名 = <release>-kube-prome-prometheus）
+    # 本 release（swanlab-monitor）对应：
+    #   prometheus-swanlab-monitor-kube-prome-prometheus-db-prometheus-swanlab-monitor-kube-prome-prometheus-0
+    # 该 PVC 已在 swanlab-monitor-pvc.yaml 中按此名称预创建，安装时将直接复用
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -209,7 +215,7 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 100Gi # TODO: 保证大小，storageClassName 与 PVC 中对齐即可
+              storage: 20Gi # 必须与 swanlab-monitor-pvc.yaml 中预创建的容量保持一致
 
     replicas: 1
 
@@ -372,17 +378,22 @@ kubectl get pods -n <your_namespace> | grep monitor
 
 
 
-### 2. 集群中已有 Prometheus
+### 2. 场景二：集群中已有 Prometheus
 
-此场景适用于已有成熟 Prometheus 监控的集群，只需将 SwanLab 接入现有的 Prometheus 抓取任务。
+此场景适用于已有成熟 Prometheus 监控的集群，只需将 SwanLab 接入现有的 Prometheus 抓取任务。本节提供三种接入方式，选择其一即可：
 
-#### 2.1 配置 Prometheus 抓取任务
+| 方式 | 说明 | 适用条件 | 需要修改 Pod 注解 |
+|------|------|----------|------------------|
+| [2.1 方式一：Pod Annotation（推荐）](#_2-1-方式一-pod-annotation-推荐) | 单个 job，通过注解动态发现服务 | 需要 [第 3 步](#_3-配置-pod-注解并更新服务) 配置注解 | ✅ 是 |
+| [2.2 方式二：Label-Based 双 Job](#_2-2-方式二-label-based-双-job) | 两个独立 job，通过 Pod 标签发现 | SwanLab Helm Chart 默认生成的标签即可 | ❌ 否 |
+| [2.3 方式三：Prometheus Operator](#_2-3-方式三-prometheus-operator-servicemonitor-podmonitor) | 通过 ServiceMonitor/PodMonitor 声明式接入 | 集群已部署 Prometheus Operator | ❌ 否 |
 
-在现有的 `prometheus.yaml` 中添加 SwanLab 专属 scrape job，可以直接在 `scrape_configs` 中复制下面名称为 `swanlab` 的 `job_name`：
+#### 2.1 方式一：Pod Annotation（推荐）
 
-:::details prometheus.yaml - swanlab scrape job 配置示例
+在现有的 `prometheus.yaml` 的 `scrape_configs` 中添加一个 SwanLab 专属 job，通过 Pod 注解动态发现服务。此方式使用单个 job 统一采集 Server 和 House，后续新增服务也只需添加注解、无需修改 Prometheus 配置。
+
+::: details prometheus.yaml - Pod Annotation scrape job 配置示例
 ```yaml
-....
 scrape_configs:
   - job_name: "swanlab"
     kubernetes_sd_configs:
@@ -422,13 +433,157 @@ scrape_configs:
 ```
 :::
 
+采用方式一时，需要继续完成 [第 3 步：配置 Pod 注解](#_3-配置-pod-注解并更新服务) 才能生效。
 
+#### 2.2 方式二：Label-Based 双 Job
+
+在 `prometheus.yaml` 的 `scrape_configs` 中添加两个独立的 job，分别采集 Server 和 House。此方式基于 SwanLab Helm Chart 自动为 Pod 生成的 `app.kubernetes.io/instance` 和 `app.kubernetes.io/service` 标签进行发现，**无需修改 Pod 注解**，部署后即可接入。
+
+::: details prometheus.yaml - Label-Based 双 Job 配置示例
+```yaml
+scrape_configs:
+  - job_name: "swanlab-server"
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - <your_namespace>    # TODO: 替换为 SwanLab 部署的命名空间
+    relabel_configs:
+      # 只抓取 release=<release_name> 且 service=server 的 Pod
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        action: keep
+        regex: swanlab-self-hosted    # TODO: 替换为实际的 release name
+
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
+        action: keep
+        regex: server
+
+      # 强制使用 Metrics 端口
+      - source_labels: [__address__]
+        action: replace
+        target_label: __address__
+        regex: ([^:]+)(?::\d+)?
+        replacement: $1:3000
+
+      - target_label: __metrics_path__
+        replacement: /metrics
+
+      # 保留常用 Kubernetes 标签
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
+        target_label: service
+
+  - job_name: "swanlab-house"
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - <your_namespace>    # TODO: 替换为 SwanLab 部署的命名空间
+    relabel_configs:
+      # 只抓取 release=<release_name> 且 service=house 的 Pod
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        action: keep
+        regex: swanlab-self-hosted    # TODO: 替换为实际的 release name
+
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
+        action: keep
+        regex: house
+
+      # 强制使用 Metrics 端口
+      - source_labels: [__address__]
+        action: replace
+        target_label: __address__
+        regex: ([^:]+)(?::\d+)?
+        replacement: $1:3000
+
+      # House 的 Metrics 路径与 Server 不同
+      - target_label: __metrics_path__
+        replacement: /api/house/metrics
+
+      # 保留常用 Kubernetes 标签
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
+        target_label: service
+```
+:::
+
+::: tip 与方式一的区别
+- **无需修改 Pod 注解**：利用 SwanLab Helm Chart 默认生成的 `app.kubernetes.io/*` 标签发现，部署后即可接入。
+- **限定命名空间**：通过 `namespaces.names` 缩小 SD 范围，对权限收紧的集群更友好。
+- **独立 Job**：Server 和 House 各自一个 job，便于在 Prometheus 的 Targets 面板中独立监控和排查。
+- 导入 Grafana 仪表盘时，模板变量 `$job` 的值为 `swanlab-server` 或 `swanlab-house`（而非 `swanlab`）。
+:::
+
+#### 2.3 方式三：Prometheus Operator（ServiceMonitor / PodMonitor）
+
+如果集群中的 Prometheus 由 [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) 管理（例如 kube-prometheus-stack、Bitnami 等 Helm Chart），可以通过声明式的 `ServiceMonitor` 或 `PodMonitor` 资源接入 SwanLab，无需手动编辑 `prometheus.yaml`。
+
+::: details ServiceMonitor 配置示例
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: swanlab-server
+  namespace: <your_namespace>    # TODO: 替换为 SwanLab 部署的命名空间
+  labels:
+    release: kube-prometheus-stack    # TODO: 匹配 Prometheus Operator 的 serviceMonitorSelector
+spec:
+  namespaceSelector:
+    matchNames:
+      - <your_namespace>
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: swanlab-self-hosted    # TODO: 替换为实际的 release name
+      app.kubernetes.io/service: server
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: swanlab-house
+  namespace: <your_namespace>    # TODO: 替换为 SwanLab 部署的命名空间
+  labels:
+    release: kube-prometheus-stack    # TODO: 匹配 Prometheus Operator 的 serviceMonitorSelector
+spec:
+  namespaceSelector:
+    matchNames:
+      - <your_namespace>
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: swanlab-self-hosted    # TODO: 替换为实际的 release name
+      app.kubernetes.io/service: house
+  endpoints:
+    - port: http
+      path: /api/house/metrics
+      interval: 30s
+```
+:::
+
+::: warning
+- `metadata.labels.release` 的值必须与 Prometheus Operator 的 `serviceMonitorSelector` 匹配，否则 Operator 不会拾取此 ServiceMonitor。请检查现有 Prometheus 的 Helm values 中 `prometheus.prometheusSpec.serviceMonitorSelector` 的设置。
+- 场景一的 `swanlab-monitor-value.yaml` 已通过 `serviceMonitorSelectorNilUsesHelmValues: false` 设置允许选择所有 ServiceMonitor，因此如果在场景一中新增 ServiceMonitor 无需额外配置。
+:::
 
 ### 3. 配置 Pod 注解并更新服务
 
+> 此步骤仅适用于 [方式一（Pod Annotation）](#_2-1-方式一-pod-annotation-推荐)。若采用 [方式二（Label-Based）](#_2-2-方式二-label-based-双-job) 或 [方式三（ServiceMonitor）](#_2-3-方式三-prometheus-operator-servicemonitor-podmonitor)，可跳过此步，直接前往 [第 4 步](#_4-配置-ingress)。
+
 在 SwanLab 私有化服务的 `swanlab-self-hosted-value.yaml` 中，分别找到`service.server.customPodAnnotations` 和`service.house.customPodAnnotations`，为 `SwanLab-Server` 和 `SwanLab-House` 添加相应的 Prometheus抓取注解: 
 
-:::details swanlab-self-hosted-value.yaml - pod 注解配置示例
+::: details swanlab-self-hosted-value.yaml - pod 注解配置示例
 ```yaml
 ....
 service:
@@ -516,10 +671,12 @@ SwanLab 官方提供了 Grafana 仪表盘模板，支持两种场景下的监控
 |------|------|--------|
 | `$datasource` | Prometheus 数据源 | 选择已配置的数据源 |
 | `$namespace` | Kubernetes 命名空间 | `swanlab` |
-| `$job` | Prometheus scrape job 名称 | `swanlab` |
+| `$job` | Prometheus scrape job 名称 | `swanlab`、`swanlab-server` 或 `swanlab-house`（取决于接入方式） |
 | `$service` | SwanLab 服务名称 | `server` 或 `house` |
 
 > **说明**：模板变量会自动从 Prometheus 读取可用值，无需手动输入。
+>
+> **注意**：House 仪表盘中的「CPU 使用情况」「内存使用量」面板数据来自 kubelet/cAdvisor 指标（`container_cpu_usage_seconds_total`、`container_memory_working_set_bytes`），并非来自 SwanLab 服务的 Metrics 接口。场景一安装的 kube-prometheus-stack 默认会采集这些指标；场景二请确认现有 Prometheus 已抓取 cAdvisor 指标，否则这两个面板将无数据。
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201624323.png"/>
 
