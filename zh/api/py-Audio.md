@@ -1,6 +1,6 @@
 # swanlab.Audio
 
-[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/audio.py)
+[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/audio/__init__.py)
 
 ```python
 Audio(

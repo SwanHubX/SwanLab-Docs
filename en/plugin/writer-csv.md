@@ -3,7 +3,7 @@
 If you wish to record some configuration information and metrics locally in a CSV file during training (in a format consistent with the "Table View" on the SwanLab webpage), we highly recommend using the `CSV Logger` plugin.
 
 :::warning Improving the Plugin
-All SwanLab plugins are open-source. You can view the [GitHub source code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/plugin/writer.py). We welcome your suggestions and PRs!
+All SwanLab plugins are open-source. You can view the [GitHub source code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/plugin/writer/csv_writer.py). We welcome your suggestions and PRs!
 :::
 
 ## Plugin Usage

@@ -3,7 +3,7 @@
 如果你希望在训练过程中，将一些配置信息、指标信息记录在本地的CSV文件中（格式和SwanLab网页中的“表格视图“一致），那么非常推荐你使用`CSV记录器`插件。
 
 :::warning 改进插件
-SwanLab插件均为开源代码，你可以在[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/plugin/writer.py)中查看，欢迎提交你的建议和PR！
+SwanLab插件均为开源代码，你可以在[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/plugin/writer/csv_writer.py)中查看，欢迎提交你的建议和PR！
 :::
 
 ## 插件用法

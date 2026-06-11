@@ -34,7 +34,7 @@ xtuner train qwen1_5_7b_chat_full_alpaca_e3.py
 
 ---
 
-如果希望像平常使用SwanLab那样指定项目名、实验名等信息，可以在实例化`SwanlabVisBackend`时在`init_kwargs`参数中指定，可以参考 [swanlab init](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py#L71) 查看可配置的参数。
+如果希望像平常使用SwanLab那样指定项目名、实验名等信息，可以在实例化`SwanlabVisBackend`时在`init_kwargs`参数中指定，可以参考 [swanlab init](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/integration/mmengine.py) 查看可配置的参数。
 
 通过以字典的形式传入`init_kwargs`，该参数最终会传给 `swanlab.init` 方法，下面举了个指定项目名称的案例。
 

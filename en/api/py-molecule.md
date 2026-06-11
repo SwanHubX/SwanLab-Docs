@@ -1,6 +1,6 @@
 # swanlab.Molecule
 
-[Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/object3d/molecule.py)
+[Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/molecule/__init__.py)
 
 | Parameter   | Description                                                                                     |
 |-------------|-------------------------------------------------------------------------------------------------|

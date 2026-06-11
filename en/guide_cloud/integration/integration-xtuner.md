@@ -34,7 +34,7 @@ xtuner train qwen1_5_7b_chat_full_alpaca_e3.py
 
 ---
 
-If you want to specify project name, experiment name, and other information as you normally would with SwanLab, you can specify them in the `init_kwargs` parameter when instantiating `SwanlabVisBackend`. You can refer to [swanlab init](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py#L71) to see the configurable parameters.
+If you want to specify project name, experiment name, and other information as you normally would with SwanLab, you can specify them in the `init_kwargs` parameter when instantiating `SwanlabVisBackend`. You can refer to [swanlab init](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/integration/mmengine.py) to see the configurable parameters.
 
 By passing `init_kwargs` in the form of a dictionary, this parameter will eventually be passed to the `swanlab.init` method. Below is an example of specifying a project name.
 

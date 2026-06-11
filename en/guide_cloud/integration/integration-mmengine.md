@@ -68,7 +68,7 @@ runner = Runner(
 runner.train()
 ```
 
-If you want to specify experiment names and other information as you would normally use SwanLab, you can specify parameters in `init_kwargs` when instantiating SwanlabVisBackend. Refer to [init api](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py#L71) for details. However, unlike directly passing parameters as arguments using `swanlab.init`, you need to construct a dictionary.
+If you want to specify experiment names and other information as you would normally use SwanLab, you can specify parameters in `init_kwargs` when instantiating SwanlabVisBackend. Refer to [init api](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/integration/mmengine.py) for details. However, unlike directly passing parameters as arguments using `swanlab.init`, you need to construct a dictionary.
 
 Here are the differences in interaction:
 

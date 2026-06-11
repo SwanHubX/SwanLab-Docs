@@ -1,6 +1,6 @@
 # swanlab.Video
 
-[Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/video/__init__.py)
+[Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/video/__init__.py)
 
 ```python
 Video(
