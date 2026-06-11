@@ -38,7 +38,7 @@ from swanlab.toolkit.callback import SwanKitCallback
 - `on_log`：每次执行`swanlab.log`时调用
 - `on_stop`：停止阶段，当SwanLab停止时调用
 
-更多的生命周期阶段，请参考：[SwanKitCallback](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/toolkit/callback.py)
+更多的生命周期阶段，请参考：[SwanKitCallback](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/protocol/callbacker.py)
 
 ## 实现一个简单的插件
 

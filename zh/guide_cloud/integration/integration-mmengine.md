@@ -68,7 +68,7 @@ runner = Runner(
 runner.train()
 ```
 
-如果希望像平常使用swanlab那样指定实验名等信息，可以在实例化SwanlabVisBackend时在init_kwargs中指定参数，具体参考[init api](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py#L71)，不过不像使用`swanlab.init`那样直接作为参数传入，而是需要构建字典。
+如果希望像平常使用swanlab那样指定实验名等信息，可以在实例化SwanlabVisBackend时在init_kwargs中指定参数，具体参考[init api](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/integration/mmengine.py)，不过不像使用`swanlab.init`那样直接作为参数传入，而是需要构建字典。
 
 下面列举了两者在交互上的不同：
 

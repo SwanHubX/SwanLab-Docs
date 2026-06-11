@@ -1,6 +1,6 @@
 # swanlab.echarts.confusion_matrix
 
-[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/custom_charts/metrics.py)
+[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/echarts/components/metrics.py)
 
 ```python
 confusion_matrix(

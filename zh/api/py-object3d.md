@@ -1,6 +1,6 @@
 # swanlab.Object3D
 
-[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/object3d/object3d.py)
+[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/object3d/__init__.py)
 
 | 参数        | 描述   |
 |-----------|---------------|

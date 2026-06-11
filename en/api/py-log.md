@@ -1,6 +1,6 @@
 # log
 
-[Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/sdk.py)
+[Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/cmd/init.py)
 
 ```python
 log(

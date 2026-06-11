@@ -38,7 +38,7 @@ Common lifecycle stages include:
 - `on_log`: Called every time `swanlab.log` is executed.
 - `on_stop`: Stop stage, called when SwanLab stops.
 
-For more lifecycle stages, refer to: [SwanKitCallback](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/toolkit/callback.py)
+For more lifecycle stages, refer to: [SwanKitCallback](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/protocol/callbacker.py)
 
 ## Implementing a Simple Plugin
 

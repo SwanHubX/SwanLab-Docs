@@ -1,6 +1,6 @@
 # swanlab.Text
 
-[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/text.py)
+[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/text/__init__.py)
 
 ```python
 Text(

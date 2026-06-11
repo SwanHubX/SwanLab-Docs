@@ -1,6 +1,6 @@
 # swanlab.Image
 
-[Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/data/modules/image.py)
+[Github Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/image/__init__.py)
 
 ```python
 Image(
