@@ -29,8 +29,8 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 | Subcommand | Description |
 |------------|-------------|
 | `swanlab api run info <path>` | Get experiment info |
-| `swanlab api run list` | List experiments under a project |
-| `swanlab api run filter` | Filter experiments by query |
+| `swanlab api run list <project_path>` | List experiments under a project |
+| `swanlab api run filter <project_path>` | Filter experiments by query |
 | `swanlab api run metrics` | Get experiment scalar metrics |
 | `swanlab api run summary` | Get experiment metric summaries |
 | `swanlab api run column` | Get a single experiment column |
@@ -187,12 +187,12 @@ swanlab api run info my-team/image-classification/abc123
 List all experiments under a project.
 
 ```bash
-swanlab api run list [OPTIONS]
+swanlab api run list <project_path> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--project_path` / `-p` | `str` | Required | Project path, format: `username/project-name` |
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
+| `project_path` | Positional | Required | Project path, format: `username/project-name` |
 | `--page_num` / `-n` | `int` | `1` | Page number |
 | `--page_size` / `-s` | `str` | `"20"` | Page size |
 | `--all` | Flag | `False` | Auto-paginate, fetch all experiments |
@@ -200,10 +200,10 @@ swanlab api run list [OPTIONS]
 
 ```bash
 # List experiments in a project
-swanlab api run list -p my-team/image-classification
+swanlab api run list my-team/image-classification
 
 # Fetch all experiments
-swanlab api run list -p my-team/image-classification --all
+swanlab api run list my-team/image-classification --all
 ```
 
 
@@ -212,12 +212,12 @@ swanlab api run list -p my-team/image-classification --all
 Query experiments by filter conditions. Use a JSON array to specify one or more filter rules.
 
 ```bash
-swanlab api run filter --project_path <path> --filter_query <json> [OPTIONS]
+swanlab api run filter <project_path> --filter_query <json> [OPTIONS]
 ```
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project_path` / `-p` | `str` | Required, project path |
+| Argument/Option | Type | Description |
+|-----------------|------|-------------|
+| `project_path` | Positional | Required, project path, format: `username/project-name` |
 | `--filter_query` / `-f` | `str` | Required, filter conditions (JSON array or path to JSON file) |
 | `--save` | Option | Save output as JSON file |
 
@@ -242,12 +242,11 @@ Each filter rule is a JSON object:
 
 ```bash
 # Query finished experiments
-swanlab api run filter \
-  -p my-team/image-classification \
+swanlab api run filter my-team/image-classification \
   -f '[{"key": "state", "type": "STABLE", "op": "EQ", "value": ["FINISHED"]}]'
 
 # Read filter conditions from file
-swanlab api run filter -p my-team/image-classification -f ./filter.json
+swanlab api run filter my-team/image-classification -f ./filter.json
 ```
 
 
@@ -259,8 +258,8 @@ Get scalar metrics for an experiment, returned as JSON.
 swanlab api run metrics <path> --keys <keys> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
 | `path` | Positional | Required | Experiment path |
 | `--keys` | `str` | Required | Comma-separated metric keys, e.g. `"loss,acc"` |
 | `--sample` / `-s` | `int` | `1500` | Sample size; auto-capped if exceeded |
@@ -271,11 +270,15 @@ swanlab api run metrics <path> --keys <keys> [OPTIONS]
 | `--range-end` | `int` | `None` | Range end (inclusive), step number or unix timestamp in ms |
 | `--range-head` | `int` | `None` | Return first N data points |
 | `--range-tail` | `int` | `None` | Return last N data points |
+| `--range-last` | `int` | `None` | Data from the last N milliseconds (mutually exclusive with `--range-start`/`--range-end`) |
 | `--save` | Option | — | Save output as JSON file |
 
-### RangeQuery
+**Notes:**
 
-`--range-head` and `--range-tail` are mutually exclusive. `--range-start` and `--range-end` work with `--range-type` (`step` or `timestamp`); timestamps are in milliseconds.
+- `--range-head` and `--range-tail` are mutually exclusive.
+- `--range-last` is mutually exclusive with `--range-start`/`--range-end`.
+- `--range-head`/`--range-tail` can be combined with `--range-start`/`--range-end` or `--range-last` (range filter is applied first, then truncation).
+- `--range-start` and `--range-end` work with `--range-type` (`step` or `timestamp`); timestamps are in milliseconds.
 
 ```bash
 # Get loss metric (default 1500 samples)
@@ -288,9 +291,17 @@ swanlab api run metrics my-team/image-classification/abc123 --keys loss,acc -s 5
 swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-type step --range-start 100 --range-end 500
 
+# Data from the last 5 minutes
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --range-last 300000
+
 # Get last 200 data points
 swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-tail 200
+
+# Step range + first 50 points
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --range-type step --range-start 0 --range-end 500 --range-head 50
 ```
 
 
@@ -302,8 +313,8 @@ Get scalar metric summaries for an experiment (final value, min, max, etc.).
 swanlab api run summary <path> [OPTIONS]
 ```
 
-| Option | Type | Description |
-|--------|------|-------------|
+| Argument/Option | Type | Description |
+|-----------------|------|-------------|
 | `path` | Positional | Experiment path |
 | `--keys` | `str` | Comma-separated metric keys; omit for all keys |
 | `--save` | Option | Save output as JSON file |
@@ -325,8 +336,8 @@ Get a single metric column for an experiment.
 swanlab api run column <path> --key <key> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
 | `path` | Positional | Required | Experiment path |
 | `--key` | `str` | Required | Column key name |
 | `--class` | `str` | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM` |
@@ -346,11 +357,12 @@ List all metric columns for an experiment.
 swanlab api run columns <path> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
 | `path` | Positional | Required | Experiment path |
 | `--page_num` / `-n` | `int` | `1` | Page number |
 | `--page_size` / `-s` | `str` | `"20"` | Page size |
+| `--search` | `str` | `None` | Fuzzy search keyword (matches column name) |
 | `--class` | `str` | `"CUSTOM"` | Column class filter |
 | `--type` | `str` | `None` | Column data type filter |
 | `--all` | Flag | `False` | Auto-paginate, fetch all columns |
@@ -359,6 +371,9 @@ swanlab api run columns <path> [OPTIONS]
 ```bash
 # List all columns
 swanlab api run columns my-team/image-classification/abc123
+
+# Fuzzy search
+swanlab api run columns my-team/image-classification/abc123 --search loss
 
 # List SYSTEM FLOAT columns only
 swanlab api run columns my-team/image-classification/abc123 \
@@ -374,8 +389,8 @@ Get media metrics (images, audio, etc.) for an experiment. Returns presigned URL
 swanlab api run medias <path> --keys <keys> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
 | `path` | Positional | Required | Experiment path |
 | `--keys` | `str` | Required | Comma-separated media keys, e.g. `"image,audio"` |
 | `--step` / `-s` | `int` | `0` | Step number |
@@ -399,8 +414,8 @@ Get console logs for an experiment.
 swanlab api run logs <path> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
 | `path` | Positional | Required | Experiment path |
 | `--offset` / `-o` | `int` | `0` | Log shard index |
 | `--level` / `-l` | `str` | `"INFO"` | Log level: `DEBUG`, `INFO`, `WARN`, `ERROR` |
@@ -427,8 +442,8 @@ Export experiment logs as a downloadable `.log` file.
 swanlab api run export-logs <path> [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| Argument/Option | Type | Default | Description |
+|-----------------|------|---------|-------------|
 | `path` | Positional | Required | Experiment path |
 | `--start` | `int` | `0` | Start row index (0-based) |
 | `--rows` / `-r` | `int` | `500000` | Number of rows to export, max 500000 |
