@@ -652,7 +652,6 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 | `column_class` | `str` | 列分类：`CUSTOM` 或 `SYSTEM` |
 | `column_type` | `str` | 数据类型：`FLOAT`、`STRING`、`IMAGE`、`VIDEO`、`OBJECT3D` 等 |
 | `created_at` | `int` | 创建时间戳 |
-| `error` | `dict` | 错误信息（如有） |
 
 
 ### Column 方法示例
@@ -681,7 +680,7 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 
 :::code-group
 
-```python [获取单个列]
+```python [获取单个指标列]
 import swanlab
 
 api = swanlab.Api()
@@ -693,7 +692,7 @@ col = api.column(
 )
 ```
 
-```python [遍历列列表]
+```python [分页遍历指标列表]
 import swanlab
 
 api = swanlab.Api()
@@ -708,12 +707,12 @@ for col in api.columns(
     print(col.name)
 ```
 
-```python [模糊搜索列]
+```python [模糊搜索指标名]
 import swanlab
 
 api = swanlab.Api()
 
-# search 参数对列名做大小写不敏感的 contains 匹配
+# search 参数对列名做大小写不敏感的 contains 匹配，分页查询
 for col in api.columns(
     path="my-team/my-project/abc123",
     search="loss",
@@ -722,7 +721,7 @@ for col in api.columns(
 ```
 
 
-```python [遍历列表]
+```python [全量遍历列表]
 import swanlab
 
 api = swanlab.Api()
@@ -735,7 +734,7 @@ for col in api.columns(
     print(col.name)
 ```
 
-```python [导出 CSV]
+```python [导出对应列指标 CSV]
 import swanlab
 
 api = swanlab.Api()
