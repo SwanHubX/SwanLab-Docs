@@ -238,7 +238,7 @@ project = api.project(path="my-team/my-project")
 
 """
 - filters: 过滤规则列表，每项为一个类型为  {key, type, op, value} 的字典
-""""
+"""
 # 示例：返回项目下已结束的实验
 runs = project.runs(filters=[{"key": "state", "type": "STABLE", "op": "EQ", "value": ["FINISHED"]}])
 print(runs.json())
@@ -662,7 +662,7 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 | `path` | `str` | — | 实验路径 `username/project/run_id` |
 | `key` | `str` | — | 搜索关键词（模糊匹配列名，返回第一个匹配项） |
 | `column_class` | `str` | `"CUSTOM"` | 列分类：`CUSTOM` 或 `SYSTEM` |
-| `column_type` | `str` | `"FLOAT"` | 列数据类型：`FLOAT`、`STRING`、`IMAGE`、`VIDEO` 等 |
+| `column_type` | `str` | `None` | 列数据类型：`FLOAT`、`STRING`、`IMAGE`、`VIDEO` 等 |
 
 **columns 参数：**
 
@@ -675,6 +675,21 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 | `column_class` | `str` | `None` | 列分类：`CUSTOM` 或 `SYSTEM` |
 | `column_type` | `str` | `None` | 列数据类型 |
 | `all` | `bool` | `False` | 是否自动翻页获取全部 |
+
+**Column.metric() 入参：**
+
+| 参数 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `sample` | `int` | `1500` | 采样数量（SCALAR 最大 1500） |
+| `metric_type` | `str` | `"SCALAR"` | 指标类型，根据列类型自动推断，通常无需手动指定 |
+| `ignore_timestamp` | `bool` | `False` | 是否去除时间戳字段 |
+| `media_step` | `int` | `None` | 仅 MEDIA 类型生效，指定 step |
+
+**Columns.total 属性：**
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| `total` | `int` | 匹配的列总数（首次访问时触发一次请求） |
 
 
 
@@ -734,6 +749,24 @@ for col in api.columns(
     print(col.name)
 ```
 
+```python [获取列总数]
+import swanlab
+
+api = swanlab.Api()
+
+cols = api.columns(path="my-team/my-project/abc123")
+print(cols.total)  # 返回匹配的列总数
+```
+
+```python [获取单列指标数据]
+import swanlab
+
+api = swanlab.Api()
+
+col = api.column(path="my-team/my-project/abc123", key="loss")
+data = col.metric(sample=500)
+```
+
 ```python [导出对应列指标 CSV]
 import swanlab
 
@@ -791,6 +824,7 @@ data = user.json()
 | `seats` | `int` | 许可证席位数 |
 
 ### SelfHosted 方法示例
+
 :::code-group
 
 ```python [实例信息]
@@ -815,16 +849,32 @@ for user in sh.get_users(page=1, size=100, all=True):
     print(user)
 ```
 
-```python [项目/空间管理]
+```python [项目管理]
 import swanlab
 
 api = swanlab.Api()
 sh = api.self_hosted()
 
-for proj in sh.get_projects(page=1, size=100, all=True, search="image"):
+# 按状态 + 创建者过滤
+for proj in sh.get_projects(
+    page=1, size=100, all=True,
+    search="image", state="FINISHED", creator="admin",
+):
     print(proj)
 
-for group in sh.get_groups(page=1, size=100, all=True):
+# 按组织空间过滤
+for proj in sh.get_projects(group="my-team", sort="create"):
+    print(proj)
+```
+
+```python [空间管理]
+import swanlab
+
+api = swanlab.Api()
+sh = api.self_hosted()
+
+# 按类型过滤
+for group in sh.get_groups(all=True, type="TEAM", sort="name"):
     print(group)
 ```
 
