@@ -194,6 +194,10 @@ grafana:
 
   replicas: 1
 
+  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
+  nodeSelector: {}
+  tolerations: []
+
 # ---------- Prometheus ----------
 # Prometheus collects and stores SwanLab metrics data
 prometheus:
@@ -217,6 +221,10 @@ prometheus:
               storage: 20Gi # must match the pre-created PVC capacity in swanlab-monitor-pvc.yaml
 
     replicas: 1
+
+    # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
+    nodeSelector: {}
+    tolerations: []
 
     # Prometheus image (Alibaba Cloud ACR)
     image:
@@ -261,6 +269,9 @@ prometheus:
 alertmanager:
   replicas: 1
   alertmanagerSpec:
+    # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
+    nodeSelector: {}
+    tolerations: []
     image:
       registry: repo.swanlab.cn
       repository: public/alertmanager
@@ -270,6 +281,9 @@ alertmanager:
 # Prometheus Operator manages Prometheus and Alertmanager instances
 prometheusOperator:
   replicas: 1
+  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
+  nodeSelector: {}
+  tolerations: []
   image:
     registry: repo.swanlab.cn
     repository: public/prometheus-operator
@@ -296,6 +310,9 @@ prometheusOperator:
 # kube-state-metrics exports cluster resource metrics from the Kubernetes API
 kube-state-metrics:
   replicas: 1
+  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
+  nodeSelector: {}
+  tolerations: []
   image:
     registry: repo.swanlab.cn
     repository: public/kube-state-metrics
@@ -306,6 +323,9 @@ kube-state-metrics:
 # Note: chart defaults distroless: true, which auto-appends -distroless suffix
 #       So tag should be "v1.11.1" without -distroless
 prometheus-node-exporter:
+  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
+  # ⚠️ node-exporter is a DaemonSet — setting nodeSelector limits it to matching nodes only
+  nodeSelector: {}
   # Disable hostNetwork to avoid port conflicts (default is true)
   hostNetwork: false
   hostPort:

@@ -172,8 +172,8 @@ grafana:
     enabled: true
     # 使用预创建的 PVC（必须在安装前创建并 Bound）
     existingClaim: swanlab-monitor-grafana-pvc
-  # Grafana 管理员默认密码（默认用户名为 admin）
-  # ⚠️ 安全提示：此为示例默认密码，安装完成后请立即登录 Grafana 修改，
+  # Grafana 管理员密码（默认用户名为 admin）
+  # ⚠️ 安全提示：此为初始密码，安装完成后请立即登录 Grafana 修改，
   # 或改用 admin.existingSecret 引用 Kubernetes Secret 管理凭据
   adminPassword: "swanlab-monitor@default"
 
@@ -199,6 +199,10 @@ grafana:
 
   replicas: 1
 
+  # 节点调度配置（按需填写，填写示例：node-role.kubernetes.io/monitor: ""）
+  nodeSelector: {}
+  tolerations: []
+
 # ---------- Prometheus ----------
 # Prometheus 用于采集和存储 SwanLab 的 metrics 数据
 prometheus:
@@ -215,13 +219,17 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: <your_storageClassName> # TODO: 替换为实际的存储类名称，必须与 swanlab-monitor-pvc.yaml 中的 storageClassName 保持一致
+          storageClassName: disk-essd-auto-delete # 必须与 swanlab-monitor-pvc.yaml 中的 storageClassName 保持一致
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
               storage: 20Gi # 必须与 swanlab-monitor-pvc.yaml 中预创建的容量保持一致
 
     replicas: 1
+
+    # 节点调度配置（按需填写，填写示例：node-role.kubernetes.io/monitor: ""）
+    nodeSelector: {}
+    tolerations: []
 
     # Prometheus 主镜像（阿里云 ACR）
     image:
@@ -231,6 +239,10 @@ prometheus:
 
     # 自定义抓取配置 —— SwanLab 专属 scrape job
     # 通过 Pod Annotation 自动发现 SwanLab 服务
+    # 注解约定：
+    #   prometheus.io/scrape: "swanlab"    — SwanLab 专属抓取标识
+    #   prometheus.io/port: "3000"         — metrics 端口
+    #   prometheus.io/path: "/metrics"     — metrics 路径
     additionalScrapeConfigs:
       - job_name: "swanlab"
         kubernetes_sd_configs:
@@ -266,6 +278,9 @@ prometheus:
 alertmanager:
   replicas: 1
   alertmanagerSpec:
+    # 节点调度配置（按需填写，填写示例：node-role.kubernetes.io/monitor: ""）
+    nodeSelector: {}
+    tolerations: []
     image:
       registry: repo.swanlab.cn
       repository: public/alertmanager
@@ -275,6 +290,9 @@ alertmanager:
 # Prometheus Operator 用于管理 Prometheus 和 Alertmanager 实例
 prometheusOperator:
   replicas: 1
+  # 节点调度配置（按需填写，填写示例：node-role.kubernetes.io/monitor: ""）
+  nodeSelector: {}
+  tolerations: []
   image:
     registry: repo.swanlab.cn
     repository: public/prometheus-operator
@@ -301,6 +319,9 @@ prometheusOperator:
 # kube-state-metrics 用于从 Kubernetes API 导出集群资源指标
 kube-state-metrics:
   replicas: 1
+  # 节点调度配置（按需填写，填写示例：node-role.kubernetes.io/monitor: ""）
+  nodeSelector: {}
+  tolerations: []
   image:
     registry: repo.swanlab.cn
     repository: public/kube-state-metrics
@@ -311,11 +332,14 @@ kube-state-metrics:
 # 注意：chart 默认 distroless: true，会自动追加 -distroless 后缀
 #       因此 tag 只需写 "v1.11.1"，不要带 -distroless
 prometheus-node-exporter:
+  # 节点调度配置（按需填写，填写示例：node-role.kubernetes.io/monitor: ""）
+  # ⚠️ node-exporter 是 DaemonSet，设了 nodeSelector 后只会在匹配节点上运行
+  nodeSelector: {}
   # 禁用 hostNetwork 避免端口冲突（默认为 true）
   hostNetwork: false
   hostPort:
     enabled: false
-  # 容忍所有 taint，确保 DaemonSet 在所有节点上运行（包括控制面）
+  # 容忍所有 taint，确保 DaemonSet 在所有节点上都能运行（包括控制面）
   tolerations:
     - effect: NoSchedule
       operator: Exists
