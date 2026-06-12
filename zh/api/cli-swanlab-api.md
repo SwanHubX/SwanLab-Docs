@@ -29,8 +29,8 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 | 子命令 | 描述 |
 |--------|------|
 | `swanlab api run info <path>` | 获取实验信息 |
-| `swanlab api run list` | 列出项目下的实验 |
-| `swanlab api run filter` | 按条件过滤实验 |
+| `swanlab api run list <project_path>` | 列出项目下的实验 |
+| `swanlab api run filter <project_path>` | 按条件过滤实验 |
 | `swanlab api run metrics` | 获取实验标量指标 |
 | `swanlab api run summary` | 获取实验指标汇总 |
 | `swanlab api run column` | 获取实验单个指标列 |
@@ -187,12 +187,12 @@ swanlab api run info my-team/image-classification/abc123
 列出指定项目下的所有实验。
 
 ```bash
-swanlab api run list [OPTIONS]
+swanlab api run list <project_path> [OPTIONS]
 ```
 
 | 参数/选项 | 类型 | 默认值 | 描述 |
 |-----------|------|--------|------|
-| `--project_path` / `-p` | `str` | 必填 | 项目路径，格式为 `username/project-name` |
+| `project_path` | 位置参数 | 必填 | 项目路径，格式为 `username/project-name` |
 | `--page_num` / `-n` | `int` | `1` | 页码 |
 | `--page_size` / `-s` | `str` | `"20"` | 每页数量 |
 | `--all` | 布尔标志 | `False` | 自动翻页，获取全部实验 |
@@ -200,10 +200,10 @@ swanlab api run list [OPTIONS]
 
 ```bash
 # 列出项目下的实验
-swanlab api run list -p my-team/image-classification
+swanlab api run list my-team/image-classification
 
 # 获取全部实验
-swanlab api run list -p my-team/image-classification --all
+swanlab api run list my-team/image-classification --all
 ```
 
 
@@ -212,12 +212,12 @@ swanlab api run list -p my-team/image-classification --all
 按过滤条件查询实验。使用 JSON 数组指定一个或多个过滤规则。
 
 ```bash
-swanlab api run filter --project_path <path> --filter_query <json> [OPTIONS]
+swanlab api run filter <project_path> --filter_query <json> [OPTIONS]
 ```
 
 | 参数/选项 | 类型 | 描述 |
 |-----------|------|------|
-| `--project_path` / `-p` | `str` | 必填，项目路径 |
+| `project_path` | 位置参数 | 必填，项目路径，格式为 `username/project-name` |
 | `--filter_query` / `-f` | `str` | 必填，过滤条件（JSON 数组或 JSON 文件路径） |
 | `--save` | 选项 | 保存输出为 JSON 文件 |
 
@@ -242,12 +242,11 @@ swanlab api run filter --project_path <path> --filter_query <json> [OPTIONS]
 
 ```bash
 # 查询状态为 FINISHED 的实验
-swanlab api run filter \
-  -p my-team/image-classification \
+swanlab api run filter my-team/image-classification \
   -f '[{"key": "state", "type": "STABLE", "op": "EQ", "value": ["FINISHED"]}]'
 
 # 从文件读取过滤条件
-swanlab api run filter -p my-team/image-classification -f ./filter.json
+swanlab api run filter my-team/image-classification -f ./filter.json
 ```
 
 
@@ -271,11 +270,14 @@ swanlab api run metrics <path> --keys <keys> [OPTIONS]
 | `--range-end` | `int` | `None` | 范围结束值（含），步数或毫秒时间戳 |
 | `--range-head` | `int` | `None` | 返回前 N 条数据 |
 | `--range-tail` | `int` | `None` | 返回后 N 条数据 |
+| `--range-last` | `int` | `None` | 最近 N 毫秒的数据（与 `--range-start`/`--range-end` 互斥） |
 | `--save` | 选项 | — | 保存输出为 JSON 文件 |
 
 **注意事项：**
 
 - `--range-head` 和 `--range-tail` 互斥。
+- `--range-last` 与 `--range-start`/`--range-end` 互斥。
+- `--range-head`/`--range-tail` 可与 `--range-start`/`--range-end` 或 `--range-last` 组合（先范围过滤，再截取）。
 - `--range-start` 和 `--range-end` 配合 `--range-type` 使用（`step` 或 `timestamp`），时间戳单位为毫秒。
 
 ```bash
@@ -289,9 +291,17 @@ swanlab api run metrics my-team/image-classification/abc123 --keys loss,acc -s 5
 swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-type step --range-start 100 --range-end 500
 
+# 最近 5 分钟的数据
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --range-last 300000
+
 # 获取最后 200 条数据
 swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-tail 200
+
+# 步数范围 + 取前 50 个点
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --range-type step --range-start 0 --range-end 500 --range-head 50
 ```
 
 
@@ -352,6 +362,7 @@ swanlab api run columns <path> [OPTIONS]
 | `path` | 位置参数 | 必填 | 实验路径 |
 | `--page_num` / `-n` | `int` | `1` | 页码 |
 | `--page_size` / `-s` | `str` | `"20"` | 每页数量 |
+| `--search` | `str` | `None` | 模糊搜索关键词（匹配列 name） |
 | `--class` | `str` | `"CUSTOM"` | 列分类筛选 |
 | `--type` | `str` | `None` | 列数据类型筛选 |
 | `--all` | 布尔标志 | `False` | 自动翻页，获取全部列 |
@@ -360,6 +371,9 @@ swanlab api run columns <path> [OPTIONS]
 ```bash
 # 列出所有指标列
 swanlab api run columns my-team/image-classification/abc123
+
+# 模糊搜索
+swanlab api run columns my-team/image-classification/abc123 --search loss
 
 # 仅列出 FLOAT 类型的系统列
 swanlab api run columns my-team/image-classification/abc123 \
