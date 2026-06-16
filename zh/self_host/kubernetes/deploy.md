@@ -20,7 +20,7 @@
 - `<your_namespace>`: 在集群中部署的 SwanLab 私有化服务的命名空间，请替换为部署使用的命名空间
 
 ::: info
-**当前APP_VERSION: v2.8.0**
+**当前APP_VERSION: v2.8.1**
 :::
 
 

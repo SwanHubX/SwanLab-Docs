@@ -22,7 +22,7 @@ If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployme
 - `<your_namespace>`: The namespace for the SwanLab self-hosted service deployed in the cluster, please replace with the actual namespace used for deployment
 
 ::: info
-**Current APP_VERSION: v2.8.0**
+**Current APP_VERSION: v2.8.1**
 :::
 
 
