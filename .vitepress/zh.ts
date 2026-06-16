@@ -100,7 +100,7 @@ export const zh = defineConfig({
         link: base_path_api + '/api-index',
         activeMatch: '/api/',
       },
-      { text: 'v0.8.0',  items: [
+      { text: 'v0.8.3',  items: [
         { text: '更新日志', link: base_path_guide_cloud + '/general/changelog' },
         { text: '文档仓库', link: 'https://github.com/SwanHubX/SwanLab-Docs' },
         { text: '基线社区', link: 'https://swanlab.cn/benchmarks' },

@@ -4,6 +4,13 @@
 升级到最新版：`pip install -U swanlab`  
 Github: https://github.com/SwanHubX/SwanLab
 ::: 
+
+## v0.8.3 - 2026.06.16
+**🚀新增功能**
+- 🔥 新增 HTML 图表，支持嵌入LLM Vibe Coding 生成页面，参考 [swanlab.Html()](https://docs.swanlab.cn/api/py-html.html)
+- 🧭 Kubenetes 部署 Prometheus + Grafana 方案 上线，参考 [监控与日志配置指南](https://docs.swanlab.cn/self_host/kubernetes/monitor-logging.html)
+
+
 ## v0.8.0 - 2026.06.05
 **🚀 新增功能与优化**
 - ⚡️ 重构了 SwanLab SDK，对训练速度影响降低 **~↓95.4%**，日志空间占用降低  **~↓65.1%**
