@@ -55,7 +55,7 @@ run.log({"demo_html": html_data})
 import swanlab
 
 run = swanlab.init()
-html_data = swanlab.Html("<h1>Hello World</p>", caption="hello")
+html_data = swanlab.Html("<h1>Hello World</h1>", caption="hello")
 
 run.log({"demo_html": html_data})
 ```
