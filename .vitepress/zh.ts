@@ -503,6 +503,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           { text: 'Text', link: 'py-Text' },
           { text: 'Video', link: 'py-video' },
           { text: 'ECharts', link: 'py-echarts' },
+          { text: 'Html', link: 'py-html' },
           { text: 'Object3D', link: 'py-object3d' },
           { text: 'Molecule', link: 'py-molecule' },
         ]
