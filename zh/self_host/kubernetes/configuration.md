@@ -334,7 +334,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: integration-postgres-secret
-  namespace: <your_namesapce>
+  namespace: <your_namespace>
 type: Opaque
 stringData:
   username: "<your_username>"
@@ -344,7 +344,7 @@ stringData:
 
 ```
 
-```yaml [integraion 字段填写示例]
+```yaml [integration 字段填写示例]
 integrations:
   ....
   postgres:
