@@ -334,7 +334,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: integration-postgres-secret
-  namespace: <your_namesapce>
+  namespace: <your_namespace>
 type: Opaque
 stringData:
   username: "<your_username>"
