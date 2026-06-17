@@ -301,9 +301,12 @@ integrations:
 
 
 
-### 【不推荐】外部 PostgreSQL（`integrations.postgres`）
+### 【可选】外部 PostgreSQL（`integrations.postgres`）
 
-接入外部 PostgreSQL（自建 cnpg 集群或云厂商 RDS）。
+接入外部 PostgreSQL（自建 cnpg 集群或云厂商 RDS 关系型数据库）。
+::: tip
+如外接 PostgreSQL, 为了保证应用性能，**请保证该数据库实例与集群在同一 VPC 下**。
+:::
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
@@ -322,16 +325,34 @@ integrations:
 | `primaryUrl` | 可读可写数据库连接串，格式：`postgresql://{username}:${password}@postgres:5432/app?schema=public` |
 | `replicaUrl` | 只读数据库连接串，一般用于负载均衡。如果未配置只读用户/集群，可使用可读可写连接串代替 |
 
+
 ::: details 外部集成 PostgreSQL 配置示例
 
-```yaml
+:::code-group 
+```yaml [postgres-secret 填写示例]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integration-postgres-secret
+  namespace: <your_namesapce>
+type: Opaque
+stringData:
+  username: "<your_username>"
+  password: "<your_password>"
+  primaryUrl: "postgres://<your_username>:<your_password>@<your_host>:5432/app" # host 和 端口号需要根据实际连接串修改
+  replicaUrl: "postgres://<your_username>:<your_password>@<your_host>:5432/app" # host 和 端口号需要根据实际连接串修改
+
+```
+
+```yaml [integraion 字段填写示例]
 integrations:
+  ....
   postgres:
     enabled: true
-    host: "example.postgres"
+    host: "<your_host>" # 修改为实际的数据库主机地址，确保与集群在同一 VPC 下
     port: 5432
     database: "app"
-    existingSecret: integration-postgres
+    existingSecret: integration-postgres-secret
 ```
 
 :::
