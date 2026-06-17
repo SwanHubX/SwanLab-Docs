@@ -301,9 +301,12 @@ integrations:
 
 
 
-### [Not Recommended] External PostgreSQL (`integrations.postgres`)
+### [Optional] External PostgreSQL (`integrations.postgres`)
 
 Connect to external PostgreSQL (self-built cnpg cluster or cloud provider RDS).
+::: tip
+If using external PostgreSQL, to ensure application performance, **please ensure the database instance is in the same VPC as the cluster**.
+:::
 
 | Field | Type | Default | Description |
 |------|------|--------|------|
@@ -322,16 +325,34 @@ Connect to external PostgreSQL (self-built cnpg cluster or cloud provider RDS).
 | `primaryUrl` | Read-write database connection string, format: `postgresql://{username}:${password}@postgres:5432/app?schema=public` |
 | `replicaUrl` | Read-only database connection string, generally used for load balancing. If a read-only user/cluster is not configured, the read-write connection string can be used instead |
 
+
 ::: details External PostgreSQL Integration Configuration Example
 
-```yaml
+:::code-group 
+```yaml [postgres-secret example]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integration-postgres-secret
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  username: "<your_username>"
+  password: "<your_password>"
+  primaryUrl: "postgres://<your_username>:<your_password>@<your_host>:5432/app" # Modify host and port according to your actual connection string
+  replicaUrl: "postgres://<your_username>:<your_password>@<your_host>:5432/app" # Modify host and port according to your actual connection string
+
+```
+
+```yaml [integration field example]
 integrations:
+  ....
   postgres:
     enabled: true
-    host: "example.postgres"
+    host: "<your_host>" # Replace with actual database host address, ensure it is in the same VPC as the cluster
     port: 5432
     database: "app"
-    existingSecret: integration-postgres
+    existingSecret: integration-postgres-secret
 ```
 
 :::
