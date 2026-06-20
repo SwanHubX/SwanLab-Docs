@@ -1,1 +1,1 @@
-<!--@include: ../course/llm_train_course/07-audio/1.cosyvoice-sft/README.md-->
+<!--@include: ../course/llm_train_course/07-audio/1.cosyvoice-sft/index.md-->
