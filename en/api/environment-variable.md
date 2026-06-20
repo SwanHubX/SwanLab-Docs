@@ -21,21 +21,21 @@
 
 ## Experiment Configuration
 
-| Environment Variable         | Description                                                                                                                              |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `SWANLAB_PROJ_NAME`          | Project name, equivalent to `swanlab.init(project="...")`                                                                                |
-| `SWANLAB_WORKSPACE`          | Workspace name, equivalent to `swanlab.init(workspace="...")`                                                                            |
-| `SWANLAB_EXP_NAME`           | Experiment name, equivalent to `swanlab.init(experiment_name="...")`                                                                     |
-| `SWANLAB_RUN_ID`             | Experiment run ID, equivalent to `swanlab.init(id="...")`                                                                                |
-| `SWANLAB_RESUME`             | Whether to resume training, equivalent to `swanlab.init(resume=...)`, possible values: `must`, `allow`, `never`                          |
-| `SWANLAB_DESCRIPTION`        | Experiment description, equivalent to `swanlab.init(description="...")`                                                                  |
-| `SWANLAB_TAGS`               | Experiment tags, equivalent to `swanlab.init(tags=[...])`. If you want to add multiple tags, write it as `SWANLAB_TAGS="tag1,tag2,tag3"` |
-| `SWANLAB_GROUP`              | Experiment group, used to categorize experiments into different groups for better management and differentiation                         |
-| `SWANLAB_JOB_TYPE`           | Experiment task type, used to identify the current experiment's task type (e.g., classification, regression, etc.)                       |
-| `SWANLAB_EXP_COLOR`          | Experiment color, equivalent to `swanlab.init(color="...")`. Supports preset color names, RGB strings, or hex color codes.               |
-| `SWANLAB_RUN_PARALLEL`       | Parallel mode, equivalent to `swanlab.init(parallel="...")`. Possible value: `shared`.                                                   |
-| `SWANLAB_RUN_DIR`            | Custom run directory name. When set, directory conflict retries are skipped and the directory is created directly                        | Auto-generated |
-| `SWANLAB_RUN_DIR_MAX_LENGTH` | Maximum length for the auto-generated run directory name                                                                                 | `255`          |
+| Environment Variable         | Description                                                                                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SWANLAB_PROJ_NAME`          | Project name, equivalent to `swanlab.init(project="...")`                                                                                   |
+| `SWANLAB_WORKSPACE`          | Workspace name, equivalent to `swanlab.init(workspace="...")`                                                                               |
+| `SWANLAB_EXP_NAME`           | Experiment name, equivalent to `swanlab.init(experiment_name="...")`                                                                        |
+| `SWANLAB_RUN_ID`             | Experiment run ID, equivalent to `swanlab.init(id="...")`                                                                                   |
+| `SWANLAB_RESUME`             | Whether to resume training, equivalent to `swanlab.init(resume=...)`, possible values: `must`, `allow`, `never`                             |
+| `SWANLAB_DESCRIPTION`        | Experiment description, equivalent to `swanlab.init(description="...")`                                                                     |
+| `SWANLAB_TAGS`               | Experiment tags, equivalent to `swanlab.init(tags=[...])`. If you want to add multiple tags, write it as `SWANLAB_TAGS="tag1,tag2,tag3"`    |
+| `SWANLAB_GROUP`              | Experiment group, used to categorize experiments into different groups for better management and differentiation                            |
+| `SWANLAB_JOB_TYPE`           | Experiment task type, used to identify the current experiment's task type (e.g., classification, regression, etc.)                          |
+| `SWANLAB_EXP_COLOR`          | Experiment color, equivalent to `swanlab.init(color="...")`. Supports preset color names, RGB strings, or hex color codes.                  |
+| `SWANLAB_RUN_PARALLEL`       | Parallel mode, equivalent to `swanlab.init(parallel="...")`. Possible value: `shared`.                                                      |
+| `SWANLAB_RUN_DIR`            | Custom run directory name. When set, directory conflict retries are skipped and the directory is created directly (default: auto-generated) |
+| `SWANLAB_RUN_DIR_MAX_LENGTH` | Maximum length for the auto-generated run directory name (default: `255`)                                                                   |
 
 ## Login Authentication
 
@@ -52,10 +52,10 @@
 ## Others
 
 | Environment Variable      | Description                                                                                                                                                                                  |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `SWANLAB_WEBHOOK`         | Webhook address.<br> When SwanLab initialization is complete, if this environment variable exists, it will be called to send a message.                                                      |
 | `SWANLAB_WEBHOOK_VALUE`   | The value passed to the Webhook callback structure. <br> When `SWANLAB_WEBHOOK` exists, if this environment variable exists, it will be sent as the value of the Webhook callback structure. |
-| `SWANLAB_WEBHOOK_TIMEOUT` | Webhook request timeout (seconds)                                                                                                                                                            | `5` |
+| `SWANLAB_WEBHOOK_TIMEOUT` | Webhook request timeout in seconds (default: `5`)                                                                                                                                            |
 
 ## Probe Configuration
 
