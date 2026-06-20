@@ -22,7 +22,8 @@ Github: https://github.com/SwanHubX/SwanLab
 - 🪓 Added `swanlab login --local` command, improving the experience for multi-user training scenarios
 - 🪓 Added OpenAPI CLI support — query experiment logs directly via the `swanlab api` CLI
 - 🪓 SwanLab official Skill is now available: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary), install with:
-  :::code-group
+
+:::code-group
 
 ```bash [npm]
 npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
