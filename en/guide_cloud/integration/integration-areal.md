@@ -4,4 +4,4 @@
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/areal/logo.png" width="200">
 
-The AReaL project has integrated SwanLab. For guidance, please refer to this document: [Areal - swanlab configuration](https://inclusionai.github.io/AReaL/cli_reference.html#swanlab-configuration).
+The AReaL project has integrated SwanLab. For guidance, please refer to this document: [Areal - swanlab configuration](https://areal-ai.io/en/cli_reference.html#swanlab-configuration).

@@ -4,4 +4,4 @@
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/areal/logo.png" width="200">
 
-AReaL项目已集成SwanLab，指引可见此文档：[Areal中的SwanLab配置](https://inclusionai.github.io/AReaL/cli_reference.html#swanlab-configuration)
+AReaL项目已集成SwanLab，指引可见此文档：[Areal中的SwanLab配置](https://areal-ai.io/zh/cli_reference.html#swanlab-configuration)
