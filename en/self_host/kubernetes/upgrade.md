@@ -42,7 +42,7 @@ Before updating, please ensure you have completed the following:
 :::
 
 1. **PVC and Snapshot Policy Configured**: Please confirm that PVCs for storage resource services have been successfully created, and that corresponding snapshot policies have been configured to ensure data security.
-2. **Confirm Image Repository Accessibility**: You need to ensure the cluster can access `repo.swanlab.cn` to pull images normally (otherwise you need to pull the known images and push them to a private repository). For details, see [SwanLab Self-Hosted Resource Inventory](/self_host/kubernetes/deploy#🧾-resource-inventory)
+2. **Confirm Image Repository Accessibility**: You need to ensure the cluster can access `repo.swanlab.cn` to pull images normally (otherwise you need to pull the known images and push them to a private repository). For details, see [SwanLab Self-Hosted Resource Inventory](/en/self_host/kubernetes/deploy#🧾-resource-inventory)
 3. **Check Image Tag Configuration**: In your `values.yaml`, ensure the image **tags for the following applications are empty strings or specified version tags**, not `latest`:
    - `swanlab-cloud`
    - `swanlab-next`

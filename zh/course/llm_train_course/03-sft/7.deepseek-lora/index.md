@@ -14,8 +14,6 @@
 
 通过本次实验，你不仅能够完成多轮对话数据的微调，还能掌握这些方法，并将其迁移到其他微调实验中，独立进行高效的模型调优。
 
----
-
 ## 📚链接资料
 
 作者信息：情感机器实验室研究员-李馨雨 邮箱：wind.340171@gmail.com
@@ -41,8 +39,6 @@
 用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
 
 应用案例：[入门实验 | SwanLab官方文档](https://docs.swanlab.cn/examples/mnist.html)
-
----
 
 ## 💻多轮对话数据构建
 
@@ -98,8 +94,6 @@ labels = <-100> <assistant1> <-100> <assistant2> <-100> <assistant3>
 也就是说，尽管输入数据中包含了多轮对话的信息，模型在进行每一轮对话的生成时，仅会关注当前回合的上下文，而不受后续轮次内容的影响。这样，第一轮的对话内容与后续轮次的对话并不会相互干扰，从而保持了学习的纯粹性。通过这种机制，模型能够有效地在多轮对话的框架下进行训练，同时保证每轮对话的独立性和准确性。
 
 > 简而言之，LLM 能够通过其掩码机制在多轮对话中进行“局部”学习，每次生成的内容都仅与当前上下文相关，而不会受到其他轮次的干扰。
-
----
 
 ## ⚙️各实验参数原理
 
@@ -444,11 +438,7 @@ openMind Library类似于transformers的大模型封装工具，其中就有Auto
 
 ![社区的图](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/community.png)
 
----
-
 ## 📜 实验环境搭建及实验代码、结果
-
----
 
 ### 1、环境设置
 

@@ -8,8 +8,6 @@ This document aims to reproduce the deepseek-r1-zero experiment, briefly introdu
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/grpo/r1-zero-ds-qwen.jpg)
 
----
-
 ## Reference Materials
 
 This experiment references the excellent open-source project [philschmid/deep-learning-pytorch-huggingface](https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/mini-deepseek-r1-aha-grpo.ipynb), authored by Google DeepMind engineer Philipp Schmid. The idea of using Countdown for R1 training originated from this project.
@@ -19,8 +17,6 @@ This experiment references the excellent open-source project [philschmid/deep-le
 > Dataset Address: Countdown-Tasks-3to4: [HuggingFace](https://huggingface.co/datasets/Jiayi-Pan/Countdown-Tasks-3to4) | [ModelScope](https://modelscope.cn/datasets/zouxuhong/Countdown-Tasks-3to4)
 >
 > Visualization Tool SwanLab Project Address: [SwanLab Result Visualization](https://swanlab.cn/@LiXinYu/Try_r1/overview)
-
----
 
 ## DeepSeek-R1 Principles
 
@@ -74,8 +70,6 @@ The figure below compares PPO and GRPO. GRPO abandons the value model and estima
 
 > One author likened GRPO to a teacher guiding students in a classroom. The teacher asks a group of students to solve a problem together.  
 > Instead of grading each student individually, the teacher encourages students to compare their answers within the group. Better-performing students receive encouragement, while others learn from mistakes. Over time, the entire group improves, becoming more accurate and consistent. GRPO applies this principle to training AI models, enabling efficient learning.
-
----
 
 ## Experimental Code
 
@@ -513,8 +507,6 @@ print(response)
 Due to long training times, we recommend using `tmux` to maintain sessions. Training progress can be monitored on [SwanLab](https://swanlab.cn/@LiXinYu/Try_r1/runs/iunfsosyp8ryfanbjcv7g/chart):
 
 ![SwanLab Results](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/grpo/swanlab-results.png)
-
----
 
 ## References
 

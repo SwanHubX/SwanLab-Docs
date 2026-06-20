@@ -22,7 +22,8 @@ Github: https://github.com/SwanHubX/SwanLab
 - 🪓 Added `swanlab login --local` command, improving the experience for multi-user training scenarios
 - 🪓 Added OpenAPI CLI support — query experiment logs directly via the `swanlab api` CLI
 - 🪓 SwanLab official Skill is now available: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary), install with:
-  :::code-group
+
+:::code-group
 
 ```bash [npm]
 npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
@@ -216,9 +217,9 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 
 **🔌 Integrations**
 
-- 🤗 Integrated with the [accelerate](https://github.com/huggingface/accelerate) framework. See the [documentation](/guide_cloud/integration/integration-huggingface-accelerate.md) to enhance experiment tracking in distributed training.
-- Integrated with the [ROLL](https://github.com/alibaba/ROLL) framework. See the [documentation](/guide_cloud/integration/integration-roll.md) to improve experiment logging during distributed training.
-- Integrated with the [Ray](https://github.com/ray-project/ray) framework. See the [documentation](/guide_cloud/integration/integration-ray.md) to enhance experiment tracking in distributed training environments.
+- 🤗 Integrated with the [accelerate](https://github.com/huggingface/accelerate) framework. See the [documentation](/en/guide_cloud/integration/integration-huggingface-accelerate) to enhance experiment tracking in distributed training.
+- Integrated with the [ROLL](https://github.com/alibaba/ROLL) framework. See the [documentation](/en/guide_cloud/integration/integration-roll) to improve experiment logging during distributed training.
+- Integrated with the [Ray](https://github.com/ray-project/ray) framework. See the [documentation](/en/guide_cloud/integration/integration-ray) to enhance experiment tracking in distributed training environments.
 
 **🔌 Plugins**
 
@@ -305,7 +306,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 
 **🌍 Ecosystem**
 
-- Listed on Tencent Cloud App Marketplace: [Guide](/zh/self_host/tencentcloud-app.md)
+- Listed on Tencent Cloud App Marketplace: [Guide](/self_host/tencentcloud-app)
 
 ## v0.5.6 - 2025.04.23
 
@@ -379,15 +380,15 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 
 ![logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/self_host/docker/docker-deploy/swanlab-docker.jpg)
 
-**🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/self_host/docker/deploy.md)
+**🎉🎉 SwanLab Self-Hosted Deployment (Community Edition) is now officially released!!** [Deployment Guide](/en/self_host/docker/deploy)
 
 **🚀 New Features**
 
 - Added the `callbacks` parameter to `swanlab.init`, allowing the registration of callback functions during initialization to support various custom plugin classes.
-- Introduced `swanlab.register_callback()`, enabling the registration of callback functions outside of `init`. [Documentation](/api/py-register-callback.html)
+- Introduced `swanlab.register_callback()`, enabling the registration of callback functions outside of `init`. [Documentation](/en/api/py-register-callback)
 - Upgraded `swanlab.login()` with new parameters `host`, `web_host`, and `save`, adapting to the characteristics of self-hosted deployment services and supporting the option to not write user login credentials locally for shared server scenarios. [Documentation](/en/api/py-login.md)
 - Upgraded `swanlab login` with new parameters `host`, `web_host`, and `api-key`. [Documentation](/en/api/cli-swanlab-login.md)
-- Added support for using `swanlab.sync_mlflow()` to synchronize MLflow projects to SwanLab. [Documentation](/guide_cloud/integration/integration-mlflow.md)
+- Added support for using `swanlab.sync_mlflow()` to synchronize MLflow projects to SwanLab. [Documentation](/en/guide_cloud/integration/integration-mlflow)
 
 **🤔 Optimizations**
 

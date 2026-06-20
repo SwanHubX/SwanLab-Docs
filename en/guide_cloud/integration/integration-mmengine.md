@@ -12,20 +12,20 @@ SwanLab integrates the `SwanlabVisBackend` designed specifically for MMEngine in
 
 ::: warning Integration with Other MM Ecosystems
 
-- [MMPretrain](/zh/guide_cloud/integration/integration-mmpretrain.md)
-- [MMDetection](/zh/guide_cloud/integration/integration-mmdetection.md)
-- [MMSegmentation](/zh/guide_cloud/integration/integration-mmsegmentation.md)
-- [XTuner](/zh/guide_cloud/integration/integration-xtuner.md)
+- [MMPretrain](/en/guide_cloud/integration/integration-mmpretrain)
+- [MMDetection](/en/guide_cloud/integration/integration-mmdetection)
+- [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation)
+- [XTuner](/en/guide_cloud/integration/integration-xtuner)
 
 :::
 
 ## Compatibility Notes for MMEngine Series Frameworks
 
-Frameworks using MMEngine can all use the following methods to introduce SwanLab. For example, MM official frameworks [MMDetection](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmdetection.html), [MMSegmentation](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmsegmentation.html), etc., as well as [training frameworks implemented based on MMEngine](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html).
+Frameworks using MMEngine can all use the following methods to introduce SwanLab. For example, MM official frameworks [MMDetection](/en/guide_cloud/integration/integration-mmdetection), [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation), etc., as well as [training frameworks implemented based on MMEngine](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html).
 
 > You can check out which excellent frameworks are available under the [OpenMMLab official GitHub account](https://github.com/open-mmlab).
 
-Some frameworks, such as [XTuner](https://github.com/InternLM/xtuner), are not fully compatible with MMEngine and require some simple modifications. You can refer to [SwanLab's XTuner Integration](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-xtuner.html) to see how to use SwanLab in XTuner.
+Some frameworks, such as [XTuner](https://github.com/InternLM/xtuner), are not fully compatible with MMEngine and require some simple modifications. You can refer to [SwanLab's XTuner Integration](/en/guide_cloud/integration/integration-xtuner) to see how to use SwanLab in XTuner.
 
 There are two methods to introduce SwanLab for experiment visualization tracking using MMEngine:
 
@@ -49,7 +49,7 @@ from mmengine.runner import Runner
 from swanlab.integration.mmengine import SwanlabVisBackend
 ...
 # Initialize SwanLab
-swanlab_vis_backend = SwanlabVisBackend(init_kwargs={})  # init args can be found in https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html
+swanlab_vis_backend = SwanlabVisBackend(init_kwargs={})  # init args can be found in https://docs.swanlab.cn/en/guide_cloud/integration/integration-mmengine.html
 # Initialize mmengine's Visualizer and introduce SwanLab as Visual Backend
 visualizer = Visualizer(
     vis_backends=swanlab_vis_backend
@@ -251,7 +251,7 @@ val_dataloader = DataLoader(
 
 visualizer = Visualizer(
     vis_backends=SwanlabVisBackend(init_kwargs={})
-)  # init args can be found in https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html
+)  # init args can be found in https://docs.swanlab.cn/en/guide_cloud/integration/integration-mmengine.html
 
 runner = Runner(
     model=MMResNet50(),

@@ -1,1 +1,1 @@
-<!--@include: ../course/llm_train_course/08-diffusion/1.llada/README.md-->
+<!--@include: ../course/llm_train_course/08-diffusion/1.llada/index.md-->

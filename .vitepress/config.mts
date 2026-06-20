@@ -3,13 +3,106 @@ import type { LocaleConfig } from "vitepress";
 
 import type { Plugin, PluginOption } from "vite";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 import { zh } from "./zh";
 import { en } from "./en";
+
+const srcExclude = ["playground/**", "AGENTS.md", "README.md", "TRICK.md"];
+
+function normalizePath(filePath: string) {
+  return filePath.split(path.sep).join("/");
+}
+
+function listMarkdownFiles(directory: string): string[] {
+  const root = path.resolve(process.cwd(), directory);
+  const files: string[] = [];
+
+  function walk(current: string) {
+    let entries;
+
+    try {
+      entries = readdirSync(current, { withFileTypes: true });
+    } catch {
+      return;
+    }
+
+    for (const entry of entries) {
+      const fullPath = path.join(current, entry.name);
+
+      if (entry.isDirectory()) {
+        walk(fullPath);
+      } else if (entry.isFile() && entry.name.endsWith(".md")) {
+        files.push(normalizePath(path.relative(process.cwd(), fullPath)));
+      }
+    }
+  }
+
+  if (statSync(root, { throwIfNoEntry: false })?.isDirectory()) {
+    walk(root);
+  }
+
+  return files;
+}
+
+function markdownPathToRoute(filePath: string) {
+  const rewrittenPath = filePath.startsWith("zh/") ? filePath.slice(3) : filePath;
+  const route = rewrittenPath.replace(/(^|\/)index\.md$/, "$1").replace(/\.md$/, "");
+
+  return route === "" ? "/" : route;
+}
+
+const localizedRoutes = {
+  root: new Set(listMarkdownFiles("zh").map(markdownPathToRoute)),
+  en: new Set(listMarkdownFiles("en").map(markdownPathToRoute)),
+};
+
+const rootOnlyRoutes = new Set(
+  Array.from(localizedRoutes.root).filter(
+    (route) => route !== "/" && !localizedRoutes.en.has(`en/${route}`),
+  ),
+);
+
+type AdditionalConfigLoader = (relativePath: string) =>
+  | [
+      {
+        themeConfig: {
+          i18nRouting: false;
+        };
+      },
+    ]
+  | undefined;
+
+function createRootOnlyAdditionalConfig(routes: Set<string>): AdditionalConfigLoader {
+  const serializedRoutes = JSON.stringify(Array.from(routes).sort());
+
+  // VitePress serializes config functions with toString(), so the route list
+  // must be embedded in the function body instead of captured from this file.
+  // oxlint-disable-next-line typescript/no-implied-eval
+  return new Function(`
+    return function additionalConfig(relativePath) {
+      const rootOnlyRoutes = new Set(${serializedRoutes});
+      const rewrittenPath = relativePath.startsWith("zh/") ? relativePath.slice(3) : relativePath;
+      const route = rewrittenPath.replace(/(^|\\/)index\\.md$/, "$1").replace(/\\.md$/, "");
+      const normalizedRoute = route === "" ? "/" : route;
+
+      if (rootOnlyRoutes.has(normalizedRoute)) {
+        return [
+          {
+            themeConfig: {
+              i18nRouting: false,
+            },
+          },
+        ];
+      }
+    };
+  `)() as AdditionalConfigLoader;
+}
+
+const rootOnlyAdditionalConfig = createRootOnlyAdditionalConfig(rootOnlyRoutes);
 
 function readTextFileInside(root: string, requestPath: string) {
   const resolvedRoot = path.resolve(root);
@@ -78,7 +171,7 @@ const plugins: PluginOption[] = [
   groupIconVitePlugin({}),
 ];
 export default defineConfig({
-  srcExclude: ["playground/**"],
+  srcExclude,
   cleanUrls: true,
   sitemap: {
     hostname: "https://docs.swanlab.cn",
@@ -111,6 +204,8 @@ export default defineConfig({
     root: { label: "简体中文", ...(zh as LocaleConfig) },
     en: { label: "English", ...(en as LocaleConfig) },
   },
+
+  additionalConfig: rootOnlyAdditionalConfig,
 
   head: [
     [

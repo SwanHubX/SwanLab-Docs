@@ -23,7 +23,8 @@ Github: https://github.com/SwanHubX/SwanLab
 - 🪓 新增 OpenAPI CLI 支持，可以通过 `swanlab api` 的 CLI 方式直接读取实验日志
 - 🦄 优化错误场景下的报错体验，提供更详细的错误信息
 - 🔨 SwanLab 官方 Skill 已上线，详见: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary)，可通过以下方式安装:
-  :::code-group
+
+:::code-group
 
 ```bash [npm]
 npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
@@ -311,7 +312,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 
 **生态**
 
-- 腾讯云云应用上架：[指引](../../self_host/tencentcloud-app.md)
+- 腾讯云云应用上架：[指引](/self_host/tencentcloud-app)
 
 ## v0.5.6 - 2025.04.23
 

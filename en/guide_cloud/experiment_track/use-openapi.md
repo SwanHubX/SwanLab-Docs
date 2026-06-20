@@ -139,8 +139,6 @@ print(logs["logs"])  # [{message: "...", level: "INFO", timestamp: ...}, ...]
 | `api.user()`                              | Get current user info                     |
 | `api.self_hosted()`                       | Self-hosted management entry point        |
 
----
-
 ## workspace
 
 **Workspace properties:**
@@ -191,8 +189,6 @@ for ws in api.workspaces("my-team"):
 ```
 
 :::
-
----
 
 ## project
 
@@ -302,8 +298,6 @@ project.delete_runs(["run_id_1", "run_id_2"], commit=True)
 ```
 
 :::
-
----
 
 ## run
 
@@ -619,8 +613,6 @@ run = api.run(path="my-team/my-project/abc123")
 run.delete(commit=True)  # commit=False only prints pending deletion info
 ```
 
----
-
 ## column
 
 **column parameters:**
@@ -708,8 +700,6 @@ if result.ok:
 
 :::
 
----
-
 ## user
 
 ```python
@@ -734,8 +724,6 @@ print(data["username"], data["email"])
 | `email`       | `str` | Email            |
 | `location`    | `str` | Location         |
 | `url`         | `str` | Personal website |
-
----
 
 ## self_hosted
 
@@ -809,8 +797,6 @@ print(result.data if result.ok else result.errmsg)
 ```
 
 :::
-
----
 
 ## Type Reference
 

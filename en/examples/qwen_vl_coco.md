@@ -21,8 +21,6 @@ LoRA is an efficient fine-tuning method. For a deeper understanding of its princ
 
 OCR Fine-Tuning Version: [Qwen2-VL-Latex-OCR](https://zhuanlan.zhihu.com/p/10705293665)
 
----
-
 ## 1. Environment Setup
 
 Environment setup involves three steps:
@@ -228,7 +226,7 @@ First-time users of SwanLab need to register an account on the [official website
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/qwen_vl_coco/04.png)
 
-For more usage, refer to the [Quick Start](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html) and [Transformers Integration](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-huggingface-transformers.html).
+For more usage, refer to the [Quick Start](/en/guide_cloud/general/quick-start) and [Transformers Integration](/en/guide_cloud/integration/integration-huggingface-transformers).
 
 ## 5. Starting Fine-Tuning
 

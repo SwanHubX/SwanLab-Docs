@@ -824,7 +824,7 @@ bash scripts/train-qwen-pt-multinpu.sh
 }
 ```
 
-其次是微调，对于`Qwen`模型的微调我们已经设置了很多教程，如果有兴趣的小伙伴可以查看我的另外一篇专门讲[lora训练](https://docs.swanlab.cn/course/llm_train_course/03-sft/7.deepseek-lora/README.html)的文章，这里只需要运行下面的启动文件就行：
+其次是微调，对于`Qwen`模型的微调我们已经设置了很多教程，如果有兴趣的小伙伴可以查看我的另外一篇专门讲[lora训练](https://docs.swanlab.cn/course/llm_train_course/03-sft/7.deepseek-lora/)的文章，这里只需要运行下面的启动文件就行：
 
 ```bash
 bash scripts/train-qwen-sft-multinpu.sh
@@ -1017,7 +1017,7 @@ accelerate launch --num_processes 1 \
 
 <div style="background:#ffeae4ff;color:#000;padding:12px 16px;border-left:4px solid #fc592cff;">
 <strong>注意：</strong></br>
-lm_eval好像只能从huggingface下载对应数据集，如果huggingface下载不了，本地下载好像没有接口使用，因此这种情况可以使用evalscope框架，因为llada估计没有在evalscope的模型库中，因此可以使用API的方法进行测评，具体可以参考我的这篇👉<a href="https://docs.swanlab.cn/course/llm_train_course/05-eval/1.evalscope/README.html#%E6%A8%A1%E5%9E%8Bapi%E6%9C%8D%E5%8A%A1%E8%AF%84%E6%B5%8B" target="_blank" rel="noopener">API评测方法</a>
+lm_eval好像只能从huggingface下载对应数据集，如果huggingface下载不了，本地下载好像没有接口使用，因此这种情况可以使用evalscope框架，因为llada估计没有在evalscope的模型库中，因此可以使用API的方法进行测评，具体可以参考我的这篇👉<a href="https://docs.swanlab.cn/course/llm_train_course/05-eval/1.evalscope/#%E6%A8%A1%E5%9E%8Bapi%E6%9C%8D%E5%8A%A1%E8%AF%84%E6%B5%8B" target="_blank" rel="noopener">API评测方法</a>
 </div>
 
 ## 参考文献

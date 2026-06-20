@@ -8,7 +8,7 @@
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/)
 
 <div align="center">
   <figure>
@@ -16,8 +16,6 @@
   <figcaption>SwanLab Official Documentation Demo</figcaption>
   </figure>
 </div>
-
----
 
 ## Abstract
 
@@ -30,8 +28,6 @@ This article details the implementation process of the SwanLab official document
   <figcaption>Technical Architecture Overview of SwanLab Document Assistant</figcaption>
   </figure>
 </div>
-
----
 
 ## Table of Contents
 
@@ -59,8 +55,8 @@ The `swanlab.json` file contains the file name, document URL, webpage URL, and d
 ```json
 {
   "theme": "cli-swanlab-convert",
-  "url": "https://raw.githubusercontent.com/SwanHubX/SwanLab-Docs/main/zh/api/cli-swanlab-convert.md",
-  "html_url": "https://docs.swanlab.cn/api/cli-swanlab-convert.html",
+  "url": "https://raw.githubusercontent.com/SwanHubX/SwanLab-Docs/main/en/api/cli-swanlab-convert.md",
+  "html_url": "https://docs.swanlab.cn/en/api/cli-swanlab-convert.html",
   "title": "swanlab convert"
 }
 ```
@@ -214,8 +210,6 @@ After obtaining all the vectors, how do we manage them? We chose Facebook’s op
 
 At this point, our “SwanLab Official Documentation Vector Knowledge Base” is fully prepared for document retrieval!
 
----
-
 ## Document Retrieval (RAG)
 
 **Retrieval-Augmented Generation (RAG)** is an AI technique that combines information retrieval with language generation models. By retrieving relevant information from an external knowledge base and using it as a prompt for large language models (LLMs), RAG enhances the model’s ability to handle knowledge-intensive tasks like question answering, text summarization, and content generation. Introduced by Facebook AI Research (FAIR) in 2020, RAG has become a popular approach in large-scale model applications.
@@ -324,8 +318,6 @@ for chunk in all_retrieved:
 ```
 
 The retrieved text chunks are carefully curated background knowledge for the LLM, representing the best content to address the user’s query.
-
----
 
 ## Model Generation
 
@@ -503,4 +495,4 @@ For more content, please refer to:
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/)

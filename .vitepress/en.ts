@@ -317,7 +317,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
         { text: "Keras", link: "integration-keras" },
         { text: "LightGBM", link: "integration-lightgbm" },
         { text: "LLaMA Factory", link: "integration-llama-factory" },
-        { text: "LLaMA Factory Online", link: "integration-llama-factory-online" },
         { text: "MindSpeed-RL", link: "integration-mindspeed-rl" },
         { text: "MLflow", link: "integration-mlflow" },
         { text: "MLX LM", link: "integration-mlx-lm" },
@@ -333,7 +332,6 @@ function sidebarIntegration(): DefaultTheme.SidebarItem[] {
       text: "O-T",
       // collapsed: false,
       items: [
-        { text: "OpenAI", link: "integration-openai" },
         { text: "OmegaConf", link: "integration-omegaconf" },
         { text: "PaddleDetection", link: "integration-paddledetection" },
         { text: "PaddleNLP", link: "integration-paddlenlp" },

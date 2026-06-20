@@ -30,7 +30,7 @@ metric_logger:
   log_dir: ${output_dir}
 ```
 
-Here, `_component_` corresponds to `swanlab.integration.torchtune.SwanLabLogger`, which is a logging class adapted for PyTorch torchtune. The parameters like `project`, `experiment_name`, etc., are the parameters passed when creating the SwanLab project. The supported parameters are consistent with the rules of [swanlab.init](/zh/api/py-init.html).
+Here, `_component_` corresponds to `swanlab.integration.torchtune.SwanLabLogger`, which is a logging class adapted for PyTorch torchtune. The parameters like `project`, `experiment_name`, etc., are the parameters passed when creating the SwanLab project. The supported parameters are consistent with the rules of [swanlab.init](/en/api/py-init).
 
 ## 2. Start Training
 

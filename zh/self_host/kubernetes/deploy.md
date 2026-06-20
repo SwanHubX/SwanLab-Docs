@@ -556,4 +556,4 @@ swanlab.finish()
 
 ### Prometheus 可观测接入指引
 
-文档待更新，敬请期待。
+参考 [监控与日志](/self_host/kubernetes/monitor-logging) 文档进行配置。

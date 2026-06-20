@@ -104,7 +104,7 @@ If you are not logged into SwanLab when starting the training, the following pro
 
 Selecting **1 or 2** will enable cloud tracking mode. Follow the prompts to input the API from the official website to enable online tracking. You can view the training tracking results online. Selecting **3** will not upload training data and will use offline tracking.
 
-Alternatively, you can log in or set the tracking mode via [environment variables](/api/environment-variable):
+Alternatively, you can log in or set the tracking mode via [environment variables](/en/api/environment-variable):
 
 ```bash
 export SWANLAB_API_KEY=<Your API Key>           # Set the API for online tracking mode
@@ -122,7 +122,7 @@ Run the process, and you can view the training logs on the [SwanLab official web
 
 ![remote](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/verl/remote.png)
 
-For more usage methods, refer to [SwanLab Viewing Results](https://docs.swanlab.cn/guide_cloud/experiment_track/view-result.html).
+For more usage methods, refer to [SwanLab Viewing Results](/en/guide_cloud/experiment_track/view-result).
 
 ---
 
@@ -132,9 +132,9 @@ If you are using the local dashboard mode, you can open the local dashboard with
 swanlab watch
 ```
 
-For more details, refer to [SwanLab Offline Dashboard Mode](https://docs.swanlab.cn/self_host/offline-board.html).
+For more details, refer to [SwanLab Offline Dashboard Mode](/en/guide_cloud/offline-board).
 
-To set the port number on the server, refer to [Offline Dashboard Port Number](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7).
+To set the port number on the server, refer to [Offline Dashboard Port Number](/en/api/cli-swanlab-watch#set-ip-and-port-number).
 
 ## Record Generated Text During Each Evaluation Round
 

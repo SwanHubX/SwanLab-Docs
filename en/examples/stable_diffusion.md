@@ -18,8 +18,6 @@ In this article, we will use the [SD-1.5](https://huggingface.co/runwayml/stable
 - Dataset: [lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
 - SwanLab: [https://swanlab.cn](https://swanlab.cn)
 
----
-
 ## 1. Environment Setup
 
 This case study is based on **Python>=3.8**. Please ensure Python is installed on your computer.
@@ -45,8 +43,6 @@ pip install swanlab diffusers datasets accelerate torchvision transformers
 
 > The code in this article was tested with `diffusers==0.29.0`, `accelerate==0.30.1`, `datasets==2.18.0`, `transformers==4.41.2`, and `swanlab==0.3.11`. For more library versions, please refer to the [Python environment recorded by SwanLab](https://swanlab.cn/@ZeyiLin/Text2Image/runs/21flglg1lbnqo67a6f1kr/environment/requirements).
 
----
-
 ## 2. Prepare the Dataset
 
 This case study uses the [Naruto](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions) dataset, which is primarily used for training text-to-image models.
@@ -66,8 +62,6 @@ The dataset size is approximately 700MB. There are two ways to download the data
 1. If your network connection to HuggingFace is stable, simply run the code provided below, and it will be downloaded directly via HF's `datasets` library.
 2. If there are network issues, I have also uploaded it to [Baidu Netdisk](https://pan.baidu.com/s/1Yu5HjXnHxK0Wgymc8G-g5g?pwd=gtk8) (extraction code: gtk8). Download `naruto-blip-captions.zip`, extract it locally, and place it in the same directory as the training script.
 
----
-
 ## 3. Prepare the Model
 
 Here, we use the [stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5) model released by Runway on HuggingFace.
@@ -79,8 +73,6 @@ There are two ways to download the model:
 1. If your network connection to HuggingFace is stable, simply run the code provided below, and it will be downloaded directly via HF's `transformers` library.
 2. If there are network issues, I have also uploaded it to [Baidu Netdisk](https://pan.baidu.com/s/1Yu5HjXnHxK0Wgymc8G-g5g?pwd=gtk8) (extraction code: gtk8). Download `stable-diffusion-v1-5.zip`, extract it locally, and place it in the same directory as the training script.
 
----
-
 ## 4. Configure Training Visualization Tool
 
 We use [SwanLab](https://swanlab.cn) to monitor the entire training process and evaluate the final model performance.
@@ -88,8 +80,6 @@ We use [SwanLab](https://swanlab.cn) to monitor the entire training process and 
 If this is your first time using SwanLab, you need to register an account at https://swanlab.cn, copy your API Key from the **User Settings** page, and paste it when the training starts:
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/images/stable_diffusion/05.png)
-
----
 
 ## 5. Start Training
 
@@ -172,8 +162,6 @@ When you see the following progress bar, it means the training has started:
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/images/stable_diffusion/05.png)
 
----
-
 ## 6. Training Results Demonstration
 
 We can view the final training results on [SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart):
@@ -204,8 +192,6 @@ After a relatively long training period, the results improve significantly.
 
 At this point, you have completed the training of the SD model on the Naruto dataset.
 
----
-
 ## 7. Model Inference
 
 The trained model will be saved in the `sd-naruto-model` folder. The inference code is as follows:
@@ -223,8 +209,6 @@ image = pipe(prompt).images[0]
 
 image.save("result.png")
 ```
-
----
 
 ## Related Links
 

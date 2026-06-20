@@ -6,8 +6,6 @@
 
 You can use `PaddleNLP` for rapid model training while leveraging SwanLab for experiment tracking and visualization.
 
----
-
 ## 1. Integrating SwanLabCallback
 
 ```python
@@ -77,8 +75,6 @@ trainer = SFTTrainer(
 )
 trainer.train()
 ```
-
----
 
 ## 4. GUI Demonstration
 

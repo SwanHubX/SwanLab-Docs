@@ -692,7 +692,7 @@ Post-training, the model correctly understands images, Chinese, and retains Qwen
 
 ### Model Inference and Analysis
 
-Testing details will be added after dataset downloads. Follow [SwanLab tutorials](https://docs.swanlab.cn/examples/qwen3_smolvlm_muxi.html) for updates!
+Testing details will be added after dataset downloads. Follow [SwanLab tutorials](/en/examples/qwen3_smolvlm_muxi) for updates!
 
 ## Code and Dataset Links
 
