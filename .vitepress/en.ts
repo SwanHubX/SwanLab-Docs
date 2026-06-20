@@ -38,7 +38,7 @@ export const en = defineConfig({
       {
         text: "Integration",
         items: [
-          { text: "All 40+ Frameworks", link: base_path_guide_cloud + "/integration" },
+          { text: "All 40+ Frameworks", link: base_path_guide_cloud + "/integration/" },
           {
             text: "Training Frameworks",
             items: [

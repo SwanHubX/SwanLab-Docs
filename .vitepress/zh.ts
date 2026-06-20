@@ -45,7 +45,7 @@ export const zh = defineConfig({
       {
         text: "集成",
         items: [
-          { text: "全部40+框架", link: base_path_guide_cloud + "/integration" },
+          { text: "全部40+框架", link: base_path_guide_cloud + "/integration/" },
           {
             text: "训练框架",
             items: [
