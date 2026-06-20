@@ -172,7 +172,7 @@ const plugins: PluginOption[] = [
 ];
 export default defineConfig({
   srcExclude,
-  cleanUrls: true,
+  cleanUrls: false,
   sitemap: {
     hostname: "https://docs.swanlab.cn",
   },
