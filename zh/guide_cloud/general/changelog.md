@@ -312,7 +312,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 
 **生态**
 
-- 腾讯云云应用上架：[指引](../../self_host/tencentcloud-app.md)
+- 腾讯云云应用上架：[指引](/self_host/tencentcloud-app)
 
 ## v0.5.6 - 2025.04.23
 

@@ -175,7 +175,7 @@ It can be seen that the model basically has an "Aha moment🤪" around 4k traini
 
 P.S. The author initially set it to run only 1k-2k steps. Found it couldn't converge. Later, after increasing the training steps, a miracle occurred.
 
-> If prompted to enter SwanLab API key, refer to [SwanLab Login Guide](https://docs.swanlab.cn/guide_cloud/general/quick-start.html) to use SwanLab for training monitoring～ SwanLab is a very useful and free online training monitoring tool, hope everyone can support it more.
+> If prompted to enter SwanLab API key, refer to [SwanLab Login Guide](/en/guide_cloud/general/quick-start) to use SwanLab for training monitoring～ SwanLab is a very useful and free online training monitoring tool, hope everyone can support it more.
 
 <div align="center">
   <figure>

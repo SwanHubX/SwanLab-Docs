@@ -6,8 +6,8 @@
 
 :::warning Tutorials for Syncing with Other Tools
 
-• [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)
-• [Weights & Biases](/guide_cloud/integration/integration-wandb.md)
+• [TensorBoard](/en/guide_cloud/integration/integration-tensorboard)
+• [Weights & Biases](/en/guide_cloud/integration/integration-wandb)
 :::
 
 **You can sync MLflow projects to SwanLab in two ways:**

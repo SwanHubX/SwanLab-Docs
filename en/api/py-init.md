@@ -155,7 +155,7 @@ swanlab.init(
 
 ### Plugins
 
-For more information about plugins, refer to the [Plugins](/zh/plugin/plugin-index.md) documentation.
+For more information about plugins, refer to the [Plugins](/en/plugin/plugin-index) documentation.
 
 ```python
 from swanlab.plugin.notification import EmailCallback

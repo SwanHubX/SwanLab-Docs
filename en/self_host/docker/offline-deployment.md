@@ -145,7 +145,7 @@ View logs with `docker compose logs <container_name>`.
 
 ### 5. Access SwanLab
 
-After installation, access SwanLab at `http://localhost:8000` (default port: 8000). Follow the [activation guide](https://docs.swanlab.cn/self_host/docker-deploy.html#_3-activate-admin-account) for the first login.
+After installation, access SwanLab at `http://localhost:8000` (default port: 8000). Follow the [activation guide](/en/self_host/docker/deploy#_3-activate-the-primary-account) for the first login.
 
 ### 6. Upgrade SwanLab
 

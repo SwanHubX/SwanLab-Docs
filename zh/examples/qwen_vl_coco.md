@@ -229,7 +229,7 @@ trainer = Trainer(
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/qwen_vl_coco/04.png)
 
-更多用法可参考[快速开始](https://docs.swanlab.cn/zh/guide_cloud/general/quick-start.html)、[Transformers集成](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-huggingface-transformers.html)。
+更多用法可参考[快速开始](/guide_cloud/general/quick-start)、[Transformers集成](/guide_cloud/integration/integration-huggingface-transformers)。
 
 ## 5. 开始微调
 

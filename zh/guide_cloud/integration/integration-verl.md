@@ -122,7 +122,7 @@ export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cl
 
 ![remote](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/verl/remote.png)
 
-更多使用方法可以参考[SwanLab查看使用结果](https://docs.swanlab.cn/guide_cloud/experiment_track/view-result.html)
+更多使用方法可以参考[SwanLab查看使用结果](/guide_cloud/experiment_track/view-result)
 
 ---
 
@@ -132,9 +132,9 @@ export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cl
 swanlab watch
 ```
 
-更多详细可以参考[SwanLab离线看板模式](https://docs.swanlab.cn/self_host/offline-board.html)
+更多详细可以参考[SwanLab离线看板模式](/guide_cloud/offline-board)
 
-服务器设置端口号可以查看[离线看板端口号](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7)
+服务器设置端口号可以查看[离线看板端口号](/api/cli-swanlab-watch#设置ip和端口号)
 
 ## 每轮评估时记录生成文本
 

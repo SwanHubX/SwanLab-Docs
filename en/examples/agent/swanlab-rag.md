@@ -8,7 +8,7 @@
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/README)
 
 <div align="center">
   <figure>
@@ -59,8 +59,8 @@ The `swanlab.json` file contains the file name, document URL, webpage URL, and d
 ```json
 {
   "theme": "cli-swanlab-convert",
-  "url": "https://raw.githubusercontent.com/SwanHubX/SwanLab-Docs/main/zh/api/cli-swanlab-convert.md",
-  "html_url": "https://docs.swanlab.cn/api/cli-swanlab-convert.html",
+  "url": "https://raw.githubusercontent.com/SwanHubX/SwanLab-Docs/main/en/api/cli-swanlab-convert.md",
+  "html_url": "https://docs.swanlab.cn/en/api/cli-swanlab-convert.html",
   "title": "swanlab convert"
 }
 ```
@@ -503,4 +503,4 @@ For more content, please refer to:
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/README)

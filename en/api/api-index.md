@@ -34,6 +34,6 @@
 - [pr_curve](/en/api/py-pr_curve.md)
 - [roc_curve](/en/api/py-roc_curve.md)
 - [confusion_matrix](/en/api/py-confusion_matrix.md)
-- [run](/api/py-run.md)
+- [run](/en/api/py-run)
 - [convert](/en/api/py-converter.md)
 - [sync_wandb](/en/api/py-sync-wandb.md)

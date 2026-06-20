@@ -6,8 +6,8 @@ Weights & Biases (W&B) is a platform for experiment tracking, model optimization
 
 :::warning Synchronization Tutorials for Other Tools
 
-- [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)
-- [MLflow](/guide_cloud/integration/integration-mlflow.md)  
+- [TensorBoard](/en/guide_cloud/integration/integration-tensorboard)
+- [MLflow](/en/guide_cloud/integration/integration-mlflow)
   :::
 
 **You can sync projects from W&B to SwanLab in three ways:**

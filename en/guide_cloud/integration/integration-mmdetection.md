@@ -46,7 +46,7 @@ visualizer = dict(
 )
 ```
 
-> For other import methods and more flexible configurations, refer to [MMEngine Integration with SwanLab](https://docs.swanlab.cn/zh/guide_cloud/integration/integration-mmengine.html)
+> For other import methods and more flexible configurations, refer to [MMEngine Integration with SwanLab](/en/guide_cloud/integration/integration-mmengine)
 
 ## Example: Training Faster-RCNN with MMDetection
 

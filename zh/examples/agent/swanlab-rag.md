@@ -14,7 +14,7 @@ AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanl
 
 方案开源GitHub仓库链接：https://github.com/EmotionMachine/swanlab-rag
 
-Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+Swabnlab官方提示词课程链接:fire:：[课程前言](/course/prompt_engineering_course/01-preface/README)
 
 <div align="center">
   <figure>
@@ -525,4 +525,4 @@ AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanl
 
 方案开源GitHub仓库链接：https://github.com/EmotionMachine/swanlab-rag
 
-Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
+Swabnlab官方提示词课程链接:fire:：[课程前言](/course/prompt_engineering_course/01-preface/README)
