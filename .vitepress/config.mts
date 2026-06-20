@@ -7,6 +7,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
+import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 import { zh } from "./zh";
 import { en } from "./en";
 
@@ -70,9 +71,18 @@ function normalizeLegacyZhMarkdownRequests(): Plugin {
   };
 }
 
-const plugins: PluginOption[] = [normalizeLegacyZhMarkdownRequests(), llmstxt()];
+const plugins: PluginOption[] = [
+  normalizeLegacyZhMarkdownRequests(),
+  llmstxt(),
+  // Code-block tab icons (pip/conda/python/bash etc.) — see vitepress-plugin-group-icons
+  groupIconVitePlugin({}),
+];
 export default defineConfig({
   srcExclude: ["playground/**"],
+  cleanUrls: true,
+  sitemap: {
+    hostname: "https://docs.swanlab.cn",
+  },
   vite: { plugins },
 
   rewrites(id) {
@@ -88,6 +98,8 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(copyOrDownloadAsMarkdownButtons);
+      // Tab icons on grouped/single code blocks
+      md.use(groupIconMdPlugin, { titleBar: { includeSnippet: true } });
     },
     image: {
       lazyLoading: true,

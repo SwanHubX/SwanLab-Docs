@@ -1,0 +1,147 @@
+/* ============================================================
+ * Layout overrides — Navbar / Sidebar / Doc content + aside
+ *
+ * Fixed header (VPNav / VPNavBar), sidebar anchoring, and the
+ * wide-screen doc layout (VPDoc.has-aside content + sticky aside).
+ * Responsive breakpoints are kept inline next to their base rules.
+ * ============================================================ */
+
+/* ===== Navbar: always-fixed header ===== */
+.VPNav {
+  position: fixed !important;
+  z-index: 30;
+}
+
+.VPNavBar {
+  border-bottom: 0 !important;
+}
+
+.VPNavBar::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  height: 1px;
+  background-color: var(--vp-c-divider);
+  content: "";
+  pointer-events: none;
+}
+
+.VPNavBar .divider {
+  display: none;
+}
+
+.VPNavBar .container {
+  max-width: none !important;
+}
+
+.title {
+  border-bottom: transparent !important;
+}
+
+/* Logo: ensure the horizontal logo image renders at proper size in header */
+.VPNavBarTitle .title {
+  min-width: 0;
+}
+
+.VPNavBarTitle .logo {
+  display: block;
+  height: 24px;
+  width: auto;
+  max-width: none;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* ===== Sidebar: anchored below the navbar ===== */
+.VPSidebar {
+  top: var(--vp-nav-height) !important;
+  bottom: 0 !important;
+  max-height: calc(100vh - var(--vp-nav-height));
+  box-sizing: border-box;
+  border-right: 1px solid var(--vp-c-divider);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Navbar + sidebar: desktop layout (≥960px) */
+@media (min-width: 960px) {
+  .VPNavBar:not(.has-sidebar) .wrapper {
+    padding: 0;
+  }
+
+  .VPNavBar .container > .title,
+  .VPNavBar.has-sidebar .container > .title {
+    width: var(--swanlab-nav-title-width) !important;
+    height: var(--vp-nav-height);
+    padding: 0 16px 0 24px !important;
+    flex-shrink: 0;
+  }
+
+  .VPNavBarTitle .title {
+    padding: 0 !important;
+  }
+
+  .VPNavBar.has-sidebar .content {
+    padding-left: var(--swanlab-nav-title-width) !important;
+    padding-right: 24px !important;
+  }
+
+  .VPNavBar:not(.has-sidebar) .content {
+    padding-left: 0 !important;
+    padding-right: 24px !important;
+  }
+
+  .VPSidebar {
+    padding-top: 24px !important;
+  }
+
+  .VPSidebar .curtain {
+    display: none;
+  }
+}
+
+/* ===== Doc layout: content + aside ===== */
+.VPDoc.has-aside .content {
+  max-width: none !important;
+}
+
+.VPDoc.has-aside .content-container {
+  max-width: 56rem !important;
+  margin: 0 auto;
+  flex: 0 1 auto;
+}
+
+.VPDoc.has-aside .aside {
+  position: sticky;
+  top: var(--vp-nav-height);
+  width: 240px;
+  flex: 0 0 240px;
+  max-height: calc(100vh - var(--vp-nav-height));
+  overflow-y: auto;
+  padding-right: 32px;
+}
+
+@media (max-width: 1280px) {
+  .VPDoc.has-aside .aside {
+    position: static;
+    width: 100%;
+    flex: none;
+    margin-top: 24px;
+    padding-right: 0;
+  }
+}
+
+/* Wide screens: relax the content max-width */
+@media (min-width: 1440px) {
+  .VPDoc.has-aside .content-container {
+    max-width: 60rem !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .VPDoc.has-aside .content-container {
+    max-width: 64rem !important;
+  }
+}
