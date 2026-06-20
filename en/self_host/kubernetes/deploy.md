@@ -552,8 +552,8 @@ For detailed field descriptions and configuration practices, please refer to the
 
 ### Updates and Rollback
 
-To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](/self_host/kubernetes/upgrade) documentation.
+To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](/en/self_host/kubernetes/upgrade) documentation.
 
 ### Prometheus Observability Integration Guide
 
-Documentation pending update, stay tuned.
+Please refer to the [Monitor & Logging](/en/self_host/kubernetes/monitor-logging) documentation.
