@@ -22,9 +22,9 @@ This document demonstrates how to train the ViT-KNO weather forecasting model on
 - **Scientific Computing Framework**: MindEarth 0.3.0 / r0.7
 - **Experiment Management & Visualization**: SwanLab Platform
 
-For MindSpore installation, refer to [Ascend NPU & MindSpore | SwanLab](/en/guide_cloud/integration/integration-ascend#install-mindspore) 。
+For MindSpore installation, refer to [Ascend NPU & MindSpore | SwanLab](/en/guide_cloud/integration/integration-ascend#install-mindspore).
 
-For MindSpore Earth installation, refer to [MindSpore Earth 0.3](https://www.mindspore.cn/mindearth/docs/zh-CN/r0.3/mindearth_install.html) 。
+For MindSpore Earth installation, refer to [MindSpore Earth 0.3](https://www.mindspore.cn/mindearth/docs/zh-CN/r0.3/mindearth_install.html).
 
 The source code for the `ViT-KNO`model can be obtained from [koopman_vit](https://gitee.com/mindspore/mindscience/tree/r0.7/MindEarth/applications/medium-range/koopman_vit) . Note that the Gitee branch version here is r0.7, which corresponds to MindSpore Earth version 0.3.
 
