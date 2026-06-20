@@ -15,6 +15,7 @@
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-plus": "latest",
     "vitepress": "2.0.0-alpha.17",
+    "vitepress-plugin-group-icons": "^1.7.5",
     "vitepress-plugin-llms": "^1.12.2"
   },
   "overrides": {
@@ -27,5 +28,8 @@
       "version": "11.17.0",
       "onFail": "download"
     }
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
   }
 }

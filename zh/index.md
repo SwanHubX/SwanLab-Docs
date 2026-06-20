@@ -25,7 +25,7 @@ hero:
 
   image:
     src: /page.png
-    alt: VitePress
+    alt: SwanLab
 
 features:
   - title: 🚢 快速开始

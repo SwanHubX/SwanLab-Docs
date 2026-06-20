@@ -24,7 +24,7 @@ hero:
     #   link: https://chat.swanlab.cn/
   image:
     src: /page.png
-    alt: VitePress
+    alt: SwanLab
 
 features:
   - title: 🚢 Quick Start

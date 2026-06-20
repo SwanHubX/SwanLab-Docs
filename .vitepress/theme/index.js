@@ -3,6 +3,7 @@ import DefaultTheme from "vitepress/theme";
 import mediumZoom from "medium-zoom";
 import { onMounted, watch, nextTick } from "vue";
 import { useRoute } from "vitepress";
+import "virtual:group-icons.css";
 import "./custom.css";
 import HeaderButton from "./components/HeaderButton.vue";
 import HeaderButtonEN from "./components/HeaderButtonEN.vue";
