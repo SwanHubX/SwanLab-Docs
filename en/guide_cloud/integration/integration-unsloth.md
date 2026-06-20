@@ -54,7 +54,7 @@ from trl import GRPOConfig, GRPOTrainer, ModelConfig, TrlParser
 
 model, tokenizer = FastLanguageModel.from_pretrained(
 ...
-) 
+)
 
 # PEFT Model
 model = FastLanguageModel.get_peft_model(

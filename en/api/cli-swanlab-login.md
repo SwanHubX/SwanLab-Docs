@@ -4,12 +4,12 @@
 swanlab login [OPTIONS]
 ```
 
-| Option | Description |
-| --- | --- |
-| `-r`, `--relogin` | Re-login. |
-| `-h`, `--host` | Specify the host where the SwanLab service is located. For example, `http://localhost:8000`. |
-| `-k`, `--api-key` | Specify the API Key. This allows automatic login if you prefer not to enter the API key via the command line. |
-| `-w`, `--web-host` | Specify the web host where the SwanLab frontend is located. |
+| Option             | Description                                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `-r`, `--relogin`  | Re-login.                                                                                                     |
+| `-h`, `--host`     | Specify the host where the SwanLab service is located. For example, `http://localhost:8000`.                  |
+| `-k`, `--api-key`  | Specify the API Key. This allows automatic login if you prefer not to enter the API key via the command line. |
+| `-w`, `--web-host` | Specify the web host where the SwanLab frontend is located.                                                   |
 
 ## Introduction
 

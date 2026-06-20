@@ -1,6 +1,6 @@
 # swanlab offline
 
-``` bash
+```bash
 swanlab offline
 ```
 

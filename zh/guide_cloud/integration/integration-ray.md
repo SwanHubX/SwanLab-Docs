@@ -15,6 +15,7 @@ from swanlab.integration.ray import SwanLabLoggerCallback
 `SwanLabLoggerCallback` 是适配于 `Ray` 的日志记录类。
 
 `SwanLabLoggerCallback`可以定义的参数有：
+
 - `project`: 项目名称
 - `workspace`: 工作空间名称
 - 其他和`swanlab.init`一致的参数

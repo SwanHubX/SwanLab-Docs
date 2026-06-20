@@ -4,11 +4,13 @@ Use your favorite framework with SwanLab!
 Below is a list of frameworks we have integrated, please submit [Issue](https://github.com/swanhubx/swanlab/issues) to feedback the framework you want to integrate.
 
 ## Basic Frameworks
+
 - [PyTorch](/en/guide_cloud/integration/integration-pytorch.html)
 - [MindSpore](/en/guide_cloud/integration/integration-ascend.html)
 - [Keras](/en/guide_cloud/integration/integration-keras.html)
 
 ## Specialized/Fine-tuned Frameworks
+
 - [PyTorch Lightning](/en/guide_cloud/integration/integration-pytorch-lightning.html)
 - [HuggingFace Transformers](/en/guide_cloud/integration/integration-huggingface-transformers.html)
 - [LLaMA Factory](/en/guide_cloud/integration/integration-llama-factory.html)
@@ -26,9 +28,11 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [MLX-LM](/en/guide_cloud/integration/integration-mlx-lm.html)
 
 ## Evaluation Frameworks
+
 - [EvalScope](/en/guide_cloud/integration/integration-evalscope.html)
 
 ## Computer Vision
+
 - [Ultralytics](/en/guide_cloud/integration/integration-ultralytics.html)
 - [MMDetection](/en/guide_cloud/integration/integration-mmdetection.html)
 - [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation.html)
@@ -36,6 +40,7 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [PaddleYOLO](/en/guide_cloud/integration/integration-paddleyolo.html)
 
 ## Reinforcement Learning
+
 - [Stable Baselines3](/en/guide_cloud/integration/integration-sb3.html)
 - [veRL](/en/guide_cloud/integration/integration-verl.html)
 - [HuggingFace TRL](/en/guide_cloud/integration/integration-huggingface-trl.html)
@@ -43,10 +48,11 @@ Below is a list of frameworks we have integrated, please submit [Issue](https://
 - [AReaL](/en/guide_cloud/integration/integration-areal.html)
 - [ROLL](/en/guide_cloud/integration/integration-roll.html)
 - [NVIDIA-NeMo/RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
-- [RLinf](/en/guide_cloud/integration/integration-rlinf.html)   
+- [RLinf](/en/guide_cloud/integration/integration-rlinf.html)
 - [MindSpeed-RL](/en/guide_cloud/integration/integration-mindspeed-rl.html)
 
 ## Others:
+
 - [TensorBoard](/en/guide_cloud/integration/integration-tensorboard.html)
 - [Weights & Biases](/en/guide_cloud/integration/integration-wandb.html)
 - [MLflow](/en/guide_cloud/integration/integration-mlflow.html)

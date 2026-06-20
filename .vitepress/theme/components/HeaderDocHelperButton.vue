@@ -1,7 +1,7 @@
 <script setup>
 // Deprecated: 文档助手 / Docs Copilot 已下线，组件暂时保留用于回滚。
-import { useData } from 'vitepress'
-const { isDark } = useData()
+import { useData } from "vitepress";
+const { isDark } = useData();
 </script>
 
 <template>
@@ -12,18 +12,8 @@ const { isDark } = useData()
     rel="noopener"
     aria-label="文档助手"
   >
-    <img
-      v-if="!isDark"
-      src="/chat-black.svg"
-      alt="文档助手"
-      class="doc-helper-logo"
-    />
-    <img
-      v-else
-      src="/chat-white.svg"
-      alt="文档助手"
-      class="doc-helper-logo"
-    />
+    <img v-if="!isDark" src="/chat-black.svg" alt="文档助手" class="doc-helper-logo" />
+    <img v-else src="/chat-white.svg" alt="文档助手" class="doc-helper-logo" />
     <span>文档助手</span>
   </a>
 </template>

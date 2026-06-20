@@ -1,10 +1,12 @@
 # API Docs
 
 ## Develop
+
 - [Open API](/en/api/py-api.md)
 - [Environment Variables](/en/api/environment-variable.md)
 
 ## CLI
+
 - [swanlab ping](/en/api/cli-swanlab-ping.md): Connectivity and environment diagnostics
 - [swanlab api](/en/api/cli-swanlab-api.md): Manage cloud workspaces/projects/experiments via CLI
 - [swanlab watch](/en/api/cli-swanlab-watch.md): Start offline experiment board
@@ -19,6 +21,7 @@
 - [swanlab disabled](/en/api/cli-swanlab-disabled.md): Set SwanLab to disabled mode
 
 ## Python SDK
+
 - [init](/en/api/py-init.md)
 - [login](/en/api/py-login.md)
 - [Image](/en/api/py-Image.md)

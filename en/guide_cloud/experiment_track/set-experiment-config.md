@@ -1,6 +1,7 @@
 # Set Experiment Configuration
 
 Use `swanlab.config` to save your training configurations, such as:
+
 - Hyperparameters
 - Input settings, such as dataset name or model type
 - Any other variables for your experiment

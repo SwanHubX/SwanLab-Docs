@@ -2,7 +2,6 @@
 
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/RL-All-In-One/runs/vjbnl6y3l99k0sqrd0f2s/chart)
 
-
 > 训练过程：[RL-All-In-One](https://swanlab.cn/@ZeyiLin/RL-All-In-One/runs/vjbnl6y3l99k0sqrd0f2s/chart)
 >
 > 代码：[Zeyi-Lin/SwanBook-RL](https://github.com/Zeyi-Lin/SwanBook-RL/blob/main/dqn-cartpole.py)
@@ -25,18 +24,17 @@ DQN（Deep Q-Network，深度Q网络）是Q-Learning的**深度学习扩展**，
 
 具体DQN原理本文不做过多赘述，结合本文提供的代码和网上其他教程/DeepSeek R1学习，会有更好效果。
 
-
 ## 二、什么是CartPole推车倒立摆任务？
 
-**CartPole（推车倒立摆）**  是强化学习中经典的基准测试任务，因为其直观可视、方便调试、状态和动作空间小等特性，常用于入门教学和算法验证。它的目标是训练一个智能体（agent）通过左右移动小车，使车顶的杆子尽可能长时间保持竖直不倒。
+**CartPole（推车倒立摆）** 是强化学习中经典的基准测试任务，因为其直观可视、方便调试、状态和动作空间小等特性，常用于入门教学和算法验证。它的目标是训练一个智能体（agent）通过左右移动小车，使车顶的杆子尽可能长时间保持竖直不倒。
 
 ![image](https://imagebed-1301372061.cos.ap-beijing.myqcloud.com/blogs/20250207134541.png)
 
-* **环境**：小车（cart）可以在水平轨道上左右移动，顶部通过关节连接一根自由摆动的杆子（pole）。
-* **目标**：通过左右移动小车，使杆子的倾斜角度不超出阈值（±12°或±15°），同时小车不超出轨道范围（如轨道长度的±2.4单位）。简单理解为，就是杆子不会倒下里，小车不会飞出屏幕。
-* **状态**：状态空间包含4个连续变量，分别是小车位置（x），小车速度（v），杆子角度（θ），杆子角速度（ω）
-* **动作**：动作空间只有2个离线动作，分别是0（向左移动）或1（向右移动）
-* **奖励机制**：每成功保持杆子不倒+1分，目前是让奖励最大化，即杆子永远不倒
+- **环境**：小车（cart）可以在水平轨道上左右移动，顶部通过关节连接一根自由摆动的杆子（pole）。
+- **目标**：通过左右移动小车，使杆子的倾斜角度不超出阈值（±12°或±15°），同时小车不超出轨道范围（如轨道长度的±2.4单位）。简单理解为，就是杆子不会倒下里，小车不会飞出屏幕。
+- **状态**：状态空间包含4个连续变量，分别是小车位置（x），小车速度（v），杆子角度（θ），杆子角速度（ω）
+- **动作**：动作空间只有2个离线动作，分别是0（向左移动）或1（向右移动）
+- **奖励机制**：每成功保持杆子不倒+1分，目前是让奖励最大化，即杆子永远不倒
 
 使用`gymnasium`库，启动cartpole环境非常容易，下面是一个简单的示例代码：
 
@@ -53,7 +51,6 @@ while not done:
     state = next_state
     env.render()
 ```
-
 
 ## 三、安装环境
 
@@ -75,7 +72,6 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 pip install swanlab gymnasium numpy torch pygame moviepy
 ```
 
-
 ## 四、定义QNet
 
 DQN使用神经网络来近似QLearning中的Q表，这个神经网络被称为QNetwork。
@@ -94,11 +90,10 @@ class QNetwork(nn.Module):
             nn.Linear(64, action_dim)
         )
         self.to(device)  # 将网络移到指定设备
-  
+
     def forward(self, x):
         return self.fc(x)
 ```
-
 
 ## 五、定义DQNAgent
 
@@ -114,7 +109,7 @@ class DQNAgent:
         self.target_net.load_state_dict(self.q_net.state_dict())  # 将目标网络和当前网络初始化一致，避免网络不一致导致的训练波动
         self.optimizer = optim.Adam(self.q_net.parameters(), lr=1e-3)
         self.replay_buffer = deque(maxlen=10000)           # 经验回放缓冲区
-		self.update_target_freq = 100  
+		self.update_target_freq = 100
 ```
 
 DQN会定义2个神经网络，分别是q_net和target_net，结构是完全相同的。训练过程中，target_net负责计算预期值，即 **reward + target_net(next_state).max(1)[0]** ，q_net负责计算当前值，训练时将两个值送到MSELoss里计算差值，反向传播后更新q_net的参数；每过update_target_freq步，将q_net的参数赋给target_net。
@@ -142,7 +137,6 @@ B. 按照先前训练得到的知识选择动作。
 ```
 
 在训练中，开始时以高概率随机探索环境，逐渐转向利用学到的知识。
-
 
 ## 六、完整代码
 
@@ -187,7 +181,7 @@ class QNetwork(nn.Module):
             nn.ReLU(),
             nn.Linear(64, action_dim)
         )
-  
+
     def forward(self, x):
         return self.fc(x)
 
@@ -223,7 +217,7 @@ class DQNAgent:
     def train(self):
         if len(self.replay_buffer) < self.batch_size:
             return
-      
+
         # 从缓冲区随机采样
         batch = random.sample(self.replay_buffer, self.batch_size)
         states, actions, rewards, next_states, dones = zip(*batch)
@@ -261,7 +255,7 @@ class DQNAgent:
             os.makedirs("./output")
         torch.save(self.q_net.state_dict(), path)
         print(f"Model saved to {path}")
-      
+
     def evaluate(self, env):
         """评估当前模型的性能"""
         original_epsilon = self.epsilon
@@ -318,7 +312,7 @@ agent.epsilon = swanlab.config["epsilon_start"]
 for episode in range(swanlab.config["episode"]):
     state = env.reset()[0]
     total_reward = 0
-  
+
     while True:
         action = agent.choose_action(state)
         next_state, reward, done, _, _ = env.step(action)
@@ -329,16 +323,16 @@ for episode in range(swanlab.config["episode"]):
         state = next_state
         if done or total_reward > 2e4:
             break
-  
+
     # epsilon是探索系数，随着每一轮训练，epsilon 逐渐减小
-    agent.epsilon = max(swanlab.config["epsilon_end"], agent.epsilon * swanlab.config["epsilon_decay"])  
-  
+    agent.epsilon = max(swanlab.config["epsilon_end"], agent.epsilon * swanlab.config["epsilon_decay"])
+
     # 每10个episode评估一次模型
     if episode % 10 == 0:
         eval_env = gym.make('CartPole-v1')
         avg_reward = agent.evaluate(eval_env)
         eval_env.close()
-      
+
         if avg_reward > agent.best_avg_reward:
             agent.best_avg_reward = avg_reward
             # 深拷贝当前最优模型的参数
@@ -347,7 +341,7 @@ for episode in range(swanlab.config["episode"]):
             print(f"New best model saved with average reward: {avg_reward}")
 
     print(f"Episode: {episode}, Train Reward: {total_reward}, Best Eval Avg Reward: {agent.best_avg_reward}")
-  
+
     swanlab.log(
         {
             "train/reward": total_reward,
@@ -367,18 +361,18 @@ for episode in range(3):  # 录制3个测试回合
     state = test_env.reset()[0]
     total_reward = 0
     steps = 0
-  
+
     while True:
         action = agent.choose_action(state)
         next_state, reward, done, _, _ = test_env.step(action)
         total_reward += reward
         state = next_state
         steps += 1
-      
+
         # 限制每个episode最多1500步,约30秒,防止录制时间过长
         if done or steps >= 1500:
             break
-  
+
     print(f"Test Episode: {episode}, Reward: {total_reward}")
 
 test_env.close()
@@ -401,7 +395,6 @@ swanlab login
 在弹出的提示中，把API Key粘贴进去（粘贴进去不会显示任何东西，放心这是正常的），然后按回车，登录完毕！
 
 然后，就可以运行训练代码了。
-
 
 ## 七、训练结果
 

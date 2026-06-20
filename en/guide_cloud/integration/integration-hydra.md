@@ -30,6 +30,7 @@ def run_experiment(cfg):
 ```
 
 ## Track Hyperparameters
+
 Hydra uses [omegaconf](https://omegaconf.readthedocs.io/en/2.1_branch/) as the default way to interact with configuration dictionaries.
 
 You can directly pass the OmegaConf dictionary to `swanlab.config`:

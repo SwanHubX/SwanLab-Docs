@@ -10,11 +10,11 @@ pr_curve(
 ) -> None
 ```
 
-| Parameter      | Description                                                                                                                           |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| y_true       | (Union[List, np.ndarray]) True labels, the actual class labels (0 or 1) in binary classification problems                                                                        |
-| y_pred_proba | (Union[List, np.ndarray]) Prediction probabilities, the model's predicted probability values for the positive class (range 0-1)                                                                        |
-| title        | (Optional[str, bool]) Whether to display chart title, defaults to None                                                                                                           |
+| Parameter    | Description                                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| y_true       | (Union[List, np.ndarray]) True labels, the actual class labels (0 or 1) in binary classification problems                       |
+| y_pred_proba | (Union[List, np.ndarray]) Prediction probabilities, the model's predicted probability values for the positive class (range 0-1) |
+| title        | (Optional[str, bool]) Whether to display chart title, defaults to None                                                          |
 
 ## Introduction
 

@@ -10,11 +10,11 @@ Audio(
 ) -> None
 ```
 
-| Parameter    | Description                                                                                            |
-|--------------|--------------------------------------------------------------------------------------------------------|
+| Parameter    | Description                                                                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | data_or_path | (Union[str, np.ndarray]) Accepts an audio file path or a numpy array. The Audio class will determine the received data type and perform the appropriate conversion. |
-| sample_rate  | (int) The sample rate of the audio, default is 44100.                                                  |
-| caption      | (str) The label for the audio. Used to mark the audio when displayed in the experiment dashboard.       |
+| sample_rate  | (int) The sample rate of the audio, default is 44100.                                                                                                               |
+| caption      | (str) The label for the audio. Used to mark the audio when displayed in the experiment dashboard.                                                                   |
 
 ## Introduction
 

@@ -12,62 +12,61 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 
 ### workspace — Workspace
 
-| Subcommand | Description |
-|------------|-------------|
+| Subcommand                              | Description        |
+| --------------------------------------- | ------------------ |
 | `swanlab api workspace info <username>` | Get workspace info |
 
 ### project — Project
 
-| Subcommand | Description |
-|------------|-------------|
-| `swanlab api project info <path>` | Get project info |
-| `swanlab api project list` | List projects under a workspace |
-| `swanlab api project create` | Create a project |
+| Subcommand                        | Description                     |
+| --------------------------------- | ------------------------------- |
+| `swanlab api project info <path>` | Get project info                |
+| `swanlab api project list`        | List projects under a workspace |
+| `swanlab api project create`      | Create a project                |
 
 ### run — Experiment
 
-| Subcommand | Description |
-|------------|-------------|
-| `swanlab api run info <path>` | Get experiment info |
-| `swanlab api run list <project_path>` | List experiments under a project |
-| `swanlab api run filter <project_path>` | Filter experiments by query |
-| `swanlab api run metrics` | Get experiment scalar metrics |
-| `swanlab api run summary` | Get experiment metric summaries |
-| `swanlab api run column` | Get a single experiment column |
-| `swanlab api run columns` | List experiment columns |
-| `swanlab api run medias` | Get experiment media metrics |
-| `swanlab api run logs` | Get experiment console logs |
-| `swanlab api run export-logs` | Export experiment logs as a file |
+| Subcommand                              | Description                      |
+| --------------------------------------- | -------------------------------- |
+| `swanlab api run info <path>`           | Get experiment info              |
+| `swanlab api run list <project_path>`   | List experiments under a project |
+| `swanlab api run filter <project_path>` | Filter experiments by query      |
+| `swanlab api run metrics`               | Get experiment scalar metrics    |
+| `swanlab api run summary`               | Get experiment metric summaries  |
+| `swanlab api run column`                | Get a single experiment column   |
+| `swanlab api run columns`               | List experiment columns          |
+| `swanlab api run medias`                | Get experiment media metrics     |
+| `swanlab api run logs`                  | Get experiment console logs      |
+| `swanlab api run export-logs`           | Export experiment logs as a file |
 
 ### user — User
 
-| Subcommand | Description |
-|------------|-------------|
+| Subcommand              | Description           |
+| ----------------------- | --------------------- |
 | `swanlab api user info` | Get current user info |
 
 ### self-hosted — Self-Hosted Management
 
 > Requires super admin privileges.
 
-| Subcommand | Description |
-|------------|-------------|
-| `swanlab api self-hosted info` | Get instance info |
-| `swanlab api self-hosted create-user` | Create a user |
-| `swanlab api self-hosted list-users` | List all users |
-| `swanlab api self-hosted list-projects` | List all projects |
-| `swanlab api self-hosted summary` | System usage summary |
-| `swanlab api self-hosted list-workspaces` | List all workspaces |
+| Subcommand                                | Description          |
+| ----------------------------------------- | -------------------- |
+| `swanlab api self-hosted info`            | Get instance info    |
+| `swanlab api self-hosted create-user`     | Create a user        |
+| `swanlab api self-hosted list-users`      | List all users       |
+| `swanlab api self-hosted list-projects`   | List all projects    |
+| `swanlab api self-hosted summary`         | System usage summary |
+| `swanlab api self-hosted list-workspaces` | List all workspaces  |
 
 ## Common Options
 
 All `swanlab api` subcommands support:
 
-| Option | Description |
-|--------|-------------|
-| `-h`, `--host` | SwanLab server host address |
-| `-k`, `--api-key` | API key; takes precedence over local login |
-| `--save` | Save output as JSON file; pass a filename or omit for auto-generated name |
-
+| Option            | Description                                                               |
+| ----------------- | ------------------------------------------------------------------------- |
+| `-h`, `--host`    | SwanLab server host address                                               |
+| `-k`, `--api-key` | API key; takes precedence over local login                                |
+| `--save`          | Save output as JSON file; pass a filename or omit for auto-generated name |
 
 ## Subcommand Reference
 
@@ -79,10 +78,10 @@ Get detailed information about a workspace.
 swanlab api workspace info <username> [OPTIONS]
 ```
 
-| Argument/Option | Type | Description |
-|-----------------|------|-------------|
-| `username` | Positional | Workspace username (unique ID) |
-| `--save` | Option | Save output as JSON file; pass a filename or omit for auto-generated name |
+| Argument/Option | Type       | Description                                                               |
+| --------------- | ---------- | ------------------------------------------------------------------------- |
+| `username`      | Positional | Workspace username (unique ID)                                            |
+| `--save`        | Option     | Save output as JSON file; pass a filename or omit for auto-generated name |
 
 ```bash
 # View workspace info
@@ -92,7 +91,6 @@ swanlab api workspace info my-team
 swanlab api workspace info my-team --save workspace.json
 ```
 
-
 ### project info
 
 Get detailed information about a project.
@@ -101,15 +99,14 @@ Get detailed information about a project.
 swanlab api project info <path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Description |
-|-----------------|------|-------------|
-| `path` | Positional | Project path, format: `username/project-name` |
-| `--save` | Option | Save output as JSON file |
+| Argument/Option | Type       | Description                                   |
+| --------------- | ---------- | --------------------------------------------- |
+| `path`          | Positional | Project path, format: `username/project-name` |
+| `--save`        | Option     | Save output as JSON file                      |
 
 ```bash
 swanlab api project info my-team/image-classification
 ```
-
 
 ### project list
 
@@ -119,13 +116,13 @@ List all projects under a workspace.
 swanlab api project list [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--workspace` | `str` | Current logged-in user | Workspace username |
-| `--page_num` / `-n` | `int` | `1` | Page number |
-| `--page_size` / `-s` | `str` | `"20"` | Page size; valid values: `"10"`, `"20"`, `"50"`, `"100"` |
-| `--all` | Flag | `False` | Auto-paginate, fetch all projects |
-| `--save` | Option | — | Save output as JSON file |
+| Option               | Type   | Default                | Description                                              |
+| -------------------- | ------ | ---------------------- | -------------------------------------------------------- |
+| `--workspace`        | `str`  | Current logged-in user | Workspace username                                       |
+| `--page_num` / `-n`  | `int`  | `1`                    | Page number                                              |
+| `--page_size` / `-s` | `str`  | `"20"`                 | Page size; valid values: `"10"`, `"20"`, `"50"`, `"100"` |
+| `--all`              | Flag   | `False`                | Auto-paginate, fetch all projects                        |
+| `--save`             | Option | —                      | Save output as JSON file                                 |
 
 ```bash
 # List projects for current workspace
@@ -138,7 +135,6 @@ swanlab api project list --workspace my-team --page_size 50
 swanlab api project list --workspace my-team --all
 ```
 
-
 ### project create
 
 Create a new project in a workspace.
@@ -147,13 +143,13 @@ Create a new project in a workspace.
 swanlab api project create [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `-n` / `--name` | `str` | Required | Project name (1–100 chars, `0-9a-zA-Z-_.+` only) |
-| `-v` / `--visibility` | `str` | `"PRIVATE"` | Visibility: `PUBLIC` or `PRIVATE` |
-| `-d` / `--description` | `str` | `None` | Project description |
-| `-w` / `--workspace` | `str` | Current logged-in user | Workspace username |
-| `--save` | Option | — | Save output as JSON file |
+| Option                 | Type   | Default                | Description                                      |
+| ---------------------- | ------ | ---------------------- | ------------------------------------------------ |
+| `-n` / `--name`        | `str`  | Required               | Project name (1–100 chars, `0-9a-zA-Z-_.+` only) |
+| `-v` / `--visibility`  | `str`  | `"PRIVATE"`            | Visibility: `PUBLIC` or `PRIVATE`                |
+| `-d` / `--description` | `str`  | `None`                 | Project description                              |
+| `-w` / `--workspace`   | `str`  | Current logged-in user | Workspace username                               |
+| `--save`               | Option | —                      | Save output as JSON file                         |
 
 ```bash
 # Create a private project
@@ -163,7 +159,6 @@ swanlab api project create -n my-project -v PRIVATE
 swanlab api project create -n my-project -v PUBLIC -w my-team -d "Image classification experiments"
 ```
 
-
 ### run info
 
 Get detailed information about an experiment.
@@ -172,15 +167,14 @@ Get detailed information about an experiment.
 swanlab api run info <path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Description |
-|-----------------|------|-------------|
-| `path` | Positional | Experiment path, format: `username/project-name/experiment-id` |
-| `--save` | Option | Save output as JSON file |
+| Argument/Option | Type       | Description                                                    |
+| --------------- | ---------- | -------------------------------------------------------------- |
+| `path`          | Positional | Experiment path, format: `username/project-name/experiment-id` |
+| `--save`        | Option     | Save output as JSON file                                       |
 
 ```bash
 swanlab api run info my-team/image-classification/abc123
 ```
-
 
 ### run list
 
@@ -190,13 +184,13 @@ List all experiments under a project.
 swanlab api run list <project_path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `project_path` | Positional | Required | Project path, format: `username/project-name` |
-| `--page_num` / `-n` | `int` | `1` | Page number |
-| `--page_size` / `-s` | `str` | `"20"` | Page size |
-| `--all` | Flag | `False` | Auto-paginate, fetch all experiments |
-| `--save` | Option | — | Save output as JSON file |
+| Argument/Option      | Type       | Default  | Description                                   |
+| -------------------- | ---------- | -------- | --------------------------------------------- |
+| `project_path`       | Positional | Required | Project path, format: `username/project-name` |
+| `--page_num` / `-n`  | `int`      | `1`      | Page number                                   |
+| `--page_size` / `-s` | `str`      | `"20"`   | Page size                                     |
+| `--all`              | Flag       | `False`  | Auto-paginate, fetch all experiments          |
+| `--save`             | Option     | —        | Save output as JSON file                      |
 
 ```bash
 # List experiments in a project
@@ -206,7 +200,6 @@ swanlab api run list my-team/image-classification
 swanlab api run list my-team/image-classification --all
 ```
 
-
 ### run filter
 
 Query experiments by filter conditions. Use a JSON array to specify one or more filter rules.
@@ -215,11 +208,11 @@ Query experiments by filter conditions. Use a JSON array to specify one or more 
 swanlab api run filter <project_path> --filter_query <json> [OPTIONS]
 ```
 
-| Argument/Option | Type | Description |
-|-----------------|------|-------------|
-| `project_path` | Positional | Required, project path, format: `username/project-name` |
-| `--filter_query` / `-f` | `str` | Required, filter conditions (JSON array or path to JSON file) |
-| `--save` | Option | Save output as JSON file |
+| Argument/Option         | Type       | Description                                                   |
+| ----------------------- | ---------- | ------------------------------------------------------------- |
+| `project_path`          | Positional | Required, project path, format: `username/project-name`       |
+| `--filter_query` / `-f` | `str`      | Required, filter conditions (JSON array or path to JSON file) |
+| `--save`                | Option     | Save output as JSON file                                      |
 
 Each filter rule is a JSON object:
 
@@ -234,11 +227,11 @@ Each filter rule is a JSON object:
 
 `type` value reference:
 
-| type | key values | value description |
-|------|-----------|-------------------|
+| type     | key values                                                                                            | value description             |
+| -------- | ----------------------------------------------------------------------------------------------------- | ----------------------------- |
 | `STABLE` | `state`, `name`, `description`, `show`, `pin`, `labels`, `createdAt`, `updatedAt`, `finishedAt`, etc. | The corresponding field value |
-| `CONFIG` | Config parameter name (e.g. `param_2`, **no** `config.` prefix) | Config parameter value |
-| `SCALAR` | Scalar metric name (e.g. `loss`) | Metric value |
+| `CONFIG` | Config parameter name (e.g. `param_2`, **no** `config.` prefix)                                       | Config parameter value        |
+| `SCALAR` | Scalar metric name (e.g. `loss`)                                                                      | Metric value                  |
 
 ```bash
 # Query finished experiments
@@ -249,7 +242,6 @@ swanlab api run filter my-team/image-classification \
 swanlab api run filter my-team/image-classification -f ./filter.json
 ```
 
-
 ### run metrics
 
 Get scalar metrics for an experiment, returned as JSON.
@@ -258,20 +250,20 @@ Get scalar metrics for an experiment, returned as JSON.
 swanlab api run metrics <path> --keys <keys> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `path` | Positional | Required | Experiment path |
-| `--keys` | `str` | Required | Comma-separated metric keys, e.g. `"loss,acc"` |
-| `--sample` / `-s` | `int` | `1500` | Sample size; auto-capped if exceeded |
-| `--ignore-timestamp` | Flag | `False` | Remove timestamp field from metric data |
-| `--all` | Flag | `False` | Fetch full data (CSV export for scalars) |
-| `--range-type` | `str` | `None` | Range query type: `step` or `timestamp` |
-| `--range-start` | `int` | `None` | Range start (inclusive), step number or unix timestamp in ms |
-| `--range-end` | `int` | `None` | Range end (inclusive), step number or unix timestamp in ms |
-| `--range-head` | `int` | `None` | Return first N data points |
-| `--range-tail` | `int` | `None` | Return last N data points |
-| `--range-last` | `int` | `None` | Data from the last N milliseconds (mutually exclusive with `--range-start`/`--range-end`) |
-| `--save` | Option | — | Save output as JSON file |
+| Argument/Option      | Type       | Default  | Description                                                                               |
+| -------------------- | ---------- | -------- | ----------------------------------------------------------------------------------------- |
+| `path`               | Positional | Required | Experiment path                                                                           |
+| `--keys`             | `str`      | Required | Comma-separated metric keys, e.g. `"loss,acc"`                                            |
+| `--sample` / `-s`    | `int`      | `1500`   | Sample size; auto-capped if exceeded                                                      |
+| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field from metric data                                                   |
+| `--all`              | Flag       | `False`  | Fetch full data (CSV export for scalars)                                                  |
+| `--range-type`       | `str`      | `None`   | Range query type: `step` or `timestamp`                                                   |
+| `--range-start`      | `int`      | `None`   | Range start (inclusive), step number or unix timestamp in ms                              |
+| `--range-end`        | `int`      | `None`   | Range end (inclusive), step number or unix timestamp in ms                                |
+| `--range-head`       | `int`      | `None`   | Return first N data points                                                                |
+| `--range-tail`       | `int`      | `None`   | Return last N data points                                                                 |
+| `--range-last`       | `int`      | `None`   | Data from the last N milliseconds (mutually exclusive with `--range-start`/`--range-end`) |
+| `--save`             | Option     | —        | Save output as JSON file                                                                  |
 
 **Notes:**
 
@@ -304,7 +296,6 @@ swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-type step --range-start 0 --range-end 500 --range-head 50
 ```
 
-
 ### run summary
 
 Get scalar metric summaries for an experiment (final value, min, max, etc.).
@@ -313,11 +304,11 @@ Get scalar metric summaries for an experiment (final value, min, max, etc.).
 swanlab api run summary <path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Description |
-|-----------------|------|-------------|
-| `path` | Positional | Experiment path |
-| `--keys` | `str` | Comma-separated metric keys; omit for all keys |
-| `--save` | Option | Save output as JSON file |
+| Argument/Option | Type       | Description                                    |
+| --------------- | ---------- | ---------------------------------------------- |
+| `path`          | Positional | Experiment path                                |
+| `--keys`        | `str`      | Comma-separated metric keys; omit for all keys |
+| `--save`        | Option     | Save output as JSON file                       |
 
 ```bash
 # Get summary for all metrics
@@ -327,7 +318,6 @@ swanlab api run summary my-team/image-classification/abc123
 swanlab api run summary my-team/image-classification/abc123 --keys loss,acc
 ```
 
-
 ### run column
 
 Get a single metric column for an experiment.
@@ -336,18 +326,17 @@ Get a single metric column for an experiment.
 swanlab api run column <path> --key <key> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `path` | Positional | Required | Experiment path |
-| `--key` | `str` | Required | Column key name |
-| `--class` | `str` | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM` |
-| `--type` | `str` | `None` | Column data type: `FLOAT`, `STRING`, `IMAGE`, etc. |
-| `--save` | Option | — | Save output as JSON file |
+| Argument/Option | Type       | Default    | Description                                        |
+| --------------- | ---------- | ---------- | -------------------------------------------------- |
+| `path`          | Positional | Required   | Experiment path                                    |
+| `--key`         | `str`      | Required   | Column key name                                    |
+| `--class`       | `str`      | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM`                 |
+| `--type`        | `str`      | `None`     | Column data type: `FLOAT`, `STRING`, `IMAGE`, etc. |
+| `--save`        | Option     | —          | Save output as JSON file                           |
 
 ```bash
 swanlab api run column my-team/image-classification/abc123 --key loss
 ```
-
 
 ### run columns
 
@@ -357,16 +346,16 @@ List all metric columns for an experiment.
 swanlab api run columns <path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `path` | Positional | Required | Experiment path |
-| `--page_num` / `-n` | `int` | `1` | Page number |
-| `--page_size` / `-s` | `str` | `"20"` | Page size |
-| `--search` | `str` | `None` | Fuzzy search keyword (matches column name) |
-| `--class` | `str` | `"CUSTOM"` | Column class filter |
-| `--type` | `str` | `None` | Column data type filter |
-| `--all` | Flag | `False` | Auto-paginate, fetch all columns |
-| `--save` | Option | — | Save output as JSON file |
+| Argument/Option      | Type       | Default    | Description                                |
+| -------------------- | ---------- | ---------- | ------------------------------------------ |
+| `path`               | Positional | Required   | Experiment path                            |
+| `--page_num` / `-n`  | `int`      | `1`        | Page number                                |
+| `--page_size` / `-s` | `str`      | `"20"`     | Page size                                  |
+| `--search`           | `str`      | `None`     | Fuzzy search keyword (matches column name) |
+| `--class`            | `str`      | `"CUSTOM"` | Column class filter                        |
+| `--type`             | `str`      | `None`     | Column data type filter                    |
+| `--all`              | Flag       | `False`    | Auto-paginate, fetch all columns           |
+| `--save`             | Option     | —          | Save output as JSON file                   |
 
 ```bash
 # List all columns
@@ -380,7 +369,6 @@ swanlab api run columns my-team/image-classification/abc123 \
   --class SYSTEM --type FLOAT --all
 ```
 
-
 ### run medias
 
 Get media metrics (images, audio, etc.) for an experiment. Returns presigned URLs.
@@ -389,13 +377,13 @@ Get media metrics (images, audio, etc.) for an experiment. Returns presigned URL
 swanlab api run medias <path> --keys <keys> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `path` | Positional | Required | Experiment path |
-| `--keys` | `str` | Required | Comma-separated media keys, e.g. `"image,audio"` |
-| `--step` / `-s` | `int` | `0` | Step number |
-| `--all` | Flag | `False` | Fetch all steps |
-| `--save` | Option | — | Save output as JSON file |
+| Argument/Option | Type       | Default  | Description                                      |
+| --------------- | ---------- | -------- | ------------------------------------------------ |
+| `path`          | Positional | Required | Experiment path                                  |
+| `--keys`        | `str`      | Required | Comma-separated media keys, e.g. `"image,audio"` |
+| `--step` / `-s` | `int`      | `0`      | Step number                                      |
+| `--all`         | Flag       | `False`  | Fetch all steps                                  |
+| `--save`        | Option     | —        | Save output as JSON file                         |
 
 ```bash
 # Get image metric at step 0
@@ -405,7 +393,6 @@ swanlab api run medias my-team/image-classification/abc123 --keys generated_imag
 swanlab api run medias my-team/image-classification/abc123 --keys audio --all
 ```
 
-
 ### run logs
 
 Get console logs for an experiment.
@@ -414,13 +401,13 @@ Get console logs for an experiment.
 swanlab api run logs <path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `path` | Positional | Required | Experiment path |
-| `--offset` / `-o` | `int` | `0` | Log shard index |
-| `--level` / `-l` | `str` | `"INFO"` | Log level: `DEBUG`, `INFO`, `WARN`, `ERROR` |
-| `--ignore-timestamp` | Flag | `False` | Remove timestamp field |
-| `--save` | Option | — | Save output as JSON file |
+| Argument/Option      | Type       | Default  | Description                                 |
+| -------------------- | ---------- | -------- | ------------------------------------------- |
+| `path`               | Positional | Required | Experiment path                             |
+| `--offset` / `-o`    | `int`      | `0`      | Log shard index                             |
+| `--level` / `-l`     | `str`      | `"INFO"` | Log level: `DEBUG`, `INFO`, `WARN`, `ERROR` |
+| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field                      |
+| `--save`             | Option     | —        | Save output as JSON file                    |
 
 ```bash
 # Get INFO level logs
@@ -433,7 +420,6 @@ swanlab api run logs my-team/image-classification/abc123 --level WARN
 swanlab api run logs my-team/image-classification/abc123 --offset 1
 ```
 
-
 ### run export-logs
 
 Export experiment logs as a downloadable `.log` file.
@@ -442,18 +428,17 @@ Export experiment logs as a downloadable `.log` file.
 swanlab api run export-logs <path> [OPTIONS]
 ```
 
-| Argument/Option | Type | Default | Description |
-|-----------------|------|---------|-------------|
-| `path` | Positional | Required | Experiment path |
-| `--start` | `int` | `0` | Start row index (0-based) |
-| `--rows` / `-r` | `int` | `500000` | Number of rows to export, max 500000 |
-| `--save` | Option | — | Save output as JSON file (includes download URL) |
+| Argument/Option | Type       | Default  | Description                                      |
+| --------------- | ---------- | -------- | ------------------------------------------------ |
+| `path`          | Positional | Required | Experiment path                                  |
+| `--start`       | `int`      | `0`      | Start row index (0-based)                        |
+| `--rows` / `-r` | `int`      | `500000` | Number of rows to export, max 500000             |
+| `--save`        | Option     | —        | Save output as JSON file (includes download URL) |
 
 ```bash
 # Export first 10000 rows
 swanlab api run export-logs my-team/image-classification/abc123 --rows 10000
 ```
-
 
 ### user info
 
@@ -463,14 +448,13 @@ Get current logged-in user information.
 swanlab api user info [OPTIONS]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option   | Description              |
+| -------- | ------------------------ |
 | `--save` | Save output as JSON file |
 
 ```bash
 swanlab api user info
 ```
-
 
 ### self-hosted info
 
@@ -480,14 +464,13 @@ Get self-hosted instance information.
 swanlab api self-hosted info [OPTIONS]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option   | Description              |
+| -------- | ------------------------ |
 | `--save` | Save output as JSON file |
 
 ```bash
 swanlab api self-hosted info
 ```
-
 
 ### self-hosted create-user
 
@@ -497,16 +480,15 @@ Create a new user in the self-hosted instance (super admin only).
 swanlab api self-hosted create-user [OPTIONS]
 ```
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `-u` / `--username` | `str` | Required, new username |
-| `-p` / `--password` | `str` | Required, new user password |
-| `--save` | Option | Save output as JSON file |
+| Option              | Type   | Description                 |
+| ------------------- | ------ | --------------------------- |
+| `-u` / `--username` | `str`  | Required, new username      |
+| `-p` / `--password` | `str`  | Required, new user password |
+| `--save`            | Option | Save output as JSON file    |
 
 ```bash
 swanlab api self-hosted create-user -u testuser -p test123456
 ```
-
 
 ### self-hosted list-users
 
@@ -516,18 +498,17 @@ List all users in the self-hosted instance (super admin only).
 swanlab api self-hosted list-users [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--page_num` / `-n` | `int` | `1` | Page number |
-| `--page_size` / `-s` | `int` | `20` | Page size |
-| `--all` | Flag | `False` | Auto-paginate, fetch all users |
-| `--save` | Option | — | Save output as JSON file |
+| Option               | Type   | Default | Description                    |
+| -------------------- | ------ | ------- | ------------------------------ |
+| `--page_num` / `-n`  | `int`  | `1`     | Page number                    |
+| `--page_size` / `-s` | `int`  | `20`    | Page size                      |
+| `--all`              | Flag   | `False` | Auto-paginate, fetch all users |
+| `--save`             | Option | —       | Save output as JSON file       |
 
 ```bash
 # List all users
 swanlab api self-hosted list-users --all
 ```
-
 
 ### self-hosted list-projects
 
@@ -537,15 +518,15 @@ List all projects in the self-hosted instance (super admin only).
 swanlab api self-hosted list-projects [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--page_num` / `-n` | `int` | `1` | Page number |
-| `--page_size` / `-s` | `int` | `20` | Page size |
-| `--all` | Flag | `False` | Auto-paginate, fetch all projects |
-| `--search` | `str` | `None` | Search keyword |
-| `--creator` | `str` | `None` | Filter by creator username |
-| `--workspace` | `str` | `None` | Filter by workspace username |
-| `--save` | Option | — | Save output as JSON file |
+| Option               | Type   | Default | Description                       |
+| -------------------- | ------ | ------- | --------------------------------- |
+| `--page_num` / `-n`  | `int`  | `1`     | Page number                       |
+| `--page_size` / `-s` | `int`  | `20`    | Page size                         |
+| `--all`              | Flag   | `False` | Auto-paginate, fetch all projects |
+| `--search`           | `str`  | `None`  | Search keyword                    |
+| `--creator`          | `str`  | `None`  | Filter by creator username        |
+| `--workspace`        | `str`  | `None`  | Filter by workspace username      |
+| `--save`             | Option | —       | Save output as JSON file          |
 
 ```bash
 # List all projects
@@ -555,7 +536,6 @@ swanlab api self-hosted list-projects --all
 swanlab api self-hosted list-projects --search image --all
 ```
 
-
 ### self-hosted summary
 
 Get system usage summary for the self-hosted instance (super admin only).
@@ -564,14 +544,13 @@ Get system usage summary for the self-hosted instance (super admin only).
 swanlab api self-hosted summary [OPTIONS]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option   | Description              |
+| -------- | ------------------------ |
 | `--save` | Save output as JSON file |
 
 ```bash
 swanlab api self-hosted summary
 ```
-
 
 ### self-hosted list-workspaces
 
@@ -581,13 +560,13 @@ List all workspaces in the self-hosted instance (super admin only).
 swanlab api self-hosted list-workspaces [OPTIONS]
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--page_num` / `-n` | `int` | `1` | Page number |
-| `--page_size` / `-s` | `int` | `20` | Page size |
-| `--all` | Flag | `False` | Auto-paginate, fetch all workspaces |
-| `--search` | `str` | `None` | Search keyword |
-| `--save` | Option | — | Save output as JSON file |
+| Option               | Type   | Default | Description                         |
+| -------------------- | ------ | ------- | ----------------------------------- |
+| `--page_num` / `-n`  | `int`  | `1`     | Page number                         |
+| `--page_size` / `-s` | `int`  | `20`    | Page size                           |
+| `--all`              | Flag   | `False` | Auto-paginate, fetch all workspaces |
+| `--search`           | `str`  | `None`  | Search keyword                      |
+| `--save`             | Option | —       | Save output as JSON file            |
 
 ```bash
 # List all workspaces

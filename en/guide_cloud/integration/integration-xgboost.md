@@ -18,7 +18,7 @@ from swanlab.integration.xgboost import SwanLabCallback
 
 ```python
 swanlab.init(
-    project="xgboost-example", 
+    project="xgboost-example",
 )
 ```
 
@@ -80,10 +80,10 @@ params = {
 # Train the model
 num_round = 100  # Number of iterations
 bst = xgb.train(
-    params, 
-    dtrain, 
+    params,
+    dtrain,
     num_round,
-    evals=[(dtrain, 'train'), (dtest, 'test')], 
+    evals=[(dtrain, 'train'), (dtest, 'test')],
     callbacks=[SwanLabCallback()]
 )
 

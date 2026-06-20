@@ -11,14 +11,15 @@ SwanLab插件均为开源代码，你可以在[GitHub源代码](https://github.c
 ## 准备工作
 
 ::: info 参考文档
-- [Telegram-Bots: An introduction for developers](https://core.telegram.org/bots)
-:::
 
+- [Telegram-Bots: An introduction for developers](https://core.telegram.org/bots)
+  :::
 
 1. 在 Telegram 搜索框中，输入 `@BotFather`
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-botfather.png" width="300"/>
+   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-botfather.png" width="300"/>
 
 2. 进入聊天框，输入 `/newbot` 命令，根据提示，分别输入 `name` 和 `username`，注意：
+
 - `name` 用于在消息框中展示 bot 名称
 - `username` 用于 telegram 频道跳转，且必须以 `bot` 作为结尾，不可重复
 
@@ -26,10 +27,8 @@ SwanLab插件均为开源代码，你可以在[GitHub源代码](https://github.c
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-botcreated.png" width="500"/>
 
 3. 在 Telegram 搜索框中，输入 `@getidsbot`，在聊天框输入 `/start`，用于获取 `chat_id`。
-`chat_id` 即用户的唯一标识符
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-chatid.png" width="500"/>
-
-
+   `chat_id` 即用户的唯一标识符
+   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-chatid.png" width="500"/>
 
 ## 基本用法
 
@@ -54,7 +53,6 @@ swanlab.init(callbacks=[telegram_callback])
 
 这样，当训练完成/发生错误时（触发`swanlab.finish()`），你将会收到Telegram消息通知。
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-finish.jpg" width="500"/>
 
 ## 自由提醒
@@ -63,14 +61,13 @@ swanlab.init(callbacks=[telegram_callback])
 
 这在提醒你某些指标达到某个阈值时非常有用！
 
-```python 
+```python
 if accuracy > 0.95:
     # 自定义场景发送消息
     telegram_callback.send_msg(
         content=f"Current Accuracy: {accuracy}",  # 通知内容
     )
 ```
-
 
 ## 限制
 

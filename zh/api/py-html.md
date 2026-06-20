@@ -9,11 +9,10 @@ Html(
 ) -> None
 ```
 
-| 参数      | 描述                                                                                                                                                                   |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| data      | (Union[str, Path, TextIO, Html]) 接收 `.html` 文件路径、html字符串、已打开的 html 文件句柄或另一个 Html 对象。Html 类将判断接收的数据类型做相应的转换。                  |
-| caption   | (str) html 的标签。用于在实验看板中展示 html 类型图表进行标记。                                                                                                        |
-
+| 参数    | 描述                                                                                                                                                    |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data    | (Union[str, Path, TextIO, Html]) 接收 `.html` 文件路径、html字符串、已打开的 html 文件句柄或另一个 Html 对象。Html 类将判断接收的数据类型做相应的转换。 |
+| caption | (str) html 的标签。用于在实验看板中展示 html 类型图表进行标记。                                                                                         |
 
 ## 介绍
 
@@ -50,7 +49,6 @@ run.log({"demo_html": html_data})
 
 直接传入原始 HTML 字符串：
 
-
 ```python
 import swanlab
 
@@ -59,8 +57,9 @@ html_data = swanlab.Html("<h1>Hello World</h1>", caption="hello")
 
 run.log({"demo_html": html_data})
 ```
+
 - 参考示例
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131539549.png"/>
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131539549.png"/>
 
 ### 从文件对象创建
 
@@ -95,4 +94,3 @@ run.log({"examples": examples})
 ```
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131855730.png"/>
-

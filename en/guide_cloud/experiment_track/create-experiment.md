@@ -8,6 +8,7 @@ This section will introduce how to create a SwanLab experiment.
 ## How to Create a SwanLab Experiment?
 
 Creating a SwanLab experiment involves three steps:
+
 1. Initialize SwanLab
 2. Pass a hyperparameter dictionary
 3. Record metrics in your training loop
@@ -122,6 +123,7 @@ For more information on how to view experiments, see [View Experiment Results](/
 ## Best Practices
 
 Here are some best practices for creating experiments that you can refer to. A complete experiment creation can include the following four parameters:
+
 - `config`: Configuration. Record anything you want to use to reproduce the model, such as hyperparameters, model name, dataset, etc. These contents will be displayed in the "Table View" and "Experiment Card" pages of the dashboard and can also be used as a basis for experiment comparison, filtering, and filtering.
 - `project`: Project. A project is a set of experiments that can be compared together and will be displayed in a unified dashboard.
 - `experiment_name`: Experiment name. Define the name of the experiment. You set it in the script and can edit it later in the SwanLab application.

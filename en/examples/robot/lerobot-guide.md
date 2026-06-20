@@ -392,15 +392,15 @@ dataset.push_to_hub()
 
 You need to modify some important parameters in the code above:
 
--   `SO101FollowerConfig` and `SO101LeaderConfig`: Update these with your own arm's configuration, specifically the `port` and `id` parameters.
--   `<hf_username>/<dataset_repo_id>`: This is the path to your Hugging Face repository. Replace it with your own, for example: `swanlab101/lerobot-dataset`.
+- `SO101FollowerConfig` and `SO101LeaderConfig`: Update these with your own arm's configuration, specifically the `port` and `id` parameters.
+- `<hf_username>/<dataset_repo_id>`: This is the path to your Hugging Face repository. Replace it with your own, for example: `swanlab101/lerobot-dataset`.
 
 Here are some global configuration parameters you can optionally change, with explanations:
 
--   `NUM_EPISODES = 50`: This means you will record 50 episodes. One complete grasping action is one episode.
--   `FPS = 30`: The camera's recording frame rate is 30 frames per second.
--   `EPISODE_TIME_SEC = 60`: The maximum duration for each episode is set to 60 seconds.
--   `RESET_TIME_SEC = 10`: The time allotted to reset the environment before starting a new episode.
+- `NUM_EPISODES = 50`: This means you will record 50 episodes. One complete grasping action is one episode.
+- `FPS = 30`: The camera's recording frame rate is 30 frames per second.
+- `EPISODE_TIME_SEC = 60`: The maximum duration for each episode is set to 60 seconds.
+- `RESET_TIME_SEC = 10`: The time allotted to reset the environment before starting a new episode.
 
 These settings mean you will record a dataset of 50 episodes, with each recording session lasting up to 60 seconds. The dataset will include video of the arm's movements and data from the arm's motors.
 
@@ -408,9 +408,9 @@ These settings mean you will record a dataset of 50 episodes, with each recordin
 
 After starting the script, you will hear a voice prompt. Be sure to complete the action within the allotted time. If you finish the action in under 60 seconds, you can use hotkeys to end the current episode and start the next one. The hotkeys are:
 
--   **Right Arrow (`→`)**: End the current episode early and start the next one.
--   **Left Arrow (`←`)**: Cancel the current episode and start a new recording.
--   **`ESC` key**: Stop the recording process immediately.
+- **Right Arrow (`→`)**: End the current episode early and start the next one.
+- **Left Arrow (`←`)**: Cancel the current episode and start a new recording.
+- **`ESC` key**: Stop the recording process immediately.
 
 ::: details Example Console Output
 
@@ -465,10 +465,10 @@ Here is an example video of one recording episode:
 
 ### 5.5 Recording Tips
 
--   Start by collecting a small dataset (e.g., 5 episodes) to get familiar with the workflow. Once you're comfortable, you can create a larger dataset for training.
--   A good starting task is to pick up a brightly colored rectangular block and place it in a box. The object should have a distinct color (like yellow), and its rectangular shape makes it easier to grasp without being obscured by the gripper.
--   It's recommended to record at least 50 episodes, with about 10 episodes for each initial object position. Keep the camera fixed and maintain consistent grasping behavior throughout the recording process.
--   A good rule of thumb is that you should be able to perform the task by only looking at the camera feed.
+- Start by collecting a small dataset (e.g., 5 episodes) to get familiar with the workflow. Once you're comfortable, you can create a larger dataset for training.
+- A good starting task is to pick up a brightly colored rectangular block and place it in a box. The object should have a distinct color (like yellow), and its rectangular shape makes it easier to grasp without being obscured by the gripper.
+- It's recommended to record at least 50 episodes, with about 10 episodes for each initial object position. Keep the camera fixed and maintain consistent grasping behavior throughout the recording process.
+- A good rule of thumb is that you should be able to perform the task by only looking at the camera feed.
 
 > For more tips, see the [official tutorial](https://huggingface.co/docs/lerobot/il_robots?record=API+example#tips-for-gathering-data)
 
@@ -492,11 +492,11 @@ python -m lerobot.scripts.train \
   --swanlab.mode=cloud
 ```
 
--   `--dataset.repo_id`: Set this to the path of the dataset you uploaded to Hugging Face.
--   `--policy.type=act`: This is the training policy, which will automatically adapt to the motor states, motor actions, and number of cameras saved in the dataset.
--   `--output_dir`: The path where the model will be saved. The final model checkpoints will be in `outputs/train/lerobot/checkpoints`.
--   `--policy.device=cuda`: Indicates we are using an Nvidia GPU for training. If you are training on an Apple M-series chip, set this to `--policy.device=mps`.
--   `--swanlab.project=my_lerobot`: The name of the corresponding SwanLab project.
+- `--dataset.repo_id`: Set this to the path of the dataset you uploaded to Hugging Face.
+- `--policy.type=act`: This is the training policy, which will automatically adapt to the motor states, motor actions, and number of cameras saved in the dataset.
+- `--output_dir`: The path where the model will be saved. The final model checkpoints will be in `outputs/train/lerobot/checkpoints`.
+- `--policy.device=cuda`: Indicates we are using an Nvidia GPU for training. If you are training on an Apple M-series chip, set this to `--policy.device=mps`.
+- `--swanlab.project=my_lerobot`: The name of the corresponding SwanLab project.
 
 Training will take several hours. On a laptop with an 8GB 3060 GPU, training with 50 episodes takes about 6 hours. On a 4090 or A100, it takes about 2-3 hours.
 
@@ -637,18 +637,18 @@ dataset.push_to_hub()
 
 You need to modify the following in the code:
 
--   `SO101FollowerConfig`: Change this to your follower arm's configuration.
--   `ACTPolicy.from_pretrained()`: Change this to the path of your trained model.
--   `LeRobotDataset`: This is for the model evaluation dataset. Change `<HF_USER>` to your Hugging Face username.
+- `SO101FollowerConfig`: Change this to your follower arm's configuration.
+- `ACTPolicy.from_pretrained()`: Change this to the path of your trained model.
+- `LeRobotDataset`: This is for the model evaluation dataset. Change `<HF_USER>` to your Hugging Face username.
 
 This script is used to collect a dataset for model evaluation. Therefore, like data collection with teleoperation, it will record episodes, but it does so with the follower arm moving autonomously, without the leader arm. The parameter meanings are:
 
--   `NUM_EPISODES`: The number of times to run the inference.
--   `EPISODE_TIME_SEC`: The duration for each run, set to 60 seconds.
+- `NUM_EPISODES`: The number of times to run the inference.
+- `EPISODE_TIME_SEC`: The duration for each run, set to 60 seconds.
 
->[!Note]
+> [!Note]
 >
->[Example Model](https://huggingface.co/ink-swpfy/lrobot2)
+> [Example Model](https://huggingface.co/ink-swpfy/lrobot2)
 
 ### 7.2 Autonomous Grasping Example
 
@@ -663,8 +663,8 @@ The grasping performance is heavily influenced by the training dataset and the e
 
 ## 8. Related Links
 
--   [Robotic Arm Assembly Tutorial - seeed studio](https://wiki.seeedstudio.com/lerobot_so100m/#calibrate-the-servos-and-assemble-the-robotic-arm)
--   [LeRobot Fork with SwanLab Integration](https://github.com/swpfY/lerobot) (Official repo has not yet merged the SwanLab PR)
--   [LeRobot Official Documentation](https://huggingface.co/docs/lerobot/index)
--   [SO101 Robotic Arm Taobao Purchase Link](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
--   [SwanLab Official Website](https://swanlab.io/)
+- [Robotic Arm Assembly Tutorial - seeed studio](https://wiki.seeedstudio.com/lerobot_so100m/#calibrate-the-servos-and-assemble-the-robotic-arm)
+- [LeRobot Fork with SwanLab Integration](https://github.com/swpfY/lerobot) (Official repo has not yet merged the SwanLab PR)
+- [LeRobot Official Documentation](https://huggingface.co/docs/lerobot/index)
+- [SO101 Robotic Arm Taobao Purchase Link](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
+- [SwanLab Official Website](https://swanlab.io/)

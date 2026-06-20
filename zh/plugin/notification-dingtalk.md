@@ -48,7 +48,7 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 from swanlab.plugin.notification import DingTalkCallback
 
 dingtalk_callback = DingTalkCallback(
-    webhook_url="https://oapi.dingtalk.com/robot/xxxx", 
+    webhook_url="https://oapi.dingtalk.com/robot/xxxx",
     secret="xxxx",
 )
 ```
@@ -69,7 +69,7 @@ swanlab.init(callbacks=[dingtalk_callback])
 
 这在提醒你某些指标达到某个阈值时非常有用！
 
-```python 
+```python
 if accuracy > 0.95:
     # 自定义场景发送消息
     dingtalk_callback.send_msg(
@@ -80,7 +80,6 @@ if accuracy > 0.95:
 ## 外部注册插件
 
 <!--@include: ./shared-snippet.md-->
-
 
 ## 限制
 

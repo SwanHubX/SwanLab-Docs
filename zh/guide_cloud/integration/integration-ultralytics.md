@@ -8,7 +8,8 @@
 
 你可以使用Ultralytics快速进行计算机视觉模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
-下面介绍两种引入SwanLab的方式：  
+下面介绍两种引入SwanLab的方式：
+
 1. `add_swanlab_callback`：无需修改源码，适用于单卡训练场景
 2. `return_swanlab_callback`：需要修改源码，适用于单卡以及多卡DDP训练场景
 
@@ -37,7 +38,7 @@ if __name__ == "__main__":
 
     model.train(
         data="./coco128.yaml",
-        epochs=3, 
+        epochs=3,
         imgsz=320,
     )
 ```
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
     model.train(
         data="./coco128.yaml",
-        epochs=3, 
+        epochs=3,
         imgsz=320,
         # 开启DDP
         device=[0,1],
@@ -82,7 +83,7 @@ if __name__ == "__main__":
 ```python (15,16,18)
 def add_integration_callbacks(instance):
     ...
-    
+
     # Load training callbacks
     if "Trainer" in instance.__class__.__name__:
         from .clearml import callbacks as clear_cb
@@ -115,9 +116,10 @@ return_swanlab_callback(
 ```
 
 :::warning ps
+
 1. 写入源码之后，之后运行就不需要在训练脚本中增加`add_swanlab_callback`了。
 2. 项目名由model.train()的project参数定义，实验名由name参数定义。
-:::
+   :::
 
 ## 2.2 代码案例
 
@@ -129,7 +131,7 @@ if __name__ == "__main__":
 
     model.train(
         data="./coco128.yaml",
-        epochs=3, 
+        epochs=3,
         imgsz=320,
         # 开启DDP
         device=[0,1,2,3],

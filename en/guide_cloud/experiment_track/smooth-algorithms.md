@@ -30,8 +30,7 @@ let debiasWeight = 0;
 return yValues.map((yPoint, index) => {
   const prevX = index > 0 ? index - 1 : 0;
   // VIEWPORT_SCALE scales the result to the chart's x-axis range
-  const changeInX =
-    ((xValues[index] - xValues[prevX]) / rangeOfX) * VIEWPORT_SCALE;
+  const changeInX = ((xValues[index] - xValues[prevX]) / rangeOfX) * VIEWPORT_SCALE;
   const smoothingWeightAdj = Math.pow(smoothingWeight, changeInX);
 
   lastY = lastY * smoothingWeightAdj + yPoint;

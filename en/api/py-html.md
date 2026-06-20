@@ -9,11 +9,10 @@ Html(
 ) -> None
 ```
 
-| Parameter | Description                                                                                                                                                          |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Parameter | Description                                                                                                                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | data      | (Union[str, Path, TextIO, Html]) Accepts an `.html` file path, an HTML string, an opened HTML file handle, or another Html object. The Html class will convert the input based on its type. |
-| caption   | (str) The label for the HTML content. Used to mark HTML-type charts in the experiment dashboard.                                                                     |
-
+| caption   | (str) The label for the HTML content. Used to mark HTML-type charts in the experiment dashboard.                                                                                            |
 
 ## Introduction
 
@@ -60,7 +59,7 @@ run.log({"demo_html": html_data})
 ```
 
 - Example
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131539549.png"/>
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131539549.png"/>
 
 ### Create from a file object
 

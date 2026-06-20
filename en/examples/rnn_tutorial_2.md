@@ -10,8 +10,8 @@ Finally, we also include some parameter tuning tips for sequence networks 😊
 
 ## Series Directory
 
-* [Archaeological RNN Tutorial (Part 1): Understanding How PyTorch RNN Handles Variable-Length Batch Training](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README.md) — Introduction to RNN principles and methods for handling variable-length sequence batches
-* [Archaeological RNN Tutorial (Part 2): How to Use RNN Networks for Sequence Prediction](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README_next.md) — Training an RNN classification network for sequence sum and remainder calculation, plus some parameter tuning tips
+- [Archaeological RNN Tutorial (Part 1): Understanding How PyTorch RNN Handles Variable-Length Batch Training](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README.md) — Introduction to RNN principles and methods for handling variable-length sequence batches
+- [Archaeological RNN Tutorial (Part 2): How to Use RNN Networks for Sequence Prediction](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README_next.md) — Training an RNN classification network for sequence sum and remainder calculation, plus some parameter tuning tips
 
 ## Training Task Introduction
 
@@ -19,14 +19,14 @@ We use the **sequence sum and remainder calculation** task to verify the perform
 
 **Sequence Sum and Remainder Calculation**: The dataset consists of input-output pairs `(X, Y)`, formally defined as follows:
 
-* **Model Input X**:  
+- **Model Input X**:  
   A random integer sequence of arbitrary length $ n \in \mathbb{N}^+ $, $ X = (x_1, x_2, \dots, x_n) $, where each element $ x_i $ is independently and identically distributed from the set $ \{0, 1, 2, \dots, 9\} $, i.e.:
 
   $$
   x_i \overset{\text{i.i.d.}}{\sim} \text{Uniform}\{0, 1, \dots, 9\}, \quad \forall i = 1, \dots, n
   $$
 
-* **Target Output Y**:  
+- **Target Output Y**:  
   The result of taking the sum of all elements in the sequence modulo 10:
 
   $$
@@ -35,12 +35,12 @@ We use the **sequence sum and remainder calculation** task to verify the perform
 
 Here are some dataset examples:
 
-| Model Input X                     | Calculation Process               | Target Output Y |
-|-----------------------------------|-----------------------------------|-----------------|
-| `[3, 7, 1, 9]`                    | (3+7+1+9) = 20 → 20 mod 10        | `0`             |
-| `[5]`                             | 5 mod 10                          | `5`             |
-| `[1,2,3,4,5,6,7,8,9,0]`           | 45 mod 10                         | `5`             |
-| `[8, 8, 8]`                       | 24 mod 10                         | `4`             |
+| Model Input X           | Calculation Process        | Target Output Y |
+| ----------------------- | -------------------------- | --------------- |
+| `[3, 7, 1, 9]`          | (3+7+1+9) = 20 → 20 mod 10 | `0`             |
+| `[5]`                   | 5 mod 10                   | `5`             |
+| `[1,2,3,4,5,6,7,8,9,0]` | 45 mod 10                  | `5`             |
+| `[8, 8, 8]`             | 24 mod 10                  | `4`             |
 
 This task can be considered as a sequence-to-scalar mapping problem, with the goal of learning the mapping function from arbitrary-length digit sequences to the sum of their digits modulo 10. Due to variable input lengths and random elements, this dataset can be used to test the RNN model's ability to model variable-length sequences, perform modular arithmetic reasoning, and generalize.
 
@@ -142,7 +142,7 @@ Here, focus on the use of `pack_padded_sequence` in the `forward` function to pa
 
 Complete training code can be viewed on GitHub (training code is also included later in case some readers cannot access GitHub, see [#Appendix: Training Code](#appendix-training-code))
 
-* GitHub link: <https://github.com/ShaohonChen/tutorial_with_rnn>
+- GitHub link: <https://github.com/ShaohonChen/tutorial_with_rnn>
 
 Download code & environment installation commands:
 
@@ -235,8 +235,8 @@ Then increase LR from 1e-3 to 5e-3
 python train_cls_rnn.py --batch_size 64 --lr 0.005 --run_name large_batch_lr5e-3
 ```
 
-> * 💡 According to scaling law principles, when batch size increases four times, learning rate should also increase approximately 4 times, but the author thinks 4e-3 is not auspicious hahaha🤣, actually as long as the order of magnitude isn't too far off, hyperparameters aren't that sensitive. The relationship between batch and lr isn't strictly linear, but generally for small models it can be approximately considered linear.  
-> * Regarding the relationship between learning rate and batch size, it is recommended to read OpenAI's classic work "An Empirical Model of Large-Batch Training" [4], which proved that under SGD optimizer, the relationship between batch size and learning rate is monotonic and bounded. When both are relatively small, learning rate and batch size are basically in a **linear relationship**.
+> - 💡 According to scaling law principles, when batch size increases four times, learning rate should also increase approximately 4 times, but the author thinks 4e-3 is not auspicious hahaha🤣, actually as long as the order of magnitude isn't too far off, hyperparameters aren't that sensitive. The relationship between batch and lr isn't strictly linear, but generally for small models it can be approximately considered linear.
+> - Regarding the relationship between learning rate and batch size, it is recommended to read OpenAI's classic work "An Empirical Model of Large-Batch Training" [4], which proved that under SGD optimizer, the relationship between batch size and learning rate is monotonic and bounded. When both are relatively small, learning rate and batch size are basically in a **linear relationship**.
 
 Effect as follows⬇️
 

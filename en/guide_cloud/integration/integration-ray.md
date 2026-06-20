@@ -15,6 +15,7 @@ from swanlab.integration.ray import SwanLabLoggerCallback
 `SwanLabLoggerCallback` is a log recording class adapted for `Ray`.
 
 The parameters that can be defined in `SwanLabLoggerCallback` include:
+
 - `project`: Project name
 - `workspace`: Workspace name
 - Other parameters consistent with `swanlab.init`

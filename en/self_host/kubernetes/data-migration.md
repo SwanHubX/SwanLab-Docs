@@ -16,18 +16,16 @@ Under the **local database deployment scheme** of the cluster, the process of cr
 - **Transit Storage (Transit)**: S3 object storage as a temporary transit station
 - **Target Cluster (Current)**: Data receiving side, completing the restore.
 
-
-| Data Type | Migration Method | Description |
-|---------|---------|------|
-| Database (PostgreSQL / ClickHouse / Redis) | Export → S3 Transit → Import | Physical migration |
-| Object Storage (MiniO / S3) | Direct connection to cloud S3 | Storage-compute separation, no need to move, new cluster directly reads and writes via API |
+| Data Type                                  | Migration Method              | Description                                                                                |
+| ------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------ |
+| Database (PostgreSQL / ClickHouse / Redis) | Export → S3 Transit → Import  | Physical migration                                                                         |
+| Object Storage (MiniO / S3)                | Direct connection to cloud S3 | Storage-compute separation, no need to move, new cluster directly reads and writes via API |
 
 **Legend Explanation**:
 
 - 🔵 **Phase 1: Export** — Source cluster exports data to S3 transit storage bucket (DB Export + S3 Sync)
 - 🟢 **Phase 2: Import** — Database data imported from S3 to new cluster (DB Import, physical migration)
 - 🟢 **Phase 2: Direct Use** (dashed line) — Object storage is not moved, new cluster directly accesses public and private object storage buckets through the same `value.yaml` configuration
-
 
 ## 🧾 Prerequisites
 
@@ -47,27 +45,27 @@ Under the **local database deployment scheme** of the cluster, the process of cr
 
 Please confirm the following information before use:
 
-| Prepared | Placeholder Variable | Description |
-|---------|---------|------|
-| ✅ | `origin_namespace` / `target_namespace` | Namespaces of the original and target clusters |
-| ✅ | `S3_REGION` | Region of the object storage bucket used for backup |
-| ✅ | `S3_BUCKET` | Bucket name |
-| ✅ | `S3_ENDPOINT` | S3 format object storage Endpoint, e.g., `tos-s3-cn-beijing.volces.com` |
-| ✅ | `S3_AK` / `S3_SK` | Object storage writable credentials |
-| ✅ | `S3_PATH_PREFIX` | Backup path prefix in S3, default `origin-backup-datas` |
-| ✅ | Original cluster component PVC names | `kubectl get pvc -n <origin_namespace>` |
+| Prepared | Placeholder Variable                    | Description                                                             |
+| -------- | --------------------------------------- | ----------------------------------------------------------------------- |
+| ✅       | `origin_namespace` / `target_namespace` | Namespaces of the original and target clusters                          |
+| ✅       | `S3_REGION`                             | Region of the object storage bucket used for backup                     |
+| ✅       | `S3_BUCKET`                             | Bucket name                                                             |
+| ✅       | `S3_ENDPOINT`                           | S3 format object storage Endpoint, e.g., `tos-s3-cn-beijing.volces.com` |
+| ✅       | `S3_AK` / `S3_SK`                       | Object storage writable credentials                                     |
+| ✅       | `S3_PATH_PREFIX`                        | Backup path prefix in S3, default `origin-backup-datas`                 |
+| ✅       | Original cluster component PVC names    | `kubectl get pvc -n <origin_namespace>`                                 |
 
 > 💡 Through practice, it has been verified that you can directly pass PVCs and let K8s handle the mounting automatically.
 
 > ⚠️ The S3 migration tool uses `s3cmd` by default, which has been verified on Tencent Cloud COS and Volcano Engine TOS. When using Alibaba Cloud OSS as a transit, you need to use `ossutil` and replace the transfer tool.
 
-
 ## 🪜 Operation Steps
 
 :::warning
+
 - During data migration, you need to ensure that **both SwanLab services are kept in a stopped state**, with a single intermediate Job performing the migration. Otherwise, migration will fail due to state inconsistency issues.
 - **You must stop services before migration!**
-:::
+  :::
 
 ### 1. Modify Configuration Files
 
@@ -84,26 +82,26 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-backup-storage-config
-  namespace: <original_namespace>      # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <original_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 data:
-  S3_REGION: "cn-beijing"              # Required: Object storage region for transit (e.g., cn-beijing)
-  S3_BUCKET: "swanlab-backup-demo"     # Required: Bucket name
-  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com"  # Required: S3 format object storage Endpoint
+  S3_REGION: "cn-beijing" # Required: Object storage region for transit (e.g., cn-beijing)
+  S3_BUCKET: "swanlab-backup-demo" # Required: Bucket name
+  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com" # Required: S3 format object storage Endpoint
   S3_PATH_PREFIX: "origin-backup-datas"
   # Optional: Local data directory path of the original cluster (fill in based on actual deployment)
-  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres"    # PostgreSQL data directory
+  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres" # PostgreSQL data directory
   HOST_CLICKHOUSE_PATH: "/var/lib/swanlab-clickhouse" # ClickHouse data directory
-  HOST_REDIS_PATH: "/var/lib/swanlab-redis"           # Redis data directory
+  HOST_REDIS_PATH: "/var/lib/swanlab-redis" # Redis data directory
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: swanlab-backup-storage-secret
-  namespace: <original_namespace>      # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <original_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 type: Opaque
 stringData:
-  S3_AK: "xxx"                         # Required: Object storage AccessKey
-  S3_SK: "xxx"                         # Required: Object storage SecretKey
+  S3_AK: "xxx" # Required: Object storage AccessKey
+  S3_SK: "xxx" # Required: Object storage SecretKey
 ```
 
 ```yaml [config-import.yaml]
@@ -111,31 +109,29 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-backup-storage-config
-  namespace: <target_namespace>        # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
 data:
-  S3_REGION: "cn-beijing"              # Required: Object storage region for transit (e.g., cn-beijing)
-  S3_BUCKET: "swanlab-backup-demo"     # Required: Bucket name
-  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com"  # Required: S3 format object storage Endpoint
+  S3_REGION: "cn-beijing" # Required: Object storage region for transit (e.g., cn-beijing)
+  S3_BUCKET: "swanlab-backup-demo" # Required: Bucket name
+  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com" # Required: S3 format object storage Endpoint
   S3_PATH_PREFIX: "origin-backup-datas"
   # Optional: Local data directory path of the original cluster (fill in based on actual deployment)
-  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres"    # PostgreSQL data directory
+  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres" # PostgreSQL data directory
   HOST_CLICKHOUSE_PATH: "/var/lib/swanlab-clickhouse" # ClickHouse data directory
-  HOST_REDIS_PATH: "/var/lib/swanlab-redis"           # Redis data directory
+  HOST_REDIS_PATH: "/var/lib/swanlab-redis" # Redis data directory
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: swanlab-backup-storage-secret
-  namespace: <target_namespace>        # ⚠️ Required: Same [Target Cluster] namespace as ConfigMap
+  namespace: <target_namespace> # ⚠️ Required: Same [Target Cluster] namespace as ConfigMap
 type: Opaque
 stringData:
-  S3_AK: "xxx"                         # Required: Object storage AccessKey
-  S3_SK: "xxx"                         # Required: Object storage SecretKey
+  S3_AK: "xxx" # Required: Object storage AccessKey
+  S3_SK: "xxx" # Required: Object storage SecretKey
 ```
 
 :::
-
-
 
 ::: code-group
 
@@ -150,6 +146,7 @@ kubectl apply -f config-import.yaml
 :::
 
 Also modify the following fields in the export/import Job YAML:
+
 - `namespace`: Corresponding K8s namespace
 - `claimName`: Corresponding PVC name
 - `nodeSelector`: Needs to specify a node for local deployment scenarios
@@ -211,7 +208,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-postgres
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -271,7 +268,7 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ Required: postgres pvc name in [Source Cluster] K8s namespace
+            claimName: swanlab-postgres-pvc # ⚠️ Required: postgres pvc name in [Source Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -279,7 +276,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-postgres
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -334,11 +331,10 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ Required: postgres pvc name in [Source Cluster] K8s namespace
+            claimName: swanlab-postgres-pvc # ⚠️ Required: postgres pvc name in [Source Cluster] K8s namespace
 ```
 
 :::
-
 
 ::: details export-clickhouse
 
@@ -349,7 +345,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-clickhouse
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -408,7 +404,7 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ Required: clickhouse pvc name in [Source Cluster] K8s namespace
+            claimName: swanlab-clickhouse-pvc # ⚠️ Required: clickhouse pvc name in [Source Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -416,7 +412,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-clickhouse
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -470,11 +466,10 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ Required: clickhouse pvc name in [Source Cluster] K8s namespace
+            claimName: swanlab-clickhouse-pvc # ⚠️ Required: clickhouse pvc name in [Source Cluster] K8s namespace
 ```
 
 :::
-
 
 ::: details export-redis
 
@@ -485,7 +480,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-redis
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -544,7 +539,7 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ Required: redis pvc name in [Source Cluster] K8s namespace
+            claimName: swanlab-redis-pvc # ⚠️ Required: redis pvc name in [Source Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -552,7 +547,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-redis
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -606,11 +601,10 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ Required: redis pvc name in [Source Cluster] K8s namespace
+            claimName: swanlab-redis-pvc # ⚠️ Required: redis pvc name in [Source Cluster] K8s namespace
 ```
 
 :::
-
 
 ::: details export-vector
 
@@ -621,7 +615,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-vector
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -683,10 +677,10 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ Required: vector-0 pvc name in [Source Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ Required: vector-0 pvc name in [Source Cluster] K8s namespace
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ Required: vector-1 pvc name in [Source Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ Required: vector-1 pvc name in [Source Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -694,7 +688,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-vector
-  namespace: <source_namespace>       # ⚠️ Required: [Source Cluster] K8s namespace
+  namespace: <source_namespace> # ⚠️ Required: [Source Cluster] K8s namespace
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -754,14 +748,13 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ Required: vector-0 pvc name in [Source Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ Required: vector-0 pvc name in [Source Cluster] K8s namespace
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ Required: vector-1 pvc name in [Source Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ Required: vector-1 pvc name in [Source Cluster] K8s namespace
 ```
 
 :::
-
 
 ```bash
 # Execute all export Jobs in parallel
@@ -783,8 +776,6 @@ kubectl get jobs -n <your_namespace>
 #### Case 1: Original Cluster Already Integrated with S3 URL
 
 If S3 endpoint is already mounted, you just need to configure the same S3 endpoint configuration in the source cluster's `value.yaml`. For details, see [External S3 Integration Configuration](/self_host/kubernetes/configuration.md#external-object-storage-s3-integrations-s3).
-
-
 
 #### Case 2: Original Cluster Uses MiniO Mounted PVC
 
@@ -885,7 +876,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-postgres
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: postgres
 spec:
@@ -944,7 +935,7 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ Required: postgres pvc name in [Target Cluster] K8s namespace
+            claimName: swanlab-postgres-pvc # ⚠️ Required: postgres pvc name in [Target Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -952,7 +943,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-postgres
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: postgres
 spec:
@@ -1000,11 +991,10 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ Required: postgres pvc name in [Target Cluster] K8s namespace
+            claimName: swanlab-postgres-pvc # ⚠️ Required: postgres pvc name in [Target Cluster] K8s namespace
 ```
 
 :::
-
 
 ::: details import-clickhouse
 
@@ -1015,7 +1005,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-clickhouse
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: clickhouse
 spec:
@@ -1074,7 +1064,7 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ Required: clickhouse pvc name in [Target Cluster] K8s namespace
+            claimName: swanlab-clickhouse-pvc # ⚠️ Required: clickhouse pvc name in [Target Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -1082,7 +1072,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-clickhouse
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: clickhouse
 spec:
@@ -1130,11 +1120,10 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ Required: clickhouse pvc name in [Target Cluster] K8s namespace
+            claimName: swanlab-clickhouse-pvc # ⚠️ Required: clickhouse pvc name in [Target Cluster] K8s namespace
 ```
 
 :::
-
 
 ::: details import-redis
 
@@ -1145,7 +1134,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-redis
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: redis
 spec:
@@ -1204,7 +1193,7 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ Required: redis pvc name in [Target Cluster] K8s namespace
+            claimName: swanlab-redis-pvc # ⚠️ Required: redis pvc name in [Target Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -1212,7 +1201,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-redis
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: redis
 spec:
@@ -1260,11 +1249,10 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ Required: redis pvc name in [Target Cluster] K8s namespace
+            claimName: swanlab-redis-pvc # ⚠️ Required: redis pvc name in [Target Cluster] K8s namespace
 ```
 
 :::
-
 
 ::: details import-vector
 
@@ -1275,7 +1263,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-vector
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: vector
 spec:
@@ -1337,10 +1325,10 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ Required: vector-0 pvc name in [Target Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ Required: vector-0 pvc name in [Target Cluster] K8s namespace
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ Required: vector-1 pvc name in [Target Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ Required: vector-1 pvc name in [Target Cluster] K8s namespace
 ```
 
 ```yaml [ossutil]
@@ -1348,7 +1336,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-vector
-  namespace: <target_namespace>  # ⚠️ Required: [Target Cluster] K8s namespace
+  namespace: <target_namespace> # ⚠️ Required: [Target Cluster] K8s namespace
   labels:
     swanlab: vector
 spec:
@@ -1399,14 +1387,13 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ Required: vector-0 pvc name in [Target Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ Required: vector-0 pvc name in [Target Cluster] K8s namespace
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ Required: vector-1 pvc name in [Target Cluster] K8s namespace
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ Required: vector-1 pvc name in [Target Cluster] K8s namespace
 ```
 
 :::
-
 
 ```bash
 # Execute all import Jobs in parallel
@@ -1459,10 +1446,10 @@ kubectl scale deployment swanlab-self-hosted --replicas=2 -n <your_namespace>
 # 「Optional」If using external S3, this can be ignored. If using the template's built-in MinIO, you need to manually restore S3
 kubectl scale deployment swanlab-self-hosted-s3 --replicas=1 -n <your_namespace>
 ```
+
 :::
 
 After restoration, you can observe pod health status and verify data recovery through online service.
-
 
 ## 🧹 Job Cleanup
 

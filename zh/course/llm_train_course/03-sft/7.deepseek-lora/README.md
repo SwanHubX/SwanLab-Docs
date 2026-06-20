@@ -1,6 +1,5 @@
 # 一文带你熟悉lora微调各类参数，轻松上手deepseek模型微调(全过程代码+结果对比)
 
-
 ## 📝简介
 
 在大模型的微调过程中，`LoRA`（低秩适配）参数设置是提升训练效率和性能的关键。通过减少需更新的参数量，`LoRA`能够在维持模型性能的同时显著降低计算成本。然而，`LoRA`并非唯一影响训练效果的因素。诸如学习率、批次大小以及优化器（如AdamW）等参数同样在微调过程中起着至关重要的作用。学习率决定了模型每次更新的幅度，批次大小则影响了每次训练中样本的处理量，而优化器则确保模型参数的平稳更新。
@@ -19,7 +18,7 @@
 
 ## 📚链接资料
 
-作者信息：情感机器实验室研究员-李馨雨  邮箱：wind.340171@gmail.com
+作者信息：情感机器实验室研究员-李馨雨 邮箱：wind.340171@gmail.com
 
 数据集：[心理大模型微调数据集地址](https://github.com/SmartFlowAI/EmoLLM/blob/main/datasets/data_pro.json)
 
@@ -33,10 +32,10 @@
 
 > 魔乐社区是一个综合性的人工智能平台，它提供了应用使能开发套件，支持各大模型社区，具备海量模型/数据托管能力，并提供在线推理体验服务。该平台还支持接入内容审核、病毒扫描等服务，助力平台伙伴快速构建社区，并对外提供模型/数据集托管和在线推理体验服务。openMind开发套件提供模型训练、微调、评估、推理等全流程开发能力，开发者可以通过简单的API接口实现微调、推理等任务，显著缩短开发周期。
 
-
 ![openMind+swanlab](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/modelspcoe.png)
 
 ---
+
 👉 **SwanLab官方文档：**
 
 用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
@@ -69,11 +68,11 @@ labels = <-100> <-100> <-100> <-100> <-100> <assistant3>
 ![多次预测](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/multi-data-2.png)
 
 ```python
-inputs1 = <user1> <assistant1> 
+inputs1 = <user1> <assistant1>
 labels1 = <-100> <assistant1>
 
-inputs2 = <user1> <assistant1> <user2> <assistant2> 
-labels2 = <-100> <-100> <-100> <assistant2> 
+inputs2 = <user1> <assistant1> <user2> <assistant2>
+labels2 = <-100> <-100> <-100> <assistant2>
 
 inputs3 = <user1> <assistant1> <user2> <assistant2> <user3> <assistant3>
 labels3 = <-100> <-100> <-100> <-100> <-100> <assistant3>
@@ -101,17 +100,19 @@ labels = <-100> <assistant1> <-100> <assistant2> <-100> <assistant3>
 > 简而言之，LLM 能够通过其掩码机制在多轮对话中进行“局部”学习，每次生成的内容都仅与当前上下文相关，而不会受到其他轮次的干扰。
 
 ---
+
 ## ⚙️各实验参数原理
 
 ### 📌lora参数
 
 LoRA（Low-Rank Adaptation）是一种针对大型语言模型的微调技术，旨在降低微调过程中的计算和内存需求。其核心思想是通过引入低秩矩阵来近似原始模型的全秩矩阵，从而减少参数数量和计算复杂度。
 
-在LoRA中，原始模型的全秩矩阵被分解为低秩矩阵的乘积。具体来说，对于一个全秩矩阵W，LoRA将其分解为两个低秩矩阵A和B的乘积，即W ≈ A * B。其中，A和B的秩远小于W的秩，从而显著减少了参数数量。
+在LoRA中，原始模型的全秩矩阵被分解为低秩矩阵的乘积。具体来说，对于一个全秩矩阵W，LoRA将其分解为两个低秩矩阵A和B的乘积，即W ≈ A \* B。其中，A和B的秩远小于W的秩，从而显著减少了参数数量。
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/lora.png" alt="lora原理图" style="zoom:70%;" />
 
 上图为 LoRA 的实现原理，其实现流程为：
+
 1. 在原始预训练语言模型旁边增加一个旁路，做降维再升维的操作来模拟内在秩；
 2. 用随机高斯分布初始化 A，用零矩阵初始化B，训练时固定预训练模型的参数，只训练矩阵 A 与矩阵 B ；
 3. 训练完成后，将 B 矩阵与 A 矩阵相乘后合并预训练模型参数作为微调后的模型参数。
@@ -197,7 +198,7 @@ LlamaForCausalLM(
 - **Self-attention层**: 这些层通常对模型性能影响较大。LoRA会被应用于自注意力的查询（q_proj）、键（k_proj）、值（v_proj）和输出（o_proj）投影矩阵。这些矩阵包含了大量的可训练参数，因此是LoRA微调的理想目标。
 
 - **LlamaSdpaAttention中的矩阵：**
-  
+
   - `q_proj`:查询投影
   - `k_proj`:键投影
   - `v_proj`:值投影
@@ -225,26 +226,26 @@ LlamaForCausalLM(
 
 - `lm_head`：在模型输出时，`lm_head`是从隐藏层到词汇表的最后一层线性转换。通常，LoRA不会直接应用于输出层，但在某些微调场景下，可以将LoRA应用于该层以调整模型输出。
 
-> **📝**总结**：
+> **📝**总结\*\*：
 >
 > 一般来说，LoRA微调会集中在以下层：
-> 
+>
 > - Attention层的查询、键、值和输出投影（`q_proj`, `k_proj`, `v_proj`, `o_proj`）
 > - MLP层的`gate_proj`、`up_proj`和`down_proj`
 > - 可能在某些场景下微调`embed_tokens`和`lm_head`
-> 
+>
 > 通过这种方式，LoRA能够有效减少参数量和计算成本，同时保持微调的效果。
 
 ### r、alpha、dropout
 
 在模型微调的过程中，r、alpha和dropout是常见的超参数，用于优化模型训练和提升其泛化能力。
+
 - `r`：通常用于LoRA（Low-Rank Adaptation）方法中，表示低秩矩阵的秩值。r决定了微调时使用的低秩矩阵的维度，较小的r可以减少参数数量，从而提高训练效率，但可能牺牲一定的模型表现。较小的r（例如 8-32）适用于较小模型或需要较低资源的情况，而较大的r（例如 64-128）适用于更大规模的模型。
 - `alpha`：是LoRA中的一个超参数，用来控制低秩矩阵的缩放因子。通过调整alpha，可以平衡低秩矩阵的影响，使模型能够在微调过程中保持足够的表达能力。16-32 是比较常见的选择，较大的alpha值通常会增加模型的表达能力，但也可能增加训练难度。
 - `Dropout`：是一种正则化技术，通过在训练过程中随机丢弃神经网络中的部分神经元来防止过拟合。dropout率控制丢弃的概率，较高的dropout率有助于减少模型的复杂度，从而提升其在新数据上的泛化能力。对于大多数任务，0.2-0.3 是比较常见的取值，较低的dropout值（如 0.1）适合于较小的模型，而较高的dropout值（如 0.4-0.5）适合于较大的网络，尤其是在防止过拟合时。
 
-
-> **📝**总结**：
-> 
+> **📝**总结\*\*：
+>
 > - r：通常选择 **8-128**，根据任务和模型规模调整。
 > - alpha：常见值在 **16-64**，推荐 **16-32**。
 > - Dropout：常见值在 **0.1-0.5**，推荐 **0.2-0.3**。
@@ -288,12 +289,13 @@ LlamaForCausalLM(
 3. **"lora_only"**：仅对LoRA引入的低秩矩阵中的偏置项进行微调。即在LoRA的低秩变换部分，偏置项会被包含在内，并进行优化。
 
 > **为什么选择 "none" 作为 bias 的值？**
-> 
+>
 > 在许多LoRA微调的实现中，偏置项通常被认为是模型的一个稳定部分，尤其是在进行低秩微调时，可能并不需要对它们进行调整。使用 "none" 的选择意味着微调过程只会集中在权重矩阵的低秩部分，而不涉及偏置项的变动，这有助于减少额外的计算和参数调节，保持模型的原始结构。
 
 ### 其他参数
 
 1、根据任务配置
+
 - use_rslora (bool): 是否使用Rank-Stabilized LoRA。这个方法有时可以提高训练效果，尤其是在低秩情况下。若不需要，可以保持False。
 - init_lora_weights (bool | Literal["gaussian", "olora", "pissa", "loftq"]): 初始化LoRA权重的方式。常用的初始化方式是"gaussian"，但如果有特殊需求，也可以选择其他选项。
 - modules_to_save (list[str]): 除LoRA层外需要保存的其他模块，通常用于在分类任务中保存最后的分类层等。
@@ -347,7 +349,7 @@ trainer = Trainer(
 2. preprocess_logits_for_metrics (Callable[[torch.Tensor, torch.Tensor], torch.Tensor], 可选)：用于指定一个函数，这个函数在每次评估步骤（evaluation step）前，其实就是在进入compute_metrics函数前对模型的输出 logits 进行预处理。接受两个张量（tensors）作为参数，一个是模型的输出 logits，另一个是真实标签（labels）。然后返回一个经过预处理后的 logits 张量，给到compute_metrics函数作为参数。
 3. compute_metrics (Callable[[EvalPrediction], Dict], 可选)：用于在评估时计算指标的函数，必须接受 EvalPrediction 作为入参，并返回一个字典，其中包含了不同性能指标的名称和相应的数值，一般是准确度、精确度、召回率、F1 分数等。
 4. optimizers (Tuple[torch.optim.Optimizer, torch.optim.lr_scheduler.LambdaLR], 可选)：用于指定一个包含优化器和学习率调度器的元组（Tuple），这个元组的两个元素分别是优化器
-（torch.optim.Optimizer）和学习率调度器（torch.optim.lr_scheduler.LambdaLR），默认会创建一个基于AdamW优化器的实例，并使用 get_linear_schedule_with_warmup() 函数创建一个学习率调度器。
+   （torch.optim.Optimizer）和学习率调度器（torch.optim.lr_scheduler.LambdaLR），默认会创建一个基于AdamW优化器的实例，并使用 get_linear_schedule_with_warmup() 函数创建一个学习率调度器。
 
 其中**args (TrainingArguments, 可选)**需要额外注意，因为它包含了epochs、batch_size等各种训练参数设置，是非常重要的环节，比如本文在进行实验的时候对这些参数加以设置：
 
@@ -395,9 +397,9 @@ train_args = TrainingArguments(
 
 1. **report_to（str）**：可视化工具的选择。由于swanlab没有直接与transformers集成，而是以回调函数的方式与transformers集成，因此这里需要设置为None，在Trainer里直接设置回调函数来配置可视化工具。
 2. **logging_strategy (str, 可选, 默认为"steps")**：训练过程中采用的日志记录策略。可选包括：
-    "no"：在训练过程中不记录任何日志。
-    "epoch"：在每个epoch结束时记录日志。
-    "steps"：根据logging_steps参数记录日志。
+   "no"：在训练过程中不记录任何日志。
+   "epoch"：在每个epoch结束时记录日志。
+   "steps"：根据logging_steps参数记录日志。
 3. **logging_steps（int）**：如果logging_strategy="steps"，则此参数为每多少步记录一次步骤。这里最好把步数设置的少一点，不然swanlab有可能曲线会很多步才会更新一次，并且如果两步之间时间间隔太长，swanlab可能无法记录。
 
 #### 训练参数设置
@@ -406,8 +408,8 @@ train_args = TrainingArguments(
 2. **num_train_epochs（float，默认3.0）**：训练的总的epoch数，一个epoch是将数据集全部训练跑完一次。
 3. seed (int, 可选, 默认为42)：当模型表现不佳或者出现意外的行为时，使用固定的随机种子可以帮助研究人员和开发人员复现问题，从而更容易地进行调试和问题定位。
 4. **lr_scheduler_type (str, 可选, 默认为"linear")**：用于指定学习率scheduler的类型，根据训练的进程来自动调整学习率。详细见：
-  
-   - **"linear"：线性学习率scheduler，学习率以线性方式改变。适用于大多数任务，尤其是预训练模型时，经常采用这种衰减方式。
+
+   - \*\*"linear"：线性学习率scheduler，学习率以线性方式改变。适用于大多数任务，尤其是预训练模型时，经常采用这种衰减方式。
 
    - "cosine"：余弦学习率scheduler，学习率以余弦形状的方式改变。特别适用于循环训练。
 
@@ -420,12 +422,10 @@ train_args = TrainingArguments(
 5. warmup_ratio (float, 可选, 默认为0.0)：用于指定线性热身占总训练步骤的比例，线性热身是一种训练策略，学习率在开始阶段从0逐渐增加到其最大值（通常是设定的学习率），然后在随后的训练中保持不变或者按照其他调度策略进行调整。如果设置为0.0，表示没有热身。
 6. warmup_steps (int,可选, 默认为0)：这个是直接指定线性热身的步骤数，这个参数会覆盖warmup_ratio，如果设置了warmup_steps，将会忽略warmup_ratio。
 
-
 # 🚀实际项目代码+结果演示
 
-
 > **💡写在前面**
-> 
+>
 > 本次实验同时适配transformers和openMind，由于openMind缺少数据处理的函数，下面实验手动添加即可，其他部分和基于transformers的代码一致。
 
 **基本概念**
@@ -445,7 +445,6 @@ openMind Library类似于transformers的大模型封装工具，其中就有Auto
 ![社区的图](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/community.png)
 
 ---
-
 
 ## 📜 实验环境搭建及实验代码、结果
 
@@ -586,6 +585,7 @@ train_dataset = train_ds.map(process_data,
 ```
 
 ❗**注意：**
+
 ```python
 input_text = f"{tokenizer.bos_token}{instruction_text}\n\nUser:{human_text}\n\nAssistant:"
 ```
@@ -604,13 +604,12 @@ input_text = f"{tokenizer.bos_token}{instruction_text}\n\nUser:{human_text}\n\nA
 
 ![deepseek模型微调输入模板](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/deepseek_chat_template.png)
 
-
 ---
 
 #### 数据封装
 
 > ⚠️**注意：**
-> 
+>
 > 由于openMind缺少数据封装的函数，因此这部分代码需要我们手动添加，transformers直接调用即可。
 
 **transformers:**
@@ -657,7 +656,7 @@ class DataCollatorForSeq2SeqCustom:
             seq + [self.tokenizer.pad_token_id] * (max_length - len(seq)) for seq in sequences
         ]
         return padded_sequences
-        
+
 # 创建数据封装器
 data_collator = DataCollatorForSeq2SeqCustom(tokenizer=tokenizer, padding=True, return_tensors="pt")
 ```
@@ -721,15 +720,12 @@ train_args = TrainingArguments(
 4、同时可以完全离线运行，在完全内网环境下也可使用
 
 > 如果想要快速入门，请参考以下文档链接：
-> 
+>
 > 用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
 >
 > 应用案例：[入门实验 | SwanLab官方文档](https://docs.swanlab.cn/examples/mnist.html)
 
 ---
-
-
-
 
 代码如下：
 
@@ -808,41 +804,41 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import os
 import shutil
- 
+
 # 保证原始模型的各个文件不遗漏保存到merge_path中
 def copy_files_not_in_B(A_path, B_path):
     if not os.path.exists(A_path):
         raise FileNotFoundError(f"The directory {A_path} does not exist.")
     if not os.path.exists(B_path):
         os.makedirs(B_path)
- 
+
     # 获取路径A中所有非权重文件
     files_in_A = os.listdir(A_path)
     files_in_A = set([file for file in files_in_A if not (".bin" in file or "safetensors" in file)])
- 
+
     files_in_B = set(os.listdir(B_path))
- 
+
     # 找到所有A中存在但B中不存在的文件
     files_to_copy = files_in_A - files_in_B
- 
+
     # 将文件或文件夹复制到B路径下
     for file in files_to_copy:
         src_path = os.path.join(A_path, file)
         dst_path = os.path.join(B_path, file)
- 
+
         if os.path.isdir(src_path):
             # 复制目录及其内容
             shutil.copytree(src_path, dst_path)
         else:
             # 复制文件
             shutil.copy2(src_path, dst_path)
- 
+
 def merge_lora_to_base_model(model_name_or_path,adapter_name_or_path,save_path):
     # 如果文件夹不存在，就创建
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     tokenizer = AutoTokenizer.from_pretrained(model_name_or_path,trust_remote_code=True,)
- 
+
     model = AutoModelForCausalLM.from_pretrained(
         model_name_or_path,
         trust_remote_code=True,
@@ -865,8 +861,6 @@ def merge_lora_to_base_model(model_name_or_path,adapter_name_or_path,save_path):
 
 完整代码的话可以直接参考github上的代码，这里记录一下每一部分文件的含义
 
-
-
 ## 📈 SwanLab观测并对比结果
 
 所有结果均可在[SwanLab](https://swanlab.cn/@LiXinYu/deepseek-llm-7b-chat-finetune/overview)中得到，下面我们可以分别观察下：
@@ -888,18 +882,16 @@ def merge_lora_to_base_model(model_name_or_path,adapter_name_or_path,save_path):
 ![多种lr对实验的影响](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/lr1.png)
 
 > 💡**哪种情况下的lr值比较合适？**
-> 
+>
 > - 从图中我们可以看到从loss和grad_norm曲线的变化上看，当`lr=2e-6`的时候明显由于学习率过小，损失和梯度范数的变化都非常缓慢，意味着模型更新太慢，难以有效学习。
-> 
 > - 当学习率较高，`lr=1e-3`的时候，损失和梯度范数的波动较大，虽然从图中可以看出其能优先达到最优值，但是由于模型更新参数时比较激进，可能会引起训练的不稳定性，比如梯度爆炸，事实上，在最开始的steps里确实出现了梯度爆炸的情况，只不过后来慢慢的调整过来了。因此该学习率还是过大了。
-> 
-> - **综上所述，梯度取值在`2e-4~1e-3`的范围内对该模型以及数据集情况较好。
+> - \*\*综上所述，梯度取值在`2e-4~1e-3`的范围内对该模型以及数据集情况较好。
 
 如果再往大了取值的话会很明显的观察到梯度爆炸的情况，具体如下图所示，`lr=1e-2`的情况：
 
 ![梯度爆炸](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/lr2.png)
 
-**⚠️**因此优先调节学习率选择合适的值是非常重要的，可以节省很多时间****
+**⚠️**因此优先调节学习率选择合适的值是非常重要的，可以节省很多时间\*\*\*\*
 
 我们具体也可以从推理结果上来查看效果：
 
@@ -973,9 +965,9 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 ![不同r下的曲线变化](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/r.png)
 
 > 💡**总结**：
-> 
+>
 > 由于这里设置的学习率低了点，所以模型收敛速度比较慢，loss曲线均具有相同的下降趋势并且基本一致，但是秩越高，梯度范数越低，原因有以下几点：
-> 
+>
 > - **数值稳定性**：在数值计算中，较高的秩可能有助于提高计算的稳定性，这是因为高秩矩阵在数值运算中更稳定。
 > - **局部最小值或鞍点**：在优化过程中，模型可能陷入局部最小值或鞍点。较高的秩可能导致模型在参数空间中的不同区域收敛，这些区域可能具有相似的损失值，但梯度方向和大小不同，这可能导致梯度范数的降低，因为模型在这些区域的梯度更新更小。
 > - **优化算法的效率**：不同的秩可能导致优化算法在参数空间中的搜索路径不同。较高的秩可能允许模型在参数空间中更平滑地移动，从而减少梯度的波动，这可能导致梯度范数的降低，因为模型在优化过程中更加稳定。
@@ -991,7 +983,7 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 
 **缩放因子（Alpha）的影响**
 
-- 更新幅度的调节：缩放因子alpha用于调整低秩矩阵更新的幅度。在LoRA中，原始权重矩阵W被分解为W0 + W_rank，其中W_rank = A * B，A和B是低秩矩阵。如果alpha设置得过大，可能会导致梯度更新过于激进，从而引起训练过程中的不稳定性；如果设置得过小，则可能导致更新过于保守，影响模型的学习能力。
+- 更新幅度的调节：缩放因子alpha用于调整低秩矩阵更新的幅度。在LoRA中，原始权重矩阵W被分解为W0 + W_rank，其中W_rank = A \* B，A和B是低秩矩阵。如果alpha设置得过大，可能会导致梯度更新过于激进，从而引起训练过程中的不稳定性；如果设置得过小，则可能导致更新过于保守，影响模型的学习能力。
 
 - 梯度稳定性：适当的alpha值有助于保持梯度的稳定性。如果alpha过大，可能会导致梯度爆炸；如果过小，则可能导致梯度消失。
 
@@ -1000,13 +992,11 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 ![r=4的时候alpha不同的对比结果](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/r-alpha-vs.png)
 
 > 💡**为什么alpha=16比alpha=32模型收敛效果更好一些?**：
-> 
+>
 > - 更新幅度适中：alpha=16提供了一个适中的更新幅度，使得模型在训练过程中能够稳定地学习和收敛。
->
 > - 避免梯度爆炸：alpha=32可能过大，导致梯度更新过于激进，从而引起训练过程中的不稳定性。
->
 > - 优化算法的适应性：不同的alpha值可能与优化算法的适应性有关。alpha=16更好地适应了所使用的优化算法，从而促进了模型的收敛。
-> 
+>
 > 总的来说，选择合适的alpha值需要考虑模型的稳定性、收敛速度以及训练过程中的梯度行为。通过实验和调整，可以找到最适合特定模型和任务的alpha值。
 
 然后多次实验的结果如下，其中没有标记的alpha=32，可以参考下：
@@ -1037,9 +1027,8 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 
 ![实验时间对比](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/time.png)
 
-
 > 其中`attn-lora`是包括q、k、v、o以及前馈网络层mlp层所有层都参与lora微调，其他两个和标题表达的意思一致，分别只参与了某些层的lora微调。
-> 
+>
 > 从上图可以看出，其实模型收敛的情况相似，差别不大， 但是只训练两层的话训练时间上能短一些，然后对于推理结果的评估需要参考比较多的测试集，理论上其实相差不大。
 
 ---
@@ -1055,7 +1044,7 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 ![epoch的对比结果](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/epoch.png)
 
 > 🚨**注意**：
-> 
+>
 > 图中梯度grad_norm变化先下降后上升最后平稳的趋势是因为这些实验的**学习率设置过低**，导致了梯度更新太小，随后推动模型逃离局部最小值而上升。本次实验合适的学习率大概是**1e-3~2e-4**之间，如果想观察下epoch过多的情况可以使用较少的数据集训练，设置合适的学习率来观察结果。
 
 ---
@@ -1071,7 +1060,7 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 ![batch设置不同的时候结果对比](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/batch.png)
 
 > 💡**为什么per_device_train_batch_size设置的大一点，模型收敛效果显著增加？**：
-> 
+>
 > 这里我都使用的是一块卡，然后单线程运行，因此总共的batch_size分别是1x1、1x2（num_gpus x per_device_train_batch_size），**较大的batch_size使得每次更新时，模型所计算的梯度更加稳定和准确。但是较小的batch_size每次更新的梯度可能受个别样本的影响较大，因此训练过程的噪声较多，可能导致模型在优化时偏离最优解，这可能会导致训练过程不稳定或者收敛速度较慢。我们可以从图中明显看出区别。**
 
 ---
@@ -1094,7 +1083,6 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 
 其中**GPU1**是**batch=2**的时候的情况，**GPU0**是**batch=1**的时候的硬件，可以看到从显存的使用上，batch=1的时候大概使用了26GB，batch=2的时候使用了36GB。
 
-
 ---
 
 ### 梯度累计步数gradient_accumulation_steps
@@ -1103,7 +1091,7 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 
 `gradient_accumulation_steps`是指每经过一定数量的`batch`后才进行一次梯度更新。举例来说：
 
-> 如果 batch size = 4，gradient_accumulation_steps = 2，那么实际的训练批次大小相当于 8（即 batch size * gradient_accumulation_steps）。
+> 如果 batch size = 4，gradient_accumulation_steps = 2，那么实际的训练批次大小相当于 8（即 batch size \* gradient_accumulation_steps）。
 > 梯度累积使得虽然每个批次大小较小，但通过累积多个批次的梯度后再进行一次反向传播和权重更新，从而有效地“模拟”了更大的批次大小。
 
 而从上面的per_device_train_batch_size上我们也可以看出，当计算出的batch越大，对显存的消耗越多，但是在合适范围内，模型收敛效果也越好，具体我们可以观察下下面的图：
@@ -1111,11 +1099,11 @@ answer="如果你有社交恐惧症（社恐），那么参加节目可能会让
 ![梯度累计步数](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/7.deepseek-lora/example/gradient.png)
 
 > 可以看到，当batch_size具体比较小的时候，总共的步长steps会比较长，而且我们设置的值是4倍的关系，steps也是4倍的关系，而当gradient_accumulation_steps设置的比较高，这里是16的时候，模型会在很小step的时候收敛，而gradient_accumulation_steps=4的时候收敛就会比较慢，具体原因如下：
-> 
+>
 > - 高的 gradient_accumulation_steps 会导致每次参数更新更精确，使得每次更新的步长较小，训练过程中的噪声减少，从而帮助模型更快找到最优解。这会导致在较少的 steps 中收敛。
 > - 当 gradient_accumulation_steps 设置较高时，实际上是通过增加每个更新周期的“累计样本数”来增强梯度估计的准确性。这个过程可以模拟较大的 batch_size，因为每次更新所基于的数据量变大，梯度估计更稳定。更稳定的梯度会加速模型收敛，尤其是在优化时，模型的参数更新方向更为清晰，避免了小批次带来的高噪声。
 > - gradient_accumulation_steps 越大，模型的权重更新就会越少，但每次更新时基于的信息量较大。更新频率减少，梯度计算更加稳定，这有助于在较少的步骤内收敛。
-> 
+>
 > 🚨**注意：gradient_accumulation_steps越大，对显存的需求越高，所以该如何选择需要基于自身需求。**
 
 > ✨✨✨***至此，您已完成全部的教程***✨✨✨

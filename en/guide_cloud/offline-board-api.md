@@ -6,7 +6,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
 
 :::
 
-
 ## Endpoint 1: Get Project Details
 
 - **URL**: `/api/v1/project`

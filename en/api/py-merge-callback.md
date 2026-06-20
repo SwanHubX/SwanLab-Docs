@@ -6,8 +6,8 @@ def merge_callbacks(
 ) -> None:
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
+| Parameter   | Type            | Description                                                                                        |
+| ----------- | --------------- | -------------------------------------------------------------------------------------------------- |
 | `callbacks` | `CallbacksType` | A single `Callback` object or an iterable of `Callback` objects to merge into the global registry. |
 
 ## Introduction

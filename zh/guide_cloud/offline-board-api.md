@@ -6,7 +6,6 @@
 
 :::
 
-
 ## 接口 1：获取项目详情
 
 - **URL**：`/api/v1/project`
@@ -203,10 +202,7 @@
   "code": 0,
   "message": "success",
   "data": {
-    "recent": [
-      "swanlab:",
-      "{'loss':"
-    ],
+    "recent": ["swanlab:", "{'loss':"],
     "logs": [
       "swanlab: Tracking run with swanlab version 0.5.2",
       "swanlab: Run data will be saved locally in /data/project/...",

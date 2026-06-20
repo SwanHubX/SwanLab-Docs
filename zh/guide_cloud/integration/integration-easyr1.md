@@ -77,12 +77,6 @@ python3 -m verl.trainer.main \
     val_generations_to_log=1
 ```
 
-
-
 ## 写在最后
 
 EasyR1 是 [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) 作者 [hiyouga](https://github.com/hiyouga) 的全新开源项目，一个适用于多模态大模型的强化学习框架。感谢 [hiyouga](https://github.com/hiyouga) 为全球开源生态的贡献，SwanLab也将继续与AI开发者同行。
-
-
-
-

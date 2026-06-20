@@ -2,7 +2,6 @@
 
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/colab.svg)](https://colab.research.google.com/drive/1JfU4oCKCS7FQE_AXqZ3k9Bt1vmK-6pMO?usp=sharing)
 
-
 Stable Baselines3 (SB3) 是一个强化学习的开源库，基于 PyTorch 框架构建。它是 Stable Baselines 项目的继任者，旨在提供一组可靠且经过良好测试的RL算法实现，便于研究和应用。Stable Baselines3主要被应用于机器人控制、游戏AI、自动驾驶、金融交易等领域。
 
 ![sb3](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/ig-sb3.png)
@@ -34,8 +33,8 @@ model.learn(
     callback=SwanLabCallback(),
 )
 ```
-在`model.learn`的`callback`参数传入`SwanLabCallback`实例，即可开始跟踪。
 
+在`model.learn`的`callback`参数传入`SwanLabCallback`实例，即可开始跟踪。
 
 ## 3.完整案例代码
 

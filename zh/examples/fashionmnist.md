@@ -36,12 +36,15 @@ FashionMNIST 包含来自 10 个类别的服装和鞋类商品的灰度图像。
 
 本案例基于`Python>=3.8`，请在您的计算机上安装好Python。
 环境依赖：
+
 ```
 torch
 torchvision
 swanlab
 ```
+
 快速安装命令：
+
 ```bash
 pip install torch torchvision swanlab
 ```
@@ -174,7 +177,7 @@ if __name__ == "__main__":
         model.train()  # 确保模型处于训练模式
         train_correct = 0
         train_total = 0
-        
+
         # 训练循环
         for iter, batch in enumerate(train_loader):
             x, y = batch
@@ -229,6 +232,7 @@ if __name__ == "__main__":
 ## 切换其他ResNet模型
 
 上面的代码支持切换以下ResNet模型：
+
 - ResNet18
 - ResNet34
 - ResNet50

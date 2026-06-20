@@ -12,7 +12,6 @@
 
 Github：https://github.com/SwanHubX/SwanLab-Dashboard
 
-
 ## 安装
 
 > 在swanlab>=0.5.0版本后，不再自带离线看板，需要使用dashboard扩展安装。

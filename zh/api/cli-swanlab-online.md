@@ -1,6 +1,6 @@
 # swanlab online
 
-``` bash
+```bash
 swanlab online
 ```
 

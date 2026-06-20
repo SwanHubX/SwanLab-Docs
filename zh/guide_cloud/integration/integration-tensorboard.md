@@ -8,7 +8,7 @@
 
 - [Wandb](/guide_cloud/integration/integration-wandb.md)
 - [MLflow](/guide_cloud/integration/integration-mlflow.md)
-:::
+  :::
 
 **你可以用两种方式将使用TensorBoard跟踪的项目同步到SwanLab：**
 
@@ -78,6 +78,7 @@ swanlab.sync_tensorboard_torch()
 
 writer = SummaryWriter(log_dir='./runs')
 ```
+
 :::
 
 ### 1.4 测试代码
@@ -164,13 +165,13 @@ tfb_converter.run()
 
 ### 2.3 参数列表
 
-| 参数 | 对应CLI参数       | 描述                  | 
-| ---- | ---------- | --------------------- | 
-| convert_dir    | -      | Tfevent文件路径       | 
-| project    | -p, --project      | SwanLab项目名       |
-| workspace  | -w, --workspace      | SwanLab工作空间名 |
-| mode    | --mode      | 模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`       |
-| logdir    | -l, --logdir      | SwanLab日志文件保存路径       | 
+| 参数        | 对应CLI参数     | 描述                                                                    |
+| ----------- | --------------- | ----------------------------------------------------------------------- |
+| convert_dir | -               | Tfevent文件路径                                                         |
+| project     | -p, --project   | SwanLab项目名                                                           |
+| workspace   | -w, --workspace | SwanLab工作空间名                                                       |
+| mode        | --mode          | 模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]` |
+| logdir      | -l, --logdir    | SwanLab日志文件保存路径                                                 |
 
 例子：
 
@@ -187,23 +188,23 @@ tfb_converter.run()
 ```
 
 与之作用相同的CLI：
+
 ```bash
 swanlab convert -t tensorboard --tb_logdir ./runs -p TensorBoard-Converter -w SwanLab -l ./logs
 ```
 
 执行上面的脚本，将会在`SwanLab`空间下，创建一个名为`TensorBoard-Converter`的项目，将`./runs`目录下tfevent文件创建为一个个swanlab实验，并将swanlab运行时产生的日志保存在`./logs`目录下。
 
-
 ## 3. API映射表
 
-| 功能 | TensorBoard | SwanLab | 
-| ---- | ---------- | --------------------- | 
-| 创建实验    |  writer = SummaryWriter(logdir="./runs")   | swanlab.init(logdir="./runs")    | 
-| 记录标量指标 | writer.add_scalar(key, value, step) | swanlab.log({key, value}, step=step) |
-| 记录多个标量指标 | writer.add_scalar(key1, value1, step)<br> writer.add_scalar(key2, value2, step) | swanlab.log({key1: value1, key2: value2}, step=step) |
-| 记录图像指标 | writer.add_image(key, data, step) | swanlab.log({key: swanlab.Image(data), step=step}) |
-| 记录文本指标 | writer.add_text(key, data, step) | swanlab.log({key: swanlab.Text(data)}, step=step) |
-| 记录音频指标 | writer.add_audio(key, data, step) | swanlab.log({key: swanlab.Audio(data), step=step}) |
-| 记录视频指标 | writer.add_video(key, data, step) | swanlab.log({key: swanlab.Video(data), step=step}) |
-| 记录PR曲线 | writer.add_pr_curve(key, labels, predictions, step) | swanlab.log({key: swanlab.PRCurve(labels, predictions), step=step}) |
-| 关闭实验 | writer.close() | swanlab.finish() |
+| 功能             | TensorBoard                                                                     | SwanLab                                                             |
+| ---------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 创建实验         | writer = SummaryWriter(logdir="./runs")                                         | swanlab.init(logdir="./runs")                                       |
+| 记录标量指标     | writer.add_scalar(key, value, step)                                             | swanlab.log({key, value}, step=step)                                |
+| 记录多个标量指标 | writer.add_scalar(key1, value1, step)<br> writer.add_scalar(key2, value2, step) | swanlab.log({key1: value1, key2: value2}, step=step)                |
+| 记录图像指标     | writer.add_image(key, data, step)                                               | swanlab.log({key: swanlab.Image(data), step=step})                  |
+| 记录文本指标     | writer.add_text(key, data, step)                                                | swanlab.log({key: swanlab.Text(data)}, step=step)                   |
+| 记录音频指标     | writer.add_audio(key, data, step)                                               | swanlab.log({key: swanlab.Audio(data), step=step})                  |
+| 记录视频指标     | writer.add_video(key, data, step)                                               | swanlab.log({key: swanlab.Video(data), step=step})                  |
+| 记录PR曲线       | writer.add_pr_curve(key, labels, predictions, step)                             | swanlab.log({key: swanlab.PRCurve(labels, predictions), step=step}) |
+| 关闭实验         | writer.close()                                                                  | swanlab.finish()                                                    |

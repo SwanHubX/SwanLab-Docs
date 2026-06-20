@@ -31,13 +31,13 @@ swanlab.init()
 
 ...
 
-swanlab.log({"loss": loss, "acc": acc})  
+swanlab.log({"loss": loss, "acc": acc})
 # 此次记录中，loss的step为0, acc的step为0
 
-swanlab.log({"loss": loss, "iter": iter})  
+swanlab.log({"loss": loss, "iter": iter})
 # 此次记录中，loss的step为1, iter的step为0, acc的step为0
 
-swanlab.log({"loss": loss, "iter": iter})  
+swanlab.log({"loss": loss, "iter": iter})
 # 此次记录中，loss的step为2, iter的step为1, acc的step为0
 ```
 

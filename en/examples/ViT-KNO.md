@@ -1,7 +1,5 @@
 # Vit-KNO Weather Forecasting
 
-
-
 ## Overview
 
 Weather is closely related to human production, daily life, economic activities, and social operations. Accurate weather forecasting not only reduces losses and ensures safety during severe weather events but also brings substantial benefits to industries such as energy, agriculture, transportation, and entertainment.
@@ -12,14 +10,12 @@ MindSpore Earth is an intelligent suite for Earth sciences built on Ascend MindS
 
 This document demonstrates how to train the ViT-KNO weather forecasting model on Huawei Ascend NPUs using MindSpore and MindEarth, and how to log training metrics and visualize results in real-time via SwanLab.
 
-
-
 ## Environment and Dependencies
 
 - **Operating System**: Ubuntu 22.04
 - **Programming Language**: Python 3.10
 - **Environment/Dependency Management**: uv
-- **Compute Card Configuration**: Huawei Kunpeng 910B2x * 1 card, 64GB VRAM
+- **Compute Card Configuration**: Huawei Kunpeng 910B2x \* 1 card, 64GB VRAM
 - **CANN**: 8.0.0
 - **CPU**: 24 vCPU Kunpeng-920, 220GB RAM
 - **Deep Learning Framework**: MindSpore 2.6.0
@@ -30,9 +26,7 @@ For MindSpore installation, refer to [Ascend NPU & MindSpore | SwanLab](https://
 
 For MindSpore Earth installation, refer to [MindSpore Earth 0.3](https://www.mindspore.cn/mindearth/docs/zh-CN/r0.3/mindearth_install.html) 。
 
-The source code for the `ViT-KNO`model can be obtained from [koopman_vit](https://gitee.com/mindspore/mindscience/tree/r0.7/MindEarth/applications/medium-range/koopman_vit) .  Note that the Gitee branch version here is r0.7, which corresponds to MindSpore Earth version 0.3.
-
-
+The source code for the `ViT-KNO`model can be obtained from [koopman_vit](https://gitee.com/mindspore/mindscience/tree/r0.7/MindEarth/applications/medium-range/koopman_vit) . Note that the Gitee branch version here is r0.7, which corresponds to MindSpore Earth version 0.3.
 
 ## Obtaining the Dataset
 
@@ -67,8 +61,6 @@ The dataset is stored in the `./dataset`directory. Its internal structure is as 
 │   └── 2016
 ```
 
-
-
 ## Directory Structure
 
 Except for the dataset path specified in the `vit_kno.yaml`configuration file, the recommended project structure for other files is as follows:
@@ -77,7 +69,7 @@ Except for the dataset path specified in the `vit_kno.yaml`configuration file, t
 .
 ├── vit_kno.yaml              # Model and training configuration file
 ├── src/
-│   ├── __init__.py           
+│   ├── __init__.py
 │	├── callback.py
 │	├── solver.py
 │	├── utils.py
@@ -141,7 +133,7 @@ summary:
   save_checkpoint_epochs: 1
   keep_checkpoint_max: 1
   plt_key_info: True
-  key_info_timestep: [6,72,120]
+  key_info_timestep: [6, 72, 120]
   ckpt_path: ""
 train:
   name: "oop"
@@ -294,8 +286,8 @@ class ViTKNOTrainer(Trainer):
                        amp_level=self.train_params['amp_level']
                        )
         return solver
-        
-        
+
+
     def train(self):
         """
         Execute model training.
@@ -337,7 +329,7 @@ class ViTKNOTrainer(Trainer):
             keep_checkpoint_max=self.callback_params.get("keep_checkpoint_max"))
         ckpt_cb = ModelCheckpoint(prefix=ckpt_name, directory=ckpt_dir, config=ckpt_config)
         return ckpt_cb
- 
+
 
 trainer = ViTKNOTrainer(config, model, loss_net, logger)
 print("trainer.valid_dataset.get_dataset_size: ", trainer.valid_dataset.get_dataset_size())
@@ -345,8 +337,6 @@ print("trainer.valid_dataset.get_dataset_size: ", trainer.valid_dataset.get_data
 trainer.train()
 swanlab.finish()
 ```
-
-
 
 ## Starting Training and Monitoring
 
@@ -424,8 +414,6 @@ def train(self):
                           dataset_sink_mode=self.data_params.get('data_sink'))
 ```
 
-
-
 ## Viewing Training Monitoring Results
 
 During training, the `SwanLab`dashboard displays:
@@ -441,8 +429,6 @@ During training, the `SwanLab`dashboard displays:
 - **Experiment Overview**: Comprehensive display of model information.
 
   ![overview](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/ViT-KNO/overview.png)
-
-
 
 ## Inference and Metric Visualization
 
@@ -617,8 +603,6 @@ When multiple charts need to be generated during training or inference, `SwanLab
 
 ![img2](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/ViT-KNO/img2.png)
 
-
-
 ## References
 
 - Mindspore Official Website: [MindSpore](https://www.mindspore.cn/)
@@ -629,11 +613,8 @@ When multiple charts need to be generated during training or inference, `SwanLab
 
 - ViT-KNO Model Source Code: [mindscience: MindScience is scientific computing kits for various industries based on the converged MindSpore framework. - Gitee.com](https://gitee.com/mindspore/mindscience/tree/r0.7/MindEarth/applications/medium-range/koopman_vit)
 
-- WeatherBench Dataset:  [Index of /mindscience/mindearth/dataset/WeatherBench_1.4_69/](https://download.mindspore.cn/mindscience/mindearth/dataset/WeatherBench_1.4_69/)
+- WeatherBench Dataset: [Index of /mindscience/mindearth/dataset/WeatherBench_1.4_69/](https://download.mindspore.cn/mindscience/mindearth/dataset/WeatherBench_1.4_69/)
 
 - WeatherBench Introduction: [GitHub - guanqiyuan/WeatherBench](https://github.com/guanqiyuan/WeatherBench)
 
 - SwanLab: [SwanLab](https://docs.swanlab.cn/guide_cloud/general/what-is-swanlab.html)
-
-  
-

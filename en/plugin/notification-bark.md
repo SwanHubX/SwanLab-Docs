@@ -59,4 +59,4 @@ if accuracy > 0.95:
 
 ## Limitations
 
--   The training completion/exception notification for the Bark notification plugin uses the `on_stop` lifecycle callback of `SwanKitCallback`. Therefore, if your process is abruptly `kill`ed, or the training machine shuts down unexpectedly, the `on_stop` callback will not be triggered, resulting in the Bark notification not being sent.
+- The training completion/exception notification for the Bark notification plugin uses the `on_stop` lifecycle callback of `SwanKitCallback`. Therefore, if your process is abruptly `kill`ed, or the training machine shuts down unexpectedly, the `on_stop` callback will not be triggered, resulting in the Bark notification not being sent.

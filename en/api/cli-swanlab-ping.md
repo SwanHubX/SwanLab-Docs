@@ -4,8 +4,8 @@
 swanlab ping [OPTIONS]
 ```
 
-| Option | Description |
-| --- | --- |
+| Option         | Description                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------------ |
 | `-h`, `--host` | Specify the SwanLab server host address, e.g. `http://localhost:8000`. Defaults to the logged-in host. |
 
 ## Introduction
@@ -53,12 +53,12 @@ swanlab ping
 
 ### Status Indicators
 
-| Indicator | Meaning |
-| --- | --- |
-| ✓ | OK |
-| ! | Warning |
-| ✗ | Error |
-| - | Not detected / Not configured |
+| Indicator | Meaning                       |
+| --------- | ----------------------------- |
+| ✓         | OK                            |
+| !         | Warning                       |
+| ✗         | Error                         |
+| -         | Not detected / Not configured |
 
 ## Diagnose Self-Hosted Deployment
 

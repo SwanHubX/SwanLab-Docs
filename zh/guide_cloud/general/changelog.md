@@ -3,24 +3,28 @@
 ::: warning 更新指南
 升级到最新版：`pip install -U swanlab`  
 Github: https://github.com/SwanHubX/SwanLab
-::: 
+:::
 
 ## v0.8.3 - 2026.06.16
+
 **🚀新增功能**
+
 - 🔥 新增 HTML 图表，支持嵌入LLM Vibe Coding 生成页面，参考 [swanlab.Html()](https://docs.swanlab.cn/api/py-html.html)
 - 🧭 Kubenetes 部署 Prometheus + Grafana 方案 上线，参考 [监控与日志配置指南](https://docs.swanlab.cn/self_host/kubernetes/monitor-logging.html)
 
-
 ## v0.8.0 - 2026.06.05
+
 **🚀 新增功能与优化**
-- ⚡️ 重构了 SwanLab SDK，对训练速度影响降低 **~↓95.4%**，日志空间占用降低  **~↓65.1%**
+
+- ⚡️ 重构了 SwanLab SDK，对训练速度影响降低 **~↓95.4%**，日志空间占用降低 **~↓65.1%**
 - 🪓 新增 `swanlab ping` 检查网络连通性与运行环境信息
 - 🪓 新增 `swanlab.async_log()` 异步打点
 - 🪓 新增`swanlab login --local`命令，优化多人训练场景下的体验
 - 🪓 新增 OpenAPI CLI 支持，可以通过 `swanlab api` 的 CLI 方式直接读取实验日志
 - 🦄 优化错误场景下的报错体验，提供更详细的错误信息
 - 🔨 SwanLab 官方 Skill 已上线，详见: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary)，可通过以下方式安装:
-:::code-group
+  :::code-group
+
 ```bash [npm]
 npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ```
@@ -28,23 +32,24 @@ npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ```bash [bun]
 bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ```
+
 :::
 
-
 **🔧修复**
+
 - 🐞 修复了在某些情况下实验启动时间过长的问题
 - 🐞 修复了离线sync场景下实验颜色重复的问题
 
 **💥 破坏性更新**
+
 - 😈 **v0.8.0 不再兼容历史版本的 `backup.swanlab` 日志格式，历史日志需使用对应历史版本读取或处理!!**
 - 😈 部分 OpenAPI 的使用方式发生调整，请做好过渡替换
 - 😈 移除了部分已废弃的历史框架集成
 
-
-
 ## v0.7.12 - 2026.03.19
 
 **🚀新增功能与优化**
+
 - 🦜 **实验复制**功能已上线，提高多个项目下进行基线实验对比的体验
 - 🪓 **并行模式**上线，现在多个分布式进程可以同时上传指标到一个实验下了
 - 🪓 **写入速率升级**，现在SwanLab支持更高的SDK指标写入速率
@@ -52,13 +57,14 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 🪓 **SDK支持指定实验颜色**
 
 **🔧修复**
+
 - 修复了添加标签时卡顿的Bug
 - 修复了一系列其他问题
-
 
 ## v0.7.8 - 2026.02.06
 
 **🚀新增功能与优化**
+
 - ⚡️ LightningBoard（闪电看板）现已上线，专为大模型预训练等超大图表数量级场景打造
 - 🔧 新版开放接口`swanlab.Api`，支持通过API获取SwanLab数据，[文档](/api/py-api.md)
 - 📊 新增图表嵌入链接，现在可以把你的图表嵌入到在线文档当中（如Notion、飞书云文档等）
@@ -67,10 +73,10 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 🌸 项目分享按钮移动到顶部Header区域
 
 **🔧修复**
+
 - 修复了下载图表PNG时，横轴显示不完全问题
 - 修复了图标放大状态下，配置图表面板，点击「应用」按钮卡顿的问题
 - 修复了一系列其他问题
-
 
 ## v0.7.6 - 2026.01.06
 
@@ -87,21 +93,23 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
 **🚀新增功能**
+
 - 适配SwanLab Kubernetes版本
 - 概览表格视图-支持通过表头设置列的隐藏、显示、Pin、升序、降序
 
 ## v0.7.3 - 2025.12.11
 
 **🚀新增功能**
+
 - 新增折线图详细信息展示，鼠标悬浮在折线图上时，单击Shift将开启详细模式，支持显示当前log点的时间
 - 图表分组支持MIN/MAX区域范围显示
 - 新增与NVIDIA-NeMo RL框架的集成，[文档](/guide_cloud/integration/integration-nvidia-nemo-rl.md)
 - 新增与Telegram通知插件的集成，[文档](/plugin/notification-telegram.md)
 
 **🤔优化**
+
 - 修复了SDK的网络连接质量问题
 - 优化了图表加载性能
-
 
 ## v0.7.2 - 2025.11.17
 
@@ -112,8 +120,8 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 环境变量新增`SWANLAB_WEBHOOK_VALUE`
 
 **🤔优化**
-- 修复了一系列问题
 
+- 修复了一系列问题
 
 ## v0.7.0 - 2025.11.06
 
@@ -134,36 +142,41 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ## v0.6.12 - 2025.10.18
 
 **🚀新增功能**
+
 - 新增Bark通知插件，支持在训练完成/发生错误时，第一时间发送iOS信息通知，[文档](/plugin/notification-bark.md)
 - 优化应用性能
 
 ## v0.6.11 - 2025.10.15
 
 **🚀新增功能**
+
 - 全新项目UI界面，表格视图支持全局筛选、排序等能力
 - 折线图配置新增 **X轴数据源** 配置功能
 - 实验状态新增 **ctrl-c**，标识用户手动中断的实验
 - 新增`swanlab local`、`swanlab online`、`swanlab offline`、`swanlab disabled`命令，支持在命令行中快速设置SwanLab模式，[文档](/api/cli-swanlab-offline.md)
 
-
 ## v0.6.9 - 2025.09.09
 
 **🚀新增功能**
+
 - 项目支持添加协作者功能，[文档](/guide_cloud/experiment_track/add-collaborator)
 - 组织管理页面大升级，提供更强大的权限控制与项目管理能力
 - 新增环境变量`SWANLAB_DESCRIPTION`、`SWANLAB_TAGS`、`SWANLAB_DISABLE_GIT`
 
 **🤔优化**
+
 - 更强大的图表渲染性能与低侵入式加载动画，让研究者更聚焦于实验分析本身
 - 修复了开放API的一些兼容性问题
 
 **🔌集成**
+
 - 新增与Apple [MLX LM](https://github.com/ml-explore/mlx-lm)框架的集成，[文档](/guide_cloud/integration/integration-mlx-lm)
 - 新增与SGLang [SpecForge](https://github.com/sgl-project/SpecForge)框架的集成
 
 ## v0.6.8 - 2025.07.29
 
 **🚀新增功能**
+
 - 侧边栏支持**实验筛选、排序**
 - 表格视图上线**列控制面板**，能够方便地实现列的隐藏与显示
 - **多API Key管理**上线，让你的数据更安全
@@ -172,6 +185,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 开放接口新增**获取实验指标**接口
 
 **🤔优化**
+
 - 增加 日语、俄语 语言支持
 - 实验卡片中的配置表格支持一键折叠/展开
 - 修复了一些问题
@@ -179,41 +193,47 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 ## v0.6.7 - 2025.07.17
 
 **🚀新增功能**
+
 - 更强大的折线图配置，支持灵活配置线型、颜色、粗细、网格和图例位置
 - 支持`swanlab.Video`数据类型，支持记录与可视化GIF格式文件
 - 全局图表仪表盘支持配置Y轴与最大显示实验数
 - 更强大的文本图表，适配大语言模型训练场景
 
 **🤔优化**
+
 - 最大实验名提升到250个字符
 - 修复了一些问题
 
 ## v0.6.5 - 2025.07.05
 
 **🚀新增功能**
+
 - 支持**resume断点续训**
 - 支持小折线图局部放大
 - 支持配置单个折线图平滑
 
 **⚙️优化**
+
 - 大幅改进了图像图表放大后的交互效果
 
 **🔌集成**
+
 - 🤗集成[accelerate](https://github.com/huggingface/accelerate)框架，[文档](/guide_cloud/integration/integration-huggingface-accelerate.md)增强分布式训练中的实验记录体验；
 - 集成[ROLL](https://github.com/alibaba/ROLL)框架，[文档](/guide_cloud/integration/integration-roll.md)增强分布式训练中的实验记录体验；
 - 集成[Ray](https://github.com/ray-project/ray)框架，[文档](/guide_cloud/integration/integration-ray.md)增强分布式训练中的实验记录体验；
 
 **🔌插件**
+
 - 新增`LogdirFileWriter`插件，支持将文件写入到日志文件夹
 
-
 **生态**
-- 阿里云计算巢服务上架：[指引](/self_host/alibabacloud-computenest.md)
 
+- 阿里云计算巢服务上架：[指引](/self_host/alibabacloud-computenest.md)
 
 ## v0.6.4 - 2025.06.18
 
 **🚀新增功能**
+
 - 新增与[AREAL](https://github.com/inclusionAI/AReaL)框架的集成，[PR](https://github.com/inclusionAI/AReaL/pull/98)
 - 支持鼠标Hover到侧边栏实验时，高亮相应曲线
 - 支持跨组对比折线图
@@ -221,52 +241,57 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 支持设置实验名裁剪规则
 
 **⚙️修复**
+
 - 修复了`local`模式下，日志文件无法正确`sync`和`watch`的问题
 
 ## v0.6.3 - 2025.06.12
 
 **🚀新增功能**
+
 - 新增`swnalab.echarts.table`，支持创建表格图表
 - 昇腾/沐曦/海光/寒武纪/昆仑芯 硬件监控 增加显存（MB）记录
 - `swanlab sync`支持一次多日志上传
 - 工作区增加`公开/私有`筛选
 - 表格视图增加`最新/最大/最小值`切换模块
 
-
 ## v0.6.2 - 2025.06.09
 
 **🚀新增功能**
+
 - 新增`swanlab sync`命令，支持将本地日志同步到SwanLab云端/私有化部署端
 - 支持在本地存储完整的实验日志文件
 
 ## v0.6.1 - 2025.06.05
 
 **🚀新增功能**
+
 - 鼠标放到表头，可以显示缩略的名称了
 - 表格视图增加「展开子表」功能
 - 硬件监控支持海光DCU
 - 硬件监控支持获取昇腾NPU的功耗信息
 
 **🤔优化**
+
 - 优化了HuggigngFace accelerate框架的集成
 - 默认不再打印重复step log warning
 
 ## v0.6.0 - 2025.06.01
 
 **🚀新增功能**
+
 - 支持 **图表自由拖拽**
 - 支持ECharts自定义图表，增加包括柱状图、饼状图、直方图在内的20+图表类型
 - 硬件监控已支持 **沐曦** 显卡
 - 集成 [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP) 框架
 
-
 ## v0.5.9 - 2025.05.25
 
 **🚀新增功能**
--  📒 日志记录支持了标准错误流，EvalScope / PyTorch Lightning等这些框架的日志记录体验大幅提升
--  💻 硬件监控已支持 **摩尔线程** 显卡
--  🔐 新增运行命令记录的安全防护功能，API Key将被自动隐藏
--  ⚙️ 设置新增「默认空间」和「默认可见性」配置，可以指定你的项目默认创建在哪个组织下啦！
+
+- 📒 日志记录支持了标准错误流，EvalScope / PyTorch Lightning等这些框架的日志记录体验大幅提升
+- 💻 硬件监控已支持 **摩尔线程** 显卡
+- 🔐 新增运行命令记录的安全防护功能，API Key将被自动隐藏
+- ⚙️ 设置新增「默认空间」和「默认可见性」配置，可以指定你的项目默认创建在哪个组织下啦！
 
 ## v0.5.8 - 2025.05.13
 
@@ -281,11 +306,12 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 集成`paddlenlp`框架
 
 **🤔优化**
+
 - 优化了个人主页的一系列交互
 
 **生态**
-- 腾讯云云应用上架：[指引](../../self_host/tencentcloud-app.md)
 
+- 腾讯云云应用上架：[指引](../../self_host/tencentcloud-app.md)
 
 ## v0.5.6 - 2025.04.23
 
@@ -299,12 +325,13 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 环境记录支持记录**Linux发行版**（如Ubuntu、CentOS、Kylin等）
 
 **🤔优化**
-- 修复了侧边栏一键隐藏实验的一些问题
 
+- 修复了侧边栏一键隐藏实验的一些问题
 
 ## v0.5.5 - 2025.04.07
 
 **🚀新增功能**
+
 - 新增`swanlab.Molecule`数据类型，支持生物化学分子可视化，为AlphaFold等AI4Science训练任务提供更好的训练体验
 - 实验表格，现在支持记忆你的排序、筛选、列拖拽了！
 - 支持了寒武纪MLU的温度和功率指标记录
@@ -312,14 +339,17 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 环境中支持显示寒武纪MLU Logo
 
 **🌍生态**
+
 - 大模型评估框架[EvalScope](https://github.com/modelscope/evalscope) 已集成SwanLab！：https://github.com/modelscope/evalscope/pull/453
 
 **🤔优化**
+
 - 优化了网页加载性能
 
 ## v0.5.4 - 2025.03.31
 
 **🚀新增功能**
+
 - 新增`swanlab.Settings`方法，支持更精细化的实验行为控制，进一步增强开放性
 - 支持了寒武纪MLU的硬件记录和资源监控
 - 昇腾NPU的硬件记录支持记录CANN版本
@@ -329,25 +359,28 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 「概览」页支持编辑"项目描述"文本
 
 **🤔优化**
+
 - 修复了sync_wandb的一些问题
 - 修复了Obejct3D类的一些问题
 - 优化「常规」设置样式
 - 大幅优化了打开项目的性能
 
 **🔌插件**
-- 官方插件增加Slack通知、Discord通知，进一步打通海外生态
 
+- 官方插件增加Slack通知、Discord通知，进一步打通海外生态
 
 ## v0.5.3 - 2025.03.20
 
 ![swanlab x huggingface](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/general/changelog/hf.png)
 
 **🚀新增功能**
+
 - SwanLab已正式加入 **🤗HuggingFace生态**！Transformers 4.50.0版本开始 正式将SwanLab集成为实验跟踪工具，在TrainingArguments中加入`report_to="swanlab"`即可开始跟踪训练。
 - 新增了`swanlab.Object3D`，支持记录三维点云，[文档](/api/py-object3d)
 - 硬件监控支持了 GPU显存（MB）、磁盘利用率、网络上下行 的记录
 
 **优化**
+
 - 修复了一些问题
 
 ## v0.5.0 - 2025.03.12
@@ -357,6 +390,7 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 **🎉🎉SwanLab私有化部署（社区版）现已重磅发布！！**[部署文档](/self_host/docker/deploy.md)
 
 **🚀新增功能**
+
 - `swanlab.init`新增参数`callbacks`，支持在初始化时注册回调函数，以支持各式各样的自定义插件类
 - 新增`swanlab.register_callback()`，支持在`init`外部注册回调函数，[文档](/api/py-register-callback.html)
 - `swanlab.login()`升级，新增`host`、`web_host`、`save`参数，适配了私有化部署服务的特性，同时支持不将用户登录凭证写入本地，以适应共用服务器场景。[文档](../../api/py-login.md)
@@ -364,10 +398,12 @@ bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
 - 新增支持使用`swanlab.sync_mlflow()`将MLflow项目同步到SwanLab，[文档](/guide_cloud/integration/integration-mlflow.md)
 
 **🤔优化**
+
 - 我们大幅优化了sdk架构，提升了sdk在大量metric场景下的性能
 - 实验侧边栏可以拉伸了！
 - 实验页面右上角增加了「Git代码」按钮，一键跳转到对应的仓库
 
 **🔌插件**：
+
 - 新增**通知类插件**，支持在训练结束时使用**邮件、飞书、钉钉、企业微信**进行通知
 - 新增**记录类插件**，支持在训练过程中将元数据、配置、指标写入到**本地CSV文件**

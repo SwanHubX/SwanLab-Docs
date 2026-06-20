@@ -12,14 +12,13 @@ Image(
 ) -> None
 ```
 
-| 参数        | 描述                                                                                                                                                                   |
-|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| data_or_path | (Union[str, np.ndarray, PILImage.Image]) 接收图像文件路径、numpy数组、或者PIL图像。Image类将判断接收的数据类型做相应的转换。                                      |
-| mode      | (str) 图像的 PIL 模式。最常见的是 "L"、"RGB"、"RGBA"。完整解释请参阅：[Pillow mode](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)                         |
-| caption   | (str) 图像的标签。用于在实验看板中展示图像时进行标记。                                                                                                                 |
-| file_type | (str) 设置图片的格式，可选['png', 'jpg', 'jpeg', 'bmp']，默认为'png'                                                                                                   |
-| size      | (Union[int, list, tuple]) 设置图像的尺寸，默认保持原图尺寸。如果size设置为int类型，如512，将根据最长边不超过512的标准做图像缩放, [size更多用法](#对传入图像做resize)|
-
+| 参数         | 描述                                                                                                                                                                 |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data_or_path | (Union[str, np.ndarray, PILImage.Image]) 接收图像文件路径、numpy数组、或者PIL图像。Image类将判断接收的数据类型做相应的转换。                                         |
+| mode         | (str) 图像的 PIL 模式。最常见的是 "L"、"RGB"、"RGBA"。完整解释请参阅：[Pillow mode](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)            |
+| caption      | (str) 图像的标签。用于在实验看板中展示图像时进行标记。                                                                                                               |
+| file_type    | (str) 设置图片的格式，可选['png', 'jpg', 'jpeg', 'bmp']，默认为'png'                                                                                                 |
+| size         | (Union[int, list, tuple]) 设置图像的尺寸，默认保持原图尺寸。如果size设置为int类型，如512，将根据最长边不超过512的标准做图像缩放, [size更多用法](#对传入图像做resize) |
 
 ## 介绍
 
@@ -81,7 +80,6 @@ for batch, ground_truth in train_dataloader():
     run.log({"examples": tensors})
 ```
 
-
 ### 从PIL Image创建
 
 ```python
@@ -125,21 +123,21 @@ image = swanlab.Image("path/to/file",
 
 ### 对传入图像做Resize
 
-在默认情况，`swanlab.Image`不对图像做任何尺寸缩放。  
+在默认情况，`swanlab.Image`不对图像做任何尺寸缩放。
 
 如果需要放缩图像，我们可以通过设置`size`参数，来调节图像尺寸。
 
-放缩规则为：  
+放缩规则为：
 
 1. 默认: 不对图像做任何缩放
 
 2. `size`为int类型: 如果最长边超过`size`, 则将最长边设为`size`, 另一边等比例缩放; 否则不缩放
 
-3. `size`为list/tuple类型: 
+3. `size`为list/tuple类型:
 
-    - (int, int): 将图像缩放到宽为size[0], 高为size[1]
-    - (int, None): 将图像缩放到宽为size[0], 高等比例缩放
-    - (None, int): 将缩放缩放到高为size[1], 宽等比例缩放
+   - (int, int): 将图像缩放到宽为size[0], 高为size[1]
+   - (int, None): 将图像缩放到宽为size[0], 高等比例缩放
+   - (None, int): 将缩放缩放到高为size[1], 宽等比例缩放
 
 ```python
 print(im_array.shape)

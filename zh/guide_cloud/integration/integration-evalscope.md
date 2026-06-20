@@ -30,7 +30,6 @@ pip install -e '.[app]'           # Install visualization dependencies
 pip install -e '.[all]'           # Install all backends (Native, OpenCompass, VLMEvalKit, RAGEval)
 ```
 
-
 ## 2. Qwen模型推理性能压测
 
 如果你希望评估`Qwen2.5-0.5B-Instruct`在[openqa格式默认数据集](https://www.modelscope.cn/datasets/AI-ModelScope/HC3-Chinese)上的表现，同时使用`SwanLab`观测性能，可以运行下面的命令：

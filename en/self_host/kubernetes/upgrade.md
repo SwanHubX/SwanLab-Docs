@@ -4,7 +4,6 @@
 
 [[toc]]
 
-
 ## 1. Pre-Update Preparation
 
 ### 1.1 Understand Version Information
@@ -52,11 +51,11 @@ Before updating, please ensure you have completed the following:
 
 ```yaml
 # values.yaml example
-    image:
-      repository: repo.swanlab.cn/self-hosted/swanlab-cloud
-      # tag set to empty string or version tag, e.g., v2.8.0, do not set to latest
-      tag: ""
-      pullPolicy: "IfNotPresent"
+image:
+  repository: repo.swanlab.cn/self-hosted/swanlab-cloud
+  # tag set to empty string or version tag, e.g., v2.8.0, do not set to latest
+  tag: ""
+  pullPolicy: "IfNotPresent"
 ```
 
 ## 2. Execute Update
@@ -66,6 +65,7 @@ You can choose one of the following update methods based on your cluster's netwo
 ### Option 1: Helm Repository Update
 
 If your **cluster nodes can directly access the Helm repository** (i.e., cluster nodes can directly access `github.com`), you can execute the update with the following commands:
+
 > ⚠️ Note: The chart packages at https://helm.swanlab.cn are indexed by version tags in [GitHub Release](https://github.com/SwanHubX/charts/releases). **Please confirm network connectivity in advance!**
 
 ```bash
@@ -76,8 +76,8 @@ helm upgrade swanlab-self-hosted swanlab/self-hosted \
   --namespace <your_namespace> \
   --dry-run
 ```
-- After confirming there are no errors, remove the `--dry-run` option to execute the update
 
+- After confirming there are no errors, remove the `--dry-run` option to execute the update
 
 ### Option 2: Local Chart Package Update
 
@@ -93,6 +93,7 @@ tar -zxvf self-hosted-<target_version>.tgz
 ```
 
 Then use the local chart package to verify:
+
 ```bash
 # It is recommended to use --dry-run first to verify template compatibility
 helm upgrade swanlab-self-hosted ./self-hosted/ \
@@ -100,8 +101,8 @@ helm upgrade swanlab-self-hosted ./self-hosted/ \
   --namespace <your_namespace> \
   --dry-run
 ```
-- After confirming there are no errors, remove the `--dry-run` option to execute the update
 
+- After confirming there are no errors, remove the `--dry-run` option to execute the update
 
 > Note: `--dry-run` is used to verify the compatibility of the update template. It is recommended to do template syntax verification before each update.
 
@@ -137,7 +138,7 @@ All Pods should be in `Running` or `Completed` status, and there should be no ab
 ```python
 import swanlab
 import random
-import numpy as np 
+import numpy as np
 import time
 
 swanlab.login(

@@ -4,13 +4,13 @@
 
 Recently while studying linear attention, I realized that although I had some understanding of RNN networks before, I hadn't delved into the details of how RNNs are stacked and how they handle parallel training. This blog will explain the usage of `torch.nn.RNN` in PyTorch, focusing on the following two aspects:
 
-* How RNNs are stacked, what structure lies behind the `num_layers` parameter, and the role of the `bidirectional` parameter
-* How RNNs perform batch training for variable-length sequence inputs
+- How RNNs are stacked, what structure lies behind the `num_layers` parameter, and the role of the `bidirectional` parameter
+- How RNNs perform batch training for variable-length sequence inputs
 
 ## Series Directory
 
-* [Archaeological RNN Series (Part 1): Understanding How PyTorch RNN Handles Variable-Length Batch Training](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README.md) — Introduction to RNN principles and methods for handling variable-length batch sequences
-* [Archaeological RNN Series (Part 2): How to Use RNN Networks for Sequence Prediction](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README_next.md) — Training an RNN classification network for sequence sum and remainder prediction, along with some parameter tuning tips
+- [Archaeological RNN Series (Part 1): Understanding How PyTorch RNN Handles Variable-Length Batch Training](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README.md) — Introduction to RNN principles and methods for handling variable-length batch sequences
+- [Archaeological RNN Series (Part 2): How to Use RNN Networks for Sequence Prediction](https://github.com/ShaohonChen/tutorial_with_rnn/blob/main/README_next.md) — Training an RNN classification network for sequence sum and remainder prediction, along with some parameter tuning tips
 
 ## Introduction to RNN Principles
 
@@ -22,9 +22,9 @@ $$
 
 Key variables in the formula:
 
-* $ x_t $ : Input vector at time step $ t $
-* $ h_t $ : Hidden state at time step $ t $
-* $ W_{xh} $ , $ W_{hh} $ , $ b_h $ : Model parameter matrices
+- $ x_t $ : Input vector at time step $ t $
+- $ h_t $ : Hidden state at time step $ t $
+- $ W*{xh} $ , $ W*{hh} $ , $ b_h $ : Model parameter matrices
 
 When I first learned about RNNs, I was always confused about the relationship between the hidden state $ h_t $ and the network output (online diagrams were quite messy, sometimes showing $ h $ and sometimes $ y $). Actually, for RNNs, the hidden state is the output. The update relationship between hidden state and output can be explained with the following diagram:
 
@@ -43,14 +43,14 @@ $$
 
 PyTorch's official implementation of the `torch.nn.RNN` module supports the following input parameters:
 
-* input_size: Input dimension
-* hidden_size: Hidden layer dimension - no matter how long the historical sequence is, the model will compress it into this small vector representation
-* num_layers: Number of layers for multi-layer RNN, **explained later**
-* nonlinearity: Choice of nonlinear function, only supports `"tanh"` and `"relu"`, if you want to use sigmoid you'll need to implement it yourself
-* bias: Whether to enable bias, which is $ b_h $ in the formula above
-* batch_first: Whether the input is batch-first, related to the shape of input_size
-* dropout: Whether to add dropout to the output
-* bidirectional: Whether to use bidirectional RNN, **explained later**
+- input_size: Input dimension
+- hidden_size: Hidden layer dimension - no matter how long the historical sequence is, the model will compress it into this small vector representation
+- num_layers: Number of layers for multi-layer RNN, **explained later**
+- nonlinearity: Choice of nonlinear function, only supports `"tanh"` and `"relu"`, if you want to use sigmoid you'll need to implement it yourself
+- bias: Whether to enable bias, which is $ b_h $ in the formula above
+- batch_first: Whether the input is batch-first, related to the shape of input_size
+- dropout: Whether to add dropout to the output
+- bidirectional: Whether to use bidirectional RNN, **explained later**
 
 A typical usage example looks like this:
 
@@ -65,7 +65,7 @@ print(hn.shape) # torch.Size([1, 3, 20])    hn only contains the last layer's hi
 
 I also recommend readers check out PyTorch's official documentation for the RNN module:
 
-* Link: <https://docs.pytorch.org/docs/stable/generated/torch.nn.RNN.html>
+- Link: <https://docs.pytorch.org/docs/stable/generated/torch.nn.RNN.html>
 
 Next, let's explain the role of the `num_layers` parameter and the `bidirectional` parameter.
 
@@ -73,11 +73,11 @@ Next, let's explain the role of the `num_layers` parameter and the `bidirectiona
 
 PyTorch's official documentation describes the `num_layers` parameter as follows:
 
->num_layers – Number of recurrent layers. E.g., setting num_layers=2 would mean stacking two RNNs together to form a stacked RNN, with the second RNN taking in outputs of the first RNN and computing the final results. Default: 1
+> num_layers – Number of recurrent layers. E.g., setting num_layers=2 would mean stacking two RNNs together to form a stacked RNN, with the second RNN taking in outputs of the first RNN and computing the final results. Default: 1
 
 Translated by Qwen3:
 
->num_layers —— Number of recurrent layers. For example, setting num_layers=2 means stacking two RNNs together to form a stacked RNN, where the second RNN receives the output of the first RNN and computes the final result. Default: 1
+> num_layers —— Number of recurrent layers. For example, setting num_layers=2 means stacking two RNNs together to form a stacked RNN, where the second RNN receives the output of the first RNN and computes the final result. Default: 1
 
 Actually, this explanation is still quite unclear. After consulting many blogs and looking at official example code, I finally understood that the so-called Stacked RNN has the following structure:
 
@@ -122,8 +122,8 @@ def forward(x, hx=None, batch_first=False):
 
 Through the above code, we can understand the relationship between output and h_t:
 
-* output represents the changes in the last layer's hidden state corresponding to each vector in the vector sequence, so the shape is `(sequence length, batch size, hidden state dimension)`
-* h_t represents the last hidden state of all layers after the entire sequence is input, so the shape is `(number of layers, batch size, hidden state dimension)`
+- output represents the changes in the last layer's hidden state corresponding to each vector in the vector sequence, so the shape is `(sequence length, batch size, hidden state dimension)`
+- h_t represents the last hidden state of all layers after the entire sequence is input, so the shape is `(number of layers, batch size, hidden state dimension)`
 
 ### Bidirectional RNN
 
@@ -156,10 +156,10 @@ Due to the RNN model structure's inherent gradient explosion problems and other 
 
 The green part in the above diagram can actually be replaced with LSTM, RNN, or Transformers logic. Below are the functions of each network:
 
-* **one to one:** Generally doesn't have this structure 😂, no different from fully connected
-* **one to many:** Early image-to-text models used this structure, or older text generation models
-* **many to many (encode-decode):** Early very popular NLP network architecture, generally used for text generation, translation, sequence prediction tasks, many LSTMs use this architecture (Bert can be roughly classified into this architecture, though not entirely correct, the design philosophy is similar)
-* **many to many:** I've seen this architecture less, but some translation tasks, sequence feature extraction (like real-time speech-to-text) use similar architectures. Including recent popular linear attention models, which can be loosely classified into this category
+- **one to one:** Generally doesn't have this structure 😂, no different from fully connected
+- **one to many:** Early image-to-text models used this structure, or older text generation models
+- **many to many (encode-decode):** Early very popular NLP network architecture, generally used for text generation, translation, sequence prediction tasks, many LSTMs use this architecture (Bert can be roughly classified into this architecture, though not entirely correct, the design philosophy is similar)
+- **many to many:** I've seen this architecture less, but some translation tasks, sequence feature extraction (like real-time speech-to-text) use similar architectures. Including recent popular linear attention models, which can be loosely classified into this category
 
 Of course, RNN's modeling capability itself is not particularly strong, so the popular ones are still the **encode-decode** architecture, or use the **many to one** architecture for simple prediction and classification tasks. The tutorial later in this article is based on the **many to one** architecture.
 
@@ -190,8 +190,8 @@ For Transformers, this problem is relatively easy to solve as we can achieve par
 
 Fortunately, PyTorch engineers also considered this and created two utility functions specifically to help handle it:
 
-* **pack_padded_sequence** Combine padded batch and sequence lengths into one long sequence: (seq, batch, dim) -> (seq*batch, dim)
-* **pad_packed_sequence** Reverse of the above function, typically used to process RNN output results: (seq*batch, dim) -> (seq, batch, dim)
+- **pack_padded_sequence** Combine padded batch and sequence lengths into one long sequence: (seq, batch, dim) -> (seq\*batch, dim)
+- **pad_packed_sequence** Reverse of the above function, typically used to process RNN output results: (seq\*batch, dim) -> (seq, batch, dim)
 
 This can achieve parallel computing to some extent, though the efficiency of parallel computing is naturally still low (this is also one reason why RNNs can't be made large). But at least it can utilize vector computation + pipeline processing to accelerate to some extent.
 
@@ -291,12 +291,12 @@ print(unpacked)
 
 Here are the official documentation links for both functions, I recommend reading them:
 
-* pack_padded_sequence documentation: <https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pack_padded_sequence.html>
-* pad_packed_sequence documentation: <https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_packed_sequence.html>
+- pack_padded_sequence documentation: <https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pack_padded_sequence.html>
+- pad_packed_sequence documentation: <https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_packed_sequence.html>
 
 Besides these two functions, there's another frequently used function `pad_sequence`, which automatically pads data from tensor lists of different lengths into a batch. This function is typically used for data preprocessing.
 
-* pad_sequence documentation: <https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_sequence.html>
+- pad_sequence documentation: <https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_sequence.html>
 
 <div align="center">
   <figure>
@@ -309,8 +309,8 @@ The next part will introduce how to build a training script for sequence classif
 
 ## References
 
-* [1] <https://www.researchgate.net/figure/Stacked-RNN-Generalized-structure-and-temporal-unrolled-variant_fig4_376204636>
+- [1] <https://www.researchgate.net/figure/Stacked-RNN-Generalized-structure-and-temporal-unrolled-variant_fig4_376204636>
 
-* [2] <https://medium.com/data-science/pytorch-basics-how-to-train-your-neural-net-intro-to-rnn-cb6ebc594677>
+- [2] <https://medium.com/data-science/pytorch-basics-how-to-train-your-neural-net-intro-to-rnn-cb6ebc594677>
 
-* [3] <https://zhuanlan.zhihu.com/p/601705984>
+- [3] <https://zhuanlan.zhihu.com/p/601705984>

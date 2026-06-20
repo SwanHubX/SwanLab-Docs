@@ -4,7 +4,6 @@
 计算机视觉，医学影像，图像分割
 :::
 
-
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)
 
 [训练过程](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)
@@ -12,7 +11,6 @@
 UNet是一种基于卷积神经网络（CNN）的医学影像分割模型，由Ronneberger等人于2015年提出。本文我们将简要介绍基于PyTorch框架，使用UNet模型在脑瘤医学影像分割数据集上进行训练，同时通过SwanLab监控训练过程，实现对病灶区域或器官结构的智能定位。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/unet-medical-segmentation/train_image.png)
-
 
 - 代码：完整代码直接看本文第5节 或 [GitHub](https://github.com/Zeyi-Lin/UNet-Medical)
 - 实验日志过程：[Unet-Medical-Segmentation - SwanLab](https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart)
@@ -62,7 +60,6 @@ unzip dataset/Brain_Tumor_Image_DataSet.zip -d dataset/
 
 下面是一些细节的代码展示，然后你想马上训练起来，可以直接跳到第五节。
 
-
 ## 3. 模型代码
 
 这里我们使用PyTorch来写UNet模型（在`net.py`中）。代码展示如下：
@@ -111,24 +108,24 @@ class UpBlock(nn.Module):
 class UNet(nn.Module):
     def __init__(self, n_channels=3, n_classes=1, n_filters=32):
         super(UNet, self).__init__()
-        
+
         # 编码器路径
         self.down1 = DownBlock(n_channels, n_filters)
         self.down2 = DownBlock(n_filters, n_filters * 2)
         self.down3 = DownBlock(n_filters * 2, n_filters * 4)
         self.down4 = DownBlock(n_filters * 4, n_filters * 8)
         self.down5 = DownBlock(n_filters * 8, n_filters * 16)
-        
+
         # 瓶颈层 - 移除最后的maxpooling
         self.bottleneck = DownBlock(n_filters * 16, n_filters * 32, dropout_prob=0.4, max_pooling=False)
-        
+
         # 解码器路径
         self.up1 = UpBlock(n_filters * 32, n_filters * 16)
         self.up2 = UpBlock(n_filters * 16, n_filters * 8)
         self.up3 = UpBlock(n_filters * 8, n_filters * 4)
         self.up4 = UpBlock(n_filters * 4, n_filters * 2)
         self.up5 = UpBlock(n_filters * 2, n_filters)
-        
+
         # 输出层
         self.outc = nn.Conv2d(n_filters, n_classes, 1)
         self.sigmoid = nn.Sigmoid()
@@ -140,17 +137,17 @@ class UNet(nn.Module):
         x3, skip3 = self.down3(x2)     # 32
         x4, skip4 = self.down4(x3)     # 16
         x5, skip5 = self.down5(x4)     # 8
-        
+
         # 瓶颈层
         x6, skip6 = self.bottleneck(x5)  # 8 (无下采样)
-        
+
         # 解码器路径
         x = self.up1(x6, skip5)    # 16
         x = self.up2(x, skip4)     # 32
         x = self.up3(x, skip3)     # 64
         x = self.up4(x, skip2)     # 128
         x = self.up5(x, skip1)     # 256
-        
+
         x = self.outc(x)
         x = self.sigmoid(x)
         return x
@@ -185,14 +182,14 @@ swanlab.init(
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/qwen_vl_coco/04.png)
 
-
 ## 5. 开始训练
 
 查看可视化训练过程：<a href="https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart" target="_blank">Unet-Medical-Segmentation</a>
 
 **本节代码做了以下几件事：**
+
 1. 加载UNet模型
-2. 加载数据集，分为训练集、验证集和测试集，数据处理为Resize为 (256, 256)和 Normalization 
+2. 加载数据集，分为训练集、验证集和测试集，数据处理为Resize为 (256, 256)和 Normalization
 3. 使用SwanLab记录训练过程，包括超参数、指标和最终的模型输出结果
 4. 训练40个epoch
 5. 生成最后的预测图像
@@ -266,40 +263,40 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         model.train()
         train_loss = 0
         train_acc = 0
-        
+
         for images, masks in train_loader:
             images, masks = images.to(device), masks.to(device)
-            
+
             optimizer.zero_grad()
             outputs = model(images)
             loss = criterion(outputs, masks)
-            
+
             loss.backward()
             optimizer.step()
-            
+
             train_loss += loss.item()
             train_acc += (outputs.round() == masks).float().mean().item()
 
         train_loss /= len(train_loader)
         train_acc /= len(train_loader)
-        
+
         # 验证
         model.eval()
         val_loss = 0
         val_acc = 0
-        
+
         with torch.no_grad():
             for images, masks in val_loader:
                 images, masks = images.to(device), masks.to(device)
                 outputs = model(images)
                 loss = criterion(outputs, masks)
-                
+
                 val_loss += loss.item()
                 val_acc += (outputs.round() == masks).float().mean().item()
-        
+
         val_loss /= len(val_loader)
         val_acc /= len(val_loader)
-        
+
         swanlab.log(
             {
                 "train/loss": train_loss,
@@ -309,11 +306,11 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
                 "val/acc": val_acc,
             },
             step=epoch+1)
-        
+
         print(f'Epoch {epoch+1}/{num_epochs}:')
         print(f'Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
         print(f'Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
-        
+
         # 早停
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -336,34 +333,34 @@ def main():
             "device": "cuda" if torch.cuda.is_available() else "cpu",
         },
     )
-    
+
     # 设置设备
     device = torch.device(swanlab.config["device"])
-    
+
     # 数据预处理
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize((256, 256)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    
+
     # 创建数据集
     train_dataset = COCOSegmentationDataset(train_coco, train_dir, transform=transform)
     val_dataset = COCOSegmentationDataset(val_coco, val_dir, transform=transform)
     test_dataset = COCOSegmentationDataset(test_coco, test_dir, transform=transform)
-    
+
     # 创建数据加载器
     BATCH_SIZE = swanlab.config["batch_size"]
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE)
-    
+
     # 初始化模型
     model = UNet(n_filters=32).to(device)
-    
+
     # 设置优化器和学习率
     optimizer = optim.Adam(model.parameters(), lr=swanlab.config["learning_rate"])
-    
+
     # 训练模型
     train_model(
         model=model,
@@ -374,12 +371,12 @@ def main():
         num_epochs=swanlab.config["num_epochs"],
         device=device,
     )
-    
+
     # 在测试集上评估
     model.eval()
     test_loss = 0
     test_acc = 0
-    
+
     with torch.no_grad():
         for images, masks in test_loader:
             images, masks = images.to(device), masks.to(device)
@@ -387,15 +384,15 @@ def main():
             loss = combined_loss(outputs, masks)
             test_loss += loss.item()
             test_acc += (outputs.round() == masks).float().mean().item()
-    
+
     test_loss /= len(test_loader)
     test_acc /= len(test_loader)
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_acc:.4f}")
     swanlab.log({"test/loss": test_loss, "test/acc": test_acc})
-    
+
     # 可视化预测结果
     visualize_predictions(model, test_loader, device, num_samples=10)
-    
+
 
 def visualize_predictions(model, test_loader, device, num_samples=5, threshold=0.5):
     model.eval()
@@ -404,18 +401,18 @@ def visualize_predictions(model, test_loader, device, num_samples=5, threshold=0
         images, masks = next(iter(test_loader))
         images, masks = images.to(device), masks.to(device)
         predictions = model(images)
-        
+
         # 将预测结果转换为二值掩码
         binary_predictions = (predictions > threshold).float()
-        
+
         # 选择前3个样本
         indices = random.sample(range(len(images)), min(num_samples, len(images)))
         indices = indices[:8]
-        
+
         # 创建一个大图
         plt.figure(figsize=(15, 8))  # 调整图像大小以适应新增的行
         plt.suptitle(f'Epoch {swanlab.config["num_epochs"]} Predictions (Random 6 samples)')
-        
+
         for i, idx in enumerate(indices):
             # 原始图像
             plt.subplot(4, 8, i*4 + 1)  # 4行而不是3行
@@ -424,13 +421,13 @@ def visualize_predictions(model, test_loader, device, num_samples=5, threshold=0
             plt.imshow(img)
             plt.title('Original Image')
             plt.axis('off')
-            
+
             # 真实掩码
             plt.subplot(4, 8, i*4 + 2)
             plt.imshow(masks[idx].cpu().squeeze(), cmap='gray')
             plt.title('True Mask')
             plt.axis('off')
-            
+
             # 预测掩码
             plt.subplot(4, 8, i*4 + 3)
             plt.imshow(binary_predictions[idx].cpu().squeeze(), cmap='gray')
@@ -441,18 +438,17 @@ def visualize_predictions(model, test_loader, device, num_samples=5, threshold=0
             plt.subplot(4, 8, i*4 + 4)
             plt.imshow(img)  # 先显示原图
             # 添加红色半透明掩码
-            plt.imshow(binary_predictions[idx].cpu().squeeze(), 
+            plt.imshow(binary_predictions[idx].cpu().squeeze(),
                       cmap='Reds', alpha=0.3)  # alpha控制透明度
             plt.title('Overlay')
             plt.axis('off')
-        
+
         # 记录图像到SwanLab
         swanlab.log({"predictions": swanlab.Image(plt)})
 
 if __name__ == '__main__':
     main()
 ```
-
 
 **运行训练**
 
@@ -464,14 +460,11 @@ python train.py
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/unet-medical-segmentation/console.png)
 
-
-
 ## 6. 训练结果演示
 
 详细训练过程请看这里：<a href="https://swanlab.cn/@ZeyiLin/Unet-Medical-Segmentation/runs/67konj7kdqhnfdmusy2u6/chart" target="_blank">Unet-Medical-Segmentation</a>
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/unet-medical-segmentation/swanlab.png)
-
 
 从SwanLab图表中我们可以看到，train loss和val loss随epoch呈现下降趋势，而train acc和val acc随epoch呈现上升趋势。最终的test acc可以达到 97.93%。
 
@@ -482,7 +475,6 @@ python train.py
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/unet-medical-segmentation/results2.png)
 
 当然，这教程主要的目标是帮助大家入门医学影像分割训练，所以没有使用更加复杂的模型结构和数据增强策略，感兴趣的同学可以基于本文的代码进行改变和实验，欢迎在[SwanLab基线社区](https://swanlab.cn/benchmarks)上展示你的结果和过程！
-
 
 ## 7. 模型推理
 
@@ -509,7 +501,7 @@ def load_model(model_path='best_model.pth', device='cuda'):
         # 检查文件是否存在
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found at {model_path}")
-            
+
         model = UNet(n_filters=32).to(device)
         # 添加weights_only=True来避免警告
         state_dict = torch.load(model_path, map_location=device, weights_only=True)
@@ -525,17 +517,17 @@ def preprocess_image(image_path):
     """预处理输入图像"""
     # 读取原始图像
     image = Image.open(image_path).convert('RGB')
-    
+
     # 保存调整大小后的原始图像用于显示
     display_image = image.resize((256, 256), Image.Resampling.BILINEAR)
-    
+
     # 模型输入的预处理
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize((256, 256)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    
+
     image_tensor = transform(image)
     return image_tensor.unsqueeze(0), display_image
 
@@ -551,26 +543,26 @@ def visualize_result(original_image, predicted_mask):
     """可视化预测结果"""
     plt.figure(figsize=(12, 6))
     plt.suptitle('Predictions')
-    
+
     # 显示原始图像
     plt.subplot(131)
     plt.imshow(original_image)
     plt.title('Original Image')
     plt.axis('off')
-    
+
     # 显示预测掩码
     plt.subplot(132)
     plt.imshow(predicted_mask.squeeze(), cmap='gray')
     plt.title('Predicted Mask')
     plt.axis('off')
-    
+
     # 显示叠加结果
     plt.subplot(133)
     plt.imshow(np.array(original_image))  # 转换为numpy数组
     plt.imshow(predicted_mask.squeeze(), cmap='Reds', alpha=0.3)
     plt.title('Overlay')
     plt.axis('off')
-        
+
     plt.tight_layout()
     plt.savefig('./predictions.png')
     print("Visualization saved as predictions.png")
@@ -579,32 +571,32 @@ def main():
     # 设置设备
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
-    
+
     try:
         # 加载模型
         model_path = "./best_model.pth"  # 确保这个路径是正确的
         print(f"Attempting to load model from: {model_path}")
         model = load_model(model_path, device)
-        
+
         # 处理单张图像
         image_path = "dataset/test/27_jpg.rf.b2a2b9811786cc32a23c46c560f04d07.jpg"
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Image file not found at {image_path}")
-            
+
         print(f"Processing image: {image_path}")
         image_tensor, original_image = preprocess_image(image_path)
-        
+
         # 预测
         predicted_mask = predict_mask(model, image_tensor, device)
-        
+
         # 将预测结果转回CPU并转换为numpy数组
         predicted_mask = predicted_mask.cpu().numpy()
-        
+
         # 可视化结果
         print("Generating visualization...")
         visualize_result(original_image, predicted_mask)
         print("Results saved to predictions.png")
-        
+
     except Exception as e:
         print(f"Error during prediction: {str(e)}")
         raise
@@ -612,7 +604,6 @@ def main():
 if __name__ == '__main__':
     main()
 ```
-
 
 ## 补充
 

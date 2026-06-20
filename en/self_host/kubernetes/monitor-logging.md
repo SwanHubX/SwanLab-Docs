@@ -22,10 +22,10 @@ SwanLab self-hosted deployment uses a microservices architecture. The monitoring
 
 The following SwanLab backend services currently expose Prometheus metrics:
 
-| Service | Description | Port | Path |
-|---------|-------------|------|------|
-| SwanLab-Server | Core backend service | 3000 | /metrics |
-| SwanLab-House | Experiment metrics OLAP service | 3000 | /api/house/metrics |
+| Service        | Description                     | Port | Path               |
+| -------------- | ------------------------------- | ---- | ------------------ |
+| SwanLab-Server | Core backend service            | 3000 | /metrics           |
+| SwanLab-House  | Experiment metrics OLAP service | 3000 | /api/house/metrics |
 
 Before configuring Prometheus scrape jobs, verify that each service's Prometheus Metrics endpoint is working.
 
@@ -50,6 +50,7 @@ kubectl exec -n <your_namespace> -c house "$(
 ```
 
 Notes:
+
 - `app.kubernetes.io/instance=<release_name>` uses the default release name `swanlab-self-hosted` — replace with your actual deployment value
 - `<your_namespace>` should be replaced with the namespace where SwanLab is deployed
 
@@ -71,6 +72,7 @@ If your cluster already has a mature Prometheus observability service, you can s
 Create persistent storage for Prometheus and Grafana. This example uses 20Gi for each — adjust based on your cluster's actual usage.
 
 ::: details swanlab-monitor-pvc.yaml Example
+
 ```yaml
 # ============================================================
 # Prometheus + Grafana PVC Configuration
@@ -107,7 +109,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi    # TODO: scale as needed
+      storage: 20Gi # TODO: scale as needed
   storageClassName: <your_storageClassName> # TODO: replace with actual storage class
   volumeMode: Filesystem
 ---
@@ -117,7 +119,7 @@ kind: PersistentVolumeClaim
 metadata:
   # Grafana PVC name is referenced via existingClaim in values
   name: swanlab-monitor-grafana-pvc
-  namespace: <your_namespace>  # TODO: replace with actual namespace
+  namespace: <your_namespace> # TODO: replace with actual namespace
 spec:
   accessModes:
     - ReadWriteOnce
@@ -127,6 +129,7 @@ spec:
   storageClassName: <your_storageClassName> # TODO: replace with actual storage class
   volumeMode: Filesystem
 ```
+
 :::
 
 Apply the PVC configuration:
@@ -143,6 +146,7 @@ kubectl get pvc -n <your_namespace>
 Create a `swanlab-monitor-value.yaml` file with Prometheus scrape job configuration and PVC references:
 
 ::: details swanlab-monitor-value.yaml Example
+
 ```yaml
 # ============================================================
 # kube-prometheus-stack values — using Alibaba Cloud ACR images
@@ -343,6 +347,7 @@ prometheus-node-exporter:
     repository: public/node-exporter
     tag: "v1.11.1"
 ```
+
 :::
 
 :::warning ⚠️ Security Note
@@ -398,17 +403,18 @@ kubectl get pods -n <your_namespace> | grep monitor
 
 This scenario applies when your cluster already has a mature Prometheus monitoring setup. You only need to integrate SwanLab metrics into the existing Prometheus scrape jobs. Three integration methods are provided — choose one:
 
-| Method | Description | Prerequisites | Requires Pod Annotation Changes |
-|--------|-------------|---------------|-------------------------------|
-| [2.1 Method 1: Pod Annotation (Recommended)](#_2-1-method-1-pod-annotation-recommended) | Single job, dynamic service discovery via annotations | Requires [Step 3](#_3-configure-pod-annotations-and-update-services) to configure annotations | ✅ Yes |
-| [2.2 Method 2: Label-Based Dual Jobs](#_2-2-method-2-label-based-dual-jobs) | Two independent jobs, discovery via Pod labels | Uses default labels from SwanLab Helm Chart | ❌ No |
-| [2.3 Method 3: Prometheus Operator](#_2-3-method-3-prometheus-operator-servicemonitor-podmonitor) | Declarative integration via ServiceMonitor/PodMonitor | Cluster has Prometheus Operator deployed | ❌ No |
+| Method                                                                                            | Description                                           | Prerequisites                                                                                 | Requires Pod Annotation Changes |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------- |
+| [2.1 Method 1: Pod Annotation (Recommended)](#_2-1-method-1-pod-annotation-recommended)           | Single job, dynamic service discovery via annotations | Requires [Step 3](#_3-configure-pod-annotations-and-update-services) to configure annotations | ✅ Yes                          |
+| [2.2 Method 2: Label-Based Dual Jobs](#_2-2-method-2-label-based-dual-jobs)                       | Two independent jobs, discovery via Pod labels        | Uses default labels from SwanLab Helm Chart                                                   | ❌ No                           |
+| [2.3 Method 3: Prometheus Operator](#_2-3-method-3-prometheus-operator-servicemonitor-podmonitor) | Declarative integration via ServiceMonitor/PodMonitor | Cluster has Prometheus Operator deployed                                                      | ❌ No                           |
 
 #### 2.1 Method 1: Pod Annotation (Recommended)
 
 Add a dedicated SwanLab scrape job to your existing `prometheus.yaml` `scrape_configs`. This approach uses a single job to collect both Server and House metrics via Pod annotations — adding new services only requires adding annotations, no Prometheus config changes needed.
 
 ::: details prometheus.yaml — Pod Annotation Scrape Job
+
 ```yaml
 scrape_configs:
   - job_name: "swanlab"
@@ -447,6 +453,7 @@ scrape_configs:
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
         target_label: service
 ```
+
 :::
 
 When using Method 1, you must also complete [Step 3: Configure Pod Annotations](#_3-configure-pod-annotations-and-update-services).
@@ -456,6 +463,7 @@ When using Method 1, you must also complete [Step 3: Configure Pod Annotations](
 Add two independent scrape jobs to your `prometheus.yaml` `scrape_configs`, one for Server and one for House. This method uses the `app.kubernetes.io/instance` and `app.kubernetes.io/service` labels auto-generated by the SwanLab Helm Chart for service discovery — **no Pod annotation changes required**, works immediately after deployment.
 
 ::: details prometheus.yaml — Label-Based Dual Jobs
+
 ```yaml
 scrape_configs:
   - job_name: "swanlab-server"
@@ -463,12 +471,12 @@ scrape_configs:
       - role: pod
         namespaces:
           names:
-            - <your_namespace>    # TODO: replace with SwanLab deployment namespace
+            - <your_namespace> # TODO: replace with SwanLab deployment namespace
     relabel_configs:
       # Only scrape Pods with release=<release_name> and service=server
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
         action: keep
-        regex: swanlab-self-hosted    # TODO: replace with actual release name
+        regex: swanlab-self-hosted # TODO: replace with actual release name
 
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
         action: keep
@@ -499,12 +507,12 @@ scrape_configs:
       - role: pod
         namespaces:
           names:
-            - <your_namespace>    # TODO: replace with SwanLab deployment namespace
+            - <your_namespace> # TODO: replace with SwanLab deployment namespace
     relabel_configs:
       # Only scrape Pods with release=<release_name> and service=house
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
         action: keep
-        regex: swanlab-self-hosted    # TODO: replace with actual release name
+        regex: swanlab-self-hosted # TODO: replace with actual release name
 
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
         action: keep
@@ -531,35 +539,38 @@ scrape_configs:
       - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
         target_label: service
 ```
+
 :::
 
 ::: tip Differences from Method 1
+
 - **No Pod annotation changes needed**: Uses default `app.kubernetes.io/*` labels from SwanLab Helm Chart.
 - **Namespace-scoped**: Uses `namespaces.names` to limit SD scope, friendlier to clusters with tightened permissions.
 - **Independent Jobs**: Separate jobs for Server and House, easier to monitor and debug in Prometheus Targets panel.
 - Grafana dashboard template variable `$job` values are `swanlab-server` or `swanlab-house` (not `swanlab`).
-:::
+  :::
 
 #### 2.3 Method 3: Prometheus Operator (ServiceMonitor / PodMonitor)
 
 If your cluster's Prometheus is managed by [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) (e.g., kube-prometheus-stack, Bitnami Helm Charts), you can integrate SwanLab declaratively via `ServiceMonitor` or `PodMonitor` resources — no manual `prometheus.yaml` editing needed.
 
 ::: details ServiceMonitor Example
+
 ```yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: swanlab-server
-  namespace: <your_namespace>    # TODO: replace with SwanLab deployment namespace
+  namespace: <your_namespace> # TODO: replace with SwanLab deployment namespace
   labels:
-    release: kube-prometheus-stack    # TODO: match your Prometheus Operator's serviceMonitorSelector
+    release: kube-prometheus-stack # TODO: match your Prometheus Operator's serviceMonitorSelector
 spec:
   namespaceSelector:
     matchNames:
       - <your_namespace>
   selector:
     matchLabels:
-      app.kubernetes.io/instance: swanlab-self-hosted    # TODO: replace with actual release name
+      app.kubernetes.io/instance: swanlab-self-hosted # TODO: replace with actual release name
       app.kubernetes.io/service: server
   endpoints:
     - port: http
@@ -570,28 +581,30 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: swanlab-house
-  namespace: <your_namespace>    # TODO: replace with SwanLab deployment namespace
+  namespace: <your_namespace> # TODO: replace with SwanLab deployment namespace
   labels:
-    release: kube-prometheus-stack    # TODO: match your Prometheus Operator's serviceMonitorSelector
+    release: kube-prometheus-stack # TODO: match your Prometheus Operator's serviceMonitorSelector
 spec:
   namespaceSelector:
     matchNames:
       - <your_namespace>
   selector:
     matchLabels:
-      app.kubernetes.io/instance: swanlab-self-hosted    # TODO: replace with actual release name
+      app.kubernetes.io/instance: swanlab-self-hosted # TODO: replace with actual release name
       app.kubernetes.io/service: house
   endpoints:
     - port: http
       path: /api/house/metrics
       interval: 30s
 ```
+
 :::
 
 ::: warning
+
 - `metadata.labels.release` must match the Prometheus Operator's `serviceMonitorSelector`, otherwise the Operator will not pick up this ServiceMonitor. Check your existing Prometheus Helm values for `prometheus.prometheusSpec.serviceMonitorSelector`.
 - Scenario 1's `swanlab-monitor-value.yaml` already sets `serviceMonitorSelectorNilUsesHelmValues: false`, so adding ServiceMonitors in Scenario 1 requires no additional configuration.
-:::
+  :::
 
 ### 3. Configure Pod Annotations and Update Services
 
@@ -600,6 +613,7 @@ spec:
 In your SwanLab self-hosted `swanlab-self-hosted-value.yaml`, find `service.server.customPodAnnotations` and `service.house.customPodAnnotations`, and add the following Prometheus scrape annotations for SwanLab-Server and SwanLab-House:
 
 ::: details swanlab-self-hosted-value.yaml — Pod Annotations
+
 ```yaml
 ....
 service:
@@ -618,6 +632,7 @@ service:
       prometheus.io/path: "/api/house/metrics"  # House Metrics path
     ...
 ```
+
 :::
 
 :::warning
@@ -664,6 +679,7 @@ SwanLab provides official Grafana dashboard templates for monitoring visualizati
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609202045722.png"/>
 
 For example:
+
 - `swanlab-monitor-kube-prome-prometheus` is the Prometheus Service in the same namespace, exposing port `9090`
 - `tenant-shaobo` is the namespace where `swanlab-self-hosted` is deployed
 
@@ -681,12 +697,12 @@ Set the **Prometheus server URL** to `http://swanlab-monitor-kube-prome-promethe
 
 The dashboards use template variables to adapt to different Prometheus configurations. After importing, select from the **top dropdown menus**:
 
-| Variable | Description | Example Value |
-|----------|-------------|---------------|
-| `$datasource` | Prometheus data source | Select your configured data source |
-| `$namespace` | Kubernetes namespace | `swanlab` |
-| `$job` | Prometheus scrape job name | `swanlab`, `swanlab-server`, or `swanlab-house` (depends on integration method) |
-| `$service` | SwanLab service name | `server` or `house` |
+| Variable      | Description                | Example Value                                                                   |
+| ------------- | -------------------------- | ------------------------------------------------------------------------------- |
+| `$datasource` | Prometheus data source     | Select your configured data source                                              |
+| `$namespace`  | Kubernetes namespace       | `swanlab`                                                                       |
+| `$job`        | Prometheus scrape job name | `swanlab`, `swanlab-server`, or `swanlab-house` (depends on integration method) |
+| `$service`    | SwanLab service name       | `server` or `house`                                                             |
 
 > **Note**: Template variables are automatically populated from Prometheus — no manual input needed.
 >
@@ -697,10 +713,10 @@ The dashboards use template variables to adapt to different Prometheus configura
 Once configured correctly, you should see service health metrics:
 
 - **SwanLab-Server**:
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201132687.png"/>
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201132687.png"/>
 
 - **SwanLab-House**:
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201039152.png"/>
+  <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201039152.png"/>
 
 ## Log Collection
 

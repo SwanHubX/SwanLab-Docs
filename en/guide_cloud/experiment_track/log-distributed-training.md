@@ -135,12 +135,12 @@ swanlab.init(experiment="distributed_experiment")
 
 Supported distributed training environment variables:
 
-| Environment Variable | Description |
-|---------------------|-------------|
-| `SWANLAB_GROUP` | Experiment group name for associating multiple experiments |
-| `SWANLAB_JOB_TYPE` | Job type, e.g., "train", "eval", "inference" |
-| `SWANLAB_NAME` | Experiment name |
-| `SWANLAB_DESCRIPTION` | Experiment description |
+| Environment Variable  | Description                                                |
+| --------------------- | ---------------------------------------------------------- |
+| `SWANLAB_GROUP`       | Experiment group name for associating multiple experiments |
+| `SWANLAB_JOB_TYPE`    | Job type, e.g., "train", "eval", "inference"               |
+| `SWANLAB_NAME`        | Experiment name                                            |
+| `SWANLAB_DESCRIPTION` | Experiment description                                     |
 
 ## Multi-Node Training
 

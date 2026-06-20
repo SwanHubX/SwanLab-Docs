@@ -96,10 +96,10 @@ def prepare_dataframe_for_lstm(df, n_steps):
     df = dc(df)
     df['date'] = pd.to_datetime(df['date'])
     df.set_index('date', inplace=True)
-    
+
     for i in range(1, n_steps+1):
         df[f'close(t-{i})'] = df['close'].shift(i)
-        
+
     df.dropna(inplace=True)
     return df
 
@@ -110,7 +110,7 @@ def get_dataset(file_path, lookback, split_ratio=0.9):
     """
     data = pd.read_csv(file_path)
     data = data[['date','close']]
-    
+
     shifted_df_as_np = prepare_dataframe_for_lstm(data, lookback)
 
     scaler = MinMaxScaler(feature_range=(-1,1))
@@ -123,7 +123,7 @@ def get_dataset(file_path, lookback, split_ratio=0.9):
 
     # Split into training and test sets
     split_index = int(len(X) * split_ratio)
-    
+
     X_train = X[:split_index]
     X_test = X[split_index:]
 
@@ -141,7 +141,7 @@ def get_dataset(file_path, lookback, split_ratio=0.9):
     y_train = torch.tensor(y_train).float()
     X_test = torch.tensor(X_test).float()
     y_test = torch.tensor(y_test).float()
-    
+
     return scaler, X_train, X_test, y_train, y_test
 
 
@@ -157,7 +157,7 @@ def train(model, train_loader, optimizer, criterion):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        
+
         avg_loss_epoch = running_loss / len(train_loader)
         print(f'Epoch: {epoch}, Batch: {i}, Avg. Loss: {avg_loss_epoch}')
         swanlab.log({"train/loss": running_loss}, step=epoch)
@@ -176,8 +176,8 @@ def validate(model, test_loader, criterion, epoch):
         avg_val_loss = val_loss / len(test_loader)
         print(f'Epoch: {epoch}, Validation Loss: {avg_val_loss}')
         swanlab.log({"val/loss": avg_val_loss}, step=epoch)
-       
-       
+
+
 def inverse_transform_and_extract(scaler, data, lookback):
     dummies = np.zeros((data.shape[0], lookback + 1))
     dummies[:, 0] = data.flatten()
@@ -198,7 +198,7 @@ def plot_predictions(actual, predicted, title, xlabel='Date', ylabel='Close Pric
     return swanlab.Image(plt, caption=title)
 
 
-def visualize_predictions(train_predictions, val_predictions, scaler, y_train, y_test, lookback):    
+def visualize_predictions(train_predictions, val_predictions, scaler, y_train, y_test, lookback):
     train_predictions = inverse_transform_and_extract(scaler, train_predictions, lookback)
     val_predictions = inverse_transform_and_extract(scaler, val_predictions, lookback)
     new_y_train = inverse_transform_and_extract(scaler, y_train, lookback)
@@ -217,26 +217,26 @@ if __name__ == '__main__':
         project='Google-Stock-Prediction',
         experiment_name="LSTM",
         description="Predict the next day's stock price based on the previous 7 days' data",
-        config={ 
+        config={
             "learning_rate": 1e-3,
             "epochs": 100,
             "batch_size": 32,
             "lookback": 7,
-            "spilt_ratio": 0.9, 
+            "spilt_ratio": 0.9,
             "save_path": "./checkpoint",
             "optimizer": "Adam",
             "device": 'cuda' if torch.cuda.is_available() else 'cpu',
         },
     )
-    
+
     config = swanlab.config
     device = torch.device(config.device)
-    
+
     # ------------------- Define the dataset -------------------
     scaler, X_train, X_test, y_train, y_test = get_dataset(file_path='./GOOG.csv',
                                                            lookback=config.lookback,
                                                            split_ratio=config.spilt_ratio,)
-    
+
     train_dataset = TimeSeriesDataset(X_train, y_train)
     test_dataset = TimeSeriesDataset(X_test, y_test)
 
@@ -254,14 +254,14 @@ if __name__ == '__main__':
     for epoch in range(1, config.epochs+1):
         train(model, train_loader, optimizer, criterion)
         validate(model, test_loader, criterion, epoch)
-        
+
     # ------------------- Use the best model for inference and generate visualization results -------------------
     with torch.no_grad():
         model.eval()
         train_predictions = model(X_train.to(device)).to('cpu').numpy()
         val_predictions = model(X_test.to(device)).to('cpu').numpy()
         visualize_predictions(train_predictions, val_predictions, scaler, y_train, y_test, config.lookback)
-    
+
     # ------------------- Save the model -------------------
     model_save_path = os.path.join(config.save_path, 'lstm.pth')
     if not os.path.exists(config.save_path):

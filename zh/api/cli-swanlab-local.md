@@ -1,6 +1,6 @@
 # swanlab local
 
-``` bash
+```bash
 swanlab local
 ```
 

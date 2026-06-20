@@ -230,20 +230,19 @@ Metrics recording:
 
 ![ig-hf-transformers-gui-2](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/huggingface_transformers/chart.jpg)
 
-
 ### 4.5 Extension: Adding More Callbacks
 
 Imagine a scenario where you want the model to infer test samples at the end of each epoch and log the inference results with swanlab. You can create a new class inheriting from `SwanLabCallback` and add or override lifecycle functions. For example:
 
 ```python
-class NLPSwanLabCallback(SwanLabCallback):    
+class NLPSwanLabCallback(SwanLabCallback):
     def on_epoch_end(self, args, state, control, **kwargs):
         test_text_list = ["example1", "example2"]
         log_text_list = []
         for text in test_text_list:
             result = model(text)
             log_text_list.append(swanlab.Text(result))
-            
+
         swanlab.log({"Prediction": test_text_list}, step=state.global_step)
 ```
 

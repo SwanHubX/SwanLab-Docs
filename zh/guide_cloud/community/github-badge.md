@@ -8,7 +8,6 @@
 
 [![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn)
 
-
 复制下面的代码到您的README.md文件中（二选一）：
 
 ```markdown
@@ -20,4 +19,3 @@
 
 - [Iconfont](https://www.iconfont.cn/search/index?searchType=icon&q=swanlab)
 - [Github](https://github.com/SwanHubX/assets)
-

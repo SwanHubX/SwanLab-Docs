@@ -160,8 +160,8 @@ swanlab.log({"examples": text_list})
 apple_image = swanlab.Image(data, caption="苹果")
 swanlab.log({"im": apple_image})
 ```
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/log-media-image.png" width=400, height=400>
 
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/log-media-image.png" width=400, height=400>
 
 ### 2. 想要媒体数据和epoch数同步，怎么办？
 

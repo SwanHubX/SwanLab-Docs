@@ -6,9 +6,9 @@ We are excited to announce that SwanLab has officially integrated with NVIDIA's 
 
 In the latest release of NVIDIA NeMo RL, you can use SwanLab to track, observe, analyze, and manage experiments throughout the entire training process. This empowers AI researchers to master every detail of RL training and accelerate efficient model iteration.
 
-* **Official Documentation:** [https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html](https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html)
-* **GitHub:** [https://github.com/NVIDIA-NeMo/RL](https://github.com/NVIDIA-NeMo/RL)
-* **SwanLab:** [https://swanlab.cn](https://swanlab.cn)
+- **Official Documentation:** [https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html](https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html)
+- **GitHub:** [https://github.com/NVIDIA-NeMo/RL](https://github.com/NVIDIA-NeMo/RL)
+- **SwanLab:** [https://swanlab.cn](https://swanlab.cn)
 
 ## 1. NVIDIA-NeMo/RL
 
@@ -30,10 +30,10 @@ Now, you can use NeMo RL to quickly perform LLM post-training while using SwanLa
 
 ### 2.1 Basic Environment
 
-* **Compute Card:** At least one NVIDIA GPU with 24GB+ VRAM
-* **CUDA Version:** >= 12.8
-* **Python Package Manager:** uv
-* **Python Version:** >= 3.10
+- **Compute Card:** At least one NVIDIA GPU with 24GB+ VRAM
+- **CUDA Version:** >= 12.8
+- **Python Package Manager:** uv
+- **Python Version:** >= 3.10
 
 ---
 

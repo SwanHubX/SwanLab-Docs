@@ -31,13 +31,13 @@ swanlab.init()
 
 ...
 
-swanlab.log({"loss": loss, "acc": acc})  
+swanlab.log({"loss": loss, "acc": acc})
 # In this record, loss has step 0, acc has step 0
 
-swanlab.log({"loss": loss, "iter": iter})  
+swanlab.log({"loss": loss, "iter": iter})
 # In this record, loss has step 1, iter has step 0, acc has step 0
 
-swanlab.log({"loss": loss, "iter": iter})  
+swanlab.log({"loss": loss, "iter": iter})
 # In this record, loss has step 2, iter has step 1, acc has step 0
 ```
 

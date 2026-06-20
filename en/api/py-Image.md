@@ -12,12 +12,12 @@ Image(
 ) -> None
 ```
 
-| Parameter    | Description                                                                                                                                                        |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| data_or_path | (Union[str, np.ndarray, PILImage.Image]) Accepts an image file path, numpy array, or PIL image. The Image class will determine the received data type and perform the appropriate conversion. |
-| mode         | (str) The PIL mode of the image. The most common are "L", "RGB", "RGBA". For a complete explanation, see: [Pillow mode](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes) |
-| caption      | (str) The label for the image. Used to mark the image when displayed in the experiment dashboard.                                                                  |
-| file_type    | (str) Set the image format, options include ['png', 'jpg', 'jpeg', 'bmp'], default is 'png'.                                                                       |
+| Parameter    | Description                                                                                                                                                                                                                                          |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data_or_path | (Union[str, np.ndarray, PILImage.Image]) Accepts an image file path, numpy array, or PIL image. The Image class will determine the received data type and perform the appropriate conversion.                                                        |
+| mode         | (str) The PIL mode of the image. The most common are "L", "RGB", "RGBA". For a complete explanation, see: [Pillow mode](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes)                                                        |
+| caption      | (str) The label for the image. Used to mark the image when displayed in the experiment dashboard.                                                                                                                                                    |
+| file_type    | (str) Set the image format, options include ['png', 'jpg', 'jpeg', 'bmp'], default is 'png'.                                                                                                                                                         |
 | size         | (Union[int, list, tuple]) Set the image size, default is to keep the original size. If size is set to an int type, such as 512, the image will be scaled based on the longest side not exceeding 512. [More usage for size](#resize-the-input-image) |
 
 ## Introduction
@@ -123,11 +123,11 @@ image = swanlab.Image("path/to/file",
 
 ### Resize the Input Image
 
-By default, `swanlab.Image` does not resize the image.  
+By default, `swanlab.Image` does not resize the image.
 
 If you need to resize the image, you can adjust the image size by setting the `size` parameter.
 
-The resizing rules are:  
+The resizing rules are:
 
 1. Default: No resizing of the image.
 
@@ -135,9 +135,9 @@ The resizing rules are:
 
 3. `size` as a list/tuple type:
 
-    - (int, int): Resize the image to width `size[0]` and height `size[1]`.
-    - (int, None): Resize the image to width `size[0]` and scale the height proportionally.
-    - (None, int): Resize the image to height `size[1]` and scale the width proportionally.
+   - (int, int): Resize the image to width `size[0]` and height `size[1]`.
+   - (int, None): Resize the image to width `size[0]` and scale the height proportionally.
+   - (None, int): Resize the image to height `size[1]` and scale the width proportionally.
 
 ```python
 print(im_array.shape)

@@ -71,7 +71,7 @@ model.compile(
 
 # Train the model with SwanLabLogger
 model.fit(
-    x_train, 
+    x_train,
     y_train,
     epochs=5,
     validation_data=(x_test, y_test),

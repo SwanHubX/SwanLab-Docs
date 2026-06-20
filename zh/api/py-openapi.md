@@ -4,7 +4,7 @@
 `swanlab.OpenApi` 已于 `≥ 0.8.0` 版本**废弃**，请迁移至新版 [`swanlab.Api`](./py-api.md)。
 
 > 此 API 适用于 swanlab **< 0.8.0** 的版本。
-:::
+> :::
 
 基于 SwanLab 云端功能, 在 SDK 端提供访问 **开放 API（OpenAPI）** 的能力, 允许用户通过编程方式在本地环境中操作云端 **实验/项目/工作空间** 资源。
 
@@ -22,17 +22,16 @@
 
 下表列出了SwanLab OpenAPI支持的所有方法，点击API名称可跳转到详细说明：
 
-| API名称 | 分类 | 功能描述 | Ready |
-|---------|------|----------|------|
-| [`list_workspaces`](#list-workspaces) | WorkSpace | 获取当前用户的所有工作空间(组织)列表 | ✅ |
-| [`list_projects`](#list-projects) | Project | 获取指定工作空间下的所有项目列表 | ✅ |
-| [`delete_project`](#delete-project) | Project | 删除一个项目 | ✅ |
-| [`list_experiments`](#list-experiments) | Experiment | 获取指定项目下的所有实验列表 | ✅ |
-| [`get_experiment`](#get-experiment) | Experiment | 获取一个实验的详细信息（实验名、配置、环境等） | ✅ |
-| [`get_summary`](#get-summary) | Experiment | 获取一个实验的Summary信息，包含实验跟踪指标的最终值和最大最小值 | ✅ |
-| [`get_metrics`](#get-metrics) | Experiment | 获取一个实验指标的值 |  ✅ |
-| [`delete_experiment`](#delete-experiment) | Experiment | 删除一个实验 | ✅ |
-
+| API名称                                   | 分类       | 功能描述                                                        | Ready |
+| ----------------------------------------- | ---------- | --------------------------------------------------------------- | ----- |
+| [`list_workspaces`](#list-workspaces)     | WorkSpace  | 获取当前用户的所有工作空间(组织)列表                            | ✅    |
+| [`list_projects`](#list-projects)         | Project    | 获取指定工作空间下的所有项目列表                                | ✅    |
+| [`delete_project`](#delete-project)       | Project    | 删除一个项目                                                    | ✅    |
+| [`list_experiments`](#list-experiments)   | Experiment | 获取指定项目下的所有实验列表                                    | ✅    |
+| [`get_experiment`](#get-experiment)       | Experiment | 获取一个实验的详细信息（实验名、配置、环境等）                  | ✅    |
+| [`get_summary`](#get-summary)             | Experiment | 获取一个实验的Summary信息，包含实验跟踪指标的最终值和最大最小值 | ✅    |
+| [`get_metrics`](#get-metrics)             | Experiment | 获取一个实验指标的值                                            | ✅    |
+| [`delete_experiment`](#delete-experiment) | Experiment | 删除一个实验                                                    | ✅    |
 
 ## 介绍
 
@@ -48,6 +47,7 @@ print(my_api.list_workspaces().data) # 获取当前用户的工作空间列表
 ```
 
 如果你需要获取其他用户的数据：
+
 ```python
 from swanlab import OpenApi
 
@@ -55,12 +55,10 @@ other_api = OpenApi(api_key='other_api_key') # 使用另一个账户的api_key
 print(other_api.list_workspaces().data)
 ```
 
-
 具体来说, **OpenApi**的认证逻辑如下：
 
 1. 如果显式提供了`api_key`参数, 则优先使用该`api_key`进行身份认证, 可以在[这里](https://swanlab.cn/space/~/settings)查看自己的 API 密钥；
 2. 否则，使用本地的认证信息。
-
 
 ::: warning 私有化部署使用OpenAPI
 
@@ -73,6 +71,7 @@ import swanlab
 swanlab.login(api_key='your-api-key', host='your-host')
 my_api = OpenApi()
 ```
+
 :::
 
 ## 常用参数
@@ -130,42 +129,42 @@ workspace_name: str = my_project.group["name"]
 
 开放 API 方法返回`swanlab.api.openapi.types.ApiResponse`对象, 包含以下字段:
 
-| 字段 | 类型 |描述 |
-| --- | --- | --- |
-| `code` | `int` | HTTP 状态码 |
-| `errmsg` | `str` | 错误信息, 如果状态码不为`2XX`则非空 |
-| `data` | `Any` | 返回的具体数据, 下面API文档中提到的返回值即为该字段 |
+| 字段     | 类型  | 描述                                                |
+| -------- | ----- | --------------------------------------------------- |
+| `code`   | `int` | HTTP 状态码                                         |
+| `errmsg` | `str` | 错误信息, 如果状态码不为`2XX`则非空                 |
+| `data`   | `Any` | 返回的具体数据, 下面API文档中提到的返回值即为该字段 |
 
 ### 实验模型 `Experiment`
 
 实验对象的类型为`swanlab.api.openapi.types.Experiment`, 包含以下字段:
 
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `cuid` | `str` | 实验CUID, 唯一标识符 |
-| `name` | `str` | 实验名 |
-| `description` | `str` | 实验描述 |
-| `state` | `str` | 实验状态, `FINISHED` 或 `RUNNING` |
-| `show` | `bool` | 显示状态 |
-| `createdAt` | `str` | 创建时间, 格式如 `2024-11-23T12:28:04.286Z` |
-| `finishedAt` | `str` | 完成时间, 格式如 `2024-11-23T12:28:04.286Z`, 若不存在则为 None |
-| `user` | `Dict[str, str]` | 实验创建者, 包含 `username` 与 `name` |
-| `profile` | `dict` | 详细包含了实验的所有配置信息, 如用户自定义配置与Python运行环境等 |
+| 字段          | 类型             | 描述                                                             |
+| ------------- | ---------------- | ---------------------------------------------------------------- |
+| `cuid`        | `str`            | 实验CUID, 唯一标识符                                             |
+| `name`        | `str`            | 实验名                                                           |
+| `description` | `str`            | 实验描述                                                         |
+| `state`       | `str`            | 实验状态, `FINISHED` 或 `RUNNING`                                |
+| `show`        | `bool`           | 显示状态                                                         |
+| `createdAt`   | `str`            | 创建时间, 格式如 `2024-11-23T12:28:04.286Z`                      |
+| `finishedAt`  | `str`            | 完成时间, 格式如 `2024-11-23T12:28:04.286Z`, 若不存在则为 None   |
+| `user`        | `Dict[str, str]` | 实验创建者, 包含 `username` 与 `name`                            |
+| `profile`     | `dict`           | 详细包含了实验的所有配置信息, 如用户自定义配置与Python运行环境等 |
 
 ### 项目模型 `Project`
 
 项目对象的类型为`swanlab.api.openapi.types.Project`, 包含以下字段:
 
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `cuid` | `str` | 项目CUID, 唯一标识符 |
-| `name` | `str` | 项目名 |
-| `description` | `str` | 项目描述 |
-| `visibility` | `str` | 可见性, `PUBLIC` 或 `PRIVATE` |
-| `createdAt` | `str` | 创建时间, 格式如 `2024-11-23T12:28:04.286Z` |
-| `updatedAt` | `str` | 更新时间, 格式如 `2024-11-23T12:28:04.286Z` |
-| `group` | `Dict[str, str]` | 工作空间信息, 包含 `type`, `username`, `name` |
-| `count` | `Dict[str, int]` | 项目的统计信息, 如实验个数, 协作者数量等 |
+| 字段          | 类型             | 描述                                          |
+| ------------- | ---------------- | --------------------------------------------- |
+| `cuid`        | `str`            | 项目CUID, 唯一标识符                          |
+| `name`        | `str`            | 项目名                                        |
+| `description` | `str`            | 项目描述                                      |
+| `visibility`  | `str`            | 可见性, `PUBLIC` 或 `PRIVATE`                 |
+| `createdAt`   | `str`            | 创建时间, 格式如 `2024-11-23T12:28:04.286Z`   |
+| `updatedAt`   | `str`            | 更新时间, 格式如 `2024-11-23T12:28:04.286Z`   |
+| `group`       | `Dict[str, str]` | 工作空间信息, 包含 `type`, `username`, `name` |
+| `count`       | `Dict[str, int]` | 项目的统计信息, 如实验个数, 协作者数量等      |
 
 ## OpenAPIs
 
@@ -183,11 +182,11 @@ workspace_name: str = my_project.group["name"]
 
 `data` `(List[Dict])`: 用户加入的工作空间列表, 每个元素是一个字典, 包含工作空间的基础信息:
 
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `name` | `str` | 工作空间名称 |
-| `username` | `str` | 工作空间唯一标识(用于组织相关的 URL) |
-| `role` | `str` | 用户在该工作空间中的角色, 为 `OWNER` 或 `MEMBER` |
+| 字段       | 类型  | 描述                                             |
+| ---------- | ----- | ------------------------------------------------ |
+| `name`     | `str` | 工作空间名称                                     |
+| `username` | `str` | 工作空间唯一标识(用于组织相关的 URL)             |
+| `role`     | `str` | 用户在该工作空间中的角色, 为 `OWNER` 或 `MEMBER` |
 
 **示例**
 
@@ -248,9 +247,9 @@ my_api.list_workspaces().code
 
 **方法参数**
 
-| 参数  | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
+| 参数       | 类型  | 描述                           |
+| ---------- | ----- | ------------------------------ |
+| `project`  | `str` | 项目名                         |
 | `username` | `str` | 工作空间名, 默认为用户个人空间 |
 
 **返回值**
@@ -313,11 +312,11 @@ my_api.list_experiments(project="project1").data[0].name
 
 **方法参数**
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
-| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
-| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+| 参数       | 类型  | 描述                                                                                 |
+| ---------- | ----- | ------------------------------------------------------------------------------------ |
+| `project`  | `str` | 项目名                                                                               |
+| `exp_id`   | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间                                                       |
 
 **返回值**
 
@@ -401,11 +400,11 @@ my_api.delete_experiment(project="project1", exp_id="cuid1")
 
 **方法参数**
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
-| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
-| `username` | `str` | 工作空间名, 默认为用户个人空间 |
+| 参数       | 类型  | 描述                                                                                 |
+| ---------- | ----- | ------------------------------------------------------------------------------------ |
+| `project`  | `str` | 项目名                                                                               |
+| `exp_id`   | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
+| `username` | `str` | 工作空间名, 默认为用户个人空间                                                       |
 
 **返回值**
 
@@ -413,13 +412,12 @@ my_api.delete_experiment(project="project1", exp_id="cuid1")
 
 字典中的每个键是一个指标名称, 值是一个结构如下的字典:
 
-| 字段 | 类型 | 描述 |
-| --- | --- | --- |
-| `step` | `int` | 最后一个步数 |
-| `value` | `float` | 最后一个步数的指标值 |
-| `min` | `Dict[str, float]` | 最小值对应的步数和指标值 |
-| `max` | `Dict[str, float]` | 最大值对应的步数和指标值 |
-
+| 字段    | 类型               | 描述                     |
+| ------- | ------------------ | ------------------------ |
+| `step`  | `int`              | 最后一个步数             |
+| `value` | `float`            | 最后一个步数的指标值     |
+| `min`   | `Dict[str, float]` | 最小值对应的步数和指标值 |
+| `max`   | `Dict[str, float]` | 最大值对应的步数和指标值 |
 
 **示例**
 
@@ -446,7 +444,6 @@ my_api.get_summary(project="project1", exp_id="cuid1").data
 """
 ```
 
-
 ```python [获取指标的最大值]
 my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["max"]["value"]
 """
@@ -460,6 +457,7 @@ my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step
 33
 """
 ```
+
 :::
 
 <br>
@@ -470,10 +468,10 @@ my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step
 
 **方法参数**
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `exp_id` | `str` | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看 |
-| `keys` | `Union[str, List[str]]` | 指标名列表, 即swanlab.log({key: value})中的key, 可在网站查看, 也可通过`get_summary`获取 |
+| 参数     | 类型                    | 描述                                                                                    |
+| -------- | ----------------------- | --------------------------------------------------------------------------------------- |
+| `exp_id` | `str`                   | 实验CUID, 唯一标识符, 可通过`list_experiments`获取, 也可在云端版实验"环境"标签页查看    |
+| `keys`   | `Union[str, List[str]]` | 指标名列表, 即swanlab.log({key: value})中的key, 可在网站查看, 也可通过`get_summary`获取 |
 
 **返回值**
 
@@ -487,7 +485,7 @@ my_api.get_summary(project="project1", exp_id="cuid1").data["loss"]["min"]["step
 my_api.get_metrics(exp_id="cuid1", keys=["loss", "acc"]).data
 """
           loss  loss_timestamp       acc  acc_timestamp
-step                                                   
+step
 1     0.336772   1751712864853  0.670422  1751712864852
 2     0.338035   1751712864858  0.830018  1751712864857
 3     0.282654   1751712864862  0.794594  1751712864862
@@ -501,11 +499,9 @@ step
 
 :::
 
-
 <br>
 
 ---
-
 
 ### Project
 
@@ -515,10 +511,10 @@ step
 
 **方法参数**
 
-| 参数  | 类型 | 描述 |
-| --- | --- | --- |
-| `username` | `str` | 工作空间名, 默认为用户个人空间 |
-| `detail` | `bool` | 是否项目统计信息, 默认为 True |
+| 参数       | 类型   | 描述                           |
+| ---------- | ------ | ------------------------------ |
+| `username` | `str`  | 工作空间名, 默认为用户个人空间 |
+| `detail`   | `bool` | 是否项目统计信息, 默认为 True  |
 
 **返回值**
 
@@ -564,9 +560,9 @@ my_api.list_projects().data
 
 **方法参数**
 
-| 参数 | 类型 | 描述 |
-| --- | --- | --- |
-| `project` | `str` | 项目名 |
+| 参数       | 类型  | 描述                           |
+| ---------- | ----- | ------------------------------ |
+| `project`  | `str` | 项目名                         |
 | `username` | `str` | 工作空间名, 默认为用户个人空间 |
 
 **返回值**

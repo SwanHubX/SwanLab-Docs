@@ -8,7 +8,6 @@
 
 你可以使用SpecForge快速进行模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
-
 ## 将SpecForge集成SwanLab
 
 > 参考文档：https://docs.sglang.io/SpecForge/basic_usage/training.html#experiment-tracking
@@ -30,4 +29,3 @@ torchrun \
     --batch-size 32 \
     --report-to swanlab
 ```
-

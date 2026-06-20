@@ -185,7 +185,7 @@ gripper         |   2020 |   2081 |   3391
 ```bash
 python -m lerobot.calibrate \
     --teleop.type=so101_leader \
-    --teleop.port=/dev/tty.usbmodem5A7A0161371 \ 
+    --teleop.port=/dev/tty.usbmodem5A7A0161371 \
     --teleop.id=my_blue_leader_arm
 ```
 
@@ -233,7 +233,7 @@ Recording positions. Press ENTER to stop...
 python -m lerobot.find_cameras opencv
 ```
 
->  更多相关内容参考：[Cameras](https://huggingface.co/docs/lerobot/cameras)
+> 更多相关内容参考：[Cameras](https://huggingface.co/docs/lerobot/cameras)
 
 可以使用以下 Python 脚本检查摄像头的状况，是否能正常使用：
 
@@ -393,7 +393,7 @@ dataset.push_to_hub()
 
 上述的代码中有一些重要参数需要自行修改
 
--  `SO100FollowerConfig` 和 `SO100LeaderConfig` 需要改成自己的机械臂的配置，需要修改 `port` 和 `id` 参数。
+- `SO100FollowerConfig` 和 `SO100LeaderConfig` 需要改成自己的机械臂的配置，需要修改 `port` 和 `id` 参数。
 - `<hf_username>/<dataset_repo_id>` 为Hugging Face 存储库的路径，需要使用自己的存储库路径，例如：`swanlab101/lerobot`。
 
 然后是一些全局配置参数，这些参数可以选择性更改，这里只做一个解释性说明：
@@ -503,7 +503,7 @@ python -m lerobot.scripts.train \
 
 训练大概需要几个小时的时间。在 3060 的 8G 笔记本上使用 50 组数据训练的时间大概为 6 小时，在 4090 和 A100 的电脑上使用 50 组数据训练的时间大概为 2~3 小时。
 
-::: details 命令行示例输出 
+::: details 命令行示例输出
 
 ```bash
 swanlab: 👋 Hi ink,welcome to swanlab!
@@ -673,4 +673,3 @@ dataset.push_to_hub()
 - [LeRobot 官方文档](https://huggingface.co/docs/lerobot/index)
 - [SO101 机械臂淘宝购买链接](https://item.taobao.com/item.htm?ali_trackid=2%3Amm_7587494315_3230200107_115939450462%3A1752723707645_554211053_0&bxsign=tbk5vSLE-62O97Or9VaJAjw5S3OKWmab7-z32DrQ05EAZ5wURXVAqGEK07y49vI0Gv46kNi9NtLNfx3lJJq50RWzGgfWOYS4UXVj1KT7Bx6Ue05TNdo_qHq8mJqBQerRa7N1D2J4ymc4BuoAgmDTgq4M7oXrg2QG3wfsGMA3f5nwRx6RKBu6IuGXUtOv6plztbN&id=878010637397&skuId=5915703371831&union_lens=lensId%3APUB%401742290075%4021662a24_0e69_195a894c064_d4e6%40023oEhJMJDAYtsRzhzp9pESW%40eyJmbG9vcklkIjo4MDY3NCwiic3BtQiiI6Il9wb3J0YWxfdjJfcGFnZXNfcHJvbW9fZ29vZHNfaW5kZXhfaHRtIiiwiic3JjRmxvb3JJZCI6IjgwNjc0In0ie%3BtkScm%3AselectionPlaza_site_4358_0_0_0_30_17422900758127587494315%3Bscm%3A1007.30148.424730.pub_search-item_034ace60-dfa1-4b94-8e7c-d9c9b4cd4b97_%3Brecoveryid%3A554211053_0%401752723707647)
 - [SwanLab 官网](https://swanlab.cn/)
-

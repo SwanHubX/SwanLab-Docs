@@ -83,7 +83,6 @@ swanlab.init(callbacks=[my_plugin])
 
 ![image](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/custom-plugin/print.png)
 
-
 ## 案例：指标打印与告警
 
 我们来实现一个插件，这个插件的功能是打印指标，并当指标`acc`大于0.9时，打印1条消息，并发送告警。
@@ -142,8 +141,6 @@ for epoch in range(2, epochs):
 执行上述代码，你会在控制台看到
 
 ![image](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/custom-plugin/threshold.png)
-
-
 
 ## 学习更多插件
 

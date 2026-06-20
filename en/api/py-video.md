@@ -9,10 +9,10 @@ Video(
 ) -> None
 ```
 
-| Parameter    | Description                                                                                            |
-|--------------|--------------------------------------------------------------------------------------------------------|
-| data_or_path | (str) Accepts a video file path. Currently only supports GIF format files. |
-| caption      | (str) The label for the video. Used to mark the video when displayed in the experiment dashboard.       |
+| Parameter    | Description                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| data_or_path | (str) Accepts a video file path. Currently only supports GIF format files.                        |
+| caption      | (str) The label for the video. Used to mark the video when displayed in the experiment dashboard. |
 
 ## Introduction
 
@@ -66,7 +66,7 @@ swanlab.init()
 def create_mock_gif(output_path, width=200, height=200, frames=10, duration=100):
     """
     Create a simple mock GIF animation
-    
+
     Parameters:
         output_path: Output GIF file path
         width: Image width (pixels)
@@ -75,26 +75,26 @@ def create_mock_gif(output_path, width=200, height=200, frames=10, duration=100)
         duration: Display time per frame (milliseconds)
     """
     images = []
-    
+
     for i in range(frames):
         # Create a new RGB image
         img = PILImage.new('RGB', (width, height), color=(255, 255, 255))
         draw = ImageDraw.Draw(img)
-        
+
         # Generate random colors
         r = random.randint(0, 255)
         g = random.randint(0, 255)
         b = random.randint(0, 255)
-        
+
         # Draw a random circle on the image
         x = random.randint(0, width)
         y = random.randint(0, height)
         radius = random.randint(10, min(width, height) // 2)
         draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill=(r, g, b))
-        
+
         # Add current frame to the list
         images.append(img)
-    
+
     # Save as GIF animation
     images[0].save(output_path, save_all=True, append_images=images[1:], duration=duration, loop=0)
 

@@ -1,15 +1,15 @@
 # swanlab watch
 
-``` bash
+```bash
 swanlab watch [OPTIONS]
 ```
 
-| Option | Description | Example |
-| --- | --- | --- |
-| `-p`, `--port` | Set the port for the experiment dashboard web service to run on, default is **5092**. | `swanlab watch -p 8080`: Set the experiment dashboard web service to port 8080 |
-| `-h`, `--host` | Set the IP address for the experiment dashboard web service to run on, default is **127.0.0.1**. | `swanlab watch -h 0.0.0.0`: Set the experiment dashboard web service IP address to 0.0.0.0 |
+| Option           | Description                                                                                        | Example                                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `-p`, `--port`   | Set the port for the experiment dashboard web service to run on, default is **5092**.              | `swanlab watch -p 8080`: Set the experiment dashboard web service to port 8080                          |
+| `-h`, `--host`   | Set the IP address for the experiment dashboard web service to run on, default is **127.0.0.1**.   | `swanlab watch -h 0.0.0.0`: Set the experiment dashboard web service IP address to 0.0.0.0              |
 | `-l`, `--logdir` | Set the log file path for the experiment dashboard web service to read from, default is `swanlog`. | `swanlab watch --logdir ./logs`: Set the logs folder in the current directory as the log file read path |
-| `--help` | View terminal help information. | `swanlab watch --help` |
+| `--help`         | View terminal help information.                                                                    | `swanlab watch --help`                                                                                  |
 
 ## Introduction
 
@@ -29,6 +29,7 @@ swanlab watch -l [logfile_path]
 Where `logfile_path` is the path to the log folder, which can be an absolute or relative path. If your log folder name is the default `swanlog`, you can also start it directly with `swanlab watch` without the `-l` option.
 
 After executing the command, you will see the following output:
+
 ```bash{6}
 swanlab watch -l [logfile_path]
 
@@ -50,6 +51,7 @@ swanlab watch -h 0.0.0.0
 ```
 
 If you need to set the port:
+
 ```bash
 swanlab watch -h 0.0.0.0 -p 8080
 ```

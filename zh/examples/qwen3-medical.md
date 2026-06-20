@@ -88,9 +88,9 @@ pip install swanlab modelscope==1.22.0 "transformers>=4.50.0" datasets==3.2.0 ac
 
 ```json
 {
-"question": "我父亲刚刚被诊断为活动性出血，医生说需要立即处理，我们该怎么做？", 
-"think": "嗯，用户的问题是关于病人出现活动性出血时应采取哪些一般处理措施，...",
-"answer": "首先，您父亲需要卧床休息，活动性出血期间暂时不要进食。为了...",
+  "question": "我父亲刚刚被诊断为活动性出血，医生说需要立即处理，我们该怎么做？",
+  "think": "嗯，用户的问题是关于病人出现活动性出血时应采取哪些一般处理措施，...",
+  "answer": "首先，您父亲需要卧床休息，活动性出血期间暂时不要进食。为了..."
 }
 ```
 
@@ -188,7 +188,6 @@ trainer = Trainer(..., args=args)
 
 ![09-07](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/qwen3/07.png)
 
-
 ## 5. 完整代码
 
 开始训练时的目录结构：
@@ -249,7 +248,7 @@ def dataset_jsonl_transfer(origin_path, new_path):
 def process_func(example):
     """
     将数据集进行预处理
-    """ 
+    """
     input_ids, attention_mask, labels = [], [], []
     instruction = tokenizer(
         f"<|im_start|>system\n{PROMPT}<|im_end|>\n<|im_start|>user\n{example['input']}<|im_end|>\n<|im_start|>assistant\n",
@@ -265,7 +264,7 @@ def process_func(example):
         input_ids = input_ids[:MAX_LENGTH]
         attention_mask = attention_mask[:MAX_LENGTH]
         labels = labels[:MAX_LENGTH]
-    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}   
+    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
 def predict(messages, model, tokenizer):
     device = "cuda"
@@ -366,7 +365,7 @@ for index, row in test_df.iterrows():
 
     LLM:{response}
     """
-    
+
     test_text_list.append(swanlab.Text(response_text))
     print(response_text)
 
@@ -379,7 +378,6 @@ swanlab.finish()
 
 ![09-08](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/qwen3/08.png)
 
-
 ## 6. 训练结果演示
 
 在SwanLab上查看最终的训练结果：
@@ -391,7 +389,6 @@ swanlab.finish()
 让我们分析一下吧！使用**「创建折线图」**功能，把train loss和eval loss放到一张图上：
 
 ![09-10](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/qwen3/10.png)
-
 
 蓝色的是train loss，绿色的式eval loss，可以看到发生了经典的**过拟合**现象：train loss会在epoch的交替阶段，阶梯式下降；而val loss在第1轮epoch是下降的，但是第二轮反而上升了，符合机器学习中经典过拟合的定义。
 
@@ -496,4 +493,3 @@ print(response)
 - 模型：[ModelScope](https://modelscope.cn/models/Qwen/Qwen3-1.7B)
 - 数据集：[delicate_medical_r1_data](https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
-

@@ -48,7 +48,7 @@ csv_writer = CSVWriter(dir="logs")
 swanlab.init(
     # Set the project name
     project="my-awesome-project",
-    
+
     # Set hyperparameters
     config={
         "learning_rate": 0.02,

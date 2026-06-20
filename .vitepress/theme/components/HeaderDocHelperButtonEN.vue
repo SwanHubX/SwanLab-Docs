@@ -1,7 +1,7 @@
 <script setup>
 // Deprecated: Docs Copilot / 文档助手 is offline; keep this component for rollback.
-import { useData } from 'vitepress'
-const { isDark } = useData()
+import { useData } from "vitepress";
+const { isDark } = useData();
 </script>
 
 <template>
@@ -12,18 +12,8 @@ const { isDark } = useData()
     rel="noopener"
     aria-label="Document Copilot"
   >
-    <img
-      v-if="!isDark"
-      src="/chat-black.svg"
-      alt="Document Copilot"
-      class="doc-helper-logo"
-    />
-    <img
-      v-else
-      src="/chat-white.svg"
-      alt="Document Copilot"
-      class="doc-helper-logo"
-    />
+    <img v-if="!isDark" src="/chat-black.svg" alt="Document Copilot" class="doc-helper-logo" />
+    <img v-else src="/chat-white.svg" alt="Document Copilot" class="doc-helper-logo" />
     <span>Docs Copilot</span>
   </a>
 </template>

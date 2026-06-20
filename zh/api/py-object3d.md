@@ -2,11 +2,10 @@
 
 [Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/object3d/__init__.py)
 
-| 参数        | 描述   |
-|-----------|---------------|
-| data | (Union[np.ndarray, str, Path]) 接收点云文件路径、numpy数组。Object3D类将判断接收的数据类型做相应的转换。                                      |              |
-| caption   | (str) 3D对象的标签。用于在实验看板中展示3D对象时进行标记。                                                                                                                 |
-
+| 参数    | 描述                                                                                                     |
+| ------- | -------------------------------------------------------------------------------------------------------- | --- |
+| data    | (Union[np.ndarray, str, Path]) 接收点云文件路径、numpy数组。Object3D类将判断接收的数据类型做相应的转换。 |     |
+| caption | (str) 3D对象的标签。用于在实验看板中展示3D对象时进行标记。                                               |
 
 ## 介绍
 
@@ -46,19 +45,19 @@ data.swanlab.pts.json：[Google Drive下载](https://drive.google.com/file/d/1mF
 
 **json文件参数详细解释：**
 
-* **`points`**：
-    * 这是一个数组，用于存储3D点云数据。
-    * 每个元素都是一个包含6个数值的数组 `[x, y, z, r, g, b]`，分别代表：
-        * `x`, `y`, `z`：点的三维坐标。
-        * `r`, `g`, `b`：点的颜色，分别代表红、绿、蓝三个通道的数值，通常取值范围为0-255。
+- **`points`**：
+  - 这是一个数组，用于存储3D点云数据。
+  - 每个元素都是一个包含6个数值的数组 `[x, y, z, r, g, b]`，分别代表：
+    - `x`, `y`, `z`：点的三维坐标。
+    - `r`, `g`, `b`：点的颜色，分别代表红、绿、蓝三个通道的数值，通常取值范围为0-255。
 
-* **`boxes`**（可选）：
-    * 这是一个数组，用于存储3D检测框数据。
-    * 每个元素都是一个对象，代表一个检测框，包含以下字段：
-        * **`color`**：检测框的颜色，`[r, g, b]` 数组，代表红、绿、蓝三个通道的数值。
-        * **`corners`**：检测框的八个顶点坐标，`[[x1, y1, z1], ..., [x8, y8, z8]]` 数组，每个元素是一个三维坐标 `[x, y, z]`。
-        * **`label`**（可选）：检测框的标签文本，字符串类型，用于在视图中显示检测框的类别。
-        * **`score`**（可选）：检测框的置信度，数值类型，通常取值范围为0-1，用于表示检测框的可靠程度。
+- **`boxes`**（可选）：
+  - 这是一个数组，用于存储3D检测框数据。
+  - 每个元素都是一个对象，代表一个检测框，包含以下字段：
+    - **`color`**：检测框的颜色，`[r, g, b]` 数组，代表红、绿、蓝三个通道的数值。
+    - **`corners`**：检测框的八个顶点坐标，`[[x1, y1, z1], ..., [x8, y8, z8]]` 数组，每个元素是一个三维坐标 `[x, y, z]`。
+    - **`label`**（可选）：检测框的标签文本，字符串类型，用于在视图中显示检测框的类别。
+    - **`score`**（可选）：检测框的置信度，数值类型，通常取值范围为0-1，用于表示检测框的可靠程度。
 
 ---
 
@@ -91,8 +90,8 @@ obj = swanlab.Object3D.from_point_data(
 
 swanlab.log({"examples": obj})
 ```
-:::
 
+:::
 
 <video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/api/py-object3d/video.mp4"></video>
 
@@ -143,6 +142,7 @@ points_xyzrgb = np.array([
 cloud_xyzrgb = swanlab.Object3D(points_xyzrgb, caption="Colored Points")
 swanlab.log({"examples": cloud_xyzrgb})
 ```
+
 :::
 
 ### 单步记录多个点云

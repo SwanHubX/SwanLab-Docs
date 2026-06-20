@@ -17,7 +17,7 @@
 
 首先是**清楚的表达**，比如你在分析一张发票的时候，如果仅仅需要金额数据，但是没有表达清楚，那么可能默认输出所有的数据，比如：
 
-*提示词* ：
+_提示词_ ：
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/prompt_engineering_course/07-multimodal_prompt/picture/fapiao.png" alt="普通发票" style="zoom:50%;" />
 
@@ -25,7 +25,7 @@
 请提取发票中的信息，并按照json格式输出
 ```
 
-*结果* ：
+_结果_ ：
 
 ```plaintext
 {
@@ -58,13 +58,13 @@
 }
 ```
 
-*准确的提示词* ：
+_准确的提示词_ ：
 
 ```plaintext
 请提取发票中的给出的合计的金额，并按照json格式输出
 ```
 
-*结果* ：
+_结果_ ：
 
 ```plaintext
 {
@@ -76,19 +76,16 @@
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/prompt_engineering_course/07-multimodal_prompt/picture/Agent.png" alt="框出部分的Agent原理图" style="zoom:50%;" />
 
-
-
-*提示词* ：
+_提示词_ ：
 
 ```plaintext
 请你解释红框中的原理
 ```
 
-*回答* ：
+_回答_ ：
 
 <details>
 <summary>点击展开完整回答内容</summary>
-
 
 ```plaintext
 红框部分展示了大脑的内部工作原理，具体包括记忆、知识存储、决策制定和推理等过程。以下是这些部分的详细解释：
@@ -172,7 +169,7 @@ completion = client.chat.completions.create(
         {"role": "user","content": [{
             # 直接传入视频文件时，请将type的值设置为video_url
             # 使用OpenAI SDK时，视频文件默认每间隔0.5秒抽取一帧，且不支持修改，如需自定义抽帧频率，请使用DashScope SDK.
-            "type": "video_url",            
+            "type": "video_url",
             "video_url": {"url": "https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20241115/cqqkru/1.mp4"}},
             {"type": "text","text": "这段视频的内容是什么?"}]
          }]
@@ -180,7 +177,7 @@ completion = client.chat.completions.create(
 print(completion.choices[0].message.content)
 ```
 
-*回答* ：
+_回答_ ：
 
 ```plaintext
 这段视频展示了一位年轻女性的特写镜头。她有着短发，面带微笑，看起来非常开心和友好。她的穿着是一件粉色的针织开衫搭配白色的内搭，整体风格显得很清新自然。背景模糊，但可以看出是在户外，可能是一个校园或住宅区。
@@ -191,7 +188,6 @@ print(completion.choices[0].message.content)
 ```
 
 至此，已完成了视频分析的任务。
-
 
 ## 音频分析
 
@@ -205,12 +201,3 @@ print(completion.choices[0].message.content)
 其难点在于计算量：一秒音频可对应数百个声学token，需引入RVQ降采样、稀疏注意力、局部-全局双层Transformer等技巧，才能将上下文拉到分钟级。实际落地中，两种路线并非互斥。客服、导航等对精度敏感、延迟容忍高的场景仍倾向ASR-TTS，可控且易纠错；社交、创作、情感陪伴类应用更青睐端到端声学LLM，可保留副语言信息并生成更自然的韵律。
 
 未来趋势是“可路由混合架构”：系统先用轻量听写模型判断是否需要保留声学细节，简单请求走文本LLM，复杂情感请求走声学LLM，实现成本与体验的动态平衡。
-
-
-
-
-
-
-
-
-

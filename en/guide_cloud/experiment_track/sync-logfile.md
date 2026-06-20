@@ -3,6 +3,7 @@
 > Synchronize local experiment data to SwanLab cloud/private deployment
 
 **Use Cases:**
+
 1. **Network interruption during training:** The server lost connection for 1 hour during model training, causing SwanLab cloud records to break.
 2. **Training environment without internet:** You unfortunately discover that your company/school's training server has no internet access and doesn't allow Docker installation.
 3. **Multi-device synchronization:** You're using private deployment but also want to sync experiment records to the cloud.

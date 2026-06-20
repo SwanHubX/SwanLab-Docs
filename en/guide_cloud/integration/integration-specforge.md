@@ -1,18 +1,18 @@
-# SpecForge  
+# SpecForge
 
-[SpecForge](https://github.com/sgl-project/SpecForge) is an ecosystem project developed by the SGLang team. It is a framework for training speculative decoding models, enabling developers to seamlessly integrate them into the SGLang service framework to accelerate inference speed.  
+[SpecForge](https://github.com/sgl-project/SpecForge) is an ecosystem project developed by the SGLang team. It is a framework for training speculative decoding models, enabling developers to seamlessly integrate them into the SGLang service framework to accelerate inference speed.
 
-![specforge](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/specforge/logo.png)  
+![specforge](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/guide_cloud/integration/specforge/logo.png)
 
-- SpecForge Official Documentation: https://docs.sglang.io/SpecForge/basic_usage/training.html  
+- SpecForge Official Documentation: https://docs.sglang.io/SpecForge/basic_usage/training.html
 
-You can use SpecForge for rapid model training while employing SwanLab for experiment tracking and visualization.  
+You can use SpecForge for rapid model training while employing SwanLab for experiment tracking and visualization.
 
-## Integrating SpecForge with SwanLab  
+## Integrating SpecForge with SwanLab
 
-> Reference Documentation: https://docs.sglang.io/SpecForge/basic_usage/training.html#experiment-tracking  
+> Reference Documentation: https://docs.sglang.io/SpecForge/basic_usage/training.html#experiment-tracking
 
-Simply add the `--report-to` parameter to the command line of the shell script provided by SpecForge and pass `swanlab` as its value.  
+Simply add the `--report-to` parameter to the command line of the shell script provided by SpecForge and pass `swanlab` as its value.
 
 ```bash {13}
 torchrun \

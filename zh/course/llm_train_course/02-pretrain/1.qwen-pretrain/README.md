@@ -8,11 +8,11 @@
 
 虽然网上有大量关于transformer理论、大语言模型微调的教程。但是少有关于预训练的解释。本文则从如何自己实战预训练一个大语言模型的角度，使用wiki数据集进行一个简单的从零预训练工作，并附上使用swanlab launch白嫖显卡的方法
 
-* 本教程完整代码：[GitHub](https://github.com/ShaohonChen/transformers_from_scratch)
+- 本教程完整代码：[GitHub](https://github.com/ShaohonChen/transformers_from_scratch)
 
-* 实验记录：[SwanLab](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)
+- 实验记录：[SwanLab](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)
 
-* 数据集下载：[百度网盘（j8ee）](https://pan.baidu.com/s/1p5F52bRlnpSY7F78q0hz7A?pwd=j8ee)，[huggingface](https://huggingface.co/datasets/fjcanyue/wikipedia-zh-cn)
+- 数据集下载：[百度网盘（j8ee）](https://pan.baidu.com/s/1p5F52bRlnpSY7F78q0hz7A?pwd=j8ee)，[huggingface](https://huggingface.co/datasets/fjcanyue/wikipedia-zh-cn)
 
 ## 安装环境
 
@@ -353,13 +353,13 @@ print("GENERATE:", pipe("人工智能", num_return_sequences=1)[0]["generated_te
 推理效果如下：
 
 （模型训练ing，可以在[https://swanlab.cn/@ShaohonChen/WikiLLM/overview](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)实时查看训练进展和推理效果）
-<!-- ![result]() -->
 
+<!-- ![result]() -->
 
 ## 参考链接
 
-* 本教程完整代码:[GitHub](https://github.com/ShaohonChen/transformers_from_scratch)
+- 本教程完整代码:[GitHub](https://github.com/ShaohonChen/transformers_from_scratch)
 
-* 实验记录：[SwanLab](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)
+- 实验记录：[SwanLab](https://swanlab.cn/@ShaohonChen/WikiLLM/overview)
 
-* 数据集下载：[百度网盘（j8ee）](https://pan.baidu.com/s/1p5F52bRlnpSY7F78q0hz7A?pwd=j8ee)，[huggingface](https://huggingface.co/datasets/fjcanyue/wikipedia-zh-cn)
+- 数据集下载：[百度网盘（j8ee）](https://pan.baidu.com/s/1p5F52bRlnpSY7F78q0hz7A?pwd=j8ee)，[huggingface](https://huggingface.co/datasets/fjcanyue/wikipedia-zh-cn)

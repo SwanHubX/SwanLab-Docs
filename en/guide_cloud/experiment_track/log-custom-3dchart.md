@@ -1,8 +1,8 @@
 # Log Custom 3D Chart
 
-SwanLab provides API compatibility with [pyecharts](https://pyecharts.org/#/en-us/intro), enabling seamless recording of pyecharts charts to SwanLab for rich visualization. Click the tag below for an online demo:  
+SwanLab provides API compatibility with [pyecharts](https://pyecharts.org/#/en-us/intro), enabling seamless recording of pyecharts charts to SwanLab for rich visualization. Click the tag below for an online demo:
 
-[![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/visualization_swanlab.svg)](https://swanlab.cn/@ZeyiLin/swanlab-echarts-3d-demo/charts)  
+[![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/visualization_swanlab.svg)](https://swanlab.cn/@ZeyiLin/swanlab-echarts-3d-demo/charts)
 
 ## Bar3D
 

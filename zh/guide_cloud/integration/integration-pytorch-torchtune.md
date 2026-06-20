@@ -32,7 +32,6 @@ metric_logger:
 
 其中，`_component_`对应的`swanlab.integration.torchtune.SwanLabLogger`是适配于PyTorch torchtune的日志记录类。而`project`、`experiment_name`等则是创建SwanLab项目传入的参数，支持传入的参数与[swanlab.init](../../api/py-init.md)规则一致。
 
-
 ## 2. 开始训练
 
 ```bash

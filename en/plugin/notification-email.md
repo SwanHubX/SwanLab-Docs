@@ -15,16 +15,19 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 Before using the plugin, you need to enable **SMTP service** for your email. Taking QQ Mail as an example:
 
 **Step 1: Access Email Settings**
+
 - Go to the QQ Mail webpage, click the "Settings" at the top.
 - In the settings menu, select the "Account" option.
 
 **Step 2: Enable SMTP Service**
+
 - Locate **"POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV Service"**.
 - Next to "Service Status," click **"Enable Service"**.
 - After completing some identity verification steps, **enable the SMTP service**.
 - (Important) Save the **authorization code** provided to you.
 
 **Step 3: Record the Following Information**
+
 - **SMTP Server Address**: smtp.qq.com
 - **Port**: 465 (SSL encryption) or 587 (TLS encryption)
 - **Sender Email**: Your full QQ email address (e.g., 123456789@qq.com)

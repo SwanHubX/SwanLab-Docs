@@ -1,4 +1,4 @@
-# 欢迎使用SwanLab 
+# 欢迎使用SwanLab
 
 [快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/index.md) · [GitHub](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
@@ -16,25 +16,25 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 ## 📹在线演示
 
-| [ResNet50 猫狗分类][demo-cats-dogs] | [Yolov8-COCO128 目标检测][demo-yolo] |
-| :--------: | :--------: |
-| [![][demo-cats-dogs-image]][demo-cats-dogs] | [![][demo-yolo-image]][demo-yolo] |
+|              [ResNet50 猫狗分类][demo-cats-dogs]               |                  [Yolov8-COCO128 目标检测][demo-yolo]                   |
+| :------------------------------------------------------------: | :---------------------------------------------------------------------: |
+|          [![][demo-cats-dogs-image]][demo-cats-dogs]           |                    [![][demo-yolo-image]][demo-yolo]                    |
 | 跟踪一个简单的 ResNet50 模型在猫狗数据集上训练的图像分类任务。 | 使用 Yolov8 在 COCO128 数据集上进行目标检测任务，跟踪训练超参数和指标。 |
 
-| [Qwen2 指令微调][demo-qwen2-sft] | [LSTM Google 股票预测][demo-google-stock] |
-| :--------: | :--------: |
-| [![][demo-qwen2-sft-image]][demo-qwen2-sft] | [![][demo-google-stock-image]][demo-google-stock] |
+|             [Qwen2 指令微调][demo-qwen2-sft]              |               [LSTM Google 股票预测][demo-google-stock]                |
+| :-------------------------------------------------------: | :--------------------------------------------------------------------: |
+|        [![][demo-qwen2-sft-image]][demo-qwen2-sft]        |           [![][demo-google-stock-image]][demo-google-stock]            |
 | 跟踪 Qwen2 大语言模型的指令微调训练，完成简单的指令遵循。 | 使用简单的 LSTM 模型在 Google 股价数据集上训练，实现对未来股价的预测。 |
 
-| [ResNeXt101 音频分类][demo-audio-classification] | [Qwen2-VL COCO数据集微调][demo-qwen2-vl] |
-| :--------: | :--------: |
-| [![][demo-audio-classification-image]][demo-audio-classification] | [![][demo-qwen2-vl-image]][demo-qwen2-vl] |
-| 从ResNet到ResNeXt在音频分类任务上的渐进式实验过程 | 基于Qwen2-VL多模态大模型，在COCO2014数据集上进行Lora微调。 |
+|         [ResNeXt101 音频分类][demo-audio-classification]          |          [Qwen2-VL COCO数据集微调][demo-qwen2-vl]          |
+| :---------------------------------------------------------------: | :--------------------------------------------------------: |
+| [![][demo-audio-classification-image]][demo-audio-classification] |         [![][demo-qwen2-vl-image]][demo-qwen2-vl]          |
+|         从ResNet到ResNeXt在音频分类任务上的渐进式实验过程         | 基于Qwen2-VL多模态大模型，在COCO2014数据集上进行Lora微调。 |
 
-| [EasyR1 多模态LLM RL训练][demo-easyr1-rl] | [Qwen2.5-0.5B GRPO训练][demo-qwen2-grpo] |
-| :--------: | :--------: |
-| [![][demo-easyr1-rl-image]][demo-easyr1-rl] | [![][demo-qwen2-grpo-image]][demo-qwen2-grpo] |
-| 使用EasyR1框架进行多模态LLM RL训练 | 基于Qwen2.5-0.5B模型在GSM8k数据集上进行GRPO训练 |
+|  [EasyR1 多模态LLM RL训练][demo-easyr1-rl]  |    [Qwen2.5-0.5B GRPO训练][demo-qwen2-grpo]     |
+| :-----------------------------------------: | :---------------------------------------------: |
+| [![][demo-easyr1-rl-image]][demo-easyr1-rl] |  [![][demo-qwen2-grpo-image]][demo-qwen2-grpo]  |
+|     使用EasyR1框架进行多模态LLM RL训练      | 基于Qwen2.5-0.5B模型在GSM8k数据集上进行GRPO训练 |
 
 视频Demo：
 
@@ -62,7 +62,6 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - **后台自动记录**：日志logging、硬件环境、Git 仓库、Python 环境、Python 库列表、项目运行目录
 - **断点续训记录**：支持在训练完成/中断后，补充新的指标数据到同个实验中
 
-
 **2. ⚡️ 全面的框架集成**: PyTorch、🤗HuggingFace Transformers、PyTorch Lightning、🦙LLaMA Factory、MMDetection、Ultralytics、PaddleDetection、LightGBM、XGBoost、Keras、TensorBoard、Weights & Biases、Swift、XTuner、Stable Baselines3、Hydra 在内的 **40+** 框架
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/integrations.png)
@@ -83,7 +82,6 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 **9. 🔌 插件拓展**: 支持通过插件拓展SwanLab的使用场景，比如 [飞书通知](https://docs.swanlab.cn/plugin/notification-lark.html)、[Slack通知](https://docs.swanlab.cn/plugin/notification-slack.html)、[CSV记录器](https://docs.swanlab.cn/plugin/writer-csv.html)等
 
-
 ## 为什么使用SwanLab？
 
 与软件工程不同，人工智能是一个**实验性学科**，产生灵感、快速试验、验证想法 是AI研究的主旋律。而记录下实验过程和灵感，就像化学家记录实验手稿一样，是每一个AI研究者、研究组织**形成积累、提升加速度**的核心。
@@ -101,7 +99,6 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 更重要的是，SwanLab是开源的，由一帮热爱开源的机器学习工程师与社区共同构建，我们提供了完全自托管的版本，可以保证你的数据安全与隐私性。
 
 希望以上信息和这份指南可以帮助你了解这款产品，我们相信 SwanLab 能够帮助到你。
-
 
 ## 从哪里开始
 
@@ -123,10 +120,8 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 - **💻持久、集中的仪表板**：
   无论你在何处训练模型，无论是在本地计算机上、在实验室集群还是在公有云的GPU实例中，你的结果都会记录到同一个集中式仪表板中。而使用TensorBoard需要花费时间从不同的机器复制和管理 TFEvent文件。
-  
 - **💪更强大的表格**：
-  通过SwanLab表格可以查看、搜索、过滤来自不同实验的结果，可以轻松查看数千个模型版本并找到适合不同任务的最佳性能模型。 TensorBoard 不适用于大型项目。  
-
+  通过SwanLab表格可以查看、搜索、过滤来自不同实验的结果，可以轻松查看数千个模型版本并找到适合不同任务的最佳性能模型。 TensorBoard 不适用于大型项目。
 
 ### W&B vs SwanLab
 
@@ -140,11 +135,13 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 下面是我们已集成的框架列表，欢迎提交 [Issue](https://github.com/swanhubx/swanlab/issues) 来反馈你想要集成的框架。
 
 **基础框架**
+
 - [PyTorch](/guide_cloud/integration/integration-pytorch.html)
 - [MindSpore](/guide_cloud/integration/integration-ascend.html)
 - [Keras](/guide_cloud/integration/integration-keras.html)
 
 **专有/微调框架**
+
 - [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
 - [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
 - [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
@@ -161,8 +158,8 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [CatBoost](/guide_cloud/integration/integration-catboost.html)
 - [MLX-LM](/guide_cloud/integration/integration-mlx-lm.html)
 
-
 **计算机视觉**
+
 - [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
 - [MMDetection](/guide_cloud/integration/integration-mmdetection.html)
 - [MMSegmentation](/guide_cloud/integration/integration-mmsegmentation.html)
@@ -170,6 +167,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
 
 **强化学习**
+
 - [Stable Baselines3](/guide_cloud/integration/integration-sb3.html)
 - [veRL](/guide_cloud/integration/integration-verl.html)
 - [HuggingFace TRL](/guide_cloud/integration/integration-huggingface-trl.html)
@@ -179,8 +177,8 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
 - [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
 
-
 **其他框架：**
+
 - [TensorBoard](/guide_cloud/integration/integration-tensorboard.html)
 - [Weights & Biases](/guide_cloud/integration/integration-wandb.html)
 - [MLflow](/guide_cloud/integration/integration-mlflow.html)
@@ -205,71 +203,49 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300>
 </div>
 
-
 <!-- link -->
 
 [release-shield]: https://img.shields.io/github/v/release/swanhubx/swanlab?color=369eff&labelColor=black&logo=github&style=flat-square
 [release-link]: https://github.com/swanhubx/swanlab/releases
-
 [license-shield]: https://img.shields.io/badge/license-apache%202.0-white?labelColor=black&style=flat-square
 [license-shield-link]: https://github.com/SwanHubX/SwanLab/blob/main/LICENSE
-
 [last-commit-shield]: https://img.shields.io/github/last-commit/swanhubx/swanlab?color=c4f042&labelColor=black&style=flat-square
 [last-commit-shield-link]: https://github.com/swanhubx/swanlab/commits/main
-
 [pypi-version-shield]: https://img.shields.io/pypi/v/swanlab?color=orange&labelColor=black&style=flat-square
 [pypi-version-shield-link]: https://pypi.org/project/swanlab/
-
 [pypi-downloads-shield]: https://static.pepy.tech/badge/swanlab?labelColor=black&style=flat-square
 [pypi-downloads-shield-link]: https://pepy.tech/project/swanlab
-
 [swanlab-cloud-shield]: https://img.shields.io/badge/Product-SwanLab云端版-636a3f?labelColor=black&style=flat-square
 [swanlab-cloud-shield-link]: https://swanlab.cn/
-
 [wechat-shield]: https://img.shields.io/badge/WeChat-微信-4cb55e?labelColor=black&style=flat-square
 [wechat-shield-link]: https://docs.swanlab.cn/guide_cloud/community/online-support.html
-
 [colab-shield]: https://colab.research.google.com/assets/colab-badge.svg
 [colab-shield-link]: https://colab.research.google.com/drive/1RWsrY_1bS8ECzaHvYtLb_1eBkkdzekR3?usp=sharing
-
 [github-stars-shield]: https://img.shields.io/github/stars/swanhubx/swanlab?labelColor&style=flat-square&color=ffcb47
 [github-stars-link]: https://github.com/swanhubx/swanlab
-
 [github-issues-shield]: https://img.shields.io/github/issues/swanhubx/swanlab?labelColor=black&style=flat-square&color=ff80eb
 [github-issues-shield-link]: https://github.com/swanhubx/swanlab/issues
-
 [github-contributors-shield]: https://img.shields.io/github/contributors/swanhubx/swanlab?color=c4f042&labelColor=black&style=flat-square
 [github-contributors-link]: https://github.com/swanhubx/swanlab/graphs/contributors
-
 [demo-cats-dogs]: https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart
 [demo-cats-dogs-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-catsdogs.png
-
 [demo-yolo]: https://swanlab.cn/@ZeyiLin/ultratest/runs/yux7vclmsmmsar9ear7u5/chart
 [demo-yolo-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-yolo.png
-
 [demo-qwen2-sft]: https://swanlab.cn/@ZeyiLin/Qwen2-fintune/runs/cfg5f8dzkp6vouxzaxlx6/chart
 [demo-qwen2-sft-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen2.png
-
-[demo-google-stock]:https://swanlab.cn/@ZeyiLin/Google-Stock-Prediction/charts
+[demo-google-stock]: https://swanlab.cn/@ZeyiLin/Google-Stock-Prediction/charts
 [demo-google-stock-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-lstm.png
-
-[demo-audio-classification]:https://swanlab.cn/@ZeyiLin/PyTorch_Audio_Classification/charts
+[demo-audio-classification]: https://swanlab.cn/@ZeyiLin/PyTorch_Audio_Classification/charts
 [demo-audio-classification-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-audio-classification.png
-
-[demo-qwen2-vl]:https://swanlab.cn/@ZeyiLin/Qwen2-VL-finetune/runs/pkgest5xhdn3ukpdy6kv5/chart
+[demo-qwen2-vl]: https://swanlab.cn/@ZeyiLin/Qwen2-VL-finetune/runs/pkgest5xhdn3ukpdy6kv5/chart
 [demo-qwen2-vl-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen2-vl.jpg
-
-[demo-easyr1-rl]:https://swanlab.cn/@Kedreamix/easy_r1/runs/wzezd8q36bb6dlza6wtpc/chart
+[demo-easyr1-rl]: https://swanlab.cn/@Kedreamix/easy_r1/runs/wzezd8q36bb6dlza6wtpc/chart
 [demo-easyr1-rl-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-easyr1-rl.png
-
-[demo-qwen2-grpo]:https://swanlab.cn/@kmno4/Qwen-R1/runs/t0zr3ak5r7188mjbjgdsc/chart
+[demo-qwen2-grpo]: https://swanlab.cn/@kmno4/Qwen-R1/runs/t0zr3ak5r7188mjbjgdsc/chart
 [demo-qwen2-grpo-image]: https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen2-grpo.png
-
-[tracking-swanlab-shield-link]:https://swanlab.cn
+[tracking-swanlab-shield-link]: https://swanlab.cn
 [tracking-swanlab-shield]: https://raw.githubusercontent.com/SwanHubX/assets/main/badge2.svg
-
-[visualize-swanlab-shield-link]:https://swanlab.cn
+[visualize-swanlab-shield-link]: https://swanlab.cn
 [visualize-swanlab-shield]: https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg
-
 [dockerhub-shield]: https://img.shields.io/docker/v/swanlab/swanlab-next?color=369eff&label=docker&labelColor=black&logoColor=white&style=flat-square
 [dockerhub-link]: https://hub.docker.com/r/swanlab/swanlab-next/tags

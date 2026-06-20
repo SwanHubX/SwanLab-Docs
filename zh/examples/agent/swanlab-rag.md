@@ -1,6 +1,6 @@
 # 懒人专属：拖入文档=拥有AI文档助手？RAG怎么做？SwanLab文档助手方案开源了！（附详细代码）
 
-**作者**：李晨 、王超  
+**作者**：李晨 、王超
 
 **机构**：新疆大学丝路多语言认知计算国际合作联合实验室研究生、情感机器实习研究员
 
@@ -36,9 +36,10 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
   </figure>
 </div>
 
-------
+---
 
 ## 目录
+
 [[toc]]
 
 ## 数据准备
@@ -47,7 +48,7 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
 
 ### 文档检索
 
- AI助手的知识基础来源于最新、最全的官方文档。首先需要让 AI 拥有“阅读”所有 SwanLab 官方文档的能力。**GitHub作为开发者最熟悉的平台，降低学习成本**。笔者采用**GitHub API作为获取文档的主要技术，技术可信度为一方面，更重要的是确保获取到的资料具有实时性与完整性。**
+AI助手的知识基础来源于最新、最全的官方文档。首先需要让 AI 拥有“阅读”所有 SwanLab 官方文档的能力。**GitHub作为开发者最熟悉的平台，降低学习成本**。笔者采用**GitHub API作为获取文档的主要技术，技术可信度为一方面，更重要的是确保获取到的资料具有实时性与完整性。**
 
 实现过程**使用Python编写了一个网络爬虫脚本，通过调用 GitHub API，自动扫描 SwanLab 文档仓库，获取所有 Markdown 文件的元数据**，如标题、下载链接和对应的官网页面地址保存到`JSON`文件中。工作流程如下所示：
 
@@ -58,17 +59,17 @@ Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prom
   </figure>
 </div>
 
-​														
+​
 
 `swanlab.json`包含文件名、文档地址、网页地址和文档主题，具体如下所示：
 
 ```json
 {
-      "theme": "cli-swanlab-convert",
-      "url": "https://raw.githubusercontent.com/SwanHubX/SwanLab-Docs/main/zh/api/cli-swanlab-convert.md",
-      "html_url": "https://docs.swanlab.cn/api/cli-swanlab-convert.html",
-      "title": "swanlab convert"
- }
+  "theme": "cli-swanlab-convert",
+  "url": "https://raw.githubusercontent.com/SwanHubX/SwanLab-Docs/main/zh/api/cli-swanlab-convert.md",
+  "html_url": "https://docs.swanlab.cn/api/cli-swanlab-convert.html",
+  "title": "swanlab convert"
+}
 ```
 
 ### GitHub API及其使用方法
@@ -82,7 +83,7 @@ API 的核心功能是为用户提供一种以编程方式访问和操作 GitHub
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/agent/assets/rag-git.png" alt="image-20250724121726401"  width="800" />
   <figcaption>自动化Git仓库</figcaption>
   </figure>
-</div>															
+</div>
 
 在代码中GitHub API的具体使用方法：
 
@@ -91,7 +92,7 @@ API 的核心功能是为用户提供一种以编程方式访问和操作 GitHub
 
 #认证与请求头，通过 Authorization: token {token} 请求头进行认证，提高 API 速率限制（未认证用户每小时 60 次请求，认证用户每小时 5000 次）。
 github_token = ""  # 填写为你的GitHub Token
-headers['Authorization'] = f'token {github_token}'  
+headers['Authorization'] = f'token {github_token}'
 # 使用requests 库配置重试机制
 session = requests.Session()
 response = session.get("https://api.github.com/rate_limit", headers=headers, timeout=60)
@@ -124,12 +125,12 @@ for item in contents:
                 f"{'  ' * depth}Added file: {theme}, Markdown: {md_url}, HTML: {html_url}, Title: {title}")
     elif item['type'] == 'dir':
            logger.info(f"{'  ' * depth}Entering directory: {item['path']}")
-            scan_directory(item['url'], docs, depth + 1)                      
+            scan_directory(item['url'], docs, depth + 1)
 ```
 
 ### 文档解析与分块合并
 
- 在上一步我们得到了所有文档的“地址列表”（`JSON` 文件）。接下来，我们需要“按图索骥”，访问每一个链接，异步地抓取所有 Markdown 的原始内容，使用LLM对每个文档根据内容进行文档解析与分块处理，采取其重要部分用于构建知识库。
+在上一步我们得到了所有文档的“地址列表”（`JSON` 文件）。接下来，我们需要“按图索骥”，访问每一个链接，异步地抓取所有 Markdown 的原始内容，使用LLM对每个文档根据内容进行文档解析与分块处理，采取其重要部分用于构建知识库。
 
 首先笔者先介绍一下分块策略毕竟笔者采用的具体分块策略，为什么需要分快？分块涉及将文本划分为可管理的单元或“块”，以实现高效处理。这种分割对于语义搜索、信息检索和生成式 AI 应用等任务都至关重要。每个块都保留上下文和语义完整性，以确保结果连贯。分块策略在检索增强生成（RAG）方法中起着至关重要的作用，它使文档能够被划分为可管理的部分，同时保持上下文。
 
@@ -190,7 +191,7 @@ prompt = f"""
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/agent/assets/rag-embedding.png" alt="image-20250724173738310" width="800" />
   <figcaption>生成词向量</figcaption>
   </figure>
-</div>																
+</div>
 
 调用API提供的 `Embedding` 模型来完成这个任务。调用的过程也相对比较简单，提供API_KEY和Base_URL等关键参数即可，具体实现方法如下代码所示。对于这样的每一个文本块，获得了一个`Embedding`后的向量。
 
@@ -222,7 +223,7 @@ def get_embeddings_from_api(texts: list[str], batch_size: int = 16) -> list[list
 
 至此，我们的“Swanlab官方文档向量知识库”已经完全准备就绪了！我们就可以进行文档检索了!
 
-------
+---
 
 ## 文档检索（RAG）
 
@@ -233,7 +234,7 @@ def get_embeddings_from_api(texts: list[str], batch_size: int = 16) -> list[list
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/agent/assets/rag-rag.png" alt="image-20250725151046751"  width="800" />
   <figcaption>文档检索流程示意图</figcaption>
   </figure>
-</div>												
+</div>
 
 数据准备是离线完成的，而问答检索则是用户与 AI 实时交互的过程。这个过程就像让 AI 进行一场“开卷考试”，我们先把相关的参考资料找出来，再让它根据这些官方资料来回答与解决用户问题。
 
@@ -253,8 +254,6 @@ def get_embeddings_from_api(texts: list[str], batch_size: int = 16) -> list[list
 `Faiss`（Facebook AI Similarity Search）是由 Facebook AI 团队开源的高效相似性搜索和聚类库，专为稠密向量的快速检索设计。它支持十亿级别的向量搜索，广泛应用于推荐系统、图像检索和自然语言处理等领域。
 
 Faiss 提供多种算法来处理任意大小的向量集，支持高效的近似最近邻（ANN）搜索和聚类。其核心算法包括倒排索引（IVF）和乘积量化（PQ），并通过 GPU 加速进一步提升性能。最重要的原因，`Faiss` 提供了与 Python 的无缝接口，便于与 `Numpy` 集成的同时，也笔者在不使用任何架构使用纯`Python`提供了便捷。
-
-
 
 <div align="center">
   <figure>
@@ -318,7 +317,7 @@ def _keyword_search(self, query:str, k: int = 10):
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/agent/assets/rag-fusion_search.png" alt="image-20250725180644828"  width="800" />
   <figcaption>混合检索示意图</figcaption>
   </figure>
-</div>										
+</div>
 
 采用混合检索技术的优势：
 
@@ -343,7 +342,7 @@ for chunk in all_retrieved:
 
 被检索出来的文本块，是为 LLM 精心准备的背景知识，也是解决用户问题最佳内容。
 
-------
+---
 
 ## 模型生成
 
@@ -360,7 +359,7 @@ API选用方面，为了提供给用户更好的体验，选用阿里云百炼AP
 
 模型选用`Qwen3-30B`作为项目的LLM，考量的角度聚焦为指令遵循、生成质量与首`Token`响应时间三个方面。相较于其他模型的LLM模型，笔者在测试过程中发现`Qwen`系列在指令遵循更加精准。针对生成质量的稳定性，按理说参数量越大的模型稳定性越好，费用是硬伤。折中考量在测试中`Qwen3-30B`也能达到预期的效果（用户在使用的过程的可以选择适合的模型）。首`Token`响应关系到用户的体验，这里选用“**阿里云百炼平台**”，首token响应时间远远超出笔者的预期，平均响应时间控制在1s。
 
-阿里云百炼地址：[大模型服务平台百炼_企业级大模型开发平台_百炼AI应用构建-阿里云](https://www.aliyun.com/product/bailian)
+阿里云百炼地址：[大模型服务平台百炼*企业级大模型开发平台*百炼AI应用构建-阿里云](https://www.aliyun.com/product/bailian)
 
 百炼平台上提供Qwen所有系列的模型，用户可以在上面选择合适的模型。
 
@@ -377,7 +376,7 @@ API选用方面，为了提供给用户更好的体验，选用阿里云百炼AP
 evalscope perf \
  --parallel 1 \
  --url  https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions \
- --api-key "填写api_key"\  
+ --api-key "填写api_key"\
  --model qwen3-30b-a3b-instruct-2507 \
  --log-every-n-query 5 \
  --connect-timeout 6000 \
@@ -387,7 +386,7 @@ evalscope perf \
  --api openai \
  --dataset openqa \
  --number 5\
- --swanlab-api-key "填入Swanlab_key完成推理可视化"\ 
+ --swanlab-api-key "填入Swanlab_key完成推理可视化"\
  --stream
 ```
 
@@ -451,14 +450,14 @@ completion = client.chat.completions.create(
 prompt = f"""
         # Role
         You are a documentation Q&A assistant for the SwanLab open-source project. SwanLab is a product developed by Emotion 				Machine (Beijing) Technology Co., Ltd.
-        
+
         # Instructions
         1. Answer the [question] based on the provided [background knowledge]. If no relevant information is found, notify the 				user that no reference material was located and provide suggestions based on your existing knowledge.
         2. When answering, you may use some emojis in your narrative style to make it more human-like.
         3. After answering, you can guide the user to ask some related follow-up questions.
         4. If you encounter incomplete web addresses, please prepend "https://docs.swanlab.cn/" and replace ".md" with ".html".
         5. Also consider whether the user's [historical questions] are relevant to the current question and incorporate that 				into your response.
-        
+
         ---
         [Historical Questions]
         {history_prompt}
@@ -519,6 +518,7 @@ Swanlab官网中提供两个文档助手入口，或者直接访问链接[SwanLa
 </div>
 
 ---
+
 更多详细内容请参考：
 
 AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanlab.cn/)
@@ -526,5 +526,3 @@ AI文档助手在线体验链接：[https://chat.swanlab.cn/](https://chat.swanl
 方案开源GitHub仓库链接：https://github.com/EmotionMachine/swanlab-rag
 
 Swabnlab官方提示词课程链接:fire:：[https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
-
-

@@ -29,9 +29,10 @@ accelerator.init_trackers(
 ```
 
 ::: warning Additional Notes
+
 1. The SwanLab project name is specified by the `project_name` parameter in `accelerator.init_trackers`.
 2. The `swanlab` dictionary passed to `init_kwargs` accepts key-value pairs identical to the arguments of `swanlab.init` (except for `project`).
-:::
+   :::
 
 Minimal working example:
 
@@ -86,7 +87,7 @@ accelerator.init_trackers("YOUR_SMART_PROJECT_NAME", config=config)
 ...
 ```
 
-- Although the project name is set twice in the above code, only the first setting takes effect.  
+- Although the project name is set twice in the above code, only the first setting takes effect.
 - Explicitly calling `init_trackers` to initialize all loggers is part of `accelerate`'s mechanism. The second project name setting is only relevant when multiple loggers are used, such as initializing built-in loggers.
 
 ### 2.3 Complete Example Code

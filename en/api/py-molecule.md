@@ -2,10 +2,10 @@
 
 [Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/molecule/__init__.py)
 
-| Parameter   | Description                                                                                     |
-|-------------|-------------------------------------------------------------------------------------------------|
-| pdb_data    | (str) PDB data received (in string format).                                                    |      
-| caption     | (str) Label for the molecule object. Used to tag the molecule when displayed in the experiment dashboard. |        
+| Parameter | Description                                                                                               |
+| --------- | --------------------------------------------------------------------------------------------------------- |
+| pdb_data  | (str) PDB data received (in string format).                                                               |
+| caption   | (str) Label for the molecule object. Used to tag the molecule when displayed in the experiment dashboard. |
 
 ## Overview
 

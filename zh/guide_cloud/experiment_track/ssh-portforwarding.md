@@ -46,10 +46,12 @@ ssh -D {port} {user}@{ip}
 ```
 
 新开终端会话必须重新配置环境变量，当然可以将上述导入环境变量的命令写入 `.bashrc` 文件中实现每次开启新终端会话时自动写入环境变量。例如：
+
 ```bash
 echo "export http_proxy=socks5://127.0.0.1:{port}" >> ~/.bashrc
 echo "export https_proxy=socks5://127.0.0.1:{port}" >> ~/.bashrc
 ```
+
 > 注意将 `{port}` 替换为自己设置的端口
 
 ## 实现原理

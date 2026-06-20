@@ -21,6 +21,7 @@ In this task, we will use the [Qwen-1.5-7b](https://modelscope.cn/models/qwen/Qw
 This case study is based on `Python>=3.10`. Please ensure Python is installed on your computer.
 
 Environment dependencies:
+
 ```txt
 swanlab
 modelscope
@@ -33,7 +34,7 @@ pandas
 
 One-click installation command:
 
-```bash 
+```bash
 pip install swanlab modelscope transformers datasets peft pandas
 ```
 
@@ -44,6 +45,7 @@ pip install swanlab modelscope transformers datasets peft pandas
 This case study uses the [zh_cls_fudan-news](https://modelscope.cn/datasets/swift/zh_cls_fudan-news) dataset, which is primarily used for training text classification models.
 
 zh_cls_fudan-news consists of several thousand entries, each containing three columns: text, category, and output.
+
 - text is the training corpus, containing text content from books or news articles.
 - category is a list of potential types for the text.
 - output is the single true type of the text.
@@ -51,6 +53,7 @@ zh_cls_fudan-news consists of several thousand entries, each containing three co
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen-2.png)
 
 Example dataset entry:
+
 ```
 """
 [PROMPT]Text: The fourth national large enterprise football tournament's knockout stage concluded. Xinhua News Agency, Zhengzhou, May 3rd (Intern Tian Zhaoyun) The Shanghai Dalong Machinery Factory team defeated the Chengdu Metallurgical Experimental Factory team 5:4 in the knockout stage of the fourth Peony Cup national large enterprise football tournament held in Luoyang yesterday, advancing to the top four. The match between Shanghai and Chengdu was evenly matched, with no winner after 90 minutes. Finally, the two teams took turns in penalty kicks, and the Shanghai team won by a one-goal margin. In the other three knockout matches, Qinghai Shanchuan Machine Tool Foundry team defeated the host Luoyang Mining Machinery Factory team 3:0, Qingdao Foundry Machinery Factory team defeated Shijiazhuang First Printing and Dyeing Factory team 3:1, and Wuhan Meat Processing Factory team narrowly defeated Tianjin Second Metallurgical Machinery Factory team 1:0. In today's two matches to determine the 9th to 12th places, Baogang Seamless Steel Tube Factory team and Henan Pingdingshan Mining Bureau No.1 Mine team respectively defeated Henan Pingdingshan Nylon Cord Factory team and Jiangsu Yancheng Radio General Factory team. On the 4th, two semi-final matches will be held, with Qinghai Shanchuan Machine Tool Foundry team and Qingdao Foundry Machinery Factory team facing off against Wuhan Meat Processing Factory team and Shanghai Dalong Machinery Factory team respectively. The tournament will conclude on the 6th. (End)
@@ -120,13 +123,13 @@ def dataset_jsonl_transfer(origin_path, new_path):
     with open(new_path, "w", encoding="utf-8") as file:
         for message in messages:
             file.write(json.dumps(message, ensure_ascii=False) + "\n")
-            
-            
+
+
 def process_func(example):
     """
     Preprocess the dataset.
     """
-    MAX_LENGTH = 384 
+    MAX_LENGTH = 384
     input_ids, attention_mask, labels = [], [], []
     instruction = tokenizer(
         f"<|im_start|>system\nYou are an expert in text classification. You will receive a piece of text and several potential classification options. Please output the correct type of the text content.<|im_end|>\n<|im_start|>user\n{example['input']}<|im_end|>\n<|im_start|>assistant\n",
@@ -142,7 +145,7 @@ def process_func(example):
         input_ids = input_ids[:MAX_LENGTH]
         attention_mask = attention_mask[:MAX_LENGTH]
         labels = labels[:MAX_LENGTH]
-    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}   
+    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
 
 def predict(messages, model, tokenizer):
@@ -161,13 +164,13 @@ def predict(messages, model, tokenizer):
     generated_ids = [
         output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
     ]
-    
+
     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-    
+
     print(response)
-     
+
     return response
-    
+
 # Download Qwen1.5-7B model from modelscope to local directory
 model_dir = snapshot_download("qwen/Qwen1.5-7B-Chat", cache_dir="./", revision="master")
 
@@ -236,7 +239,7 @@ test_text_list = []
 for index, row in test_df.iterrows():
     instruction = row['instruction']
     input_value = row['input']
-    
+
     messages = [
         {"role": "system", "content": f"{instruction}"},
         {"role": "user", "content": f"{input_value}"}
@@ -246,7 +249,7 @@ for index, row in test_df.iterrows():
     messages.append({"role": "assistant", "content": f"{response}"})
     result_text = f"{messages[0]}\n\n{messages[1]}\n\n{messages[2]}"
     test_text_list.append(swanlab.Text(result_text, caption=response))
-    
+
 swanlab.log({"Prediction": test_text_list})
 swanlab.finish()
 ```

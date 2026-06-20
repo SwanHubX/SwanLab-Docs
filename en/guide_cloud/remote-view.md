@@ -20,10 +20,10 @@ We need to run the experiment dashboard service on the remote server (the machin
 
 In the `swanlab watch` command, the main parameters that can be set are `-p` and `-h`:
 
-| API         | Description                                     | Example                                             |
-|-------------|-------------------------------------------------|-----------------------------------------------------|
-| `-p, --port`| Set the port for the experiment dashboard web service, default is 5092. | `swanlab watch -p 8080`: Set the experiment dashboard web service to port 8080 |
-| `-h, --host`| Set the IP address for the experiment dashboard web service, default is 127.0.0.1. | `swanlab watch -h 0.0.0.0`: Set the experiment dashboard web service IP address to 0.0.0.0 |
+| API          | Description                                                                        | Example                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `-p, --port` | Set the port for the experiment dashboard web service, default is 5092.            | `swanlab watch -p 8080`: Set the experiment dashboard web service to port 8080             |
+| `-h, --host` | Set the IP address for the experiment dashboard web service, default is 127.0.0.1. | `swanlab watch -h 0.0.0.0`: Set the experiment dashboard web service IP address to 0.0.0.0 |
 
 Generally, for remote access to the experiment dashboard, you need to set `-h` to `0.0.0.0`, and `-p` according to your needs. Here, we set the port to `8080`:
 

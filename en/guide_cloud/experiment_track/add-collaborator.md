@@ -16,17 +16,17 @@ SwanLab supports adding project collaborators to facilitate teamwork.
 
 ## Collaborator Permissions
 
-| Permission | Read | Develop | Manage |
-| --- | --- | --- | --- |
-| View Experiments | ✅ | ✅ | ✅ |
-| View Overview | ✅ | ✅ | ✅ |
-| View Chart Comparison | ✅ | ✅ | ✅ |
-| Create New Experiments | ❌ | ✅ | ✅ |
-| Edit Experiment Information | ❌ | ✅ | ✅ |
-| Delete Experiments | ❌ | ✅ | ✅ |
-| Modify Project Information | ❌ | ❌ | ✅ |
-| Delete Project | ❌ | ❌ | ✅ |
-| Manage Collaborators | ❌ | ❌ | ✅ |
+| Permission                  | Read | Develop | Manage |
+| --------------------------- | ---- | ------- | ------ |
+| View Experiments            | ✅   | ✅      | ✅     |
+| View Overview               | ✅   | ✅      | ✅     |
+| View Chart Comparison       | ✅   | ✅      | ✅     |
+| Create New Experiments      | ❌   | ✅      | ✅     |
+| Edit Experiment Information | ❌   | ✅      | ✅     |
+| Delete Experiments          | ❌   | ✅      | ✅     |
+| Modify Project Information  | ❌   | ❌      | ✅     |
+| Delete Project              | ❌   | ❌      | ✅     |
+| Manage Collaborators        | ❌   | ❌      | ✅     |
 
 ## Collaborators creating experiments in other projects
 
@@ -35,10 +35,9 @@ If you are a collaborator of the project `OpenVLA` (with develop or manage permi
 ```python
 swanlab.init(
     project="OpenVLA",
-    workspace="A", 
+    workspace="A",
 )
 ```
-
 
 ## Removing Collaborators
 

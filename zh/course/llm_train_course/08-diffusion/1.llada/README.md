@@ -73,7 +73,6 @@
   </figure>
 </div>
 
-
 **LLaDA-8B**
 
 人大高瓴人工智能研究院、蚂蚁共同提出LLaDA（a Large Language Diffusion with mAsking）。
@@ -144,7 +143,6 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
   </figure>
 </div>
 
-
 ## 目录
 
 [[toc]]
@@ -161,7 +159,6 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 
 其中扩散模型我们选择LLaDA模型，微调数据集还是采用经典的instruct数据集alpaca，预训练数据集经过多次试验，我们采用C4数据集来进行训练。
 
-
 ## LLaDA原理
 
 本次教程我们使用`LLaDA`模型作为基座模型来实现预训练和微调，我在实验的时候查看了下面的这些论文，有兴趣的小伙伴可以看看原文：
@@ -169,7 +166,6 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
 - [Large Language Diffusion Models](https://arxiv.org/abs/2502.09992)
 - [Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/abs/2507.15857)
 - [Scaling Data-Constrained Language Models](https://arxiv.org/abs/2305.16264)
-
 
 关于扩散模型，我们最常用的还是图像领域的扩散模型，通常来说，图像领域的扩散模型有两个过程，分别是反向加噪过程和正向扩散过程
 
@@ -197,8 +193,7 @@ LLaDA使用Transformer架构作为掩码预测器。与自回归模型不同，L
   </figure>
 </div>
 
-
-*下面我们分别按照预训练、微调以及推理部分详细说明其原理*：
+_下面我们分别按照预训练、微调以及推理部分详细说明其原理_：
 
 ### 预训练
 
@@ -244,7 +239,6 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,x_0,x_t}\left [  \frac{1}{t}\sum^
   </figure>
 </div>
 
-
 ### 微调
 
 对于监督微调过程，整体的核心逻辑和预训练相似，有几个区别：
@@ -264,7 +258,6 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 对于扩散生成部分，作者做了多个实验，这里我们直接讨论结论：
 
-
 <div style="display:flex;justify-content:center;">
   <figure style="text-align:center;margin:0;">
     <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/08-diffusion/1.llada/picture/example16.png" style="width:100%">
@@ -281,57 +274,57 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
 
 每个块里要生成4个`tokens`，那么我们假设迭代2次：
 
-***第一块***
+**_第一块_**
 
 **第一轮迭代(t=1.0)**
 
-| 步骤 | 内容 |
-|------|------|
-| **输入** | `[M]` `[M]` `[M]` `[M]` `[M]` `[M]` `[M]` `[M]` |
+| 步骤         | 内容                                                      |
+| ------------ | --------------------------------------------------------- |
+| **输入**     | `[M]` `[M]` `[M]` `[M]` `[M]` `[M]` `[M]` `[M]`           |
 | **模型预测** | `[人类]` `[智能]` `[在]` `[改变]` `[M]` `[M]` `[M]` `[M]` |
-| **采样策略** | 置信度阈值低，采纳 Top-2 |
-| **采纳结果** | 位置1: `智能` (0.9),
-|             |  位置3: `改变` (0.85) |
-| **当前状态** | `[M]` `[智能]` `[M]` `[改变]` `[M]` `[M]` `[M]` `[M]` |
+| **采样策略** | 置信度阈值低，采纳 Top-2                                  |
+| **采纳结果** | 位置1: `智能` (0.9),                                      |
+|              | 位置3: `改变` (0.85)                                      |
+| **当前状态** | `[M]` `[智能]` `[M]` `[改变]` `[M]` `[M]` `[M]` `[M]`     |
 
 **第一轮迭代(t=0.5)**
 
-| 步骤 | 内容 |
-|------|------|
-| **输入** | `[M]` `[智能]` `[M]` `[改变]` `[M]` `[M]` `[M]` `[M]` |
-| **模型预测** | `[人工]` `[智能]` `[在]` `[改变]` `[M]` `[M]` `[M]` `[M]` |
-| **采样策略** | 采纳置信度>0.7的 |
-| **采纳结果** | 位置0: `人工` (0.85)
-|             |  位置1: `智能` (0.9) |
-|             |  位置2: `正在` (0.8) |
-|             |  位置3: `改变` (0.85) |
+| 步骤         | 内容                                                        |
+| ------------ | ----------------------------------------------------------- |
+| **输入**     | `[M]` `[智能]` `[M]` `[改变]` `[M]` `[M]` `[M]` `[M]`       |
+| **模型预测** | `[人工]` `[智能]` `[在]` `[改变]` `[M]` `[M]` `[M]` `[M]`   |
+| **采样策略** | 采纳置信度>0.7的                                            |
+| **采纳结果** | 位置0: `人工` (0.85)                                        |
+|              | 位置1: `智能` (0.9)                                         |
+|              | 位置2: `正在` (0.8)                                         |
+|              | 位置3: `改变` (0.85)                                        |
 | **当前状态** | `[人工]` `[智能]` `[正在]` `[改变]` `[M]` `[M]` `[M]` `[M]` |
 
-***第二块***
+**_第二块_**
 
 **第一轮迭代(t=1.0)**
 
-| 步骤 | 内容 |
-|------|------|
-| **输入** | `[人工]` `[智能]` `[正在]` `[改变]` `[M]` `[M]` `[M]` `[M]` |
-| **模型预测** | `[人类]` `[智能]` `[在]` `[改变]` `[世界]` `[。]` `[M]` `[M]` |
-| **采样策略** | 采纳置信度>0.8 |
-| **采纳结果** | 位置0: `世界` (0.9),
-|             |  位置1: `。` (0.85) |
-| **当前状态** |`[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[M]` `[M]` |
+| 步骤         | 内容                                                            |
+| ------------ | --------------------------------------------------------------- |
+| **输入**     | `[人工]` `[智能]` `[正在]` `[改变]` `[M]` `[M]` `[M]` `[M]`     |
+| **模型预测** | `[人类]` `[智能]` `[在]` `[改变]` `[世界]` `[。]` `[M]` `[M]`   |
+| **采样策略** | 采纳置信度>0.8                                                  |
+| **采纳结果** | 位置0: `世界` (0.9),                                            |
+|              | 位置1: `。` (0.85)                                              |
+| **当前状态** | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[M]` `[M]` |
 
 **第一轮迭代(t=0.5)**
 
-| 步骤 | 内容 |
-|------|------|
-| **输入** | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[M]` `[M]` |
-| **模型预测** | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[<EOS>]` `[<EOS>]`|
-| **采样策略** | 采纳置信度>0.8的 |
-| **采纳结果** | 位置0: `世界` (0.9),
-|             |  位置1: `。` (0.85) |
-|             |  位置2: `<EOS>` (0.85) |
-|             |  位置3: `<EOS>` (0.85) |
-| **当前状态** | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[<EOS>]` `[<EOS>]`|
+| 步骤         | 内容                                                                    |
+| ------------ | ----------------------------------------------------------------------- |
+| **输入**     | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[M]` `[M]`         |
+| **模型预测** | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[<EOS>]` `[<EOS>]` |
+| **采样策略** | 采纳置信度>0.8的                                                        |
+| **采纳结果** | 位置0: `世界` (0.9),                                                    |
+|              | 位置1: `。` (0.85)                                                      |
+|              | 位置2: `<EOS>` (0.85)                                                   |
+|              | 位置3: `<EOS>` (0.85)                                                   |
+| **当前状态** | `[人工]` `[智能]` `[正在]` `[改变]` `[世界]` `[。]` `[<EOS>]` `[<EOS>]` |
 
 对于推理，同时预测所有被掩码的标记并不意味着一次性会全部预测，事实上，这是一个循序渐进的过程，经过多轮`steps`之后，消除`[MASK]`，不过每一轮`step`具体预测哪一个`[MASK]`并不固定，这是和自回归不一样的，因为我们知道自回归模型只会预测下一个token。
 
@@ -356,7 +349,6 @@ $$\mathcal{L}(\theta)\triangleq -\mathbb{E}_{t,p_0,r_0,r_t}\left [  \frac{1}{t}\
     <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/08-diffusion/1.llada/picture/output.gif" style="width:100%">
   </figure>
 </div>
-
 
 ## 完整训练
 
@@ -411,7 +403,6 @@ import torch_npu
 ...
 
 ```
-
 
 ### 2. 数据处理
 
@@ -473,7 +464,7 @@ c4_dataset.save_to_disk(output_path)
 
 预训练之所以可以直接保存text形式内容，是因为在数据预处理阶段直接自动转换成tokens格式，而SFT由于我有个参数`load_preprocessed_data`设置为`True`了（官方默认为False），意思是提前处理好了，所以不会自动转换tokens，我不想改源代码，因此直接把数据集在下载阶段就转换好保存的。
 
-*我们看下`dllm`的关于数据处理部分的代码：*
+_我们看下`dllm`的关于数据处理部分的代码：_
 
 **pretrain**
 
@@ -519,12 +510,10 @@ dataset = dllm.data.load_sft_dataset(
           )
 ```
 
-
 <div style="background:#ffeae4ff;color:#000;padding:12px 16px;border-left:4px solid #fc592cff;">
 <strong>注意：</strong>
 训练的时候看下最终交给Trainer的datasets内容是否是tokens就行，dllm的Trainer继承父类Transformers的Trainer，因此如何使用不再赘述。
 </div>
-
 
 ### 3. 训练代码
 
@@ -637,9 +626,7 @@ return F.scaled_dot_product_attention(
   "activation_type": "silu",
   "alibi": false,
   "alibi_bias_max": 8.0,
-  "architectures": [
-    "LLaDAModelLM"
-  ],
+  "architectures": ["LLaDAModelLM"],
   "attention_dropout": 0.0,
   "attention_layer_norm": false,
   "attention_layer_norm_with_affine": true,
@@ -677,7 +664,7 @@ return F.scaled_dot_product_attention(
   "pad_token_id": 126081,
   "precision": "amp_bf16",
   "residual_dropout": 0.0,
-  "rms_norm_eps": 1e-05,
+  "rms_norm_eps": 1e-5,
   "rope": true,
   "rope_full_precision": true,
   "rope_theta": 10000.0,
@@ -772,7 +759,6 @@ num_proc: 8
 max_length: 1024
 load_preprocessed_data: true
 
-
 # TrainingArguments
 output_dir: /data/lxy/diffusion/output/llada-gpu1-epoch-test
 report_to: swanlab
@@ -797,9 +783,7 @@ save_total_limit: 2
 2. 最好将`max_steps`改成`num_train_epochs`，然后微调2-3个epoch即可。如果是`max_steps`最好提前计算下选择多少steps较为合适。
 3. `SwanLab`是我们的训练观测工具，由于`dllm`继承了`Transformers`父类，而且`Transformers`已经集成`SwanLab`，因此我们直接令`report_to=swanlab`，唯一需要注意的是，如果想修改项目名称的话，需要提前设置环境变量，我在这里进行设置👉[project_name](https://atomgit.com/windytina1/llada-npu/blob/main/dllm/utils/configs.py#L7)
 
-
-
-#### *Qwen
+#### \*Qwen
 
 本次教程选择`Qwen`模型作为`llada`模型的对比模型，用`Qwen`模型进行预训练和微调，分别和`llada`模型对比预训练和微调效果。
 
@@ -813,9 +797,7 @@ bash scripts/train-qwen-pt-multinpu.sh
 
 ```json
 {
-  "architectures": [
-    "Qwen2ForCausalLM"
-  ],
+  "architectures": ["Qwen2ForCausalLM"],
   "attention_dropout": 0.0,
   "bos_token_id": 151643,
   "eos_token_id": 151643,
@@ -829,7 +811,7 @@ bash scripts/train-qwen-pt-multinpu.sh
   "num_attention_heads": 7,
   "num_hidden_layers": 6,
   "num_key_value_heads": 7,
-  "rms_norm_eps": 1e-06,
+  "rms_norm_eps": 1e-6,
   "rope_theta": 10000.0,
   "sliding_window": 2048,
   "tie_word_embeddings": false,
@@ -906,7 +888,6 @@ bash scripts/train-qwen-sft-multinpu.sh
   </figure>
 </div>
 
-
 预训练我使用的是`C4-en`中的一部分，模型我设置为100M的大小，分别对比了`epoch=2`和`epoch=10`的情况。
 
 其中`epoch=2`的时候，我使用了前100万条数据，通过计算得知，每条数据平均有大约`500 tokens`左右，因此总共的计算量应该有`500M tokens`；
@@ -935,7 +916,6 @@ python /home/lxy/diffusion_project/llada-sft/examples/llada/merge.py \
 1. `chat.py`：终端交互式对话
 2. `generate.py`：代码中修改，并在终端打印结果
 
-
 如果想在终端进行互动，可以运行下面的代码：
 
 ```bash
@@ -948,17 +928,17 @@ ASCEND_RT_VISIBLE_DEVICES=0 python examples/llada/chat.py \
 
 - `steps`：在扩散模型的反向生成过程中，从 `t=1（全掩码）`到 `t=0（无掩码）`需要执行的迭代次数。每一步对应一个离散的 `t` 值，模型在该步骤预测掩码位置的内容。
 
-    - steps越大：生成质量通常更高，因为更多迭代允许更精细的调整，但推理速度越慢。
+  - steps越大：生成质量通常更高，因为更多迭代允许更精细的调整，但推理速度越慢。
 
-    - steps越小：推理越快，但可能牺牲生成质量。
+  - steps越小：推理越快，但可能牺牲生成质量。
 
 - `block_size`：在使用块扩散采样策略时，每个块（block） 的长度。
 
-    - block_size = 生成长度（如1024）：相当于纯扩散采样，一次性生成整个序列。
+  - block_size = 生成长度（如1024）：相当于纯扩散采样，一次性生成整个序列。
 
-    - block_size = 1：相当于完全自回归采样，逐词生成。
+  - block_size = 1：相当于完全自回归采样，逐词生成。
 
-    - block_size 介于两者之间：半自回归采样，平衡速度和质量。
+  - block_size 介于两者之间：半自回归采样，平衡速度和质量。
 
 论文验证了在`block_size=32`的时候，和纯扩散模型效果差不多，因此这样设置：
 
@@ -1014,7 +994,7 @@ bash scripts/eval-llada.sh
 或者运行下面的代码：
 
 ```bash
-export PYTHONPATH=../:$PYTHONPATH             
+export PYTHONPATH=../:$PYTHONPATH
 export HF_ALLOW_CODE_EVAL=1                 # Allow code evaluation
 export HF_DATASETS_TRUST_REMOTE_CODE=True   # For cmmlu dataset
 
@@ -1039,7 +1019,6 @@ accelerate launch --num_processes 1 \
 <strong>注意：</strong></br>
 lm_eval好像只能从huggingface下载对应数据集，如果huggingface下载不了，本地下载好像没有接口使用，因此这种情况可以使用evalscope框架，因为llada估计没有在evalscope的模型库中，因此可以使用API的方法进行测评，具体可以参考我的这篇👉<a href="https://docs.swanlab.cn/course/llm_train_course/05-eval/1.evalscope/README.html#%E6%A8%A1%E5%9E%8Bapi%E6%9C%8D%E5%8A%A1%E8%AF%84%E6%B5%8B" target="_blank" rel="noopener">API评测方法</a>
 </div>
-
 
 ## 参考文献
 

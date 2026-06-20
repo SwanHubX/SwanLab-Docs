@@ -63,7 +63,7 @@ class SwanLabCallback(Callback):
         if dist.get_world_size() < 2 or dist.get_rank() == 0:
             mode = status['mode']
             epoch_id = status['epoch_id']
-            
+
             if mode == 'train':
                 fps = sum(self.fps) / len(self.fps)
                 self.fps = []
@@ -72,7 +72,7 @@ class SwanLabCallback(Callback):
                 if (epoch_id + 1) % self.model.cfg.snapshot_epoch == 0 or epoch_id == end_epoch - 1:
                     save_name = str(epoch_id) if epoch_id != end_epoch - 1 else "model_final"
                     tags = ["latest", f"epoch_{epoch_id}"]
-            
+
             elif mode == 'eval':
                 fps = status['sample_num'] / status['cost_time']
 
@@ -92,13 +92,13 @@ class SwanLabCallback(Callback):
                     for metric in self.model._metrics:
                         map_res = metric.get_results()
                         key = next((k for k in ['bbox', 'keypoint', 'mask'] if k in map_res), None)
-                        
+
                         if not key:
                             logger.warning("Evaluation results empty, this may be due to "
                                            "training iterations being too few or not "
                                            "loading the correct weights.")
                             return
-                        
+
                         if map_res[key][0] >= self.best_ap:
                             self.best_ap = map_res[key][0]
                             save_name = 'best_model'

@@ -12,8 +12,8 @@
 
 ```json
 {
-    "epochs": 20,
-    "learning-rate": 0.001,
+  "epochs": 20,
+  "learning-rate": 0.001
 }
 ```
 
@@ -34,6 +34,7 @@ learning-rate: 0.001
 ```
 
 将配置文件的路径传入`config`参数，它会把配置文件解析为字典：
+
 ```python
 swanlab.init(config="swanlab-init-config.yaml")
 # 等价于swanlab.init(config={"epochs": 20, "learning-rate": 0.001})
@@ -49,12 +50,13 @@ swanlab.init(config="swanlab-init-config.yaml")
 
 ```json
 {
-    "project": "cat-dog-classification",
-    "experiment_name": "Resnet50",
-    "description": "我的第一个人工智能实验",
-    "config":{
-        "epochs": 20,
-        "learning-rate": 0.001}
+  "project": "cat-dog-classification",
+  "experiment_name": "Resnet50",
+  "description": "我的第一个人工智能实验",
+  "config": {
+    "epochs": 20,
+    "learning-rate": 0.001
+  }
 }
 ```
 

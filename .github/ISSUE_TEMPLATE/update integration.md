@@ -1,13 +1,11 @@
 ---
 name: Update Integration
 about: Update swanlab integration docs
-title: '[Integration] '
-assignees: ''
+title: "[Integration] "
+assignees: ""
 ---
 
 ### 🚀 Content
-
-
 
 ### 🚑 Any additional [like screenshots]
 

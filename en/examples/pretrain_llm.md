@@ -344,4 +344,5 @@ print("GENERATE:", pipe("人工智能", num_return_sequences=1)[0]["generated_te
 Inference results are as follows:
 
 (The model is still training; you can check the training progress and inference results in real-time at [https://swanlab.cn/@ShaohonChen/WikiLLM/overview](https://swanlab.cn/@ShaohonChen/WikiLLM/overview))
+
 <!-- ![result]() -->

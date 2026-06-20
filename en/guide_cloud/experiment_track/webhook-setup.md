@@ -20,20 +20,20 @@ The webhook sends callbacks using the POST method. The callback structure is des
 
 ```ts
 interface SwanLabInfo {
-    // SwanLab version number
-    version: string
-    // SwanLab running mode
-    mode: 'cloud' | 'local' | 'offline' | 'disabled'
-    // Log storage path
-    swanlog_dir: string
-    // Cloud experiment URL
-    exp_url: string
+  // SwanLab version number
+  version: string;
+  // SwanLab running mode
+  mode: "cloud" | "local" | "offline" | "disabled";
+  // Log storage path
+  swanlog_dir: string;
+  // Cloud experiment URL
+  exp_url: string;
 }
 
 // Webhook callback structure
-interface Body{
-   value: string
-   swanlab: SwanLabInfo
+interface Body {
+  value: string;
+  swanlab: SwanLabInfo;
 }
 ```
 

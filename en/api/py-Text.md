@@ -9,9 +9,9 @@ Text(
 ) -> None
 ```
 
-| Parameter | Description |
-|-----------|-------------|
-| data      | (Union[str]) Accepts a string. |
+| Parameter | Description                                                                      |
+| --------- | -------------------------------------------------------------------------------- |
+| data      | (Union[str]) Accepts a string.                                                   |
 | caption   | (str) The label for the text. Used to mark the data in the experiment dashboard. |
 
 ## Introduction
@@ -19,7 +19,6 @@ Text(
 Convert text data to be recorded by `swanlab.log()`.
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/api/py-text/show.png)
-
 
 ### Logging String Text
 

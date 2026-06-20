@@ -24,17 +24,17 @@
 
 **参考资料：**
 
-* 智谱AI官网：[https://www.zhipuai.cn/](https://www.zhipuai.cn/)
+- 智谱AI官网：[https://www.zhipuai.cn/](https://www.zhipuai.cn/)
 
-* ChatGLM-9B基座模型：[https://huggingface.co/THUDM/glm-4-9b-hf](https://huggingface.co/THUDM/glm-4-9b-hf/tree/main)
+- ChatGLM-9B基座模型：[https://huggingface.co/THUDM/glm-4-9b-hf](https://huggingface.co/THUDM/glm-4-9b-hf/tree/main)
 
-* ChatGLM-9B-Chat模型：[https://huggingface.co/THUDM/glm-4-9b-chat-hf](https://huggingface.co/THUDM/glm-4-9b-chat-hf/tree/main)
+- ChatGLM-9B-Chat模型：[https://huggingface.co/THUDM/glm-4-9b-chat-hf](https://huggingface.co/THUDM/glm-4-9b-chat-hf/tree/main)
 
-* Alpaca数据集中文版：[https://huggingface.co/datasets/llamafactory/alpaca_gpt4_zh](https://huggingface.co/datasets/llamafactory/alpaca_gpt4_zh)
+- Alpaca数据集中文版：[https://huggingface.co/datasets/llamafactory/alpaca_gpt4_zh](https://huggingface.co/datasets/llamafactory/alpaca_gpt4_zh)
 
-* 本博客开源项目链接：[https://github.com/SwanHubX/glm4-finetune](https://github.com/SwanHubX/glm4-finetune)
+- 本博客开源项目链接：[https://github.com/SwanHubX/glm4-finetune](https://github.com/SwanHubX/glm4-finetune)
 
-* SwanLab训练日志查看：[https://swanlab.cn/@ShaohonChen/chatglm-finetune/](https://swanlab.cn/@ShaohonChen/chatglm-finetune/)
+- SwanLab训练日志查看：[https://swanlab.cn/@ShaohonChen/chatglm-finetune/](https://swanlab.cn/@ShaohonChen/chatglm-finetune/)
 
 ## TRL包介绍+环境准备
 
@@ -74,15 +74,13 @@ trainer.train() # 开始训练，流程和TRL一样
 
 简单来说TRL包的使用方法和Transformers类似，不过多了两步：
 
-* 导入`SFTConfig`模块，这个模块基于`transformers`的`TrainingArguments`，不过针对SFT引入了一点额外的参数，以及lora的支持参数
+- 导入`SFTConfig`模块，这个模块基于`transformers`的`TrainingArguments`，不过针对SFT引入了一点额外的参数，以及lora的支持参数
 
-* 导入`SFTTrainer`模块，这个模块包含了SFT的代码实现，还有一些对`peft`的lora支持和数据集格式转换代码。
+- 导入`SFTTrainer`模块，这个模块包含了SFT的代码实现，还有一些对`peft`的lora支持和数据集格式转换代码。
 
 后文将完整的介绍如何使用TRL包完成大模型的指令遵从功能。
 
-
 ## GLM4介绍+模型准备
-
 
 ![chatglm_history](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/images/glm4-instruct/chatglm_history.png)
 
@@ -286,9 +284,9 @@ print(raw_dataset["train"][0])
 
 ```json
 {
-    "instruction": "保持健康的三个提示。",
-    "input": "",
-    "output": "以下是保持健康的三个提示：\n\n1. 保持身体活动。每天做适当的身体运动，如散步、跑步或游泳，能促进心血管健康，增强肌肉力量，并有助于减少体重。\n\n2. 均衡饮食。每天食用新鲜的蔬菜、水果、全谷物和脂肪含量低的蛋白质食物，避免高糖、高脂肪和加工食品，以保持健康的饮食习惯。\n\n3. 睡眠充足。睡眠对人体健康至关重要，成年人每天应保证 7-8 小时的睡眠。良好的睡眠有助于减轻压力，促进身体恢复，并提高注意力和记忆力。"
+  "instruction": "保持健康的三个提示。",
+  "input": "",
+  "output": "以下是保持健康的三个提示：\n\n1. 保持身体活动。每天做适当的身体运动，如散步、跑步或游泳，能促进心血管健康，增强肌肉力量，并有助于减少体重。\n\n2. 均衡饮食。每天食用新鲜的蔬菜、水果、全谷物和脂肪含量低的蛋白质食物，避免高糖、高脂肪和加工食品，以保持健康的饮食习惯。\n\n3. 睡眠充足。睡眠对人体健康至关重要，成年人每天应保证 7-8 小时的睡眠。良好的睡眠有助于减轻压力，促进身体恢复，并提高注意力和记忆力。"
 }
 ```
 
@@ -360,7 +358,7 @@ def formatting_func(example):
 3. 睡眠充足。睡眠对人体健康至关重要，成年人每天应保证 7-8 小时的睡眠。良好的睡眠有助于减轻压力，促进身体恢复，并提高注意力和记忆力。
 ```
 
-最后便是训练的超参数设置和训练过程的实现，这里由于数据规模比较小，我们训练600个steps，每个GPU实际batch大小为1*4：
+最后便是训练的超参数设置和训练过程的实现，这里由于数据规模比较小，我们训练600个steps，每个GPU实际batch大小为1\*4：
 
 ```python
 ################

@@ -1,13 +1,14 @@
 # Lazy Person's Guide: Drag and Drop Documents = Your Own AI Document Assistant? How to Build RAG? SwanLab Document Assistant Solution Open-Sourced! (With Detailed Code)
+
 **Authors**: Chen Li, Chao Wang  
 **Affiliation**: Graduate Students, International Joint Laboratory for Multilingual Cognitive Computing, Xinjiang University; Intern Researchers, Emotion Machine  
-**Contact Emails**: lichen@stu.xju.edu.cn, wangchao@stu.xju.edu.cn  
+**Contact Emails**: lichen@stu.xju.edu.cn, wangchao@stu.xju.edu.cn
 
 **"With the explosive growth of official documentation APIs, reading them has become quite challenging for users. Today, we’ll use **SwanLab** + an **out-of-the-box RAG framework** to guide you through building a **production-grade document assistant** in just 30 minutes! (Complete source code and online demo included—no complex setup required, ready to run locally in 10 minutes!)"**
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)  
+**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)
 
 <div align="center">
   <figure>
@@ -19,6 +20,7 @@
 ---
 
 ## Abstract
+
 In the era of information explosion, developers need to quickly extract accurate information from technical documentation. SwanLab’s official documentation is rich in content, but manual searching is time-consuming and inefficient. **To enable developers to retrieve information from SwanLab’s official documentation more quickly and accurately**, we developed an AI document assistant based on the **Retrieval-Augmented Generation (RAG) architecture**.  
 This article details the implementation process of the SwanLab official document assistant, built entirely from scratch without relying on any existing agent frameworks—truly **handcrafted**. The article covers three main aspects: data preparation, document retrieval, and model generation.
 
@@ -32,12 +34,15 @@ This article details the implementation process of the SwanLab official document
 ---
 
 ## Table of Contents
+
 [[toc]]
 
 ## Data Preparation
+
 This section introduces the detailed construction scheme for the **vector database**.
 
 ### Document Retrieval
+
 The knowledge base for the AI assistant comes from the latest and most comprehensive official documentation. The first step is to enable the AI to “read” all of SwanLab’s official documentation. **GitHub, being a platform familiar to developers, reduces the learning curve.** We used the **GitHub API as the primary method for retrieving documentation**, ensuring both technical reliability and the real-time, comprehensive nature of the retrieved data.
 
 The implementation involves **writing a Python web crawler script that uses the GitHub API to automatically scan the SwanLab documentation repository and retrieve metadata for all Markdown files**, such as titles, download links, and corresponding official webpage URLs, which are saved in a `JSON` file. The workflow is illustrated below:
@@ -61,7 +66,8 @@ The `swanlab.json` file contains the file name, document URL, webpage URL, and d
 ```
 
 ### GitHub API and Its Usage
-The GitHub API is a programming interface for interacting with the GitHub platform, allowing developers to access resources and data programmatically. The endpoint `https://api.github.com/repos/` is a key component, enabling users to retrieve resources from GitHub repositories.  
+
+The GitHub API is a programming interface for interacting with the GitHub platform, allowing developers to access resources and data programmatically. The endpoint `https://api.github.com/repos/` is a key component, enabling users to retrieve resources from GitHub repositories.
 
 The API’s core functionality provides a programmatic way to access and manipulate GitHub data, eliminating the need for manual interaction through the user interface. Developers can retrieve detailed repository information, create new repositories, modify existing repository settings, or even delete repositories.
 
@@ -78,7 +84,7 @@ The specific usage of the GitHub API in the code is as follows:
 # scrape_swanlab_docs_Internet.py
 # Authentication and request headers: Use `Authorization: token {token}` for authentication to increase API rate limits (unauthenticated users: 60 requests/hour; authenticated users: 5000 requests/hour).
 github_token = ""  # Replace with your GitHub Token
-headers['Authorization'] = f'token {github_token}'  
+headers['Authorization'] = f'token {github_token}'
 # Configure retry mechanism using the requests library
 session = requests.Session()
 response = session.get("https://api.github.com/rate_limit", headers=headers, timeout=60)
@@ -113,6 +119,7 @@ for item in contents:
 ```
 
 ### Document Parsing and Chunking
+
 In the previous step, we obtained a list of document “addresses” (in the `JSON` file). Next, we need to “follow the map” to access each link, asynchronously fetch the raw content of all Markdown files, and use an LLM to parse and chunk the documents based on their content, extracting key sections to build the knowledge base.
 
 First, let’s discuss the chunking strategy and why it’s necessary. Chunking involves dividing text into manageable units or “chunks” for efficient processing. This segmentation is critical for tasks like semantic search, information retrieval, and generative AI applications. Each chunk retains contextual and semantic integrity to ensure coherent results. The chunking strategy plays a vital role in Retrieval-Augmented Generation (RAG) by dividing documents into manageable parts while preserving context.
@@ -144,10 +151,10 @@ The configuration file and chunking prompt are shown in `config.py` and `prompt.
 ```yaml
 # config.yaml
 llm:
-  api_type: "openai"  # or "groq", etc.
-  model: "Qwen/Qwen2.5-32B-Instruct"  # or "GPT-4o", etc.
-  api_key: ""    # Replace with your API key
-  base_url: ""  # LLM service URL
+  api_type: "openai" # or "groq", etc.
+  model: "Qwen/Qwen2.5-32B-Instruct" # or "GPT-4o", etc.
+  api_key: "" # Replace with your API key
+  base_url: "" # LLM service URL
 ```
 
 ```python
@@ -169,6 +176,7 @@ Reference Content: {content}
 ```
 
 ### Document Encoding
+
 Now that we have a collection of text chunks, computers don’t understand text—they understand numbers. We need a “translator” to convert each text chunk into a numerical “vector.” This process is called **Embedding**.
 
 <div align="center">
@@ -209,6 +217,7 @@ At this point, our “SwanLab Official Documentation Vector Knowledge Base” is
 ---
 
 ## Document Retrieval (RAG)
+
 **Retrieval-Augmented Generation (RAG)** is an AI technique that combines information retrieval with language generation models. By retrieving relevant information from an external knowledge base and using it as a prompt for large language models (LLMs), RAG enhances the model’s ability to handle knowledge-intensive tasks like question answering, text summarization, and content generation. Introduced by Facebook AI Research (FAIR) in 2020, RAG has become a popular approach in large-scale model applications.
 
 <div align="center">
@@ -221,6 +230,7 @@ At this point, our “SwanLab Official Documentation Vector Knowledge Base” is
 Data preparation is done offline, while question-answering retrieval is a real-time interaction between the user and the AI. This process is like giving the AI an “open-book exam,” where we first retrieve relevant reference materials and then let it answer user questions based on those official documents.
 
 ### Retrieving Relevant Documents
+
 When a user asks a question, we first use the same `Embedding` model to convert the question into a vector. Using this “question vector,” we employ a hybrid retrieval strategy (vector retrieval + keyword retrieval) to search the FAISS vector database, instructing it to: “Find the text chunk vectors closest to this vector in spatial distance!” We’ll discuss why we use this hybrid approach in the section on hybrid retrieval. First, let’s review the core logic of vector retrieval and keyword retrieval.
 
 <div align="center">
@@ -231,6 +241,7 @@ When a user asks a question, we first use the same `Embedding` model to convert 
 </div>
 
 #### Vector Retrieval
+
 **Faiss** (Facebook AI Similarity Search) is an open-source library by Facebook AI, designed for efficient similarity search and clustering of dense vectors. It supports billion-scale vector searches and is widely used in recommendation systems, image retrieval, and natural language processing.
 
 Faiss offers various algorithms for handling vector sets of any size, supporting efficient approximate nearest neighbor (ANN) search and clustering. Its core algorithms include Inverted File Index (IVF) and Product Quantization (PQ), with GPU acceleration for enhanced performance. Most importantly, Faiss provides seamless integration with Python and NumPy, enabling us to implement it purely in Python without relying on any frameworks.
@@ -258,6 +269,7 @@ retrieved_chunks = [self.index_to_chunk[str(i)] for i in indices[0]]
 ```
 
 #### Keyword Retrieval
+
 **Keyword Search**, also known as lexical search, is a traditional information retrieval method based on exact word matching. Its core mechanism relies on an inverted index structure, consisting of a lexicon and corresponding posting lists, enabling efficient lookup through their mapping. The process involves query parsing, extracting query terms through lexical analysis, and optionally applying techniques like stopword filtering to optimize retrieval. This method excels in precise matching of query keywords with document terms, offering high computational efficiency and simplicity.
 
 ```python
@@ -280,6 +292,7 @@ def _keyword_search(self, query: str, k: int = 10):
 ```
 
 #### Hybrid Retrieval
+
 We adopted a hybrid retrieval approach (vector retrieval + keyword retrieval) because the two methods complement each other. Vector retrieval provides “intelligence” and “depth” to understand user intent, while keyword retrieval ensures “precision” and “reliability” in capturing key details. This combination achieves a “1+1 > 2” effect and is a mainstream and best-practice approach for building advanced RAG systems.
 
 <div align="center">
@@ -290,6 +303,7 @@ We adopted a hybrid retrieval approach (vector retrieval + keyword retrieval) be
 </div>
 
 Advantages of hybrid retrieval:
+
 - **Ensures High Recall**: Hybrid retrieval maximizes the likelihood of retrieving all potentially relevant documents. Vector retrieval handles documents that “match in meaning,” while keyword retrieval acts as a safety net, ensuring documents with specific keywords are not missed.
 - **Improves Answer Precision**: By providing the large language model with context that includes both high-level conceptual understanding and fine-grained key details, the model can generate more reliable and accurate answers based on richer, unbiased information.
 - **Handles Complex Query Scenarios**:
@@ -316,6 +330,7 @@ The retrieved text chunks are carefully curated background knowledge for the LLM
 ## Model Generation
 
 ### API Selection and Latency Testing
+
 For the API, we chose the **Alibaba Cloud Bailian API** to provide a better user experience.
 
 <div align="center">
@@ -359,18 +374,18 @@ evalscope perf \
 
 Test results are shown below:
 
-| Throughput Metric             | Value    |
-|------------------------------|----------|
+| Throughput Metric               | Value   |
+| ------------------------------- | ------- |
 | Output Token Throughput (tok/s) | 91.8166 |
 | Total Token Throughput (tok/s)  | 95.4285 |
 | Request Throughput (req/s)      | 0.1235  |
 
-| Latency Metric                  | Value   |
-|---------------------------------|---------|
-| Average Latency (s)             | 8.0971  |
-| First Token Average Time (s)    | 0.4173  |
+| Latency Metric                    | Value  |
+| --------------------------------- | ------ |
+| Average Latency (s)               | 8.0971 |
+| First Token Average Time (s)      | 0.4173 |
 | Average Time per Output Token (s) | 0.0102 |
-| Average Packet Latency (s)      | 0.0403  |
+| Average Packet Latency (s)        | 0.0403 |
 
 Quick example of using the Alibaba Cloud Bailian API:
 
@@ -399,6 +414,7 @@ completion = client.chat.completions.create(
 ```
 
 ### Building the Prompt
+
 During testing, we found that directly feeding “background knowledge” and “questions” to the LLM often produced suboptimal results. The importance of prompts was evident during experiments with text-to-image models. Thus, we carefully designed a **Prompt** to define the LLM’s role and response format, making answers more human-like and structured.
 
 <div align="center">
@@ -414,14 +430,14 @@ The prompt template is as follows:
 prompt = f"""
         # Role
         You are a documentation Q&A assistant for the SwanLab open-source project. SwanLab is a product developed by Emotion Machine (Beijing) Technology Co., Ltd.
-        
+
         # Instructions
         1. Answer the [question] based on the provided [background knowledge]. If no relevant information is found, notify the user that no reference material was located and provide suggestions based on your existing knowledge.
         2. When answering, you may use some emojis in your narrative style to make it more human-like.
         3. After answering, you can guide the user to ask some related follow-up questions.
         4. If you encounter incomplete web addresses, please prepend "https://docs.swanlab.cn/" and replace ".md" with ".html".
         5. Also consider whether the user's [historical questions] are relevant to the current question and incorporate that into your response.
-        
+
         ---
         [Historical Questions]
         {history_prompt}
@@ -440,6 +456,7 @@ prompt = f"""
 This carefully crafted prompt provides all necessary information to the LLM, guiding it to produce the most accurate and comprehensive answers. Finally, the LLM returns referenced documents for frontend display.
 
 ### Model Generation
+
 The final step is to send the complete prompt to a powerful large language model (in this project, we used the `qwen3-30b-a3b-instruct-2507` model provided by Alibaba Cloud Bailian). The model synthesizes all the information to generate a fluent and accurate response.
 
 <div align="center">
@@ -452,6 +469,7 @@ The final step is to send the complete prompt to a powerful large language model
 We also added a small detail: from the retrieved knowledge chunks, we extract the “primary heading” and use the `html_url` collected earlier to generate a clickable “reference materials” list for users, enhancing the credibility of answers and providing additional guidance.
 
 ## Quick Start
+
 SwanLab’s official website provides two entry points for the document assistant, or you can directly visit the [SwanLab AI Document Assistant](https://chat.swanlab.cn/), as shown below (one in the navigation bar on the right, one on the main interface). If you encounter any bugs during use, please contact the authors to provide feedback and valuable suggestions.
 
 <div align="center">
@@ -480,9 +498,9 @@ For a particularly tricky question where the documentation does not explicitly s
 </div>
 
 ---
+
 For more content, please refer to:
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)  
-
+**SwanLab Official Prompt Engineering Course**:fire:: [https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html](https://docs.swanlab.cn/course/prompt_engineering_course/01-preface/README.html)

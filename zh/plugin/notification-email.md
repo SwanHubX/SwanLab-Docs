@@ -16,7 +16,7 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 **步骤 1：进入邮箱设置**
 
-- 进入QQ邮箱网页，点击顶部的 ​​“设置”​ 
+- 进入QQ邮箱网页，点击顶部的 ​​“设置”​
 - 在设置菜单中，选择 ​​“账号”​ 选项。
 
 **​步骤 2：开启SMTP服务**
@@ -27,13 +27,13 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 - （重要）保存给到你的**授权码**
 
 **​步骤 3：记录以下信息**
+
 - **SMTP服务器地址**: smtp.qq.com
 - **端口**: 465（SSL加密）或 587（TLS加密）
 - **发送邮箱**: 你的完整QQ邮箱地址（如 123456789@qq.com）
 - **密码**: 使用你刚刚获取的 ​授权码，而不是QQ邮箱的登录密码。
 
 其他的邮箱服务基本都支持STMP，可按照相似的流程开启服务。
-
 
 ## 基本用法
 
@@ -61,10 +61,7 @@ swanlab.init(callbacks=[email_callback])
 
 这样，当训练完成/发生错误时（触发`swanlab.finish()`），你将会收到邮件通知。
 
-
 ![image](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-email/email.png)
-
-
 
 ## 自由提醒
 
@@ -72,7 +69,7 @@ swanlab.init(callbacks=[email_callback])
 
 这在提醒你某些指标达到某个阈值时非常有用！
 
-```python 
+```python
 if accuracy > 0.95:
     # 自定义场景发送邮件
     email_callback.send_email(
@@ -84,7 +81,6 @@ if accuracy > 0.95:
 ## 外部注册插件
 
 <!--@include: ./shared-snippet.md-->
-
 
 ## 限制
 

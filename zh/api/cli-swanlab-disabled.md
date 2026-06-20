@@ -1,6 +1,6 @@
 # swanlab disabled
 
-``` bash
+```bash
 swanlab disabled
 ```
 

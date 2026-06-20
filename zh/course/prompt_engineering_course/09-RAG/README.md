@@ -13,7 +13,6 @@
   </figure>
 </div>
 
-
 我们简单的把RAG过程分割成三个部分，根据RAG的英文全称是Retrieval-Augmented Generation，理论上应该分割成`检索`、`增强`、`生成`，不过`检索`部分可以类比成`存储+检索`，多加了一个词，是不是原理就更清晰了呢？我们拆分下：
 
 1. `存储+检索`：将文档内容分割、转换成向量格式、检索相似性较高的文档切片
@@ -45,45 +44,45 @@ from typing import List, Dict, Optional
 
 class VectorStorage:
     """简单向量存储类，仅负责向量的存储功能"""
-    
+
     def __init__(self):
         """初始化向量存储"""
         self.vectors = []  # 存储向量
         self.metadata = []  # 存储向量对应的元数据
         self.dim = None  # 向量维度
-    
+
     def add(self, vector: List[float], metadata: Optional[Dict] = None) -> int:
         """
         添加向量到存储
-        
+
         参数:
             vector: 要添加的向量
             metadata: 向量相关的元数据
-            
+
         返回:
             向量在存储中的索引
         """
-        
+
         # 检查向量维度
         if self.dim is None:
             self.dim = len(vector)
         elif len(vector) != self.dim:
             raise ValueError(f"向量维度必须为{self.dim}")
-        
+
         # 保存向量和元数据
         self.vectors.append(vector)
         self.metadata.append(metadata or {})
-        
+
         # 返回向量索引
         return len(self.vectors) - 1
-    
+
     def get(self, index: int) -> tuple[np.ndarray, dict]:
         """
         获取指定索引的向量和元数据
-        
+
         参数:
             index: 向量索引
-            
+
         返回:
             元组 (向量, 元数据)
         """
@@ -104,13 +103,13 @@ class VectorStorage:
         # 计算相似度
         similarities = embedding_model.similarity(query_vector, self.vectors)
         similarities = similarities.squeeze()
-        
+
         # 限制 k 值不超过向量总数
         k = min(k, len(self.vectors))
-        
+
         # 获取最相似的 k 个向量的索引（使用 PyTorch 方法）
         top_k_values, top_k_indices = similarities.topk(k, largest=True)
-        
+
         # 返回结果（将张量转换为 Python 列表）
         return [
         (top_k_indices[i].item(), top_k_values[i].item(), self.metadata[top_k_indices[i].item()])
@@ -144,7 +143,7 @@ print(f"向量1: {vector1}, 元数据: {meta1}")
 print(f"存储的向量数量: {len(vb)}")
 ```
 
-*回答* ：
+_回答_ ：
 
 ```plaintext
 向量1: [1,2,3], 元数据: {"index":1,"chunk":"你好"}
@@ -156,7 +155,6 @@ print(f"存储的向量数量: {len(vb)}")
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/prompt_engineering_course/09-RAG/picture/qwen3_list.png" alt="Qwen3的Embedding模型列表" style="zoom:80%;" />
 
 能够处理的序列长度为32K，超过这个长度就无法词嵌入了，因此我们要对文档进行分块处理。如何处理我们接着往下看。
-
 
 ## 文档分块处理
 
@@ -173,10 +171,10 @@ import re
 def read_pdf(file_path: str) -> str:
     """
     读取PDF文件内容
-    
+
     参数:
         file_path: PDF文件路径
-        
+
     返回:
         PDF文件中的文本内容
     """
@@ -290,15 +288,14 @@ results = vb.search(query, k=2)
 print(results)
 ```
 
-*回答* ：
+_回答_ ：
 
 ```json
-[(0, 0.8075547814369202, {'index': 0, 'chunk': '《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》\n前作展开，以计划建造1万座行星发动机的时代为背景\n在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地\n球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”\n和“数字生命计划”进入论证阶段'}), 
+[(0, 0.8075547814369202, {'index': 0, 'chunk': '《流浪地球2》是由郭帆执导的科幻灾难电影，于2023年上映，故事围绕《流浪地球》\n前作展开，以计划建造1万座行星发动机的时代为背景\n在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地\n球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”\n和“数字生命计划”进入论证阶段'}),
 (6, 0.7484183311462402, {'index': 6, 'chunk': '\n《流浪地球2》通过展现刘培强、图恒宇、周喆直等众多角色的经历，以及全球人类在末\n日危机下的挣扎与抗争，呈现了一个宏大而震撼的科幻世界，探讨了人类面对绝境时的生存\n选择、亲情、责任与勇气等主题，传达出“人类命运共同体”理念和“没有人的文明，\n毫无意义”的深刻内涵，以其壮观的视效和动人的情节，成为中国科幻电影的重要代表作'})]
 ```
 
 那么你已经完成了检索部分的任务，接下来，我们将讲述`增强和生成`部分的任务。
-
 
 ## 提示词增强
 
@@ -308,7 +305,7 @@ print(results)
 
 比如，我们将检索的信息和提示词指令结合：
 
-*提示词* ：
+_提示词_ ：
 
 ```python
 ### 6、提示词增强
@@ -325,7 +322,7 @@ prompt=f"""
 print(prompt.format(query=query, context=context))
 ```
 
-*回答* ：
+_回答_ ：
 
 ```plaintext
 你是一个非常专业的AI智能助手，请你根据下面的“问题”，结合给出的“文本”内容，生成合理的回答，如果文本中没有相关内容，请回答“无法回答”。
@@ -335,7 +332,7 @@ print(prompt.format(query=query, context=context))
 在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地
 球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”
 和“数字生命计划”进入论证阶段
-2. 
+2.
 《流浪地球2》通过展现刘培强、图恒宇、周喆直等众多角色的经历，以及全球人类在末
 日危机下的挣扎与抗争，呈现了一个宏大而震撼的科幻世界，探讨了人类面对绝境时的生存
 选择、亲情、责任与勇气等主题，传达出“人类命运共同体”理念和“没有人的文明，
@@ -345,13 +342,11 @@ print(prompt.format(query=query, context=context))
 
 规范了提示词后，相信大模型生成的结果会更加准确。
 
-
-
 ## 大模型生成
 
 这部分内容呢就是老生常谈的推理部分了，有了提示词后，直接让模型生成对应的结果，如果问的问题和文档切片不相关，大模型就会明确说“无法回答”，能有效避免大模型幻觉，具体推理代码在前面的章节中有提到，我们使用的是huggingface的对应推理代码，这里我们只展示提示词部分内容：
 
-*提示词* ：
+_提示词_ ：
 
 ```plaintext
 你是一个非常专业的AI智能助手，请你根据下面的“问题”，结合给出的“文本”内容，生成合理的回答，如果文本中没有相关内容，请回答“无法回答”。
@@ -361,7 +356,7 @@ print(prompt.format(query=query, context=context))
 在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地
 球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”
 和“数字生命计划”进入论证阶段
-2. 
+2.
 《流浪地球2》通过展现刘培强、图恒宇、周喆直等众多角色的经历，以及全球人类在末
 日危机下的挣扎与抗争，呈现了一个宏大而震撼的科幻世界，探讨了人类面对绝境时的生存
 选择、亲情、责任与勇气等主题，传达出“人类命运共同体”理念和“没有人的文明，
@@ -369,7 +364,7 @@ print(prompt.format(query=query, context=context))
 回答:
 ```
 
-*回答* ：
+_回答_ ：
 
 ```plaintext
 《流浪地球2》是由郭帆执导的。
@@ -377,7 +372,7 @@ print(prompt.format(query=query, context=context))
 
 如果问的问题和文档无关呢？
 
-*提示词* ：
+_提示词_ ：
 
 ```plaintext
 你是一个非常专业的AI智能助手，请你根据下面的“问题”，结合给出的“文本”内容，生成合理的回答，如果文本中没有相关内容，请回答“无法回答”。
@@ -387,7 +382,7 @@ print(prompt.format(query=query, context=context))
 在不远的未来，太阳急速衰老膨胀，即将吞噬太阳系，地球面临灭顶之灾为应对危机，地
 球各国成立联合政府，提出数百个自救计划，其中“移山计划”“方舟计划”“逐月计划”
 和“数字生命计划”进入论证阶段
-2. 
+2.
 另一边，量子科学家图恒宇（刘德华饰）则与“数字生命计划”紧密相关他致力于将女
 儿图丫丫的意识数字化，即使该计划被禁止，他也未放弃在一系列意外后，图恒宇自己也
 意外进入数字世界，以一种特殊的方式继续参与到拯救地球的行动中，他在数字空间中的经
@@ -395,13 +390,10 @@ print(prompt.format(query=query, context=context))
 回答:
 ```
 
-*回答* ：
+_回答_ ：
 
 ```plaintext
 无法回答。根据提供的文本内容，没有提到《黑客帝国》这部电影及其导演信息。文本主要描述了《流浪地球2》的相关信息以及一个科幻灾难电影的故事梗概。
 ```
 
 因为在检索向量部分，我们并没有限制检索分数，因此会将排名前两个的文档切片全部作为提示词部分，虽然和《黑客帝国》没有任何关系，而为了回复效率，我们当然可以给检索限制一个分数，比如0.5以上才能作为输出，这样一旦出现差异过大的，大模型就能直接“无法回答”，无需再分析文本。
-
-
-

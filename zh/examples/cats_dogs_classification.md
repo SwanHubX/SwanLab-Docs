@@ -13,31 +13,37 @@
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/01.png)
 
 - 实验过程可看这个网页：[猫狗分类｜SwanLab](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
-- 代码：[GitHub](https://github.com/Zeyi-Lin/Resnet50-cats_vs_dogs) 
+- 代码：[GitHub](https://github.com/Zeyi-Lin/Resnet50-cats_vs_dogs)
 - 在线Demo：[HuggingFace](https://huggingface.co/spaces/TheEeeeLin/Resnet50-cats_vs_dogs)
 - 数据集：[百度云](https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ) 提取码: 1ybm
 - 三个开源库：[SwanLab](https://github.com/swanhubx/swanlab)、[Gradio](https://github.com/gradio-app/gradio)、[PyTorch](https://github.com/pytorch/pytorch)
 
 ## 1. 准备部分
+
 ### 1.1 安装Python库
+
 需要安装下面这4个库：
+
 ```bash
 torch>=1.12.0
 torchvision>=0.13.0
 swanlab
 gradio
 ```
+
 安装命令：
+
 ```bash
 pip install torch>=1.12.0 torchvision>=0.13.0 swanlab gradio
 ```
 
 ### 1.2 创建文件目录
+
 现在打开1个文件夹，新建下面这5个文件：
 
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/02.png)
 
-它们各自的作用分别是： 
+它们各自的作用分别是：
 | 文件 | 用途 |
 | --- | --- |
 | `checkpoint` | 这个文件夹用于存储训练过程中生成的模型权重。 |
@@ -50,6 +56,7 @@ pip install torch>=1.12.0 torchvision>=0.13.0 swanlab gradio
 
 数据集来源是ModelScope上的[猫狗分类数据集](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary)，包含275张图像的数据集和70张图像的测试集，一共不到10MB。
 我对数据做了一些整理，所以更推荐使用下面的百度网盘链接下载：
+
 > 百度网盘：链接: https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ 提取码: 1ybm
 
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/03.png)
@@ -59,21 +66,25 @@ pip install torch>=1.12.0 torchvision>=0.13.0 swanlab gradio
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/04.png)
 
 ok，现在我们开始训练部分！
+
 > ps：如果你想要用更大规模的数据来训练猫狗分类模型，请前往文末的相关链接。
 
 ## 2. 训练部分
+
 ps：如果想直接看完整代码和效果，可直接跳转到第2.9。
 
 ### 2.1 load_datasets.py
-我们首先需要创建1个类`DatasetLoader`，它的作用是完成数据集的读取和预处理，我们将它写在`load_datasets.py`中。 
+
+我们首先需要创建1个类`DatasetLoader`，它的作用是完成数据集的读取和预处理，我们将它写在`load_datasets.py`中。
 在写这个类之前，先分析一下数据集。
-在datasets目录下，`train.csv`和`val.csv`分别记录了训练集和测试集的图像相对路径（第一列是图像的相对路径，第二列是标签，0代表猫，1代表狗）： 
+在datasets目录下，`train.csv`和`val.csv`分别记录了训练集和测试集的图像相对路径（第一列是图像的相对路径，第二列是标签，0代表猫，1代表狗）：
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/05.png)
 ![左图作为train.csv，右图为train文件夹中的cat文件夹中的图像](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/06.png)
 左图作为train.csv，右图为train文件夹中的cat文件夹中的图像。
 
-那么我们的目标就很明确： 
-1. 解析这两个csv文件，获取图像相对路径和标签 
+那么我们的目标就很明确：
+
+1. 解析这两个csv文件，获取图像相对路径和标签
 2. 根据相对路径读取图像
 3. 对图像做预处理
 4. 返回预处理后的图像和对应标签
@@ -113,9 +124,10 @@ class DatasetLoader(Dataset):
 
     def __len__(self):
         return len(self.data)
-   ```
-   
+```
+
 `DatasetLoader`类由四个部分组成：
+
 1. `__init__`：包含1个输入参数csv_path，在外部传入`csv_path`后，将读取后的数据存入`self.data`中。`self.current_dir`则是获取了当前代码所在目录的绝对路径，为后续读取图像做准备。
 
 2. `preprocess_image`：此函数用于图像预处理。首先，它构造图像文件的绝对路径，然后使用PIL库打开图像。接着，定义了一系列图像变换：调整图像大小至256x256、转换图像为张量、对图像进行标准化处理，最终，返回预处理后的图像。
@@ -125,7 +137,9 @@ class DatasetLoader(Dataset):
 4. `__len__`：用于返回数据集的总图像数量。
 
 ### 2.2 载入数据集
+
 > 从本节开始，代码将写在train.py中。
+
 ```python
 from torch.utils.data import DataLoader
 from load_datasets import DatasetLoader
@@ -139,6 +153,7 @@ ValDataLoader = DataLoader(ValDataset, batch_size=batch_size, shuffle=False)
 ```
 
 我们传入那两个csv文件的路径实例化`DatasetLoader`类，然后用PyTorch的`DataLoader`做一层封装。`DataLoader`可以再传入两个参数：
+
 - `batch_size`：定义了每个数据批次包含多少张图像。在深度学习中，我们通常不会一次性地处理所有数据，而是将数据划分为小批次。这有助于模型更快地学习，并且还可以节省内存。在这里我们定义batch_size = 8，即每个批次将包含8个图像。
 - `shuffle`：定义了是否在每个循环轮次（epoch）开始时随机打乱数据。这通常用于训练数据集以保证每个epoch的数据顺序不同，从而帮助模型更好地泛化。如果设置为True，那么在每个epoch开始时，数据将被打乱。在这里我们让训练时打乱，测试时不打乱。
 
@@ -170,9 +185,11 @@ model.fc = torch.nn.Linear(in_features, num_classes)
 ```
 
 ### 2.4 设置cuda/mps/cpu
+
 如果你的电脑是**英伟达显卡**，那么cuda可以极大加速你的训练；
 如果你的电脑是**Macbook Apple Sillicon（M系列芯片）**，那么mps同样可以极大加速你的训练；
 如果都不是，那就选用cpu：
+
 ```python
 #检测是否支持mps
 try:
@@ -206,7 +223,9 @@ lr = 1e-4
 batch_size = 8
 num_classes = 2
 ```
+
 ### 损失函数与优化器
+
 设置损失函数为交叉熵损失，优化器为Adam。
 
 ```python
@@ -222,6 +241,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/07.png)
 
 #### 2.6.1 设置初始化配置参数
+
 swanlab库使用`swanlab.init`设置实验名、实验介绍、记录超参数以及日志文件的保存位置。
 后续打开可视化看板需要根据日志文件完成。
 
@@ -247,11 +267,13 @@ swanlab.init(
 ```
 
 #### 2.6.2 跟踪关键指标
+
 swanlab库使用`swanlab.log`来记录关键指标，具体使用案例见2.7和2.8。
 
 ### 2.7 训练函数
 
 我们定义1个训练函数`train`：
+
 ```python
 def train(model, device, train_dataloader, optimizer, criterion, epoch):
     model.train()
@@ -269,9 +291,11 @@ def train(model, device, train_dataloader, optimizer, criterion, epoch):
 
 训练的逻辑很简单：我们循环调用`train_dataloader`，每次取出1个batch_size的图像和标签，传入到resnet50模型中得到预测结果，将结果和标签传入损失函数中计算交叉熵损失，最后根据损失计算反向传播，Adam优化器执行模型参数更新，循环往复。
 在训练中我们最关心的指标是损失值`loss`，所以我们用`swanlab.log`跟踪它的变化。
-  
+
 ### 2.8 测试函数
+
 我们定义1个测试函数`test`：
+
 ```python
 def test(model, device, test_dataloader, epoch):
     model.eval()
@@ -299,7 +323,7 @@ def test(model, device, test_dataloader, epoch):
 ```python
 for epoch in range(1, num_epochs + 1):
     train(model, device, TrainDataLoader, optimizer, criterion, epoch)
-    if epoch % 4 == 0: 
+    if epoch % 4 == 0:
         accuracy = test(model, device, ValDataLoader, epoch)
 
 if not os.path.exists("checkpoint"):
@@ -356,7 +380,7 @@ if __name__ == "__main__":
     lr = 1e-4
     batch_size = 8
     num_classes = 2
-    
+
     # 设置device
     try:
         use_mps = torch.backends.mps.is_available()
@@ -400,21 +424,21 @@ if __name__ == "__main__":
     model.to(torch.device(device))
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    
+
     # 开始训练
     for epoch in range(1, num_epochs + 1):
         train(model, device, TrainDataLoader, optimizer, criterion, epoch)  # Train for one epoch
 
         if epoch % 4 == 0:  # Test every 4 epochs
             accuracy = test(model, device, ValDataLoader, epoch)
-    
+
     # 保存权重文件
     if not os.path.exists("checkpoint"):
         os.makedirs("checkpoint")
     torch.save(model.state_dict(), 'checkpoint/latest_checkpoint.pth')
     print("Training complete")
 ```
-   
+
 ### 2.10 开始训练！
 
 🔥实验过程可看这个网页：[猫狗分类｜SwanLab](https://swanlab.cn/@ZeyiLin/Cats_Dogs_Classification/runs/jzo93k112f15pmx14vtxf/chart)
@@ -428,7 +452,7 @@ swanlab login
 
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/08.png)
 
-然后，我们运行`train.py`：    
+然后，我们运行`train.py`：
 
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/09.png)
 
@@ -448,8 +472,10 @@ swanlab login
 ![在这里插入图片描述](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/cats_dogs/13.png)
 
 ## 3. Gradio演示程序
+
 Gradio是一个开源的Python库，旨在帮助数据科学家、研究人员和从事机器学习领域的开发人员快速创建和共享用于机器学习模型的用户界面。
 在这里我们使用Gradio来构建一个猫狗分类的Demo界面，编写`app.py`程序：
+
 ```python
 import gradio as gr
 import torch
@@ -550,4 +576,3 @@ if __name__ == "__main__":
 - 猫狗分类数据集（300张图像）：[ModelScope](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary)
   - 百度云下载：[链接](https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ) 提取码: 1ybm
 - 猫狗分类数据集（10k张图像）：[ModelScope](https://modelscope.cn/datasets/XCsunny/cat_vs_dog_class/summary)
-

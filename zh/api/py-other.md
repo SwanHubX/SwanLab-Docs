@@ -27,4 +27,3 @@ print(swanlab.get_url())
 ```python
 print(swanlab.get_project_url())
 ```
-

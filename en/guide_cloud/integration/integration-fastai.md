@@ -13,6 +13,7 @@ from swanlab.integration.fastai import SwanLabCallback
 **SwanLabCallback** is a logging class adapted for fastai.
 
 **SwanLabCallback** can define parameters such as:
+
 - `project`, `experiment_name`, `description`, and other parameters consistent with `swanlab.init`, used for initializing the SwanLab project.
 - You can also create the project externally via `swanlab.init`, and the integration will log the experiment to the project you created externally.
 
