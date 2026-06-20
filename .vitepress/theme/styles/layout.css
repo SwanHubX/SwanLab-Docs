@@ -36,6 +36,12 @@
   max-width: none !important;
 }
 
+.VPNavBar .content-body {
+  box-sizing: border-box;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
 .title {
   border-bottom: transparent !important;
 }
