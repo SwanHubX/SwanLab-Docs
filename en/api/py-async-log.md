@@ -10,13 +10,13 @@ def async_log(
 ) -> Future
 ```
 
-| Parameter | Description |
-|-----------|-------------|
-| `func` | (Callable) A function that returns a `dict` suitable for `swanlab.log()`. The return value will be logged automatically. |
-| `*args` | Positional arguments forwarded to `func`. |
-| `step` | (Optional[int]) Optional step index. If `None`, it is auto-incremented when the task **completes** (not when submitted). Pass an explicit value if step ordering matters. |
-| `mode` | (AsyncLogType) Execution mode. One of `asyncio`, `threading` (default), `spawn`, `fork`. See below for details. |
-| `**kwargs` | Keyword arguments forwarded to `func`. |
+| Parameter  | Description                                                                                                                                                               |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `func`     | (Callable) A function that returns a `dict` suitable for `swanlab.log()`. The return value will be logged automatically.                                                  |
+| `*args`    | Positional arguments forwarded to `func`.                                                                                                                                 |
+| `step`     | (Optional[int]) Optional step index. If `None`, it is auto-incremented when the task **completes** (not when submitted). Pass an explicit value if step ordering matters. |
+| `mode`     | (AsyncLogType) Execution mode. One of `asyncio`, `threading` (default), `spawn`, `fork`. See below for details.                                                           |
+| `**kwargs` | Keyword arguments forwarded to `func`.                                                                                                                                    |
 
 ## Introduction
 

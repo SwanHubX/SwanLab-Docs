@@ -30,11 +30,11 @@ features:
   - title: 🚢 Quick Start
     details: Install SwanLab and start tracking your AI experiments in minutes.
     link: /en/guide_cloud/general/quick-start.md
-  
+
   - title: 📚 Examples
     details: SwanLab official examples, better understand the role and function of SwanLab in the AI pipeline.
     link: /en/examples/mnist
-  
+
   - title: 🤗 Integration
     details: Integration documentation with HuggingFace Transformers, PyTorch Lightning, Hydra, etc.
     link: /en/guide_cloud/integration/integration-pytorch-lightning.md
@@ -50,7 +50,6 @@ features:
   - title: 💻 Self-hosted
     details: Docker deployment and enterprise version.
     link: /en/self_host/docker/deploy.md
-
 ---
 
 <style>
@@ -185,7 +184,6 @@ features:
 }
 
 </style>
-
 
 <!-- 分割线 -->
 <div style="text-align: center; margin-top: 48px; padding: 0 24px 16px; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.8;">

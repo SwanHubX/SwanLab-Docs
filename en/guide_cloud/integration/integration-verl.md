@@ -8,25 +8,25 @@
 
 **verl is flexible and easy to use with:**
 
-* **Easy extension of diverse RL algorithms:** The Hybrid programming model combines the strengths of single-controller and multi-controller paradigms to enable flexible representation and efficient execution of complex Post-Training dataflows. Allowing users to build RL dataflows in a few lines of code.
+- **Easy extension of diverse RL algorithms:** The Hybrid programming model combines the strengths of single-controller and multi-controller paradigms to enable flexible representation and efficient execution of complex Post-Training dataflows. Allowing users to build RL dataflows in a few lines of code.
 
-* **Seamless integration of existing LLM infra with modular APIs:** Decouples computation and data dependencies, enabling seamless integration with existing LLM frameworks, such as PyTorch FSDP, Megatron-LM and vLLM. Moreover, users can easily extend to other LLM training and inference frameworks.
+- **Seamless integration of existing LLM infra with modular APIs:** Decouples computation and data dependencies, enabling seamless integration with existing LLM frameworks, such as PyTorch FSDP, Megatron-LM and vLLM. Moreover, users can easily extend to other LLM training and inference frameworks.
 
-* **Flexible device mapping and parallelism:** Supports various placement of models onto different sets of GPUs for efficient resource utilization and scalability across different cluster sizes.
+- **Flexible device mapping and parallelism:** Supports various placement of models onto different sets of GPUs for efficient resource utilization and scalability across different cluster sizes.
 
 Readily integration with popular HuggingFace models
 
 **verl is fast with:**
 
-* **State-of-the-art throughput:** By seamlessly integrating existing SOTA LLM training and inference frameworks, verl achieves high generation and training throughput.
+- **State-of-the-art throughput:** By seamlessly integrating existing SOTA LLM training and inference frameworks, verl achieves high generation and training throughput.
 
-* **Efficient actor model resharding with 3D-HybridEngine:** Eliminates memory redundancy and significantly reduces communication overhead during transitions between training and generation phases.
+- **Efficient actor model resharding with 3D-HybridEngine:** Eliminates memory redundancy and significantly reduces communication overhead during transitions between training and generation phases.
 
 For more information, refer to the following links:
 
-> * Verl GitHub Repository: [https://github.com/volcengine/verl](https://github.com/volcengine/verl)
-> * Official Documentation: [https://verl.readthedocs.io/en/latest/index.html](https://verl.readthedocs.io/en/latest/index.html)
-> * HybridFlow Paper: [https://arxiv.org/pdf/2409.19256v2](https://arxiv.org/pdf/2409.19256v2)
+> - Verl GitHub Repository: [https://github.com/volcengine/verl](https://github.com/volcengine/verl)
+> - Official Documentation: [https://verl.readthedocs.io/en/latest/index.html](https://verl.readthedocs.io/en/latest/index.html)
+> - HybridFlow Paper: [https://arxiv.org/pdf/2409.19256v2](https://arxiv.org/pdf/2409.19256v2)
 
 You can use Verl to quickly conduct large-scale model reinforcement learning training while using SwanLab for experiment tracking and visualization.
 
@@ -34,9 +34,9 @@ You can use Verl to quickly conduct large-scale model reinforcement learning tra
 
 Required Environment:
 
-* Python: Version >= 3.9
+- Python: Version >= 3.9
 
-* CUDA: Version >= 12.1
+- CUDA: Version >= 12.1
 
 Refer to the Verl official documentation for installation: [https://verl.readthedocs.io/en/latest/start/install.html](https://verl.readthedocs.io/en/latest/start/install.html)
 
@@ -87,6 +87,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 :::info
 If you need to set the project and experiment name, you can set `trainer.project_name` and `trainer.experiment_name`.  
 For example:
+
 ```bash
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  ...
@@ -94,6 +95,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  trainer.experiment_name="ppo" \
  ...
 ```
+
 :::
 
 If you are not logged into SwanLab when starting the training, the following prompt will appear.
@@ -133,7 +135,6 @@ swanlab watch
 For more details, refer to [SwanLab Offline Dashboard Mode](https://docs.swanlab.cn/self_host/offline-board.html).
 
 To set the port number on the server, refer to [Offline Dashboard Port Number](https://docs.swanlab.cn/api/cli-swanlab-watch.html#%E8%AE%BE%E7%BD%AEip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7).
-
 
 ## Record Generated Text During Each Evaluation Round
 

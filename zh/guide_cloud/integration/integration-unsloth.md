@@ -8,7 +8,6 @@
 
 你可以使用Unsloth与Tranformers或TRL结合加速LLM模型训练，同时使用SwanLab进行实验跟踪与可视化。
 
-
 ## 1. 引入SwanLabCallback
 
 ```python
@@ -21,7 +20,6 @@ SwanLabCallback可以定义的参数有：
 
 - project、experiment_name、description 等与 swanlab.init 效果一致的参数, 用于SwanLab项目的初始化。
 - 你也可以在外部通过swanlab.init创建项目，集成会将实验记录到你在外部创建的项目中。
-
 
 ## 2. 传入Trainer
 
@@ -56,7 +54,7 @@ from trl import GRPOConfig, GRPOTrainer, ModelConfig, TrlParser
 
 model, tokenizer = FastLanguageModel.from_pretrained(
 ...
-) 
+)
 
 # PEFT 模型
 model = FastLanguageModel.get_peft_model(

@@ -6,9 +6,9 @@
 
 在最新的 NVIDIA NeMo RL 版本中，可以使用 SwanLab 实现对训练全流程的跟踪、观测、分析与实验管理，帮助人工智能研发人员掌控 RL 训练的每个细节，加速模型的高效迭代。
 
-* **官方文档：** [https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html](https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html)
-* **Github：** [https://github.com/NVIDIA-NeMo/RL](https://github.com/NVIDIA-NeMo/RL)
-* **SwanLab：** [https://swanlab.cn](https://swanlab.cn)
+- **官方文档：** [https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html](https://docs.nvidia.com/nemo/rl/latest/design-docs/logger.html)
+- **Github：** [https://github.com/NVIDIA-NeMo/RL](https://github.com/NVIDIA-NeMo/RL)
+- **SwanLab：** [https://swanlab.cn](https://swanlab.cn)
 
 ## 1. NVIDIA-NeMo/RL
 
@@ -26,15 +26,14 @@ NeMo RL 支持的训练种类也非常多，除了 GRPO 以外，还支持 On-po
 
 现在，你可以使用 NeMo RL 快速使用 LLM 后训练，同时使用 SwanLab 进行全面的跟踪、观测与分析。
 
-
 ## 2. 使用方式
 
 ### 2.1 基础环境
 
-* **计算卡：** 至少 1 张 24GB 以上的 NVIDIA 计算卡
-* **CUDA 版本：** >= 12.8
-* **Python 包管理器：** uv
-* **Python 版本：** >= 3.10
+- **计算卡：** 至少 1 张 24GB 以上的 NVIDIA 计算卡
+- **CUDA 版本：** >= 12.8
+- **Python 包管理器：** uv
+- **Python 版本：** >= 3.10
 
 ---
 
@@ -85,6 +84,7 @@ uv venv
 ### 2.3 GRPO训练
 
 我们使用 Qwen/Qwen2.5-1.5B 模型，在 OpenMathInstruct-2 数据集上做GRPO训练：
+
 ```bash
 uv run python examples/run_grpo_math.py \
     policy.model_name="Qwen/Qwen2.5-1.5B" \

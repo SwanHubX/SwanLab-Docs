@@ -10,7 +10,6 @@ DiffSynth Studio 支持多种扩散模型，包括 Wan-Video、StepVideo、Hunyu
 
 [[toc]]
 
-
 ## 准备工作
 
 **1. 克隆仓库并安装环境**
@@ -59,7 +58,6 @@ file_name,text
 modelscope download --model=Kwai-Kolors/Kolors --local_dir models/kolors/Kolors
 modelscope download --model=AI-ModelScope/sdxl-vae-fp16-fix --local_dir models/kolors/sdxl-vae-fp16-fix
 ```
-
 
 ## 设置SwanLab参数
 
@@ -111,7 +109,7 @@ if args.use_swanlab:
     swanlab_config = {"UPPERFRAMEWORK": "DiffSynth-Studio"}
     swanlab_config.update(vars(args))
     swanlab_logger = SwanLabLogger(
-        project="diffsynth_studio", 
+        project="diffsynth_studio",
         name="diffsynth_studio",
         config=swanlab_config,
         mode=args.swanlab_mode,
@@ -130,7 +128,7 @@ if args.use_swanlab:
     swanlab_config = {"UPPERFRAMEWORK": "DiffSynth-Studio"}
     swanlab_config.update(vars(args))
     swanlab_logger = SwanLabLogger(
-        project="wan", 
+        project="wan",
         name="wan",
         config=swanlab_config,
         mode=args.swanlab_mode,

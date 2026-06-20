@@ -8,7 +8,7 @@
 
 - [TensorBoard](/guide_cloud/integration/integration-tensorboard.md)
 - [Weights & Biases](/guide_cloud/integration/integration-wandb.md)
-:::
+  :::
 
 **你可以用两种方式将MLflow上的项目同步到SwanLab：**
 
@@ -21,7 +21,6 @@
 :::
 
 [[toc]]
-
 
 ## 1. 同步跟踪
 
@@ -43,7 +42,6 @@ mlflow.start_run()
 ```
 
 在上述这种代码写法中，`mlflow.start_run()`的同时会初始化swanlab，项目名、实验名和配置和`mlflow.start_run()`中的`experiment_name`、`run_name`、`log_param`一致，因此你不需要再手动初始化swanlab。
-
 
 ### 1.2 另一种写法
 
@@ -72,19 +70,18 @@ mlflow.set_experiment("mlflow_sync_test")
 with mlflow.start_run(run_name="test_run"):
     mlflow.log_param("learning_rate", 0.01)
     mlflow.log_params({"batch_size": 32, "epochs": 10})
-    
+
     for epoch in range(10):
         acc = 1 - 2 ** -epoch - random.random() / epoch
         loss = 2 ** -epoch + random.random() / epoch
         mlflow.log_metric("accuracy", acc, step=epoch)
         mlflow.log_metric("loss", loss, step=epoch)
-        
+
         mlflow.log_metrics({
             "precision": acc * 0.9,
             "recall": acc * 0.8
         }, step=epoch)
 ```
-
 
 ## 2. 转换已经存在的项目
 

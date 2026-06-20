@@ -6,10 +6,9 @@
 
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/BERT/charts)
 
-[在线Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [知乎](https://zhuanlan.zhihu.com/p/699441531)  | [美团外卖评论分类](https://zhuanlan.zhihu.com/p/701460910)
+[在线Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [知乎](https://zhuanlan.zhihu.com/p/699441531) | [美团外卖评论分类](https://zhuanlan.zhihu.com/p/701460910)
 
 ## 概述
-
 
 **BERT**（Bidirectional Encoder Representations from Transformers）是由Google提出的一种自然语言处理预训练模型，广泛应用于各种自然语言处理任务。BERT 通过在大规模语料库上进行预训练，能够捕捉词汇之间的上下文关系，从而在很多任务上取得了优秀的效果。
 

@@ -64,7 +64,6 @@ confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred)
 swanlab.log({"confusion_matrix_default": confusion_matrix})
 ```
 
-
 ### 二分类示例
 
 ```python

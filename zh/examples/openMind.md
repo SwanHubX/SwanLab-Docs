@@ -6,9 +6,9 @@
 
 友情链接：
 
-* [魔乐社区](https://modelers.cn/docs/zh/openmind-library/0.9.1/overview.html)
-* [Huggingface](https://huggingface.co)
-* [SwanLab](https://swanlab.cn)
+- [魔乐社区](https://modelers.cn/docs/zh/openmind-library/0.9.1/overview.html)
+- [Huggingface](https://huggingface.co)
+- [SwanLab](https://swanlab.cn)
 
 ---
 
@@ -59,7 +59,7 @@ npu-smi info
 安装命令如下：
 
 ```bash
- 
+
 # 下载PyTorch安装包
 wget https://download.pytorch.org/whl/cpu/torch-2.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
 # 下载torch_npu插件包
@@ -158,20 +158,20 @@ pip install swanlab
 
 OmDataset.load_dataset()方法目前支持下载的数据集格式如下：
 
-* parquet
-* json或者jsonl
-* tar.gz
-* csv
-* 下载python脚本加载魔乐社区数据集
-* 下载python脚本加载三方站点数据集
+- parquet
+- json或者jsonl
+- tar.gz
+- csv
+- 下载python脚本加载魔乐社区数据集
+- 下载python脚本加载三方站点数据集
 
 ```python
 from openmind import OmDataset
 from openmind import AutoTokenizer
- 
+
 ### 准备数据集
 dataset = OmDataset.load_dataset("AI_Connect/glue", "cola")
- 
+
 ### 结果
 """
 DatasetDict({
@@ -189,17 +189,17 @@ DatasetDict({
     })
 })
 """
- 
+
 ### 加载分词器
 tokenizer = AutoTokenizer.from_pretrained("PyTorch-NPU/bert_base_cased")
- 
+
 ### 处理数据集
 def tokenize_function(examples):
     return tokenizer(examples["sentence"],truncation=True,padding="max_length",max_length=512)
- 
+
 ### 训练数据封装
 tokenized_datasets = dataset.map(tokenize_function, batched=True)
- 
+
 # 训练数据+验证数据，验证发生在每个epoch之后
 small_train_dataset = tokenized_datasets["train"].shuffle(seed=42)
 small_eval_dataset = tokenized_datasets["validation"].shuffle(seed=42)
@@ -212,11 +212,11 @@ small_eval_dataset = tokenized_datasets["validation"].shuffle(seed=42)
 ```python
 from openmind import AutoTokenizer
 from openmind import AutoModelForSequenceClassification  ## 做分类任务
- 
- 
+
+
 ### 加载分词器
 tokenizer = AutoTokenizer.from_pretrained("PyTorch-NPU/bert_base_cased")
- 
+
 ### 加载模型
 model = AutoModelForSequenceClassification.from_pretrained("PyTorch-NPU/bert_base_cased", num_labels=2)  # 二分类任务
 ```
@@ -227,7 +227,7 @@ model = AutoModelForSequenceClassification.from_pretrained("PyTorch-NPU/bert_bas
 
 ```python
 from openmind import TrainingArguments
- 
+
 ### 参数初始化
 # 指定保存训练检查点的路径
 training_args = TrainingArguments(logging_steps=1,
@@ -246,11 +246,11 @@ Trainer在训练过程中不会自动评估模型性能，需要向Trainer传递
 ```python
 import numpy as np
 from openmind import metrics
- 
+
 ### 配置评估参数
 metric = metrics.Accuracy()
- 
- 
+
+
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
     preds = np.argmax(logits, axis=-1)
@@ -269,7 +269,7 @@ swanlab支持记录openMind Library。能够在线/离线查看训练日志。Sw
 ```python
 from openmind import Trainer
 from swanlab.integration.transformers import SwanLabCallback
- 
+
 ### 使用swanlab监测
 swanlab_config = {
     "dataset": "glue",
@@ -283,7 +283,7 @@ swanlab_callback = SwanLabCallback(
     workspace=None,
     config=swanlab_config,
 )
- 
+
 ### 创建训练器并且启动训练
 trainer = Trainer(
     model=model,
@@ -293,9 +293,9 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
     callbacks=[swanlab_callback],
 )
- 
+
 trainer.train()
- 
+
 ### 保存模型
 output_dir="./output"
 final_save_path = join(output_dir)
@@ -314,31 +314,31 @@ import numpy as np
 from openmind import Trainer
 from swanlab.integration.transformers import SwanLabCallback
 from os.path import join
- 
- 
+
+
 ### 准备数据集
 dataset = OmDataset.load_dataset("AI_Connect/glue", "cola")
- 
+
 ### 加载分词器
 tokenizer = AutoTokenizer.from_pretrained("PyTorch-NPU/bert_base_cased")
- 
- 
+
+
 ### 处理数据集
 def tokenize_function(examples):
     # 填充
     return tokenizer(examples["sentence"],truncation=True,padding="max_length",max_length=512)
- 
- 
+
+
 tokenized_datasets = dataset.map(tokenize_function, batched=True)
- 
+
 # 减少数据量
 small_train_dataset = tokenized_datasets["train"].shuffle(seed=42)
 small_eval_dataset = tokenized_datasets["validation"].shuffle(seed=42)
- 
- 
+
+
 ### 加载模型
 model = AutoModelForSequenceClassification.from_pretrained("PyTorch-NPU/bert_base_cased", num_labels=2)
- 
+
 ### 参数初始化
 # 指定保存训练检查点的路径
 training_args = TrainingArguments(logging_steps=1,
@@ -348,17 +348,17 @@ training_args = TrainingArguments(logging_steps=1,
                                   per_device_train_batch_size=4,
                                   optim="adamw_torch",
                                   learning_rate=2e-5)
- 
+
 ### 配置评估参数
 metric = metrics.Accuracy()
- 
- 
+
+
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
     preds = np.argmax(logits, axis=-1)
     return metric.compute(preds=preds, labels=labels)
- 
- 
+
+
 ### 使用swanlab监测
 swanlab_config = {
     "dataset": "glue",
@@ -381,9 +381,9 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
     callbacks=[swanlab_callback],
 )
- 
+
 trainer.train()
- 
+
 ### 保存模型
 output_dir="./output"
 final_save_path = join(output_dir)
@@ -405,43 +405,43 @@ from transformers import Trainer
 from swanlab.integration.transformers import SwanLabCallback
 from os.path import join
 import os
- 
+
 # 设置只使用第一个GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # 使用第一块 GPU
- 
+
 ### 加载数据集
 dataset = load_dataset("nyu-mll/glue","cola")
- 
+
 ### 加载分词器
 tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-cased")
- 
+
 ### 处理数据集
 def tokenize_function(examples):
     # 填充
     return tokenizer(examples["sentence"], padding="max_length", truncation=True)
- 
+
 tokenized_datasets = dataset.map(tokenize_function, batched=True)
- 
+
 # 减少数据量
 small_train_dataset = tokenized_datasets["train"].shuffle(seed=42)
 small_eval_dataset = tokenized_datasets["validation"].shuffle(seed=42)
- 
+
 ### 加载模型
 model = AutoModelForSequenceClassification.from_pretrained("google-bert/bert-base-cased", num_labels=2)
- 
+
 ### 参数初始化
 # 指定保存训练检查点的路径
 training_args = TrainingArguments(logging_steps=1,
                                   output_dir="test_trainer",
                                   evaluation_strategy="epoch",
-                                  half_precision_backend="auto",  
+                                  half_precision_backend="auto",
                                   per_device_train_batch_size=4,
                                   optim="adamw_torch",
                                   learning_rate=2e-5)
- 
+
 ### 配置评估参数
 metric = evaluate.load("accuracy")
- 
+
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
     preds = np.argmax(logits, axis=-1)
@@ -449,7 +449,7 @@ def compute_metrics(eval_pred):
     metric.add_batch(predictions=preds, references=labels)  # 使用add_batch方法添加批次数据
     # 计算准确度
     return metric.compute()
- 
+
 ### 使用swanlab监测
 swanlab_config = {
     "dataset": "glue"
@@ -470,9 +470,9 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
     callbacks=[swanlab_callback],
 )
- 
+
 trainer.train()
- 
+
 ### 保存模型
 output_dir="./output/A100"
 final_save_path = join(output_dir)
@@ -494,7 +494,7 @@ trainer.save_model(final_save_path)
 ```bash
 # NPU：
 watch -n 1 npu-smi info
- 
+
 # GPU：
 nvtop
 ```

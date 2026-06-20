@@ -2,9 +2,7 @@
 
 ## 📝简介
 
-​	在目标检测领域，众多神经网络模型早已凭借其卓越的性能，实现了精准的目标检测与目标分割效果。然而，随着多模态模型的崛起，其在图像分析方面展现出的非凡能力，为该领域带来了新的机遇。多模态模型不仅能够深入理解图像内容，还能将这种理解转化为文本形式输出，极大地拓展了其应用场景。鉴于此，本文旨在打造一份详尽的教程，指导读者如何通过对主流多模态大模型进行微调，来实现目标检测任务。以Qwen2.5-VL为例，凭借其强大的多模态分析能力，无需从头开始，利用大量数据进行预训练来构建新模型，仅通过微调即可高效地实现目标检测功能，为该领域的发展提供一种全新的思路与方法。
-
-
+​ 在目标检测领域，众多神经网络模型早已凭借其卓越的性能，实现了精准的目标检测与目标分割效果。然而，随着多模态模型的崛起，其在图像分析方面展现出的非凡能力，为该领域带来了新的机遇。多模态模型不仅能够深入理解图像内容，还能将这种理解转化为文本形式输出，极大地拓展了其应用场景。鉴于此，本文旨在打造一份详尽的教程，指导读者如何通过对主流多模态大模型进行微调，来实现目标检测任务。以Qwen2.5-VL为例，凭借其强大的多模态分析能力，无需从头开始，利用大量数据进行预训练来构建新模型，仅通过微调即可高效地实现目标检测功能，为该领域的发展提供一种全新的思路与方法。
 
 ## 📚链接资料
 
@@ -27,8 +25,6 @@
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/4.grounding/qwen2_5-vl-report/swanlab-content.png" alt="SwanLab精选内容" style="zoom:50%">
 
-
-
 ## 💻训练任务设置
 
 ### 1、训练方法简介
@@ -47,8 +43,6 @@
    - 这种方法的优势在于能够充分利用预训练模型的知识，并针对特定任务进行精细调整，从而在许多任务上达到最优性能。
    - `缺点`是计算成本高，尤其是在模型参数量巨大的情况下。全参数微调需要大量的GPU内存和计算资源，这在多模型部署和实时应用中可能成为瓶颈。
 
-
-
 ### 2、选用模型简介
 
 - Qwen2.5-vl技术报告论文地址：[[Qwen2.5-VL Technical Report](https://arxiv.org/pdf/2502.13923)]
@@ -56,7 +50,7 @@
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/4.grounding/qwen2_5-vl-report/qwen2_5-vl-object.jpg" alt="Qwen2.5-vl模型整体结构图" style="zoom:50%">
 
-​	多模态模型主要由**视觉编码器（Vision Encoder）、语言模型（LM）和多模态融合模块（Connector）**三块构成，和Qwen2-VL一样，Qwen2.5-VL并没有巨大的Connector，仅用一个MLP完成特征投影。打印模型结构如下：
+​ 多模态模型主要由**视觉编码器（Vision Encoder）、语言模型（LM）和多模态融合模块（Connector）**三块构成，和Qwen2-VL一样，Qwen2.5-VL并没有巨大的Connector，仅用一个MLP完成特征投影。打印模型结构如下：
 
 ```python
 ### 代码表示
@@ -133,7 +127,7 @@ Qwen2_5_VLForConditionalGeneration(
 )
 ```
 
-​	Qwen2.5-VL-3B-Instruct 基于 Qwen2.5 架构，其参数量达到 30 亿级别，专为指令微调而设计。该模型在预训练阶段，通过海量文本和图像数据学习通用的语言和视觉知识，能够理解并生成自然语言文本，同时处理与文本相关的图像信息，实现多模态交互。在指令微调过程中，Qwen2.5-VL-3B-Instruct 针对特定的指令任务进行了优化，使其能够更好地理解和执行人类的指令，如问答、文本生成、图像描述等。它在多模态任务上展现出色的性能，能够将图像内容与文本语义相结合，生成准确且富有逻辑的回答。此外，该模型还具备一定的推理能力和创造力，能够在处理复杂任务时提供有价值的见解和解决方案。
+​ Qwen2.5-VL-3B-Instruct 基于 Qwen2.5 架构，其参数量达到 30 亿级别，专为指令微调而设计。该模型在预训练阶段，通过海量文本和图像数据学习通用的语言和视觉知识，能够理解并生成自然语言文本，同时处理与文本相关的图像信息，实现多模态交互。在指令微调过程中，Qwen2.5-VL-3B-Instruct 针对特定的指令任务进行了优化，使其能够更好地理解和执行人类的指令，如问答、文本生成、图像描述等。它在多模态任务上展现出色的性能，能够将图像内容与文本语义相结合，生成准确且富有逻辑的回答。此外，该模型还具备一定的推理能力和创造力，能够在处理复杂任务时提供有价值的见解和解决方案。
 
 下载代码：
 
@@ -141,17 +135,15 @@ Qwen2_5_VLForConditionalGeneration(
 modelscope download --model Qwen/Qwen2.5-VL-3B-Instruct  --local_dir /data/nvme1/weights/Qwen/Qwen2.5-VL-3B-Instruct
 ```
 
-
-
 ### 3、数据集简介
 
-​	TextVQA_GT_bbox 是 Hugging Face 上的一个视觉问答（VQA）数据集，专注于文本相关的视觉问答任务，来源于 [TextVQA](https://textvqa.org/dataset/) ，并`提供目标边界框`信息。该数据集包含图像、与图像相关的问题以及对应的答案，边界框信息帮助模型精准定位图像中的文本内容，从而提高回答问题的准确性。该数据集选择[TextVQA](https://textvqa.org/dataset/) 中单目标检测的问答，保留5000个样本中的4370个。
+​ TextVQA_GT_bbox 是 Hugging Face 上的一个视觉问答（VQA）数据集，专注于文本相关的视觉问答任务，来源于 [TextVQA](https://textvqa.org/dataset/) ，并`提供目标边界框`信息。该数据集包含图像、与图像相关的问题以及对应的答案，边界框信息帮助模型精准定位图像中的文本内容，从而提高回答问题的准确性。该数据集选择[TextVQA](https://textvqa.org/dataset/) 中单目标检测的问答，保留5000个样本中的4370个。
 
-​	本次教程的任务目标是利用问题和目标边界框信息来对Qwen2.5-VL-3B-Instruct模型进行微调，数据集样式如下：
+​ 本次教程的任务目标是利用问题和目标边界框信息来对Qwen2.5-VL-3B-Instruct模型进行微调，数据集样式如下：
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/4.grounding/qwen2_5-vl-report/dataset_example.png" alt="TextVQA(包含边框信息)数据集样例" style="zoom:50%">
 
-​	论文《[MLLMs Know Where to Look: Training-free Perception of Small Visual Details with Multimodal LLMs](https://arxiv.org/pdf/2502.17422)》中使用该数据集用于研究MLLM的注意力模式。
+​ 论文《[MLLMs Know Where to Look: Training-free Perception of Small Visual Details with Multimodal LLMs](https://arxiv.org/pdf/2502.17422)》中使用该数据集用于研究MLLM的注意力模式。
 
 下载代码：
 
@@ -159,21 +151,17 @@ modelscope download --model Qwen/Qwen2.5-VL-3B-Instruct  --local_dir /data/nvme1
 modelscope download --dataset Tina12345/textVQA_groundingtask_bbox  --local_dir /data/nvme0/textvqa_bbox
 ```
 
-
-
 ### 4、训练框架选择
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/4.grounding/qwen2_5-vl-report/transformers.png" alt="HF Transformers工具包logo" style="zoom:50%">
 
-​	**Hugging Face Transformers** 是一个基于 Python 的开源库，广泛应用于自然语言处理（NLP）任务。该框架提供了大量预训练的语言模型（如 BERT、GPT、T5、RoBERTa、DistilBERT 等），并支持使用 PyTorch 和 TensorFlow 两种主流深度学习框架进行模型的微调与部署。
+​ **Hugging Face Transformers** 是一个基于 Python 的开源库，广泛应用于自然语言处理（NLP）任务。该框架提供了大量预训练的语言模型（如 BERT、GPT、T5、RoBERTa、DistilBERT 等），并支持使用 PyTorch 和 TensorFlow 两种主流深度学习框架进行模型的微调与部署。
 
-​	Transformers 库的核心优势在于其统一且简洁的接口设计，使得研究人员和开发者可以快速实现文本分类、命名实体识别、问答系统、文本生成等多种 NLP 任务。此外，它集成了 Hugging Face Model Hub ，这是一个包含数万个社区贡献模型的平台，用户可直接加载已有模型或上传自定义模型，便于模型共享与复用。
+​ Transformers 库的核心优势在于其统一且简洁的接口设计，使得研究人员和开发者可以快速实现文本分类、命名实体识别、问答系统、文本生成等多种 NLP 任务。此外，它集成了 Hugging Face Model Hub ，这是一个包含数万个社区贡献模型的平台，用户可直接加载已有模型或上传自定义模型，便于模型共享与复用。
 
-​	在性能方面，Transformers 支持混合精度训练、分布式训练以及 ONNX 导出等功能，适用于从研究原型到工业级部署的全流程开发。结合 Datasets、Tokenizers、Accelerate 等配套库，Hugging Face 构建了一个完整的 NLP 开发生态系统，极大提升了模型开发与实验迭代的效率。
+​ 在性能方面，Transformers 支持混合精度训练、分布式训练以及 ONNX 导出等功能，适用于从研究原型到工业级部署的全流程开发。结合 Datasets、Tokenizers、Accelerate 等配套库，Hugging Face 构建了一个完整的 NLP 开发生态系统，极大提升了模型开发与实验迭代的效率。
 
 参考材料：https://huggingface.co/docs/transformers/index
-
-
 
 ## 📜 数据集准备
 
@@ -211,10 +199,10 @@ modelscope download --dataset Tina12345/textVQA_groundingtask_bbox  --local_dir 
 
 ```json
 {
-    'image': <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=1024x681 at 0x7FA58E1DB340>, 
-    'question': 'what is the name of the company on the card?', 
-    'answer': ['blink', 'intergrative nutrition', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink'], 
-    'dataset_id': '36269', 
+    'image': <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=1024x681 at 0x7FA58E1DB340>,
+    'question': 'what is the name of the company on the card?',
+    'answer': ['blink', 'intergrative nutrition', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink'],
+    'dataset_id': '36269',
     'bbox': [712.0, 255.0, 64.0, 43.0]
 }
 ```
@@ -226,7 +214,11 @@ modelscope download --dataset Tina12345/textVQA_groundingtask_bbox  --local_dir 
 原数据集的bbox为[x1,y1,w,h]的格式，训练保存的bbox修改成[x1,y1,x2,y2]的格式，最终保存成以下格式：
 
 ```json
-{"image": ["./data/test/003001.jpg"], "query": "what is written on the ghost?", "response": "{\"bbox_2d\": [460, 635, 513, 669]}"}
+{
+  "image": ["./data/test/003001.jpg"],
+  "query": "what is written on the ghost?",
+  "response": "{\"bbox_2d\": [460, 635, 513, 669]}"
+}
 ```
 
 其中需要注意的是，qwen对于grounding的训练任务有相应的模板，链接在这👉[Qwen2.5-vl-finetune](https://github.com/QwenLM/Qwen2.5-VL/blob/main/qwen-vl-finetune/README.md)，因此上述的"{\"bbox_2d\": [460, 635, 513, 669]}"其实是参考了官方的**Grounding Example**，
@@ -255,10 +247,10 @@ modelscope download --dataset Tina12345/textVQA_groundingtask_bbox  --local_dir 
 
 原数据集格式为：
 {
-    'image': <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=1024x681 at 0x7FA58E1DB340>, 
-    'question': 'what is the name of the company on the card?', 
-    'answer': ['blink', 'intergrative nutrition', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink'], 
-    'dataset_id': '36269', 
+    'image': <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=1024x681 at 0x7FA58E1DB340>,
+    'question': 'what is the name of the company on the card?',
+    'answer': ['blink', 'intergrative nutrition', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink', 'blink'],
+    'dataset_id': '36269',
     'bbox': [712.0, 255.0, 64.0, 43.0]
 }
 
@@ -309,18 +301,18 @@ def convert_to_qwen25vl_format(bbox, orig_height, orig_width, factor=28, min_pix
     new_height, new_width = smart_resize(orig_height, orig_width, factor, min_pixels, max_pixels)
     scale_w = new_width / orig_width
     scale_h = new_height / orig_height
-    
+
     x1, y1, x2, y2 = bbox
     x1_new = round(x1 * scale_w)
     y1_new = round(y1 * scale_h)
     x2_new = round(x2 * scale_w)
     y2_new = round(y2 * scale_h)
-    
+
     x1_new = max(0, min(x1_new, new_width - 1))
     y1_new = max(0, min(y1_new, new_height - 1))
     x2_new = max(0, min(x2_new, new_width - 1))
     y2_new = max(0, min(y2_new, new_height - 1))
-    
+
     return [x1_new, y1_new, x2_new, y2_new]
 
 
@@ -358,7 +350,7 @@ def convert_to_sft_format(data_path,save_path,type='train'):
             # 保存其他信息
             # 坐标信息
             old_bbox = sample['bbox']
-            #### 这里需要将坐标转换成Qwen2.5-VL的坐标格式   
+            #### 这里需要将坐标转换成Qwen2.5-VL的坐标格式
             image_width, image_height = image.size
             x1, y1, w, h = old_bbox
             new_bboxes = [x1, y1, x1 + w, y1 + h]
@@ -447,18 +439,18 @@ def convert_to_qwen25vl_format(bbox, orig_height, orig_width, factor=28, min_pix
     new_height, new_width = smart_resize(orig_height, orig_width, factor, min_pixels, max_pixels)
     scale_w = new_width / orig_width
     scale_h = new_height / orig_height
-    
+
     x1, y1, x2, y2 = bbox
     x1_new = round(x1 * scale_w)
     y1_new = round(y1 * scale_h)
     x2_new = round(x2 * scale_w)
     y2_new = round(y2 * scale_h)
-    
+
     x1_new = max(0, min(x1_new, new_width - 1))
     y1_new = max(0, min(y1_new, new_height - 1))
     x2_new = max(0, min(x2_new, new_width - 1))
     y2_new = max(0, min(y2_new, new_height - 1))
-    
+
     return [x1_new, y1_new, x2_new, y2_new]
 
 
@@ -469,7 +461,7 @@ print(f"转换后的坐标是{convert_to_qwen25vl_format(new_bboxes, image.shape
 
 输出结果：
 
-新的坐标是[948, 633, 1007, 654] 
+新的坐标是[948, 633, 1007, 654]
 
 转换后的坐标是[959, 628, 1019, 649]
 
@@ -481,13 +473,13 @@ print(f"转换后的坐标是{convert_to_qwen25vl_format(new_bboxes, image.shape
 
 - 硬件信息概览：[概览](https://swanlab.cn/@LiXinYu/qwen2.5-vl-sft-grounding/runs/j426nezsim58am8gwrhb0/environment/overview)
 
-​	**GPU：**8 * NVIDIA H20 96GB
+​ **GPU：**8 \* NVIDIA H20 96GB
 
-​	**CPU：**AMD EPYC 9K84 96-Core Processor 
+​ **CPU：**AMD EPYC 9K84 96-Core Processor
 
-​	**操作系统：**TencentOS Server 3.1 (Final)
+​ **操作系统：**TencentOS Server 3.1 (Final)
 
-​	**python版本：**3.10.17
+​ **python版本：**3.10.17
 
 - python训练环境：
 
@@ -497,17 +489,14 @@ print(f"转换后的坐标是{convert_to_qwen25vl_format(new_bboxes, image.shape
   transformers
   peft
   diffusers
-  torch==2.5.1 
-  torchvision==0.20.1 
+  torch==2.5.1
+  torchvision==0.20.1
   torchaudio==2.5.1
   swanlab
   deepspeed
   ```
 
-
-> 实测3090也行，8*3090 24GB也可以运行，不过后续的参数需要调整
-
-
+> 实测3090也行，8\*3090 24GB也可以运行，不过后续的参数需要调整
 
 ### 2、数据预处理
 
@@ -563,8 +552,8 @@ DatasetDict({
     remove_columns=raw_dataset["train"].column_names,
     desc="Preprocessing textvqa dataset",
   )
-  
-  
+
+
 # 4、Trainer数据集调用
 train_dataset=raw_dataset["train"],
 eval_dataset=(
@@ -757,7 +746,7 @@ batch_input_ids = {
 return batch_input_ids
 ```
 
-***该部分整体代码***
+**_该部分整体代码_**
 
 ```python
 from typing import Optional, Tuple
@@ -1133,7 +1122,7 @@ class Qwen2_5VLCollator:
                 )
 
             return position_ids, mrope_position_deltas
-        
+
 
 ################
 # Data collator map
@@ -1145,7 +1134,7 @@ vision_data_collator_map = {
 
 ### 3、参数设置
 
-***1、初始化模型、数据、训练参数***
+**_1、初始化模型、数据、训练参数_**
 
 因为像model_name_or_path可能需要多次修改，但是在代码里修改太麻烦了，因此我们可以使用脚本文件进行修改，前提需要对参数进行初始化，代码如下：
 
@@ -1250,7 +1239,7 @@ class LoraArguments:
 
 其中因为本次训练采用全参数微调，因此lora arguments没用上，有兴趣的小伙伴可以尝试下lora微调。
 
-***2、脚本文件设置***
+**_2、脚本文件设置_**
 
 本次教程采用单机多卡分布式训练，因此脚本文件有点多有点乱，下行代码首先展示如何整体使用这些脚本文件，然后会一一讲解。
 
@@ -1289,10 +1278,10 @@ deepspeed_config:
   zero3_init_flag: false
   zero_stage: 2
 distributed_type: DEEPSPEED
-downcast_bf16: 'no'
+downcast_bf16: "no"
 machine_rank: 0
 main_training_function: main
-mixed_precision: 'bf16'
+mixed_precision: "bf16"
 num_machines: 1
 num_processes: 8
 rdzv_backend: static
@@ -1324,7 +1313,7 @@ max_seq_length: 256
 ## 训练超参数
 seed: 2025
 data_seed: 2025
-remove_unused_columns: False  # 此处需要指定为false
+remove_unused_columns: False # 此处需要指定为false
 ## batchsize、训练次数相关
 per_device_train_batch_size: 1
 gradient_accumulation_steps: 1
@@ -1354,8 +1343,6 @@ logging_steps: 0.001
 > 💡注意：
 >
 > 由于本次教程固定max_steps，因此最终的epoch会很大，会有过拟合的现象，如果想要使用epoch，可以单独设置。
-
-
 
 ### 4、模型训练&保存
 
@@ -1474,10 +1461,8 @@ if __name__ == "__main__":
     parser = TrlParser(dataclass_types)
     data_args, training_args, model_args, lora_args = parser.parse_args_and_config()
     main(data_args, training_args, model_args, lora_args)
-	
+
 ```
-
-
 
 ### 5、完整代码
 
@@ -1521,15 +1506,11 @@ python scripts/convert2sft_format.py
 bash scripts/sft_vqa_4gpu-z2.sh configs/SFT_Qwen2_5-VL-3B-Instruct_vqa.yaml
 ```
 
-
-
 ## 📈SwanLab可视化结果
 
 链接在这👉[SwanLab](https://swanlab.cn/@LiXinYu/qwen2.5-vl-sft-grounding/runs/j426nezsim58am8gwrhb0/chart)
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/4.grounding/qwen2_5-vl-report/swanlab_results.png" alt="swanlab可视化观测结果" style="zoom:60%">
-
-
 
 ## 📌微调模型后推理测试
 
@@ -1637,8 +1618,6 @@ TypeError: Value.__init__() missing 1 required positional argument: 'dtype'
 
 删掉下载到本地的数据集文件里的dataset_infos.json文件。
 
-
-
 ## 参考资料
 
 [https://github.com/QwenLM/Qwen2.5-VL/tree/main](https://github.com/QwenLM/Qwen2.5-VL/tree/main)
@@ -1658,10 +1637,3 @@ TypeError: Value.__init__() missing 1 required positional argument: 'dtype'
 [Qwen2.5-VL Technical Report](https://arxiv.org/abs/2502.13923#:~:text=We%20introduce%20Qwen2.5-VL%2C%20the%20latest%20flagship%20model%20of,advancements%20in%20both%20foundational%20capabilities%20and%20innovative%20functionalities)
 
 [多模态大模型应用实践（一）- 利用微调 LLaVA 实现高效酒店图片分类](https://aws.amazon.com/cn/blogs/china/multimodal-large-model-application-practice-part-one/)
-
-
-
-
-
-
-

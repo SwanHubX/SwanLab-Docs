@@ -9,12 +9,12 @@ login(
 ):
 ```
 
-| Parameter | Description |
-| --- | --- |
-| `api_key` | (str) Authentication key. If not provided, the key will be read from the key file. |
-| `host` | (str) The API host where the SwanLab service is located. If not provided, the default host (i.e., the cloud version) will be used. |
+| Parameter  | Description                                                                                                                        |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `api_key`  | (str) Authentication key. If not provided, the key will be read from the key file.                                                 |
+| `host`     | (str) The API host where the SwanLab service is located. If not provided, the default host (i.e., the cloud version) will be used. |
 | `web_host` | (str) The web host where the SwanLab service is located. If not provided, the default host (i.e., the cloud version) will be used. |
-| `save` | (bool) Whether to save the API key to the key file. The default value is False. |
+| `save`     | (bool) Whether to save the API key to the key file. The default value is False.                                                    |
 
 ## Introduction
 

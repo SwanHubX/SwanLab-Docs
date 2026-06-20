@@ -30,12 +30,8 @@ print(run.public.cloud.experiment_url)
 - `swanlog_dir`：swanlab保存文件夹
 - `run_dir`：本次实验的保存文件夹
 - `cloud`：云端环境的相关信息
-    - `available`：是否运行在云端模式，如果不是，下面的属性全部为None
-    - `project_name`：本次运行的项目名称
-    - `project_url`：本次运行在云端项目url
-    - `experiment_name`：本次运行的实验名称
-    - `experiment_url`：本次运行的云端实验url
-
-
-
-
+  - `available`：是否运行在云端模式，如果不是，下面的属性全部为None
+  - `project_name`：本次运行的项目名称
+  - `project_url`：本次运行在云端项目url
+  - `experiment_name`：本次运行的实验名称
+  - `experiment_url`：本次运行的云端实验url

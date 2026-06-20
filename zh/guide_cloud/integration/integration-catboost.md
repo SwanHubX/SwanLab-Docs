@@ -3,12 +3,14 @@
 [CatBoost (Categorical Boosting)](https://catboost.ai) 是由俄罗斯通信公司 Yandex 在 2017 年提出的一种基于梯度提升决策树的开源机器学习算法框架，相比 XGBoost 和 LightGBM 在算法准确率方面具有更好的表现。
 
 ## 1. 引入 SwanLabCallback
+
 ```python
 from swanlab.integration.catboost import SwanLabCallback
 ```
 
 ## 2. 初始化 SwanLab 项目
-``` python
+
+```python
     swanlab.init(
         project="gbdt-demo",
         experiment_name="catboost-demo-full",

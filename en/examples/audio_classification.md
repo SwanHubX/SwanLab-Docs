@@ -12,10 +12,10 @@ In current audio classification applications, it is often used for audio annotat
 
 In this article, we will train a ResNet series model on the GTZAN dataset using the PyTorch framework, and use [SwanLab](https://swanlab.cn) to monitor the training process and evaluate the model's performance.
 
-* GitHub: [https://github.com/Zeyi-Lin/PyTorch-Audio-Classification](https://github.com/Zeyi-Lin/PyTorch-Audio-Classification)
-* Dataset: [https://pan.baidu.com/s/14CTI_9MD1vXCqyVxmAbeMw?pwd=1a9e](https://pan.baidu.com/s/14CTI_9MD1vXCqyVxmAbeMw?pwd=1a9e) Extraction Code: 1a9e
-* SwanLab Experiment Logs: [https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification-simple/charts](https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification-simple/charts)
-* More Experiment Logs: [https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification/charts](https://swanlab.cn/@ZeyiLin/PyTorch\_Audio\_Classification/charts)
+- GitHub: [https://github.com/Zeyi-Lin/PyTorch-Audio-Classification](https://github.com/Zeyi-Lin/PyTorch-Audio-Classification)
+- Dataset: [https://pan.baidu.com/s/14CTI_9MD1vXCqyVxmAbeMw?pwd=1a9e](https://pan.baidu.com/s/14CTI_9MD1vXCqyVxmAbeMw?pwd=1a9e) Extraction Code: 1a9e
+- SwanLab Experiment Logs: [https://swanlab.cn/@ZeyiLin/PyTorch_Audio_Classification-simple/charts](https://swanlab.cn/@ZeyiLin/PyTorch_Audio_Classification-simple/charts)
+- More Experiment Logs: [https://swanlab.cn/@ZeyiLin/PyTorch_Audio_Classification/charts](https://swanlab.cn/@ZeyiLin/PyTorch_Audio_Classification/charts)
 
 ## 1. Audio Classification Logic
 
@@ -80,7 +80,7 @@ def create_dataset_csv():
     # Dataset root directory
     data_dir = './GTZAN/genres_original'
     data = []
-    
+
     # Traverse all subdirectories
     for label in os.listdir(data_dir):
         label_dir = os.path.join(data_dir, label)
@@ -90,7 +90,7 @@ def create_dataset_csv():
                 if audio_file.endswith('.wav'):
                     audio_path = os.path.join(label_dir, audio_file)
                     data.append([audio_path, label])
-    
+
     # Create DataFrame and save as CSV
     df = pd.DataFrame(data, columns=['path', 'label'])
     df.to_csv('audio_dataset.csv', index=False)
@@ -160,7 +160,7 @@ def create_dataset_csv():
     # Dataset root directory
     data_dir = './GTZAN/genres_original'
     data = []
-    
+
     # Traverse all subdirectories
     for label in os.listdir(data_dir):
         label_dir = os.path.join(data_dir, label)
@@ -170,7 +170,7 @@ def create_dataset_csv():
                 if audio_file.endswith('.wav'):
                     audio_path = os.path.join(label_dir, audio_file)
                     data.append([audio_path, label])
-    
+
     # Create DataFrame and save as CSV
     df = pd.DataFrame(data, columns=['path', 'label'])
     df.to_csv('audio_dataset.csv', index=False)
@@ -187,11 +187,11 @@ class AudioDataset(Dataset):
         self.train_mode = train_mode  # Add training mode flag
     def __len__(self):
         return len(self.audio_paths)
-    
+
     def __getitem__(self, idx):
         # Load audio file
         waveform, sample_rate = torchaudio.load(self.audio_paths[idx])
-        
+
         # Convert audio to Mel spectrogram
         transform = torchaudio.transforms.MelSpectrogram(
             sample_rate=sample_rate,
@@ -203,14 +203,14 @@ class AudioDataset(Dataset):
 
         # Ensure values are within a reasonable range
         mel_spectrogram = torch.clamp(mel_spectrogram, min=0)
-        
+
         # Convert to 3-channel image format (to fit ResNet)
         mel_spectrogram = mel_spectrogram.repeat(3, 1, 1)
-        
+
         # Ensure consistent size
         resize = torch.nn.AdaptiveAvgPool2d((self.resize, self.resize))
         mel_spectrogram = resize(mel_spectrogram)
-        
+
         return mel_spectrogram, self.labels[idx]
 
 # Modify ResNet model
@@ -221,39 +221,39 @@ class AudioClassifier(nn.Module):
         self.resnet = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
         # Modify the final fully connected layer
         self.resnet.fc = nn.Linear(512, num_classes)
-        
+
     def forward(self, x):
         return self.resnet(x)
 
 # Training function
 def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, device):
-    
+
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
         correct = 0
         total = 0
-        
+
         for i, (inputs, labels) in enumerate(train_loader):
             inputs, labels = inputs.to(device), labels.to(device)
-            
+
             outputs = model(inputs)
             loss = criterion(outputs, labels)
-            
+
             loss.backward()
 
             optimizer.step()
             optimizer.zero_grad()
-            
+
             running_loss += loss.item()
-            
+
             _, predicted = outputs.max(1)
             total += labels.size(0)
             correct += predicted.eq(labels).sum().item()
-        
+
         train_loss = running_loss/len(train_loader)
         train_acc = 100.*correct/total
-        
+
         # Validation phase
         model.eval()
         val_loss = 0.0
@@ -264,17 +264,17 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
                 inputs, labels = inputs.to(device), labels.to(device)
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
-                
+
                 val_loss += loss.item()
                 _, predicted = outputs.max(1)
                 total += labels.size(0)
                 correct += predicted.eq(labels).sum().item()
-        
+
         val_loss = val_loss/len(val_loader)
         val_acc = 100.*correct/total
-        
+
         current_lr = optimizer.param_groups[0]['lr']
-        
+
         # Record training and validation metrics
         swanlab.log({
             "train/loss": train_loss,
@@ -284,7 +284,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             "train/epoch": epoch,
             "train/lr": current_lr
         })
-            
+
         print(f'Epoch {epoch+1}:')
         print(f'Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.2f}%')
         print(f'Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.2f}%')
@@ -294,7 +294,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
 def main():
     # Set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
+
     run = swanlab.init(
         project="PyTorch_Audio_Classification-simple",
         experiment_name="resnet18",
@@ -305,39 +305,39 @@ def main():
             "resize": 224,
         },
     )
-    
+
     # Generate or load dataset CSV file
     if not os.path.exists('audio_dataset.csv'):
         df = create_dataset_csv()
     else:
         df = pd.read_csv('audio_dataset.csv')
-    
+
     # Split training and validation sets
     train_df = pd.DataFrame()
     val_df = pd.DataFrame()
-    
+
     for label in df['label'].unique():
         label_df = df[df['label'] == label]
         label_train, label_val = train_test_split(label_df, test_size=0.2, random_state=42)
         train_df = pd.concat([train_df, label_train])
         val_df = pd.concat([val_df, label_val])
-    
-    # Create dataset and data loader 
+
+    # Create dataset and data loader
     train_dataset = AudioDataset(train_df, resize=run.config.resize, train_mode=True)
     val_dataset = AudioDataset(val_df, resize=run.config.resize, train_mode=False)
-    
+
     train_loader = DataLoader(train_dataset, batch_size=run.config.batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
-    
+
     # Create model
     num_classes = len(df['label'].unique())  # Set based on actual classification number
     print("num_classes", num_classes)
     model = AudioClassifier(num_classes).to(device)
-    
+
     # Define loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=run.config.learning_rate)  
-    
+    optimizer = optim.Adam(model.parameters(), lr=run.config.learning_rate)
+
     # Train model
     train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=run.config.num_epochs, device=device)
 
@@ -361,4 +361,4 @@ Below is the experiment where I achieved 87.5% validation accuracy. The specific
 
 1. Switching the model to resnext101_32x8d.
 2. Increasing the Mel spectrogram resize to 512.
-3
+   3

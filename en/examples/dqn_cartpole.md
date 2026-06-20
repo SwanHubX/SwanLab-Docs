@@ -28,11 +28,11 @@ This article will not delve too much into the specifics of DQN. Combining the pr
 
 ![image](https://imagebed-1301372061.cos.ap-beijing.myqcloud.com/blogs/20250207134541.png)
 
-* **Environment**: A cart can move left or right on a horizontal track, with a freely swinging pole attached to the top via a joint.
-* **Goal**: By moving the cart left or right, keep the pole's tilt angle within a threshold (±12° or ±15°), while ensuring the cart does not go out of bounds (e.g., ±2.4 units of the track length). Simply put, the pole should not fall, and the cart should not fly off the screen.
-* **State**: The state space consists of 4 continuous variables: cart position (x), cart velocity (v), pole angle (θ), and pole angular velocity (ω).
-* **Action**: The action space has only 2 discrete actions: 0 (move left) or 1 (move right).
-* **Reward Mechanism**: +1 point for each step the pole remains balanced. The goal is to maximize the reward, meaning the pole never falls.
+- **Environment**: A cart can move left or right on a horizontal track, with a freely swinging pole attached to the top via a joint.
+- **Goal**: By moving the cart left or right, keep the pole's tilt angle within a threshold (±12° or ±15°), while ensuring the cart does not go out of bounds (e.g., ±2.4 units of the track length). Simply put, the pole should not fall, and the cart should not fly off the screen.
+- **State**: The state space consists of 4 continuous variables: cart position (x), cart velocity (v), pole angle (θ), and pole angular velocity (ω).
+- **Action**: The action space has only 2 discrete actions: 0 (move left) or 1 (move right).
+- **Reward Mechanism**: +1 point for each step the pole remains balanced. The goal is to maximize the reward, meaning the pole never falls.
 
 Using the `gymnasium` library, starting the CartPole environment is very easy. Here is a simple example code:
 
@@ -88,7 +88,7 @@ class QNetwork(nn.Module):
             nn.Linear(64, action_dim)
         )
         self.to(device)  # Move the network to the specified device
-  
+
     def forward(self, x):
         return self.fc(x)
 ```
@@ -107,7 +107,7 @@ class DQNAgent:
         self.target_net.load_state_dict(self.q_net.state_dict())  # Initialize target network and current network to be the same to avoid training fluctuations due to network inconsistency
         self.optimizer = optim.Adam(self.q_net.parameters(), lr=1e-3)
         self.replay_buffer = deque(maxlen=10000)           # Experience replay buffer
-		self.update_target_freq = 100  
+		self.update_target_freq = 100
 ```
 
 DQN defines two neural networks: q_net and target_net, which have identical structures. During training, target_net is responsible for computing the expected value, i.e., **reward + target_net(next_state).max(1)[0]**, while q_net computes the current value. During training, these two values are fed into MSELoss to compute the difference, and after backpropagation, the parameters of q_net are updated. Every update_target_freq steps, the parameters of q_net are assigned to target_net.
@@ -179,7 +179,7 @@ class QNetwork(nn.Module):
             nn.ReLU(),
             nn.Linear(64, action_dim)
         )
-  
+
     def forward(self, x):
         return self.fc(x)
 
@@ -215,7 +215,7 @@ class DQNAgent:
     def train(self):
         if len(self.replay_buffer) < self.batch_size:
             return
-      
+
         # Randomly sample from the buffer
         batch = random.sample(self.replay_buffer, self.batch_size)
         states, actions, rewards, next_states, dones = zip(*batch)
@@ -253,7 +253,7 @@ class DQNAgent:
             os.makedirs("./output")
         torch.save(self.q_net.state_dict(), path)
         print(f"Model saved to {path}")
-      
+
     def evaluate(self, env):
         """Evaluate the current model's performance"""
         original_epsilon = self.epsilon
@@ -310,7 +310,7 @@ agent.epsilon = swanlab.config["epsilon_start"]
 for episode in range(swanlab.config["episode"]):
     state = env.reset()[0]
     total_reward = 0
-  
+
     while True:
         action = agent.choose_action(state)
         next_state, reward, done, _, _ = env.step(action)
@@ -321,16 +321,16 @@ for episode in range(swanlab.config["episode"]):
         state = next_state
         if done or total_reward > 2e4:
             break
-  
+
     # Epsilon is the exploration coefficient, which gradually decreases with each training episode
-    agent.epsilon = max(swanlab.config["epsilon_end"], agent.epsilon * swanlab.config["epsilon_decay"])  
-  
+    agent.epsilon = max(swanlab.config["epsilon_end"], agent.epsilon * swanlab.config["epsilon_decay"])
+
     # Evaluate the model every 10 episodes
     if episode % 10 == 0:
         eval_env = gym.make('CartPole-v1')
         avg_reward = agent.evaluate(eval_env)
         eval_env.close()
-      
+
         if avg_reward > agent.best_avg_reward:
             agent.best_avg_reward = avg_reward
             # Deep copy the parameters of the current best model
@@ -339,7 +339,7 @@ for episode in range(swanlab.config["episode"]):
             print(f"New best model saved with average reward: {avg_reward}")
 
     print(f"Episode: {episode}, Train Reward: {total_reward}, Best Eval Avg Reward: {agent.best_avg_reward}")
-  
+
     swanlab.log(
         {
             "train/reward": total_reward,
@@ -359,18 +359,18 @@ for episode in range(3):  # Record 3 test episodes
     state = test_env.reset()[0]
     total_reward = 0
     steps = 0
-  
+
     while True:
         action = agent.choose_action(state)
         next_state, reward, done, _, _ = test_env.step(action)
         total_reward += reward
         state = next_state
         steps += 1
-      
+
         # Limit each episode to a maximum of 1500 steps, about 30 seconds, to prevent excessively long recordings
         if done or steps >= 1500:
             break
-  
+
     print(f"Test Episode: {episode}, Reward: {total_reward}")
 
 test_env.close()

@@ -17,20 +17,26 @@ Cat and dog classification is one of the most fundamental tasks in computer visi
 - Three open-source libraries: [SwanLab](https://github.com/swanhubx/swanlab), [Gradio](https://github.com/gradio-app/gradio), [PyTorch](https://github.com/pytorch/pytorch)
 
 ## 1. Preparation
+
 ### 1.1 Install Python Libraries
+
 You need to install the following 4 libraries:
+
 ```bash
 torch>=1.12.0
 torchvision>=0.13.0
 swanlab
 gradio
 ```
+
 Installation command:
+
 ```bash
 pip install torch>=1.12.0 torchvision>=0.13.0 swanlab gradio
 ```
 
 ### 1.2 Create File Directory
+
 Now open a folder and create the following 5 files:
 
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/02.png)
@@ -48,6 +54,7 @@ Their respective functions are:
 
 The dataset source is the [Cat and Dog Classification Dataset](https://modelscope.cn/datasets/tany0699/cats_and_dogs/summary) on ModelScope, which contains 275 images for training and 70 images for testing, totaling less than 10MB.
 I have organized the data, so it is recommended to download it using the following Baidu Netdisk link:
+
 > Baidu Netdisk: Link: https://pan.baidu.com/s/1qYa13SxFM0AirzDyFMy0mQ Extraction code: 1ybm
 
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/03.png)
@@ -57,12 +64,15 @@ Place the dataset in the `datasets` folder:
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/04.png)
 
 OK, now we start the training part!
+
 > PS: If you want to train the cat and dog classification model with a larger dataset, please refer to the related links at the end of the article.
 
 ## 2. Training Part
+
 PS: If you want to directly view the complete code and results, you can jump to section 2.9.
 
 ### 2.1 load_datasets.py
+
 First, we need to create a class `DatasetLoader`, whose purpose is to complete the dataset reading and preprocessing. We will write it in `load_datasets.py`.
 Before writing this class, let's analyze the dataset.
 In the datasets directory, `train.csv` and `val.csv` respectively record the relative paths of the images in the training and testing sets (the first column is the relative path of the image, the second column is the label, 0 represents cat, 1 represents dog):
@@ -71,6 +81,7 @@ In the datasets directory, `train.csv` and `val.csv` respectively record the rel
 Left image as train.csv, right image as the image in the cat folder in the train folder.
 
 So our goal is clear:
+
 1. Parse these two CSV files to get the image relative paths and labels.
 2. Read the images based on the relative paths.
 3. Preprocess the images.
@@ -114,6 +125,7 @@ class DatasetLoader(Dataset):
 ```
 
 The `DatasetLoader` class consists of four parts:
+
 1. `__init__`: Contains one input parameter `csv_path`. After passing `csv_path` from the outside, the read data is stored in `self.data`. `self.current_dir` obtains the absolute path of the directory where the current code is located, preparing for subsequent image reading.
 
 2. `preprocess_image`: This function is used for image preprocessing. First, it constructs the absolute path of the image file, then uses the PIL library to open the image. Next, it defines a series of image transformations: resizing the image to 256x256, converting the image to a tensor, and normalizing the image. Finally, it returns the preprocessed image.
@@ -123,7 +135,9 @@ The `DatasetLoader` class consists of four parts:
 4. `__len__`: Used to return the total number of images in the dataset.
 
 ### 2.2 Load the Dataset
+
 > Starting from this section, the code will be written in train.py.
+
 ```python
 from torch.utils.data import DataLoader
 from load_datasets import DatasetLoader
@@ -137,6 +151,7 @@ ValDataLoader = DataLoader(ValDataset, batch_size=batch_size, shuffle=False)
 ```
 
 We pass the paths of those two CSV files to instantiate the `DatasetLoader` class, then use PyTorch's `DataLoader` to encapsulate it. `DataLoader` can take two additional parameters:
+
 - `batch_size`: Defines how many images each data batch contains. In deep learning, we usually do not process all data at once but divide the data into small batches. This helps the model learn faster and also saves memory. Here we define `batch_size = 8`, meaning each batch will contain 8 images.
 - `shuffle`: Defines whether to randomly shuffle the data at the beginning of each epoch. This is usually used for training datasets to ensure that the data order is different in each epoch, helping the model generalize better. If set to True, the data will be shuffled at the beginning of each epoch. Here we shuffle during training but not during testing.
 
@@ -168,9 +183,11 @@ model.fc = torch.nn.Linear(in_features, num_classes)
 ```
 
 ### 2.4 Set cuda/mps/cpu
+
 If your computer has an **NVIDIA GPU**, then CUDA can greatly accelerate your training;
 If your computer is a **Macbook Apple Silicon (M-series chip)**, then MPS can also greatly accelerate your training;
 If neither, then use CPU:
+
 ```python
 # Check if MPS is available
 try:
@@ -206,6 +223,7 @@ num_classes = 2
 ```
 
 ### Loss Function and Optimizer
+
 Set the loss function to cross-entropy loss and the optimizer to Adam.
 
 ```python
@@ -221,6 +239,7 @@ In training, we use the `swanlab` library as the experiment management and metri
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/07.png)
 
 #### 2.6.1 Set Initial Configuration Parameters
+
 The swanlab library uses `swanlab.init` to set the experiment name, experiment description, record hyperparameters, and the location of the log file.
 Subsequent opening of the visualization dashboard requires the log file.
 
@@ -246,11 +265,13 @@ swanlab.init(
 ```
 
 #### 2.6.2 Track Key Metrics
+
 The swanlab library uses `swanlab.log` to record key metrics. Specific usage cases are in sections 2.7 and 2.8.
 
 ### 2.7 Training Function
 
 We define a training function `train`:
+
 ```python
 def train(model, device, train_dataloader, optimizer, criterion, epoch):
     model.train()
@@ -270,7 +291,9 @@ The training logic is simple: we loop through `train_dataloader`, each time taki
 During training, the most concerning metric is the loss value `loss`, so we use `swanlab.log` to track its changes.
 
 ### 2.8 Testing Function
+
 We define a testing function `test`:
+
 ```python
 def test(model, device, test_dataloader, epoch):
     model.eval()
@@ -298,7 +321,7 @@ We train for `num_epochs` rounds, testing every 4 rounds, and save the weight fi
 ```python
 for epoch in range(1, num_epochs + 1):
     train(model, device, TrainDataLoader, optimizer, criterion, epoch)
-    if epoch % 4 == 0: 
+    if epoch % 4 == 0:
         accuracy = test(model, device, ValDataLoader, epoch)
 
 if not os.path.exists("checkpoint"):
@@ -355,7 +378,7 @@ if __name__ == "__main__":
     lr = 1e-4
     batch_size = 8
     num_classes = 2
-    
+
     # Set device
     try:
         use_mps = torch.backends.mps.is_available()
@@ -399,14 +422,14 @@ if __name__ == "__main__":
     model.to(torch.device(device))
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    
+
     # Start training
     for epoch in range(1, num_epochs + 1):
         train(model, device, TrainDataLoader, optimizer, criterion, epoch)  # Train for one epoch
 
         if epoch % 4 == 0:  # Test every 4 epochs
             accuracy = test(model, device, ValDataLoader, epoch)
-    
+
     # Save the weights
     if not os.path.exists("checkpoint"):
         os.makedirs("checkpoint")
@@ -447,6 +470,7 @@ You can see that the model has already achieved 100% test accuracy in the middle
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/13.png)
 
 ## 3. Gradio Demo Program
+
 Gradio is an open-source Python library designed to help data scientists, researchers, and developers in the field of machine learning quickly create and share user interfaces for machine learning models.
 Here, we use Gradio to build a demo interface for cat and dog classification. Write the `app.py` program:
 

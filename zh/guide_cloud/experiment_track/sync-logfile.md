@@ -3,6 +3,7 @@
 > 将本地的实验数据，同步到SwanLab云端/私有化部署端
 
 **使用场景：**
+
 1. **训练过程中断网：** 模型训一半服务器断网了1小时，SwanLab的云端记录断了
 2. **无网训练环境：** 你不幸地发现公司/学校的训练服务器完全不联网，也不让安装Docker
 3. **多端同步：** 你使用了私有化部署，但也希望把实验记录同步到云端
@@ -53,7 +54,6 @@ swanlab sync ./swanlog/run-xxx
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/sync-logfile/cli.png)
 
-
 ## 在原实验上同步
 
 如果你不希望创建1个新实验，而是在原本的实验上同步（会自行比对数据，增加差异的部分），可以使用`--id`参数：
@@ -63,7 +63,6 @@ swanlab sync ./swanlog/run-xxx --id <实验ID>
 ```
 
 实验ID获取方式见：[恢复实验/断点续训](/guide_cloud/experiment_track/resume-experiment)
-
 
 ## 批量上传
 
@@ -82,7 +81,6 @@ swanlab sync ./swanlog/run-xxx -p <project_name> -w <workspace_name>
 :::warning 复制实验场景
 如果你希望一个实验可以出现在多个项目下，那么可以使用上述命令，将实验上传到多个项目下。
 :::
-
 
 ## 上传到私有化部署
 

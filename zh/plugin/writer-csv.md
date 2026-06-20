@@ -35,9 +35,7 @@ swanlab.init(
 csv_writer = CSVWriter(dir="logs", filename="my_csv_file.csv")
 ```
 
-
 ## 示例代码
-
 
 ```python
 import swanlab
@@ -50,7 +48,7 @@ csv_writer = CSVWriter(dir="logs")
 swanlab.init(
     # 设置项目名
     project="my-awesome-project",
-    
+
     # 设置超参数
     config={
         "learning_rate": 0.02,

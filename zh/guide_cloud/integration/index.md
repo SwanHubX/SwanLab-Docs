@@ -4,11 +4,13 @@
 下面是我们已集成的框架列表，欢迎提交 [Issue](https://github.com/swanhubx/swanlab/issues) 来反馈你想要集成的框架。
 
 ## 基础框架
+
 - [PyTorch](/guide_cloud/integration/integration-pytorch.html)
 - [MindSpore](/guide_cloud/integration/integration-ascend.html)
 - [Keras](/guide_cloud/integration/integration-keras.html)
 
 ## 专有/微调框架
+
 - [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
 - [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
 - [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
@@ -26,9 +28,11 @@
 - [MLX-LM](/guide_cloud/integration/integration-mlx-lm.html)
 
 ## 评估框架
+
 - [EvalScope](/guide_cloud/integration/integration-evalscope.html)
 
 ## 计算机视觉
+
 - [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
 - [MMDetection](/guide_cloud/integration/integration-mmdetection.html)
 - [MMSegmentation](/guide_cloud/integration/integration-mmsegmentation.html)
@@ -36,6 +40,7 @@
 - [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
 
 ## 强化学习
+
 - [Stable Baselines3](/guide_cloud/integration/integration-sb3.html)
 - [veRL](/guide_cloud/integration/integration-verl.html)
 - [HuggingFace TRL](/guide_cloud/integration/integration-huggingface-trl.html)
@@ -43,10 +48,11 @@
 - [AReaL](/guide_cloud/integration/integration-areal.html)
 - [ROLL](/guide_cloud/integration/integration-roll.html)
 - [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
-- [RLinf](/guide_cloud/integration/integration-rlinf.html)      
+- [RLinf](/guide_cloud/integration/integration-rlinf.html)
 - [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
 
 ## 其他框架
+
 - [TensorBoard](/guide_cloud/integration/integration-tensorboard.html)
 - [Weights & Biases](/guide_cloud/integration/integration-wandb.html)
 - [MLflow](/guide_cloud/integration/integration-mlflow.html)

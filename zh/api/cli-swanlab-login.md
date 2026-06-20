@@ -1,15 +1,15 @@
 # swanlab login
 
-``` bash
+```bash
 swanlab login [OPTIONS]
 ```
 
-| 选项 | 描述 |
-| --- | --- |
-| `-r`, `--relogin` | 重新登录。|
-| `-h`, `--host` | 指定SwanLab服务所在的主机。比如`http://localhost:8000`。|
-| `-k`, `--api-key` | 指定API Key。如果您不喜欢使用命令行来输入 API 密钥，这将允许自动登录。|
-| `-w`, `--web-host` | 指定SwanLab前端所在的Web主机。|
+| 选项               | 描述                                                                   |
+| ------------------ | ---------------------------------------------------------------------- |
+| `-r`, `--relogin`  | 重新登录。                                                             |
+| `-h`, `--host`     | 指定SwanLab服务所在的主机。比如`http://localhost:8000`。               |
+| `-k`, `--api-key`  | 指定API Key。如果您不喜欢使用命令行来输入 API 密钥，这将允许自动登录。 |
+| `-w`, `--web-host` | 指定SwanLab前端所在的Web主机。                                         |
 
 ## 介绍
 
@@ -30,7 +30,6 @@ swanlab login
 ```bash
 swanlab login -k <api-key>
 ```
-
 
 ## 重新登录
 
@@ -53,4 +52,3 @@ swanlab logout
 ```bash
 swanlab login --host <host>
 ```
-

@@ -16,18 +16,16 @@
 - **中转存储 (Transit)**：S3 对象存储作为临时中转站
 - **目标集群 (Current)**：数据接收端，完成恢复。
 
-
-| 数据类型 | 迁移方式 | 说明 |
-|---------|---------|------|
-| 数据库（PostgreSQL / ClickHouse / Redis） | 导出 → S3 中转 → 导入 | 物理迁移 |
-| 对象存储（MiniO / S3） | 直接对接云端 S3 | 存算分离，免搬运，新集群直接通过 API 读写 |
+| 数据类型                                  | 迁移方式              | 说明                                      |
+| ----------------------------------------- | --------------------- | ----------------------------------------- |
+| 数据库（PostgreSQL / ClickHouse / Redis） | 导出 → S3 中转 → 导入 | 物理迁移                                  |
+| 对象存储（MiniO / S3）                    | 直接对接云端 S3       | 存算分离，免搬运，新集群直接通过 API 读写 |
 
 **图例说明**：
 
 - 🔵 **Phase 1: Export** — 源集群导出数据到 S3 中转存储桶（DB Export + S3 Sync）
 - 🟢 **Phase 2: Import** — 数据库数据从 S3 导入到新集群（DB Import，物理迁移）
 - 🟢 **Phase 2: Direct Use**（虚线）— 对象存储不移动，新集群直接通过 `value.yaml` 同样的配置访问 public 和 private 对象存储桶
-
 
 ## 🧾 前置条件
 
@@ -47,27 +45,27 @@
 
 使用前请确认以下信息：
 
-| 是否准备 | 占位变量 | 说明 |
-|---------|---------|------|
-| ✅ | `origin_namespace` / `target_namespace` | 原始集群和目标集群的命名空间 |
-| ✅ | `S3_REGION` | 用于备份的对象存储桶的地域 |
-| ✅ | `S3_BUCKET` | 存储桶名称 |
-| ✅ | `S3_ENDPOINT` | S3 格式的对象存储 Endpoint，如 `tos-s3-cn-beijing.volces.com` |
-| ✅ | `S3_AK` / `S3_SK` | 对象存储可写密钥 |
-| ✅ | `S3_PATH_PREFIX` | S3 中的备份路径前缀，默认 `origin-backup-datas` |
-| ✅ | 原始集群各组件 PVC 名称 | `kubectl get pvc -n <origin_namespace>` |
+| 是否准备 | 占位变量                                | 说明                                                          |
+| -------- | --------------------------------------- | ------------------------------------------------------------- |
+| ✅       | `origin_namespace` / `target_namespace` | 原始集群和目标集群的命名空间                                  |
+| ✅       | `S3_REGION`                             | 用于备份的对象存储桶的地域                                    |
+| ✅       | `S3_BUCKET`                             | 存储桶名称                                                    |
+| ✅       | `S3_ENDPOINT`                           | S3 格式的对象存储 Endpoint，如 `tos-s3-cn-beijing.volces.com` |
+| ✅       | `S3_AK` / `S3_SK`                       | 对象存储可写密钥                                              |
+| ✅       | `S3_PATH_PREFIX`                        | S3 中的备份路径前缀，默认 `origin-backup-datas`               |
+| ✅       | 原始集群各组件 PVC 名称                 | `kubectl get pvc -n <origin_namespace>`                       |
 
 > 💡 经实践检验，可以直接通过传入 PVC 的方式，让 K8s 自动处理挂载。
 
 > ⚠️ S3 迁移工具默认使用 `s3cmd`，已在腾讯云 COS、火山引擎 TOS 上经过验证。阿里云 OSS 作为中转时需使用 `ossutil`，需替换传输工具。
 
-
 ## 🪜 操作步骤
 
 :::warning
+
 - 数据迁移时需要确保**两套 SwanLab 服务都保持停机状态**，由一个中间 Job 执行迁移，否则会因为状态不一致等问题，造成迁移失败。
 - **迁移前必须停机！**
-:::
+  :::
 
 ### 1. 修改配置文件
 
@@ -84,26 +82,26 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-backup-storage-config
-  namespace: <original_namespace>      # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <original_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 data:
-  S3_REGION: "cn-beijing"              # 必填：用于中转的对象存储地域（如 cn-beijing）
-  S3_BUCKET: "swanlab-backup-demo"     # 必填：存储桶名称
-  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com"  # 必填：S3 格式的对象存储 Endpoint
+  S3_REGION: "cn-beijing" # 必填：用于中转的对象存储地域（如 cn-beijing）
+  S3_BUCKET: "swanlab-backup-demo" # 必填：存储桶名称
+  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com" # 必填：S3 格式的对象存储 Endpoint
   S3_PATH_PREFIX: "origin-backup-datas"
   # 选填：原始集群本机数据目录路径（根据实际部署填写）
-  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres"    # PostgreSQL 数据目录
+  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres" # PostgreSQL 数据目录
   HOST_CLICKHOUSE_PATH: "/var/lib/swanlab-clickhouse" # ClickHouse 数据目录
-  HOST_REDIS_PATH: "/var/lib/swanlab-redis"           # Redis 数据目录
+  HOST_REDIS_PATH: "/var/lib/swanlab-redis" # Redis 数据目录
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: swanlab-backup-storage-secret
-  namespace: <original_namespace>      # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <original_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 type: Opaque
 stringData:
-  S3_AK: "xxx"                         # 必填：对象存储 AccessKey
-  S3_SK: "xxx"                         # 必填：对象存储 SecretKey
+  S3_AK: "xxx" # 必填：对象存储 AccessKey
+  S3_SK: "xxx" # 必填：对象存储 SecretKey
 ```
 
 ```yaml [config-import.yaml]
@@ -111,31 +109,29 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-backup-storage-config
-  namespace: <target_namespace>        # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
 data:
-  S3_REGION: "cn-beijing"              # 必填：用于中转的对象存储地域（如 cn-beijing）
-  S3_BUCKET: "swanlab-backup-demo"     # 必填：存储桶名称
-  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com"  # 必填：S3 格式的对象存储 Endpoint
+  S3_REGION: "cn-beijing" # 必填：用于中转的对象存储地域（如 cn-beijing）
+  S3_BUCKET: "swanlab-backup-demo" # 必填：存储桶名称
+  S3_ENDPOINT: "tos-s3-cn-beijing.volces.com" # 必填：S3 格式的对象存储 Endpoint
   S3_PATH_PREFIX: "origin-backup-datas"
   # 选填：原始集群本机数据目录路径（根据实际部署填写）
-  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres"    # PostgreSQL 数据目录
+  HOST_POSTGRES_PATH: "/var/lib/swanlab-postgres" # PostgreSQL 数据目录
   HOST_CLICKHOUSE_PATH: "/var/lib/swanlab-clickhouse" # ClickHouse 数据目录
-  HOST_REDIS_PATH: "/var/lib/swanlab-redis"           # Redis 数据目录
+  HOST_REDIS_PATH: "/var/lib/swanlab-redis" # Redis 数据目录
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: swanlab-backup-storage-secret
-  namespace: <target_namespace>        # ⚠️ 必填：与 ConfigMap 相同的【目标集群】命名空间
+  namespace: <target_namespace> # ⚠️ 必填：与 ConfigMap 相同的【目标集群】命名空间
 type: Opaque
 stringData:
-  S3_AK: "xxx"                         # 必填：对象存储 AccessKey
-  S3_SK: "xxx"                         # 必填：对象存储 SecretKey
+  S3_AK: "xxx" # 必填：对象存储 AccessKey
+  S3_SK: "xxx" # 必填：对象存储 SecretKey
 ```
 
 :::
-
-
 
 ::: code-group
 
@@ -150,6 +146,7 @@ kubectl apply -f config-import.yaml
 :::
 
 同时修改导出/导入 Job YAML 中的以下字段：
+
 - `namespace`：对应的 K8s 命名空间
 - `claimName`：对应的 PVC 名称
 - `nodeSelector`：本机部署场景需指定节点
@@ -211,7 +208,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-postgres
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -271,7 +268,7 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ 必填：【原始集群】K8s 命名空间下的 postgres pvc 名称
+            claimName: swanlab-postgres-pvc # ⚠️ 必填：【原始集群】K8s 命名空间下的 postgres pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -279,7 +276,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-postgres
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -334,11 +331,10 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ 必填：【原始集群】K8s 命名空间下的 postgres pvc 名称
+            claimName: swanlab-postgres-pvc # ⚠️ 必填：【原始集群】K8s 命名空间下的 postgres pvc 名称
 ```
 
 :::
-
 
 ::: details export-clickhouse
 
@@ -349,7 +345,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-clickhouse
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -408,7 +404,7 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ 必填：【原始集群】K8s 命名空间下的 clickhouse pvc 名称
+            claimName: swanlab-clickhouse-pvc # ⚠️ 必填：【原始集群】K8s 命名空间下的 clickhouse pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -416,7 +412,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-clickhouse
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -470,11 +466,10 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ 必填：【原始集群】K8s 命名空间下的 clickhouse pvc 名称
+            claimName: swanlab-clickhouse-pvc # ⚠️ 必填：【原始集群】K8s 命名空间下的 clickhouse pvc 名称
 ```
 
 :::
-
 
 ::: details export-redis
 
@@ -485,7 +480,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-redis
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -544,7 +539,7 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ 必填：【原始集群】K8s 命名空间下的 redis pvc 名称
+            claimName: swanlab-redis-pvc # ⚠️ 必填：【原始集群】K8s 命名空间下的 redis pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -552,7 +547,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-redis
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -606,11 +601,10 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ 必填：【原始集群】K8s 命名空间下的 redis pvc 名称
+            claimName: swanlab-redis-pvc # ⚠️ 必填：【原始集群】K8s 命名空间下的 redis pvc 名称
 ```
 
 :::
-
 
 ::: details export-vector
 
@@ -621,7 +615,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-vector
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -683,10 +677,10 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-0 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-0 pvc 名称
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-1 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-1 pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -694,7 +688,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-export-vector
-  namespace: <source_namespace>       # ⚠️ 必填：【原始集群】K8s 命名空间
+  namespace: <source_namespace> # ⚠️ 必填：【原始集群】K8s 命名空间
 spec:
   backoffLimit: 2
   ttlSecondsAfterFinished: 86400
@@ -754,14 +748,13 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-0 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-0 pvc 名称
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-1 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ 必填：【原始集群】K8s 命名空间下的 vector-1 pvc 名称
 ```
 
 :::
-
 
 ```bash
 # 并行执行所有导出 Job
@@ -783,8 +776,6 @@ kubectl get jobs -n <your_namespace>
 #### 情况 1：原始集群已集成 S3 URL
 
 如果原本已经挂载好 S3 接入点，只需配置源集群 `value.yaml` 中相同的 S3接入点配置，详见 [外部 S3 集成配置](/self_host/kubernetes/configuration.md#外部-s3-集成-integrations-s3)。
-
-
 
 #### 情况 2：原始集群使用 MiniO 挂载 PVC
 
@@ -885,7 +876,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-postgres
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: postgres
 spec:
@@ -944,7 +935,7 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ 必填：【目标集群】K8s 命名空间下的 postgres pvc 名称
+            claimName: swanlab-postgres-pvc # ⚠️ 必填：【目标集群】K8s 命名空间下的 postgres pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -952,7 +943,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-postgres
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: postgres
 spec:
@@ -1000,11 +991,10 @@ spec:
       volumes:
         - name: swanlab-pg-data
           persistentVolumeClaim:
-            claimName: swanlab-postgres-pvc  # ⚠️ 必填：【目标集群】K8s 命名空间下的 postgres pvc 名称
+            claimName: swanlab-postgres-pvc # ⚠️ 必填：【目标集群】K8s 命名空间下的 postgres pvc 名称
 ```
 
 :::
-
 
 ::: details import-clickhouse
 
@@ -1015,7 +1005,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-clickhouse
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: clickhouse
 spec:
@@ -1074,7 +1064,7 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ 必填：【目标集群】K8s 命名空间下的 clickhouse pvc 名称
+            claimName: swanlab-clickhouse-pvc # ⚠️ 必填：【目标集群】K8s 命名空间下的 clickhouse pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -1082,7 +1072,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-clickhouse
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: clickhouse
 spec:
@@ -1130,11 +1120,10 @@ spec:
       volumes:
         - name: swanlab-ch-data
           persistentVolumeClaim:
-            claimName: swanlab-clickhouse-pvc  # ⚠️ 必填：【目标集群】K8s 命名空间下的 clickhouse pvc 名称
+            claimName: swanlab-clickhouse-pvc # ⚠️ 必填：【目标集群】K8s 命名空间下的 clickhouse pvc 名称
 ```
 
 :::
-
 
 ::: details import-redis
 
@@ -1145,7 +1134,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-redis
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: redis
 spec:
@@ -1204,7 +1193,7 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ 必填：【目标集群】K8s 命名空间下的 redis pvc 名称
+            claimName: swanlab-redis-pvc # ⚠️ 必填：【目标集群】K8s 命名空间下的 redis pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -1212,7 +1201,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-redis
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: redis
 spec:
@@ -1260,11 +1249,10 @@ spec:
       volumes:
         - name: swanlab-redis-data
           persistentVolumeClaim:
-            claimName: swanlab-redis-pvc  # ⚠️ 必填：【目标集群】K8s 命名空间下的 redis pvc 名称
+            claimName: swanlab-redis-pvc # ⚠️ 必填：【目标集群】K8s 命名空间下的 redis pvc 名称
 ```
 
 :::
-
 
 ::: details import-vector
 
@@ -1275,7 +1263,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-vector
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: vector
 spec:
@@ -1337,10 +1325,10 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-0 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-0 pvc 名称
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-1 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-1 pvc 名称
 ```
 
 ```yaml [ossutil]
@@ -1348,7 +1336,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: swanlab-import-vector
-  namespace: <target_namespace>  # ⚠️ 必填：【目标集群】K8s 命名空间
+  namespace: <target_namespace> # ⚠️ 必填：【目标集群】K8s 命名空间
   labels:
     swanlab: vector
 spec:
@@ -1399,14 +1387,13 @@ spec:
       volumes:
         - name: vector-data-0
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-0  # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-0 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-0 # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-0 pvc 名称
         - name: vector-data-1
           persistentVolumeClaim:
-            claimName: data-swanlab-self-hosted-vector-1  # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-1 pvc 名称
+            claimName: data-swanlab-self-hosted-vector-1 # ⚠️ 必填：【目标集群】K8s 命名空间下的 vector-1 pvc 名称
 ```
 
 :::
-
 
 ```bash
 # 并行执行所有导入 Job
@@ -1459,10 +1446,10 @@ kubectl scale deployment swanlab-self-hosted --replicas=2 -n <your_namespace>
 # 「可选」如外接 S3 可忽略，如果使用 template 内置 MinIO 需要手动恢复 S3
 kubectl scale deployment swanlab-self-hosted-s3 --replicas=1 -n <your_namespace>
 ```
+
 :::
 
 恢复后可以观测 pod 健康状况与线上服务验证数据恢复情况。
-
 
 ## 🧹 Job 清理
 

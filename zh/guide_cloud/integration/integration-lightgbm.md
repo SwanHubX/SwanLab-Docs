@@ -14,12 +14,11 @@ from swanlab.integration.lightgbm import SwanLabCallback
 
 SwanLabCallback是适配于LightGBM的日志记录类。
 
-
 ## 2. 初始化SwanLab
 
 ```python
 swanlab.init(
-    project="lightgbm-example", 
+    project="lightgbm-example",
     experiment_name="breast-cancer-classification"
 )
 ```
@@ -34,7 +33,6 @@ gbm = lgb.train(
     callbacks=[SwanLabCallback()]
 )
 ```
-
 
 ## 4. 完整测试代码
 

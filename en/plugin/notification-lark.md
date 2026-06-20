@@ -49,7 +49,7 @@ Using the Lark notification plugin is straightforward. Simply initialize a `Lark
 from swanlab.plugin.notification import LarkCallback
 
 lark_callback = LarkCallback(
-    webhook_url="https://open.larkoffice.com/open-apis/bot/v2/hook/xxxx", 
+    webhook_url="https://open.larkoffice.com/open-apis/bot/v2/hook/xxxx",
     secret="xxxx",
 )
 ```

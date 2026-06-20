@@ -1,4 +1,3 @@
-
 # 🚀Quick Start
 
 Install SwanLab and start tracking your AI experiments in minutes
@@ -48,7 +47,7 @@ swanlab login -k api-key
 If your computer does not support the `swanlab login` method, you can also log in using a Python script:
 
 ```python
-import swanlab  
+import swanlab
 swanlab.login(api_key="Your API Key")
 ```
 

@@ -1,13 +1,11 @@
 ---
 name: Update Example
 about: Update swanlab example docs
-title: '[Example] '
-assignees: ''
+title: "[Example] "
+assignees: ""
 ---
 
 ### 🚀 Content
-
-
 
 ### 🚑 Any additional [like screenshots]
 

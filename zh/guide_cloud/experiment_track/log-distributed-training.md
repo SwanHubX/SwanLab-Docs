@@ -135,12 +135,12 @@ swanlab.init(experiment="distributed_experiment")
 
 支持的分布式训练环境变量：
 
-| 环境变量 | 描述 |
-|---------|------|
-| `SWANLAB_GROUP` | 实验分组名称，用于关联多个实验 |
-| `SWANLAB_JOB_TYPE` | 任务类型，如 "train"、"eval"、"inference" |
-| `SWANLAB_NAME` | 实验名称 |
-| `SWANLAB_DESCRIPTION` | 实验描述 |
+| 环境变量              | 描述                                      |
+| --------------------- | ----------------------------------------- |
+| `SWANLAB_GROUP`       | 实验分组名称，用于关联多个实验            |
+| `SWANLAB_JOB_TYPE`    | 任务类型，如 "train"、"eval"、"inference" |
+| `SWANLAB_NAME`        | 实验名称                                  |
+| `SWANLAB_DESCRIPTION` | 实验描述                                  |
 
 ## 多节点训练
 

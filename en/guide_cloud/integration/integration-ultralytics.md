@@ -9,6 +9,7 @@
 You can use Ultralytics to quickly train computer vision models while using SwanLab for experiment tracking and visualization.
 
 Below are two methods to integrate SwanLab:
+
 1. `add_swanlab_callback`: No need to modify the source code, suitable for single-card training scenarios.
 2. `return_swanlab_callback`: Requires modifying the source code, suitable for single-card and multi-card DDP training scenarios.
 
@@ -37,7 +38,7 @@ if __name__ == "__main__":
 
     model.train(
         data="./coco128.yaml",
-        epochs=3, 
+        epochs=3,
         imgsz=320,
     )
 ```
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
     model.train(
         data="./coco128.yaml",
-        epochs=3, 
+        epochs=3,
         imgsz=320,
         # Enable DDP
         device=[0,1],
@@ -82,7 +83,7 @@ We need to modify the Ultralytics source code. Go to `ultralytics/utils/callback
 ```python (15,16,18)
 def add_integration_callbacks(instance):
     ...
-    
+
     # Load training callbacks
     if "Trainer" in instance.__class__.__name__:
         from .clearml import callbacks as clear_cb
@@ -115,9 +116,10 @@ return_swanlab_callback(
 ```
 
 :::warning ps
+
 1. After writing to the source code, you no longer need to add `add_swanlab_callback` in the training script for subsequent runs.
 2. The project name is defined by the `project` parameter in `model.train()`, and the experiment name is defined by the `name` parameter.
-:::
+   :::
 
 ## 2.2 Code Example
 
@@ -129,7 +131,7 @@ if __name__ == "__main__":
 
     model.train(
         data="./coco128.yaml",
-        epochs=3, 
+        epochs=3,
         imgsz=320,
         # Enable DDP
         device=[0,1,2,3],

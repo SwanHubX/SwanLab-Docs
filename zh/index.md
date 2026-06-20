@@ -51,7 +51,6 @@ features:
   - title: 💻 私有化部署
     details: 离线查看实验结果，支持Docker部署
     link: /self_host/docker/deploy.md
-
 ---
 
 <!-- 精选文章部分 -->
@@ -357,7 +356,6 @@ features:
   text-decoration: underline;
 }
 </style>
-
 
 <!-- 分割线 -->
 <div style="text-align: center; margin-top: 48px; padding: 0 24px 16px; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.8;">

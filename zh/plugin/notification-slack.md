@@ -13,15 +13,14 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 ## 准备工作
 
 ::: info 参考文档
+
 - [Slack-使用传入的webhooks发送消息](https://api.slack.com/messaging/webhooks)
 - [腾讯云-Slack群接收消息](https://cloud.tencent.com/document/product/1263/74219)
-:::
-
+  :::
 
 1. 前往 [Slack-API](https://api.slack.com/apps) 页面，点击 **「Create an App」**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-slack/slack-create-app.png" width="400"/>
-
 
 2. 在弹窗中点击 **「From scratch」**
 
@@ -37,7 +36,6 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 5. 在页面下方，点击 **「Add New Webhook to Workspace」**，将APP添加到工作区的频道中；
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-slack/add-new-webhook-workspace.png" width="400"/>
 
 6. 在跳转的应用请求页面中，选择好APP要发送消息的频道，点击 **「允许」**
@@ -48,7 +46,6 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-slack/copy-url.png" width="500"/>
 
-
 ## 基本用法
 
 使用Slack通知插件的方法非常简单，只需要初始化1个`SlackCallback`对象：
@@ -57,7 +54,7 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 from swanlab.plugin.notification import SlackCallback
 
 slack_callback = SlackCallback(
-    webhook_url='https://hooks.slack.com/services/xxxx/xxxx/xxxx', 
+    webhook_url='https://hooks.slack.com/services/xxxx/xxxx/xxxx',
     language='zh'
 )
 ```
@@ -70,7 +67,6 @@ swanlab.init(callbacks=[slack_callback])
 
 这样，当训练完成/发生错误时（触发`swanlab.finish()`），你将会收到Slack消息通知。
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-slack/slack-finish.png" width="500"/>
 
 ## 自由提醒
@@ -79,14 +75,13 @@ swanlab.init(callbacks=[slack_callback])
 
 这在提醒你某些指标达到某个阈值时非常有用！
 
-```python 
+```python
 if accuracy > 0.95:
     # 自定义场景发送消息
     slack_callback.send_msg(
         content=f"Current Accuracy: {accuracy}",  # 通知内容
     )
 ```
-
 
 ## 限制
 

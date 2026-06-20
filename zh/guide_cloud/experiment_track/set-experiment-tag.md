@@ -51,7 +51,6 @@ swanlab.init(
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/set-experiment-tag/arxiv-tag.png)
 
-
 ## AI开源社区标签
 
 支持识别标签中的AI开源社区链接（[HuggingFace](https://huggingface.co/)、[魔搭社区](https://www.modelscope.cn/)、[魔乐社区](https://www.modelers.cn/)），呈现一个特殊样式，并可以点击跳转。
@@ -79,4 +78,3 @@ swanlab.init(
 ```
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/set-experiment-tag/power-tag.png)
-

@@ -8,17 +8,16 @@ If you wish to receive immediate [WXWork](https://work.weixin.qq.com/) notificat
 SwanLab plugins are open-source. You can view the [GitHub source code](https://github.com/swanhubx/swanlab/blob/main/swanlab/plugin/notification.py). Suggestions and PRs are welcome!
 :::
 
-
 [[toc]]
 
 ## Preparation
 
 ::: info Reference
+
 - [WXWork-Group Robot Configuration Instruction](https://developer.work.weixin.qq.com/document/path/91770)
-:::
+  :::
 
-
-1. In a WXWork group，click the  **「···」-「Add Group Robot」**
+1. In a WXWork group，click the **「···」-「Add Group Robot」**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-wxwork/wxwork-setting.png" width="400"/>
 
@@ -26,7 +25,7 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-wxwork/wxwork-addrobot.png" width="400"/>
 
-3. Continue to click  **「New Robot」**
+3. Continue to click **「New Robot」**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-wxwork/wxwork-createnewrobot.png" width="400"/>
 
@@ -56,14 +55,9 @@ Then pass the `wxwork_callback` object into the `callbacks` list parameter of `s
 swanlab.init(callbacks=[wxwork_callback])
 ```
 
-
 This way, when training completes or an error occurs (triggering `swanlab.finish()`), you will receive a WXWork notification.
 
-
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-wxwork/wxwork-show.png" width="500"/>
-
-
 
 ## Custom Notifications
 
@@ -71,19 +65,17 @@ You can also use the `send_msg` method of the `WXWorkCallback` object to send cu
 
 This is particularly useful for notifying you when certain metrics reach specific thresholds!
 
-
-```python 
+```python
 if accuracy > 0.95:
     # custom messages
     wxwork_callback.send_msg(
-        content=f"Current Accuracy: {accuracy}",  
+        content=f"Current Accuracy: {accuracy}",
     )
 ```
 
 ## Register plugins externally
 
 <!--@include: ./shared-snippet.md-->
-
 
 ## Limitations
 

@@ -22,7 +22,7 @@ The installation script provides some configuration options, including data stor
 
 - Add parameters when running the script. The installation script provides a command-line parameter `-p` that can be used to modify the port, for example: `./install.sh -p 80`.
 
-> For more command-line parameters, see:  [Deploy via Docker](https://github.com/SwanHubX/self-hosted/tree/main/docker)
+> For more command-line parameters, see: [Deploy via Docker](https://github.com/SwanHubX/self-hosted/tree/main/docker)
 
 ### Modifying after deployment
 
@@ -44,13 +44,12 @@ traefik:
 
 After making the changes, execute `docker compose up -d` to restart the container. Once restarted, you can access it via `http://{ip}:80`
 
+## What to Do When Uploading Media Files Results in an Error
 
-## What to Do When Uploading Media Files Results in an Error  
+When you use `swanlab.log` to record media files (such as images or audio) and encounter an error like:
 
-When you use `swanlab.log` to record media files (such as images or audio) and encounter an error like:  
-
-```bash  
-swanlab: Upload error: An error occurred (InvalidAccessKeyId) when calling the PutObject operation: The Access Key Id you provided does not exist in our records.  
-```  
+```bash
+swanlab: Upload error: An error occurred (InvalidAccessKeyId) when calling the PutObject operation: The Access Key Id you provided does not exist in our records.
+```
 
 Please check whether your server has **port 9000** open. If it is not open, configure your server's firewall/security group to allow traffic on **port 9000**.

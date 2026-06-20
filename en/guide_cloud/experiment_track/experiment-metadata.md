@@ -30,8 +30,8 @@ The `run` class returned by `swanlab.init` carries a `public` attribute, which r
 - `swanlog_dir`: The directory where swanlab saves files
 - `run_dir`: The directory where the current experiment is saved
 - `cloud`: Information related to the cloud environment
-    - `available`: Whether it is running in cloud mode. If not, all the following attributes will be None.
-    - `project_name`: The name of the current running project
-    - `project_url`: The URL of the current running project in the cloud
-    - `experiment_name`: The name of the current running experiment
-    - `experiment_url`: The URL of the current running experiment in the cloud
+  - `available`: Whether it is running in cloud mode. If not, all the following attributes will be None.
+  - `project_name`: The name of the current running project
+  - `project_url`: The URL of the current running project in the cloud
+  - `experiment_name`: The name of the current running experiment
+  - `experiment_url`: The URL of the current running experiment in the cloud

@@ -6,26 +6,24 @@
 
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg)](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart)
 
-
 [实验过程](https://swanlab.cn/@ZeyiLin/Qwen-fintune/runs/zy0st4z16sh4bndyehtks/chart) | [Qwen2微调教程](https://zhuanlan.zhihu.com/p/702491999)
 
 ## 概述
+
 [Qwen1.5](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)是通义千问团队的开源大语言模型，由阿里云通义实验室研发。以Qwen-1.5作为基座大模型，通过任务微调的方式实现高准确率的文本分类，是学习**大语言模型微调**的入门任务。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen-1.png)
 
 微调是一种通过在由（输入，输出）对组成的数据集上进一步训练LLMs的过程。这个过程有助于让LLM在特定的下游任务上表现的更为主出色。
 
-
-
 在这个任务中我们会使用[Qwen-1.5-7b](https://modelscope.cn/models/qwen/Qwen1.5-7B-Chat/summary)模型在[zh_cls_fudan_news](https://modelscope.cn/datasets/swift/zh_cls_fudan-news)数据集上进行指令微调任务，同时使用SwanLab进行监控和可视化。
-
 
 ## 环境安装
 
-本案例基于`Python>=3.10`，请在您的计算机上安装好Python。  
+本案例基于`Python>=3.10`，请在您的计算机上安装好Python。
 
-环境依赖:  
+环境依赖:
+
 ```txt
 swanlab
 modelscope
@@ -36,10 +34,9 @@ accelerat
 pandas
 ```
 
-
 一键安装命令：
 
-```bash 
+```bash
 pip install swanlab modelscope transformers datasets peft pandas
 ```
 
@@ -50,6 +47,7 @@ pip install swanlab modelscope transformers datasets peft pandas
 本案例使用的是[zh_cls_fudan-news](https://modelscope.cn/datasets/swift/zh_cls_fudan-news)数据集，该数据集主要被用于训练文本分类模型。
 
 zh_cls_fudan-news由几千条数据，每条数据包含text、category、output三列：
+
 - text 是训练语料，内容是书籍或新闻的文本内容
 - category 是text的多个备选类型组成的列表
 - output 则是text唯一真实的类型
@@ -57,6 +55,7 @@ zh_cls_fudan-news由几千条数据，每条数据包含text、category、output
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen-2.png)
 
 数据集例子如下：
+
 ```
 """
 [PROMPT]Text: 第四届全国大企业足球赛复赛结束新华社郑州５月３日电（实习生田兆运）上海大隆机器厂队昨天在洛阳进行的第四届牡丹杯全国大企业足球赛复赛中，以５：４力克成都冶金实验厂队，进入前四名。沪蓉之战，双方势均力敌，９０分钟不分胜负。最后，双方互射点球，沪队才以一球优势取胜。复赛的其它３场比赛，青海山川机床铸造厂队３：０击败东道主洛阳矿山机器厂队，青岛铸造机械厂队３：１战胜石家庄第一印染厂队，武汉肉联厂队１：０险胜天津市第二冶金机械厂队。在今天进行的决定九至十二名的两场比赛中，包钢无缝钢管厂队和河南平顶山矿务局一矿队分别击败河南平顶山锦纶帘子布厂队和江苏盐城无线电总厂队。４日将进行两场半决赛，由青海山川机床铸造厂队和青岛铸造机械厂队分别与武汉肉联厂队和上海大隆机器厂队交锋。本届比赛将于６日结束。（完）
@@ -76,8 +75,8 @@ Output:[OUTPUT]Sports
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-qwen-3.png)
 
-
 ## 完整代码
+
 开始训练时的目录结构：
 
 ```txt
@@ -126,13 +125,13 @@ def dataset_jsonl_transfer(origin_path, new_path):
     with open(new_path, "w", encoding="utf-8") as file:
         for message in messages:
             file.write(json.dumps(message, ensure_ascii=False) + "\n")
-            
-            
+
+
 def process_func(example):
     """
     将数据集进行预处理
     """
-    MAX_LENGTH = 384 
+    MAX_LENGTH = 384
     input_ids, attention_mask, labels = [], [], []
     instruction = tokenizer(
         f"<|im_start|>system\n你是一个文本分类领域的专家，你会接收到一段文本和几个潜在的分类选项，请输出文本内容的正确类型<|im_end|>\n<|im_start|>user\n{example['input']}<|im_end|>\n<|im_start|>assistant\n",
@@ -148,7 +147,7 @@ def process_func(example):
         input_ids = input_ids[:MAX_LENGTH]
         attention_mask = attention_mask[:MAX_LENGTH]
         labels = labels[:MAX_LENGTH]
-    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}   
+    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
 
 def predict(messages, model, tokenizer):
@@ -167,13 +166,13 @@ def predict(messages, model, tokenizer):
     generated_ids = [
         output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
     ]
-    
+
     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-    
+
     print(response)
-     
+
     return response
-    
+
 # 在modelscope上下载Qwen1.5-7B模型到本地目录下
 model_dir = snapshot_download("qwen/Qwen1.5-7B-Chat", cache_dir="./", revision="master")
 
@@ -242,7 +241,7 @@ test_text_list = []
 for index, row in test_df.iterrows():
     instruction = row['instruction']
     input_value = row['input']
-    
+
     messages = [
         {"role": "system", "content": f"{instruction}"},
         {"role": "user", "content": f"{input_value}"}
@@ -252,7 +251,7 @@ for index, row in test_df.iterrows():
     messages.append({"role": "assistant", "content": f"{response}"})
     result_text = f"{messages[0]}\n\n{messages[1]}\n\n{messages[2]}"
     test_text_list.append(swanlab.Text(result_text, caption=response))
-    
+
 swanlab.log({"Prediction": test_text_list})
 swanlab.finish()
 ```

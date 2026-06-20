@@ -12,15 +12,14 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 ## Preparation
 
 ::: info References
+
 - [Slack-Sending messages using incoming webhooks](https://api.slack.com/messaging/webhooks)
 - [TencentCloudDocs-Slack channel receive messages](https://cloud.tencent.com/document/product/1263/74219)
-:::
-
+  :::
 
 1. Turn into the page of [Slack-API](https://api.slack.com/apps)，click **「Create an App」**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-slack/slack-create-app.png" width="400"/>
-
 
 2. Click **「From scratch」** in the pop up window
 
@@ -36,7 +35,6 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 
 5. At the bottom of the page，click **「Add New Webhook to Workspace」** to add the APP into your workspace；
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-slack/add-new-webhook-workspace.png" width="400"/>
 
 6. In the redirect page，select a channel the app needs to send notification，click **「Accept」**
@@ -47,7 +45,6 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-slack/copy-url.png" width="500"/>
 
-
 ## Basic Usage
 
 Using the Slack notification plugin is straightforward. Simply initialize a `SlackCallback` object：
@@ -56,7 +53,7 @@ Using the Slack notification plugin is straightforward. Simply initialize a `Sla
 from swanlab.plugin.notification import SlackCallback
 
 slack_callback = SlackCallback(
-    webhook_url='https://hooks.slack.com/services/xxxx/xxxx/xxxx', 
+    webhook_url='https://hooks.slack.com/services/xxxx/xxxx/xxxx',
     language='en'
 )
 ```
@@ -69,7 +66,6 @@ swanlab.init(callbacks=[slack_callback])
 
 This way, when training completes or an error occurs (triggering `swanlab.finish()`), you will receive a Slack notification.
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-slack/slack-finish.png" width="500"/>
 
 ## Custom Notifications
@@ -78,14 +74,13 @@ You can also use the `send_msg` method of the `SlackCallback` object to send cus
 
 This is particularly useful for notifying you when certain metrics reach specific thresholds!
 
-```python 
+```python
 if accuracy > 0.95:
     # custom messages
     slack_callback.send_msg(
-        content=f"Current Accuracy: {accuracy}",  
+        content=f"Current Accuracy: {accuracy}",
     )
 ```
-
 
 ## Limitations
 

@@ -14,12 +14,11 @@ from swanlab.integration.xgboost import SwanLabCallback
 
 SwanLabCallback是适配于XGBoost的日志记录类。
 
-
 ## 2. 初始化SwanLab
 
 ```python
 swanlab.init(
-    project="xgboost-example", 
+    project="xgboost-example",
 )
 ```
 
@@ -33,7 +32,6 @@ bst = xgb.train(
     callbacks=[SwanLabCallback()]
 )
 ```
-
 
 ## 4. 完整测试代码
 
@@ -82,10 +80,10 @@ params = {
 # 训练模型
 num_round = 100  # 迭代次数
 bst = xgb.train(
-    params, 
-    dtrain, 
+    params,
+    dtrain,
     num_round,
-    evals=[(dtrain, 'train'), (dtest, 'test')], 
+    evals=[(dtrain, 'train'), (dtest, 'test')],
     callbacks=[SwanLabCallback()]
 )
 

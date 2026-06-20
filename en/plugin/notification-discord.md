@@ -13,29 +13,25 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 ## Preparation
 
 ::: info Reference
-- [Discord-Intro-to-Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
-:::
 
+- [Discord-Intro-to-Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+  :::
 
 1. Select the Discord channel on which you want to receive notifications of SwanLab events
-
 
 2. Click the **「Edit Channel」** button corresponding to **「⚙️」** icon
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-discord/edit-channel.png" width="400"/>
 
-3. Select  **「Inegrations」 -> 「Webhhook」** in the expanded menu list
+3. Select **「Inegrations」 -> 「Webhhook」** in the expanded menu list
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-discord/integration-webhook.png" width="400"/>
 
-
-4. Click  **「New Webhook」** card will automatically create a new webhook bot
+4. Click **「New Webhook」** card will automatically create a new webhook bot
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-discord/new-webhook.png" width="400"/>
 
-5. Click **「Copy Webhook URL」**  button to obtain your webhook url
-
-
+5. Click **「Copy Webhook URL」** button to obtain your webhook url
 
 ## Basic Usage
 
@@ -45,13 +41,12 @@ Using the Discord notification plugin is straightforward. Simply initialize a `D
 from swanlab.plugin.notification import DiscordCallback
 
 discord_callback = DiscordCallback(
-    webhook_url='https://discord.com/api/webhooks/xxxxx/xxx', 
+    webhook_url='https://discord.com/api/webhooks/xxxxx/xxx',
     language='en'
 )
 ```
 
 Then pass the `discord_callback` object into the `callbacks` list parameter of `swanlab.init`:
-
 
 ```python
 swanlab.init(callbacks=[discord_callback])
@@ -59,11 +54,7 @@ swanlab.init(callbacks=[discord_callback])
 
 This way, when training completes or an error occurs (triggering `swanlab.finish()`), you will receive a Discord notification.
 
-
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-discord/discord-finish.png" width="500"/>
-
-
 
 ## Custom Notifications
 
@@ -71,15 +62,13 @@ You can also use the `send_msg` method of the `DiscordCallback` object to send c
 
 This is particularly useful for notifying you when certain metrics reach specific thresholds!
 
-
-```python 
+```python
 if accuracy > 0.95:
     # custom messages
     discord_callback.send_msg(
-        content=f"Current Accuracy: {accuracy}",  
+        content=f"Current Accuracy: {accuracy}",
     )
 ```
-
 
 ## Limitations
 

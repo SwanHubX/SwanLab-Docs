@@ -1,6 +1,6 @@
 # 创建一个实验
 
-使用 **SwanLab Python SDK** 跟踪人工智能实验，然后你可以在 在线交互式仪表板 中查看结果。  
+使用 **SwanLab Python SDK** 跟踪人工智能实验，然后你可以在 在线交互式仪表板 中查看结果。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/create-experiment/overview.jpg)
 
@@ -9,6 +9,7 @@
 ## 如何创建一个SwanLab实验?
 
 创建一个SwanLab实验分为3步：
+
 1. 初始化SwanLab
 2. 传递一个超参数字典
 3. 在你的训练循环中记录指标
@@ -19,8 +20,8 @@
 下面的代码片段展示了如何创建一个名为 **cat-dog-classification** 的新SwanLab项目。并为其添加了：
 
 1. **project**：项目名。
-1. **experiment_name**：实验名。实验名为当前实验的标识，以帮助您识别此实验。  
-2. **description**：描述。描述是对实验的详细介绍。
+1. **experiment_name**：实验名。实验名为当前实验的标识，以帮助您识别此实验。
+1. **description**：描述。描述是对实验的详细介绍。
 
 ```python
 # 导入SwanLab Python库
@@ -59,9 +60,10 @@ swanlab.config={"epochs": 20, "learning_rate": 1e-4, "batch_size": 32, "model_ty
 <br>
 
 ### 3. 在训练循环中记录指标
+
 在每轮for循环（epoch）中计算准确率与损失值指标，并用`swanlab.log()`将它们记录到SwanLab中。  
 在默认情况下，当您调用`swanlab.log`时，它会创建一个新的step添加到对应指标的历史数据中，规则是新的step=旧的最大step数+1。  
-下面的代码示例展示了如何用`swanlab.log()`记录指标：  
+下面的代码示例展示了如何用`swanlab.log()`记录指标：
 
 ```python
 # 省略了如何设置模型与如何设置数据集的细节
@@ -119,10 +121,10 @@ for epoch in range(swanlab.config.epochs):
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/create-experiment/show.jpg)
 
-
 ## 最佳实践
 
-下面介绍一下创建实验时可以参考的写法，一个完整的实验创建可以包含下面这四个参数：  
+下面介绍一下创建实验时可以参考的写法，一个完整的实验创建可以包含下面这四个参数：
+
 - `config`：配置。记录你想要用于复现模型的任何内容，比如超参数、模型名称、数据集等。这些内容将显示在仪表盘的“表格视图”与“实验卡片”页中，也可以作为实验比较、筛选、过滤的依据。
 - `project`：项目。项目是一组可以一起比较的实验，它们将在一个统一的仪表盘中显示。
 - `experiment_name`：实验名。定义实验的名称。您在脚本中设置，可以之后在SwanLab应用上编辑。

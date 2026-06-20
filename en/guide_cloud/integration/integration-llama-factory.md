@@ -95,8 +95,8 @@ LLaMA Factory also supports fine-tuning via YAML configuration files in the comm
 Edit the **examples/train_lora/qwen2vl_lora_sft.yaml** file in the LLaMA Factory project directory and add the following at the end:
 
 ```yaml
-...
 
+...
 ### swanlab
 use_swanlab: true
 swanlab_project: llamafactory
@@ -115,7 +115,7 @@ After loading the model and dataset and officially starting the fine-tuning, as 
 
 ![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/llama_factory/9.png)
 
-***
+---
 
 We salute the LLaMA Factory team for providing such an excellent model training tool to the open-source community. As we continue to collaborate, stay tuned for more in-depth and powerful experiment tracking features from SwanLab for large model trainers.
 

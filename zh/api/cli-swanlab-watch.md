@@ -1,15 +1,15 @@
 # swanlab watch
 
-``` bash
+```bash
 swanlab watch [OPTIONS]
 ```
 
-| 选项 | 描述 | 例子 |
-| --- | --- | --- |
-| `-p`, `--port` | 设置实验看板Web服务运行的端口，默认为**5092**。 | `swanlab watch -p 8080`：将实验看板Web服务设置为8080端口 |
-| `-h`, `--host` | 设置实验看板Web服务运行的IP地址，默认为**127.0.0.1**。 | `swanlab watch -h 0.0.0.0`：将实验看板Web服务的IP地址设置为0.0.0.0 |
+| 选项             | 描述                                                     | 例子                                                                            |
+| ---------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `-p`, `--port`   | 设置实验看板Web服务运行的端口，默认为**5092**。          | `swanlab watch -p 8080`：将实验看板Web服务设置为8080端口                        |
+| `-h`, `--host`   | 设置实验看板Web服务运行的IP地址，默认为**127.0.0.1**。   | `swanlab watch -h 0.0.0.0`：将实验看板Web服务的IP地址设置为0.0.0.0              |
 | `-l`, `--logdir` | 设置实验看板Web服务读取的日志文件路径，默认为`swanlog`。 | `swanlab watch --logdir ./logs`：将当前目录下的logs文件夹设置为日志文件读取路径 |
-| `--help` | 查看终端帮助信息。 | `swanlab watch --help` |
+| `--help`         | 查看终端帮助信息。                                       | `swanlab watch --help`                                                          |
 
 ## 介绍
 
@@ -29,6 +29,7 @@ swanlab watch -l [logfile_path]
 其中`logfile_path`是日志文件夹的路径，可以是绝对路径或相对路径。如果你的日志文件夹名称是默认的`swanlog`，那么也可以直接用`swanlab watch`启动而无需`-l`选项。
 
 执行命令后，会看到下面的输出：
+
 ```bash{6}
 swanlab watch -l [logfile_path]
 
@@ -50,6 +51,7 @@ swanlab watch -h 0.0.0.0
 ```
 
 如果需要设置端口的话：
+
 ```bash
 swanlab watch -h 0.0.0.0 -p 8080
 ```

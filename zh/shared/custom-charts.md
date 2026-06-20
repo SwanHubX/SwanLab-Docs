@@ -35,7 +35,7 @@ swanlab.log({"line": line})
 
 ```python [样式-设置不透明度]
 """
-demo: 
+demo:
 https://swanlab.cn/@ZeyiLin/swanlab-echarts-demo/runs/trptzejp9037cimxd786e/chart#eDczbzM0-blJ6R3dXSFU=
 """
 
@@ -63,8 +63,8 @@ line.set_series_opts(areastyle_opts=opts.AreaStyleOpts(opacity=0.5))
 # 记录到swanlab
 swanlab.log({"line_opacity": line})
 ```
-:::
 
+:::
 
 ## 柱状图 bar
 
@@ -122,7 +122,6 @@ swanlab.log({"bar_horizontal": bar})
 
 :::
 
-
 ## 饼状图 pie
 
 ![pie](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/py-echarts/pie-1.png)
@@ -145,7 +144,7 @@ pie = swanlab.echarts.Pie()
 
 # 设置x轴数据并配置标签显示
 pie.add(
-    "访问来源", 
+    "访问来源",
     data_pair,
     # 配置标签显示
     label_opts={
@@ -191,7 +190,7 @@ heatmap = swanlab.echarts.HeatMap()
 # 设置x轴数据并配置标签显示
 heatmap.add_xaxis(hours)
 heatmap.add_yaxis(
-  "Punch Card", 
+  "Punch Card",
   days,
   data,
 )
@@ -236,7 +235,7 @@ heatmap.set_global_opts(
 # 设置x轴数据并配置标签显示
 heatmap.add_xaxis(hours)
 heatmap.add_yaxis(
-  "Punch Card", 
+  "Punch Card",
   days,
   data,
 )
@@ -244,8 +243,6 @@ heatmap.add_yaxis(
 # 记录到swanlab
 swanlab.log({"heatmap_visualmapopts": heatmap})
 ```
-
-
 
 :::
 
@@ -282,7 +279,7 @@ scatter = swanlab.echarts.Scatter()
 # 设置x轴数据并配置标签显示
 scatter.add_xaxis(x_data)
 scatter.add_yaxis(
-  "", 
+  "",
   y_data,
   symbol_size=20,
 )
@@ -454,9 +451,6 @@ table.add(headers, rows)
 # 记录到swanlab
 swanlab.log({"table": table})
 ```
-
-
-
 
 ## 树状图 tree
 

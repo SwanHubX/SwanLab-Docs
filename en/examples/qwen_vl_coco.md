@@ -80,10 +80,10 @@ Here, "from" represents the role (`user` for human, `assistant` for the model), 
 **Dataset Download and Processing Steps**
 
 1. **We need to do four things:**
-    ◦ Download the coco_2014_caption dataset via ModelScope.
-    ◦ Load the dataset and save the images locally.
-    ◦ Convert the image paths and captions into a CSV file.
-    ◦ Convert the CSV file into a JSON file.
+   ◦ Download the coco_2014_caption dataset via ModelScope.
+   ◦ Load the dataset and save the images locally.
+   ◦ Convert the image paths and captions into a CSV file.
+   ◦ Convert the CSV file into a JSON file.
 
 2. **Use the following code to complete the process from data download to CSV generation:**
 
@@ -118,15 +118,15 @@ if not os.path.exists('coco_2014_caption'):
         image_id = item['image_id']
         caption = item['caption']
         image = item['image']
-        
+
         # Save the image and record the path
         image_path = os.path.abspath(f'coco_2014_caption/{image_id}.jpg')
         image.save(image_path)
-        
+
         # Add the path and caption to the lists
         image_paths.append(image_path)
         captions.append(caption)
-        
+
         # Print progress every 50 images
         if (i + 1) % 50 == 0:
             print(f'Processing {i+1}/{total} images ({(i+1)/total*100:.1f}%)')
@@ -136,10 +136,10 @@ if not os.path.exists('coco_2014_caption'):
         'image_path': image_paths,
         'caption': captions
     })
-    
+
     # Save the data as a CSV file
     df.to_csv('./coco-2024-dataset.csv', index=False)
-    
+
     print(f'Data processing completed, {total} images processed')
 
 else:
@@ -168,7 +168,7 @@ for i in range(len(df)):
                 "value": f"COCO Yes: <|vision_start|>{df.iloc[i]['image_path']}<|vision_end|>"
             },
             {
-                "from": "assistant", 
+                "from": "assistant",
                 "value": df.iloc[i]['caption']
             }
         ]
@@ -235,6 +235,7 @@ For more usage, refer to the [Quick Start](https://docs.swanlab.cn/zh/guide_clou
 View the visualized training process: <a href="https://swanlab.cn/@ZeyiLin/Qwen2-VL-finetune/runs/53vm3y7sp5h5fzlmlc5up/chart" target="_blank">Qwen2-VL-finetune</a>
 
 **This section does the following:**
+
 1. Download and load the Qwen2-VL-2B-Instruct model.
 2. Load the dataset, using the first 496 entries for training and 4 entries for subjective evaluation.
 3. Configure LoRA with parameters: `r=64`, `lora_alpha=16`, `lora_dropout=0.05`.
@@ -242,6 +243,7 @@ View the visualized training process: <a href="https://swanlab.cn/@ZeyiLin/Qwen2
 5. Train for 2 epochs.
 
 The directory structure when starting the code should be:
+
 ```
 |———— train.py
 |———— coco_2014_caption
@@ -361,7 +363,7 @@ def predict(messages, model):
     output_text = processor.batch_decode(
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )
-    
+
     return output_text[0]
 
 
@@ -420,7 +422,7 @@ args = TrainingArguments(
     gradient_checkpointing=True,
     report_to="none",
 )
-        
+
 # Set up SwanLab callback
 swanlab_callback = SwanLabCallback(
     project="Qwen2-VL-finetune",
@@ -473,12 +475,12 @@ for item in test_dataset:
     input_image_prompt = item["conversations"][0]["value"]
     # Remove <|vision_start|> and <|vision_end|>
     origin_image_path = input_image_prompt.split("<|vision_start|>")[1].split("<|vision_end|>")[0]
-    
+
     messages = [{
-        "role": "user", 
+        "role": "user",
         "content": [
             {
-            "type": "image", 
+            "type": "image",
             "image": origin_image_path
             },
             {
@@ -486,7 +488,7 @@ for item in test_dataset:
             "text": "COCO Yes:"
             }
         ]}]
-    
+
     response = predict(messages, val_peft_model)
     messages.append({"role": "assistant", "content": f"{response}"})
     print(messages[-1])
@@ -607,4 +609,4 @@ print(output_text)
 
 ### Important Notes
 
-• In the fine-tuning script, `val_peft_model` loads a fixed checkpoint file. If you add data or modify hyperparameters, adjust the checkpoint file path accordingly.    
+• In the fine-tuning script, `val_peft_model` loads a fixed checkpoint file. If you add data or modify hyperparameters, adjust the checkpoint file path accordingly.

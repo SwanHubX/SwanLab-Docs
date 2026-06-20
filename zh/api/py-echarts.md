@@ -1,4 +1,4 @@
-# swanlab.echarts 
+# swanlab.echarts
 
 <!--@include: @zh/shared/custom-charts.md-->
 

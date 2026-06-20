@@ -12,8 +12,8 @@ Below is an example of a configuration file in json format:
 
 ```json
 {
-    "epochs": 20,
-    "learning-rate": 0.001
+  "epochs": 20,
+  "learning-rate": 0.001
 }
 ```
 
@@ -50,13 +50,13 @@ Below is an example of a configuration file in json format:
 
 ```json
 {
-    "project": "cat-dog-classification",
-    "experiment_name": "Resnet50",
-    "description": "My first AI experiment",
-    "config": {
-        "epochs": 20,
-        "learning-rate": 0.001
-    }
+  "project": "cat-dog-classification",
+  "experiment_name": "Resnet50",
+  "description": "My first AI experiment",
+  "config": {
+    "epochs": 20,
+    "learning-rate": 0.001
+  }
 }
 ```
 

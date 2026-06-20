@@ -38,6 +38,7 @@ mmengine有两种引入SwanLab进行实验可视化跟踪的方法：
 确保你安装了SwanLab，或者使用`pip install -U swanlab`安装最新版。
 
 如果你按照官方案例使用了mmengine作为你的训练框架。只需在训练脚本中进行如下改动：
+
 1. 在初始化`visualizer`时加入SwanlabVisBackend
 2. 初始化`runner`传入`visualizer`即可：
 
@@ -52,7 +53,7 @@ swanlab_vis_backend = SwanlabVisBackend(init_kwargs={})# init args can be found 
 # 初始化mmegine的Visulizer，并引入SwanLab作为Visual Backend
 visualizer = Visualizer(
     vis_backends=swanlab_vis_backend
-)  
+)
 
 # 构建mmengine的Runner
 runner = Runner(

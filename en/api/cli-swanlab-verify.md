@@ -4,8 +4,8 @@
 swanlab verify [OPTIONS]
 ```
 
-| Option | Description |
-| --- | --- |
+| Option    | Description                                                                      |
+| --------- | -------------------------------------------------------------------------------- |
 | `--local` | Verify local login status only (checks for `.swanlab` in the current directory). |
 
 ## Introduction

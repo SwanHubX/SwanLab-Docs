@@ -16,6 +16,7 @@ This task is based on the [MNIST dataset](https://paperswithcode.com/dataset/mni
 ![mnist](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/mnist.jpg)
 
 This case study primarily focuses on:
+
 - Using `pytorch` to build, train, and evaluate a CNN (Convolutional Neural Network).
 - Using `swanlab` to track hyperparameters, record metrics, and visualize monitoring throughout the training cycle.
 
@@ -23,12 +24,15 @@ This case study primarily focuses on:
 
 This case study is based on `Python>=3.8`. Please ensure Python is installed on your computer.  
 Environment dependencies:
+
 ```
 torch
 torchvision
 swanlab
 ```
+
 Quick installation command:
+
 ```bash
 pip install torch torchvision swanlab
 ```
@@ -86,7 +90,7 @@ def log_images(loader, num_images=16):
         if images_logged >= num_images:
             break
     swanlab.log({"MNIST-Preview": logged_images})
-    
+
 
 def train(model, device, train_dataloader, optimizer, criterion, epoch, num_epochs):
     model.train()
@@ -123,12 +127,12 @@ def test(model, device, val_dataloader, epoch):
             total += labels.size(0)
             # 4. Calculate the number of correct predictions
             correct += (predicted == labels).sum().item()
-    
+
         # 5. Get the final test accuracy
         accuracy = correct / total
         # 6. Log the accuracy with SwanLab
         swanlab.log({"val/accuracy": accuracy}, step=epoch)
-    
+
 
 if __name__ == "__main__":
 
@@ -166,7 +170,7 @@ if __name__ == "__main__":
 
     train_dataloader = utils.data.DataLoader(train_dataset, batch_size=run.config.batch_size, shuffle=True)
     val_dataloader = utils.data.DataLoader(val_dataset, batch_size=8, shuffle=False)
-    
+
     # (Optional) Take a look at the first 16 images in the dataset
     log_images(train_dataloader, 16)
 
@@ -185,7 +189,7 @@ if __name__ == "__main__":
     for epoch in range(1, run.config.num_epochs+1):
         swanlab.log({"train/epoch": epoch}, step=epoch)
         train(model, device, train_dataloader, optimizer, criterion, epoch, run.config.num_epochs)
-        if epoch % 2 == 0: 
+        if epoch % 2 == 0:
             test(model, device, val_dataloader, epoch)
 
     # Save the model

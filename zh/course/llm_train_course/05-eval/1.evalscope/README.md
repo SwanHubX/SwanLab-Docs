@@ -4,26 +4,26 @@
 
 ## 简介
 
-​    本教程是基于**魔搭社区**的官方模型评估和基准测试框架**EvalScope**做微调后模型的评估测试，该框架专为满足各种评估需求而设计。它支持各种模型类型，包括大型语言模型、多模态模型、Embedding模型、Reranker模型和 CLIP 模型。
+​ 本教程是基于**魔搭社区**的官方模型评估和基准测试框架**EvalScope**做微调后模型的评估测试，该框架专为满足各种评估需求而设计。它支持各种模型类型，包括大型语言模型、多模态模型、Embedding模型、Reranker模型和 CLIP 模型。
 
-​    本教程可以学习两种评估测试方法😊，一种是直接使用官方工具，另外一种是使用模型API服务评测（适用于所有模型，包括evalscope没有集成的模型结构）。
+​ 本教程可以学习两种评估测试方法😊，一种是直接使用官方工具，另外一种是使用模型API服务评测（适用于所有模型，包括evalscope没有集成的模型结构）。
 
-​    其中训练过程和压测过程分别用可视化工具**SwanLab**展示结果，SwanLab是一个开源、现代化设计、训练跟踪的可视化工具，于30+主流AI训练框架集成，同时支持云端/离线使用，是非常方便的训练助手😄。
+​ 其中训练过程和压测过程分别用可视化工具**SwanLab**展示结果，SwanLab是一个开源、现代化设计、训练跟踪的可视化工具，于30+主流AI训练框架集成，同时支持云端/离线使用，是非常方便的训练助手😄。
 
-​    希望该教程能为各位炼丹师解决问题🙋。
+​ 希望该教程能为各位炼丹师解决问题🙋。
 
->  为了讲清楚评测的步骤，所以写了一段训练代码，可以根据生成的结果来操作😄。
+> 为了讲清楚评测的步骤，所以写了一段训练代码，可以根据生成的结果来操作😄。
 
 ## 资料链接
 
 1. evalscope相关链接
-   
+
    - 魔搭社区官网：[https://modelscope.cn/my/overview](https://modelscope.cn/my/overview)
    - EvalScope官方代码：[github](https://github.com/modelscope/evalscope)
    - 官方使用文档👉[官方使用文档](https://evalscope.readthedocs.io/zh-cn/latest/get_started/introduction.html)
 
 2. 教程链接
-   
+
    - 模型地址：[Qwen3-0.6B](https://modelscope.cn/models/Qwen/Qwen3-0.6B)
    - 数据集地址：[Chinese-DeepSeek-R1-Distill-data-110k-SFT](https://www.modelscope.cn/datasets/liucong/Chinese-DeepSeek-R1-Distill-data-110k-SFT)
    - github代码链接：[github](https://github.com/828Tina/evalscope_qwen3_eval/tree/main)
@@ -31,7 +31,7 @@
    - 可视化压测结果：[SwanLab-perf](https://swanlab.cn/@LiXinYu/perf_benchmark/runs/k0flil25zyxgt1097asz8/chart)
 
 3. SwanLab官方文档：
-   
+
    - 用户指南，可以快速上手SwanLab： [快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
    - 应用案例：[入门实验 | SwanLab官方文档](https://docs.swanlab.cn/examples/mnist.html)
 
@@ -47,13 +47,13 @@
 pip install ms-swift
 ```
 
-***2、安装swanlab：***
+**_2、安装swanlab：_**
 
 ```plaintext
 pip install swanlab
 ```
 
-***3、安装deepspeed***
+**_3、安装deepspeed_**
 
 如果采用单机多卡分布式训练方式，可以选择DeepSpeed ZeRO2/ZeRO3。
 
@@ -106,7 +106,15 @@ modelscope download --dataset liucong/Chinese-DeepSeek-R1-Distill-data-110k-SFT 
 转换格式（参考官方文档👉[自定义数据集](https://swift.readthedocs.io/zh-cn/latest/Customization/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E9%9B%86.html)）
 
 ```json
-{"messages": [{"role": "system", "content": "<system>"}, {"role": "user", "content": "<query1>"}, {"role": "assistant", "content": "<response1>"}, {"role": "user", "content": "<query2>"}, {"role": "assistant", "content": "<response2>"}]}
+{
+  "messages": [
+    { "role": "system", "content": "<system>" },
+    { "role": "user", "content": "<query1>" },
+    { "role": "assistant", "content": "<response1>" },
+    { "role": "user", "content": "<query2>" },
+    { "role": "assistant", "content": "<response2>" }
+  ]
+}
 ```
 
 运行代码（记得修改数据集地址🤔）：
@@ -146,10 +154,10 @@ bash train_deepspeed.sh
 
 ### 3、合并保存模型
 
->  lora微调的话需要合并模型参数，Qwen3和之前的模型不太一样，所以合并的时候不能用之前的代码，可以看到[ms-swift官方](https://github.com/modelscope/ms-swift/tree/main)有下面的代码表示推理，同时又有merge_lora的功能：
-> 
+> lora微调的话需要合并模型参数，Qwen3和之前的模型不太一样，所以合并的时候不能用之前的代码，可以看到[ms-swift官方](https://github.com/modelscope/ms-swift/tree/main)有下面的代码表示推理，同时又有merge_lora的功能：
+>
 > ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/05-eval/1.evalscope/eval_qwen3/merge_main.png)
-> 
+>
 > 😄直接定位到[这里](https://github.com/modelscope/ms-swift/blob/main/swift/llm/export/merge_lora.py)，看到merge_lora需要至少三个参数，即model、adapters、output_dir，因此用swift写一个对应的启动文件即可，需要注意三个地址根据自身需要修改。
 
 ```bash
@@ -167,12 +175,12 @@ swift export \
 
 ## 评测模型
 
-​    本次教程主要为讲述如何对训练好的模型进行评测，使用EvalScope工具，分为两个部分来讲，
+​ 本次教程主要为讲述如何对训练好的模型进行评测，使用EvalScope工具，分为两个部分来讲，
 
 1. 直接用命令行操作，但是前提是ms-swift已经集成了该模型结构；
 2. 用模型API服务评测，对模型结构没有限制，但是要求API格式
 
-​    **然后补充一个模型推理性能压测实验**
+​ **然后补充一个模型推理性能压测实验**
 
 ---
 
@@ -239,7 +247,7 @@ evalscope eval \
 ```
 
 > ⚠️注意⚠️
-> 
+>
 > **gsm8k的数据集评测时默认的prompt_template为Question: {query}\nLet's think step by step\nAnswer:。测试过后发现enable_thinking设置为false比true要高些，所以可以默认为false，但是其他的没有cot提示的测试集可以设置为true，尤其是数学推理的时候**
 
 如果设置了多个数据集，可以参考下面的脚本：
@@ -288,7 +296,7 @@ evalscope eval \
 
 当然，如果遇到新的模型结构（如llada）或者模型更新的时候对结构有修改而evalscope还没有集成的话，可以考虑采用该方法对模型进行测评，该方法难点在于如何设置模型API服务地址，其他的和上述代码没有什么区别。
 
-官方文档说指定模型**API服务地址(api_url)和API Key(api_key)**，评测部署的模型API服务，*此时`eval-type`参数必须指定为`service`*；
+官方文档说指定模型**API服务地址(api_url)和API Key(api_key)**，评测部署的模型API服务，_此时`eval-type`参数必须指定为`service`_；
 
 然后使用以下命令评测模型API服务：
 
@@ -322,7 +330,7 @@ evalscope eval \
 
 基本**接收用户请求**和**返回结果**都是基于openai的请求响应的原理，**处理请求并生成回复**部分理解成用大模型进行推理对话就行，用每个模型自带的readme里提到的推理代码即可，我们来看下各个部分处理的代码。
 
-***1.处理请求并生成回复***
+**_1.处理请求并生成回复_**
 
 其实就是将[Qwen3给的推理代码](https://www.modelscope.cn/models/Qwen/Qwen3-0.6B)直接搬运😉，就是需要发送一个 POST 请求到 `http://127.0.0.1:25001/v1/chat/completions`，其他的代码不变。
 
@@ -365,7 +373,7 @@ async def chat_completions(request: ChatCompletionRequest):
                                         temperature=temperature,
                                         max_new_tokens=max_tokens,
                                         )
-    output_ids = generation_ids[0][len(model_inputs.input_ids[0]):].tolist() 
+    output_ids = generation_ids[0][len(model_inputs.input_ids[0]):].tolist()
     # 解码输出文本
     response_texts = tokenizer.decode(output_ids, skip_special_tokens=True).strip("\n")
     # 构建响应对象
@@ -387,7 +395,7 @@ async def chat_completions(request: ChatCompletionRequest):
     return response
 ```
 
-***2、处理请求并生成回复***
+**_2、处理请求并生成回复_**
 
 这里需要注意输入格式要按照OpenAI要求的API格式即可，请求参数不知道的小伙伴可以参考👉[Chat Completions](https://openai.apifox.cn/api-67883981)
 
@@ -420,7 +428,7 @@ class ChatCompletionRequest(BaseModel):
     stream: Optional[bool] = False
 ```
 
-***3、返回结果***
+**_3、返回结果_**
 
 服务器将生成的回答以 JSON 格式返回给用户，和2一样，需要规定输出格式，输出格式[在这](https://openai.apifox.cn/api-67883981).
 
@@ -456,7 +464,7 @@ class ChatCompletionResponse(BaseModel):
 先运行下面的代码连接服务端口
 
 ```bash
-python ./evalscope-eval/api_model/url.py 
+python ./evalscope-eval/api_model/url.py
 ```
 
 再开启一个新的terminal运行下面的代码
@@ -476,7 +484,7 @@ bash ./evalscope-eval/api_model/eval_api_eval.sh
 模型推理性能压测是一种评估机器学习模型在实际运行环境中性能的方法。它主要关注模型在处理输入数据并生成预测结果时的效率和稳定性。压测的目的是确保模型在面对预期或超出预期的负载时仍能保持良好的性能。
 
 > **为什么进行性能压测？**
-> 
+>
 > 1. **性能评估**：了解模型在不同负载下的性能表现，包括响应时间、吞吐量等。
 > 2. **瓶颈识别**：识别可能影响模型性能的瓶颈，如计算资源（CPU、GPU）、内存、网络带宽等。
 > 3. **稳定性测试**：确保模型在长时间运行或高负载下不会崩溃或出现性能急剧下降。

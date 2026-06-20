@@ -14,7 +14,6 @@ SwanLab支持多种平滑算法：
 - [高斯平滑](#gaussian-smoothing)
 - [运行平均平滑](#running-average-smoothing)
 
-
 ## Time Weighted EMA
 
 时间加权指数移动平均 (Time Weighted EMA) 平滑算法是一种通过指数衰减先前数据点的权重来平滑时间序列数据的技术。有关该技术的详细信息，请参阅[指数平滑](https://en.wikipedia.org/wiki/Exponential_smoothing)。权重值范围为 0 到 1。该算法还添加了一个去偏项，以避免时间序列中早期值偏向于零。
@@ -31,8 +30,7 @@ let debiasWeight = 0;
 return yValues.map((yPoint, index) => {
   const prevX = index > 0 ? index - 1 : 0;
   // VIEWPORT_SCALE scales the result to the chart's x-axis range
-  const changeInX =
-    ((xValues[index] - xValues[prevX]) / rangeOfX) * VIEWPORT_SCALE;
+  const changeInX = ((xValues[index] - xValues[prevX]) / rangeOfX) * VIEWPORT_SCALE;
   const smoothingWeightAdj = Math.pow(smoothingWeight, changeInX);
 
   lastY = lastY * smoothingWeightAdj + yPoint;

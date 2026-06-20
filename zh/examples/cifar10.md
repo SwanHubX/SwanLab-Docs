@@ -36,12 +36,15 @@ CIFAR-10 包含来自 10 个类别的图像。这些类别包括：
 
 本案例基于`Python>=3.8`，请在您的计算机上安装好Python。
 环境依赖：
+
 ```
 torch
 torchvision
 swanlab
 ```
+
 快速安装命令：
+
 ```bash
 pip install torch torchvision swanlab
 ```
@@ -84,7 +87,7 @@ def log_images(loader, num_images=16):
                 break
         if images_logged >= num_images:
             break
-    swanlab.log({"Preview/CIFAR10": logged_images}) 
+    swanlab.log({"Preview/CIFAR10": logged_images})
 
 
 if __name__ == "__main__":
@@ -130,11 +133,11 @@ if __name__ == "__main__":
 
     # 设置训练集、验证集和测试集
     dataset = CIFAR10(os.getcwd(), train=True, download=True, transform=transform)
-    
+
     # 确保划分数量正确
     total_size = len(dataset)  # 应该是50000
     train_dataset, val_dataset = utils.data.random_split(
-        dataset, 
+        dataset,
         [run.config.train_dataset_num, run.config.val_dataset_num],
         generator=torch.Generator().manual_seed(42)  # 保持划分的随机性一致
     )
@@ -178,7 +181,7 @@ if __name__ == "__main__":
         model.train()  # 确保模型处于训练模式
         train_correct = 0
         train_total = 0
-        
+
         # 训练循环
         for iter, batch in enumerate(train_loader):
             x, y = batch
@@ -233,6 +236,7 @@ if __name__ == "__main__":
 ## 切换其他ResNet模型
 
 上面的代码支持切换以下ResNet模型：
+
 - ResNet18
 - ResNet34
 - ResNet50

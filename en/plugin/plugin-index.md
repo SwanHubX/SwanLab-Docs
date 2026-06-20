@@ -15,4 +15,4 @@
 
 ## 📝 Logging Plugins
 
-- [CSV Writer](/en/plugin/writer-csv.md)    
+- [CSV Writer](/en/plugin/writer-csv.md)

@@ -1,12 +1,12 @@
 # 使用Macbook和M微调Qwen3——通过微调给Qwen起一个新名字（手把手教学）
 
-* GitHub代码：<https://github.com/ShaohonChen/Finetune_Qwen3_on_MacBook>
+- GitHub代码：<https://github.com/ShaohonChen/Finetune_Qwen3_on_MacBook>
 
-* 数据集地址：<https://modelscope.cn/datasets/swift/self-cognition>
+- 数据集地址：<https://modelscope.cn/datasets/swift/self-cognition>
 
-* 模型地址：<https://modelscope.cn/models/Qwen/Qwen3-0.6B>
+- 模型地址：<https://modelscope.cn/models/Qwen/Qwen3-0.6B>
 
-* SwanLab训练日志：<https://swanlab.cn/@ShaohonChen/MLX-FT-Qwen3/charts>
+- SwanLab训练日志：<https://swanlab.cn/@ShaohonChen/MLX-FT-Qwen3/charts>
 
 ## 写在前面
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
 ```bash
 # 可以替换成自己期望的模型名和作者名
-python trans_data.py --name 小鹅 --author SwanLab团队 --en_name little-swan --en_author SwanLab-Team    
+python trans_data.py --name 小鹅 --author SwanLab团队 --en_name little-swan --en_author SwanLab-Team
 ```
 
 > 也可以使用笔者转换好的数据集：在<https://github.com/ShaohonChen/Finetune_Qwen3_on_MacBook>
@@ -171,27 +171,27 @@ modelscope download --model Qwen/Qwen3-0.6B --local_dir ./Qwen3-0.6B
 ```yaml
 model: "Qwen3-0.6B" # 本地模型目录或 Hugging Face 仓库的路径。
 train: true # 是否进行训练（布尔值）
-fine_tune_type: lora  # 微调方法: "lora", "dora" 或 "full"。
+fine_tune_type: lora # 微调方法: "lora", "dora" 或 "full"。
 optimizer: adamw # 优化器及其可能的输入
 data: "mlx_data" # 包含 {train, valid, test}.jsonl 文件的目录
 seed: 0 # PRNG 随机种子
 num_layers: 28 # 需要微调的层数
 batch_size: 1 # 小批量大小。
-iters: 500  # 训练迭代次数。
+iters: 500 # 训练迭代次数。
 val_batches: 25 # 验证批次数，-1 表示使用整个验证集。
 learning_rate: 1e-4 # Adam 学习率。
-report_to: swanlab  # 使用swanlab记录实验
-project_name: MLX-FT-Qwen3  # 记录项目名
-steps_per_report: 10  # 每隔多少训练步数报告一次损失。
+report_to: swanlab # 使用swanlab记录实验
+project_name: MLX-FT-Qwen3 # 记录项目名
+steps_per_report: 10 # 每隔多少训练步数报告一次损失。
 steps_per_eval: 200 # 每隔多少训练步数进行一次验证。
 resume_adapter_file: null # 加载路径，用于用给定的 adapter 权重恢复训练。
-adapter_path: "cog_adapters"  # 训练后 adapter 权重的保存/加载路径。
+adapter_path: "cog_adapters" # 训练后 adapter 权重的保存/加载路径。
 save_every: 100 # 每 N 次迭代保存一次模型。
 test: false # 训练后是否在测试集上评估
 test_batches: 100 # 测试集批次数，-1 表示使用整个测试集。
 max_seq_length: 512 # 最大序列长度。
-grad_checkpoint: false  # 是否使用梯度检查点以减少内存使用。
-lora_parameters:  # LoRA 参数只能在配置文件中指定
+grad_checkpoint: false # 是否使用梯度检查点以减少内存使用。
+lora_parameters: # LoRA 参数只能在配置文件中指定
   keys: ["self_attn.q_proj", "self_attn.v_proj"]
   rank: 8
   scale: 20.0
@@ -264,7 +264,7 @@ curl localhost:8080/v1/chat/completions \
 看到模型正常返回后，说明API部署成功：
 
 ```bash
-{"id": "chatcmpl-bdfd6f0c-72db-418e-a35a-ecf13cd98ee0", "system_fingerprint": "0.28.0-0.29.1-macOS-15.6.1-arm64-arm-64bit-applegpu_g14g", "object": "chat.completion", "model": "default_model", "created": 1758181778, "choices": [{"index": 0, "finish_reason": "stop", "logprobs": {"token_logprobs": [-1.125, -0.875, -1.5, 0.0, -0.125, 0.0, -0.375, -2.75, -0.25, -0.375, 0.0, 0.0, -0.125, 0.0, -0.5, 0.0, -0.625, 0.0, 0.0, 0.0, -1.25, 0.0], "top_logprobs": [], "tokens": [9707, 11, 419, 374, 264, 1273, 0, 1416, 498, 614, 894, 4755, 476, 1184, 1492, 11, 2666, 1910, 311, 2548, 0, 151645]}, "message": {"role": "assistant", "content": "Hello, this is a test! If you have any questions or need help, feel free to ask!", "tool_calls": []}}], "usage": {"prompt_tokens": 18, "completion_tokens": 22, "total_tokens": 40}}% 
+{"id": "chatcmpl-bdfd6f0c-72db-418e-a35a-ecf13cd98ee0", "system_fingerprint": "0.28.0-0.29.1-macOS-15.6.1-arm64-arm-64bit-applegpu_g14g", "object": "chat.completion", "model": "default_model", "created": 1758181778, "choices": [{"index": 0, "finish_reason": "stop", "logprobs": {"token_logprobs": [-1.125, -0.875, -1.5, 0.0, -0.125, 0.0, -0.375, -2.75, -0.25, -0.375, 0.0, 0.0, -0.125, 0.0, -0.5, 0.0, -0.625, 0.0, 0.0, 0.0, -1.25, 0.0], "top_logprobs": [], "tokens": [9707, 11, 419, 374, 264, 1273, 0, 1416, 498, 614, 894, 4755, 476, 1184, 1492, 11, 2666, 1910, 311, 2548, 0, 151645]}, "message": {"role": "assistant", "content": "Hello, this is a test! If you have any questions or need help, feel free to ask!", "tool_calls": []}}], "usage": {"prompt_tokens": 18, "completion_tokens": 22, "total_tokens": 40}}%
 ```
 
 **部署性能测试**

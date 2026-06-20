@@ -12,13 +12,11 @@
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/view-result/cloud.jpg)
 
-
 ## 📱 移动端看实验
 
 你一定遇到过，实验正在training，但你不在电脑旁边 —— 也许在运动、在通勤、或者刚刚起床，十分想瞄一眼实验的进展和结果。这个时候，手机+SwanLab，会是绝佳组合。[查看详情](../general/app.md)
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/general/app/android.png)
-
 
 ## 表格视图
 
@@ -27,7 +25,6 @@
 
 ![view-result](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/view-result-1.jpg)
 
-
 ## 图表对比视图
 
 通过**图表对比视图**可以将每个实验的图表进行整合，生成一个多实验对比图表视图。  
@@ -35,13 +32,11 @@
 
 ![chart-comparison](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/chart-comparison.jpg)
 
-
 ## 日志
 
 在实验开始到结束，SwanLab会记录下从`swanlab.init`到实验结束的终端输出，并记录在实验的「日志」选项卡，可以随时查看、复制与下载。我们也支持通过搜索找到关键信息。
 
 ![logging](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/logging.jpg)
-
 
 ## 环境
 

@@ -51,11 +51,11 @@ helm search repo swanlab/self-hosted --versions
 
 ```yaml
 # values.yaml 示例
-    image:
-      repository: repo.swanlab.cn/self-hosted/swanlab-cloud
-      # tag 置为空字符串 或者版本 tag，如 v2.8.0，不要设置为 latest
-      tag: ""
-      pullPolicy: "IfNotPresent"
+image:
+  repository: repo.swanlab.cn/self-hosted/swanlab-cloud
+  # tag 置为空字符串 或者版本 tag，如 v2.8.0，不要设置为 latest
+  tag: ""
+  pullPolicy: "IfNotPresent"
 ```
 
 ## 2. 执行更新
@@ -65,7 +65,8 @@ helm search repo swanlab/self-hosted --versions
 ### 选项一：Helm 仓库更新
 
 如果您的**集群节点可以直接访问 Helm 仓库**（即集群节点可以直接访问 `github.com`），可以参考如下命令执行更新：
-> ⚠️ 注意：https://helm.swanlab.cn 的 chart 包在 [GitHub Release](https://github.com/SwanHubX/charts/releases )做版本 tag 索引 ， **请提前确认网络连通性!**
+
+> ⚠️ 注意：https://helm.swanlab.cn 的 chart 包在 [GitHub Release](https://github.com/SwanHubX/charts/releases)做版本 tag 索引 ， **请提前确认网络连通性!**
 
 ```bash
 # 建议先使用 --dry-run 验证模板兼容性
@@ -75,8 +76,8 @@ helm upgrade swanlab-self-hosted swanlab/self-hosted \
   --namespace <your_namespace> \
   --dry-run
 ```
-- 确认无报错后，去掉 `--dry-run` 选项执行更新
 
+- 确认无报错后，去掉 `--dry-run` 选项执行更新
 
 ### 选项二：本地 Chart 包更新
 
@@ -92,6 +93,7 @@ tar -zxvf self-hosted-<target_version>.tgz
 ```
 
 然后使用本地 chart 包更新验证：
+
 ```bash
 # 建议先使用 --dry-run 验证模板兼容性
 helm upgrade swanlab-self-hosted ./self-hosted/ \
@@ -99,8 +101,8 @@ helm upgrade swanlab-self-hosted ./self-hosted/ \
   --namespace <your_namespace> \
   --dry-run
 ```
-- 确认无报错后，去掉 `--dry-run` 选项执行更新
 
+- 确认无报错后，去掉 `--dry-run` 选项执行更新
 
 > 其中：`--dry-run` 用于验证更新模板的兼容性，建议每次更新前均做一下模板语法验证。
 
@@ -136,7 +138,7 @@ kubectl get pods -n <your_namespace>
 ```python
 import swanlab
 import random
-import numpy as np 
+import numpy as np
 import time
 
 swanlab.login(

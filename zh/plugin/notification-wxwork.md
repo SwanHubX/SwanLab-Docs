@@ -13,8 +13,10 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 ## 准备工作
 
 ::: info 参考文档
+
 - [企业微信-群机器人配置说明](https://developer.work.weixin.qq.com/document/path/91770)
-:::
+  :::
+
 1. 在企业微信群中，点击右上角的 **「···」-「添加群机器人」**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-wxwork/wxwork-setting.png" width="400"/>
@@ -23,7 +25,7 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-wxwork/wxwork-addrobot.png" width="400"/>
 
-3. 继续点击  **「新创建一个机器人」**
+3. 继续点击 **「新创建一个机器人」**
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-wxwork/wxwork-createnewrobot.png" width="400"/>
 
@@ -55,7 +57,6 @@ swanlab.init(callbacks=[wxwork_callback])
 
 这样，当训练完成/发生错误时（触发`swanlab.finish()`），你将会收到企业微信消息通知。
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-wxwork/wxwork-show.png" width="500"/>
 
 ## 自由提醒
@@ -64,7 +65,7 @@ swanlab.init(callbacks=[wxwork_callback])
 
 这在提醒你某些指标达到某个阈值时非常有用！
 
-```python 
+```python
 if accuracy > 0.95:
     # 自定义场景发送消息
     wxwork_callback.send_msg(
@@ -75,7 +76,6 @@ if accuracy > 0.95:
 ## 外部注册插件
 
 <!--@include: ./shared-snippet.md-->
-
 
 ## 限制
 

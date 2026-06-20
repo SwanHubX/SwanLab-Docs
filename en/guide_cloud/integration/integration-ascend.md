@@ -198,14 +198,14 @@ After setup, you can view the training progress in real-time on the cloud. My ex
 
 Also attached are other scripts and online experiment records:
 
-| Content  | Training Command  | Experiment Log  |
-|--------|--------|--------|
-| Baseline | `python train.py configs/baseline.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/qhl47nxl23tc4oycr6pmg/chart) |
-| CPU Run | `python train.py configs/baseline.json CPU` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/s60wuicmwaitxe2v401ry/chart) |
-| Two-Layer LSTM | `python train.py configs/two_layer.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/ydrgxvnqhjfrimzdj3oh4/chart) |
-| Small Batch Size | `python train.py configs/small_batch.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/uovjgenfzcnxrl9gup900/chart) |
-| Larger Hidden Layer | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/eki6pa1him482w4jcc7gn/chart) |
-| Larger Learning Rate | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/if3o10o6nf3am87f4ou62/chart) |
+| Content              | Training Command                            | Experiment Log                                                                          |
+| -------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Baseline             | `python train.py configs/baseline.json`     | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/qhl47nxl23tc4oycr6pmg/chart) |
+| CPU Run              | `python train.py configs/baseline.json CPU` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/s60wuicmwaitxe2v401ry/chart) |
+| Two-Layer LSTM       | `python train.py configs/two_layer.json`    | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/ydrgxvnqhjfrimzdj3oh4/chart) |
+| Small Batch Size     | `python train.py configs/small_batch.json`  | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/uovjgenfzcnxrl9gup900/chart) |
+| Larger Hidden Layer  | `python train.py configs/large_hs.json`     | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/eki6pa1him482w4jcc7gn/chart) |
+| Larger Learning Rate | `python train.py configs/large_hs.json`     | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/if3o10o6nf3am87f4ou62/chart) |
 
 Related hyperparameters and final results can be viewed in the [Chart View](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/overview).
 
@@ -499,7 +499,9 @@ predict_sentiment(model, vocab, "This film is terrible")
 ## Troubleshooting
 
 ### Possible Problem 1: Incompatible MindSpore and CANN Versions
+
 Ensure that the MindSpore version is consistent with the driver version. Otherwise, the following error will occur:
+
 ```bash
 [WARNING] ME(1049852:281473041023008,MainProcess):2024-12-06-12:23:11.112.000 [mindspore/run_check/_check_version.py:357] MindSpore version 2.3.1 and Ascend AI software package (Ascend Data Center Solution)version 7.5 does not match, the version of software package expect one of ['7.2', '7.3']. Please refer to the match info on: https://www.mindspore.cn/install
 /home/huawei/miniconda3/envs/mindspore231/lib/python3.10/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
@@ -530,10 +532,13 @@ Ensure that the MindSpore version is consistent with the driver version. Otherwi
 MindSpore version:  2.3.1
 Segmentation fault (core dumped)
 ```
+
 Solution: Install the correct version. For MindSpore 2.4.1, install the **8.0.RC3.beta1** driver.
 
 ### Possible Problem 2: Missing Prerequisite Packages
+
 The following error may occur:
+
 ```bash
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:360] CheckFailed: cannot import name 'version' from 'te' (unknown location)
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:361] MindSpore relies on whl packages of "te" and "hccl" in the "latest" folder of the Ascend AI software package (Ascend Data Center Solution). Please check whether they are installed correctly or not, refer to the match info on: https://www.mindspore.cn/install
@@ -550,7 +555,9 @@ Aborted (core dumped)
 ```
 
 ### Possible Problem 3: Error in pip Installation Stage - opc-tool 0.1.0 requires attrs, which is not installed
+
 If the following error occurs (there is a probability that pip may report the following error during previous installations):
+
 ```bash
 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 auto-tune 0.1.0 requires decorator, which is not installed.
@@ -568,13 +575,17 @@ te 0.4.0 requires psutil, which is not installed.
 te 0.4.0 requires scipy, which is not installed.
 te 0.4.0 requires tornado, which is not installed.
 ```
+
 Try to solve it using the following command:
+
 ```bash
 pip install attrs cloudpickle decorator jinja2 ml-dtypes psutil scipy tornado absl-py
 ```
 
 ### Possible Problem 4: KeyError: 'op_debug_dir' Occurs During Testing or Actual Training
+
 The following situation is likely to occur when the environment variable command has not been run.
+
 ```bash
 Traceback (most recent call last):
   File "/home/huawei/miniconda3/envs/mindspore241/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
@@ -588,7 +599,9 @@ Traceback (most recent call last):
        ~~~~~~~~^^^^^^^^^^^^^^^^
 KeyError: 'op_debug_dir'
 ```
+
 Solution: Set the environment variables using the following commands
+
 ```bash
 # control log level. 0-DEBUG, 1-INFO, 2-WARNING, 3-ERROR, 4-CRITICAL, default level is WARNING.
 export GLOG_v=2
@@ -599,7 +612,9 @@ LOCAL_ASCEND=/usr/local/Ascend # Set to the actual installation path of the soft
 # set environmet variables using script provided by CANN, swap "ascend-toolkit" with "nnae" if you are using CANN-nnae package instead
 source ${LOCAL_ASCEND}/ascend-toolkit/set_env.sh
 ```
+
 When using conda, it seems that the above commands need to be run every time. If you want to solve this problem permanently, you can use the following commands:
+
 ```bash
 export LOCAL_ASCEND=/usr/local/Ascend # Set to the actual installation path of the software package
 echo "source ${LOCAL_ASCEND}/ascend-toolkit/set_env.sh" >> ~/.bashrc

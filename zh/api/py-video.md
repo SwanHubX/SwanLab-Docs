@@ -9,10 +9,10 @@ Video(
 ) -> None
 ```
 
-| 参数          | 描述                                                                                                     |
-|-------------|--------------------------------------------------------------------------------------------------------|
-| data_or_path | (str) 接收视频文件路径。目前仅支持GIF格式文件。 |
-| caption     | (str) 视频的标签。用于在实验看板中展示视频时进行标记。                                                      |
+| 参数         | 描述                                                   |
+| ------------ | ------------------------------------------------------ |
+| data_or_path | (str) 接收视频文件路径。目前仅支持GIF格式文件。        |
+| caption      | (str) 视频的标签。用于在实验看板中展示视频时进行标记。 |
 
 ## 介绍
 
@@ -66,7 +66,7 @@ swanlab.init()
 def create_mock_gif(output_path, width=200, height=200, frames=10, duration=100):
     """
     创建一个简单的mock GIF动画
-    
+
     参数:
         output_path: 输出GIF文件路径
         width: 图像宽度(像素)
@@ -75,26 +75,26 @@ def create_mock_gif(output_path, width=200, height=200, frames=10, duration=100)
         duration: 每帧显示时间(毫秒)
     """
     images = []
-    
+
     for i in range(frames):
         # 创建一个新的RGB图像
         img = PILImage.new('RGB', (width, height), color=(255, 255, 255))
         draw = ImageDraw.Draw(img)
-        
+
         # 随机生成颜色
         r = random.randint(0, 255)
         g = random.randint(0, 255)
         b = random.randint(0, 255)
-        
+
         # 在图像上绘制一个随机的圆形
         x = random.randint(0, width)
         y = random.randint(0, height)
         radius = random.randint(10, min(width, height) // 2)
         draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill=(r, g, b))
-        
+
         # 将当前帧添加到列表中
         images.append(img)
-    
+
     # 保存为GIF动画
     images[0].save(output_path, save_all=True, append_images=images[1:], duration=duration, loop=0)
 

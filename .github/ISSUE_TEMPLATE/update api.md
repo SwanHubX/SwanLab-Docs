@@ -1,13 +1,11 @@
 ---
 name: Update API
 about: Update swanlab python/cli api
-title: '[API] '
-assignees: ''
+title: "[API] "
+assignees: ""
 ---
 
 ### 🚀 Content
-
-
 
 ### 🚑 Any additional [like screenshots]
 

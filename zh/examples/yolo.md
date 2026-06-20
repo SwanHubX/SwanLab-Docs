@@ -50,7 +50,6 @@ if __name__ == "__main__":
     main()
 ```
 
-
 ## 演示效果
 
 ![yolo-2](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/example-yolo-2.png)

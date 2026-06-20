@@ -2,7 +2,7 @@
 
 [![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/colab.svg)](https://colab.research.google.com/drive/1RWsrY_1bS8ECzaHvYtLb_1eBkkdzekR3?usp=sharing)
 
-在学术研究者当中，[PyTorch](https://pytorch.org/) 是最流行的 Python 深度学习框架。  
+在学术研究者当中，[PyTorch](https://pytorch.org/) 是最流行的 Python 深度学习框架。
 
 ![PyTorch](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/ig-pytorch.png)
 
@@ -14,7 +14,6 @@
 - [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.md)
 
 :::
-
 
 ## 记录Tensor图像
 

@@ -24,10 +24,9 @@
 
 更多信息可参考如下链接
 
-> * verl GitHub仓库链接: [https://github.com/volcengine/verl](https://github.com/volcengine/verl)
-> * 官方文档: [https://verl.readthedocs.io/en/latest/index.html](https://verl.readthedocs.io/en/latest/index.html)
-> * HybridFlow论文地址: [https://arxiv.org/pdf/2409.19256v2](https://arxiv.org/pdf/2409.19256v2)
-
+> - verl GitHub仓库链接: [https://github.com/volcengine/verl](https://github.com/volcengine/verl)
+> - 官方文档: [https://verl.readthedocs.io/en/latest/index.html](https://verl.readthedocs.io/en/latest/index.html)
+> - HybridFlow论文地址: [https://arxiv.org/pdf/2409.19256v2](https://arxiv.org/pdf/2409.19256v2)
 
 你可以使用verl快速进行大模型强化学习训练，同时使用SwanLab进行实验跟踪与可视化。
 
@@ -35,9 +34,9 @@
 
 需要环境：
 
-* Python: Version >= 3.9
+- Python: Version >= 3.9
 
-* CUDA: Version >= 12.1
+- CUDA: Version >= 12.1
 
 参考verl官方文档安装：[https://verl.readthedocs.io/en/latest/start/install.html](https://verl.readthedocs.io/en/latest/start/install.html)
 
@@ -88,6 +87,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 :::info
 如果你需要设置项目和实验名，可以设置`trainer.project_name`和`trainer.experiment_name`。  
 如：
+
 ```bash
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  ...
@@ -95,6 +95,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
  trainer.experiment_name="ppo" \
  ...
 ```
+
 :::
 
 如果启动训练时你还未登陆SwanLab，会出现如下提示。
@@ -102,7 +103,6 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 ![select](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/verl/select.png)
 
 选择**1、2**则为使用云端跟踪模式，选择后根据引导输入官网的API即可实现在线跟踪。可以在线查看训练跟踪结果。选择**3**则不上传训练数据，采用离线跟踪。
-
 
 当然，你也可以通过[环境变量](/api/environment-variable)的方式登陆或者设置跟踪模式：
 
@@ -150,7 +150,6 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 ```
 
 > 如果你希望每轮评估时生成多条结果，如10条，那么修改`trainer.log_val_generations=10`即可
-
 
 ## 断点续训
 

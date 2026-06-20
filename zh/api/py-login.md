@@ -1,6 +1,6 @@
 # swanlab.login
 
-``` bash
+```bash
 login(
     api_key: str = None,
     host: str = None,
@@ -9,13 +9,12 @@ login(
 ):
 ```
 
-| 参数 | 描述 |
-| --- | --- |
-| `api_key` | (str) 身份验证密钥，如果未提供，密钥将从密钥文件中读取。|
-| `host` | (str) SwanLab服务所在的API主机，如果未提供，将使用默认主机（即云端版）|
-| `web_host` | (str) SwanLab服务所在的Web主机，如果未提供，将使用默认主机（即云端版）|
-| `save` | (bool) 是否将API密钥保存到密钥文件中，默认值为False。|
-
+| 参数       | 描述                                                                   |
+| ---------- | ---------------------------------------------------------------------- |
+| `api_key`  | (str) 身份验证密钥，如果未提供，密钥将从密钥文件中读取。               |
+| `host`     | (str) SwanLab服务所在的API主机，如果未提供，将使用默认主机（即云端版） |
+| `web_host` | (str) SwanLab服务所在的Web主机，如果未提供，将使用默认主机（即云端版） |
+| `save`     | (bool) 是否将API密钥保存到密钥文件中，默认值为False。                  |
 
 ## 介绍
 
@@ -42,4 +41,3 @@ swanlab.login(api_key='your-api-key', save=True)
 ```python
 swanlab.login(api_key='your-api-key', host='your-private-host')
 ```
-

@@ -30,7 +30,7 @@
       <button class="copy-page" @click="copyAsMarkdown">
         <span v-html="icons[copied ? 'check' : 'copy']" class="icon"></span>
         <span class="label">
-          {{ copied ? 'Copied' : 'Copy Markdown' }}
+          {{ copied ? "Copied" : "Copy Markdown" }}
         </span>
       </button>
     </div>
@@ -38,179 +38,179 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
-const rawModules = import.meta.glob('../icons/*.svg', {
+const rawModules = import.meta.glob("../icons/*.svg", {
   eager: true,
-  query: '?raw',
-  import: 'default',
-})
+  query: "?raw",
+  import: "default",
+});
 
 const icons = Object.fromEntries(
   Object.entries(rawModules).map(([path, content]) => {
-    const name = path.match(/\/([^/]+)\.svg$/)[1]
-    return [name, content]
+    const name = path.match(/\/([^/]+)\.svg$/)[1];
+    return [name, content];
   }),
-)
+);
 
 const aiProviders = [
   {
-    icon: 'chatgpt',
-    name: 'ChatGPT',
-    promptUrl: 'https://chatgpt.com/?hints=search&prompt=',
+    icon: "chatgpt",
+    name: "ChatGPT",
+    promptUrl: "https://chatgpt.com/?hints=search&prompt=",
     buildPrompt: (markdownUrl) => `Read from ${markdownUrl} so I can ask questions about it.`,
   },
   {
-    icon: 'claude',
-    name: 'Claude',
-    promptUrl: 'https://claude.ai/new?q=',
+    icon: "claude",
+    name: "Claude",
+    promptUrl: "https://claude.ai/new?q=",
     buildPrompt: (markdownUrl) => `Read from ${markdownUrl} so I can ask questions about it.`,
   },
   {
-    icon: 'kimi',
-    name: 'Kimi',
-    promptUrl: 'https://www.kimi.com/_prefill_chat?prefill_prompt=',
+    icon: "kimi",
+    name: "Kimi",
+    promptUrl: "https://www.kimi.com/_prefill_chat?prefill_prompt=",
     buildPrompt: (markdownUrl) => `Read from ${markdownUrl} so I can ask questions about it.`,
   },
-]
+];
 
-const isOpen = ref(false)
-const copied = ref(false)
-const dropdownContainer = ref()
-const isRendered = ref(false)
-const dropdownMenu = ref()
+const isOpen = ref(false);
+const copied = ref(false);
+const dropdownContainer = ref();
+const isRendered = ref(false);
+const dropdownMenu = ref();
 
-const animationDuration = 2000
+const animationDuration = 2000;
 
 function removeHtmlExtension(pathSegment) {
-  const lastSlashIndex = pathSegment.lastIndexOf('/')
-  const lastDotIndex = pathSegment.lastIndexOf('.')
+  const lastSlashIndex = pathSegment.lastIndexOf("/");
+  const lastDotIndex = pathSegment.lastIndexOf(".");
 
-  if (lastDotIndex > lastSlashIndex && lastDotIndex !== -1 && pathSegment.endsWith('.html')) {
-    return pathSegment.slice(0, lastDotIndex)
+  if (lastDotIndex > lastSlashIndex && lastDotIndex !== -1 && pathSegment.endsWith(".html")) {
+    return pathSegment.slice(0, lastDotIndex);
   }
 
-  return pathSegment
+  return pathSegment;
 }
 
 function cleanUrl(url) {
-  const { origin, pathname } = new URL(url)
-  const pathnameWithoutTrailingSlash = pathname.replace(/\/+$/, '')
+  const { origin, pathname } = new URL(url);
+  const pathnameWithoutTrailingSlash = pathname.replace(/\/+$/, "");
 
   if (pathname.length > 0) {
-    return origin + removeHtmlExtension(pathnameWithoutTrailingSlash)
+    return origin + removeHtmlExtension(pathnameWithoutTrailingSlash);
   }
 
-  return origin
+  return origin;
 }
 
 function resolveMarkdownPageURL(url) {
-  const cleanedURL = cleanUrl(url)
+  const cleanedURL = cleanUrl(url);
 
   if (cleanedURL === window.location.origin) {
-    return `${cleanedURL}/index.md`
+    return `${cleanedURL}/index.md`;
   }
 
-  return `${cleanedURL}.md`
+  return `${cleanedURL}.md`;
 }
 
 function normalizeLegacyZhPathname(pathname) {
-  if (pathname === '/zh') {
-    return '/'
+  if (pathname === "/zh") {
+    return "/";
   }
 
-  if (pathname.startsWith('/zh/')) {
-    return pathname.slice(3)
+  if (pathname.startsWith("/zh/")) {
+    return pathname.slice(3);
   }
 
-  return pathname
+  return pathname;
 }
 
 function getCurrentURL() {
-  if (typeof window === 'undefined') {
-    return ''
+  if (typeof window === "undefined") {
+    return "";
   }
 
-  return window.location.origin + normalizeLegacyZhPathname(window.location.pathname)
+  return window.location.origin + normalizeLegacyZhPathname(window.location.pathname);
 }
 
 function getMarkdownURL() {
-  return resolveMarkdownPageURL(getCurrentURL())
+  return resolveMarkdownPageURL(getCurrentURL());
 }
 
 async function fetchMarkdownText(markdownUrl) {
-  const response = await fetch(markdownUrl)
+  const response = await fetch(markdownUrl);
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch markdown: ${response.status} ${response.statusText}`)
+    throw new Error(`Failed to fetch markdown: ${response.status} ${response.statusText}`);
   }
 
-  const buffer = await response.arrayBuffer()
+  const buffer = await response.arrayBuffer();
 
-  return new TextDecoder('utf-8').decode(buffer)
+  return new TextDecoder("utf-8").decode(buffer);
 }
 
 function toggleDropdown() {
   if (isOpen.value) {
-    isOpen.value = false
+    isOpen.value = false;
 
-    const el = dropdownMenu.value
+    const el = dropdownMenu.value;
     if (!el) {
-      return
+      return;
     }
 
     const onEnd = () => {
-      isRendered.value = false
-      el.removeEventListener('transitionend', onEnd)
-    }
+      isRendered.value = false;
+      el.removeEventListener("transitionend", onEnd);
+    };
 
-    el.addEventListener('transitionend', onEnd)
+    el.addEventListener("transitionend", onEnd);
   } else {
-    isRendered.value = true
+    isRendered.value = true;
     requestAnimationFrame(() => {
-      isOpen.value = true
-    })
+      isOpen.value = true;
+    });
   }
 }
 
 async function copyAsMarkdown() {
   try {
-    const text = await fetchMarkdownText(getMarkdownURL())
-    await navigator.clipboard.writeText(text)
+    const text = await fetchMarkdownText(getMarkdownURL());
+    await navigator.clipboard.writeText(text);
 
-    copied.value = true
+    copied.value = true;
     setTimeout(() => {
-      copied.value = false
-    }, animationDuration)
+      copied.value = false;
+    }, animationDuration);
   } catch (error) {
-    console.error('Error copying markdown:', error)
+    console.error("Error copying markdown:", error);
   }
 
-  isOpen.value = false
+  isOpen.value = false;
 }
 
 async function viewAsMarkdown() {
-  const markdownUrl = getMarkdownURL()
-  window.open(markdownUrl, '_blank')
-  isOpen.value = false
+  const markdownUrl = getMarkdownURL();
+  window.open(markdownUrl, "_blank");
+  isOpen.value = false;
 }
 
 function openInAI(provider) {
-  const markdownUrl = getMarkdownURL()
-  const prompt = provider.buildPrompt(markdownUrl)
+  const markdownUrl = getMarkdownURL();
+  const prompt = provider.buildPrompt(markdownUrl);
 
-  window.open(provider.promptUrl + encodeURIComponent(prompt), '_blank')
-  isOpen.value = false
+  window.open(provider.promptUrl + encodeURIComponent(prompt), "_blank");
+  isOpen.value = false;
 }
 
 function handleClickOutside(event) {
   if (dropdownContainer.value && !dropdownContainer.value.contains(event.target)) {
-    isOpen.value = false
+    isOpen.value = false;
   }
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+onMounted(() => document.addEventListener("click", handleClickOutside));
+onUnmounted(() => document.removeEventListener("click", handleClickOutside));
 </script>
 
 <style scoped>

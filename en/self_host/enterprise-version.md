@@ -15,12 +15,12 @@ The **Community Edition** is intended for individual use and does not include ad
 
 For professional AI R&D teams, we provide **SwanLab Enterprise**. The primary differences between the Community and Enterprise editions are summarized in the table below:
 
-| Feature \ Version | Community Edition | Enterprise Edition |
-| :--- | :---: | :---: |
-| Offline Deployment | ✅ | ✅ |
-| Docker / K8S Deployment | ✅ | ✅ |
-| Multi-User Collaboration | ❌ | ✅ |
-| Team Creation | ❌ | ✅ |
-| Role-Based Access Control | ❌ | ✅ |
-| Admin Dashboard | ❌ | ✅ |
-| Official Team Support | ❌ | ✅ |
+| Feature \ Version         | Community Edition | Enterprise Edition |
+| :------------------------ | :---------------: | :----------------: |
+| Offline Deployment        |        ✅         |         ✅         |
+| Docker / K8S Deployment   |        ✅         |         ✅         |
+| Multi-User Collaboration  |        ❌         |         ✅         |
+| Team Creation             |        ❌         |         ✅         |
+| Role-Based Access Control |        ❌         |         ✅         |
+| Admin Dashboard           |        ❌         |         ✅         |
+| Official Team Support     |        ❌         |         ✅         |

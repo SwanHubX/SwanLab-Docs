@@ -52,7 +52,7 @@ pandas
 
 One-command installation:
 
-```bash 
+```bash
 pip install swanlab modelscope transformers datasets peft pandas accelerate
 ```
 
@@ -91,7 +91,7 @@ For this tutorial, we'll use only the CCFBDCI subset (a Chinese NER robustness e
             "entity_text": "Tang Jiaxuan",
             "entity_label": "PER",
             "entity_names": ["Person Name", "Full Name"]
-        }, 
+        },
         ...
     ],
 "data_source": "CCFBDCI"
@@ -120,7 +120,7 @@ We'll download the Qwen2-1.5B-Instruct model via ModelScope (which has stable do
 from modelscope import snapshot_download, AutoTokenizer
 from transformers import AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForSeq2Seq
 
-model_id = "qwen/Qwen2-1.5B-Instruct"    
+model_id = "qwen/Qwen2-1.5B-Instruct"
 model_dir = "./qwen/Qwen2-1___5B-Instruct"
 
 # Download Qwen model from ModelScope
@@ -190,7 +190,7 @@ def dataset_jsonl_transfer(origin_path, new_path):
             input_text = data["text"]
             entities = data["entities"]
             match_names = ["Location", "Person Name", "Geographical Entity", "Organization"]
-            
+
             entity_sentence = ""
             for entity in entities:
                 entity_json = dict(entity)
@@ -200,33 +200,33 @@ def dataset_jsonl_transfer(origin_path, new_path):
                     if name in match_names:
                         entity_label = name
                         break
-                
+
                 entity_sentence += f"""{{"entity_text": "{entity_text}", "entity_label": "{entity_label}"}}"""
-            
+
             if entity_sentence == "":
                 entity_sentence = "No entities found"
-            
+
             message = {
                 "instruction": """You are an expert in text entity recognition. Extract entities (Location; Person Name; Geographical Entity; Organization) from the given sentence. Output in JSON format, e.g., {"entity_text": "Nanjing", "entity_label": "Geographical Entity"}. Note: 1. Each line must be valid JSON. 2. If no entities are found, output "No entities found".""",
                 "input": f"Text:{input_text}",
                 "output": entity_sentence,
             }
-            
+
             messages.append(message)
 
     with open(new_path, "w", encoding="utf-8") as file:
         for message in messages:
             file.write(json.dumps(message, ensure_ascii=False) + "\n")
-            
-            
+
+
 def process_func(example):
     """
     Preprocess dataset
     """
-    MAX_LENGTH = 384 
+    MAX_LENGTH = 384
     input_ids, attention_mask, labels = [], [], []
     system_prompt = """You are an expert in text entity recognition. Extract entities (Location; Person Name; Geographical Entity; Organization) from the given sentence. Output in JSON format, e.g., {"entity_text": "Nanjing", "entity_label": "Geographical Entity"}. Note: 1. Each line must be valid JSON. 2. If no entities are found, output "No entities found"."""
-    
+
     instruction = tokenizer(
         f"<|im_start|>system\n{system_prompt}<|im_end|>\n<|im_start|>user\n{example['input']}<|im_end|>\n<|im_start|>assistant\n",
         add_special_tokens=False,
@@ -241,7 +241,7 @@ def process_func(example):
         input_ids = input_ids[:MAX_LENGTH]
         attention_mask = attention_mask[:MAX_LENGTH]
         labels = labels[:MAX_LENGTH]
-    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}   
+    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
 
 def predict(messages, model, tokenizer):
@@ -260,15 +260,15 @@ def predict(messages, model, tokenizer):
     generated_ids = [
         output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
     ]
-    
+
     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-    
+
     print(response)
-     
+
     return response
 
 
-model_id = "qwen/Qwen2-1.5B-Instruct"    
+model_id = "qwen/Qwen2-1.5B-Instruct"
 model_dir = "./qwen/Qwen2-1___5B-Instruct"
 
 # Download model
@@ -346,7 +346,7 @@ test_text_list = []
 for index, row in test_df.iterrows():
     instruction = row['instruction']
     input_value = row['input']
-    
+
     messages = [
         {"role": "system", "content": f"{instruction}"},
         {"role": "user", "content": f"{input_value}"}
@@ -356,7 +356,7 @@ for index, row in test_df.iterrows():
     messages.append({"role": "assistant", "content": f"{response}"})
     result_text = f"{messages[0]}\n\n{messages[1]}\n\n{messages[2]}"
     test_text_list.append(swanlab.Text(result_text, caption=response))
-    
+
 swanlab.log({"Prediction": test_text_list})
 swanlab.finish()
 ```

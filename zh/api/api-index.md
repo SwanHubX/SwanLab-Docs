@@ -1,10 +1,12 @@
 # API文档
 
 ## Develop
+
 - [开放接口](/api/py-api.md)
 - [环境变量](/api/environment-variable.md)
 
 ## 命令行
+
 - [swanlab ping](/api/cli-swanlab-ping.md): 连通性与环境诊断
 - [swanlab api](/api/cli-swanlab-api.md): 通过命令行操作云端工作空间/项目/实验/用户资源
 - [swanlab watch](/api/cli-swanlab-watch.md): 启动离线实验看板
@@ -19,6 +21,7 @@
 - [swanlab disabled](/api/cli-swanlab-disabled.md): 将SwanLab设置为禁用模式
 
 ## Python SDK
+
 - [init](/api/py-init.md)
 - [login](/api/py-login.md)
 - [Image](/api/py-Image.md)

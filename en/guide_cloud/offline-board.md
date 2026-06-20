@@ -39,7 +39,7 @@ swanlab.init(
 
 • Set the `mode` parameter to `local` to disable syncing experiments to the cloud.
 • The `logdir` parameter is optional and specifies the directory where SwanLab log files are saved (default is the `swanlog` folder).
-  • Log files are created and updated during experiment tracking, and the offline dashboard relies on these files for operation.
+• Log files are created and updated during experiment tracking, and the offline dashboard relies on these files for operation.
 
 All other functionalities remain consistent with the cloud version.
 

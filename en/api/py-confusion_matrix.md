@@ -10,11 +10,11 @@ confusion_matrix(
 ) -> None
 ```
 
-| Parameter     | Description                                                                                                                           |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| y_true       | (Union[List, np.ndarray]) True labels, the actual class labels in classification problems                                                                                    |
-| y_pred       | (Union[List, np.ndarray]) Predicted labels, the class labels predicted by the model                                                                                        |
-| class_names  | (List[str]) List of class names used to display class labels in the confusion matrix. If None, numeric indices will be used as labels                                                           |
+| Parameter   | Description                                                                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| y_true      | (Union[List, np.ndarray]) True labels, the actual class labels in classification problems                                             |
+| y_pred      | (Union[List, np.ndarray]) Predicted labels, the class labels predicted by the model                                                   |
+| class_names | (List[str]) List of class names used to display class labels in the confusion matrix. If None, numeric indices will be used as labels |
 
 ## Introduction
 

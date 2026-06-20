@@ -18,12 +18,12 @@ Add the following configuration to your YAML configuration file:
 
 ```yaml
 runner:
-  task_type: math  # or "embodied", etc.
+  task_type: math # or "embodied", etc.
   logger:
     log_path: ${runner.output_dir}/${runner.experiment_name}
     project_name: rlinf
     experiment_name: ${runner.experiment_name}
-    logger_backends: ["swanlab"]  # [!code ++]
+    logger_backends: ["swanlab"] # [!code ++]
   experiment_name: grpo-1.5b
   output_dir: ./logs
 ```

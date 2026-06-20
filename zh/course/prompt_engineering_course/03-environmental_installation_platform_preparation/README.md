@@ -11,7 +11,6 @@ git clone https://github.com/828Tina/PromptEngineeringCourse
 cd PromptEngineeringCourse
 ```
 
-
 ## 如何使用大模型？
 
 > 代码中需要我们使用*大模型*来完成提示词工程教学任务。
@@ -21,7 +20,6 @@ cd PromptEngineeringCourse
 <div style="background:#e7f5ff;color:#000;padding:12px 16px;border-left:4px solid #74c0fc;">
 <strong>我们提供两种方式，<em>一种是本地调用</em>，<em>另一种是调用API</em>。本地调用需要自己配置至少一块3090，API调用对配置没有要求。下面我们分别从两种方式来讲如何安装环境，可以根据自身需求选择合适的方案👇。</strong>
 </div>
-
 
 ### 本地调用大模型的环境安装指南
 
@@ -43,8 +41,7 @@ source ~/miniconda/bin/activate
 
 不过，如果在本地运行，由于都没有使用量化技术，对于GPU的要求在20GB左右，一块3090足矣，如果是更小的模型，那么要求也可以降低。
 
->  本教程基于英伟达芯片进行各个实验。
-
+> 本教程基于英伟达芯片进行各个实验。
 
 **环境搭建**
 
@@ -124,7 +121,6 @@ print(response)
 
 `vLLM`是伯克利大学LMSYS组织开源的大语言模型高速推理框架，旨在极大地提升实时场景下的语言模型服务的吞吐与内存使用效率。`vLLM`是一个快速且易于使用的库，用于 LLM 推理和服务，可以和HuggingFace 无缝集成。vLLM利用了全新的注意力算法「PagedAttention」，有效地管理注意力键和值。
 
-
 vllm在吞吐量方面，vLLM的性能比[HuggingFace Transformers](https://zhida.zhihu.com/search?content_id=238989790&content_type=Article&match_order=1&q=HuggingFace+Transformers&zhida_source=entity)(HF)高出 24 倍，文本生成推理（TGI）高出3.5倍。
 
 简单点说就是vllm框架的推理速度很快，但是显存占用较高，同样的3B模型，本地推理可能只需要15GB左右，而vllm框架则需要37GB。
@@ -148,7 +144,6 @@ pip install -U vllm
   </figure>
 </div>
 
-
 具体用法可以参考[Qwen模型的vllm用法](https://qwen.readthedocs.io/zh-cn/latest/deployment/vllm.html)。另外，也可以从[官网](https://docs.vllm.ai/en/latest/index.html)获得更加详细的信息。我们简单讲述下我们教程里的使用步骤。
 
 1. 在本地默认端口跑本地模型
@@ -168,15 +163,13 @@ vllm serve /your/path/of/model
   </figure>
 </div>
 
-
-
 然后我们需要再开启一个终端页面。
 
 2. 开启新的终端页面运行各个代码
 
 在新的终端页面，我们就可以跑我们对应的服务了，需要注意的是，我们使用大模型来进行推理的时候可以使用[openai的prompt的API的接口](https://openai.apifox.cn/api-55352401)或者[messages对应的API接口](https://openai.apifox.cn/api-67883981)等，输入接口参考给出的文档即可，讲起来比较抽象，我们看下代码例子：
 
-*模型生成回答的代码* ：
+_模型生成回答的代码_ ：
 
 ```python
 results = utils.openai_completion(
@@ -188,7 +181,7 @@ results = utils.openai_completion(
         )
 ```
 
-*对应的工具utils的* *openai_completion函数*：
+_对应的工具utils的_ _openai_completion函数_：
 
 ```python
 def openai_completion(
@@ -208,7 +201,7 @@ def openai_completion(
                 prompt=prompt_batch, **shared_kwargs
             )
     choices = completion_batch.choices
-    
+
 ……
 ……
 ```
@@ -220,8 +213,6 @@ def openai_completion(
 如果不太理解具体如何做，在下面的教程中按照步骤运行相应的文件，不明白原理的可以参考我们的代码。
 
 > 我们还有基于昇腾NPU的vllm[教程](./1.huawei.md)
-
-
 
 ### 调用API使用大模型的环境安装指南
 

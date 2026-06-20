@@ -18,7 +18,7 @@ from swanlab.integration.lightgbm import SwanLabCallback
 
 ```python
 swanlab.init(
-    project="lightgbm-example", 
+    project="lightgbm-example",
     experiment_name="breast-cancer-classification"
 )
 ```

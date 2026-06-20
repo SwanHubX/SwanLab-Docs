@@ -1,11 +1,9 @@
 {
-  "overrides": {
-    "vite": "$vite"
-  },
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "prepare": "vp config"
   },
   "dependencies": {
     "markdown-it-mathjax3": "^4.3.2",
@@ -14,8 +12,20 @@
   "devDependencies": {
     "@types/node": "^25.9.1",
     "oxc-minify": "0.132.0",
-    "vite": "8.0.13",
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite-plus": "latest",
     "vitepress": "2.0.0-alpha.17",
     "vitepress-plugin-llms": "^1.12.2"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vitest": "4.1.9"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": "11.17.0",
+      "onFail": "download"
+    }
   }
 }

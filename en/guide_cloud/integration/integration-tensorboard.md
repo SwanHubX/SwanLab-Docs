@@ -72,6 +72,7 @@ swanlab.sync_tensorboard_torch()
 
 writer = SummaryWriter(log_dir='./runs')
 ```
+
 :::
 
 ### 1.4 Test Code
@@ -151,13 +152,13 @@ This has the same effect as the command line conversion.
 
 ### 2.3 Parameter List
 
-| Parameter | Corresponding CLI Parameter | Description | 
-| ---- | ---------- | --------------------- | 
-| convert_dir    | -      | Path to Tfevent files       | 
-| project    | -p, --project      | SwanLab project name       |
-| workspace  | -w, --workspace      | SwanLab workspace name |
-| mode    | --mode      | Mode, default is "online", options: `["online", "local", "offline", "disabled"]`       | 
-| logdir    | -l, --logdir      | Path to save SwanLab log files       | 
+| Parameter   | Corresponding CLI Parameter | Description                                                                      |
+| ----------- | --------------------------- | -------------------------------------------------------------------------------- |
+| convert_dir | -                           | Path to Tfevent files                                                            |
+| project     | -p, --project               | SwanLab project name                                                             |
+| workspace   | -w, --workspace             | SwanLab workspace name                                                           |
+| mode        | --mode                      | Mode, default is "online", options: `["online", "local", "offline", "disabled"]` |
+| logdir      | -l, --logdir                | Path to save SwanLab log files                                                   |
 
 Example:
 
@@ -174,6 +175,7 @@ tfb_converter.run()
 ```
 
 The equivalent CLI command:
+
 ```bash
 swanlab convert -t tensorboard --tb_logdir ./runs -p TensorBoard-Converter -w SwanLab -l ./logs
 ```
@@ -182,14 +184,14 @@ Executing the above script will create a project named `TensorBoard-Converter` i
 
 ## 3. API Mapping Table
 
-| Function | TensorBoard | SwanLab | 
-| ---- | ---------- | --------------------- | 
-| Create Experiment | writer = SummaryWriter(logdir="./runs") | swanlab.init(logdir="./runs") | 
-| Record Scalar Metrics | writer.add_scalar(key, value, step) | swanlab.log({key, value}, step=step) |
-| Record Multiple Scalar Metrics | writer.add_scalar(key1, value1, step)<br> writer.add_scalar(key2, value2, step) | swanlab.log({key1: value1, key2: value2}, step=step) |
-| Record Image Metrics | writer.add_image(key, data, step) | swanlab.log({key: swanlab.Image(data), step=step}) |
-| Record Text Metrics | writer.add_text(key, data, step) | swanlab.log({key: swanlab.Text(data)}, step=step) |
-| Record Audio Metrics | writer.add_audio(key, data, step) | swanlab.log({key: swanlab.Audio(data), step=step}) |
-| Record Video Metrics | writer.add_video(key, data, step) | swanlab.log({key: swanlab.Video(data), step=step}) |
-| Record PR Curve | writer.add_pr_curve(key, labels, predictions, step) | swanlab.log({key: swanlab.PRCurve(labels, predictions), step=step}) |
-| Close Experiment | writer.close() | swanlab.finish() |
+| Function                       | TensorBoard                                                                     | SwanLab                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Create Experiment              | writer = SummaryWriter(logdir="./runs")                                         | swanlab.init(logdir="./runs")                                       |
+| Record Scalar Metrics          | writer.add_scalar(key, value, step)                                             | swanlab.log({key, value}, step=step)                                |
+| Record Multiple Scalar Metrics | writer.add_scalar(key1, value1, step)<br> writer.add_scalar(key2, value2, step) | swanlab.log({key1: value1, key2: value2}, step=step)                |
+| Record Image Metrics           | writer.add_image(key, data, step)                                               | swanlab.log({key: swanlab.Image(data), step=step})                  |
+| Record Text Metrics            | writer.add_text(key, data, step)                                                | swanlab.log({key: swanlab.Text(data)}, step=step)                   |
+| Record Audio Metrics           | writer.add_audio(key, data, step)                                               | swanlab.log({key: swanlab.Audio(data), step=step})                  |
+| Record Video Metrics           | writer.add_video(key, data, step)                                               | swanlab.log({key: swanlab.Video(data), step=step})                  |
+| Record PR Curve                | writer.add_pr_curve(key, labels, predictions, step)                             | swanlab.log({key: swanlab.PRCurve(labels, predictions), step=step}) |
+| Close Experiment               | writer.close()                                                                  | swanlab.finish()                                                    |

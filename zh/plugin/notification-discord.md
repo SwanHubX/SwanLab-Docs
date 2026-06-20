@@ -13,12 +13,11 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 ## 准备工作
 
 ::: info 参考文档
-- [Discord-Webhook群机器人配置说明](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
-:::
 
+- [Discord-Webhook群机器人配置说明](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+  :::
 
 1. 选择您想要接收SwanLab事件通知的 Discord 频道
-
 
 2. 点击对应频道右侧的 **「⚙️」** 对应的 **「编辑频道」** 按钮
 
@@ -28,14 +27,11 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-discord/integration-webhook.png" width="400"/>
 
-
 4. 点击选项卡 **「新Webhook」** 自动创建新的 webhook 机器人
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-discord/new-webhook.png" width="400"/>
 
 5. 点击 **「复制 Webhook URL」** 即可获取到对应的 webhook 地址
-
-
 
 ## 基本用法
 
@@ -45,7 +41,7 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 from swanlab.plugin.notification import DiscordCallback
 
 discord_callback = DiscordCallback(
-    webhook_url='https://discord.com/api/webhooks/xxxxx/xxx', 
+    webhook_url='https://discord.com/api/webhooks/xxxxx/xxx',
     language='zh'
 )
 ```
@@ -58,8 +54,6 @@ swanlab.init(callbacks=[discord_callback])
 
 这样，当训练完成/发生错误时（触发`swanlab.finish()`），你将会收到Discord消息通知。
 
-
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-discord/discord-finish.png" width="500"/>
 
 ## 自由提醒
@@ -68,14 +62,13 @@ swanlab.init(callbacks=[discord_callback])
 
 这在提醒你某些指标达到某个阈值时非常有用！
 
-```python 
+```python
 if accuracy > 0.95:
     # 自定义场景发送消息
     discord_callback.send_msg(
         content=f"Current Accuracy: {accuracy}",  # 通知内容
     )
 ```
-
 
 ## 限制
 

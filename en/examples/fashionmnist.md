@@ -36,12 +36,15 @@ This case study primarily focuses on:
 
 This case study is based on `Python>=3.8`. Please ensure Python is installed on your computer.
 Environment dependencies:
+
 ```
 torch
 torchvision
 swanlab
 ```
+
 Quick installation command:
+
 ```bash
 pip install torch torchvision swanlab
 ```
@@ -174,7 +177,7 @@ if __name__ == "__main__":
         model.train()  # 确保模型处于训练模式
         train_correct = 0
         train_total = 0
-        
+
         # 训练循环
         for iter, batch in enumerate(train_loader):
             x, y = batch
@@ -229,6 +232,7 @@ if __name__ == "__main__":
 ## Switching to Other ResNet Models
 
 The above code supports switching to the following ResNet models:
+
 - ResNet18
 - ResNet34
 - ResNet50

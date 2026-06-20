@@ -17,11 +17,11 @@ Interested in contributing to SwanLab? We welcome contributions from the communi
 
 1. Browse the [Issues](https://github.com/SwanHubX/SwanLab/issues) on GitHub to see the features you'd like to add or bugs you'd like to fix, and whether they have already been addressed by a Pull Request.
 
-    - If not, create a [new Issue](https://github.com/SwanHubX/SwanLab/issues/new/choose) — this will help the project track feature requests and bug reports and ensure that work is not duplicated.
+   - If not, create a [new Issue](https://github.com/SwanHubX/SwanLab/issues/new/choose) — this will help the project track feature requests and bug reports and ensure that work is not duplicated.
 
 2. If you are contributing to an open-source project for the first time, go to the [project homepage](https://github.com/SwanHubX/SwanLab) and click the "Fork" button in the upper right corner. This will create a personal copy of the repository for your development.
 
-    - Clone the forked project to your computer and add a remote link to the `swanlab` project:
+   - Clone the forked project to your computer and add a remote link to the `swanlab` project:
 
    ```bash
    git clone https://github.com/<your-username>/swanlab.git
@@ -31,20 +31,20 @@ Interested in contributing to SwanLab? We welcome contributions from the communi
 
 3. Develop your contribution
 
-    - Ensure your fork is synchronized with the main repository:
+   - Ensure your fork is synchronized with the main repository:
 
    ```bash
    git checkout main
    git pull upstream main
    ```
 
-    - Create a `git` branch where you will develop your contribution. Use a reasonable name for the branch, for example:
+   - Create a `git` branch where you will develop your contribution. Use a reasonable name for the branch, for example:
 
    ```bash
    git checkout -b <username>/<short-dash-seperated-feature-description>
    ```
 
-    - As you make progress, commit your changes locally, for example:
+   - As you make progress, commit your changes locally, for example:
 
    ```bash
    git add changed-file.py tests/test-changed-file.py
@@ -53,18 +53,18 @@ Interested in contributing to SwanLab? We welcome contributions from the communi
 
 4. Submit your contribution:
 
-    - [Github Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
-    - When your contribution is ready, push your branch to GitHub:
+   - [Github Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+   - When your contribution is ready, push your branch to GitHub:
 
    ```bash
    git push origin <username>/<short-dash-seperated-feature-description>
    ```
 
-    - After the branch is uploaded, `GitHub` will print a URL to submit your contribution as a pull request. Open that URL in your browser, write an informative title and detailed description for your pull request, and submit it.
+   - After the branch is uploaded, `GitHub` will print a URL to submit your contribution as a pull request. Open that URL in your browser, write an informative title and detailed description for your pull request, and submit it.
 
-    - Please link the relevant Issue (existing Issue or the one you created) to your PR. See the right sidebar of the PR page. Alternatively, mention "Fixes issue link" in the PR description — GitHub will automatically link it.
+   - Please link the relevant Issue (existing Issue or the one you created) to your PR. See the right sidebar of the PR page. Alternatively, mention "Fixes issue link" in the PR description — GitHub will automatically link it.
 
-    - We will review your contribution and provide feedback. To merge the changes suggested by the reviewer, commit the edits to your branch and push it again (no need to recreate the pull request, it will automatically track modifications to the branch), for example:
+   - We will review your contribution and provide feedback. To merge the changes suggested by the reviewer, commit the edits to your branch and push it again (no need to recreate the pull request, it will automatically track modifications to the branch), for example:
 
    ```bash
    git add tests/test-changed-file.py
@@ -72,7 +72,7 @@ Interested in contributing to SwanLab? We welcome contributions from the communi
    git push origin <username>/<short-dash-seperated-feature-description>
    ```
 
-    - Once your pull request is approved by the reviewer, it will be merged into the main branch of the repository.
+   - Once your pull request is approved by the reviewer, it will be merged into the main branch of the repository.
 
 ## Local Debugging
 
@@ -163,6 +163,6 @@ SWANLAB_API_HOST=https://swanlab.cn/api
 SWANLAB_WEB_HOST=https://swanlab.cn
 ```
 
-*Note: When performing cloud testing, some useless test experiment data will be generated under your cloud account, which needs to be manually deleted*
+_Note: When performing cloud testing, some useless test experiment data will be generated under your cloud account, which needs to be manually deleted_
 
 After configuring, you can run the complete test

@@ -4,7 +4,7 @@
 Introduction to Natural Language Processing, Text Classification, and Machine Learning
 :::
 
-[Online Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [Zhihu](https://zhuanlan.zhihu.com/p/699441531)  | [Meituan Waimai Review Classification](https://zhuanlan.zhihu.com/p/701460910)
+[Online Demo](https://swanlab.cn/@ZeyiLin/BERT/charts) ｜ [Zhihu](https://zhuanlan.zhihu.com/p/699441531) | [Meituan Waimai Review Classification](https://zhuanlan.zhihu.com/p/701460910)
 
 ## Overview
 

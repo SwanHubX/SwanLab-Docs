@@ -10,14 +10,15 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 ## Preparation
 
 ::: info References
-- [Telegram-Bots: An introduction for developers](https://core.telegram.org/bots)
-:::
 
+- [Telegram-Bots: An introduction for developers](https://core.telegram.org/bots)
+  :::
 
 1. In the Telegram search bar, enter `@BotFather`
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-botfather.png" width="300"/>
+   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-botfather.png" width="300"/>
 
-2. In the chat window,  send the command `/newbot`. Follow the prompts to input the `name` and `username` respectively. Notes:
+2. In the chat window, send the command `/newbot`. Follow the prompts to input the `name` and `username` respectively. Notes:
+
 - The `name` is used to display the bot’s name in the message window.
 - The `username` is for redirecting to Telegram channels, must end with `bot`, and cannot be duplicated with other bots.
 
@@ -25,8 +26,7 @@ You will receive a message as shown below. Copy and save the `token`.
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-botcreated.png" width="500"/>
 
 3. In the Telegram search bar, enter `@getidsbot`. Send the command `/start` in the chat window to obtain the `chat_id`. The `chat_id` is the unique identifier of the user.
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-chatid.png" width="500"/>
-
+   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-chatid.png" width="500"/>
 
 ## Basic Usage
 
@@ -50,7 +50,6 @@ swanlab.init(callbacks=[telegram_callback])
 
 In this way, you will receive a Telegram notification when training completes or an error occurs (triggering `swanlab.finish()`).
 
-
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-finish.png" width="500"/>
 
 ## Custom Notifications
@@ -59,14 +58,13 @@ You can also use the `send_msg` method of the `TelegramCallback` object to send 
 
 This is particularly useful for notifying you when certain metrics reach specific thresholds!
 
-```python 
+```python
 if accuracy > 0.95:
     # custom messages
     telegram_callback.send_msg(
-        content=f"Current Accuracy: {accuracy}",  
+        content=f"Current Accuracy: {accuracy}",
     )
 ```
-
 
 ## Limitations
 

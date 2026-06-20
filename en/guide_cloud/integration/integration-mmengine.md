@@ -38,6 +38,7 @@ You can refer to the [MMEngine 15-minute tutorial](https://mmengine.readthedocs.
 Ensure you have installed SwanLab, or use `pip install -U swanlab` to install the latest version.
 
 If you follow the official example and use MMEngine as your training framework, make the following changes in your training script:
+
 1. Add SwanlabVisBackend when initializing `visualizer`.
 2. Pass `visualizer` when initializing `runner`:
 
@@ -52,7 +53,7 @@ swanlab_vis_backend = SwanlabVisBackend(init_kwargs={})  # init args can be foun
 # Initialize mmengine's Visualizer and introduce SwanLab as Visual Backend
 visualizer = Visualizer(
     vis_backends=swanlab_vis_backend
-)  
+)
 
 # Build mmengine's Runner
 runner = Runner(

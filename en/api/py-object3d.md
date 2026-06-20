@@ -2,10 +2,10 @@
 
 [GitHub Source Code](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/object3d/__init__.py)
 
-| Parameter | Description |
-|---|---|
-| data | (Union[np.ndarray, str, Path]) Accepts point cloud file paths or NumPy arrays. The Object3D class will determine the received data type and perform corresponding conversions. |
-| caption | (str) Label for the 3D object. Used to mark the 3D object when displayed in the experiment dashboard. |
+| Parameter | Description                                                                                                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| data      | (Union[np.ndarray, str, Path]) Accepts point cloud file paths or NumPy arrays. The Object3D class will determine the received data type and perform corresponding conversions. |
+| caption   | (str) Label for the 3D object. Used to mark the 3D object when displayed in the experiment dashboard.                                                                          |
 
 ## Introduction
 
@@ -45,23 +45,23 @@ The file format is `json`, with the following content structure:
 
 **Detailed Explanation of JSON File Parameters:**
 
-  * **`points`**:
+- **`points`**:
 
-      * This is an array used to store 3D point cloud data.
-      * Each element is an array of 6 numerical values `[x, y, z, r, g, b]`, representing:
-          * `x`, `y`, `z`: 3D coordinates of the point.
-          * `r`, `g`, `b`: Color of the point, representing red, green, and blue channel values, typically in the range 0-255.
+  - This is an array used to store 3D point cloud data.
+  - Each element is an array of 6 numerical values `[x, y, z, r, g, b]`, representing:
+    - `x`, `y`, `z`: 3D coordinates of the point.
+    - `r`, `g`, `b`: Color of the point, representing red, green, and blue channel values, typically in the range 0-255.
 
-  * **`boxes`** (Optional):
+- **`boxes`** (Optional):
 
-      * This is an array used to store 3D detection box data.
-      * Each element is an object representing a detection box, containing the following fields:
-          * **`color`**: Color of the detection box, an `[r, g, b]` array representing red, green, and blue channel values.
-          * **`corners`**: Coordinates of the eight vertices of the detection box, an `[[x1, y1, z1], ..., [x8, y8, z8]]` array, where each element is a 3D coordinate `[x, y, z]`.
-          * **`label`** (Optional): Label text of the detection box, a string, used to display the category of the detection box in the view.
-          * **`score`** (Optional): Confidence score of the detection box, a numerical value, typically in the range 0-1, representing the reliability of the detection box.
+  - This is an array used to store 3D detection box data.
+  - Each element is an object representing a detection box, containing the following fields:
+    - **`color`**: Color of the detection box, an `[r, g, b]` array representing red, green, and blue channel values.
+    - **`corners`**: Coordinates of the eight vertices of the detection box, an `[[x1, y1, z1], ..., [x8, y8, z8]]` array, where each element is a 3D coordinate `[x, y, z]`.
+    - **`label`** (Optional): Label text of the detection box, a string, used to display the category of the detection box in the view.
+    - **`score`** (Optional): Confidence score of the detection box, a numerical value, typically in the range 0-1, representing the reliability of the detection box.
 
------
+---
 
 Using SwanLab to log 3D point cloud data from a `json` file:
 

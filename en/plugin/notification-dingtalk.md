@@ -48,7 +48,7 @@ Using the DingTalk notification plugin is straightforward. Simply initialize a `
 from swanlab.plugin.notification import DingTalkCallback
 
 dingtalk_callback = DingTalkCallback(
-    webhook_url="https://oapi.dingtalk.com/robot/xxxx", 
+    webhook_url="https://oapi.dingtalk.com/robot/xxxx",
     secret="xxxx",
 )
 ```
@@ -69,7 +69,7 @@ You can also use the `send_msg` method of the `DingTalkCallback` object to send 
 
 This is particularly useful for notifying you when certain metrics reach a specific threshold!
 
-```python 
+```python
 if accuracy > 0.95:
     # Custom scenario to send a message
     dingtalk_callback.send_msg(

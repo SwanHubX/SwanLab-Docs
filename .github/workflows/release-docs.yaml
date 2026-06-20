@@ -1,26 +1,26 @@
-name: 'Verify APP_VERSION'
+name: "Verify APP_VERSION"
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'APP_VERSION'
-      - 'zh/self_host/docker/offline-deployment.md'
-      - 'en/self_host/docker/offline-deployment.md'
-      - 'zh/self_host/docker/deploy.md'
-      - 'zh/self_host/kubernetes/deploy.md'
-      - 'en/self_host/kubernetes/deploy.md'
+      - "APP_VERSION"
+      - "zh/self_host/docker/offline-deployment.md"
+      - "en/self_host/docker/offline-deployment.md"
+      - "zh/self_host/docker/deploy.md"
+      - "zh/self_host/kubernetes/deploy.md"
+      - "en/self_host/kubernetes/deploy.md"
   pull_request:
     branches:
       - main
     paths:
-      - 'APP_VERSION'
-      - 'zh/self_host/docker/offline-deployment.md'
-      - 'en/self_host/docker/offline-deployment.md'
-      - 'zh/self_host/docker/deploy.md'
-      - 'zh/self_host/kubernetes/deploy.md'
-      - 'en/self_host/kubernetes/deploy.md'
+      - "APP_VERSION"
+      - "zh/self_host/docker/offline-deployment.md"
+      - "en/self_host/docker/offline-deployment.md"
+      - "zh/self_host/docker/deploy.md"
+      - "zh/self_host/kubernetes/deploy.md"
+      - "en/self_host/kubernetes/deploy.md"
   workflow_dispatch:
 
 concurrency:

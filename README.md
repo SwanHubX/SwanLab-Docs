@@ -4,12 +4,11 @@ This repository regroups documentation and information that is hosted on the Swa
 
 You can access the SwanLab documentation at [Document](https://docs.swanlab.cn). Powered by [vitepress](https://vitepress.dev/zh/guide/getting-started).
 
-
 ### How to contribute to the docs
 
 It's very simple! Just clone the project, add or modify Markdown files, commit them, and then create a PR.
 
-### Previewing locally 
+### Previewing locally
 
 **1. Clone this repository**
 

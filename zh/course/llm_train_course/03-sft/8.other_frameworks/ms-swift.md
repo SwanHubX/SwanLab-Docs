@@ -2,13 +2,11 @@
 
 ## 简介
 
-​	Qwen3 是 Qwen 系列中最新一代的大规模语言模型，提供了一系列密集型和专家混合（MoE）模型。基于广泛的训练，Qwen3 在推理、指令执行、代理能力和多语言支持方面实现了突破性进展，能在单一模型内无缝切换思考模式（用于复杂的逻辑推理、数学和编程）和非思考模式（用于高效的通用对话），确保在各种场景下的最佳性能。
+​ Qwen3 是 Qwen 系列中最新一代的大规模语言模型，提供了一系列密集型和专家混合（MoE）模型。基于广泛的训练，Qwen3 在推理、指令执行、代理能力和多语言支持方面实现了突破性进展，能在单一模型内无缝切换思考模式（用于复杂的逻辑推理、数学和编程）和非思考模式（用于高效的通用对话），确保在各种场景下的最佳性能。
 
-​	ms-swift 是 ModelScope 社区提供的官方框架，用于微调和部署大型语言模型和多模态大型模型。它目前支持 450+ 大型模型和 150+ 多模态大型模型的训练（预训练、微调、人工对齐）、推理、评估、量化和部署，非常便利。
+​ ms-swift 是 ModelScope 社区提供的官方框架，用于微调和部署大型语言模型和多模态大型模型。它目前支持 450+ 大型模型和 150+ 多模态大型模型的训练（预训练、微调、人工对齐）、推理、评估、量化和部署，非常便利。
 
-​	本次教程就使用ms-swift框架对Qwen3-0.6B模型进行医疗问答领域微调，希望本次教程能让读者轻松上手实践。
-
-
+​ 本次教程就使用ms-swift框架对Qwen3-0.6B模型进行医疗问答领域微调，希望本次教程能让读者轻松上手实践。
 
 ## 链接资料
 
@@ -29,8 +27,6 @@
 > 1. [框架集成文档](https://docs.swanlab.cn/guide_cloud/integration/)：SwanLab已经集成Transformers、LLaMA Factory、Pytorch等主流框架，并持续更新
 > 2. [实战案例](https://docs.swanlab.cn/examples/hello_world.html)：SwanLab提供了丰富的模型训练实战教程，助力用户快速掌握深度学习模型训练的要点
 
-
-
 ## 训练代码
 
 ### 1、环境配置
@@ -47,7 +43,7 @@ pip install ms-swift
 pip install swanlab
 ```
 
-***3、安装deepspeed***
+**_3、安装deepspeed_**
 
 如果采用单机多卡分布式训练方式，可以选择DeepSpeed ZeRO2/ZeRO3。
 
@@ -60,8 +56,6 @@ pip install deepspeed
 ```bash
 pip install -r requirement.txt
 ```
-
-
 
 ### 2、数据集处理
 
@@ -90,14 +84,14 @@ https://modelscope.cn/datasets/krisfu/delicate_medical_r1_data
 其中包含四种标准格式，我们使用标准格式：
 
 ```json
-{"messages": 
-    [
-        {"role": "system", "content": "<system>"}, 
-        {"role": "user", "content": "<query1>"}, 
-        {"role": "assistant", "content": "<response1>"}, 
-        {"role": "user", "content": "<query2>"},
-         {"role": "assistant", "content": "<response2>"}
-     ]
+{
+  "messages": [
+    { "role": "system", "content": "<system>" },
+    { "role": "user", "content": "<query1>" },
+    { "role": "assistant", "content": "<response1>" },
+    { "role": "user", "content": "<query2>" },
+    { "role": "assistant", "content": "<response2>" }
+  ]
 }
 ```
 
@@ -123,8 +117,6 @@ python data.py
 ./data/val.jsonl
 
 模型微调时直接使用存放地址即可。
-
-
 
 ### 3、训练代码
 
@@ -233,14 +225,12 @@ TypeError: Value.__init__() missing 1 required positional argument: 'dtype'
 
 删掉下载到本地的数据集文件里的dataset_infos.json文件。
 
-
-
 ### 2、环境配置问题
 
 modelscope和datasets如果版本对不上，会报环境的错误
 
 ```python
-ImportError: cannot import name 'OfflineModeIsEnabled' from 'datasets.utils.file_utils' 
+ImportError: cannot import name 'OfflineModeIsEnabled' from 'datasets.utils.file_utils'
 ```
 
 这个错误表明在尝试从 `datasets.utils.file_utils` 模块中导入 `OfflineModeIsEnabled` 时失败了。这通常是因为 `datasets` 库的版本与 `modelscope` 库的依赖不匹配导致的。
@@ -249,18 +239,11 @@ ImportError: cannot import name 'OfflineModeIsEnabled' from 'datasets.utils.file
 
 ```python
 datasets==3.2.0
-modelscope==1.22.0 
+modelscope==1.22.0
 ```
-
-
 
 ## 参考资料
 
 [https://github.com/modelscope/ms-swift/tree/main](https://github.com/modelscope/ms-swift/tree/main)
 
 [ms-swift自定义数据集指南](https://swift.readthedocs.io/zh-cn/latest/Customization/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E9%9B%86.html)
-
-
-
-
-

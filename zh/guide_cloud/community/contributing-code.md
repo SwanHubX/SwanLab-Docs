@@ -18,12 +18,12 @@
 1. 浏览 GitHub 上的[Issues](https://github.com/SwanHubX/SwanLab/issues)，查看你愿意添加的功能或修复的错误，以及它们是否已被
    Pull Request。
 
-    - 如果没有，请创建一个[新 Issue](https://github.com/SwanHubX/SwanLab/issues/new/choose)——这将帮助项目跟踪功能请求和错误报告，并确保不重复工作。
+   - 如果没有，请创建一个[新 Issue](https://github.com/SwanHubX/SwanLab/issues/new/choose)——这将帮助项目跟踪功能请求和错误报告，并确保不重复工作。
 
 2. 如果你是第一次为开源项目贡献代码，请转到 [本项目首页](https://github.com/SwanHubX/SwanLab) 并单击右上角的"Fork"
    按钮。这将创建你用于开发的仓库的个人副本。
 
-    - 将 Fork 的项目克隆到你的计算机，并添加指向`swanlab`项目的远程链接：
+   - 将 Fork 的项目克隆到你的计算机，并添加指向`swanlab`项目的远程链接：
 
    ```bash
    git clone https://github.com/<your-username>/swanlab.git
@@ -33,20 +33,20 @@
 
 3. 开发你的贡献
 
-    - 确保您的 Fork 与主存储库同步：
+   - 确保您的 Fork 与主存储库同步：
 
    ```bash
    git checkout main
    git pull upstream main
    ```
 
-    - 创建一个`git`分支，您将在其中发展您的贡献。为分支使用合理的名称，例如：
+   - 创建一个`git`分支，您将在其中发展您的贡献。为分支使用合理的名称，例如：
 
    ```bash
    git checkout -b <username>/<short-dash-seperated-feature-description>
    ```
 
-    - 当你取得进展时，在本地提交你的改动，例如：
+   - 当你取得进展时，在本地提交你的改动，例如：
 
    ```bash
    git add changed-file.py tests/test-changed-file.py
@@ -55,19 +55,19 @@
 
 4. 发起贡献：
 
-    - [Github Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
-    - 当您的贡献准备就绪后，将您的分支推送到 GitHub：
+   - [Github Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+   - 当您的贡献准备就绪后，将您的分支推送到 GitHub：
 
    ```bash
    git push origin <username>/<short-dash-seperated-feature-description>
    ```
 
-    - 分支上传后， `GitHub`将打印一个 URL，用于将您的贡献作为拉取请求提交。在浏览器中打开该 URL，为您的拉取请求编写信息丰富的标题和详细描述，然后提交。
+   - 分支上传后， `GitHub`将打印一个 URL，用于将您的贡献作为拉取请求提交。在浏览器中打开该 URL，为您的拉取请求编写信息丰富的标题和详细描述，然后提交。
 
-    - 请将相关 Issue（现有 Issue 或您创建的 Issue）链接到您的 PR。请参阅 PR 页面的右栏。或者，在 PR
-      描述中提及“修复问题链接” - GitHub 将自动进行链接。
+   - 请将相关 Issue（现有 Issue 或您创建的 Issue）链接到您的 PR。请参阅 PR 页面的右栏。或者，在 PR
+     描述中提及“修复问题链接” - GitHub 将自动进行链接。
 
-    - 我们将审查您的贡献并提供反馈。要合并审阅者建议的更改，请将编辑提交到您的分支，然后再次推送到分支（无需重新创建拉取请求，它将自动跟踪对分支的修改），例如：
+   - 我们将审查您的贡献并提供反馈。要合并审阅者建议的更改，请将编辑提交到您的分支，然后再次推送到分支（无需重新创建拉取请求，它将自动跟踪对分支的修改），例如：
 
    ```bash
    git add tests/test-changed-file.py
@@ -75,7 +75,7 @@
    git push origin <username>/<short-dash-seperated-feature-description>
    ```
 
-    - 一旦您的拉取请求被审阅者批准，它将被合并到存储库的主分支中。
+   - 一旦您的拉取请求被审阅者批准，它将被合并到存储库的主分支中。
 
 ## 本地调试
 
@@ -168,6 +168,6 @@ SWANLAB_API_HOST=https://swanlab.cn/api
 SWANLAB_WEB_HOST=https://swanlab.cn
 ```
 
-*注意：在进行云端版测试时会在您的云端账号下生成一些无用的测试实验数据，需要手动删除*
+_注意：在进行云端版测试时会在您的云端账号下生成一些无用的测试实验数据，需要手动删除_
 
 配置完后即可运行完整测试

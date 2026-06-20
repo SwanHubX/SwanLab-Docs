@@ -10,11 +10,11 @@ confusion_matrix(
 ) -> None
 ```
 
-| 参数          | 描述                                                                                                                           |
-|-------------|------------------------------------------------------------------------------------------------------------------------------|
-| y_true      | (Union[List, np.ndarray]) 真实标签，分类问题中的真实类别标签                                                                                    |
-| y_pred      | (Union[List, np.ndarray]) 预测标签，模型预测的类别标签                                                                                        |
-| class_names | (List[str]) 类别名称列表，用于在混淆矩阵中显示类别标签。如果为None，将使用数字索引作为标签                                                           |
+| 参数        | 描述                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| y_true      | (Union[List, np.ndarray]) 真实标签，分类问题中的真实类别标签                               |
+| y_pred      | (Union[List, np.ndarray]) 预测标签，模型预测的类别标签                                     |
+| class_names | (List[str]) 类别名称列表，用于在混淆矩阵中显示类别标签。如果为None，将使用数字索引作为标签 |
 
 ## 介绍
 
@@ -77,7 +77,6 @@ swanlab.log({"confusion_matrix_custom": confusion_matrix})
 confusion_matrix = swanlab.echarts.confusion_matrix(y_test, y_pred)
 swanlab.log({"confusion_matrix_default": confusion_matrix})
 ```
-
 
 ### 二分类示例
 

@@ -12,12 +12,11 @@ save(
 ) -> List[str]
 ```
 
-| Parameter     | Description                                                                                                                           |
-|---------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| glob_str      | (Union[str, bytes, Path]) Glob pattern for files to save, e.g. ``"checkpoints/*.pt"``.                                               |
-| base_path     | (Optional[Union[str, Path]]) Base directory for resolving relative paths. Defaults to current working directory.                      |
-| policy        | (Literal["now", "end", "live"]) Save policy: ``"now"`` upload immediately; ``"end"`` defer until run finishes; ``"live"`` watch and re-upload on changes. Defaults to ``"live"``. |
-
+| Parameter | Description                                                                                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| glob_str  | (Union[str, bytes, Path]) Glob pattern for files to save, e.g. `"checkpoints/*.pt"`.                                                                                      |
+| base_path | (Optional[Union[str, Path]]) Base directory for resolving relative paths. Defaults to current working directory.                                                          |
+| policy    | (Literal["now", "end", "live"]) Save policy: `"now"` upload immediately; `"end"` defer until run finishes; `"live"` watch and re-upload on changes. Defaults to `"live"`. |
 
 ## Introduction
 
@@ -41,10 +40,10 @@ swanlab.finish()
 
 ## Save Policies
 
-| Policy | Behavior |
-|--------|----------|
-| `now` | Upload matched files immediately. |
-| `end` | Defer upload until the run finishes. |
+| Policy | Behavior                                                      |
+| ------ | ------------------------------------------------------------- |
+| `now`  | Upload matched files immediately.                             |
+| `end`  | Defer upload until the run finishes.                          |
 | `live` | Watch for file changes and re-upload automatically. (default) |
 
 ### Example: Save at the End of Training

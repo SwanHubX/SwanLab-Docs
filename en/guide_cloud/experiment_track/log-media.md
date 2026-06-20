@@ -19,7 +19,7 @@ Example code:
 
 ```python
 image = swanlab.Image(image_array, caption="Left: Input, Right: Output")
-swanlab.log({"examples": image})    
+swanlab.log({"examples": image})
 ```
 
 ### 1.2 Log PIL-Type Images
@@ -160,6 +160,7 @@ Each media type has a `caption` parameter, which is used for textual description
 apple_image = swanlab.Image(data, caption="Apple")
 swanlab.log({"im": apple_image})
 ```
+
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/log-media-image.png" width=400, height=400>
 
 ### 2. How to synchronize media data with the epoch number?

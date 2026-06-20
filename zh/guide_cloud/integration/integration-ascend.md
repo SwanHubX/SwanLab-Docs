@@ -67,7 +67,7 @@ The result of multiplication calculation is correct, MindSpore has been installe
 
 由于华为Ascend环境安装较为复杂，建议参考[MindSpore安装教程和踩坑记录](///)教程完成MindSpore环境安装。下面简述MindSpore安装过程
 
->本博客写的时间是2024年12月6日，安装的版本是**MindSpore2.4.1**，因为感觉MindSpore变动会比较大特意记录一下时间和版本。
+> 本博客写的时间是2024年12月6日，安装的版本是**MindSpore2.4.1**，因为感觉MindSpore变动会比较大特意记录一下时间和版本。
 
 #### 驱动安装&验证
 
@@ -198,14 +198,14 @@ python train.py
 
 并且附上其他脚本与在线实验记录：
 
-| 内容  | 训练命令  | 实验log  |
-|--------|--------|--------|
-| 基线 | `python train.py configs/baseline.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/qhl47nxl23tc4oycr6pmg/chart) |
-| CPU运行 | `python train.py configs/baseline.json CPU` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/s60wuicmwaitxe2v401ry/chart) |
-| 双层LSTM | `python train.py configs/two_layer.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/ydrgxvnqhjfrimzdj3oh4/chart) |
-| 小batch数 | `python train.py configs/small_batch.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/uovjgenfzcnxrl9gup900/chart) |
-| 隐藏层加大 | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/eki6pa1him482w4jcc7gn/chart) |
-| 学习率加大 | `python train.py configs/large_hs.json` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/if3o10o6nf3am87f4ou62/chart) |
+| 内容       | 训练命令                                    | 实验log                                                                                 |
+| ---------- | ------------------------------------------- | --------------------------------------------------------------------------------------- |
+| 基线       | `python train.py configs/baseline.json`     | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/qhl47nxl23tc4oycr6pmg/chart) |
+| CPU运行    | `python train.py configs/baseline.json CPU` | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/s60wuicmwaitxe2v401ry/chart) |
+| 双层LSTM   | `python train.py configs/two_layer.json`    | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/ydrgxvnqhjfrimzdj3oh4/chart) |
+| 小batch数  | `python train.py configs/small_batch.json`  | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/uovjgenfzcnxrl9gup900/chart) |
+| 隐藏层加大 | `python train.py configs/large_hs.json`     | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/eki6pa1him482w4jcc7gn/chart) |
+| 学习率加大 | `python train.py configs/large_hs.json`     | [log](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/runs/if3o10o6nf3am87f4ou62/chart) |
 
 相关超参数和最终结果可在[图标视图查看](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/overview)
 
@@ -621,4 +621,3 @@ export LOCAL_ASCEND=/usr/local/Ascend # 设置为软件包的实际安装路径
 echo "source ${LOCAL_ASCEND}/ascend-toolkit/set_env.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
-

@@ -10,7 +10,6 @@
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/01.png)
 
-
 > 显存要求 22GB左右
 
 在本文中，我们会使用[SD-1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5)模型在[火影忍者](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)数据集上做训练，同时使用[SwanLab](https://swanlab.cn)监控训练过程、评估模型效果。
@@ -20,7 +19,6 @@
 - 模型：[runwayml/stable-diffusion-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - 数据集：[lambdalabs/naruto-blip-captions](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
-
 
 ## 1.环境安装
 
@@ -47,7 +45,6 @@ pip install swanlab diffusers datasets accelerate torchvision transformers
 
 > 本文的代码测试于diffusers==0.29.0、accelerate==0.30.1、datasets==2.18.0、transformers==4.41.2、swanlab==0.3.11，更多库版本可查看[SwanLab记录的Python环境](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/environment/requirements)。
 
-
 ## 2.准备数据集
 
 本案例是用的是[火影忍者](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions)数据集，该数据集主要被用于训练文生图模型。
@@ -56,11 +53,9 @@ pip install swanlab diffusers datasets accelerate torchvision transformers
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/02.png)
 
-
 我们的训练任务，便是希望训练后的SD模型能够输入提示词，生成火影风格的图像：
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/03.png)
-
 
 ---
 
@@ -75,7 +70,6 @@ pip install swanlab diffusers datasets accelerate torchvision transformers
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/04.png)
 
-
 模型的下载方式同样有两种：
 
 1. 如果你的网络与HuggingFace连接是通畅的，那么直接运行我下面提供的代码即可，它会直接通过HF的`transformers`库进行下载。
@@ -88,7 +82,6 @@ pip install swanlab diffusers datasets accelerate torchvision transformers
 如果你是第一次使用SwanLab，那么还需要去https://swanlab.cn上注册一个账号，在**用户设置**页面复制你的API Key，然后在训练开始时粘贴进去即可：
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/05.png)
-
 
 ## 5.开始训练
 
@@ -171,25 +164,19 @@ python train_sd1-5_naruto.py \
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/05.png)
 
-
-
 ## 6. 训练结果演示
-
 
 我们在[SwanLab](https://swanlab.cn/@ZeyiLin/SD-Naruto/runs/21flglg1lbnqo67a6f1kr/chart)上查看最终的训练结果：
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/06.png)
 
-
 可以看到SD训练的特点是loss一直在震荡，随着epoch的增加，loss在最初下降后，后续的变化其实并不大：
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/07.png)
 
-
 我们来看看主观生成的图像，第一个epoch的图像长这样：
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/08.png)
-
 
 可以看到詹姆斯还是非常的“原生态”，迈克尔杰克逊生成的也怪怪的。。。
 
@@ -197,9 +184,7 @@ python train_sd1-5_naruto.py \
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/09.png)
 
-
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/06-multillm/3.stable_diffusion/images/stable_diffusion/10.png)
-
 
 经过比较长时间的训练后，效果就好了不少。
 
@@ -222,8 +207,8 @@ pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float
 pipe = pipe.to("cuda")
 
 prompt = "Lebron James with a hat"
-image = pipe(prompt).images[0]  
-    
+image = pipe(prompt).images[0]
+
 image.save("result.png")
 ```
 

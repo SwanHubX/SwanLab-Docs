@@ -4,7 +4,6 @@
 
 见此回答：[链接](https://www.zhihu.com/question/720308649/answer/25076837539)
 
-
 ## 如何从一个脚本启动多个实验？
 
 **方式一**：在多次创建实验之间调用 `swanlab.finish()` 结束当前实验，再启动下一个。
@@ -51,8 +50,6 @@ swanlab login --host 你的私有化部署IP地址 --api-key 你的API Key
 
 :::
 
-
-
 ## 如何在训练时关闭swanlab记录（Debug调试）？
 
 将`swanlab.init`的`mode`参数设置为disabled，就可以不创建实验以及不写入数据。
@@ -71,20 +68,17 @@ swanlab.init(mode='disabled')
 
 **方式二**：在运行代码前，设置环境变量 `SWANLAB_API_KEY="你的API Key"`
 
-
 ## 本地的训练已经结束，但SwanLab UI上仍然在运行中，要怎么改变状态？
 
 点击实验名旁边的终止按钮，会将实验状态从“进行中”转为“中断”，并停止接收数据的上传。
 
 ![stop](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/stop.png)
 
-
 ## 如何查看折线图的局部细节？
 
 放大折线图，长按鼠标划过目标的区域，即可放大查看该区域。
 
 ![details](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/faq-chart-details.png)
-
 
 ## 内部指标名
 
@@ -141,7 +135,6 @@ swanlab.init()
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/faq/smooth_button.png)
 
-
 ## 如何修改实验“中断”状态
 
 在实验页面，点击状态标签：
@@ -152,11 +145,9 @@ swanlab.init()
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/faq/exp_windows_finish.png)
 
-
 ## 如何开启断点续训？
 
 参考文档：[resume](/guide_cloud/experiment_track/resume-experiment.md)
-
 
 ## 如何关闭系统硬件监控？
 

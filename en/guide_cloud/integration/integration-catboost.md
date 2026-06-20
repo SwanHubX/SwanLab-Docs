@@ -1,14 +1,16 @@
 # CatBoost
 
-[CatBoost (Categorical Boosting)](https://catboost.ai)  is an open-source machine learning algorithm framework based on Gradient Boosting Decision Trees (GBDT), proposed by the Russian telecommunications company Yandex in 2017. Compared with XGBoost and LightGBM, it demonstrates better performance in terms of algorithm accuracy.
+[CatBoost (Categorical Boosting)](https://catboost.ai) is an open-source machine learning algorithm framework based on Gradient Boosting Decision Trees (GBDT), proposed by the Russian telecommunications company Yandex in 2017. Compared with XGBoost and LightGBM, it demonstrates better performance in terms of algorithm accuracy.
 
 ## 1. Import SwanLabCallback
+
 ```python
 from swanlab.integration.catboost import SwanLabCallback
 ```
 
 ## 2. Initialzie SwanLab Project
-``` python
+
+```python
     swanlab.init(
         project="gbdt-demo",
         experiment_name="catboost-demo-full",
