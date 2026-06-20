@@ -10,8 +10,6 @@
 - [Huggingface](https://huggingface.co)
 - [SwanLab](https://swanlab.cn)
 
----
-
 ## 1、基本概念
 
 1、[openMind Library](https://modelers.cn/docs/zh/openmind-library/0.9.1/overview.html)--->[Huggingface Transformers](https://huggingface.co/docs/transformers/index)
@@ -23,8 +21,6 @@ openMind Library类似于transformers的大模型封装工具，其中就有Auto
 
 魔乐社区类似于huggingface这种模型托管社区，里面除了torch的模型还有使用MindSpore实现的模型。transformers可以直接从huggingface获取模型或者数据集，openMind也是一样的，可以从魔乐社区获取模型和数据集。
 ![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/openMind/mole.png)
-
----
 
 ## 2、微调代码
 

@@ -18,8 +18,6 @@ UNet is a convolutional neural network (CNN)-based model for medical image segme
 • **Dataset**: [brain-tumor-image-dataset-semantic-segmentation - Kaggle](https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation)  
 • **SwanLab**: [https://swanlab.cn](https://swanlab.cn)
 
----
-
 ## 1. Environment Setup
 
 The environment setup consists of three steps:
@@ -599,8 +597,6 @@ Training was conducted on an **NVIDIA vGPU-32GB**, completing 40 epochs in **13 
 GPU memory usage was **6.124 GB**, meaning any GPU with ≥6GB VRAM can run this task. To reduce memory requirements, decrease the batch size.
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/unet-medical-segmentation/memory.png)
-
----
 
 ## References
 

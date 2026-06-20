@@ -19,8 +19,6 @@ UNet是一种基于卷积神经网络（CNN）的医学影像分割模型，由R
 - SwanLab：[https://swanlab.cn](https://swanlab.cn)
 - 论文：[《U-Net: Convolutional Networks for Biomedical Image Segmentation》](https://arxiv.org/abs/1505.04597)
 
----
-
 ## 1. 环境配置
 
 环境配置分为三步：
@@ -616,8 +614,6 @@ if __name__ == '__main__':
 显存占用情况为`6.124GB`，即只要你的显卡显存大于6GB，就可以跑这个任务。如果想要进一步降低显存要求，可以调低batch size。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/unet-medical-segmentation/memory.png)
-
----
 
 ## 参考
 

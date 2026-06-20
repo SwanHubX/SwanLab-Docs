@@ -44,8 +44,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
 - `charts`: Number of charts.
 - `pinned_opened` / `hidden_opened`: Default expansion state of the dashboard panels.
 
----
-
 ## Endpoint 2: Get Single Experiment Details
 
 - **URL**: `/api/v1/experiment/<experiment_id>`
@@ -92,8 +90,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
 - `system`: System info where the experiment was run, including CPU, GPU, Python version, and command.
 - `run_id`: Unique identifier for the experiment, usually linked to the log files.
 
----
-
 ## Endpoint 3: Get Chart Metadata
 
 - **URL**: `/api/v1/experiment/<experiment_id>/chart`
@@ -136,8 +132,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
 - `charts`: List of chart definitions, including name, type, and source.
 - `namespaces`: Namespaces used to organize and categorize charts.
 - `reference`: Reference for the X-axis, e.g., `step` (training step).
-
----
 
 ## Endpoint 4: Get Metric Data
 
@@ -186,8 +180,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
   - `create_time`: Timestamp when the data was recorded.
   - `_last`: Indicates whether this is the last data point (`true` for last entry only).
 
----
-
 ## Endpoint 5: Get Recent Log Output
 
 - **URL**: `/api/v1/experiment/<experiment_id>/recent_log`
@@ -217,8 +209,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
 
 - `recent`: Latest log snippets, usually for quick preview.
 - `logs`: Full list of log outputs, including system logs and experiment runtime output.
-
----
 
 ## Endpoint 6: Get Experiment Status
 
@@ -272,8 +262,6 @@ This API is intended for **Offline Dashboard Mode** in Swanlab. It provides acce
 - `charts`: Chart structure under the experiment.
   - `charts`: List of chart definitions (same as in `/chart` endpoint).
   - `namespaces`: Chart categories and layout groups.
-
----
 
 ## Endpoint 7: Get Experiment Summary Metrics
 

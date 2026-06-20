@@ -36,8 +36,6 @@ Swabnlab官方提示词课程链接:fire:：[课程前言](/course/prompt_engine
   </figure>
 </div>
 
----
-
 ## 目录
 
 [[toc]]
@@ -223,8 +221,6 @@ def get_embeddings_from_api(texts: list[str], batch_size: int = 16) -> list[list
 
 至此，我们的“Swanlab官方文档向量知识库”已经完全准备就绪了！我们就可以进行文档检索了!
 
----
-
 ## 文档检索（RAG）
 
 `RAG`（`Retrieval-Augmented Generation`，检索增强生成） 是一种结合了信息检索技术与语言生成模型的人工智能技术。该技术通过从外部知识库中检索相关信息，并将其作为提示（Prompt）输入给大型语言模型（LLMs），以增强模型处理知识密集型任务的能力，如问答、文本摘要、内容生成等。RAG模型由Facebook AI Research（FAIR）团队于2020年首次提出，并迅速成为大模型应用中的热门方案。
@@ -341,8 +337,6 @@ for chunk in all_retrieved:
 ```
 
 被检索出来的文本块，是为 LLM 精心准备的背景知识，也是解决用户问题最佳内容。
-
----
 
 ## 模型生成
 

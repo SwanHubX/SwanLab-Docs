@@ -17,8 +17,6 @@
   </figure>
 </div>
 
----
-
 ## Abstract
 
 In the era of information explosion, developers need to quickly extract accurate information from technical documentation. SwanLab’s official documentation is rich in content, but manual searching is time-consuming and inefficient. **To enable developers to retrieve information from SwanLab’s official documentation more quickly and accurately**, we developed an AI document assistant based on the **Retrieval-Augmented Generation (RAG) architecture**.  
@@ -30,8 +28,6 @@ This article details the implementation process of the SwanLab official document
   <figcaption>Technical Architecture Overview of SwanLab Document Assistant</figcaption>
   </figure>
 </div>
-
----
 
 ## Table of Contents
 
@@ -214,8 +210,6 @@ After obtaining all the vectors, how do we manage them? We chose Facebook’s op
 
 At this point, our “SwanLab Official Documentation Vector Knowledge Base” is fully prepared for document retrieval!
 
----
-
 ## Document Retrieval (RAG)
 
 **Retrieval-Augmented Generation (RAG)** is an AI technique that combines information retrieval with language generation models. By retrieving relevant information from an external knowledge base and using it as a prompt for large language models (LLMs), RAG enhances the model’s ability to handle knowledge-intensive tasks like question answering, text summarization, and content generation. Introduced by Facebook AI Research (FAIR) in 2020, RAG has become a popular approach in large-scale model applications.
@@ -324,8 +318,6 @@ for chunk in all_retrieved:
 ```
 
 The retrieved text chunks are carefully curated background knowledge for the LLM, representing the best content to address the user’s query.
-
----
 
 ## Model Generation
 

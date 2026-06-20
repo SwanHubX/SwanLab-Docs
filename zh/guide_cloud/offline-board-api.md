@@ -44,8 +44,6 @@
 - `charts`：图表数量。
 - `pinned_opened` / `hidden_opened`：控制面板的默认展开状态。
 
----
-
 ## 接口 2：获取单个实验详情
 
 - **URL**：`/api/v1/experiment/<experiment_id>`
@@ -92,8 +90,6 @@
 - `system`：运行时主机的系统信息，包括 CPU、GPU、Python 版本、命令等。
 - `run_id`：实验的唯一标识符，通常与日志文件关联。
 
----
-
 ## 接口 3：获取实验图表信息
 
 - **URL**：`/api/v1/experiment/<experiment_id>/chart`
@@ -136,8 +132,6 @@
 - `charts`：图表定义列表，包括图表名称、类型、数据来源等。
 - `namespaces`：图表命名空间，用于分类展示。
 - `reference`：图表的 X 轴参考，5982 `step`（训练步数）。
-
----
 
 ## 接口 4：获取指标数据
 
@@ -186,8 +180,6 @@
   - `create_time`：记录时间。
   - `_last`：是否为最后一个数据点（仅最后一条为 true）。
 
----
-
 ## 接口 5：获取实验最新日志
 
 - **URL**：`/api/v1/experiment/<experiment_id>/recent_log`
@@ -217,8 +209,6 @@
 
 - `recent`：最新日志段落，通常用于快速预览。
 - `logs`：日志输出列表，包含 swanlab 系统日志和运行中的配置、输出数据。
-
----
 
 ## 接口 6：获取实验状态信息
 
@@ -292,8 +282,6 @@
 - `charts`：实验中的图表结构信息。
   - `charts`：图表定义数组，字段与 `/chart` 接口一致。
   - `namespaces`：图表命名空间，标识图表分类与分组。
-
----
 
 ## 接口 7：获取实验指标汇总
 

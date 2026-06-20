@@ -21,8 +21,6 @@ LoRA is an efficient fine-tuning method. For a deeper understanding of its princ
 
 OCR Fine-Tuning Version: [Qwen2-VL-Latex-OCR](https://zhuanlan.zhihu.com/p/10705293665)
 
----
-
 ## 1. Environment Setup
 
 Environment setup involves three steps:
