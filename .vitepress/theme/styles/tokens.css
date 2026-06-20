@@ -1,0 +1,28 @@
+/* ============================================================
+ * Design tokens — brand color ramp + layout metrics
+ *
+ * Imported first so every downstream layout/component rule can
+ * reference these variables. Light values in :root, dark mode
+ * overrides in .dark.
+ * ============================================================ */
+
+:root {
+  --vp-c-brand-1: #107d8b;
+  --vp-c-brand-2: #1692a1;
+  --vp-c-brand-3: #2aabb8;
+  --vp-c-brand-soft: rgba(16, 125, 139, 0.13);
+  --vp-layout-max-width: 100%;
+  --vp-sidebar-bg-color: var(--vp-c-bg-alt);
+  --vp-sidebar-width: 280px;
+  --vp-sidebar-padding-left: 16px;
+  --swanlab-nav-search-max-width: 420px;
+  --swanlab-nav-search-min-width: 180px;
+  --swanlab-nav-title-width: 164px;
+}
+
+.dark {
+  --vp-c-brand-1: #2e9dac;
+  --vp-c-brand-2: #42b1c1;
+  --vp-c-brand-3: #5cc4d2;
+  --vp-c-brand-soft: rgba(46, 157, 172, 0.16);
+}

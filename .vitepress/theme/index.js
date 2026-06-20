@@ -4,7 +4,10 @@ import mediumZoom from "medium-zoom";
 import { onMounted, watch, nextTick } from "vue";
 import { useRoute } from "vitepress";
 import "virtual:group-icons.css";
-import "./custom.css";
+// Order matters for the cascade: tokens → layout → components.
+import "./styles/tokens.css";
+import "./styles/layout.css";
+import "./styles/components.css";
 import HeaderButton from "./components/HeaderButton.vue";
 import HeaderButtonEN from "./components/HeaderButtonEN.vue";
 import HeaderGithubButton from "./components/HeaderGithubButton.vue";
