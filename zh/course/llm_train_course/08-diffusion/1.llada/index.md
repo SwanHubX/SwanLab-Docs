@@ -824,7 +824,7 @@ bash scripts/train-qwen-pt-multinpu.sh
 }
 ```
 
-其次是微调，对于`Qwen`模型的微调我们已经设置了很多教程，如果有兴趣的小伙伴可以查看我的另外一篇专门讲[lora训练](../../03-sft/7.deepseek-lora/index.md)的文章，这里只需要运行下面的启动文件就行：
+其次是微调，对于`Qwen`模型的微调我们已经设置了很多教程，如果有兴趣的小伙伴可以查看我的另外一篇专门讲[lora训练](/course/llm_train_course/03-sft/7.deepseek-lora/)的文章，这里只需要运行下面的启动文件就行：
 
 ```bash
 bash scripts/train-qwen-sft-multinpu.sh
