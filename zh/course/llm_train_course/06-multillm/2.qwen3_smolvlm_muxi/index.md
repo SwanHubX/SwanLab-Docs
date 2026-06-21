@@ -707,7 +707,7 @@ accelerate --num_process 8 train.py ./full_train.yaml
 
 等笔者下完数据集后未来补一下测试环节 ; ）
 
-可以关注[swanlab教程集合](https://docs.swanlab.cn/examples/qwen3_smolvlm_muxi.html)获取最新更新教程！
+可以关注[swanlab教程集合](../../../../examples/qwen3_smolvlm_muxi.md)获取最新更新教程！
 
 ## 代码及数据集链接汇总
 

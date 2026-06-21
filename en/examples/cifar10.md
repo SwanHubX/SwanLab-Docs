@@ -231,7 +231,7 @@ To switch models, modify the `model` parameter in `config`:
     )
 ```
 
-- How does `config` work? 👉 [Configure Experiments](/en/guide_cloud/experiment_track/set-experiment-config)
+- How does `config` work? 👉 [Configure Experiments](../guide_cloud/experiment_track/set-experiment-config.md)
 
 ## Demo
 

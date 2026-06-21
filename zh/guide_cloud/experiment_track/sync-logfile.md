@@ -9,7 +9,7 @@
 3. **多端同步：** 你使用了私有化部署，但也希望把实验记录同步到云端
 4. **复制实验：** 这个实验对你创建的多个项目都有普适性（比如baseline、benchmark实验），希望能复制到多个项目下
 
-当你遇到上述场景时，`swanlab sync`命令可以帮你解决，[API文档](/api/cli-swanlab-sync)。
+当你遇到上述场景时，`swanlab sync`命令可以帮你解决，[API文档](../../api/cli-swanlab-sync.md)。
 
 ::: warning 版本兼容性注意
 
@@ -27,7 +27,7 @@
 
 ## 本地实验数据目录
 
-SwanLab会将**实验记录文件**默认存放到项目目录的`swanlog`目录下，你也可以通过`logdir`参数自定义保存路径，[文档](/api/py-init#设置日志文件保存位置)。
+SwanLab会将**实验记录文件**默认存放到项目目录的`swanlog`目录下，你也可以通过`logdir`参数自定义保存路径，[文档](../../api/py-init.md#设置日志文件保存位置)。
 
 每当你创建1个实验时，SwanLab会自动在`swanlog`目录下创建1个`run-[实验ID]`目录，将数据持续记录到该目录下。
 
@@ -62,7 +62,7 @@ swanlab sync ./swanlog/run-xxx
 swanlab sync ./swanlog/run-xxx --id <实验ID>
 ```
 
-实验ID获取方式见：[恢复实验/断点续训](/guide_cloud/experiment_track/resume-experiment)
+实验ID获取方式见：[恢复实验/断点续训](./resume-experiment.md)
 
 ## 批量上传
 

@@ -4,7 +4,7 @@
 
 The offline dashboard is a legacy feature of SwanLab and is currently maintained with minimal updates. It is no longer actively developed.
 
-For private deployment needs, we recommend using the [Docker version](/en/self_host/docker/deploy).
+For private deployment needs, we recommend using the [Docker version](../self_host/docker/deploy.md).
 
 :::
 
@@ -57,4 +57,4 @@ After execution, a backend service will be launched, and SwanLab will provide a 
 
 Access this URL in your browser to view experiments using the offline dashboard.
 
-[How to Set Port and IP](/en/api/cli-swanlab-watch#set-ip-and-port)
+[How to Set Port and IP](../api/cli-swanlab-watch.md#set-ip-and-port)

@@ -11,7 +11,7 @@
 - ❌ **No**
 
 The original service must be stopped during migration. If the original service is not stopped, data gaps will occur.
-In such cases, you may consider using [swanlab sync](/en/api/cli-swanlab-sync) to upload data to the new service.
+In such cases, you may consider using [swanlab sync](../../api/cli-swanlab-sync.md) to upload data to the new service.
 
 ## [Replica Count] How should the recommended service replica count be configured for the SwanLab self-hosted service?
 
@@ -118,7 +118,7 @@ These issues are strongly related to `S3 Object Storage` configuration problems.
 
 ### `values.yaml` Configuration Verification
 
-- First verify whether the configuration in `integrations.s3` is correct. For details, see [External S3 Integration Configuration](/en/self_host/kubernetes/configuration#external-object-storage-s3-integrations-s3)
+- First verify whether the configuration in `integrations.s3` is correct. For details, see [External S3 Integration Configuration](./configuration.md#external-object-storage-s3-integrations-s3)
 
 ### Storage Bucket CORS Rule Configuration
 

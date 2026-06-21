@@ -226,7 +226,7 @@ First-time users of SwanLab need to register an account on the [official website
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/qwen_vl_coco/04.png)
 
-For more usage, refer to the [Quick Start](/en/guide_cloud/general/quick-start) and [Transformers Integration](/en/guide_cloud/integration/integration-huggingface-transformers).
+For more usage, refer to the [Quick Start](../guide_cloud/general/quick-start.md) and [Transformers Integration](../guide_cloud/integration/integration-huggingface-transformers.md).
 
 ## 5. Starting Fine-Tuning
 

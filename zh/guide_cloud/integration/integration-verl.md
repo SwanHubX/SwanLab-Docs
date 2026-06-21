@@ -104,7 +104,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 
 选择**1、2**则为使用云端跟踪模式，选择后根据引导输入官网的API即可实现在线跟踪。可以在线查看训练跟踪结果。选择**3**则不上传训练数据，采用离线跟踪。
 
-当然，你也可以通过[环境变量](/api/environment-variable)的方式登陆或者设置跟踪模式：
+当然，你也可以通过[环境变量](../../api/environment-variable.md)的方式登陆或者设置跟踪模式：
 
 ```bash
 export SWANLAB_API_KEY=<你的登陆API>           # 设置在线跟踪模式API
@@ -122,7 +122,7 @@ export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cl
 
 ![remote](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/integration/verl/remote.png)
 
-更多使用方法可以参考[SwanLab查看使用结果](/guide_cloud/experiment_track/view-result)
+更多使用方法可以参考[SwanLab查看使用结果](../experiment_track/view-result.md)
 
 ---
 
@@ -132,9 +132,9 @@ export SWANLAB_MODE=<设置SwanLab的运行模式>     # 包含四种模式：cl
 swanlab watch
 ```
 
-更多详细可以参考[SwanLab离线看板模式](/guide_cloud/offline-board)
+更多详细可以参考[SwanLab离线看板模式](../offline-board.md)
 
-服务器设置端口号可以查看[离线看板端口号](/api/cli-swanlab-watch#设置ip和端口号)
+服务器设置端口号可以查看[离线看板端口号](../../api/cli-swanlab-watch.md#设置ip和端口号)
 
 ## 每轮评估时记录生成文本
 
@@ -153,7 +153,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
 
 ## 断点续训
 
-如果你训练时崩溃或希望补充实验，可以使用[resume](/guide_cloud/experiment_track/resume-experiment.html)功能来恢复实验。
+如果你训练时崩溃或希望补充实验，可以使用[resume](../experiment_track/resume-experiment.md)功能来恢复实验。
 
 在verl训练中，你可以通过设置环境变量来执行resume：
 

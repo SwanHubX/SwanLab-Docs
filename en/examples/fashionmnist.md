@@ -252,7 +252,7 @@ Switching is very simple; just modify the `model` parameter in the `config` to t
     )
 ```
 
-- How does `config` work? 👉 [Set Experiment Configuration](/en/guide_cloud/experiment_track/set-experiment-config)
+- How does `config` work? 👉 [Set Experiment Configuration](../guide_cloud/experiment_track/set-experiment-config.md)
 
 ## Demonstration of Results
 

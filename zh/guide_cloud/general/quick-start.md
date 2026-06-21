@@ -54,7 +54,7 @@ import swanlab
 swanlab.login(api_key="你的API Key", save=True)
 ```
 
-若要在Kaggle等Notebook环境下使用Swanlab，参见[用 Notebook 跟踪实验](/guide_cloud/experiment_track/jupyter-notebook.md)
+若要在Kaggle等Notebook环境下使用Swanlab，参见[用 Notebook 跟踪实验](../experiment_track/jupyter-notebook.md)
 
 :::
 
@@ -126,10 +126,10 @@ for epoch in range(2, run.config.epochs):
 
 ## 下一步是什么
 
-1. 查看SwanLab如何[记录多媒体内容](/guide_cloud/experiment_track/log-media)（图片、音频、文本、...）
-2. 查看SwanLab记录[MNIST手写体识别](/examples/mnist.md)的案例
-3. 查看与其他框架的[集成](/guide_cloud/integration/index.md)
-4. 查看如何通过SwanLab与[团队协作](/guide_cloud/general/organization.md)
+1. 查看SwanLab如何[记录多媒体内容](../experiment_track/log-media.md)（图片、音频、文本、...）
+2. 查看SwanLab记录[MNIST手写体识别](../../examples/mnist.md)的案例
+3. 查看与其他框架的[集成](../integration/index.md)
+4. 查看如何通过SwanLab与[团队协作](./organization.md)
 
 ## 常见问题
 
@@ -139,4 +139,4 @@ for epoch in range(2, run.config.epochs):
 
 ### 2. 我可以离线使用SwanLab吗？
 
-可以，具体流程请查看[自托管部分](/self_host/docker/deploy.md)。
+可以，具体流程请查看[自托管部分](../../self_host/docker/deploy.md)。

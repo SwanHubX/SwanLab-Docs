@@ -30,8 +30,8 @@
 
 3. SwanLab官方文档：
 
-   - 用户指南，可以快速上手SwanLab： [快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
-   - 应用案例：[入门实验 | SwanLab官方文档](https://docs.swanlab.cn/examples/mnist.html)
+   - 用户指南，可以快速上手SwanLab： [快速开始 | SwanLab官方文档](../../../../guide_cloud/general/quick-start.md)
+   - 应用案例：[入门实验 | SwanLab官方文档](../../../../examples/mnist.md)
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/05-eval/1.evalscope/eval_qwen3/swanlab-logo.png)
 
@@ -131,7 +131,7 @@ python ./ms-swift-train/alpaca2swift_dataset.py
 
 ### 2、 启动训练
 
-该训练使用CLI代码来实现，ms-swift还提供了UI还有Python代码实现，有兴趣的小伙伴可以试试别的方法。参考链接👉[SwanLab](https://docs.swanlab.cn/guide_cloud/integration/integration-swift.html)。
+该训练使用CLI代码来实现，ms-swift还提供了UI还有Python代码实现，有兴趣的小伙伴可以试试别的方法。参考链接👉[SwanLab](../../../../guide_cloud/integration/integration-swift.md)。
 
 训练脚本分别是下面两个文件：
 

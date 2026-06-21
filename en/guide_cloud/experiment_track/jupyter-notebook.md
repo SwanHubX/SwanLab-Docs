@@ -16,7 +16,7 @@ ps: `-qqq` is used to control the amount of output information during command ex
 
 `jupyter --execute` is the command-line execution mode provided by Jupyter, commonly used in automation, CI/CD pipelines, and scheduled tasks. In these scenarios, unattended operation is required, and interactive input (such as `input()` or manually pasting keys) is not allowed; otherwise, the process will stall or encounter errors.
 
-Environment variables automatically inject the API Key into the Notebook execution environment, ensuring that the Notebook runs smoothly in any non-interactive environment. Therefore, you need to log in via [swanlab.login](/en/api/py-login.md).
+Environment variables automatically inject the API Key into the Notebook execution environment, ensuring that the Notebook runs smoothly in any non-interactive environment. Therefore, you need to log in via [swanlab.login](../../api/py-login.md).
 
 ```python
 import swanlab

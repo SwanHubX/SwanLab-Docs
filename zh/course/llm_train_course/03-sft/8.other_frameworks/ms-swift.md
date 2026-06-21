@@ -24,8 +24,8 @@
 >
 > SwanLab官方文档，助你轻松开启深度学习之旅。
 >
-> 1. [框架集成文档](https://docs.swanlab.cn/guide_cloud/integration/)：SwanLab已经集成Transformers、LLaMA Factory、Pytorch等主流框架，并持续更新
-> 2. [实战案例](https://docs.swanlab.cn/examples/hello_world.html)：SwanLab提供了丰富的模型训练实战教程，助力用户快速掌握深度学习模型训练的要点
+> 1. [框架集成文档](../../../../guide_cloud/integration/index.md)：SwanLab已经集成Transformers、LLaMA Factory、Pytorch等主流框架，并持续更新
+> 2. [实战案例](../../../../examples/hello_world.md)：SwanLab提供了丰富的模型训练实战教程，助力用户快速掌握深度学习模型训练的要点
 
 ## 训练代码
 
@@ -120,7 +120,7 @@ python data.py
 
 ### 3、训练代码
 
-该训练使用CLI代码来实现，ms-swift还提供了UI还有Python代码实现，有兴趣的小伙伴可以试试别的方法。参考链接👉[SwanLab](https://docs.swanlab.cn/guide_cloud/integration/integration-swift.html)。
+该训练使用CLI代码来实现，ms-swift还提供了UI还有Python代码实现，有兴趣的小伙伴可以试试别的方法。参考链接👉[SwanLab](../../../../guide_cloud/integration/integration-swift.md)。
 
 训练脚本分别是下面两个文件：
 

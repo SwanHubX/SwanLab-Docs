@@ -9,7 +9,7 @@
 3. **Multi-device synchronization:** You're using private deployment but also want to sync experiment records to the cloud.
 4. **Experiment replication:** The experiment is universally applicable to multiple projects you've created (e.g., baseline, benchmark experiments) and you want to replicate it across projects.
 
-When encountering the above scenarios, the `swanlab sync` command can help. [API Documentation](/en/api/cli-swanlab-sync).
+When encountering the above scenarios, the `swanlab sync` command can help. [API Documentation](../../api/cli-swanlab-sync.md).
 
 ::: warning Version Compatibility
 
@@ -27,7 +27,7 @@ Starting from **SwanLab SDK `v0.8.0`**, the local log format underwent significa
 
 ## Local Experiment Data Directory
 
-SwanLab saves **experiment log files** by default in the `swanlog` directory of your project. You can also customize the save path using the `logdir` parameter. [Documentation](/en/api/py-init#setting-the-log-file-save-location).
+SwanLab saves **experiment log files** by default in the `swanlog` directory of your project. You can also customize the save path using the `logdir` parameter. [Documentation](../../api/py-init.md#setting-the-log-file-save-location).
 
 Each time you create an experiment, SwanLab automatically creates a `run-[experiment ID]` directory under `swanlog` and continuously records data to this directory.
 
@@ -62,7 +62,7 @@ If you don't want to create a new experiment but instead sync to the original on
 swanlab sync ./swanlog/run-xxx --id <experiment ID>
 ```
 
-For how to obtain the experiment ID, see: [Resume Experiment/Checkpoint Training](/en/guide_cloud/experiment_track/resume-experiment)
+For how to obtain the experiment ID, see: [Resume Experiment/Checkpoint Training](./resume-experiment.md)
 
 ## Batch Upload
 

@@ -11,7 +11,7 @@
 - ❌ **不能**
 
 迁移过程中必须停机原服务。如果不停止原服务会出现数据 gap。  
-此时可考虑使用[swanlab sync](/api/cli-swanlab-sync.md)将数据上传至新服务。
+此时可考虑使用[swanlab sync](../../api/cli-swanlab-sync.md)将数据上传至新服务。
 
 ## 【副本数】SwanLab 私有化服务推荐的服务副本数如何设置？
 
@@ -118,7 +118,7 @@ service:
 
 ### `value.yaml` 配置校验
 
-- 首先校验一下 `integrations.s3` 中的配置是否正确，详见 [外部 S3 集成配置](/self_host/kubernetes/configuration.md#外部-s3-集成-integrations-s3)
+- 首先校验一下 `integrations.s3` 中的配置是否正确，详见 [外部 S3 集成配置](./configuration.md#外部-s3-集成-integrations-s3)
 
 ### 存储桶跨域规则配置
 

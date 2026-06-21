@@ -4,7 +4,7 @@ SwanLab supports logging media data (images, audio, text, obejct3d, etc.) to vis
 
 ## 1. Images
 
-`swanlab.Image` supports logging various image types, including numpy, PIL, Tensor, file reading, etc. [API Documentation](/en/api/py-Image).
+`swanlab.Image` supports logging various image types, including numpy, PIL, Tensor, file reading, etc. [API Documentation](../../api/py-Image.md).
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/media-image-1.jpg)
 
@@ -76,11 +76,11 @@ for i in range(3):
 swanlab.log({"examples": image_list})
 ```
 
-For more details about images, refer to the [API Documentation](/en/api/py-Image).
+For more details about images, refer to the [API Documentation](../../api/py-Image.md).
 
 ## 2. Audio
 
-[API Documentation](/en/api/py-Audio)
+[API Documentation](../../api/py-Audio.md)
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/media-audio-1.jpg)
 
@@ -112,7 +112,7 @@ run.log({"examples": examples})
 
 ## 3. Text
 
-[API Documentation](/en/api/py-Text)
+[API Documentation](../../api/py-Text.md)
 
 ### 3.1 Log Strings
 
@@ -138,17 +138,17 @@ swanlab.log({"examples": text_list})
 
 ![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/api/py-object3d/demo.png)
 
-👀Please refer to this document: [API-Oject3D](/en/api/py-object3d)
+👀Please refer to this document: [API-Oject3D](../../api/py-object3d.md)
 
 ## 5. Molecules
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/molecule.gif)
 
-Please refer to this document: [API-Molecule](/en/api/py-molecule)
+Please refer to this document: [API-Molecule](../../api/py-molecule.md)
 
 ## 6. Video
 
-Please refer to this document: [API-Video](/en/api/py-video)
+Please refer to this document: [API-Video](../../api/py-video.md)
 
 ## Q&A
 

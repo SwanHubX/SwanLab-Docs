@@ -1,6 +1,6 @@
 # Deploying with Kubernetes
 
-> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](/en/self_host/docker/migration-docker-kubernetes).
+> If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](../docker/migration-docker-kubernetes.md).
 > The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.4
 
 If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployment of SwanLab, please follow the installation process below.
@@ -48,7 +48,7 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 
 ### Infrastructure Images
 
-> ⚠️Note: When a storage component chooses to [customize base service resources](/en/self_host/kubernetes/deploy#_3-1-customizing-base-service-resources), the corresponding images below can be ignored (using self-built external services).
+> ⚠️Note: When a storage component chooses to [customize base service resources](./deploy.md#_3-1-customizing-base-service-resources), the corresponding images below can be ignored (using self-built external services).
 
 ::: warning
 The **database of the SwanLab self-hosted service uses a single-instance mode**, and there will be architectural changes in the future. **To ensure consistency between architecture and testing behavior**, except for **S3 object storage**, we **do not recommend using cloud databases** for integration. We recommend using **cloud SSD disks** as the storageClass for the corresponding base service PVC storage resources.
@@ -69,7 +69,7 @@ The **database of the SwanLab self-hosted service uses a single-instance mode**,
 ## 🪜 Installation Guide
 
 ::: info
-This guide follows the best practices for SwanLab K8s self-hosted service installation. The recommended approach is **[External S3 Object Storage Integration] + [Cluster Databases via PVC-mounted Cloud Disks]**. If you have special integration requirements, please refer to [Custom Value Configuration](/en/self_host/kubernetes/configuration) for modifications.
+This guide follows the best practices for SwanLab K8s self-hosted service installation. The recommended approach is **[External S3 Object Storage Integration] + [Cluster Databases via PVC-mounted Cloud Disks]**. If you have special integration requirements, please refer to [Custom Value Configuration](./configuration.md) for modifications.
 :::
 
 ### 1. Create S3 Secret
@@ -219,7 +219,7 @@ kubectl get pvc -n <your_namespace>
 
 ### 3. Fill in Values
 
-For the complete `values.yaml` configuration options, please refer to the [Custom Value Configuration](/en/self_host/kubernetes/configuration) documentation.
+For the complete `values.yaml` configuration options, please refer to the [Custom Value Configuration](./configuration.md) documentation.
 
 You can view the original value template used by `swanlab-self-hosted` at [values.yaml template](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml), or view it with the following command:
 
@@ -351,7 +351,7 @@ The `tag` of the four application images under `service` (server / house / cloud
 
 #### 3.4 External S3 Integration Configuration
 
-The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](/en/self_host/kubernetes/configuration#external-object-storage-s3-integrations-s3) section.
+The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](./configuration.md#external-object-storage-s3-integrations-s3) section.
 
 ### 4. Add Helm Repository
 
@@ -444,7 +444,7 @@ Get the application URL by running these commands:
 ```
 
 As shown above, the `swanlab-self-hosted` self-hosted service cannot be directly accessed via external network by default. You can access this service locally using the `port-forward` functionality.
-If you wish to **enable external access (via IP or domain name)**, please refer to [Configuring Application Access Entrypoint](/en/self_host/kubernetes/configuration#configuring-application-access-entrypoint).
+If you wish to **enable external access (via IP or domain name)**, please refer to [Configuring Application Access Entrypoint](./configuration.md#configuring-application-access-entrypoint).
 
 Here is an example of accessing it locally; open a terminal and execute:
 
@@ -542,7 +542,7 @@ You can verify the following features:
 
 You can view all configurable options for `swanlab-self-hosted` [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
-For detailed field descriptions and configuration practices, please refer to the [Custom Value Configuration](/en/self_host/kubernetes/configuration) documentation, which covers:
+For detailed field descriptions and configuration practices, please refer to the [Custom Value Configuration](./configuration.md) documentation, which covers:
 
 - **Global Configuration**: Pod anti-affinity, login domain, etc.
 - **Application Services**: Replica count, resource limits, labels and annotations, etc.
@@ -552,8 +552,8 @@ For detailed field descriptions and configuration practices, please refer to the
 
 ### Updates and Rollback
 
-To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](/en/self_host/kubernetes/upgrade) documentation.
+To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](./upgrade.md) documentation.
 
 ### Prometheus Observability Integration Guide
 
-Please refer to the [Monitor & Logging](/en/self_host/kubernetes/monitor-logging) documentation.
+Please refer to the [Monitor & Logging](./monitor-logging.md) documentation.

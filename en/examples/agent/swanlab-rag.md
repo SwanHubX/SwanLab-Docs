@@ -8,7 +8,7 @@
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/)
+**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/index.md)
 
 <div align="center">
   <figure>
@@ -495,4 +495,4 @@ For more content, please refer to:
 
 **AI Document Assistant Online Demo**: [https://chat.swanlab.cn/](https://chat.swanlab.cn/)  
 **Open-Source GitHub Repository**: [https://github.com/EmotionMachine/swanlab-rag](https://github.com/EmotionMachine/swanlab-rag)  
-**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/)
+**SwanLab Official Prompt Engineering Course**:fire:: [Course Preface](/course/prompt_engineering_course/01-preface/index.md)

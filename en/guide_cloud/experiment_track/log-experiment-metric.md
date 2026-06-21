@@ -21,7 +21,7 @@ for epoch in range(num_epochs):
 
 When `swanlab.log` is used for logging, it will aggregate the dictionary `{metric name: metric}` to a unified location based on the metric name.
 
-⚠️It is important to note that the value in `swanlab.log({key: value})` must be of type `int` / `float` / `BaseType` (if a `str` type is passed, it will first be attempted to be converted to `float`, and if the conversion fails, an error will be reported). The `BaseType` type mainly refers to multimedia data. For details, please refer to [Log Multimedia Data](/en/guide_cloud/experiment_track/log-media).
+⚠️It is important to note that the value in `swanlab.log({key: value})` must be of type `int` / `float` / `BaseType` (if a `str` type is passed, it will first be attempted to be converted to `float`, and if the conversion fails, an error will be reported). The `BaseType` type mainly refers to multimedia data. For details, please refer to [Log Multimedia Data](./log-media.md).
 
 Each time a record is made, a `step` is assigned to that record. By default, `step` starts from 0 and, with each subsequent logging under the same metric name, `step` equals the maximum `step` of historical records for that metric name + 1. For example:
 
@@ -118,4 +118,4 @@ future = swanlab.async_log(compute_metric, step=1)
 swanlab.finish()
 ```
 
-`swanlab.async_log()` supports multiple execution modes (`threading`, `asyncio`, `spawn`). For detailed usage and all mode options, see the [async_log API documentation](/en/api/py-async-log.md).
+`swanlab.async_log()` supports multiple execution modes (`threading`, `asyncio`, `spawn`). For detailed usage and all mode options, see the [async_log API documentation](../../api/py-async-log.md).

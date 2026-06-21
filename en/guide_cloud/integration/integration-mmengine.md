@@ -12,20 +12,20 @@ SwanLab integrates the `SwanlabVisBackend` designed specifically for MMEngine in
 
 ::: warning Integration with Other MM Ecosystems
 
-- [MMPretrain](/en/guide_cloud/integration/integration-mmpretrain)
-- [MMDetection](/en/guide_cloud/integration/integration-mmdetection)
-- [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation)
-- [XTuner](/en/guide_cloud/integration/integration-xtuner)
+- [MMPretrain](./integration-mmpretrain.md)
+- [MMDetection](./integration-mmdetection.md)
+- [MMSegmentation](./integration-mmsegmentation.md)
+- [XTuner](./integration-xtuner.md)
 
 :::
 
 ## Compatibility Notes for MMEngine Series Frameworks
 
-Frameworks using MMEngine can all use the following methods to introduce SwanLab. For example, MM official frameworks [MMDetection](/en/guide_cloud/integration/integration-mmdetection), [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation), etc., as well as [training frameworks implemented based on MMEngine](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html).
+Frameworks using MMEngine can all use the following methods to introduce SwanLab. For example, MM official frameworks [MMDetection](./integration-mmdetection.md), [MMSegmentation](./integration-mmsegmentation.md), etc., as well as [training frameworks implemented based on MMEngine](https://mmengine.readthedocs.io/zh-cn/latest/get_started/15_minutes.html).
 
 > You can check out which excellent frameworks are available under the [OpenMMLab official GitHub account](https://github.com/open-mmlab).
 
-Some frameworks, such as [XTuner](https://github.com/InternLM/xtuner), are not fully compatible with MMEngine and require some simple modifications. You can refer to [SwanLab's XTuner Integration](/en/guide_cloud/integration/integration-xtuner) to see how to use SwanLab in XTuner.
+Some frameworks, such as [XTuner](https://github.com/InternLM/xtuner), are not fully compatible with MMEngine and require some simple modifications. You can refer to [SwanLab's XTuner Integration](./integration-xtuner.md) to see how to use SwanLab in XTuner.
 
 There are two methods to introduce SwanLab for experiment visualization tracking using MMEngine:
 

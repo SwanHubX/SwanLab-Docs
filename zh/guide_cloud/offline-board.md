@@ -4,7 +4,7 @@
 
 离线看板是SwanLab的历史功能，现阶段仅做简单维护，不再更新。
 
-如果您有私有化部署的需求，推荐使用[Docker版](/self_host/docker/deploy)。
+如果您有私有化部署的需求，推荐使用[Docker版](../self_host/docker/deploy.md)。
 
 :::
 
@@ -57,4 +57,4 @@ swanlab watch ./logs
 
 访问该链接，就可以在浏览器用离线看板查看实验了。
 
-[如何设置端口号和IP](/api/cli-swanlab-watch.md#设置ip和端口号)
+[如何设置端口号和IP](../api/cli-swanlab-watch.md#设置ip和端口号)

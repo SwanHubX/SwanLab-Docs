@@ -36,9 +36,9 @@
 
 👉 **SwanLab官方文档：**
 
-用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
+用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](../../../../guide_cloud/general/quick-start.md)
 
-应用案例：[入门实验 | SwanLab官方文档](https://docs.swanlab.cn/examples/mnist.html)
+应用案例：[入门实验 | SwanLab官方文档](../../../../examples/mnist.md)
 
 ## 💻多轮对话数据构建
 
@@ -711,9 +711,9 @@ train_args = TrainingArguments(
 
 > 如果想要快速入门，请参考以下文档链接：
 >
-> 用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
+> 用户指南，可以快速上手<span style="color: #0000FF;">SwanLab</span>：🚀[快速开始 | SwanLab官方文档](../../../../guide_cloud/general/quick-start.md)
 >
-> 应用案例：[入门实验 | SwanLab官方文档](https://docs.swanlab.cn/examples/mnist.html)
+> 应用案例：[入门实验 | SwanLab官方文档](../../../../examples/mnist.md)
 
 ---
 

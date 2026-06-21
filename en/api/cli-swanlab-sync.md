@@ -70,4 +70,4 @@ If you don't want to create a new experiment, but sync on the existing experimen
 swanlab sync ./swanlog/run-xxx --id <experiment ID>
 ```
 
-Experiment ID can be obtained from [Resume Experiment/Resume Training](/en/guide_cloud/experiment_track/resume-experiment).
+Experiment ID can be obtained from [Resume Experiment/Resume Training](../guide_cloud/experiment_track/resume-experiment.md).

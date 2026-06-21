@@ -172,7 +172,7 @@ swanlab-traefik      ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0            
 
 ### 5. 访问 SwanLab
 
-安装成功后，可以通过 `http://localhost:8000` （默认端口为8000）直接打开网站。第一次打开需要激活主账户，流程见[文档](/self_host/docker/deploy#_3-激活主账号)。
+安装成功后，可以通过 `http://localhost:8000` （默认端口为8000）直接打开网站。第一次打开需要激活主账户，流程见[文档](./deploy.md#_3-激活主账号)。
 
 ### 6. 升级 SwanLab
 

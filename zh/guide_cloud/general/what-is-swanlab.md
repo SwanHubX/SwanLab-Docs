@@ -1,9 +1,9 @@
 # 欢迎使用SwanLab
 
-[快速开始](/guide_cloud/general/quick-start.md) · [官网](https://swanlab.cn) · [框架集成](/guide_cloud/integration/index.md) · [GitHub](https://github.com/swanhubx/swanlab) · [同步Wandb](/guide_cloud/integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
+[快速开始](./quick-start.md) · [官网](https://swanlab.cn) · [框架集成](../integration/index.md) · [GitHub](https://github.com/swanhubx/swanlab) · [同步Wandb](../integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
 ::: warning 🎉 私有化部署Kubernetes版正式上线！
-私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](/self_host/kubernetes/deploy.md)
+私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](../../self_host/kubernetes/deploy.md)
 :::
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)
@@ -44,7 +44,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 **1. 📊 实验指标与超参数跟踪**: 极简的代码嵌入您的机器学习 pipeline，跟踪记录训练关键指标
 
-- ☁️ 支持**云端**使用（类似Weights & Biases），随时随地查看训练进展。[手机看实验的方法](https://docs.swanlab.cn/guide_cloud/general/app.html)
+- ☁️ 支持**云端**使用（类似Weights & Biases），随时随地查看训练进展。[手机看实验的方法](./app.md)
 - 🌸 **可视化训练过程**: 通过UI界面对实验跟踪数据进行可视化，可以让训练师直观地看到实验每一步的结果，分析指标走势，判断哪些变化导致了模型效果的提升，从而整体性地提升模型迭代效率。
 - 📝 **超参数记录**、**指标总结**、**表格分析**
 - **支持的元数据类型**：标量指标、图像、音频、文本、视频、3D点云、生物化学分子、Echarts自定义图表...
@@ -80,7 +80,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 **8. 💻 支持自托管**: 支持离线环境使用，自托管的社区版同样可以查看仪表盘与管理实验，[使用攻略](#-自托管)
 
-**9. 🔌 插件拓展**: 支持通过插件拓展SwanLab的使用场景，比如 [飞书通知](https://docs.swanlab.cn/plugin/notification-lark.html)、[Slack通知](https://docs.swanlab.cn/plugin/notification-slack.html)、[CSV记录器](https://docs.swanlab.cn/plugin/writer-csv.html)等
+**9. 🔌 插件拓展**: 支持通过插件拓展SwanLab的使用场景，比如 [飞书通知](../../plugin/notification-lark.md)、[Slack通知](../../plugin/notification-slack.md)、[CSV记录器](../../plugin/writer-csv.md)等
 
 ## 为什么使用SwanLab？
 
@@ -102,11 +102,11 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 ## 从哪里开始
 
-- [快速开始](/guide_cloud/general/quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
-- [API文档](/api/api-index.md): 完整的API文档
-- [在线支持](/guide_cloud/community/online-support.md): 加入社区、反馈问题和联系我们
-- [自托管](/self_host/docker/deploy.md): 自托管（私有化部署）使用方式教程
-- [案例](/examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
+- [快速开始](./quick-start.md): SwanLab入门教程，五分钟玩转实验跟踪！
+- [API文档](../../api/api-index.md): 完整的API文档
+- [在线支持](../community/online-support.md): 加入社区、反馈问题和联系我们
+- [自托管](../../self_host/docker/deploy.md): 自托管（私有化部署）使用方式教程
+- [案例](../../examples/mnist.md): 查看SwanLab与各个深度学习任务的案例
 
 ## 与熟悉产品的对比
 
@@ -136,57 +136,57 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 **基础框架**
 
-- [PyTorch](/guide_cloud/integration/integration-pytorch.html)
-- [MindSpore](/guide_cloud/integration/integration-ascend.html)
-- [Keras](/guide_cloud/integration/integration-keras.html)
+- [PyTorch](../integration/integration-pytorch.md)
+- [MindSpore](../integration/integration-ascend.md)
+- [Keras](../integration/integration-keras.md)
 
 **专有/微调框架**
 
-- [PyTorch Lightning](/guide_cloud/integration/integration-pytorch-lightning.html)
-- [HuggingFace Transformers](/guide_cloud/integration/integration-huggingface-transformers.html)
-- [LLaMA Factory](/guide_cloud/integration/integration-llama-factory.html)
-- [ModelScope Swift](/guide_cloud/integration/integration-swift.html)
-- [DiffSynth-Studio](/guide_cloud/integration/integration-diffsynth-studio.html)
-- [Sentence Transformers](/guide_cloud/integration/integration-sentence-transformers.html)
+- [PyTorch Lightning](../integration/integration-pytorch-lightning.md)
+- [HuggingFace Transformers](../integration/integration-huggingface-transformers.md)
+- [LLaMA Factory](../integration/integration-llama-factory.md)
+- [ModelScope Swift](../integration/integration-swift.md)
+- [DiffSynth-Studio](../integration/integration-diffsynth-studio.md)
+- [Sentence Transformers](../integration/integration-sentence-transformers.md)
 - [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
-- [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.html)
-- [XTuner](/guide_cloud/integration/integration-xtuner.html)
-- [MMEngine](/guide_cloud/integration/integration-mmengine.html)
-- [FastAI](/guide_cloud/integration/integration-fastai.html)
-- [LightGBM](/guide_cloud/integration/integration-lightgbm.html)
-- [XGBoost](/guide_cloud/integration/integration-xgboost.html)
-- [CatBoost](/guide_cloud/integration/integration-catboost.html)
-- [MLX-LM](/guide_cloud/integration/integration-mlx-lm.html)
+- [Torchtune](../integration/integration-pytorch-torchtune.md)
+- [XTuner](../integration/integration-xtuner.md)
+- [MMEngine](../integration/integration-mmengine.md)
+- [FastAI](../integration/integration-fastai.md)
+- [LightGBM](../integration/integration-lightgbm.md)
+- [XGBoost](../integration/integration-xgboost.md)
+- [CatBoost](../integration/integration-catboost.md)
+- [MLX-LM](../integration/integration-mlx-lm.md)
 
 **计算机视觉**
 
-- [Ultralytics](/guide_cloud/integration/integration-ultralytics.html)
-- [MMDetection](/guide_cloud/integration/integration-mmdetection.html)
-- [MMSegmentation](/guide_cloud/integration/integration-mmsegmentation.html)
-- [PaddleDetection](/guide_cloud/integration/integration-paddledetection.html)
-- [PaddleYOLO](/guide_cloud/integration/integration-paddleyolo.html)
+- [Ultralytics](../integration/integration-ultralytics.md)
+- [MMDetection](../integration/integration-mmdetection.md)
+- [MMSegmentation](../integration/integration-mmsegmentation.md)
+- [PaddleDetection](../integration/integration-paddledetection.md)
+- [PaddleYOLO](../integration/integration-paddleyolo.md)
 
 **强化学习**
 
-- [Stable Baselines3](/guide_cloud/integration/integration-sb3.html)
-- [veRL](/guide_cloud/integration/integration-verl.html)
-- [HuggingFace TRL](/guide_cloud/integration/integration-huggingface-trl.html)
-- [EasyR1](/guide_cloud/integration/integration-easyr1.html)
-- [AReaL](/guide_cloud/integration/integration-areal.html)
-- [ROLL](/guide_cloud/integration/integration-roll.html)
-- [NVIDIA-NeMo RL](/guide_cloud/integration/integration-nvidia-nemo-rl.html)
-- [MindSpeed-RL](/guide_cloud/integration/integration-mindspeed-rl.html)
+- [Stable Baselines3](../integration/integration-sb3.md)
+- [veRL](../integration/integration-verl.md)
+- [HuggingFace TRL](../integration/integration-huggingface-trl.md)
+- [EasyR1](../integration/integration-easyr1.md)
+- [AReaL](../integration/integration-areal.md)
+- [ROLL](../integration/integration-roll.md)
+- [NVIDIA-NeMo RL](../integration/integration-nvidia-nemo-rl.md)
+- [MindSpeed-RL](../integration/integration-mindspeed-rl.md)
 
 **其他框架：**
 
-- [TensorBoard](/guide_cloud/integration/integration-tensorboard.html)
-- [Weights & Biases](/guide_cloud/integration/integration-wandb.html)
-- [MLflow](/guide_cloud/integration/integration-mlflow.html)
-- [HuggingFace Accelerate](/guide_cloud/integration/integration-huggingface-accelerate.html)
-- [Hydra](/guide_cloud/integration/integration-hydra.html)
-- [OmegaConf](/guide_cloud/integration/integration-omegaconf.html)
+- [TensorBoard](../integration/integration-tensorboard.md)
+- [Weights & Biases](../integration/integration-wandb.md)
+- [MLflow](../integration/integration-mlflow.md)
+- [HuggingFace Accelerate](../integration/integration-huggingface-accelerate.md)
+- [Hydra](../integration/integration-hydra.md)
+- [OmegaConf](../integration/integration-omegaconf.md)
 
-[更多集成](/guide_cloud/integration/integration-pytorch-lightning.html)
+[更多集成](../integration/integration-pytorch-lightning.md)
 
 ## 在线支持
 
@@ -195,7 +195,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - **电子邮件支持**：反馈关于使用SwanLab的问题
   - 产品: <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(产品经理邮箱)
 
-- **微信群与飞书群**: 见[在线支持](/guide_cloud/community/online-support.md)
+- **微信群与飞书群**: 见[在线支持](../community/online-support.md)
 
 - **微信公众号**:
 

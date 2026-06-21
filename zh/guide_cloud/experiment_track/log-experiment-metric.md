@@ -21,7 +21,7 @@ for epoch in range(num_epochs):
 
 在 `swanlab.log` 记录时，会根据指标名，将`{指标名: 指标}`字典汇总到一个统一位置存储。
 
-⚠️需要注意的是，`swanlab.log({key: value})`中的value必须是`int` / `float` / `BaseType`这三种类型（如果传入的是`str`类型，会先尝试转为`float`，如果转换失败就会报错），其中`BaseType`类型主要是多媒体数据，详情请看[记录多媒体数据](/guide_cloud/experiment_track/log-media.md)。
+⚠️需要注意的是，`swanlab.log({key: value})`中的value必须是`int` / `float` / `BaseType`这三种类型（如果传入的是`str`类型，会先尝试转为`float`，如果转换失败就会报错），其中`BaseType`类型主要是多媒体数据，详情请看[记录多媒体数据](./log-media.md)。
 
 在每次记录时，会为该次记录赋予一个 `step`。在默认情况下，`step` 为0开始，并在你每一次在同一个指标名下记录时，`step` 等于该指标名历史记录的最大 `step` + 1，例如：
 
@@ -118,4 +118,4 @@ future = swanlab.async_log(compute_metric, step=1)
 swanlab.finish()
 ```
 
-`swanlab.async_log()` 支持多种执行模式（`threading`、`asyncio`、`spawn`）。详细用法和所有模式选项请参阅 [async_log API 文档](/api/py-async-log.md)。
+`swanlab.async_log()` 支持多种执行模式（`threading`、`asyncio`、`spawn`）。详细用法和所有模式选项请参阅 [async_log API 文档](../../api/py-async-log.md)。

@@ -775,7 +775,7 @@ kubectl get jobs -n <your_namespace>
 
 #### 情况 1：原始集群已集成 S3 URL
 
-如果原本已经挂载好 S3 接入点，只需配置源集群 `value.yaml` 中相同的 S3接入点配置，详见 [外部 S3 集成配置](/self_host/kubernetes/configuration.md#外部-s3-集成-integrations-s3)。
+如果原本已经挂载好 S3 接入点，只需配置源集群 `value.yaml` 中相同的 S3接入点配置，详见 [外部 S3 集成配置](./configuration.md#外部-s3-集成-integrations-s3)。
 
 #### 情况 2：原始集群使用 MiniO 挂载 PVC
 

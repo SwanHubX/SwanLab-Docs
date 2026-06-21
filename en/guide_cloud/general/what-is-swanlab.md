@@ -1,9 +1,9 @@
 # Welcome to SwanLab
 
-[Official Website](https://swanlab.cn) · [Framework Integration](/en/guide_cloud/integration/integration-huggingface-transformers) · [GitHub](https://github.com/swanhubx/swanlab) · [Quick Start](/en/guide_cloud/general/quick-start) · [Sync WandB](/en/guide_cloud/integration/integration-wandb#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)
+[Official Website](https://swanlab.cn) · [Framework Integration](../integration/integration-huggingface-transformers.md) · [GitHub](https://github.com/swanhubx/swanlab) · [Quick Start](./quick-start.md) · [Sync WandB](../integration/integration-wandb.md#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)
 
 ::: warning 🎉 Self-Hosted Kubernetes Version Officially Released!  
-The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](/en/self_host/kubernetes/deploy.md).  
+The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](../../self_host/kubernetes/deploy.md).  
 :::
 
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)
@@ -44,7 +44,7 @@ Video Demo:
 
 **1. 📊 Experiment Metrics & Hyperparameter Tracking**: Easily integrate into your ML pipeline to track key training metrics.
 
-- ☁️ Supports **cloud** usage (like Weights & Biases), allowing remote training progress monitoring. [How to view experiments on mobile](/en/guide_cloud/general/app).
+- ☁️ Supports **cloud** usage (like Weights & Biases), allowing remote training progress monitoring. [How to view experiments on mobile](./app.md).
 - 🌸 **Visualize Training**: The UI provides intuitive visualizations of experiment data, helping trainers analyze metric trends and identify improvements.
 - 📝 **Hyperparameter logging**, **metric summaries**, **tabular analysis**.
 - **Supported Metadata Types**: Scalar metrics, images, audio, text, video, 3D point clouds, biochemical molecules, Echarts custom charts...
@@ -80,7 +80,7 @@ Video Demo:
 
 **8. 💻 Self-Hosting Support**: Use SwanLab offline—the community edition supports dashboards and experiment management. [Self-Hosting Guide](#-self-hosting).
 
-**9. 🔌 Plugin Extensions**: Extend functionality with plugins like [Lark Notifications](/en/plugin/notification-lark), [Slack Notifications](/en/plugin/notification-slack), [CSV Logger](/en/plugin/writer-csv).
+**9. 🔌 Plugin Extensions**: Extend functionality with plugins like [Lark Notifications](../../plugin/notification-lark.md), [Slack Notifications](../../plugin/notification-slack.md), [CSV Logger](../../plugin/writer-csv.md).
 
 ## Why Choose SwanLab?
 
@@ -102,11 +102,11 @@ We hope this guide helps you understand SwanLab—we believe it can assist you.
 
 ## Getting Started
 
-- [Quick Start](/en/guide_cloud/general/quick-start): A 5-minute tutorial for experiment tracking!
-- [API Docs](/en/api/api-index): Complete API documentation.
-- [Online Support](/en/guide_cloud/community/online-support): Join the community, report issues, and contact us.
-- [Self-Hosting](/en/self_host/docker/deploy): Guide for self-hosted (private deployment) usage.
-- [Examples](/en/examples/mnist): Case studies of SwanLab with various deep learning tasks.
+- [Quick Start](./quick-start.md): A 5-minute tutorial for experiment tracking!
+- [API Docs](../../api/api-index.md): Complete API documentation.
+- [Online Support](../community/online-support.md): Join the community, report issues, and contact us.
+- [Self-Hosting](../../self_host/docker/deploy.md): Guide for self-hosted (private deployment) usage.
+- [Examples](../../examples/mnist.md): Case studies of SwanLab with various deep learning tasks.
 
 ## Comparison with Familiar Tools
 
@@ -128,64 +128,64 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 
 **Core Frameworks**
 
-- [PyTorch](/en/guide_cloud/integration/integration-pytorch)
-- [MindSpore](/en/guide_cloud/integration/integration-ascend)
-- [Keras](/en/guide_cloud/integration/integration-keras)
+- [PyTorch](../integration/integration-pytorch.md)
+- [MindSpore](../integration/integration-ascend.md)
+- [Keras](../integration/integration-keras.md)
 
 **Specialized/Fine-Tuning Frameworks**
 
-- [PyTorch Lightning](/en/guide_cloud/integration/integration-pytorch-lightning)
-- [HuggingFace Transformers](/en/guide_cloud/integration/integration-huggingface-transformers)
-- [LLaMA Factory](/en/guide_cloud/integration/integration-llama-factory)
-- [ModelScope Swift](/en/guide_cloud/integration/integration-swift)
-- [DiffSynth-Studio](/en/guide_cloud/integration/integration-diffsynth-studio)
-- [Sentence Transformers](/en/guide_cloud/integration/integration-sentence-transformers)
+- [PyTorch Lightning](../integration/integration-pytorch-lightning.md)
+- [HuggingFace Transformers](../integration/integration-huggingface-transformers.md)
+- [LLaMA Factory](../integration/integration-llama-factory.md)
+- [ModelScope Swift](../integration/integration-swift.md)
+- [DiffSynth-Studio](../integration/integration-diffsynth-studio.md)
+- [Sentence Transformers](../integration/integration-sentence-transformers.md)
 - [OpenMind](https://modelers.cn/docs/zh/openmind-library/1.0.0/basic_tutorial/finetune/finetune_pt.html#%E8%AE%AD%E7%BB%83%E7%9B%91%E6%8E%A7)
-- [Torchtune](/en/guide_cloud/integration/integration-pytorch-torchtune)
-- [XTuner](/en/guide_cloud/integration/integration-xtuner)
-- [MMEngine](/en/guide_cloud/integration/integration-mmengine)
-- [FastAI](/en/guide_cloud/integration/integration-fastai)
-- [LightGBM](/en/guide_cloud/integration/integration-lightgbm)
-- [XGBoost](/en/guide_cloud/integration/integration-xgboost)
-- [CatBoost](/en/guide_cloud/integration/integration-catboost)
-- [MLX-LM](/en/guide_cloud/integration/integration-mlx-lm)
+- [Torchtune](../integration/integration-pytorch-torchtune.md)
+- [XTuner](../integration/integration-xtuner.md)
+- [MMEngine](../integration/integration-mmengine.md)
+- [FastAI](../integration/integration-fastai.md)
+- [LightGBM](../integration/integration-lightgbm.md)
+- [XGBoost](../integration/integration-xgboost.md)
+- [CatBoost](../integration/integration-catboost.md)
+- [MLX-LM](../integration/integration-mlx-lm.md)
 
 **Computer Vision**
 
-- [Ultralytics](/en/guide_cloud/integration/integration-ultralytics)
-- [MMDetection](/en/guide_cloud/integration/integration-mmdetection)
-- [MMSegmentation](/en/guide_cloud/integration/integration-mmsegmentation)
-- [PaddleDetection](/en/guide_cloud/integration/integration-paddledetection)
-- [PaddleYOLO](/en/guide_cloud/integration/integration-paddleyolo)
+- [Ultralytics](../integration/integration-ultralytics.md)
+- [MMDetection](../integration/integration-mmdetection.md)
+- [MMSegmentation](../integration/integration-mmsegmentation.md)
+- [PaddleDetection](../integration/integration-paddledetection.md)
+- [PaddleYOLO](../integration/integration-paddleyolo.md)
 
 **Reinforcement Learning**
 
-- [Stable Baselines3](/en/guide_cloud/integration/integration-sb3)
-- [veRL](/en/guide_cloud/integration/integration-verl)
-- [HuggingFace TRL](/en/guide_cloud/integration/integration-huggingface-trl)
-- [EasyR1](/en/guide_cloud/integration/integration-easyr1)
-- [AReaL](/en/guide_cloud/integration/integration-areal)
-- [ROLL](/en/guide_cloud/integration/integration-roll)
-- [NVIDIA-NeMo RL](/en/guide_cloud/integration/integration-nvidia-nemo-rl)
-- [MindSpeed-RL](/en/guide_cloud/integration/integration-mindspeed-rl)
+- [Stable Baselines3](../integration/integration-sb3.md)
+- [veRL](../integration/integration-verl.md)
+- [HuggingFace TRL](../integration/integration-huggingface-trl.md)
+- [EasyR1](../integration/integration-easyr1.md)
+- [AReaL](../integration/integration-areal.md)
+- [ROLL](../integration/integration-roll.md)
+- [NVIDIA-NeMo RL](../integration/integration-nvidia-nemo-rl.md)
+- [MindSpeed-RL](../integration/integration-mindspeed-rl.md)
 
 **Other Frameworks**:
 
-- [TensorBoard](/en/guide_cloud/integration/integration-tensorboard)
-- [Weights & Biases](/en/guide_cloud/integration/integration-wandb)
-- [MLflow](/en/guide_cloud/integration/integration-mlflow)
-- [HuggingFace Accelerate](/en/guide_cloud/integration/integration-huggingface-accelerate)
-- [Hydra](/en/guide_cloud/integration/integration-hydra)
-- [OmegaConf](/en/guide_cloud/integration/integration-omegaconf)
+- [TensorBoard](../integration/integration-tensorboard.md)
+- [Weights & Biases](../integration/integration-wandb.md)
+- [MLflow](../integration/integration-mlflow.md)
+- [HuggingFace Accelerate](../integration/integration-huggingface-accelerate.md)
+- [Hydra](../integration/integration-hydra.md)
+- [OmegaConf](../integration/integration-omegaconf.md)
 
-[More Integrations](/en/guide_cloud/integration/integration-pytorch-lightning)
+[More Integrations](../integration/integration-pytorch-lightning.md)
 
 ## Online Support
 
 - **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**: Report bugs or issues.
 - **Email Support**:
   - Product: <contact@swanlab.cn>, <zeyi.lin@swanhub.co> (Product Manager)
-- **WeChat & Lark Groups**: See [Online Support](/en/guide_cloud/community/online-support).
+- **WeChat & Lark Groups**: See [Online Support](../community/online-support.md).
 - **WeChat Official Account**:
 
 <div align="center">  
