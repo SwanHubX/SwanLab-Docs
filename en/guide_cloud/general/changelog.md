@@ -306,7 +306,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 
 **🌍 Ecosystem**
 
-- Listed on Tencent Cloud App Marketplace: [Guide](/self_host/tencentcloud-app.md)
+- Listed on Tencent Cloud App Marketplace: [Guide](../../../zh/self_host/tencentcloud-app.md)
 
 ## v0.5.6 - 2025.04.23
 
