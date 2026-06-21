@@ -1,7 +1,7 @@
 # swanlab.register_callbacks
 
 :::warning Deprecated
-`swanlab.register_callbacks()` is deprecated. Use [`swanlab.merge_callbacks()`](/en/api/py-merge-callback.md) instead.
+`swanlab.register_callbacks()` is deprecated. Use [`swanlab.merge_callbacks()`](./py-merge-callback.md) instead.
 :::
 
 ```python
@@ -71,4 +71,4 @@ swanlab.register_callbacks([email_callback])
 swanlab.merge_callbacks([email_callback])
 ```
 
-For detailed usage, see the [merge_callbacks API documentation](/en/api/py-merge-callback.md).
+For detailed usage, see the [merge_callbacks API documentation](./py-merge-callback.md).

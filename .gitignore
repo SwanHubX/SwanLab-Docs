@@ -26,3 +26,6 @@ QWEN.md
 
 .omx/
 .mimocode/
+
+# Local experiment worktrees (not committed — keeps PR branches clean)
+.worktrees/

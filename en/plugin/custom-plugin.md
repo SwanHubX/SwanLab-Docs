@@ -144,5 +144,5 @@ Executing the above code will display the following in the console:
 
 ## Learn More About Plugins
 
-- [EmailCallback](/en/plugin/notification-email.md): Sends an email when training completes or an error occurs.
-- [LarkCallback](/en/plugin/notification-lark.md): Sends a message to Lark when training completes or an error occurs.
+- [EmailCallback](./notification-email.md): Sends an email when training completes or an error occurs.
+- [LarkCallback](./notification-lark.md): Sends a message to Lark when training completes or an error occurs.

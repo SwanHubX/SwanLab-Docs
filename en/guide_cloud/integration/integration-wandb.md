@@ -6,8 +6,8 @@ Weights & Biases (W&B) is a platform for experiment tracking, model optimization
 
 :::warning Synchronization Tutorials for Other Tools
 
-- [TensorBoard](/en/guide_cloud/integration/integration-tensorboard)
-- [MLflow](/en/guide_cloud/integration/integration-mlflow)
+- [TensorBoard](./integration-tensorboard.md)
+- [MLflow](./integration-mlflow.md)
   :::
 
 **You can sync projects from W&B to SwanLab in three ways:**
@@ -143,7 +143,7 @@ swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb
 swanlab sync [LOG_DIRECTORY_PATH]
 ```
 
-[SwanLab Sync Documentation](/en/api/cli-swanlab-sync.md)
+[SwanLab Sync Documentation](../../api/cli-swanlab-sync.md)
 
 ### 2.3 Method 2: In-Code Conversion
 
@@ -188,7 +188,7 @@ wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 swanlab sync [LOG_DIRECTORY_PATH]
 ```
 
-[SwanLab Sync Documentation](/en/api/cli-swanlab-sync.md)
+[SwanLab Sync Documentation](../../api/cli-swanlab-sync.md)
 
 ## 3 Converting wandb Log Files
 

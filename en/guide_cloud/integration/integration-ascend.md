@@ -190,7 +190,7 @@ python train.py
 
 However, this
 
-> If prompted to log in to SwanLab, refer to [How to Log in to SwanLab](/en/guide_cloud/general/quick-start#_2-log-in), which will allow you to use the **cloud dashboard** to view the training process and results in real-time.
+> If prompted to log in to SwanLab, refer to [How to Log in to SwanLab](../general/quick-start.md#_2-log-in), which will allow you to use the **cloud dashboard** to view the training process and results in real-time.
 
 After setup, you can view the training progress in real-time on the cloud. My experiment record can be referenced at [Complete Experiment Record](https://swanlab.cn/@ShaohonChen/Ascend_IMDB_CLS/charts).
 

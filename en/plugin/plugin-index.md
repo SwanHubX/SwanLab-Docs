@@ -1,18 +1,18 @@
 # Plugin Overview
 
-- [Custom Plugin](/en/plugin/custom-plugin.md)
+- [Custom Plugin](./custom-plugin.md)
 
 ## ✈️ Notification Plugins
 
-- [Email](/en/plugin/notification-email.md)
-- [Lark](/en/plugin/notification-lark.md)
-- [DingTalk](/en/plugin/notification-dingtalk.md)
-- [WeChat Work](/en/plugin/notification-wxwork.md)
-- [Discord](/en/plugin/notification-discord.md)
-- [Slack](/en/plugin/notification-slack.md)
-- [Bark](/en/plugin/notification-bark.md)
-- [Telegram](/en/plugin/notification-telegram.md)
+- [Email](./notification-email.md)
+- [Lark](./notification-lark.md)
+- [DingTalk](./notification-dingtalk.md)
+- [WeChat Work](./notification-wxwork.md)
+- [Discord](./notification-discord.md)
+- [Slack](./notification-slack.md)
+- [Bark](./notification-bark.md)
+- [Telegram](./notification-telegram.md)
 
 ## 📝 Logging Plugins
 
-- [CSV Writer](/en/plugin/writer-csv.md)
+- [CSV Writer](./writer-csv.md)

@@ -1,7 +1,7 @@
 # swanlab.register_callbacks
 
 :::warning 已弃用
-`swanlab.register_callbacks()` 已被弃用，请使用 [`swanlab.merge_callbacks()`](/api/py-merge-callback.md) 替代。
+`swanlab.register_callbacks()` 已被弃用，请使用 [`swanlab.merge_callbacks()`](./py-merge-callback.md) 替代。
 :::
 
 ```python
@@ -71,4 +71,4 @@ swanlab.register_callbacks([email_callback])
 swanlab.merge_callbacks([email_callback])
 ```
 
-详细用法请参阅 [merge_callbacks API 文档](/api/py-merge-callback.md)。
+详细用法请参阅 [merge_callbacks API 文档](./py-merge-callback.md)。

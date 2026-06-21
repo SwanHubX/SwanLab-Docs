@@ -72,4 +72,4 @@ swanlab sync ./swanlog/run-*
 swanlab sync ./swanlog/run-xxx --id <实验ID>
 ```
 
-实验ID获取方式见：[恢复实验/断点续训](/guide_cloud/experiment_track/resume-experiment.md)
+实验ID获取方式见：[恢复实验/断点续训](../guide_cloud/experiment_track/resume-experiment.md)

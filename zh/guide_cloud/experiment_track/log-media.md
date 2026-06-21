@@ -4,7 +4,7 @@ SwanLab 支持记录媒体数据（图像、音频、文本、三维点云等）
 
 ## 1.图像
 
-`swanlab.Image` 支持记录多种图像类型，包括 numpy、PIL、Tensor、读取文件等。[API文档](/api/py-Image)。
+`swanlab.Image` 支持记录多种图像类型，包括 numpy、PIL、Tensor、读取文件等。[API文档](../../api/py-Image.md)。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/media-image-1.jpg)
 
@@ -76,11 +76,11 @@ for i in range(3):
 swanlab.log({"examples": image_list})
 ```
 
-关于图像的更多细节，可参考[API文档](/api/py-Image)
+关于图像的更多细节，可参考[API文档](../../api/py-Image.md)
 
 ## 2. 音频
 
-[API文档](/api/py-Audio)
+[API文档](../../api/py-Audio.md)
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/media-audio-1.jpg)
 
@@ -112,7 +112,7 @@ run.log({"examples": examples})
 
 ## 3. 文本
 
-[API文档](/api/py-Text)
+[API文档](../../api/py-Text.md)
 
 ### 3.1 记录字符串
 
@@ -138,17 +138,17 @@ swanlab.log({"examples": text_list})
 
 ![alt](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/api/py-object3d/demo.png)
 
-请参考此文档：[API-Oject3D](/api/py-object3d)
+请参考此文档：[API-Oject3D](../../api/py-object3d.md)
 
 ## 5. 生物化学分子
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/molecule.gif)
 
-请参考此文档：[API-Molecule](/api/py-molecule)
+请参考此文档：[API-Molecule](../../api/py-molecule.md)
 
 ## 6. 视频
 
-请参考此文档：[API-Video](/api/py-video)
+请参考此文档：[API-Video](../../api/py-video.md)
 
 ## Q&A
 

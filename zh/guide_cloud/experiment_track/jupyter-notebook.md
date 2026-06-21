@@ -16,7 +16,7 @@ ps: `-qqq`是用来控制命令执行时的输出信息量的，可选。
 
 `jupyter --execute`是 Jupyter 提供的命令行执行模式，常用于自动化、CI/CD 流水线、定时任务等场景。这些场景下，无人值守，不允许出现交互式输入（如 input()、手动粘贴密钥等），否则流程会卡住或报错。
 
-环境变量让 API Key 自动注入 Notebook 执行环境，可确保 Notebook 在任何非交互式环境下都能顺利运行。因此需要通过[swanlab.login](/api/py-login.md)进行登录。
+环境变量让 API Key 自动注入 Notebook 执行环境，可确保 Notebook 在任何非交互式环境下都能顺利运行。因此需要通过[swanlab.login](../../api/py-login.md)进行登录。
 
 ```python
 import swanlab

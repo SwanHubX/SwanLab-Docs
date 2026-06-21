@@ -51,7 +51,7 @@ import swanlab
 swanlab.login(api_key="Your API Key")
 ```
 
-To use Swanlab in a Notebook environment such as Kaggle, see [Tracking Experiments with a Notebook](/en/guide_cloud/experiment_track/jupyter-notebook.md).
+To use Swanlab in a Notebook environment such as Kaggle, see [Tracking Experiments with a Notebook](../experiment_track/jupyter-notebook.md).
 
 :::
 
@@ -124,8 +124,8 @@ Run the code, visit [SwanLab](https://swanlab.cn), and see the improvement of th
 ## What's next
 
 1. See how SwanLab records multimedia content (images, audio, text,...)
-2. See how SwanLab records the [MNIST handwritten recognition](/en/examples/mnist.md) case
-3. See [integration with other frameworks](/en/guide_cloud/integration/index.md)
+2. See how SwanLab records the [MNIST handwritten recognition](../../examples/mnist.md) case
+3. See [integration with other frameworks](../integration/index.md)
 4. See how to collaborate with your team through SwanLab
 
 ## FAQ
@@ -136,4 +136,4 @@ After logging in to the SwanLab website, the API Key will be displayed on the [u
 
 ### 2. Can I use SwanLab offline?
 
-Yes, please refer to the [self-hosting](/en/self_host/docker/deploy.md) section for the specific process.
+Yes, please refer to the [self-hosting](../../self_host/docker/deploy.md) section for the specific process.

@@ -6,8 +6,8 @@
 
 :::warning 其他工具的同步教程
 
-- [Wandb](/guide_cloud/integration/integration-wandb.md)
-- [MLflow](/guide_cloud/integration/integration-mlflow.md)
+- [Wandb](./integration-wandb.md)
+- [MLflow](./integration-mlflow.md)
   :::
 
 **你可以用两种方式将使用TensorBoard跟踪的项目同步到SwanLab：**

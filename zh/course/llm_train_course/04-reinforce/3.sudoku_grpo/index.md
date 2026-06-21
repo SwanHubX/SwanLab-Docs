@@ -50,7 +50,7 @@
 
 - GRPOTrainer官方文档：[huggingface/TRL/GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer)
 
-- SwanLab使用教程：[快速开始](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)
+- SwanLab使用教程：[快速开始](../../../../guide_cloud/general/quick-start.md)
 
 ## 数独游戏的难点
 

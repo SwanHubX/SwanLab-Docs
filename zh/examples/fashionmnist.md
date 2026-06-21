@@ -252,7 +252,7 @@ if __name__ == "__main__":
     )
 ```
 
-- `config`是如何发挥作用的？ 👉 [设置实验配置](/guide_cloud/experiment_track/set-experiment-config)
+- `config`是如何发挥作用的？ 👉 [设置实验配置](../guide_cloud/experiment_track/set-experiment-config.md)
 
 ## 效果演示
 

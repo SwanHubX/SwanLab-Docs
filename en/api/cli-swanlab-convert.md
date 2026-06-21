@@ -25,8 +25,8 @@ Supported tools for conversion include: `TensorBoard`, `Weights & Biases`.
 
 ### TensorBoard
 
-[Integration - TensorBoard](/en/guide_cloud/integration/integration-tensorboard.md)
+[Integration - TensorBoard](../guide_cloud/integration/integration-tensorboard.md)
 
 ### Weights & Biases
 
-[Integration - Weights & Biases](/en/guide_cloud/integration/integration-wandb.md)
+[Integration - Weights & Biases](../guide_cloud/integration/integration-wandb.md)

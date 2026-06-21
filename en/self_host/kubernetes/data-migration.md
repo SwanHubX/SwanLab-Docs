@@ -775,7 +775,7 @@ kubectl get jobs -n <your_namespace>
 
 #### Case 1: Original Cluster Already Integrated with S3 URL
 
-If S3 endpoint is already mounted, you just need to configure the same S3 endpoint configuration in the source cluster's `value.yaml`. For details, see [External S3 Integration Configuration](/en/self_host/kubernetes/configuration#external-object-storage-s3-integrations-s3).
+If S3 endpoint is already mounted, you just need to configure the same S3 endpoint configuration in the source cluster's `value.yaml`. For details, see [External S3 Integration Configuration](./configuration.md#external-object-storage-s3-integrations-s3).
 
 #### Case 2: Original Cluster Uses MiniO Mounted PVC
 

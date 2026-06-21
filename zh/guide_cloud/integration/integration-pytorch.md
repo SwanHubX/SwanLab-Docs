@@ -10,8 +10,8 @@
 
 ::: warning Pytorch生态的其他集成
 
-- [Lightning](/guide_cloud/integration/integration-pytorch-lightning.md)
-- [Torchtune](/guide_cloud/integration/integration-pytorch-torchtune.md)
+- [Lightning](./integration-pytorch-lightning.md)
+- [Torchtune](./integration-pytorch-torchtune.md)
 
 :::
 

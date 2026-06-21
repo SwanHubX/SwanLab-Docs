@@ -175,7 +175,7 @@ python train_cls_rnn.py
 
 P.S. 笔者一开始设置只运行1k-2k steps。结果发现老收敛不了。后来拉大训练步骤后出现奇迹了。
 
-> 如果提示输入swanlab api key可参考[swanlab登陆指南](https://docs.swanlab.cn/guide_cloud/general/quick-start.html)来使用SwanLab监控训练指标～ SwanLab是一个非常好用且免费的在线训练监控工具，希望大家能够多多支持。
+> 如果提示输入swanlab api key可参考[swanlab登陆指南](../../../../guide_cloud/general/quick-start.md)来使用SwanLab监控训练指标～ SwanLab是一个非常好用且免费的在线训练监控工具，希望大家能够多多支持。
 
 <div align="center">
   <figure>

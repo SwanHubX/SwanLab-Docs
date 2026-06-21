@@ -100,4 +100,4 @@ swanlab.config.set["batch_size", 32]
 
 ### Set with Configuration Files
 
-You can initialize `config` using json and yaml configuration files. For details, please refer to [Create Experiment with Configuration File](/en/guide_cloud/experiment_track/create-experiment-by-configfile).
+You can initialize `config` using json and yaml configuration files. For details, please refer to [Create Experiment with Configuration File](./create-experiment-by-configfile.md).

@@ -48,4 +48,4 @@ visualizer = dict(
 ...
 ```
 
-> For other import methods and more flexible configurations, refer to [MMEngine Integration with SwanLab](/en/guide_cloud/integration/integration-mmengine)
+> For other import methods and more flexible configurations, refer to [MMEngine Integration with SwanLab](./integration-mmengine.md)
