@@ -98,6 +98,12 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                |
 | `service.server.image.tag`        | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
 
+### SwanLab-Auth（认证服务）
+
+| 字段                    | 类型   | 默认 | 说明                                                                |
+| ----------------------- | ------ | ---- | ------------------------------------------------------------------- |
+| service.auth.public_url | string | ""   | 部署所在地址，如 “https://example.swanlab.com”，用于 SSO 功能的回调 |
+
 ### SwanLab-House（后端实验 OLAP 服务）
 
 | 字段                                     | 类型   | 默认值                                      | 说明                                                    |
