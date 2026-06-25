@@ -9,7 +9,7 @@
 | `global.imagePullSecrets`      | list   | `[]`            | Image pull credentials (private repository authentication)                                                                                                                                                                                                                        |
 | `global.clusterDomain`         | string | `cluster.local` | Kubernetes cluster domain                                                                                                                                                                                                                                                         |
 | `global.podAntiAffinityPreset` | string | `soft`          | Pod anti-affinity strategy: `soft` (try to spread) / `hard` (force spread) / `none` (no setting)                                                                                                                                                                                  |
-| `global.settings.host`         | string | `""`            | Login host address. After modification, the API Key login address displayed in the frontend application will change accordingly (does not affect the actual backend service address) .If you use SSO features, this is recommended to be set to the external URL of your gateway. |
+| `global.settings.host`         | string | `""`            | Login host address. After modification, the API Key login address displayed in the frontend application will change accordingly (does not affect the actual backend service address). If you use SSO features, this is recommended to be set to the external URL of your gateway. |
 
 ### Pod Anti-Affinity
 
