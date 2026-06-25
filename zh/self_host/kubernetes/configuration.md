@@ -4,12 +4,12 @@
 
 ## 全局配置（`global`）
 
-| 字段                           | 类型   | 默认值          | 说明                                                                                      |
-| ------------------------------ | ------ | --------------- | ----------------------------------------------------------------------------------------- |
-| `global.imagePullSecrets`      | list   | `[]`            | 镜像拉取凭证（私有仓库认证）                                                              |
-| `global.clusterDomain`         | string | `cluster.local` | Kubernetes 集群域名                                                                       |
-| `global.podAntiAffinityPreset` | string | `soft`          | Pod 反亲和策略：`soft`（尽量分散）/ `hard`（强制分散）/ `none`（不设置）                  |
-| `global.settings.loginHost`    | string | `""`            | 登录主机地址，修改后前端应用中显示的 API Key 登录地址会随之变化（不影响实际后端服务地址） |
+| 字段                           | 类型   | 默认值          | 说明                                                                                                                     |
+| ------------------------------ | ------ | --------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `global.imagePullSecrets`      | list   | `[]`            | 镜像拉取凭证（私有仓库认证）                                                                                             |
+| `global.clusterDomain`         | string | `cluster.local` | Kubernetes 集群域名                                                                                                      |
+| `global.podAntiAffinityPreset` | string | `soft`          | Pod 反亲和策略：`soft`（尽量分散）/ `hard`（强制分散）/ `none`（不设置）                                                 |
+| `global.settings.host`         | string | `""`            | 登录主机地址，修改后前端应用中显示的 API Key 登录地址会随之变化（不影响实际后端服务地址），若使用 SSO 功能则强烈建议配置 |
 
 ### Pod 反亲和性
 
@@ -97,12 +97,6 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `service.server.replicas`         | int    | `2`                                          | 副本数                                                  |
 | `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                |
 | `service.server.image.tag`        | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
-
-### SwanLab-Auth（认证服务）
-
-| 字段                    | 类型   | 默认 | 说明                                                                |
-| ----------------------- | ------ | ---- | ------------------------------------------------------------------- |
-| service.auth.public_url | string | ""   | 部署所在地址，如 “https://example.swanlab.com”，用于 SSO 功能的回调 |
 
 ### SwanLab-House（后端实验 OLAP 服务）
 
