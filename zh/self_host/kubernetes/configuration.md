@@ -4,12 +4,12 @@
 
 ## 全局配置（`global`）
 
-| 字段                           | 类型   | 默认值          | 说明                                                                                                                     |
-| ------------------------------ | ------ | --------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `global.imagePullSecrets`      | list   | `[]`            | 镜像拉取凭证（私有仓库认证）                                                                                             |
-| `global.clusterDomain`         | string | `cluster.local` | Kubernetes 集群域名                                                                                                      |
-| `global.podAntiAffinityPreset` | string | `soft`          | Pod 反亲和策略：`soft`（尽量分散）/ `hard`（强制分散）/ `none`（不设置）                                                 |
-| `global.settings.host`         | string | `""`            | 登录主机地址，修改后前端应用中显示的 API Key 登录地址会随之变化（不影响实际后端服务地址），若使用 SSO 功能则强烈建议配置 |
+| 字段                           | 类型   | 默认值          | 说明                                                                                                                                           |
+| ------------------------------ | ------ | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `global.imagePullSecrets`      | list   | `[]`            | 镜像拉取凭证（私有仓库认证）                                                                                                                   |
+| `global.clusterDomain`         | string | `cluster.local` | Kubernetes 集群域名                                                                                                                            |
+| `global.podAntiAffinityPreset` | string | `soft`          | Pod 反亲和策略：`soft`（尽量分散）/ `hard`（强制分散）/ `none`（不设置）                                                                       |
+| `global.settings.host`         | string | `""`            | 登录主机地址，修改后前端应用中显示的 API Key 登录地址会随之变化（不影响实际后端服务地址）。若使用 SSO 功能，强烈建议将其配置为网关的外部 URL。 |
 
 ### Pod 反亲和性
 
