@@ -21,16 +21,16 @@ Github: https://github.com/SwanHubX/SwanLab
 - 🪓 Added `swanlab.async_log()` for asynchronous metric logging
 - 🪓 Added `swanlab login --local` command, improving the experience for multi-user training scenarios
 - 🪓 Added OpenAPI CLI support — query experiment logs directly via the `swanlab api` CLI
-- 🪓 SwanLab official Skill is now available: [swanlab-skill](https://www.modelscope.cn/skills/SwanLab/swanlab-skill/summary), install with:
+- 🪓 SwanLab official Skill is now available: [swanlab-skill](https://github.com/SwanHubX/SwanLab-Skill), install with:
 
 :::code-group
 
 ```bash [npm]
-npx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
+npx skills add SwanHubX/SwanLab-Skill -y -g
 ```
 
 ```bash [bun]
-bunx skills add https://www.modelscope.cn/skills/SwanLab/swanlab-skill
+bunx skills add SwanHubX/SwanLab-Skill -y -g
 ```
 
 :::

@@ -17,7 +17,7 @@
 | `SWANLAB_LOGDIR`   | SwanLab 解析日志文件保存的路径                                                                                                                 | 当前运行目录的 `swanlog` 文件夹  |
 | `SWANLAB_MODE`     | SwanLab 的解析模式，涉及操作员注册的回调。可选值：`local`、`online`（`cloud` 为 `online` 的别名）、`offline`、`disabled`。**注意：大小写敏感** | `online`                         |
 | `SWANLAB_API_HOST` | SwanLab 云端环境的 API 地址                                                                                                                    | `https://api.swanlab.cn`         |
-| `SWANLAB_WEB_HOST` | SwanLab 云端环境的 Web 地址。私有化部署时仅需设置此变量，无需设置 `SWANLAB_API_HOST`                                                           | `https://swanlab.cn`             |
+| `SWANLAB_WEB_HOST` | SwanLab 云端环境的 Web 地址。                                                                                                                  | `https://swanlab.cn`             |
 
 ## 实验配置
 
