@@ -239,6 +239,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
           link: "experiment_track/log-distributed-training",
         },
         { text: "System Hardware Monitoring", link: "experiment_track/system-monitor" },
+        { text: "SKILL", link: "experiment_track/skill" },
         { text: "Set tag", link: "experiment_track/set-experiment-tag" },
         { text: "Group experiments", link: "experiment_track/grouping" },
         { text: "View result", link: "experiment_track/view-result" },
