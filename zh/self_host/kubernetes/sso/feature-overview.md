@@ -85,7 +85,7 @@ Provider 测试不会登录、绑定或创建账号，只用于确认 IdP 配置
 2. 进入“身份验证”控制面板，选择协议并创建后可选择是否启用，后续可在“操作”中进行测试、编辑、删除
    ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626141407249.png)
 
-3. 已启用的 IDP 将在登录页面显示，点击后即可启动 SSO 认证
+3. 已启用的 IdP 将在登录页面显示，点击后即可启动 SSO 认证
    ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626140437886.png)
 
 ## 六、常见异常

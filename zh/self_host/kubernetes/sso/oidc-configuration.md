@@ -30,12 +30,12 @@ OIDC（OpenID Connect）是在 OAuth2 基础上增加身份层的标准协议。
 
 | 字段          | 是否必填 | 说明                                                                             |
 | ------------- | -------- | -------------------------------------------------------------------------------- |
-| Client ID     | 是       | IdP 上配置的 Client ID，一般在 IDP 上配置时手动填写                              |
-| Client Secret | 是       | IdP 分配给 SwanLab 的 OAuth2 Client Secret，一般为 IDP 自动生成，需要从 IDP 获取 |
+| Client ID     | 是       | IdP 上配置的 Client ID，一般在 IdP 上配置时手动填写                              |
+| Client Secret | 是       | IdP 分配给 SwanLab 的 OAuth2 Client Secret，一般为 IdP 自动生成，需要从 IdP 获取 |
 | 授权地址      | 是       | OIDC **Issuer URL**，SwanLab 会基于该地址做 Discovery，注意不是具体的接口地址    |
 | Scopes        | 否       | 空格分隔的授权范围，留空时默认 `openid profile`，但建议手动填写                  |
 
-> “授权地址”仅需填写 OIDC Issuer 地址，不需要和 OAuth2 一样具体到某个路径上，因为 OIDC 对路由进行了约束，所以直接使用标准协议进行路由发现，若企业 IDP 相关配置不符合标准，则需要自行调整
+> “授权地址”仅需填写 OIDC Issuer 地址，不需要和 OAuth2 一样具体到某个路径上，因为 OIDC 对路由进行了约束，所以直接使用标准协议进行路由发现，若企业 IdP 相关配置不符合标准，则需要自行调整
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626173104696.png)
 
@@ -58,9 +58,9 @@ OIDC（OpenID Connect）是在 OAuth2 基础上增加身份层的标准协议。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626173837111.png)
 
-6. 启用 IDP
+6. 启用 IdP
 
-创建后即可在列表中查看当前已有 IDP，启用后即可进行测试、使用：
+创建后即可在列表中查看当前已有 IdP，启用后即可进行测试、使用：
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626174020396.png)
 
@@ -89,8 +89,8 @@ https://swanlab.example.com/api/auth/sso/oidc/callback/arui-oidc
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626175104031.png)
 
-Client Secret 一般由 IDP 生成，需要复制并填写到 SwanLab 配置：
+Client Secret 一般由 IdP 生成，需要复制并填写到 SwanLab 配置：
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626175225603.png)
 
-> SwanLab 后台对于 OIDC/SAML2 会缓存 IDP 信息，若 IDP 侧信息发生改变，SwanLab 不一定会及时同步相关更新，可以通过修改 SwanLab 中对应配置的任意字段刷新缓存。
+> SwanLab 后台对于 OIDC/SAML2 会缓存 IdP 信息，若 IdP 侧信息发生改变，SwanLab 不一定会及时同步相关更新，可以通过修改 SwanLab 中对应配置的任意字段刷新缓存。

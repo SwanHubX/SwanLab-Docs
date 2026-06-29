@@ -1,4 +1,4 @@
-# # 管理员配置 OAuth2 SSO 登录（以 Keycloak 为例）
+# 管理员配置 OAuth2 SSO 登录（以 Keycloak 为例）
 
 本文说明如何在 SwanLab 中配置 OAuth2 SSO Provider，以及 IdP 侧需要填写的回调地址和字段映射。
 
@@ -32,19 +32,19 @@ OAuth2 SSO 适用于只提供 OAuth2 Authorization Code 流程的身份服务。
 
 | 字段              | 是否必填 | 说明                                                                                            |
 | ----------------- | -------- | ----------------------------------------------------------------------------------------------- |
-| Client ID         | 是       | IdP 上配置的 Client ID，一般在 IDP 上配置时手动填写                                             |
-| Client Secret     | 是       | IdP 分配给 SwanLab 的 OAuth2 Client Secret，一般为 IDP 自动生成，需要从 IDP 获取                |
-| 授权地址          | 是       | OAuth2 Authorization Endpoint，不同认证服务可能不同，需要查看 IDP 文档获取                      |
-| Access Token 地址 | 是       | 使用授权码换取 Access Token 的 Token Endpoint，不同认证服务可能不同，需要查看 IDP 文档获取      |
-| 用户信息地址      | 是       | 使用 Access Token 拉取用户资料的 Userinfo Endpoint，不同认证服务可能不同，需要查看 IDP 文档获取 |
+| Client ID         | 是       | IdP 上配置的 Client ID，一般在 IdP 上配置时手动填写                                             |
+| Client Secret     | 是       | IdP 分配给 SwanLab 的 OAuth2 Client Secret，一般为 IdP 自动生成，需要从 IdP 获取                |
+| 授权地址          | 是       | OAuth2 Authorization Endpoint，不同认证服务可能不同，需要查看 IdP 文档获取                      |
+| Access Token 地址 | 是       | 使用授权码换取 Access Token 的 Token Endpoint，不同认证服务可能不同，需要查看 IdP 文档获取      |
+| 用户信息地址      | 是       | 使用 Access Token 拉取用户资料的 Userinfo Endpoint，不同认证服务可能不同，需要查看 IdP 文档获取 |
 | Scopes            | 否       | 空格分隔的授权范围，留空时默认 `openid profile`，但建议手动填写                                 |
 
 其中“授权地址”、“Access Token 地址”、“用户信息地址”是 OAuth2 协议内容，但不同服务并没有统一的路径要求，例如对于“授权地址”：
 
-- keycloak：`https://<IDP URL>/realms/<realm name>/protocol/openid-connect/auth`
-- authentik: `https://<IDP URL>/application/o/authorize/`
+- keycloak：`https://<IdP URL>/realms/<realm name>/protocol/openid-connect/auth`
+- authentik: `https://<IdP URL>/application/o/authorize/`
 
-在这里以 `kecloak` 为例：
+在这里以 `keycloak` 为例：
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152250790.png)
 
@@ -67,9 +67,9 @@ OAuth2 SSO 适用于只提供 OAuth2 Authorization Code 流程的身份服务。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152945594.png)
 
-6. 启用 IDP
+6. 启用 IdP
 
-创建后即可在列表中查看当前已有 IDP，启用后即可进行测试、使用：
+创建后即可在列表中查看当前已有 IdP，启用后即可进行测试、使用：
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626153553498.png)
 
@@ -96,5 +96,5 @@ https://swanlab.example.com/api/auth/sso/oauth2/callback/arui-oauth2
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626154427440.png)
 
-Client Secret 一般由 IDP 生成，需要复制并填写到 SwanLab 配置：
+Client Secret 一般由 IdP 生成，需要复制并填写到 SwanLab 配置：
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626154713024.png)

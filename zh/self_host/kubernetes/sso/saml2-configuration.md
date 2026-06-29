@@ -1,4 +1,4 @@
-# # 管理员配置 SAML2 SSO 登录（以 Keycloak、Authentik 为例）
+# 管理员配置 SAML2 SSO 登录（以 Keycloak、Authentik 为例）
 
 本文说明如何在 SwanLab 中配置 SAML2 SSO Provider，以及 IdP 侧需要填写的 SP Metadata、ACS、EntityID 和属性映射。
 
@@ -36,7 +36,7 @@ SAML2 SSO 适用于企业已有 SAML IdP 的场景。SwanLab 当前作为 SP（S
 | SAML 私钥内容   | 是       | SwanLab 作为 SP 使用的私钥 PEM 内容 |
 | SAML 证书内容   | 是       | SwanLab 作为 SP 使用的证书 PEM 内容 |
 
-> SwanLab 会签名 AuthnRequest，所以证书为必填项，配置 IDP 时也需要在 IDP 上填写此处用到的证书。
+> SwanLab 会签名 AuthnRequest，所以证书为必填项，配置 IdP 时也需要在 IdP 上填写此处用到的证书。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626180857336.png)
 
@@ -59,9 +59,9 @@ SAML2 SSO 适用于企业已有 SAML IdP 的场景。SwanLab 当前作为 SP（S
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626181535376.png)
 
-6. 启用 IDP
+6. 启用 IdP
 
-创建后即可在列表中查看当前已有 IDP，启用后即可进行测试、使用：
+创建后即可在列表中查看当前已有 IdP，启用后即可进行测试、使用：
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626181628925.png)
 
