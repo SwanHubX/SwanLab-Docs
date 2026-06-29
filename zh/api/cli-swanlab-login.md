@@ -10,7 +10,7 @@ swanlab login [OPTIONS]
 | `-h`, `--host`     | 指定SwanLab服务所在的主机。比如`http://localhost:8000`。               |
 | `-k`, `--api-key`  | 指定API Key。如果您不喜欢使用命令行来输入 API 密钥，这将允许自动登录。 |
 | `-w`, `--web-host` | 指定SwanLab前端所在的Web主机。                                         |
-| `--local`          | 将登录凭证保存到当前目录（`.swanlab/`），而非用户主目录。              |
+| `--local`          | 将登录凭证保存到当前目录下的 `.swanlab/`文件夹，而非用户主目录。       |
 
 ## 介绍
 
