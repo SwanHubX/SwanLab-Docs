@@ -85,7 +85,6 @@ export const en = defineConfig({
             text: "Kubernetes",
             items: [
               { text: "Quick Start", link: "/en/self_host/kubernetes/deploy" },
-              { text: "SSO", link: "/en/self_host/kubernetes/sso/feature-overview" },
               { text: "FAQ", link: "/en/self_host/kubernetes/faq" },
             ],
           },

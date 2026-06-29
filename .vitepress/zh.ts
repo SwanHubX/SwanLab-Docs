@@ -97,7 +97,6 @@ export const zh = defineConfig({
             text: "Kubernetes",
             items: [
               { text: "快速开始", link: "/self_host/kubernetes/deploy" },
-              { text: "SSO 单点登录", link: "/self_host/kubernetes/sso/feature-overview" },
               { text: "常见问题", link: "/self_host/kubernetes/faq" },
             ],
           },
