@@ -21,17 +21,18 @@
 当前 `swanlab-self-hosted` 部署方案中，`postgres` 和 `clickhouse` 均采用**单副本方案**。数据库主从复制涉及较大的架构变动，在当前私有化部署版本中**暂不支持**，请勿调整数据库相关的服务副本数量。
 :::
 
-| 服务名         | 副本数量 | 说明                                                   |
-| -------------- | -------- | ------------------------------------------------------ |
-| clickhouse     | 1        | 【不可修改】列数据库，负责实验指标存储                 |
-| postgres       | 1        | 【不可修改】关系型数据库，负责元数据和关系记录         |
-| redis          | 1        | 【不可修改】内存数据库，缓存会话数据                   |
-| vector         | 2        | 【不可修改】clickhouse 指标写入缓冲队列                |
-| traefik        | 2        | 【按需修改】主网关，分发服务流量                       |
-| swanlab-server | ≥ 3      | 【按需修改】SwanLab 核心服务，根据服务负载动态调整     |
-| swanlab-house  | ≥ 3      | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整 |
-| swanlab-next   | 2        | 【按需修改】SwanLab 前端框架                           |
-| swanlab-cloud  | 1        | 【按需修改】SwanLab 前端实验页面                       |
+| 服务名         | 副本数量 | 说明                                                     |
+| -------------- | -------- | -------------------------------------------------------- |
+| clickhouse     | 1        | 【不可修改】列数据库，负责实验指标存储                   |
+| postgres       | 1        | 【不可修改】关系型数据库，负责元数据和关系记录           |
+| redis          | 1        | 【不可修改】内存数据库，缓存会话数据                     |
+| vector         | 2        | 【不可修改】clickhouse 指标写入缓冲队列                  |
+| traefik        | 2        | 【按需修改】主网关，分发服务流量                         |
+| swanlab-server | ≥ 3      | 【按需修改】SwanLab 核心服务，根据服务负载动态调整       |
+| swanlab-auth   | ≥ 2      | 【按需修改】SwanLab 认证与鉴权服务，根据服务负载动态调整 |
+| swanlab-house  | ≥ 3      | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整   |
+| swanlab-next   | 2        | 【按需修改】SwanLab 前端框架                             |
+| swanlab-cloud  | 1        | 【按需修改】SwanLab 前端实验页面                         |
 
 ## 【节点指定】如何将 SwanLab 私有化服务 Pod 调度到指定节点？
 
@@ -72,7 +73,7 @@ service:
 ```
 
 ::: tip
-`customNodeSelector` 与 `customTolerations` 为所有服务的通用字段，包括应用服务（`gateway`、`vector`、`service.server`、`service.house`、`service.cloud`、`service.next`）和基础服务（`dependencies.postgres`、`dependencies.redis`、`dependencies.clickhouse`、`dependencies.s3`），按需为各服务单独配置即可。
+`customNodeSelector` 与 `customTolerations` 为所有服务的通用字段，包括应用服务（`gateway`、`vector`、`service.server`、`service.auth`、`service.house`、`service.cloud`、`service.next`）和基础服务（`dependencies.postgres`、`dependencies.redis`、`dependencies.clickhouse`、`dependencies.s3`），按需为各服务单独配置即可。
 :::
 
 ## 【资源限制】如何限制 SwanLab 服务的 CPU 和 内存用量？

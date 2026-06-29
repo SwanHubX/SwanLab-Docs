@@ -18,7 +18,7 @@
 - `<your_namespace>`: 在集群中部署的 SwanLab 私有化服务的命名空间，请替换为部署使用的命名空间
 
 ::: info
-**当前APP_VERSION: v2.8.1**
+**当前APP_VERSION: v2.9.0**
 :::
 
 ## 🧱 先决条件
@@ -42,6 +42,7 @@
 | 组件           | 镜像地址                                                   | values.yaml 配置路径   | 说明                 |
 | -------------- | ---------------------------------------------------------- | ---------------------- | -------------------- |
 | swanlab-server | `repo.swanlab.cn/self-hosted/swanlab-server:<APP_VERSION>` | `service.server.image` | 后端核心服务         |
+| swanlab-auth   | `repo.swanlab.cn/self-hosted/swanlab-auth:<APP_VERSION>`   | `service.auth.image`   | 认证与鉴权服务       |
 | swanlab-house  | `repo.swanlab.cn/self-hosted/swanlab-house:<APP_VERSION>`  | `service.house.image`  | 后端实验指标OLAP服务 |
 | swanlab-cloud  | `repo.swanlab.cn/self-hosted/swanlab-cloud:<APP_VERSION>`  | `service.cloud.image`  | 前端实验图表渲染组件 |
 | swanlab-next   | `repo.swanlab.cn/self-hosted/swanlab-next:<APP_VERSION>`   | `service.next.image`   | 前端UI               |
@@ -343,7 +344,7 @@ clickhouse: # ClickHouse 配置
 
 #### 3.2 应用镜像标签
 
-`service` 下的四个应用镜像（server / house / cloud / next）的 `tag` 应设置为**空字符串**，Chart 会在渲染时自动注入正确的版本号。
+`service` 下的五个应用镜像（server / auth / house / cloud / next）的 `tag` 应设置为**空字符串**，Chart 会在渲染时自动注入正确的版本号。
 
 #### 3.3 Vector 存储
 
