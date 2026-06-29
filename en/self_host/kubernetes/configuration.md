@@ -101,6 +101,14 @@ You can write your load balancing strategy based on the above information. It is
 | `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | Image address                                                                      |
 | `service.server.image.tag`        | string | `""`                                         | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
 
+### SwanLab-Auth (Authentication and Authorization Service)
+
+| Field                           | Type   | Default                                    | Description                                                                        |
+| ------------------------------- | ------ | ------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `service.auth.replicas`         | int    | `2`                                        | Replica count                                                                      |
+| `service.auth.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | Image address                                                                      |
+| `service.auth.image.tag`        | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
+
 ### SwanLab-House (Backend Experiment OLAP Service)
 
 | Field                                    | Type   | Default                                     | Description                                                                        |
@@ -130,7 +138,7 @@ You can write your load balancing strategy based on the above information. It is
 | `service.next.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-next` | Image address                                                                      |
 | `service.next.image.tag`        | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
 
-> **Application Image Tag Note**: The `tag` of the four application images under `service` (server / house / cloud / next) should all be set to **empty strings** rather than `latest`. The Chart will automatically inject the correct version number during rendering.
+> **Application Image Tag Note**: The `tag` of the five application images under `service` (server / auth / house / cloud / next) should all be set to **empty strings** rather than `latest`. The Chart will automatically inject the correct version number during rendering.
 
 ### Common Fields (Supported by all services)
 

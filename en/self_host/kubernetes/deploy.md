@@ -42,6 +42,7 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 | Component      | Image Address                                              | values.yaml Config Path | Description                                   |
 | -------------- | ---------------------------------------------------------- | ----------------------- | --------------------------------------------- |
 | swanlab-server | `repo.swanlab.cn/self-hosted/swanlab-server:<APP_VERSION>` | `service.server.image`  | Backend core service                          |
+| swanlab-auth   | `repo.swanlab.cn/self-hosted/swanlab-auth:<APP_VERSION>`   | `service.auth.image`    | Authentication and authorization service      |
 | swanlab-house  | `repo.swanlab.cn/self-hosted/swanlab-house:<APP_VERSION>`  | `service.house.image`   | Backend experiment metrics OLAP service       |
 | swanlab-cloud  | `repo.swanlab.cn/self-hosted/swanlab-cloud:<APP_VERSION>`  | `service.cloud.image`   | Frontend experiment chart rendering component |
 | swanlab-next   | `repo.swanlab.cn/self-hosted/swanlab-next:<APP_VERSION>`   | `service.next.image`    | Frontend UI                                   |
@@ -343,7 +344,7 @@ clickhouse: # ClickHouse configuration
 
 #### 3.2 Application Image Tags
 
-The `tag` of the four application images under `service` (server / house / cloud / next) should be set to **empty strings**, and the Chart will automatically inject the correct version number during rendering.
+The `tag` of the five application images under `service` (server / auth / house / cloud / next) should be set to **empty strings**, and the Chart will automatically inject the correct version number during rendering.
 
 #### 3.3 Vector Storage
 
