@@ -622,6 +622,17 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
             { text: "更新与回滚", link: "kubernetes/upgrade" },
             { text: "监控与日志", link: "kubernetes/monitor-logging" },
             { text: "数据迁移", link: "kubernetes/data-migration" },
+            {
+              text: "SSO 单点登录",
+              collapsed: true,
+              items: [
+                { text: "功能说明", link: "kubernetes/sso/feature-overview" },
+                { text: "前置操作", link: "kubernetes/sso/prerequisites" },
+                { text: "OAuth2 配置", link: "kubernetes/sso/oauth2-configuration" },
+                { text: "OIDC 配置", link: "kubernetes/sso/oidc-configuration" },
+                { text: "SAML2 配置", link: "kubernetes/sso/saml2-configuration" },
+              ],
+            },
             { text: "常见问题", link: "kubernetes/faq" },
           ],
         },

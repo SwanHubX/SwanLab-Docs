@@ -561,6 +561,17 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
             { text: "Update & Rollback", link: "kubernetes/upgrade" },
             { text: "Monitor & Logging", link: "kubernetes/monitor-logging" },
             { text: "Data Migration", link: "kubernetes/data-migration" },
+            {
+              text: "SSO",
+              collapsed: true,
+              items: [
+                { text: "Feature Overview", link: "kubernetes/sso/feature-overview" },
+                { text: "Prerequisites", link: "kubernetes/sso/prerequisites" },
+                { text: "OAuth2 Configuration", link: "kubernetes/sso/oauth2-configuration" },
+                { text: "OIDC Configuration", link: "kubernetes/sso/oidc-configuration" },
+                { text: "SAML2 Configuration", link: "kubernetes/sso/saml2-configuration" },
+              ],
+            },
             { text: "FAQ", link: "kubernetes/faq" },
           ],
         },

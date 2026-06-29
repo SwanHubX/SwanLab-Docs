@@ -4,12 +4,12 @@
 
 ## Global Configuration (`global`)
 
-| Field                          | Type   | Default         | Description                                                                                                                                                                          |
-| ------------------------------ | ------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `global.imagePullSecrets`      | list   | `[]`            | Image pull credentials (private repository authentication)                                                                                                                           |
-| `global.clusterDomain`         | string | `cluster.local` | Kubernetes cluster domain                                                                                                                                                            |
-| `global.podAntiAffinityPreset` | string | `soft`          | Pod anti-affinity strategy: `soft` (try to spread) / `hard` (force spread) / `none` (no setting)                                                                                     |
-| `global.settings.loginHost`    | string | `""`            | Login host address. After modification, the API Key login address displayed in the frontend application will change accordingly (does not affect the actual backend service address) |
+| Field                          | Type   | Default         | Description                                                                                                                                                                                                                                                                       |
+| ------------------------------ | ------ | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `global.imagePullSecrets`      | list   | `[]`            | Image pull credentials (private repository authentication)                                                                                                                                                                                                                        |
+| `global.clusterDomain`         | string | `cluster.local` | Kubernetes cluster domain                                                                                                                                                                                                                                                         |
+| `global.podAntiAffinityPreset` | string | `soft`          | Pod anti-affinity strategy: `soft` (try to spread) / `hard` (force spread) / `none` (no setting)                                                                                                                                                                                  |
+| `global.settings.host`         | string | `""`            | Login host address. After modification, the API Key login address displayed in the frontend application will change accordingly (does not affect the actual backend service address). If you use SSO features, this is recommended to be set to the external URL of your gateway. |
 
 ### Pod Anti-Affinity
 
@@ -28,11 +28,14 @@ global:
 - `hard`: Ensures Pods of the same service are not scheduled on the same Node
 - `none`: Disables Pod anti-affinity
 
-### Login Domain (loginHost)
+### Login Domain (host)
 
-By default, the **login host** displayed on the `<Your Host>/space/~/quick-start` page automatically uses the domain name `<Your Host>` you are currently using to access the frontend. If you need to modify this value, you can specify it to your desired domain name by configuring `global.settings.loginHost`.
+By default, the **login host** displayed on the `<Your Host>/space/~/quick-start` page automatically uses the domain name `<Your Host>` you are currently using to access the frontend. If you need to modify this value, you can specify it to your desired domain name by configuring `global.settings.host`.
 
-> **Note**: This setting does not affect the actual backend service address. You need to configure the corresponding forwarding rules yourself.
+> **Note**:
+>
+> 1. This setting does not affect the actual backend service address. You need to configure the corresponding forwarding rules yourself.
+> 2. If you use the SSO feature, it is strongly recommended to set this field; otherwise, an attempt will be made to infer the external address from the request information, which may lead to certain issues.
 
 ## Gateway (`gateway`)
 
