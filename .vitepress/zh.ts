@@ -270,6 +270,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         { text: "查看实验结果", link: "experiment_track/view-result" },
         { text: "结束一个实验", link: "experiment_track/finish-experiment" },
         { text: "GPU监控", link: "experiment_track/system-monitor" },
+        { text: "Skill", link: "experiment_track/skill" },
         { text: "邮件/第三方通知", link: "experiment_track/send-notification" },
         { text: "常见问题", link: "experiment_track/FAQ" },
       ],
