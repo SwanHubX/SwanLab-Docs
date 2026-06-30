@@ -4,12 +4,12 @@
 
 ## 全局配置（`global`）
 
-| 字段                           | 类型   | 默认值          | 说明                                                                                      |
-| ------------------------------ | ------ | --------------- | ----------------------------------------------------------------------------------------- |
-| `global.imagePullSecrets`      | list   | `[]`            | 镜像拉取凭证（私有仓库认证）                                                              |
-| `global.clusterDomain`         | string | `cluster.local` | Kubernetes 集群域名                                                                       |
-| `global.podAntiAffinityPreset` | string | `soft`          | Pod 反亲和策略：`soft`（尽量分散）/ `hard`（强制分散）/ `none`（不设置）                  |
-| `global.settings.loginHost`    | string | `""`            | 登录主机地址，修改后前端应用中显示的 API Key 登录地址会随之变化（不影响实际后端服务地址） |
+| 字段                           | 类型   | 默认值          | 说明                                                                                                                                           |
+| ------------------------------ | ------ | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `global.imagePullSecrets`      | list   | `[]`            | 镜像拉取凭证（私有仓库认证）                                                                                                                   |
+| `global.clusterDomain`         | string | `cluster.local` | Kubernetes 集群域名                                                                                                                            |
+| `global.podAntiAffinityPreset` | string | `soft`          | Pod 反亲和策略：`soft`（尽量分散）/ `hard`（强制分散）/ `none`（不设置）                                                                       |
+| `global.settings.host`         | string | `""`            | 登录主机地址，修改后前端应用中显示的 API Key 登录地址会随之变化（不影响实际后端服务地址）。若使用 SSO 功能，强烈建议将其配置为网关的外部 URL。 |
 
 ### Pod 反亲和性
 
@@ -28,11 +28,14 @@ global:
 - `hard`：确保同一服务的 Pod 不会分布在同一 Node 上
 - `none`：禁用 Pod 反亲和性
 
-### 登录域名（loginHost）
+### 登录域名（host）
 
-默认情况下，`<Your Host>/space/~/quick-start` 页面中显示的 **login host** 会自动使用您当前访问前端的域名 `<Your Host>`。如果您需要修改此值，可以通过配置 `global.settings.loginHost` 指定为您期望的域名。
+默认情况下，`<Your Host>/space/~/quick-start` 页面中显示的 **login host** 会自动使用您当前访问前端的域名 `<Your Host>`。如果您需要修改此值，可以通过配置 `global.settings.host` 指定为您期望的域名。
 
-> **注意**：此设置不会影响实际的后端服务地址，您需要自己配置对应的转发规则。
+> **注意**：
+>
+> 1. 此设置不会影响实际的后端服务地址，您需要自己配置对应的转发规则。
+> 2. 若需要使用 SSO 功能，则强烈建议设置该字段，否则会尝试通过请求信息推断外部地址，这可能导致某些问题。
 
 ## 网关（`gateway`）
 
@@ -98,6 +101,14 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                |
 | `service.server.image.tag`        | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
 
+### SwanLab-Auth（认证与鉴权服务）
+
+| 字段                            | 类型   | 默认值                                     | 说明                                                    |
+| ------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------- |
+| `service.auth.replicas`         | int    | `2`                                        | 副本数                                                  |
+| `service.auth.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | 镜像地址                                                |
+| `service.auth.image.tag`        | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
+
 ### SwanLab-House（后端实验 OLAP 服务）
 
 | 字段                                     | 类型   | 默认值                                      | 说明                                                    |
@@ -127,7 +138,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `service.next.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-next` | 镜像地址                                                |
 | `service.next.image.tag`        | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
 
-> **应用镜像标签说明**：`service` 下的四个应用镜像（server / house / cloud / next）的 `tag` 均应设置为**空字符串**而非 `latest`，Chart 会在渲染时自动注入正确的版本号。
+> **应用镜像标签说明**：`service` 下的五个应用镜像（server / auth / house / cloud / next）的 `tag` 均应设置为**空字符串**而非 `latest`，Chart 会在渲染时自动注入正确的版本号。
 
 ### 通用字段（所有 service 均支持）
 

@@ -10,14 +10,14 @@
 
 ## Global Configuration
 
-| Environment Variable | Description                                                                                                                                  | Default Value                                     |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `SWANLAB_ROOT`       | Path where SwanLab global folder is saved                                                                                                    | `.swanlab` folder in the user's home directory    |
-| `SWANLAB_PUBLIC`     | Whether to make experiments public. Accepts `true`, `yes`, `1`; leave empty for private                                                      | Private                                           |
-| `SWANLAB_LOGDIR`     | Path where SwanLab parsed log files are saved                                                                                                | `swanlog` folder in the current working directory |
-| `SWANLAB_MODE`       | SwanLab's parsing mode. Available modes: `local`, `online` (`cloud` is an alias), `offline`, `disabled`. **Case-sensitive**                  | `online`                                          |
-| `SWANLAB_API_HOST`   | API address for the SwanLab cloud environment                                                                                                | `https://api.swanlab.cn`                          |
-| `SWANLAB_WEB_HOST`   | Web address for the SwanLab cloud environment. For private deployment, only this variable needs to be set, no need to set `SWANLAB_API_HOST` | `https://swanlab.cn`                              |
+| Environment Variable | Description                                                                                                                 | Default Value                                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `SWANLAB_ROOT`       | Path where SwanLab global folder is saved                                                                                   | `.swanlab` folder in the user's home directory    |
+| `SWANLAB_PUBLIC`     | Whether to make experiments public. Accepts `true`, `yes`, `1`; leave empty for private                                     | Private                                           |
+| `SWANLAB_LOGDIR`     | Path where SwanLab parsed log files are saved                                                                               | `swanlog` folder in the current working directory |
+| `SWANLAB_MODE`       | SwanLab's parsing mode. Available modes: `local`, `online` (`cloud` is an alias), `offline`, `disabled`. **Case-sensitive** | `online`                                          |
+| `SWANLAB_API_HOST`   | API address for the SwanLab cloud environment                                                                               | `https://api.swanlab.cn`                          |
+| `SWANLAB_WEB_HOST`   | Web address for the SwanLab cloud environment.                                                                              | `https://swanlab.cn`                              |
 
 ## Experiment Configuration
 

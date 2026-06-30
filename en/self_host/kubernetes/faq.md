@@ -21,17 +21,18 @@ The following are recommended replica configuration best practices based on onli
 In the current `swanlab-self-hosted` deployment, both `postgres` and `clickhouse` use a **single-replica scheme**. Database master-slave replication involves significant architectural changes and is **not currently supported** in this self-hosted deployment version. Please do not adjust the replica count of database-related services.
 :::
 
-| Service Name   | Replica Count | Description                                                                             |
-| -------------- | ------------- | --------------------------------------------------------------------------------------- |
-| clickhouse     | 1             | [Not modifiable] Column database, responsible for experiment metrics storage            |
-| postgres       | 1             | [Not modifiable] Relational database, responsible for metadata and relational records   |
-| redis          | 1             | [Not modifiable] In-memory database, caching session data                               |
-| vector         | 2             | [Not modifiable] ClickHouse metrics write buffer queue                                  |
-| traefik        | 2             | [Adjustable] Main gateway, distributes service traffic                                  |
-| swanlab-server | ≥ 3           | [Adjustable] SwanLab core service, dynamically adjust based on service load             |
-| swanlab-house  | ≥ 3           | [Adjustable] SwanLab metrics analysis service, dynamically adjust based on service load |
-| swanlab-next   | 2             | [Adjustable] SwanLab frontend framework                                                 |
-| swanlab-cloud  | 1             | [Adjustable] SwanLab frontend experiment page                                           |
+| Service Name   | Replica Count | Description                                                                                 |
+| -------------- | ------------- | ------------------------------------------------------------------------------------------- |
+| clickhouse     | 1             | [Not modifiable] Column database, responsible for experiment metrics storage                |
+| postgres       | 1             | [Not modifiable] Relational database, responsible for metadata and relational records       |
+| redis          | 1             | [Not modifiable] In-memory database, caching session data                                   |
+| vector         | 2             | [Not modifiable] ClickHouse metrics write buffer queue                                      |
+| traefik        | 2             | [Adjustable] Main gateway, distributes service traffic                                      |
+| swanlab-server | ≥ 3           | [Adjustable] SwanLab core service, dynamically adjust based on service load                 |
+| swanlab-auth   | ≥ 2           | [Adjustable] SwanLab authentication and authorization service, adjust based on service load |
+| swanlab-house  | ≥ 3           | [Adjustable] SwanLab metrics analysis service, dynamically adjust based on service load     |
+| swanlab-next   | 2             | [Adjustable] SwanLab frontend framework                                                     |
+| swanlab-cloud  | 1             | [Adjustable] SwanLab frontend experiment page                                               |
 
 ## [Node Assignment] How to schedule SwanLab self-hosted service Pods to specific nodes?
 
@@ -72,7 +73,7 @@ service:
 ```
 
 ::: tip
-`customNodeSelector` and `customTolerations` are common fields for all services, including application services (`gateway`, `vector`, `service.server`, `service.house`, `service.cloud`, `service.next`) and base services (`dependencies.postgres`, `dependencies.redis`, `dependencies.clickhouse`, `dependencies.s3`). Configure them individually for each service as needed.
+`customNodeSelector` and `customTolerations` are common fields for all services, including application services (`gateway`, `vector`, `service.server`, `service.auth`, `service.house`, `service.cloud`, `service.next`) and base services (`dependencies.postgres`, `dependencies.redis`, `dependencies.clickhouse`, `dependencies.s3`). Configure them individually for each service as needed.
 :::
 
 ## [Resource Limits] How to limit the CPU and memory usage of SwanLab services?

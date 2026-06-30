@@ -15,6 +15,24 @@ swanlab.login(api_key="<your_api_key>")
 
 Using `swanlab.login()` for authentication does not save login information locally. This ensures that experiments are definitely uploaded to your account, and prevents others from uploading to your account.
 
+## Local Login
+
+::: tip
+The `--local` option is only available in SDK ≥ 0.8.0.
+:::
+
+Use the `--local` option to save credentials only at the project level (in the `.swanlab/` folder of the current directory) instead of the user's home directory. This way each project uses independent credentials, avoiding key conflicts on shared servers:
+
+```bash
+swanlab login --local
+```
+
+To logout from local login:
+
+```bash
+swanlab logout --local
+```
+
 ## Logout
 
 Using `swanlab logout` will clear the locally stored login information. It is recommended to execute this before leaving a public server.
