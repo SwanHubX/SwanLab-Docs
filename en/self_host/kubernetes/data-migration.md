@@ -8,7 +8,7 @@ If you are using an external cloud database scheme [Not Recommended], you can ig
 
 ## Migration Process Diagram
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/cross-cluster-migration.drawio.svg"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/cross-cluster-migration-v2.drawio.svg"/>
 
 Under the **local database deployment scheme** of the cluster, the process of cross-cluster data migration for the SwanLab self-hosted service database includes three core areas:
 

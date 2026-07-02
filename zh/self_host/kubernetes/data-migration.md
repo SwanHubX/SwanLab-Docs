@@ -4,7 +4,7 @@
 
 ## 迁移流程示意图
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/cross-cluster-migration.drawio.svg"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/cross-cluster-migration-v2.drawio.svg"/>
 
 SwanLab 私有化服务的数据库进行跨集群数据迁移的流程，包含三个核心区域：
 
@@ -68,9 +68,8 @@ SwanLab 私有化服务的数据库进行跨集群数据迁移的流程，包含
 
 :::warning
 
-- 数据迁移时需要确保**两套 SwanLab 服务都保持停机状态**，由中间 Job 执行迁移，否则会因为状态不一致等问题，造成迁移失败。
-- **迁移前必须停机！**
-  :::
+**⚠️ 迁移前必须停机！** 数据迁移时需要确保**两套 SwanLab 应用层服务都保持停机状态**，由中间 Job 执行迁移，否则会因为数据写入状态不一致等问题，造成迁移失败。
+:::
 
 ### 1. 修改配置文件
 
@@ -302,36 +301,29 @@ kubectl apply -f config-import.yaml
 
 ```bash [1. 停网关]
 # 切断所有外部流量
-kubectl scale deployment swanlab-self-hosted --replicas=0 -n <your_namespace>
+kubectl scale deploy/swanlab-self-hosted --replicas=0 -n <your_namespace>
 ```
 
 ```bash [2. 停应用层]
 # 停后端核心服务
-kubectl scale deployment swanlab-self-hosted-server --replicas=0 -n <your_namespace>
+kubectl scale deploy/swanlab-self-hosted-server --replicas=0 -n <your_namespace>
 # 停后端指标OLAP服务
-kubectl scale deployment swanlab-self-hosted-house --replicas=0 -n <your_namespace>
+kubectl scale deploy/swanlab-self-hosted-house --replicas=0 -n <your_namespace>
 ```
 
-```bash [3. 停 Vector]
+```bash [3. 等待 Vector 消费]
 # 先等缓冲区消费完（看 logs 无新写入后 Ctrl+C）
 kubectl logs -f swanlab-self-hosted-vector-0 -n <your_namespace> --tail=20
 kubectl logs -f swanlab-self-hosted-vector-1 -n <your_namespace> --tail=20
 
-# 停 Vector
-kubectl scale statefulset swanlab-self-hosted-vector --replicas=0 -n <your_namespace>
 ```
 
-```bash [4. 停数据库]
-kubectl scale deployment swanlab-self-hosted-postgres --replicas=0 -n <your_namespace>
-kubectl scale deployment swanlab-self-hosted-clickhouse --replicas=0 -n <your_namespace>
-kubectl scale deployment swanlab-self-hosted-redis --replicas=0 -n <your_namespace>
-```
+:::
 
-```bash [「可选」5. 停 S3]
-# 「可选」通常外接 S3 对象存储可忽略，如您使用 template 自集成的 MinIO 则需要停服
-kubectl scale deployment swanlab-self-hosted-s3 --replicas=0 -n <your_namespace>
-```
+:::tip
+针对 **目标集群** 的 Redis 数据库，由于需要用 rdb 快照恢复服务，因此需要单独针对目标集群的Reids数据库停服:
 
+`kubectl scale deploy/swanlab-self-hosted-redis --replicas=0 -n <your_namespace>`
 :::
 
 ### 3. 导出 DB 数据
@@ -340,16 +332,12 @@ kubectl scale deployment swanlab-self-hosted-s3 --replicas=0 -n <your_namespace>
 
 每个数据库的迁移被封装为独立的 Job，可并行执行。
 
-::: info 导出架构说明
+::: info 导出说明
 
-- **PostgreSQL**：Job 作为客户端直连 PG Service，使用 `pg_dump -Fc`（custom 格式）导出后通过 `rclone` 上传至 S3 中转桶。不挂载 PVC。
-- **ClickHouse**：Job 作为客户端直连 CH Service，使用原生 `BACKUP DATABASE ... TO S3()` 命令，CH 服务端保证 parts 一致性。不挂载 PVC，不需要 scale down CH。
-- **Redis**：Job 作为客户端直连 Redis Service，使用 `redis-cli --rdb` 导出 RDB 后通过 `rclone` 上传。不挂载 PVC。
+- **PostgreSQL**：Job 作为客户端直连 PG Service，使用 `pg_dump -Fc`（custom 格式）导出后通过 `rclone` 上传至 S3 中转桶
+- **ClickHouse**：Job 作为客户端直连 CH Service，使用原生 `BACKUP DATABASE ... TO S3()` 命令，CH 服务端保证 parts 一致性。
+- **Redis**：Job 作为客户端直连 Redis Service，使用 `redis-cli --rdb` 导出 RDB 后通过 `rclone` 上传。
 
-:::
-
-::: warning ClickHouse NFS 用户
-`backup_threads` / `restore_threads` 在 CH 24.3 已从普通 Settings 迁为 ServerSettings，SQL SET 和 BACKUP/RESTORE SETTINGS 子句均无效，只能改 `config.d/*.xml` + `SYSTEM RELOAD CONFIG`。NFS 源建议并发 ≤4，避免元数据队列阻塞。
 :::
 
 ::: details export-postgres
@@ -720,7 +708,7 @@ kubectl get jobs -n <your_namespace>
 
 #### 情况 2：原始集群使用 MinIO 挂载 PVC
 
-MinIO 数据需要通过 `rclone sync` 同步到公有云对象存储。此 Job 直连现役 MinIO Service，不挂 PVC。
+MinIO 数据需要通过 `rclone sync` 同步到公有云对象存储。此 Job 直连 MinIO Service。
 
 ::: info 前置条件
 
@@ -1272,34 +1260,21 @@ kubectl get jobs -n <your_namespace>
 ::: code-group
 
 ```bash [1. 恢复数据库]
-# 恢复数据库服务 (replicas 必须为 1)
-kubectl scale deployment swanlab-self-hosted-clickhouse --replicas=1 -n <your_namespace>
-kubectl scale deployment swanlab-self-hosted-postgres --replicas=1 -n <your_namespace>
+# 恢复数据库服务（主要是 Redis） (replicas 必须为 1)
 kubectl scale deployment swanlab-self-hosted-redis --replicas=1 -n <your_namespace>
 
 # 确认数据库就绪
 kubectl get pods -n <your_namespace> -w
 ```
 
-```bash [2. 恢复 Vector]
-# StatefulSet，双副本
-kubectl scale statefulset swanlab-self-hosted-vector --replicas=2 -n <your_namespace>
-```
-
-```bash [3. 恢复应用层]
+```bash [2. 恢复应用层]
 # 先恢复副本，再按需扩容
-kubectl scale deployment swanlab-self-hosted-house --replicas=1 -n <your_namespace>
-kubectl scale deployment swanlab-self-hosted-server --replicas=1 -n <your_namespace>
+kubectl scale deploy/swanlab-self-hosted-house deploy/swanlab-self-hosted-server --replicas=1 -n <your_namespace>
 ```
 
 ```bash [4. 恢复网关]
 # 恢复网关
-kubectl scale deployment swanlab-self-hosted --replicas=2 -n <your_namespace>
-```
-
-```bash [「可选」5. 恢复 S3]
-# 「可选」如外接 S3 可忽略，如果使用 template 内置 MinIO 需要手动恢复 S3
-kubectl scale deployment swanlab-self-hosted-s3 --replicas=1 -n <your_namespace>
+kubectl scale deploy/swanlab-self-hosted --replicas=2 -n <your_namespace>
 ```
 
 :::
