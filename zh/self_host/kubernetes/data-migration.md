@@ -62,8 +62,6 @@ SwanLab 私有化服务的数据库进行跨集群数据迁移的流程，包含
 | ✅       | `S3_AK` / `S3_SK`                       | 对象存储可写密钥                                              |
 | ✅       | `S3_PATH_PREFIX`                        | S3 中的备份路径前缀，默认 `origin-backup-datas`               |
 
-> ⚠️ S3 迁移工具使用 `rclone`，已验证兼容腾讯云 COS、火山引擎 TOS、阿里云 OSS 等主流 S3 兼容存储。
-
 ## 🪜 操作步骤
 
 :::warning
@@ -134,8 +132,8 @@ metadata:
   name: swanlab-pg-backup-config
   namespace: <SOURCE_NAMESPACE>
 data:
-  PG_HOST: "postgres" # ⚠️ 【源集群】PG Service 名
-  PG_USER: "postgres" # ⚠️ PG 用户名
+  PG_HOST: "swanlab-self-hosted-postgres" # ⚠️ 【源集群】PG Service 名
+  PG_USER: "swanlab" # ⚠️ PG 用户名
   PG_DB: "app" # ⚠️ PG 数据库名
   PG_BACKUP_OBJECT: "postgres-restore.dump" # ⚠️ S3 中转对象名（import 侧需一致）
 ---
@@ -155,7 +153,7 @@ metadata:
   name: swanlab-ch-backup-config
   namespace: <SOURCE_NAMESPACE>
 data:
-  CLICKHOUSE_HOST: "<CLICKHOUSE_HOST>" # ⚠️ 【源集群】CH Service 名
+  CLICKHOUSE_HOST: "swanlab-self-hosted-clickhouse" # ⚠️ 【源集群】CH Service 名
   CLICKHOUSE_DB: "app" # ⚠️ 待备份的数据库名
   CLICKHOUSE_BACKUP_PATH: "clickhouse-backup" # ⚠️ S3 中转桶内备份子路径（import 侧需一致）
 ---
@@ -321,7 +319,7 @@ kubectl logs -f swanlab-self-hosted-vector-1 -n <your_namespace> --tail=20
 :::
 
 :::tip
-针对 **目标集群** 的 Redis 数据库，由于需要用 rdb 快照恢复服务，因此需要单独针对目标集群的Reids数据库停服:
+针对 **「目标集群」** 的 Redis 数据库，由于需要用 rdb 快照恢复服务，因此需要单独对【目标集群】的Redis服务停服:
 
 `kubectl scale deploy/swanlab-self-hosted-redis --replicas=0 -n <your_namespace>`
 :::
