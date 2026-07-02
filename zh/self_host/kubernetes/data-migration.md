@@ -531,8 +531,12 @@ spec:
                 WHERE database='${CLICKHOUSE_DB}' AND active
               "
 
-              ## 阿里云 OSS 要求 virtual hosted style
-              S3_URL="https://${S3_BUCKET}.${S3_ENDPOINT}"
+              ## 根据 S3_FORCE_PATH_STYLE 动态构造 URL
+              if [ "${S3_FORCE_PATH_STYLE:-false}" = "true" ]; then
+                S3_URL="https://${S3_ENDPOINT}/${S3_BUCKET}"
+              else
+                S3_URL="https://${S3_BUCKET}.${S3_ENDPOINT}"
+              fi
               PREFIX="${S3_PATH_PREFIX%/}"
               BACKUP_PATH="${PREFIX:+${PREFIX}/}${CLICKHOUSE_BACKUP_PATH}"
 
@@ -871,13 +875,13 @@ spec:
 
               echo "[3/4] 同步 public..."
               rclone sync localminio:${MINIO_PUBLIC_BUCKET} clouds3:${CLOUD_S3_PUBLIC_DEST} \
-                --transfers 16 --checkers 8 --buffer-size 256M \
+                --transfers 16 --checkers 8 --buffer-size 128M \
                 --multi-thread-streams 4 --s3-upload-concurrency 4 \
                 --retries 3 --retries-sleep 5s --progress -vv
 
               echo "[4/4] 同步 private..."
               rclone sync localminio:${MINIO_PRIVATE_BUCKET} clouds3:${CLOUD_S3_PRIVATE_DEST} \
-                --transfers 16 --checkers 8 --buffer-size 256M \
+                --transfers 16 --checkers 8 --buffer-size 128M \
                 --multi-thread-streams 4 --s3-upload-concurrency 4 \
                 --retries 3 --retries-sleep 5s --progress -vv
 
@@ -1078,7 +1082,12 @@ spec:
               "${CH_CLIENT[@]}" --query "CREATE DATABASE IF NOT EXISTS ${CLICKHOUSE_DB}"
               echo "  目标库 ${CLICKHOUSE_DB} 已就绪（空）"
 
-              S3_URL="https://${S3_BUCKET}.${S3_ENDPOINT}"
+              ## 根据 S3_FORCE_PATH_STYLE 动态构造 URL
+              if [ "${S3_FORCE_PATH_STYLE:-false}" = "true" ]; then
+                S3_URL="https://${S3_ENDPOINT}/${S3_BUCKET}"
+              else
+                S3_URL="https://${S3_BUCKET}.${S3_ENDPOINT}"
+              fi
               PREFIX="${S3_PATH_PREFIX%/}"
               BACKUP_PATH="${PREFIX:+${PREFIX}/}${CLICKHOUSE_BACKUP_PATH}"
 
@@ -1284,7 +1293,7 @@ kubectl scale deploy/swanlab-self-hosted --replicas=2 -n <your_namespace>
 
 ```bash
 # 源集群
-kubectl delete job swanlab-export-postgres swanlab-export-clickhouse swanlab-export-redis -n <SOURCE_NAMESPACE>
+kubectl delete job swanlab-export-postgres swanlab-export-clickhouse swanlab-export-redis swanlab-migrate-s3-export -n <SOURCE_NAMESPACE>
 
 # 目标集群
 kubectl delete job swanlab-import-postgres swanlab-import-clickhouse swanlab-import-redis -n <TARGET_NAMESPACE>
