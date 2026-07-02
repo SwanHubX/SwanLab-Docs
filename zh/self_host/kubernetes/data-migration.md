@@ -778,9 +778,6 @@ spec:
         - name: rclone-worker
           image: repo.swanlab.cn/public/s3-migrator:bookworm-slim
           imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              memory: 4Gi
           env:
             - name: MINIO_AK
               valueFrom:
