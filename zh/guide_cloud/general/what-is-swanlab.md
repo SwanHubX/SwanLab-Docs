@@ -1,9 +1,10 @@
 # 欢迎使用SwanLab
 
-[快速开始](./quick-start.md) · [官网](https://swanlab.cn) · [框架集成](../integration/index.md) · [GitHub](https://github.com/swanhubx/swanlab) · [同步Wandb](../integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
+[快速开始](./quick-start.md) · [框架集成](../integration/index.md) · [同步Wandb](../integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
-::: warning 🎉 私有化部署Kubernetes版正式上线！
-私有化部署Kubernetes版支持在本地使用到与公有云版体验相当的功能，部署方式见[此文档](../../self_host/kubernetes/deploy.md)
+::: warning 🎉 新产品上线！
+[TRIO](https://pytrio.cn)是一个**前后分离、训推一体**的新型 AI 计算平台，它让开发者无需维护复杂GPU基础设施，在个人电脑就可以轻松做llm sft/rl训练，支持弹性扩展，一次开20个实验不再困难。  
+体验链接：https://pytrio.cn
 :::
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)
