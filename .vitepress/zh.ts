@@ -436,6 +436,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       items: [
         { text: "BERT文本分类", link: "bert" },
         { text: "LLM预训练", link: "pretrain_llm" },
+        { text: "Qwen3.5角色扮演", link: "qwen3.5-huanhuan" },
         { text: "GLM4指令微调", link: "glm4-instruct" },
         { text: "Qwen下游任务训练", link: "qwen_finetune" },
         { text: "NER命名实体识别", link: "ner" },
