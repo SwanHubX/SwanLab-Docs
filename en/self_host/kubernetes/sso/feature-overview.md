@@ -2,6 +2,10 @@
 
 This document describes the SSO capabilities, applicable scenarios, account policy, and user login flow in the current SwanLab version. The current version supports OAuth2, OIDC, and SAML2.
 
+::: warning Commercial Only
+SSO (Single Sign-On) is only supported in the SwanLab commercial edition. The community edition does not include this feature.
+:::
+
 ## 1. Feature Introduction
 
 SSO (Single Sign-On) allows users to log in to SwanLab with an existing enterprise identity provider (IdP) account. After an administrator configures and enables a Provider in SwanLab, the corresponding SSO login entry appears on the login page. When users click the entry, they are redirected to the enterprise IdP to complete authentication, and then return to SwanLab to log in, bind an account, or automatically create an account.
