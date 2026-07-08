@@ -20,6 +20,7 @@ For professional AI R&D teams, we provide **SwanLab Enterprise**. The primary di
 | Offline Deployment        |        ✅         |         ✅         |
 | Docker / K8S Deployment   |        ✅         |         ✅         |
 | Multi-User Collaboration  |        ❌         |         ✅         |
+| Single-Sign On (SSO)      |        ❌         |         ✅         |
 | Team Creation             |        ❌         |         ✅         |
 | Role-Based Access Control |        ❌         |         ✅         |
 | Admin Dashboard           |        ❌         |         ✅         |

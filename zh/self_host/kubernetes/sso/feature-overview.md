@@ -2,6 +2,10 @@
 
 本文说明 SwanLab 当前版本的 SSO 能力、适用场景、账号策略和用户登录流程。当前版本支持 OAuth2、OIDC 和 SAML2 三类协议。
 
+::: warning 商用版功能
+SSO 单点登录仅在 SwanLab 商用版中支持，社区版不包含此功能。
+:::
+
 ## 一、功能简介
 
 SSO（Single Sign-On，单点登录）允许用户使用企业已有身份提供商（IdP）的账号登录 SwanLab。管理员在 SwanLab 中配置 Provider 并启用后，登录页会展示对应的 SSO 登录入口。用户点击入口后，会跳转到企业 IdP 完成认证，再返回 SwanLab 完成登录、绑定或自动创建账号。
