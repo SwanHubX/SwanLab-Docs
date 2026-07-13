@@ -53,11 +53,12 @@
 
 .VPNavBarTitle .logo {
   display: block;
-  height: 24px;
+  height: 28px;
   width: auto;
   max-width: none;
   flex-shrink: 0;
   object-fit: contain;
+  transform: translate(14px, -6px);
 }
 
 /* ===== Sidebar: anchored below the navbar ===== */
