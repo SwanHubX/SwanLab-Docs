@@ -24,7 +24,7 @@ defineProps({
 });
 
 function goToWebsite() {
-  window.open("https://swanlab.cn", "_blank");
+  window.open("https://swanlab.cn/home", "_blank");
 }
 </script>
 

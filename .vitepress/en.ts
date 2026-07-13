@@ -134,7 +134,7 @@ export const en = defineConfig({
       {
         component: "HeaderGithubButton",
       },
-      // { text: 'Website', link: 'https://swanlab.cn' },
+      // { text: 'Website', link: 'https://swanlab.cn/home' },
     ],
 
     // 最后更新于配置
