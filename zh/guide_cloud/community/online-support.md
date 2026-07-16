@@ -4,7 +4,7 @@
 
 | 微信公众号                                                                                                                                          | 微信交流群                                                                                                                               |
 | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300></div> | <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/20260708145537385.png" width=300></div> |
+| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300></div> | <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/20260716161129955.png" width=300></div> |
 
 | 飞书群                                                                                                                                                                           |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
