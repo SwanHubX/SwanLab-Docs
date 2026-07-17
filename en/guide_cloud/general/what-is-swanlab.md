@@ -184,7 +184,8 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 
 - **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**: Report bugs or issues.
 - **Email Support**:
-  - Product: <contact@swanlab.cn>, <zeyi.lin@swanhub.co> (Product Manager)
+  - <contact@swanlab.cn>
+  - <zeyi.lin@emotionmachine.cn>
 - **WeChat & Lark Groups**: See [Online Support](../community/online-support.md).
 - **WeChat Official Account**:
 

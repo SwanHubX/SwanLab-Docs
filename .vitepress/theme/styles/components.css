@@ -202,8 +202,59 @@ div.VPNavBarSearch.search {
  * 231×47 aspect ratio). Only the desktop header imgs are affected — the
  * mobile menu logo lives in a separate overlay. */
 header.wrapper img {
-  height: 30px !important;
+  height: 26px !important;
   width: auto !important;
+}
+
+/* ===== Navbar layout: right-align search + 官网 + GitHub =====
+ * The OSS header splits items into a left <div> (logo + menu — the 官网
+ * and GitHub buttons sit at the end of this menu via the nav config) and
+ * a right <div> (search + utilities). `order` can't move items across
+ * those two containers, so on wide screens (≥1280px) we flatten the
+ * wrapper divs with `display: contents` and reorder everything in one
+ * flex row:
+ *   [logo · 指南…v0.8.3]  ←push right→  [search][官网][github][…]
+ * The extra/appearance wrappers keep their xl: display toggles (the
+ * `:not(.xl\:hidden)` guard avoids breaking them), and everything below
+ * 1280px is untouched. */
+@media (min-width: 1280px) {
+  header.wrapper {
+    gap: 1rem;
+  }
+
+  header.wrapper > div,
+  header.wrapper nav.VPNavBarMenu,
+  header.wrapper > div > div:not(.xl\:hidden) {
+    display: contents;
+  }
+
+  /* widen + bound the search, and push it (and everything after) right */
+  .VPNavBarSearch {
+    order: 1;
+    flex-grow: 0 !important;
+    width: 320px;
+    margin-left: auto;
+  }
+
+  .header-button {
+    order: 2;
+  }
+
+  .github-button {
+    order: 3;
+  }
+
+  .VPNavBarAppearance {
+    order: 4;
+  }
+
+  .VPNavBarTranslations {
+    order: 5;
+  }
+
+  .VPNavBarSocialLinks {
+    order: 6;
+  }
 }
 
 /* ===== Navbar / footer type scale =====
@@ -245,5 +296,20 @@ header.wrapper .VPFlyout > button {
 }
 
 .beian-footer img {
-  width: 14px !important;
+  width: 12px !important;
+}
+
+/* ===== 正文列表行距 =====
+ * 主题在 @layer docs 给 li 设了 line-height: 1.75rem (28px)，行距偏松。
+ * 这里收紧到 1.5（无层 > @layer docs，无需 !important）。 */
+.vp-doc li {
+  line-height: 1.5;
+}
+
+/* ===== 右侧目录（aside outline）=====
+ * 主题给 .outline-link 设了 white-space: nowrap + ellipsis，长标题会被
+ * 省略号截断，即使宽屏下右侧空间充裕。改为允许换行，完整展示标题。 */
+.outline-link {
+  white-space: normal !important;
+  /* line-height: 1.5 !important; */
 }

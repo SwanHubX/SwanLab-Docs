@@ -71,6 +71,21 @@
   overflow-y: auto;
 }
 
+/* Hide the thin scrollbars on the left sidebar and the right aside.
+   The theme already hides the inner aside-container's scrollbar; doing
+   the same here keeps the wide-screen chrome clean (scroll still works). */
+.VPSidebar,
+.VPDoc.has-aside .aside {
+  scrollbar-width: none;
+}
+
+.VPSidebar::-webkit-scrollbar,
+.VPDoc.has-aside .aside::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 /* Navbar + sidebar: desktop layout (≥960px) */
 @media (min-width: 960px) {
   .VPNavBar:not(.has-sidebar) .wrapper {
@@ -109,6 +124,14 @@
 }
 
 /* ===== Doc layout: content + aside ===== */
+/* The theme's doc container uses Tailwind's `container` utility, which caps
+   it at max-width 1536px and centers it — so on ultra-wide displays the
+   doc area becomes a centered strip that ignores the edge-to-edge frame.
+   Let it fill its grid column instead. */
+.VPDoc.has-aside .container {
+  max-width: none !important;
+}
+
 .VPDoc.has-aside .content {
   max-width: none !important;
 }
@@ -149,5 +172,36 @@
   .content-wrapper,
   header.wrapper {
     max-width: calc(100vw - 4rem) !important;
+  }
+}
+
+/* Right outline: grow with the viewport on wide screens so longer
+   headings fit on one line instead of wrapping. The base 240px column
+   is kept for laptops (≥1280px); only large displays widen it. The
+   inner .aside-container is widened in lockstep (the theme fixes it at
+   224px). Below 1280px the aside goes full-width anyway (rule above). */
+@media (min-width: 96rem) {
+  /* ≥1536px */
+  .VPDoc.has-aside .aside {
+    width: 296px;
+    flex: 0 0 296px;
+    max-width: 296px;
+  }
+
+  .VPDoc.has-aside .aside-container {
+    width: 264px;
+  }
+}
+
+@media (min-width: 120rem) {
+  /* ≥1920px */
+  .VPDoc.has-aside .aside {
+    width: 344px;
+    flex: 0 0 344px;
+    max-width: 344px;
+  }
+
+  .VPDoc.has-aside .aside-container {
+    width: 312px;
   }
 }

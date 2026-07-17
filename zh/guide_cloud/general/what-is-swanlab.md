@@ -194,7 +194,8 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 - **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**：反馈使用SwanLab时遇到的错误和问题
 
 - **电子邮件支持**：反馈关于使用SwanLab的问题
-  - 产品: <contact@swanlab.cn>, <zeyi.lin@swanhub.co>(产品经理邮箱)
+  - <contact@swanlab.cn>
+  - <zeyi.lin@emotionmachine.cn>
 
 - **微信群与飞书群**: 见[在线支持](../community/online-support.md)
 
