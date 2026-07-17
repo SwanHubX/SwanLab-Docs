@@ -8,6 +8,7 @@ import path from "node:path";
 import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
+import { extendConfig } from "@voidzero-dev/vitepress-theme/config";
 import { zh } from "./zh";
 import { en } from "./en";
 
@@ -170,51 +171,58 @@ const plugins: PluginOption[] = [
   // Code-block tab icons (pip/conda/python/bash etc.) — see vitepress-plugin-group-icons
   groupIconVitePlugin({}),
 ];
-export default defineConfig({
-  srcExclude,
-  cleanUrls: false,
-  sitemap: {
-    hostname: "https://docs.swanlab.cn",
-  },
-  vite: { plugins },
-
-  rewrites(id) {
-    return id.startsWith("zh/") ? id.slice(3) : id;
-  },
-
-  themeConfig: {
-    search: {
-      provider: "local",
+// Wrapped with the VoidZero theme's extendConfig, which injects the
+// Tailwind plugin, @vp-default aliases, and asset handling.
+export default extendConfig(
+  defineConfig({
+    srcExclude,
+    cleanUrls: false,
+    sitemap: {
+      hostname: "https://docs.swanlab.cn",
     },
-  },
+    vite: { plugins },
 
-  markdown: {
-    config(md) {
-      md.use(copyOrDownloadAsMarkdownButtons);
-      // Tab icons on grouped/single code blocks
-      md.use(groupIconMdPlugin, { titleBar: { includeSnippet: true } });
+    rewrites(id) {
+      return id.startsWith("zh/") ? id.slice(3) : id;
     },
-    image: {
-      lazyLoading: true,
-    },
-    math: true,
-  },
 
-  locales: {
-    root: { label: "简体中文", ...(zh as LocaleConfig) },
-    en: { label: "English", ...(en as LocaleConfig) },
-  },
-
-  additionalConfig: rootOnlyAdditionalConfig,
-
-  head: [
-    [
-      "script",
-      {
-        defer: "",
-        src: "https://umami.swanlab.cn/script.js",
-        "data-website-id": process.env.UMAMI_WEBSITE_ID ?? "",
+    themeConfig: {
+      // VoidZero theme variant — neutral branding for now (brand colors are
+      // intentionally left untuned; see .vitepress/theme/styles.css).
+      variant: "voidzero",
+      search: {
+        provider: "local",
       },
+    },
+
+    markdown: {
+      config(md) {
+        md.use(copyOrDownloadAsMarkdownButtons);
+        // Tab icons on grouped/single code blocks
+        md.use(groupIconMdPlugin, { titleBar: { includeSnippet: true } });
+      },
+      image: {
+        lazyLoading: true,
+      },
+      math: true,
+    },
+
+    locales: {
+      root: { label: "简体中文", ...(zh as LocaleConfig) },
+      en: { label: "English", ...(en as LocaleConfig) },
+    },
+
+    additionalConfig: rootOnlyAdditionalConfig,
+
+    head: [
+      [
+        "script",
+        {
+          defer: "",
+          src: "https://umami.swanlab.cn/script.js",
+          "data-website-id": process.env.UMAMI_WEBSITE_ID ?? "",
+        },
+      ],
     ],
-  ],
-});
+  }),
+);

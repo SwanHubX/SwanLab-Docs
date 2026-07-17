@@ -1,13 +1,16 @@
-// .vitepress/theme/index.js
-import DefaultTheme from "vitepress/theme";
+// .vitepress/theme/index.ts
+import type { Theme } from "vitepress";
+import { useRoute } from "vitepress";
+import { VoidZeroTheme, themeContextKey } from "@voidzero-dev/vitepress-theme";
 import mediumZoom from "medium-zoom";
 import { onMounted, watch, nextTick } from "vue";
-import { useRoute } from "vitepress";
 import "virtual:group-icons.css";
-// Order matters for the cascade: tokens → layout → components.
+// Theme design system first; project overrides after (cascade: tokens → layout → components).
+import "./styles.css";
 import "./styles/tokens.css";
 import "./styles/layout.css";
 import "./styles/components.css";
+import Layout from "./Layout.vue";
 import HeaderButton from "./components/HeaderButton.vue";
 import HeaderButtonEN from "./components/HeaderButtonEN.vue";
 import HeaderGithubButton from "./components/HeaderGithubButton.vue";
@@ -17,21 +20,33 @@ import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
 
 export default {
-  ...DefaultTheme,
-  enhanceApp({ app }) {
-    app.component("HeaderButton", HeaderButton);
-    app.component("HeaderButtonEN", HeaderButtonEN);
-    app.component("HeaderGithubButton", HeaderGithubButton);
+  ...VoidZeroTheme,
+  Layout,
+  enhanceApp(ctx) {
+    // Required by the theme's forked header/banner/footer components, which
+    // inject this context (see the theme's per-project variant entries).
+    // Placeholder assets for now — brand polish comes later.
+    ctx.app.provide(themeContextKey, {
+      logoDark: "/icon.svg",
+      logoLight: "/icon.svg",
+      logoAlt: "SwanLab",
+      // 1px transparent gif so the OSS footer CTA renders without a photo.
+      footerBg: "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=",
+      monoIcon: "/icon.svg",
+    });
+    ctx.app.component("HeaderButton", HeaderButton);
+    ctx.app.component("HeaderButtonEN", HeaderButtonEN);
+    ctx.app.component("HeaderGithubButton", HeaderGithubButton);
     // Deprecated: not used in nav while Docs Copilot / 文档助手 is offline.
-    app.component("HeaderDocHelperButton", HeaderDocHelperButton);
-    app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
-    app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
-    DefaultTheme.enhanceApp({ app });
+    ctx.app.component("HeaderDocHelperButton", HeaderDocHelperButton);
+    ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
+    ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
+    VoidZeroTheme.enhanceApp(ctx);
   },
   setup() {
     const route = useRoute();
 
-    const shouldZoomImage = (img) => {
+    const shouldZoomImage = (img: HTMLImageElement) => {
       // 1. Check if there are clear exclusion marks
       if (
         img.classList.contains("no-zoomable") ||
@@ -54,7 +69,7 @@ export default {
     // Image zoom functionality
     const initZoom = () => {
       void nextTick(() => {
-        const allImages = document.querySelectorAll(".vp-doc img");
+        const allImages = document.querySelectorAll<HTMLImageElement>(".vp-doc img");
         const zoomableImages = Array.from(allImages).filter(shouldZoomImage);
 
         if (zoomableImages.length > 0) {
@@ -77,4 +92,4 @@ export default {
         }),
     );
   },
-};
+} satisfies Theme;
