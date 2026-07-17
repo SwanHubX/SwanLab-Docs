@@ -19,16 +19,26 @@
   --swanlab-nav-search-min-width: 180px;
   --swanlab-nav-title-width: 164px;
 
-  /* Typography — extend the VoidZero font stacks with CJK fallbacks.
-     Inter / "APK Protocol" only ship Latin glyphs, so Chinese text was
-     falling back to the browser's generic sans-serif (inconsistent weight/
-     spacing). List the system CJK faces explicitly so 指南/案例/集成 render
-     with the platform's intended UI font. */
+  /* Typography — cross-platform, native-first font stacks.
+     Native UI fonts lead so each OS renders body text in its own system face
+     (SF on macOS/iOS, Segoe UI on Windows, Roboto on Android) — these are
+     designed alongside the platform's CJK face, so mixed 中英文 no longer
+     looks mismatched. Inter stays as a consistent fallback, then the CJK
+     faces are enumerated per platform:
+       PingFang SC / Hiragino Sans GB  -> macOS / iOS
+       Microsoft YaHei                 -> Windows
+       Noto Sans SC / Source Han Sans  -> Linux / Android / ChromeOS
+     Emoji faces are appended so inline symbols render in colour.
+     --vp-font-family-base is intentionally NOT overridden, so the theme's
+     :lang(zh) rule still controls punctuation handling on Chinese pages. */
   --font-sans:
-    Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Source Han Sans SC",
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-heading:
-    "APK Protocol", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  --vp-font-family-base: var(--font-sans);
+    "APK Protocol", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Source Han Sans SC",
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
 }
 
 .dark {
