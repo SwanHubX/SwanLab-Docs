@@ -32,11 +32,11 @@ Prometheus 通过监控专用 Headless Service 的 DNS A 记录发现并逐个�
 
 下表为 SwanLab 服务目前支持访问 metrics 信息的应用和对应接口配置、路由：
 
-| 服务名称       | 服务说明           | 端口 | 路由      |
-| -------------- | ------------------ | ---- | --------- |
-| SwanLab-Server | 后端核心业务服务   | 3000 | /metrics  |
-| SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics  |
-| Vector         | 指标转发缓冲队列   | 9090 | /metrics  |
+| 服务名称       | 服务说明           | 端口 | 路由     |
+| -------------- | ------------------ | ---- | -------- |
+| SwanLab-Server | 后端核心业务服务   | 3000 | /metrics |
+| SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics |
+| Vector         | 指标转发缓冲队列   | 9090 | /metrics |
 
 如果安装时 `Redis` / `PostgreSQL` / `ClickHouse` 基础数据库服务**未外部集成**，可以额外部署对应的 Exporter 采集服务，将可观测指标转发到 Prometheus（见下文 2.2 节）。其中 ClickHouse 内置 Prometheus exporter（端口 `9363`），可直接被采集，无需额外部署。
 
@@ -103,6 +103,7 @@ dependencies:
 ```
 
 > ⚠️ 注意：
+>
 > - `dependencies` 下的数据库依赖服务仅在未集成外部服务的情况下才能生效；
 > - PostgreSQL 与 Redis 通过独立的 Exporter 服务采集（见 2.2 节），无需开启 chart 的 `monitor` 配置。
 
@@ -121,6 +122,7 @@ SwanLab-Monitor 集成了 `Prometheus + Grafana` 的部署清单与可观测指�
 #### 2.1 Prometheus + Grafana 监控服务安装
 
 :::details swanlab-monitor.yaml 模板
+
 ```yaml
 # ============================================================
 # SwanLab Monitor — Prometheus + Grafana 监控栈
@@ -710,6 +712,7 @@ data:
               summary: "Redis 拒绝了新连接"
               description: "instance={{ $labels.instance }} 达到 maxclients，出现被拒绝连接"
 ```
+
 :::
 
 其中：
@@ -741,6 +744,7 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-prometheus 9090:909
 
 ::::details 数据库 Exporter 模板
 :::code-group
+
 ```yaml [postgres-exporter.yaml]
 # ============================================================
 # SwanLab Monitor 组件 — PostgreSQL Exporter（可选，按需安装）
@@ -998,6 +1002,7 @@ spec:
       targetPort: metrics
       name: metrics
 ```
+
 :::
 ::::
 
@@ -1038,14 +1043,14 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 8080:80
 
 打开 `http://localhost:8080`，在 **Dashboards → New → Import** 中按需导入对应的看板 JSON 配置（数据源选择 Prometheus）：
 
-| 服务           | 看板 JSON 配置模板                                  |
-| -------------- | --------------------------------------------------- |
-| SwanLab-Server | `<dashboard_base_url>/k8s-config-server.json`       |
-| SwanLab-House  | `<dashboard_base_url>/k8s-config-house.json`        |
-| Vector         | `<dashboard_base_url>/k8s-config-vector.json`       |
-| Redis          | `<dashboard_base_url>/k8s-config-redis.json`        |
-| PostgreSQL     | `<dashboard_base_url>/k8s-config-postgres.json`     |
-| ClickHouse     | `<dashboard_base_url>/k8s-config-ch.json`           |
+| 服务           | 看板 JSON 配置模板                              |
+| -------------- | ----------------------------------------------- |
+| SwanLab-Server | `<dashboard_base_url>/k8s-config-server.json`   |
+| SwanLab-House  | `<dashboard_base_url>/k8s-config-house.json`    |
+| Vector         | `<dashboard_base_url>/k8s-config-vector.json`   |
+| Redis          | `<dashboard_base_url>/k8s-config-redis.json`    |
+| PostgreSQL     | `<dashboard_base_url>/k8s-config-postgres.json` |
+| ClickHouse     | `<dashboard_base_url>/k8s-config-ch.json`       |
 
 > `<dashboard_base_url>` 为看板 JSON 文件的对象存储下载地址（占位，待补充）。
 
@@ -1066,6 +1071,7 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 8080:80
 #### 4.1 Alertmanager 服务安装
 
 :::details swanlab-monitor-alertmanager.yaml 模板
+
 ```yaml
 # ============================================================
 # SwanLab Monitor — 告警通道统一凭据 Secret
@@ -1267,6 +1273,7 @@ spec:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: swanlab-monitor
 ```
+
 :::
 
 模板中的密钥占位符（按需填写实际启用的通道即可）：
@@ -1288,6 +1295,7 @@ kubectl apply -f swanlab-monitor-alertmanager.yaml -n <your_namespace>
 
 ::::details IM 通道桥接模板
 :::code-group
+
 ```yaml [dingtalk.yaml]
 # ============================================================
 # 钉钉桥 — timonwong/prometheus-webhook-dingtalk，监听 8060
@@ -1576,6 +1584,7 @@ spec:
     app.kubernetes.io/name: wecom-bridge
     app.kubernetes.io/instance: swanlab-monitor
 ```
+
 :::
 ::::
 

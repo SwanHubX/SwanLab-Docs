@@ -1,4 +1,5 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
+import { SWANLAB_VERSION } from "./version";
 
 type SidebarItemBadge = { badge?: { type?: string; text?: string } };
 type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge;
@@ -107,7 +108,7 @@ export const en = defineConfig({
         activeMatch: "/en/api/",
       },
       {
-        text: "v0.8.3",
+        text: `v${SWANLAB_VERSION}`,
         items: [
           { text: "Changelog", link: base_path_guide_cloud + "/general/changelog" },
           { text: "Docs GitHub", link: "https://github.com/SwanHubX/SwanLab-Docs" },

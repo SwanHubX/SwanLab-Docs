@@ -48,8 +48,8 @@
   --font-heading: var(--font-sans);
   /* Code: native monospace stack (VitePress default / docs.swanlab.cn). */
   --font-mono:
-    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New",
+    monospace;
   --vp-font-family-mono: var(--font-mono);
 }
 
