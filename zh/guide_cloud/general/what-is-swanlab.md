@@ -2,11 +2,6 @@
 
 [快速开始](./quick-start.md) · [框架集成](../integration/index.md) · [同步Wandb](../integration/integration-wandb.md#_1-同步跟踪) · [基线社区](https://swanlab.cn/benchmarks)
 
-::: warning 🎉 新产品上线！
-[TRIO](https://pytrio.cn)是一个**前后分离、训推一体**的新型 AI 计算平台，它让开发者无需维护复杂GPU基础设施，在个人电脑就可以轻松做llm sft/rl训练，支持弹性扩展，一次开20个实验不再困难。  
-体验链接：https://pytrio.cn
-:::
-
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)
 
 SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**训练可视化、自动日志记录、超参数记录、实验对比、多人协同**等功能，帮助团队快速发现训练问题，加速模型迭代。
