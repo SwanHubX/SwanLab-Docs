@@ -1,39 +1,46 @@
 # 监控与日志配置指南
 
-> 本文档介绍了利用 `Prometheus + Grafana` 监测 SwanLab 线上应用的配置方法。
+> 本文档介绍利用 `Prometheus + Grafana` 监控 SwanLab 私有化服务的配置方法。
 
 :::info
-受限于各种集群权限要求，在私有化 `App ≥ 3.0.0` 版本，SwanLab 采用 Prometheus + Grafana + AlertManager 独立看板的部署模式。
+受限于各类集群权限要求，自私有化 `App ≥ 3.0.0` 版本起，SwanLab 采用 Prometheus + Grafana + Alertmanager 独立部署的监控模式。
 :::
 
 ## ☀️ 架构概述
 
 SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分并独立运行，整体监控链路如下：
 
-1. **Prometheus** 定期抓取 SwanLab 各个服务暴露的 `/metrics` 接口。
-2. **Grafana** 从 Prometheus 读取数据，并渲染 SwanLab 的监控仪表盘和告警面板。
-3. **「可选」Alertmanager** 或您已有的告警系统在 Prometheus 告警规则触发时发送通知。
+1. **Prometheus** 定期抓取 SwanLab 各服务暴露的 `/metrics` 接口。
+2. **Grafana** 从 Prometheus 读取数据，渲染 SwanLab 的监控仪表盘与告警面板。
+3. **「可选」Alertmanager** 或您已有的告警系统，在 Prometheus 告警规则触发时发送通知。
 
 ## 🪜 流程示意
+
+```text
+Server / House / Vector / ClickHouse ──/metrics──► Prometheus ──query──► Grafana
+PostgreSQL / Redis / CH-Table Exporter ───────────►      │
+                                                         └──firing──► Alertmanager ──► Slack / 钉钉 / 飞书 / 企业微信
+```
+
+Prometheus 通过监控专用 Headless Service 的 DNS A 记录发现并逐个抓取 Pod 指标，全程不访问 Kubernetes API，无需额外的 ServiceAccount / RBAC 权限。
 
 ## 🧱 前置条件
 
 - 已通过 Helm 安装 SwanLab 私有化服务（参考 [Kubernetes 部署指南](./deploy.md)）
 - 对 SwanLab 私有化服务所在命名空间具有 admin 权限
-- 应用默认 `release_name` 为 `swanlab-self-hosted`，安装命名空间为 `<your_namespace>`，存储类 storageClass 为 `<your_storageclass>`（请根据实际情况替换）
+- 应用默认 `release_name` 为 `swanlab-self-hosted`，安装命名空间为 `<your_namespace>`，存储类为 `<your_storageclass>`（请根据实际情况替换）
 
 下表为 SwanLab 服务目前支持访问 metrics 信息的应用和对应接口配置、路由：
 
-| 服务名称       | 服务说明         | 端口 | 路由     |
-| -------------- | ---------------- | ---- | -------- |
-| SwanLab-Server | 后端核心业务服务 | 3000 | /metrics |
-| SwanLab-House  | 实验指标OLAP服务 | 3000 | /metrics |
-|Vector | 指标转发缓冲队列 | 9090 | - |
+| 服务名称       | 服务说明           | 端口 | 路由      |
+| -------------- | ------------------ | ---- | --------- |
+| SwanLab-Server | 后端核心业务服务   | 3000 | /metrics  |
+| SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics  |
+| Vector         | 指标转发缓冲队列   | 9090 | /metrics  |
 
-如果在安装时，`Redis/PostgreSQL/ClickHouse` 基础数据库服务**未外部集成**，可以通过安装一些基本采集服务的方式，将可观测指标转发到 Promethues 。
+如果安装时 `Redis` / `PostgreSQL` / `ClickHouse` 基础数据库服务**未外部集成**，可以额外部署对应的 Exporter 采集服务，将可观测指标转发到 Prometheus（见下文 2.2 节）。其中 ClickHouse 内置 Prometheus exporter（端口 `9363`），可直接被采集，无需额外部署。
 
-
-在实际配置 Prometheus 抓取任务前，建议先验证各自服务的 Prometheus Metrics 接口是否正常。
+在实际配置 Prometheus 抓取任务前，建议先验证各服务的 Metrics 接口是否正常：
 
 - **验证 SwanLab-Server**
 
@@ -57,63 +64,68 @@ kubectl exec -n <your_namespace> -c house "$(
 
 其中：
 
-- `app.kubernetes.io/instance=<release_name>` 中，`<release_name>` 使用的是默认的 RELEASE 名称，默认为 `swanlab-self-hosted` ，请按照实际部署情况替换
-- `<your_namespace>` 替换为您实际部署使用的集群命名空间
+- `app.kubernetes.io/instance=<release_name>` 中的 `<release_name>` 为 Helm RELEASE 名称（默认 `swanlab-self-hosted`），请按实际部署情况替换
+- `<your_namespace>` 替换为实际部署使用的集群命名空间
 
 ## 📊 可观测监控服务
 
+### 1. 开启 values 监控配置
 
-### 1. 开启 value 监控配置
-在 `values.yaml` 中，对需要采集可观测指标的服务开启配置，格式例如下列所示：
+在 `values.yaml` 中，为需要采集可观测指标的服务开启 `monitor` 配置，示例如下：
 
 ```yaml
 # 应用服务
 service:
   server:
-  ...
-  # 是否开启监控采集专用 Headless Service
+    # ...
+    # 是否开启监控采集专用 Headless Service
+    monitor:
+      enable: true
+  house:
+    # ...
     monitor:
       enable: true
 
+# Vector 日志聚合
+vector:
+  # ...
+  monitor:
+    enable: true
+
 # 基础组件服务
 dependencies:
-  ...
+  # ...
   clickhouse:
-    ...
+    # ...
     # 是否开启监控采集专用 Headless Service
     monitor:
       enable: true
 ```
 
-> ⚠️ 注意： `denpendencies` 下的数据库依赖服务仅在未集成外部服务的情况下才能生效
+> ⚠️ 注意：
+> - `dependencies` 下的数据库依赖服务仅在未集成外部服务的情况下才能生效；
+> - PostgreSQL 与 Redis 通过独立的 Exporter 服务采集（见 2.2 节），无需开启 chart 的 `monitor` 配置。
 
-修改完 `value.yaml` 后执行更新：
+修改完 `values.yaml` 后执行更新：
+
 ```bash
 helm upgrade swanlab-self-hosted <path_to_chart> -n <your_namespace>
 ```
 
-更新完成后，在各开启 `monitor` 配置的 SVC 下会额外新建一个独立 `monitor` headless 服务用于可观测指标采集。
-
+更新完成后，每个开启了 `monitor` 配置的服务都会额外创建一个独立的 `monitor` Headless Service，专用于可观测指标采集。
 
 ### 2. 安装 SwanLab-Monitor 独立监控
 
-SwanLab-Monitor 集成了 `Prometheus + Grafana` 的镜像和可观测指标的采集配置，需要在 SwanLab 所在命名空间下
-安装两个单实例 StatefulSet 服务，模板如下所示⬇️：
+SwanLab-Monitor 集成了 `Prometheus + Grafana` 的部署清单与可观测指标的采集、告警配置，需要在 SwanLab 所在命名空间下安装两个单实例 StatefulSet 服务，模板如下：
 
-#### 2.1 Prometheus + Grafanna 监控服务安装
+#### 2.1 Prometheus + Grafana 监控服务安装
+
 :::details swanlab-monitor.yaml 模板
 ```yaml
 # ============================================================
-# SwanLab Monitor — Pod-level scraping via Headless Service DNS
-# ============================================================
-# ============================================================
-# 占位符清单（搜索 # ← 替换）—— 3 个环境占位符，可被 render.sh 批量替换：
-#   示例：swanlab-self-hosted  
-#                        release 含 "self-hosted" → fullname = release 名（如本例）
-#                        release 不含 "self-hosted"（如 swanlab-my）→ fullname = swanlab-my-self-hosted
-#   <YOUR_NAMESPACE>     K8s 命名空间          默认/示例：tenant-shaobo
-#   <STORAGE_CLASS_NAME> StorageClass（PVC）   默认/示例：disk-essd-auto-delete
-#
+# SwanLab Monitor — Prometheus + Grafana 监控栈
+# 抓取方式：通过监控专用 Headless Service 的 DNS A 记录逐 Pod 抓取，无需访问 K8s API
+# 占位符：<your_namespace>（命名空间）、<your_storageclass>（StorageClass）
 # ============================================================
 
 # ---------- Prometheus ConfigMap ----------
@@ -121,7 +133,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-monitor-prometheus-config
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/instance: swanlab-monitor
@@ -135,19 +147,18 @@ data:
 
     scrape_configs:
       # ---- SwanLab Server ----
-      # dns_sd_configs 通过监控专用 Headless Service A 记录发现所有 Pod IP
-      # Headless Service 名 = <fullname>-server-monitor，由 chart values monitorService: true 创建
-      # 通过 relabel_configs 静态注入 namespace / service 标签，匹配 Grafana 看板变量
+      # dns_sd 通过监控专用 Headless Service 的 A 记录发现所有 Pod IP
+      # relabel_configs 静态注入 namespace / service 标签，匹配 Grafana 看板变量
       - job_name: "swanlab-server"
         metrics_path: /metrics
         dns_sd_configs:
           - names:
-              - swanlab-self-hosted-server-monitor.<YOUR_NAMESPACE>.svc.cluster.local
+              - swanlab-self-hosted-server-monitor.<your_namespace>.svc.cluster.local
             type: A
             port: 3000
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: server
 
@@ -156,86 +167,76 @@ data:
         metrics_path: /metrics
         dns_sd_configs:
           - names:
-              - swanlab-self-hosted-house-monitor.<YOUR_NAMESPACE>.svc.cluster.local
+              - swanlab-self-hosted-house-monitor.<your_namespace>.svc.cluster.local
             type: A
             port: 3000
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: house
 
-      # ---- Vector 日志聚合 ----
-      # Vector 内置 prometheus_exporter sink，端口 9090，路径 /metrics
+      # ---- Vector 日志聚合（内置 prometheus_exporter，端口 9090）----
       - job_name: "swanlab-vector"
         metrics_path: /metrics
         dns_sd_configs:
           - names:
-              - swanlab-self-hosted-vector-monitor.<YOUR_NAMESPACE>.svc.cluster.local
+              - swanlab-self-hosted-vector-monitor.<your_namespace>.svc.cluster.local
             type: A
             port: 9090
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: vector
 
-      # ---- ClickHouse 数据库 ----
-      # 仅在非外部托管时生效（integrations.clickhouse.enabled: false）
-      # ClickHouse 内置 prometheus exporter，端口 9363（独立于 HTTP 8123），路径 /metrics
+      # ---- ClickHouse 数据库（内置 exporter，端口 9363，仅未外部集成时生效）----
       - job_name: "swanlab-clickhouse"
         metrics_path: /metrics
         dns_sd_configs:
           - names:
-              - swanlab-self-hosted-clickhouse-monitor.<YOUR_NAMESPACE>.svc.cluster.local
+              - swanlab-self-hosted-clickhouse-monitor.<your_namespace>.svc.cluster.local
             type: A
             port: 9363
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: clickhouse
 
-      # ---- ClickHouse per-table exporter ----
-      # 独立 Deployment（见 components/ch-exporter.yaml，按需安装）
-      # 查询 CH system.parts 暴露每表 bytes/rows/parts，端口 9364
-      # 注：swanlab-monitor-* 为本监控栈固定 Service 名（非 swanlab-self-hosted），仅 namespace 需替换
+      # ---- ClickHouse per-table exporter（端口 9364，需部署 clickhouse-exporter.yaml）----
       - job_name: "swanlab-clickhouse-tables"
         metrics_path: /metrics
         static_configs:
           - targets:
-              - swanlab-monitor-ch-table-exporter.<YOUR_NAMESPACE>:9364
+              - swanlab-monitor-ch-table-exporter.<your_namespace>:9364
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: clickhouse
 
-      # ---- PostgreSQL exporter ----
-      # 独立 Deployment（见 components/postgres-exporter.yaml，按需安装）
-      # prometheuscommunity/postgres-exporter，端口 9187
+      # ---- PostgreSQL exporter（端口 9187，需部署 postgres-exporter.yaml）----
       - job_name: "swanlab-postgres"
         metrics_path: /metrics
         static_configs:
           - targets:
-              - swanlab-monitor-postgres-exporter.<YOUR_NAMESPACE>:9187
+              - swanlab-monitor-postgres-exporter.<your_namespace>:9187
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: postgres
 
-      # ---- Redis exporter ----
-      # 独立 Deployment（见 components/redis-exporter.yaml，按需安装）
-      # oliver006/redis_exporter，端口 9121
+      # ---- Redis exporter（端口 9121，需部署 redis-exporter.yaml）----
       - job_name: "swanlab-redis"
         metrics_path: /metrics
         static_configs:
           - targets:
-              - swanlab-monitor-redis-exporter.<YOUR_NAMESPACE>:9121
+              - swanlab-monitor-redis-exporter.<your_namespace>:9121
         relabel_configs:
           - target_label: namespace
-            replacement: <YOUR_NAMESPACE>
+            replacement: <your_namespace>
           - target_label: service
             replacement: redis
 
@@ -247,15 +248,12 @@ data:
     rule_files:
       - /etc/prometheus/rules/*.yml
 
-    # ---- 对接 Alertmanager ----
-    # firing 告警发送到 monitor-alerting.yaml 部署的 Alertmanager，再路由到各 IM 通道
-    # Alertmanager 是已知固定地址，用 static_configs 即可（无需 dns_sd）
-    # 注：swanlab-monitor-alertmanager 为固定 Service 名（由 monitor-alerting-template.yaml 创建）
+    # ---- 对接 Alertmanager（可选，由 swanlab-monitor-alertmanager.yaml 创建）----
     alerting:
       alertmanagers:
         - static_configs:
             - targets:
-                - swanlab-monitor-alertmanager.<YOUR_NAMESPACE>:9093
+                - swanlab-monitor-alertmanager.<your_namespace>:9093
 
 ---
 # ---------- Prometheus StatefulSet ----------
@@ -263,7 +261,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: swanlab-monitor-prometheus
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/instance: swanlab-monitor
@@ -282,7 +280,7 @@ spec:
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/instance: swanlab-monitor
     spec:
-      # 显式声明使用 default SA + 禁用 token 自动挂载
+      # 显式声明使用 default SA + 禁用 token 自动挂载（Prometheus 无需访问 K8s API）
       serviceAccountName: default
       automountServiceAccountToken: false
       securityContext:
@@ -296,7 +294,7 @@ spec:
         - name: prometheus
           image: repo.swanlab.cn/public/prometheus:v3.12.0-distroless
           imagePullPolicy: IfNotPresent
-          securityContext:                # 容器级加固：禁提权 + 弃所有 capabilities + 只读根 FS
+          securityContext: # 容器级加固：禁提权 + 弃所有 capabilities + 只读根文件系统
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
@@ -304,8 +302,8 @@ spec:
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus"
-            - "--storage.tsdb.retention.time=7d" # ← 可按需修改 retention.time（7d/15d/30d 等） 
-            - "--storage.tsdb.retention.size=15GiB" # ← 可按需修改 retention.size（如 15GiB），不得超过 PVC 容量
+            - "--storage.tsdb.retention.time=7d" # ← 可按需修改保留时长（7d/15d/30d 等）
+            - "--storage.tsdb.retention.size=15GiB" # ← 可按需修改保留大小，不得超过 PVC 容量
             - "--web.enable-lifecycle"
           ports:
             - name: web
@@ -319,7 +317,7 @@ spec:
               readOnly: true
             - name: data
               mountPath: /prometheus
-            - name: tmp                   # readOnlyRootFilesystem 下供 Prometheus 写临时文件
+            - name: tmp # 只读根文件系统下用于写临时文件
               mountPath: /tmp
           readinessProbe:
             httpGet:
@@ -347,7 +345,7 @@ spec:
         - name: rules
           configMap:
             name: swanlab-monitor-prometheus-rules
-        - name: tmp                      # 配合 readOnlyRootFilesystem
+        - name: tmp
           emptyDir: {}
   volumeClaimTemplates:
     - metadata:
@@ -357,7 +355,7 @@ spec:
         resources:
           requests:
             storage: "20Gi"
-        storageClassName: <STORAGE_CLASS_NAME>
+        storageClassName: <your_storageclass>
         volumeMode: Filesystem
 
 ---
@@ -366,7 +364,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-prometheus
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/instance: swanlab-monitor
@@ -386,7 +384,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-monitor-grafana-datasources
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: swanlab-monitor
@@ -397,7 +395,7 @@ data:
       - name: Prometheus
         type: prometheus
         access: proxy
-        url: http://swanlab-monitor-prometheus.<YOUR_NAMESPACE>:9090
+        url: http://swanlab-monitor-prometheus.<your_namespace>:9090
         isDefault: true
         editable: true
 
@@ -407,7 +405,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: swanlab-monitor-grafana
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: swanlab-monitor
@@ -439,14 +437,14 @@ spec:
         - name: grafana
           image: repo.swanlab.cn/public/grafana:13.0.1-security-01
           imagePullPolicy: IfNotPresent
-          securityContext:                # 容器级加固：禁提权 + 弃所有 capabilities + 只读根 FS
+          securityContext: # 容器级加固：禁提权 + 弃所有 capabilities + 只读根文件系统
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
             readOnlyRootFilesystem: true
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
-              value: "swanlab-monitor@default"   
+              value: "swanlab-monitor@default" # ← 建议修改默认管理员密码
             - name: GF_USERS_ALLOW_SIGN_UP
               value: "false"
             - name: GF_SERVER_HTTP_PORT
@@ -460,7 +458,7 @@ spec:
             - name: provisioning-datasources
               mountPath: /etc/grafana/provisioning/datasources
               readOnly: true
-            - name: tmp                   # readOnlyRootFilesystem 下供 Grafana 写临时文件
+            - name: tmp # 只读根文件系统下用于写临时文件
               mountPath: /tmp
           readinessProbe:
             httpGet:
@@ -485,7 +483,7 @@ spec:
         - name: provisioning-datasources
           configMap:
             name: swanlab-monitor-grafana-datasources
-        - name: tmp                      # 配合 readOnlyRootFilesystem
+        - name: tmp
           emptyDir: {}
   volumeClaimTemplates:
     - metadata:
@@ -495,7 +493,7 @@ spec:
         resources:
           requests:
             storage: "20Gi"
-        storageClassName: <STORAGE_CLASS_NAME>
+        storageClassName: <your_storageclass>
         volumeMode: Filesystem
 
 ---
@@ -504,7 +502,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-grafana
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: swanlab-monitor
@@ -524,20 +522,18 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: swanlab-monitor-prometheus-rules
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/instance: swanlab-monitor
 data:
   swanlab-alerts.yml: |
-    # firing 告警由 Alertmanager 处理（见 monitor-alerting.yaml），按 receiver 路由到各 IM 通道。
-    # 通道开关 / 收件人 / 分组策略均在 alertmanager.yml（Secret: swanlab-monitor-alertmanager-config）中配置。
+    # firing 告警由 Alertmanager 处理（见 swanlab-monitor-alertmanager.yaml），按 receiver 路由到各 IM 通道
     groups:
       - name: swanlab-alerts
         interval: 30s
         rules:
-          # ---- 抓取健康 ----
-          # 任一 swanlab job 抓取失败 5 分钟即告警
+          # ---- 抓取健康（Server / House）----
           - alert: SwanLabScrapeDown
             expr: up{job=~"swanlab-(server|house)"} == 0
             for: 5m
@@ -547,8 +543,7 @@ data:
               summary: "{{ $labels.job }} 抓取失败"
               description: "instance={{ $labels.instance }} 已离线超过 5 分钟，Prometheus 无法抓取 /metrics"
 
-          # ---- 基础设施抓取健康 ----
-          # Vector / ClickHouse 抓取失败 5 分钟即告警
+          # ---- 抓取健康（Vector / ClickHouse）----
           - alert: SwanLabInfraScrapeDown
             expr: up{job=~"swanlab-(vector|clickhouse)"} == 0
             for: 5m
@@ -558,8 +553,7 @@ data:
               summary: "{{ $labels.job }} 抓取失败"
               description: "instance={{ $labels.instance }} 已离线超过 5 分钟，Prometheus 无法抓取 /metrics"
 
-          # ---- 服务端 5xx / panic 错误率 ----
-          # 任一服务 5xx+exception 错误率 > 5% 持续 5 分钟
+          # ---- 服务端 5xx / 异常错误率 ----
           - alert: SwanLabHigh5xxRate
             expr: |
               sum by (service, namespace) (
@@ -577,7 +571,6 @@ data:
               description: "{{ $labels.service }} 的服务端错误率超过 5%，持续 5 分钟"
 
           # ---- panic 异常 ----
-          # 任一服务出现 panic（被 recover 捕获记为 exception）即告警
           - alert: SwanLabPanicSpike
             expr: rate(http_error_requests_total{error_type="exception", route!="/metrics"}[5m]) > 0
             for: 1m
@@ -588,7 +581,6 @@ data:
               description: "instance={{ $labels.instance }} 在过去 5 分钟内出现 panic（被中间件 recover 捕获）"
 
           # ---- P99 延迟过高 ----
-          # 任一服务 P99 > 5s 持续 5 分钟
           - alert: SwanLabLatencyP99High
             expr: |
               histogram_quantile(0.99,
@@ -604,7 +596,6 @@ data:
               description: "{{ $labels.service }} 的 P99 延迟超过 5s，持续 5 分钟"
 
           # ---- Pod 频繁重启 ----
-          # instance 的 process_start_time_seconds 在 10 分钟内变化 > 2 次
           - alert: SwanLabPodRestart
             expr: changes(process_start_time_seconds{job=~"swanlab-(server|house)"}[10m]) > 2
             for: 0m
@@ -615,7 +606,6 @@ data:
               description: "instance={{ $labels.instance }} 在 10 分钟内重启超过 2 次"
 
           # ---- ClickHouse 磁盘使用率过高 ----
-          # default disk 使用率 > 85% 持续 10 分钟
           - alert: SwanLabClickHouseDiskHigh
             expr: |
               ClickHouseAsyncMetrics_DiskUsed_default{job="swanlab-clickhouse"}
@@ -629,7 +619,6 @@ data:
               description: "instance={{ $labels.instance }} 磁盘使用率超过 85%，持续 10 分钟"
 
           # ---- ClickHouse Parts 数过高（TooManyParts 风险）----
-          # 单分区最大 part 数 > 100 持续 10 分钟
           - alert: SwanLabClickHouseTooManyParts
             expr: ClickHouseAsyncMetrics_MaxPartCountForPartition{job="swanlab-clickhouse"} > 100
             for: 10m
@@ -639,8 +628,7 @@ data:
               summary: "ClickHouse Parts 数过高"
               description: "instance={{ $labels.instance }} 单分区最大 Parts 数超过 100，存在 TooManyParts 风险"
 
-          # ---- Vector Disk Buffer 积压 ----
-          # disk buffer 使用率 > 50% 持续 10 分钟（说明 ClickHouse sink 消费不及时）
+          # ---- Vector Disk Buffer 积压（通常说明 ClickHouse 写入消费不及时）----
           - alert: SwanLabVectorDiskBufferBacklog
             expr: |
               (
@@ -655,8 +643,7 @@ data:
               summary: "Vector Disk Buffer 积压"
               description: "component={{ $labels.component_id }} host={{ $labels.host }} 磁盘缓冲区使用率超过 50%，持续 10 分钟"
 
-          # ---- PostgreSQL 宕机 ----
-          # pg_up == 0 持续 1 分钟（exporter 连不上 PG 或 PG 进程挂了）
+          # ---- PostgreSQL 宕机（exporter 无法连接或进程异常）----
           - alert: SwanLabPostgresDown
             expr: pg_up{job="swanlab-postgres"} == 0
             for: 1m
@@ -667,7 +654,6 @@ data:
               description: "instance={{ $labels.instance }} PostgreSQL 不可用，持续 1 分钟"
 
           # ---- PostgreSQL 连接数过高 ----
-          # 活跃连接 > max_connections * 80% 持续 5 分钟
           - alert: SwanLabPostgresConnectionsHigh
             expr: |
               sum(pg_stat_activity_count{job="swanlab-postgres"})
@@ -680,8 +666,7 @@ data:
               summary: "PostgreSQL 连接数过高"
               description: "活跃连接数超过最大连接数的 80%，持续 5 分钟"
 
-          # ---- PostgreSQL 死锁 ----
-          # 出现新死锁即告警（deadlocks 是累计计数器，rate > 0 表示有新增）
+          # ---- PostgreSQL 死锁（deadlocks 为累计计数器，rate > 0 表示有新增）----
           - alert: SwanLabPostgresDeadlocks
             expr: rate(pg_stat_database_deadlocks{job="swanlab-postgres"}[5m]) > 0
             for: 1m
@@ -691,8 +676,7 @@ data:
               summary: "PostgreSQL 检测到死锁"
               description: "database={{ $labels.datname }} 出现新的死锁"
 
-          # ---- Redis 宕机 ----
-          # redis_up == 0 持续 1 分钟（exporter 连不上 Redis 或 Redis 进程挂了）
+          # ---- Redis 宕机（exporter 无法连接或进程异常）----
           - alert: SwanLabRedisDown
             expr: redis_up{job="swanlab-redis"} == 0
             for: 1m
@@ -702,8 +686,7 @@ data:
               summary: "Redis 宕机"
               description: "instance={{ $labels.instance }} Redis 不可用，持续 1 分钟"
 
-          # ---- Redis 内存使用率过高 ----
-          # used_memory / maxmemory > 85% 持续 5 分钟（maxmemory=0 即未限时通过 > 0 跳过）
+          # ---- Redis 内存使用率过高（maxmemory=0 即未限制时自动跳过）----
           - alert: SwanLabRedisMemoryHigh
             expr: |
               redis_memory_used_bytes{job="swanlab-redis"}
@@ -718,7 +701,6 @@ data:
               description: "instance={{ $labels.instance }} 内存使用率超过 85%，持续 5 分钟"
 
           # ---- Redis 拒绝连接（maxclients 打满）----
-          # 出现被拒绝连接即告警（rejected_connections_total 为累计计数器）
           - alert: SwanLabRedisRejectedConnections
             expr: increase(redis_rejected_connections_total{job="swanlab-redis"}[5m]) > 0
             for: 1m
@@ -727,39 +709,43 @@ data:
             annotations:
               summary: "Redis 拒绝了新连接"
               description: "instance={{ $labels.instance }} 达到 maxclients，出现被拒绝连接"
-
 ```
 :::
 
-其中:
-- ` <YOUR_NAMESPACE>`: 安装 SwanLab 私有化服务的命名空间;
-- `<STORAGE_CLASS_NAME>` StorageClass（PVC）: 存储 Prometheus 指标和Grafana配置文件的持久化存储类；
-- `rentationTime` 和 `rentationSize` 分别代表可观测时序数据的过期时间和轮转存储大小，默认按照 7 天/ 15Gi 的大小进行配置，可以按需调整；
-- 抓取配置与告警规则无需做额外修改；
+其中：
 
-所有服务的 DNS 服务地址均以 `swanlab-self-hosted` 为默认的 release 名称进行预设，如果您此前安装时**自行指定了 `release` 名称**，例如： `swanlab-my`，则相关服务的 host 前缀需要变更为 `swanlab-my-<SVC_NAME>-self-hosted`
+- `<your_namespace>`：安装 SwanLab 私有化服务的命名空间
+- `<your_storageclass>`：存储 Prometheus 指标与 Grafana 配置文件的 StorageClass（PVC）
+- `retention.time` 与 `retention.size`：可观测时序数据的保留时长与轮转存储大小，默认按 7 天 / 15GiB 配置，可按需调整
+- `GF_SECURITY_ADMIN_PASSWORD`：Grafana 管理员密码，默认为 `swanlab-monitor@default`，建议修改
+- 抓取配置与告警规则无需额外修改
 
-在替换完对应字段后，可以安装 `Prometheus` + `Grafana` 两个独立 StatefulSet 服务
+模板中所有服务的 DNS 地址均以默认 release 名称 `swanlab-self-hosted` 预设。如果您安装时**自行指定了 release 名称**（例如 `swanlab-my`），则完整资源名规则为 `<release名>-self-hosted`（例如 `swanlab-my-self-hosted`），对应监控地址需相应调整为 `swanlab-my-self-hosted-<服务名>-monitor.<your_namespace>.svc.cluster.local`。
+
+替换完对应字段后，安装 `Prometheus` + `Grafana` 两个独立 StatefulSet 服务：
+
 ```bash
 kubectl apply -f swanlab-monitor.yaml -n <your_namespace>
 ```
 
+安装完成后，可通过端口转发验证各抓取任务是否正常：
 
-#### 「可选」2.2 数据库 Exporter 服务安装
-针对 `Redis/PostgreSQL/ClickHouse` 数据库服务，需要各自额外安装 `SideCar` 采集服务用于转发指标
+```bash
+kubectl port-forward -n <your_namespace> svc/swanlab-monitor-prometheus 9090:9090
+# 打开 http://localhost:9090/targets ，确认各 job 的 target 状态为 UP
+```
 
-:::details DB-Exporter
+#### 2.2 「可选」数据库 Exporter 服务安装
+
+针对 `Redis` / `PostgreSQL` / `ClickHouse` 数据库服务，可按需分别部署对应的 Exporter 服务，用于采集并暴露指标：
+
+::::details 数据库 Exporter 模板
 :::code-group
 ```yaml [postgres-exporter.yaml]
 # ============================================================
 # SwanLab Monitor 组件 — PostgreSQL Exporter（可选，按需安装）
-# ============================================================
-# prometheuscommunity/postgres-exporter，查询 PG pg_stat_* 系统视图
-# 暴露连接数 / 事务 / 锁 / 复制 / 缓存命中 / 数据库大小等 100+ 指标，端口 9187。
-# 抓取 job 在 monitor-raw.yaml 的 prometheus 配置中（job_name: swanlab-postgres）。
-#
-# 依赖：chart 已部署 PostgreSQL（dependencies.postgres），凭据 Secret 由 chart 创建。
-# 连接 PG 的凭据来自 chart 创建的 Secret（<POSTGRES_SECRET_NAME>）
+# 查询 pg_stat_* 系统视图，暴露连接数 / 事务 / 锁 / 缓存命中 / 数据库大小等指标，端口 9187
+# 占位符：<your_namespace>（命名空间）、<your_postgres_exporter_image>（镜像地址）
 # ============================================================
 
 ---
@@ -768,7 +754,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swanlab-monitor-postgres-exporter
-  namespace: tenant-shaobo
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: postgres-exporter
     app.kubernetes.io/instance: swanlab-monitor
@@ -786,7 +772,7 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: <POSTGRES_EXPORTER_IMAGE>
+          image: <your_postgres_exporter_image>
           imagePullPolicy: Always
           ports:
             - containerPort: 9187
@@ -795,15 +781,15 @@ spec:
             - name: PG_USER
               valueFrom:
                 secretKeyRef:
-                  name: <POSTGRES_SECRET_NAME>
+                  name: swanlab-self-hosted-postgres-credentials
                   key: username
             - name: PG_PASS
               valueFrom:
                 secretKeyRef:
-                  name: <POSTGRES_SECRET_NAME>
+                  name: swanlab-self-hosted-postgres-credentials
                   key: password
             - name: DATA_SOURCE_NAME
-              value: "postgresql://$(PG_USER):$(PG_PASS)@swanlab-self-hosted-postgres.tenant-shaobo.svc.cluster.local:5432/app?sslmode=disable"
+              value: "postgresql://$(PG_USER):$(PG_PASS)@swanlab-self-hosted-postgres.<your_namespace>.svc.cluster.local:5432/app?sslmode=disable"
           securityContext:
             runAsNonRoot: true
             runAsUser: 65534
@@ -825,12 +811,14 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
+
 ---
+# ---------- PostgreSQL Exporter Service ----------
 apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-postgres-exporter
-  namespace: tenant-shaobo
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: postgres-exporter
     app.kubernetes.io/instance: swanlab-monitor
@@ -843,19 +831,14 @@ spec:
     - port: 9187
       targetPort: metrics
       name: metrics
-
 ```
 
 ```yaml [redis-exporter.yaml]
 # ============================================================
 # SwanLab Monitor 组件 — Redis Exporter（可选，按需安装）
-# ============================================================
-# oliver006/redis_exporter，查询 Redis INFO 暴露内存/连接/命令统计/键空间等指标，端口 9121。
-# 抓取 job 在 monitor-raw.yaml 的 prometheus 配置中（job_name: swanlab-redis）。
-#
-# 依赖：chart 已部署 Redis（dependencies.redis）。
-# 当前 chart 的 Redis 无密码（secret 仅存 url，无 password key），故仅需 REDIS_ADDR。
-# 连接 Redis 的地址为主 ClusterIP Service（Redis 单副本 + Recreate，无需逐 Pod 发现）。
+# 查询 Redis INFO，暴露内存 / 连接 / 命令统计 / 键空间等指标，端口 9121
+# 当前 chart 的 Redis 无密码，仅需配置 REDIS_ADDR
+# 占位符：<your_namespace>（命名空间）、<your_redis_exporter_image>（镜像地址）
 # ============================================================
 
 ---
@@ -864,7 +847,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swanlab-monitor-redis-exporter
-  namespace: tenant-shaobo
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: redis-exporter
     app.kubernetes.io/instance: swanlab-monitor
@@ -882,14 +865,14 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: <REDIS_EXPORTER_IMAGE>
+          image: <your_redis_exporter_image>
           imagePullPolicy: Always
           ports:
             - containerPort: 9121
               name: metrics
           env:
             - name: REDIS_ADDR
-              value: "redis://<HELM_RELEASE_NAME>-redis.tenant-shaobo.svc.cluster.local:6379"
+              value: "redis://swanlab-self-hosted-redis.<your_namespace>.svc.cluster.local:6379"
           securityContext:
             runAsNonRoot: true
             runAsUser: 65534
@@ -905,12 +888,14 @@ spec:
             limits:
               cpu: 100m
               memory: 64Mi
+
 ---
+# ---------- Redis Exporter Service ----------
 apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-redis-exporter
-  namespace: tenant-shaobo
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: redis-exporter
     app.kubernetes.io/instance: swanlab-monitor
@@ -923,20 +908,14 @@ spec:
     - port: 9121
       targetPort: metrics
       name: metrics
-
 ```
 
 ```yaml [clickhouse-exporter.yaml]
 # ============================================================
-# SwanLab Monitor 组件 — ClickHouse Exporter（可选，按需安装）
-# ============================================================
-# CH 内置 exporter 只暴露聚合指标，此 Deployment 查询 system.parts
-# 暴露每表 bytes/rows/parts 作为 Prometheus gauge 指标，端口 9364。
-# 抓取 job 在 monitor-raw.yaml 的 prometheus 配置中（job_name: swanlab-clickhouse-tables）。
-#
-# 依赖：chart 已部署 ClickHouse（dependencies.clickhouse），凭据 Secret 由 chart 创建。
-# 镜像: <CH_TABLE_EXPORTER_IMAGE>（已推送到 ACR）
-# 连接 CH 的凭据来自 chart 创建的 Secret（<CLICKHOUSE_SECRET_NAME>）
+# SwanLab Monitor 组件 — ClickHouse Per-Table Exporter（可选，按需安装）
+# ClickHouse 内置 exporter 只暴露聚合指标，此服务查询 system.parts
+# 暴露每表 bytes / rows / parts 作为 Prometheus gauge 指标，端口 9364
+# 占位符：<your_namespace>（命名空间）、<your_ch_table_exporter_image>（镜像地址）
 # ============================================================
 
 ---
@@ -945,7 +924,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swanlab-monitor-ch-table-exporter
-  namespace: tenant-shaobo
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: ch-table-exporter
     app.kubernetes.io/instance: swanlab-monitor
@@ -963,25 +942,25 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: <CH_TABLE_EXPORTER_IMAGE>
+          image: <your_ch_table_exporter_image>
           imagePullPolicy: Always
           ports:
             - containerPort: 9364
               name: metrics
           env:
             - name: CH_HOST
-              value: "swanlab-self-hosted-clickhouse.tenant-shaobo.svc.cluster.local"
+              value: "swanlab-self-hosted-clickhouse.<your_namespace>.svc.cluster.local"
             - name: CH_PORT
               value: "8123"
             - name: CLICKHOUSE_USER
               valueFrom:
                 secretKeyRef:
-                  name: <CLICKHOUSE_SECRET_NAME>
+                  name: swanlab-self-hosted-clickhouse-credentials
                   key: username
             - name: CLICKHOUSE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: <CLICKHOUSE_SECRET_NAME>
+                  name: swanlab-self-hosted-clickhouse-credentials
                   key: password
           securityContext:
             runAsNonRoot: true
@@ -998,12 +977,14 @@ spec:
             limits:
               cpu: 100m
               memory: 64Mi
+
 ---
+# ---------- ClickHouse Per-Table Exporter Service ----------
 apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-ch-table-exporter
-  namespace: tenant-shaobo
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: ch-table-exporter
     app.kubernetes.io/instance: swanlab-monitor
@@ -1016,24 +997,30 @@ spec:
     - port: 9364
       targetPort: metrics
       name: metrics
-
 ```
 :::
+::::
 
+模板说明：
 
-确认好需要观测的基础数据库服务后，可以执行如下命令进行安装：
+- 数据库的 Service 地址与凭据 Secret 名均按默认 release 名称 `swanlab-self-hosted` 预设（Secret 名形如 `<fullname>-postgres-credentials`），如自定义了 release 名称，请按 `<release名>-self-hosted` 规则同步调整
+- 三个 Exporter 的镜像占位符需替换为您镜像仓库中实际可用的镜像地址
+- PostgreSQL / ClickHouse 的凭据 Secret 由 SwanLab chart 自动创建，可通过 `kubectl get secret -n <your_namespace>` 确认
+
+确认需要观测的数据库服务后，执行如下命令安装：
+
 ```bash
 # Redis
 kubectl apply -f redis-exporter.yaml -n <your_namespace>
 
 # PostgreSQL
-kubectl apply -f postgres-exporter.yaml  -n <your_namespace>
+kubectl apply -f postgres-exporter.yaml -n <your_namespace>
 
 # ClickHouse
-kubectl apply -f clickhouse-exporter.yaml  -n <your_namespace>
+kubectl apply -f clickhouse-exporter.yaml -n <your_namespace>
 ```
 
-安装完成后需要重启 Prometheus + Grafana 服务才能生效:
+Exporter 安装完成后，Prometheus 会自动发现新目标并纳入抓取；如需立即生效，可手动重启：
 
 ```bash
 kubectl rollout restart statefulset swanlab-monitor-prometheus -n <your_namespace>
@@ -1041,25 +1028,30 @@ kubectl rollout restart statefulset swanlab-monitor-prometheus -n <your_namespac
 kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 ```
 
-
-
 ### 3. 配置仪表盘
 
-根据开启的可观测服务，可根据需要在 Grafana 中导入对应的看板配置
+先通过端口转发访问 Grafana（默认账号 `admin`，密码为模板中的 `GF_SECURITY_ADMIN_PASSWORD`）：
 
-| 服务 | 配置模板 | 
-| --- | ---- |
-| SwanLab-Server | server_url |
-| SwanLab-House | server_url |
-| Vector | server_url |
-| Redis | server_url |
-| PostgreSQL | server_url |
-| ClickHouse | server_url |
+```bash
+kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 8080:80
+```
 
+打开 `http://localhost:8080`，在 **Dashboards → New → Import** 中按需导入对应的看板 JSON 配置（数据源选择 Prometheus）：
+
+| 服务           | 看板 JSON 配置模板                                  |
+| -------------- | --------------------------------------------------- |
+| SwanLab-Server | `<dashboard_base_url>/k8s-config-server.json`       |
+| SwanLab-House  | `<dashboard_base_url>/k8s-config-house.json`        |
+| Vector         | `<dashboard_base_url>/k8s-config-vector.json`       |
+| Redis          | `<dashboard_base_url>/k8s-config-redis.json`        |
+| PostgreSQL     | `<dashboard_base_url>/k8s-config-postgres.json`     |
+| ClickHouse     | `<dashboard_base_url>/k8s-config-ch.json`           |
+
+> `<dashboard_base_url>` 为看板 JSON 文件的对象存储下载地址（占位，待补充）。
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201624323.png"/>
 
-配置正常后可以看到相关的服务检测指标
+配置正常后可以看到相关的服务监控指标：
 
 - **SwanLab-Server**:
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201132687.png"/>
@@ -1067,83 +1059,55 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 - **SwanLab-House**:
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201039152.png"/>
 
-### 4. 「可选」 AlertManager 通知告警服务
+### 4. 「可选」Alertmanager 告警通知服务
 
-在 `swanlab-monitor.yaml` 中配置了关于服务指标异常时的告警阈值，但并未配置触发渠道，因此如果要实现阈值自动告警，需要安装额外的组件用于配置告警通知
+`swanlab-monitor.yaml` 中已配置服务指标异常时的告警规则阈值，但未配置通知渠道。如需告警触发后自动发送通知，需要额外安装 Alertmanager 及对应的 IM 通道桥接服务。
 
-#### 4.1 AlertManager 服务安装
+#### 4.1 Alertmanager 服务安装
 
-:::details swanlab-monitor-alertmanager.yaml 配置
+:::details swanlab-monitor-alertmanager.yaml 模板
 ```yaml
 # ============================================================
 # SwanLab Monitor — 告警通道统一凭据 Secret
-# ============================================================
-# 所有 IM 通道的密钥收敛在这一个 Secret 里，部署时只需填一次。
-# 各组件的读取方式：
-#   Alertmanager — 挂载到 /etc/alertmanager/secrets/，用 api_url_file / url_file 引用
-#   DingTalk 桥 — 挂载 dingtalk_config.yml 作为 config.yml
-#   Feishu 桥   — envFrom 注入 FEISHU_WEBHOOK_URL / FEISHU_SECRET / MESSAGE_TYPE
-#   WeCom 桥    — 无需凭据（key 在 wecom_webhook_url 里，Alertmanager 读取）
-#
-# 占位符清单（搜索 # ← 替换）：
-#   <SLACK_TOKEN>           Slack Incoming Webhook 的 services/ 之后部分
-#   <WECOM_BOT_KEY>         企业微信群机器人 webhook 的 key 参数
-#   <DINGTALK_ACCESS_TOKEN> 钉钉机器人 webhook 的 access_token
-#   <DINGTALK_SECRET>       钉钉机器人加签 secret（未开加签可留空字符串）
-#   <FEISHU_WEBHOOK_URL>    飞书自定义机器人 webhook 完整 URL
-#   <FEISHU_SECRET>         飞书机器人签名校验 secret（未开校验留空字符串）
+# 所有 IM 通道的密钥集中在此 Secret 中，部署时按需填写一次即可
 # ============================================================
 apiVersion: v1
 kind: Secret
 metadata:
   name: swanlab-monitor-channels-credentials
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: alertmanager-channels
     app.kubernetes.io/instance: swanlab-monitor
 type: Opaque
 stringData:
-  # ---- Slack（Alertmanager 通过 api_url_file 读取此文件）----
-  slack_webhook_url: "https://hooks.slack.com/services/<SLACK_TOKEN>"       # ← Slack Incoming Webhook 完整 URL
+  # ---- Slack（Alertmanager 通过 api_url_file 读取）----
+  slack_webhook_url: "https://hooks.slack.com/services/<your_slack_token>"
 
-  # ---- 企业微信（Alertmanager 通过 url_file 读取此文件，含完整 URL + key）----
-  wecom_webhook_url: "http://swanlab-monitor-wecom-bridge.<YOUR_NAMESPACE>:5001/send?key=<WECOM_BOT_KEY>"   # ← 企业微信群机器人 key
+  # ---- 企业微信（Alertmanager 通过 url_file 读取，含完整 URL + key）----
+  wecom_webhook_url: "http://swanlab-monitor-wecom-bridge.<your_namespace>:5001/send?key=<your_wecom_bot_key>"
 
   # ---- 钉钉（桥通过 subPath 挂载此 key 作为 config.yml）----
   dingtalk_config.yml: |
     targets:
       swanlab:
-        url: https://oapi.dingtalk.com/robot/send?access_token=<DINGTALK_ACCESS_TOKEN>   # ← 钉钉机器人 access_token
-        secret: <DINGTALK_SECRET>                                                         # ← 加签 secret；未开加签留空字符串
+        url: https://oapi.dingtalk.com/robot/send?access_token=<your_dingtalk_access_token>
+        secret: <your_dingtalk_secret> # 未开加签可留空字符串
         mention:
           all: false
 
   # ---- 飞书（桥通过 envFrom 注入以下环境变量）----
-  FEISHU_WEBHOOK_URL: "<FEISHU_WEBHOOK_URL>"           # ← 飞书自定义机器人完整 webhook URL
-  FEISHU_SECRET: "<FEISHU_SECRET>"                     # ← 签名校验 secret；未开校验留空字符串
-  MESSAGE_TYPE: "interactive"                           # interactive=卡片消息，text=纯文本
+  FEISHU_WEBHOOK_URL: "<your_feishu_webhook_url>"
+  FEISHU_SECRET: "<your_feishu_secret>" # 未开签名校验可留空字符串
+  MESSAGE_TYPE: "interactive" # interactive=卡片消息，text=纯文本
 
 ---
-# ============================================================
-# Alertmanager — 配置 + StatefulSet + Service
-# ============================================================
-# Prometheus (monitor.yaml) --firing--> Alertmanager --routing--> 各 IM 通道
-#                                                               ├─ slack_configs     → Slack（原生，api_url_file 读 Secret）
-#                                                               ├─ webhook → dingtalk-bridge:8060  ──→ 钉钉群
-#                                                               ├─ webhook → feishu-bridge:8080    ──→ 飞书群
-#                                                               └─ webhook (url_file) → wecom-bridge:5001 ──→ 企业微信群
-#
-# alertmanager.yml 本身不含任何密钥——所有 token/key 通过 file 引用从统一 Secret 读取。
-# 通道开关：注释 receiver 里对应的配置块即禁用。
-# ============================================================
-
-# ---------- Alertmanager Config Secret ----------
-# 纯路由配置，无密钥（密钥在 channels-credentials Secret 里）
+# ---------- Alertmanager 配置 Secret（纯路由配置，无密钥）----------
 apiVersion: v1
 kind: Secret
 metadata:
   name: swanlab-monitor-alertmanager-config
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: swanlab-monitor
@@ -1162,30 +1126,26 @@ stringData:
 
     receivers:
       - name: im-all
-        # ┌─────────────────────────────────────────────────────────────────┐
-        # │ 通道开关：注释整块 = 禁用；取消注释 = 启用                        │
-        # │ 至少保留一个通道启用                                              │
-        # │ 密钥不在本文件——从 /etc/alertmanager/secrets/ 读取（file 引用）  │
-        # └─────────────────────────────────────────────────────────────────┘
+        # 通道开关：注释对应配置块即禁用（至少保留一个通道）
+        # 密钥不在本文件——统一从 /etc/alertmanager/secrets/ 读取
 
-        # ---- [enable] Slack（原生 slack_configs，密钥从 Secret 文件读取）----
+        # ---- Slack（原生 slack_configs）----
         slack_configs:
-          - api_url_file: /etc/alertmanager/secrets/slack_webhook_url   # 从统一 Secret 读取 Slack webhook URL
-            channel: '#swanlab-alerts'
+          - api_url_file: /etc/alertmanager/secrets/slack_webhook_url
+            channel: '#swanlab-alerts' # ← 按实际频道修改
             send_resolved: true
 
-        # ---- 以下 webhook_configs 每条 = 一个 IM 通道桥，注释单条即禁用 ----
         webhook_configs:
-          # ---- [enable] 钉钉（需部署下方 dingtalk-bridge）----
-          - url: 'http://swanlab-monitor-dingtalk-bridge.<YOUR_NAMESPACE>:8060/dingtalk/swanlab/send'
+          # ---- 钉钉（需部署 dingtalk.yaml）----
+          - url: 'http://swanlab-monitor-dingtalk-bridge.<your_namespace>:8060/dingtalk/swanlab/send'
             send_resolved: true
 
-          # ---- [enable] 飞书（需部署下方 feishu-bridge）----
-          - url: 'http://swanlab-monitor-feishu-bridge.<YOUR_NAMESPACE>:8080/webhook'
+          # ---- 飞书（需部署 feishu.yaml）----
+          - url: 'http://swanlab-monitor-feishu-bridge.<your_namespace>:8080/webhook'
             send_resolved: true
 
-          # ---- [enable] 企业微信（url 从 Secret 文件读取，含 key）----
-          - url_file: /etc/alertmanager/secrets/wecom_webhook_url        # 从统一 Secret 读取完整 WeCom webhook URL（含 key）
+          # ---- 企业微信（需部署 wecom.yaml，URL 含 key，从凭据 Secret 读取）----
+          - url_file: /etc/alertmanager/secrets/wecom_webhook_url
             send_resolved: true
 
 ---
@@ -1194,7 +1154,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: swanlab-monitor-alertmanager
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: swanlab-monitor
@@ -1241,7 +1201,7 @@ spec:
             - name: config
               mountPath: /etc/alertmanager
               readOnly: true
-            - name: secrets               # 统一凭据 Secret 挂载（供 api_url_file / url_file 读取）
+            - name: secrets # 统一凭据 Secret 挂载（供 api_url_file / url_file 读取）
               mountPath: /etc/alertmanager/secrets
               readOnly: true
             - name: data
@@ -1271,7 +1231,7 @@ spec:
         - name: config
           secret:
             secretName: swanlab-monitor-alertmanager-config
-        - name: secrets                   # 统一凭据 Secret
+        - name: secrets
           secret:
             secretName: swanlab-monitor-channels-credentials
         - name: tmp
@@ -1284,7 +1244,7 @@ spec:
         resources:
           requests:
             storage: 20Gi
-        storageClassName: <STORAGE_CLASS_NAME>
+        storageClassName: <your_storageclass>
         volumeMode: Filesystem
 
 ---
@@ -1293,7 +1253,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-alertmanager
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: swanlab-monitor
@@ -1306,25 +1266,32 @@ spec:
   selector:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: swanlab-monitor
-
-
 ```
 :::
 
+模板中的密钥占位符（按需填写实际启用的通道即可）：
 
-#### 4.2 WebhookIM 告警通知配置
+- `<your_slack_token>`：Slack Incoming Webhook 中 `services/` 之后的部分
+- `<your_wecom_bot_key>`：企业微信群机器人 Webhook 的 `key` 参数
+- `<your_dingtalk_access_token>` / `<your_dingtalk_secret>`：钉钉机器人的 `access_token` 与加签 secret
+- `<your_feishu_webhook_url>` / `<your_feishu_secret>`：飞书自定义机器人的完整 Webhook URL 与签名校验 secret
 
-根据不同的 IM Channel，可以安装对应的告警服务
+替换完对应字段后，安装 Alertmanager 服务：
 
-:::details Webhook IM 告警通知配置
-:::code-group 
+```bash
+kubectl apply -f swanlab-monitor-alertmanager.yaml -n <your_namespace>
+```
+
+#### 4.2 Webhook IM 告警通知配置
+
+根据实际启用的 IM 通道，安装对应的桥接服务（未在 `alertmanager.yml` 中启用的通道无需安装）：
+
+::::details IM 通道桥接模板
+:::code-group
 ```yaml [dingtalk.yaml]
 # ============================================================
-# 钉钉桥 —— timonwong/prometheus-webhook-dingtalk
-# 端点：/<target>，target 名 = config.yml 里的 key（此处 swanlab）
-# Alertmanager POST 到 http://<svc>:8060/dingtalk/swanlab/send
-# 密钥（access_token + 加签 secret）在统一凭据 Secret 里：
-#   swanlab-monitor-channels-credentials → dingtalk_config.yml
+# 钉钉桥 — timonwong/prometheus-webhook-dingtalk，监听 8060
+# 密钥（access_token + 加签 secret）从统一凭据 Secret（swanlab-monitor-channels-credentials）读取
 # ============================================================
 
 ---
@@ -1333,7 +1300,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swanlab-monitor-dingtalk-bridge
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: dingtalk-bridge
     app.kubernetes.io/instance: swanlab-monitor
@@ -1374,7 +1341,7 @@ spec:
             - name: http
               containerPort: 8060
           volumeMounts:
-            - name: credentials              # 从统一凭据 Secret 读取 dingtalk_config.yml
+            - name: credentials # 从统一凭据 Secret 读取 dingtalk_config.yml
               mountPath: /etc/prometheus-webhook-dingtalk
               readOnly: true
             - name: tmp
@@ -1392,12 +1359,12 @@ spec:
               cpu: 100m
               memory: 64Mi
       volumes:
-        - name: credentials                  # 统一凭据 Secret（dingtalk_config.yml key → config.yml 文件）
+        - name: credentials # 统一凭据 Secret（dingtalk_config.yml key → config.yml 文件）
           secret:
             secretName: swanlab-monitor-channels-credentials
             items:
               - key: dingtalk_config.yml
-                path: config.yml             # 挂载为 config.yml（桥期望的文件名）
+                path: config.yml
         - name: tmp
           emptyDir: {}
 
@@ -1407,7 +1374,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-dingtalk-bridge
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: dingtalk-bridge
     app.kubernetes.io/instance: swanlab-monitor
@@ -1420,16 +1387,12 @@ spec:
   selector:
     app.kubernetes.io/name: dingtalk-bridge
     app.kubernetes.io/instance: swanlab-monitor
-
 ```
 
 ```yaml [feishu.yaml]
 # ============================================================
-# 飞书桥 —— nirvam/alertmanager-feishu (dev 分支)
-# 端点：POST /webhook，FastAPI + uvicorn，监听 8080
-# 配置走环境变量：FEISHU_WEBHOOK_URL / FEISHU_SECRET / MESSAGE_TYPE
-# 密钥在统一凭据 Secret 里（envFrom 注入）：
-#   swanlab-monitor-channels-credentials → FEISHU_WEBHOOK_URL / FEISHU_SECRET / MESSAGE_TYPE
+# 飞书桥 — alertmanager-feishu，监听 8080
+# 通过 envFrom 从统一凭据 Secret 注入 FEISHU_WEBHOOK_URL / FEISHU_SECRET / MESSAGE_TYPE
 # ============================================================
 
 ---
@@ -1438,7 +1401,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swanlab-monitor-feishu-bridge
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: feishu-bridge
     app.kubernetes.io/instance: swanlab-monitor
@@ -1474,7 +1437,7 @@ spec:
           command: ["/app/.venv/bin/alertmanager-feishu", "serve"]
           envFrom:
             - secretRef:
-                name: swanlab-monitor-channels-credentials   # 从统一凭据 Secret 注入 FEISHU_* 环境变量
+                name: swanlab-monitor-channels-credentials
           volumeMounts:
             - name: tmp
               mountPath: /tmp
@@ -1508,7 +1471,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-feishu-bridge
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: feishu-bridge
     app.kubernetes.io/instance: swanlab-monitor
@@ -1524,21 +1487,19 @@ spec:
 ```
 
 ```yaml [wecom.yaml]
+# ============================================================
+# 企业微信桥 — rea1shane/a2w，监听 5001
+# key 在 Alertmanager 的 webhook URL 中配置，桥本身无需凭据
+# 如需 @指定用户：在 wecom_webhook_url 后追加 &mention=user1&mention=user2
+# ============================================================
 
-# ============================================================
-# 企业微信桥 —— rea1shane/a2w
-# 端点：/send?key=<KEY>，无状态（key 在 Alertmanager 的 webhook URL 里，不在桥内配置）
-# 监听 5001，默认时区 Asia/Shanghai
-# Alertmanager POST 到 http://<svc>:5001/send?key=<WECOM_BOT_KEY>
-# 如需 @指定用户：URL 追加 &mention=user1&mention=user2
-# ============================================================
 ---
 # ---------- WeCom Bridge Deployment ----------
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swanlab-monitor-wecom-bridge
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: wecom-bridge
     app.kubernetes.io/instance: swanlab-monitor
@@ -1556,7 +1517,7 @@ spec:
     spec:
       serviceAccountName: default
       automountServiceAccountToken: false
-      securityContext:                # 最小权限 + PSS restricted 兼容（非 root + seccomp）
+      securityContext:
         runAsNonRoot: true
         runAsUser: 65534
         runAsGroup: 65534
@@ -1566,18 +1527,18 @@ spec:
         - name: wecom-bridge
           image: repo.swanlab.cn/public/a2w:latest
           imagePullPolicy: IfNotPresent
-          securityContext:            # 容器级加固：禁提权 + 弃所有 capabilities + 只读根 FS
+          securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
             readOnlyRootFilesystem: true
           env:
             - name: TZ
-              value: Asia/Shanghai          # a2w 用本地时区显示告警时间
+              value: Asia/Shanghai # a2w 用本地时区显示告警时间
           ports:
             - name: http
               containerPort: 5001
-          readinessProbe:                    # a2w 无标准健康端点，用 tcpSocket 探端口
+          readinessProbe: # a2w 无标准健康端点，用 tcpSocket 探端口
             tcpSocket:
               port: 5001
             initialDelaySeconds: 5
@@ -1601,7 +1562,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swanlab-monitor-wecom-bridge
-  namespace: <YOUR_NAMESPACE>
+  namespace: <your_namespace>
   labels:
     app.kubernetes.io/name: wecom-bridge
     app.kubernetes.io/instance: swanlab-monitor
@@ -1616,17 +1577,30 @@ spec:
     app.kubernetes.io/instance: swanlab-monitor
 ```
 :::
+::::
 
+按需安装实际启用的通道桥接服务：
+
+```bash
+# 钉钉
+kubectl apply -f dingtalk.yaml -n <your_namespace>
+
+# 飞书
+kubectl apply -f feishu.yaml -n <your_namespace>
+
+# 企业微信
+kubectl apply -f wecom.yaml -n <your_namespace>
+```
 
 ## 📝 日志采集服务
 
 > 🚧 日志采集（如 `Loki + Promtail`、`ELK` 等方案）的配置指南正在编写中，敬请期待。
-> 在此之前，您可以通过 `kubectl logs` 查看各服务 Pod 的运行日志，或通过公有云自带的集群 Pod 日志服务进行观测：
 
+在此之前，您可以通过 `kubectl logs` 查看各服务 Pod 的运行日志，或通过公有云自带的集群 Pod 日志服务进行观测：
 
-> ```bash
-> kubectl logs -n <your_namespace> <pod_name> -c <container_name>
-> ```
+```bash
+kubectl logs -n <your_namespace> <pod_name> -c <container_name>
+```
 
 ## ❓ 常见问题
 
@@ -1636,7 +1610,7 @@ spec:
 
 ### Metrics 接口返回的指标分别代表什么？
 
-Metrics 接口遵循 Prometheus 格式规范，通常会返回请求 QPS、请求延迟、请求错误率等信息，同时包含 Node.js、Go 等语言内部运行指标。由于指标数量庞大，很难完全列出所有指标及其含义。通常我们建议您通过 [前置条件](#🧱-前置条件) 中的验证 Metrics 接口，或者在 Prometheus 面板手动获取所有指标信息，然后借助其他工具（如大语言模型）查询对应指标的含义。
+Metrics 接口遵循 Prometheus 格式规范，通常会返回请求 QPS、请求延迟、请求错误率等信息，同时包含 Node.js、Go 等语言内部运行指标。由于指标数量庞大，很难完全列出所有指标及其含义。通常我们建议您通过前置条件中的验证 Metrics 接口，或者在 Prometheus 面板手动获取所有指标信息，然后借助其他工具（如大语言模型）查询对应指标的含义。
 
 ### Metrics 接口是否返回了 CPU、内存等指标？
 
@@ -1654,5 +1628,4 @@ Metrics 接口没有采集 CPU、内存等硬件指标。
 
 ### 是否支持监控 PostgreSQL、ClickHouse 等基础服务？
 
-PostgreSQL、ClickHouse 有推出对应的 exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)），但是对部署权限要求较高。
-未来更新中会考虑为 Grafana 面板集成相应的基础服务指标。
+支持。PostgreSQL、Redis、ClickHouse 均有对应的 Exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)、[redis_exporter](https://github.com/oliver006/redis_exporter)），可参考上文「2.2 数据库 Exporter 服务安装」部署对应的 Exporter 服务，并导入相应的 Grafana 看板，即可观测基础服务指标。
