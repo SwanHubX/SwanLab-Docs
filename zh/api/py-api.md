@@ -481,8 +481,9 @@ result = run.metrics(keys=["loss"], range_query={"tail": 30})
 #### 5. summary
 
 获取标量指标的统计摘要（min / max / avg / median / latest），**每个指标以 latest 值为准**。
-| 参数 | 类型 | 描述 |
-|------|------|------|
+
+| 参数   | 类型        | 描述                                                 |
+| ------ | ----------- | ---------------------------------------------------- |
 | `keys` | `list[str]` | 需要查询的标量 key 列表，为 `None` 表示查询全量 keys |
 
 :::code-group
@@ -658,12 +659,13 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 ### Column 方法示例
 
 **column 入参：**
-| 参数 | 类型 | 默认值 | 描述 |
-|------|------|--------|------|
-| `path` | `str` | — | 实验路径 `username/project/run_id` |
-| `key` | `str` | — | 搜索关键词（模糊匹配列名，返回第一个匹配项） |
-| `column_class` | `str` | `"CUSTOM"` | 列分类：`CUSTOM` 或 `SYSTEM` |
-| `column_type` | `str` | `None` | 列数据类型：`FLOAT`、`STRING`、`IMAGE`、`VIDEO` 等 |
+
+| 参数           | 类型  | 默认值     | 描述                                               |
+| -------------- | ----- | ---------- | -------------------------------------------------- |
+| `path`         | `str` | —          | 实验路径 `username/project/run_id`                 |
+| `key`          | `str` | —          | 搜索关键词（模糊匹配列名，返回第一个匹配项）       |
+| `column_class` | `str` | `"CUSTOM"` | 列分类：`CUSTOM` 或 `SYSTEM`                       |
+| `column_type`  | `str` | `None`     | 列数据类型：`FLOAT`、`STRING`、`IMAGE`、`VIDEO` 等 |
 
 **columns 参数：**
 

@@ -139,15 +139,15 @@
   }
 }
 
-/* Wide screens: relax the content max-width */
-@media (min-width: 1440px) {
-  .VPDoc.has-aside .content-container {
-    max-width: 60rem !important;
-  }
-}
-
-@media (min-width: 1920px) {
-  .VPDoc.has-aside .content-container {
-    max-width: 64rem !important;
+/* Wide screens: span the viewport so the left sidebar and the right
+   outline (aside) align near the screen edges, but pull in slightly so
+   the content-wrapper's vertical divider lines are visibly framed
+   (instead of hugging the screen edge). Adaptive — no fixed cap, so it
+   still grows with the display. The reading column itself stays capped
+   by `.content-container` above. */
+@media (min-width: 90rem) {
+  .content-wrapper,
+  header.wrapper {
+    max-width: calc(100vw - 4rem) !important;
   }
 }

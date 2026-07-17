@@ -18,6 +18,17 @@
   --swanlab-nav-search-max-width: 420px;
   --swanlab-nav-search-min-width: 180px;
   --swanlab-nav-title-width: 164px;
+
+  /* Typography — extend the VoidZero font stacks with CJK fallbacks.
+     Inter / "APK Protocol" only ship Latin glyphs, so Chinese text was
+     falling back to the browser's generic sans-serif (inconsistent weight/
+     spacing). List the system CJK faces explicitly so 指南/案例/集成 render
+     with the platform's intended UI font. */
+  --font-sans:
+    Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-heading:
+    "APK Protocol", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --vp-font-family-base: var(--font-sans);
 }
 
 .dark {

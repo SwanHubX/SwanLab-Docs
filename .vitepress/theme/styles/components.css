@@ -195,3 +195,55 @@ div.VPNavBarSearch.search {
 .medium-zoom-image {
   z-index: 31;
 }
+
+/* ===== Navbar logo =====
+ * The OSS header renders the icon_docs wordmark at Tailwind `h-4` (16px),
+ * which is too small to read. Scale it up (height + auto width keeps the
+ * 231×47 aspect ratio). Only the desktop header imgs are affected — the
+ * mobile menu logo lives in a separate overlay. */
+header.wrapper img {
+  height: 30px !important;
+  width: auto !important;
+}
+
+/* ===== Navbar / footer type scale =====
+ * The OSS navbar renders menu links and flyout buttons with Tailwind's
+ * `text-base` (16px), which reads too large next to the search box and
+ * pushes the 82px header out of proportion. Drop the chrome type a notch.
+ * `!important` is required to beat the unlayered Tailwind utility. */
+header.wrapper nav.VPNavBarMenu .VPLink,
+header.wrapper .VPNavBarMenu a,
+header.wrapper .VPNavBarMenuGroup > button,
+header.wrapper .VPFlyout > button {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+/* Doc footer (prev/next pager + edit link) — slightly more compact */
+.VPDocFooter .pager-link .title {
+  font-size: 13px !important;
+}
+
+.VPDocFooter .edit-link-button {
+  font-size: 13px !important;
+}
+
+/* Global copyright footer (when configured) */
+.VPFooter .message,
+.VPFooter .copyright {
+  font-size: 13px !important;
+}
+
+/* ===== 备案 / 版权信息 =====
+ * 这段在首页正文中，外层 <div> 的 font-size 会被 .vp-doc p/a 的
+ * 排版默认值（16px）覆盖（显式声明优先于继承），所以内联设字号无效。
+ * 用类名 + !important 把整块（含 p、a、图标）统一压到小字号。 */
+.beian-footer,
+.beian-footer p,
+.beian-footer a {
+  font-size: 13px !important;
+}
+
+.beian-footer img {
+  width: 14px !important;
+}

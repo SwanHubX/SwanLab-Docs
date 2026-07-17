@@ -27,12 +27,14 @@ export default {
     // inject this context (see the theme's per-project variant entries).
     // Placeholder assets for now — brand polish comes later.
     ctx.app.provide(themeContextKey, {
-      logoDark: "/icon.svg",
-      logoLight: "/icon.svg",
+      // logoDark is rendered in light mode (dark-colored logo on light bg),
+      // logoLight in dark mode — see OSS Header.vue (`block dark:hidden` / `dark:block`).
+      logoDark: "/icon_docs.svg",
+      logoLight: "/icon_docs_dark.svg",
       logoAlt: "SwanLab",
       // 1px transparent gif so the OSS footer CTA renders without a photo.
       footerBg: "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=",
-      monoIcon: "/icon.svg",
+      monoIcon: "/icon_docs.svg",
     });
     ctx.app.component("HeaderButton", HeaderButton);
     ctx.app.component("HeaderButtonEN", HeaderButtonEN);

@@ -186,7 +186,7 @@ features:
 </style>
 
 <!-- 分割线 -->
-<div style="text-align: center; margin-top: 48px; padding: 0 24px 16px; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.8;">
+<div class="beian-footer" style="text-align: center; margin-top: 48px; padding: 0 24px 16px; color: var(--vp-c-text-2); line-height: 1.8;">
   <div style="border-top: 1px solid var(--vp-c-divider); margin: 0 0 10px;"></div>
   <p style="margin: 0; padding: 0;">◎ Emotion Machine (Beijing) Technology Co., Ltd. · <span id="en-copyright"></span></p>
 </div>

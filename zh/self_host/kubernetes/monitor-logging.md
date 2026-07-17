@@ -53,10 +53,8 @@ kubectl exec -n <your_namespace> -c house "$(
 - `<your_namespace>` 替换为您实际部署使用的集群命名空间
 
 ## 📊 集成监控服务
+
 待更新
-
-
-
 
 ### 配置仪表盘
 
