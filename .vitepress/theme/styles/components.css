@@ -314,20 +314,20 @@ header.wrapper .VPFlyout > button {
   /* line-height: 1.5 !important; */
 }
 
-/* ===== 顶部公告条（announcement bar）布局 =====
- * AnnouncementBar 在文档流顶部占位（relative），不再 fixed 浮层。
- * 主题 OSSHeader 在文档页 lg+ 默认 lg:fixed 吸顶——这里在 banner 存在时
- * 把它改成 sticky，使导航栏处于文档流（紧跟 banner 下方），banner 滚走后
- * 导航栏吸顶到 top:0，不留空白、也不遮挡。选择器特异性高于主题的
- * .lg\:fixed，无需 !important。
- * banner 被 v-if 移除（关闭）后 :has() 失配，本规则整体失效，导航栏自动
- * 回到主题默认的 lg:fixed 吸顶行为——即“关闭后恢复页面”。 */
+/* ===== 顶部公告条（announcement bar）布局腾位 =====
+ * AnnouncementBar 在 lg+ 为 fixed 吸顶（覆盖页面最顶层），需要：
+ *  1) 设 --vp-banner-height，让主题 OSSHeader / VPLocalNav / VPSidebar
+ *     下移到 banner 下方、各 sticky/fixed 的 top 计算正确，不再错位；
+ *  2) 给 .Layout 加 padding-top，把整页内容下推，为 banner 腾出顶部空间
+ *     （复用主题内置 TopBanner 对 .top-banner 的同款机制，但匹配本组件 class）。
+ * md（平板）时 banner 与导航栏都在文档流，不需要这些偏移。
+ * banner 被 v-if 移除（关闭）后 :has() 失配，变量与 padding 自动回到 0。 */
 @media (min-width: 1024px) {
-  .Layout:has(.announcement-bar) > div:has(> header.wrapper) {
-    position: sticky;
-    top: 0;
-    left: auto;
-    right: auto;
-    z-index: 50;
+  :root:has(.announcement-bar) {
+    --vp-banner-height: 36px;
+  }
+
+  .Layout:has(.announcement-bar) {
+    padding-top: var(--vp-banner-height, 0);
   }
 }

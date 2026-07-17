@@ -75,9 +75,19 @@ const dismiss = () => {
   }
 }
 
-/* banner 始终在文档流占位（顶部一块），不 fixed、不浮层；导航栏在
- * banner 存在时改为 sticky（见 styles/components.css），这样 banner 滚走
- * 后导航栏自动吸顶到 top:0，不留空白、也不遮挡导航栏。 */
+/* lg+ 吸顶：fixed 在页面最顶层，靠 --vp-banner-height + .Layout 的
+ * padding-top（见 styles/components.css）让导航栏与正文下移腾位、不遮挡；
+ * banner 关闭(v-if 移除)后 :has() 失配，腾位与变量回到 0，布局自动复原。
+ * md（平板）时 banner 与导航栏都在文档流，无需 fixed。 */
+@media (min-width: 1024px) {
+  .announcement-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+  }
+}
 
 .announcement-bar__inner {
   display: flex;
