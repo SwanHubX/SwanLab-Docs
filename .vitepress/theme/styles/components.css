@@ -268,6 +268,18 @@ header.wrapper .VPNavBarMenuGroup > button,
 header.wrapper .VPFlyout > button {
   font-size: 14px !important;
   font-weight: 500 !important;
+  /* 收紧顶级导航项（指南/案例…）之间的水平间距：主题给每个 link/group
+     按钮设了 px-3（12px）侧边距，在压平后的 flex 行里相邻项显得过松。 */
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* 悬浮下拉（VPMenu）子选项行距收紧。VPMenuLink 把每个选项渲染成
+   <a class="link px-3 py-2 text-sm">，py-2（8px）的纵向内边距让下拉
+   列表显得偏松；收到 6px。 */
+.VPMenu .VPMenuLink a {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
 }
 
 /* Doc footer (prev/next pager + edit link) — slightly more compact */

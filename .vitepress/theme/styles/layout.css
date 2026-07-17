@@ -123,6 +123,20 @@
   }
 }
 
+/* Sidebar sticky panel aligns below the navbar AND the announcement banner.
+   The base `.VPSidebar { top: var(--vp-nav-height) }` above predates the
+   banner; without the banner-height term the sticky panel sits roughly one
+   banner-height too high and tucks under the navbar (the sidebar then looks
+   flush against it — "贴边"). The visible sidebar panel only exists at lg+,
+   where the banner is also fixed, so the fix is scoped here. When the banner
+   is closed, :has() drops --vp-banner-height and the calc falls back to 0. */
+@media (min-width: 1024px) {
+  .VPSidebar {
+    top: calc(var(--vp-nav-height) + var(--vp-banner-height, 0px)) !important;
+    max-height: calc(100vh - var(--vp-nav-height) - var(--vp-banner-height, 0px));
+  }
+}
+
 /* ===== Doc layout: content + aside ===== */
 /* The theme's doc container uses Tailwind's `container` utility, which caps
    it at max-width 1536px and centers it — so on ultra-wide displays the
@@ -144,10 +158,12 @@
 
 .VPDoc.has-aside .aside {
   position: sticky;
-  top: var(--vp-nav-height);
+  /* Align with the sidebar: account for the announcement banner too, else the
+     sticky aside tucks under the navbar the same way the sidebar did. */
+  top: calc(var(--vp-nav-height) + var(--vp-banner-height, 0px));
   width: 240px;
   flex: 0 0 240px;
-  max-height: calc(100vh - var(--vp-nav-height));
+  max-height: calc(100vh - var(--vp-nav-height) - var(--vp-banner-height, 0px));
   overflow-y: auto;
   padding-right: 32px;
 }
