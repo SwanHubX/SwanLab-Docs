@@ -1,6 +1,6 @@
 # 管理员配置 OAuth2 SSO 登录（以 Keycloak 为例）
 
-本文说明如何在 SwanLab 中配置 OAuth2 SSO Provider，以及 IdP 侧需要填写的回调地址和字段映射。
+本文说明如何在 SwanLab 中配置 OAuth2 SSO Provider，以及 IdP 侧需要填写的回调地址。
 
 ## 一、功能简介
 
@@ -48,32 +48,19 @@ OAuth2 SSO 适用于只提供 OAuth2 Authorization Code 流程的身份服务。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152250790.png)
 
-4. 填写用户映射
-
-| 字段         | 是否必填 | 说明                           |
-| ------------ | -------- | ------------------------------ |
-| 用户 ID 字段 | 是       | 第三方用户唯一 ID 对应的字段名 |
-| 用户名字段   | 是       | 第三方用户名对应的字段名       |
-
-| 用户唯一 ID 推荐字段          | 用户名推荐字段                            |
-| ----------------------------- | ----------------------------------------- |
-| `id`、`uid`、`user_id`、`sub` | `username`、`login`、`preferred_username` |
-
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152613209.png)
-
-5. 填写展示配置
+4. 填写展示配置
 
 图标 URL 推荐填写在线链接
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152945594.png)
 
-6. 启用 IdP
+5. 启用 IdP
 
 创建后即可在列表中查看当前已有 IdP，启用后即可进行测试、使用：
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626153553498.png)
 
-7. 在登录列表中查看
+6. 在登录列表中查看
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626153838893.png)
 

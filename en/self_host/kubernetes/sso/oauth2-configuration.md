@@ -1,6 +1,6 @@
 # Configure OAuth2 SSO Login as an Administrator (Keycloak Example)
 
-This document describes how to configure an OAuth2 SSO Provider in SwanLab, as well as the callback address and field mapping required on the IdP side.
+This document describes how to configure an OAuth2 SSO Provider in SwanLab, as well as the callback address required on the IdP side.
 
 ## 1. Feature Introduction
 
@@ -48,32 +48,19 @@ The following uses `keycloak` as an example:
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152250790.png)
 
-4. Fill in user mapping.
-
-| Field          | Required | Description                                                |
-| -------------- | -------- | ---------------------------------------------------------- |
-| User ID field  | Yes      | Field name corresponding to the third-party unique user ID |
-| Username field | Yes      | Field name corresponding to the third-party username       |
-
-| Recommended unique user ID field | Recommended username field                |
-| -------------------------------- | ----------------------------------------- |
-| `id`, `uid`, `user_id`, `sub`    | `username`, `login`, `preferred_username` |
-
-![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152613209.png)
-
-5. Fill in the display configuration.
+4. Fill in the display configuration.
 
 We recommend using an online link for the Icon URL.
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626152945594.png)
 
-6. Enable the IdP.
+5. Enable the IdP.
 
 After creation, you can view existing IdPs in the list. After enabling one, you can test and use it:
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626153553498.png)
 
-7. View it in the login list.
+6. View it in the login list.
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260626153838893.png)
 
