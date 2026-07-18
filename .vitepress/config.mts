@@ -11,6 +11,7 @@ import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-i
 import { extendConfig } from "@voidzero-dev/vitepress-theme/config";
 import { zh } from "./zh";
 import { en } from "./en";
+import { SWANLAB_VERSION } from "./version";
 
 const srcExclude = ["playground/**", "AGENTS.md", "README.md", "TRICK.md"];
 
@@ -180,7 +181,14 @@ export default extendConfig(
     sitemap: {
       hostname: "https://docs.swanlab.cn",
     },
-    vite: { plugins },
+    vite: {
+      plugins,
+      define: {
+        // Baked-in build-time version, read by the browser-side sync layer
+        // (theme/version-sync.ts) as the baseline it may incrementally patch.
+        __SWANLAB_VERSION__: JSON.stringify(SWANLAB_VERSION),
+      },
+    },
 
     rewrites(id) {
       return id.startsWith("zh/") ? id.slice(3) : id;

@@ -5,3 +5,6 @@ declare module "*.vue" {
 }
 
 declare module "virtual:group-icons.css";
+
+/** Build-time baked SwanLab version, injected via `vite.define` in config.mts. */
+declare const __SWANLAB_VERSION__: string;

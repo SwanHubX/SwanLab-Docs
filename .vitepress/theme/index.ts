@@ -18,6 +18,7 @@ import HeaderGithubButton from "./components/HeaderGithubButton.vue";
 import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
+import { useVersionSync } from "./version-sync";
 
 export default {
   ...VoidZeroTheme,
@@ -47,6 +48,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const initVersionSync = useVersionSync();
 
     const shouldZoomImage = (img: HTMLImageElement) => {
       // 1. Check if there are clear exclusion marks
@@ -84,6 +86,8 @@ export default {
 
     onMounted(() => {
       initZoom();
+      // Browser-side navbar version sync (localStorage 6h TTL + silent PyPI fetch).
+      initVersionSync();
     });
 
     watch(

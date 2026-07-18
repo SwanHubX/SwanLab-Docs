@@ -9,10 +9,11 @@
  *  - The result is cached in `.vitepress/cache/swanlab-version.json`
  *    (gitignored). Rebuilds / dev-server restarts within the TTL reuse the
  *    cache instead of hitting PyPI again.
- *  - There is NO client-side fetch — the version is baked into the static
- *    build, so end users never trigger a PyPI request. Freshness on the
- *    deployed site is therefore tied to how often docs are rebuilt/deployed
- *    (point CI/deploy at this repo and it stays current).
+ *  - The baked value is only the first-paint baseline. A browser-side layer
+ *    (`theme/version-sync.ts`) keeps deployed sites fresh between rebuilds:
+ *    it caches `{version, fetchedAt}` in localStorage with a 6h TTL and, once
+ *    expired, silently re-fetches PyPI and patches the navbar — so each
+ *    browser hits PyPI at most once per 6h.
  *
  * Robustness:
  *  - 3s request timeout; on any failure we fall back to the stale cache, or to
