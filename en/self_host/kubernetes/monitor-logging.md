@@ -706,7 +706,7 @@ The dashboards use template variables to adapt to different Prometheus configura
 
 > **Note**: Template variables are automatically populated from Prometheus — no manual input needed.
 >
-> **Important**: The "CPU Usage" and "Memory Usage" panels in the House dashboard use kubelet/cAdvisor metrics (`container_cpu_usage_seconds_total`, `container_memory_working_set_bytes`), not from SwanLab service Metrics endpoints. Scenario 1's kube-prometheus-stack collects these by default; for Scenario 2, confirm your existing Prometheus is scraping cAdvisor metrics, otherwise these panels will show no data.
+> **Important**: The "CPU Usage" and "Memory Usage" panels in the Server and House dashboards use process-level metrics exposed by each service's own Metrics endpoint (`process_cpu_seconds_total`, `process_resident_memory_bytes`), not kubelet/cAdvisor container metrics. As long as Prometheus is scraping the SwanLab services, these panels will have data — no additional hardware exporters are required.
 
 <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201624323.png"/>
 
@@ -739,13 +739,16 @@ The Metrics endpoint follows the Prometheus format specification and typically r
 
 ### Does the Metrics endpoint return CPU, memory, and other metrics?
 
-The Metrics endpoint does not collect CPU, memory, or other hardware metrics.
+Yes, but they are all **process-level** metrics. They are collected by the Prometheus client libraries by default, with negligible overhead, and only read the process's own `/proc/self` information, so no extra permissions are required:
 
-First, for performance reasons, the SwanLab service Metrics endpoint primarily exposes application runtime status metrics and does not include system resource metrics such as CPU and memory. Collecting CPU and other resource information may increase the application burden. On the other hand, CPU and memory metric collection may require higher permissions, which does not align with SwanLab's self-hosted deployment requirements. Finally, in cloud-native environments, these resource metrics are typically collected uniformly by [cAdvisor](https://github.com/google/cadvisor), [node-exporter](https://github.com/prometheus/node_exporter), or cloud provider monitoring components. Consider deploying the corresponding components to collect CPU and other data.
+- **SwanLab-Server** (Node.js): `process_cpu_user_seconds_total`, `process_cpu_system_seconds_total` (cumulative user/system CPU seconds consumed by the process; applying `rate()` yields CPU usage in cores), `process_resident_memory_bytes` (process resident memory / RSS, in bytes).
+- **SwanLab-House** (Go): `process_cpu_seconds_total` (cumulative user + system CPU seconds), `process_resident_memory_bytes` (RSS), `process_virtual_memory_bytes` (virtual memory), `process_open_fds` (number of open file descriptors), plus Go runtime metrics such as `go_goroutines` and `go_memstats_*`.
+
+Note that these metrics reflect the resource usage of each service process itself, not node/host-level resource metrics. In cloud-native environments, node-level resource metrics are typically collected by [cAdvisor](https://github.com/google/cadvisor), [node-exporter](https://github.com/prometheus/node_exporter), or cloud provider monitoring components — deploy those if you need them.
 
 ### Why do panels in the SwanLab monitoring dashboards show no data?
 
-If CPU, memory, or other panels show no data, as mentioned in the previous question, you should consider deploying the corresponding hardware monitoring components. If you have already deployed the components, or if panels such as request latency show no data, the recommended troubleshooting steps are:
+CPU and memory panels are populated from the process-level metrics exposed by each service's own Metrics endpoint (see the previous question) — like the QPS and latency panels, they rely on Prometheus scraping the SwanLab services, not on any additional hardware monitoring components. If panels show no data, the recommended troubleshooting steps are:
 
 1. Check whether the corresponding metric exists in the Prometheus panel;
 2. If it exists, the Grafana dashboard metric query configuration may be incorrect and needs to be modified;

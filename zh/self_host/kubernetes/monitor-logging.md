@@ -1501,7 +1501,50 @@ spec:
 # 企业微信桥 — rea1shane/a2w，监听 5001
 # key 在 Alertmanager 的 webhook URL 中配置，桥本身无需凭据
 # 如需 @指定用户：在 wecom_webhook_url 后追加 &mention=user1&mention=user2
+# 挂载 standard.tmpl 读取标准字段（severity/summary/description），与 Slack/钉钉/飞书统一
 # ============================================================
+
+---
+# ---------- WeCom Bridge Template ConfigMap ----------
+# 自定义模板替代 a2w 内置 base.tmpl（base.tmpl 读 level/current/labels）。
+# 本模板读 Alertmanager 通用字段，使 4 个 IM 通道字段一致，rules 无需为企微单独写字段。
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swanlab-monitor-wecom-bridge-template
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: wecom-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+data:
+  standard.tmpl: |
+    {{ range $i, $alert := .Alerts }}
+
+        {{- if eq $alert.Status "firing" }}
+    <font color="warning">**[firing] {{ or $alert.Annotations.summary $alert.Labels.alertname }}**</font>
+        {{- with $alert.Labels.severity }}
+    **告警等级**: {{ . }}
+        {{- end }}
+    **触发时间**: {{ timeFormat ($alert.StartsAt) }}
+    **持续时长**: {{ timeFromNow ($alert.StartsAt) }}
+        {{- with $alert.Annotations.description }}
+    **告警详情**: {{ . }}
+        {{- end }}
+        {{- else if eq $alert.Status "resolved" }}
+    <font color="info">**[resolved] {{ or $alert.Annotations.summary $alert.Labels.alertname }}**</font>
+    **触发时间**: {{ timeFormat ($alert.StartsAt) }}
+    **恢复时间**: {{ timeFormat ($alert.EndsAt) }}
+    **持续时长**: {{ timeDuration ($alert.StartsAt) ($alert.EndsAt) }}
+        {{- with $alert.Annotations.description }}
+    **告警详情**: {{ . }}
+        {{- end }}
+        {{- end }}
+        {{- with $alert.GeneratorURL }}
+
+    [🔍 Prometheus]({{ . }})
+        {{- end }}
+
+    {{ end }}
 
 ---
 # ---------- WeCom Bridge Deployment ----------
@@ -1537,6 +1580,8 @@ spec:
         - name: wecom-bridge
           image: repo.swanlab.cn/public/a2w:latest
           imagePullPolicy: IfNotPresent
+          args:
+            - "--template=/etc/a2w/template/standard.tmpl" # 用自定义标准字段模板替代 a2w 内置 base.tmpl
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1565,6 +1610,14 @@ spec:
             limits:
               cpu: 100m
               memory: 64Mi
+          volumeMounts: # 挂载自定义模板（只读）
+            - name: wecom-template
+              mountPath: /etc/a2w/template
+              readOnly: true
+      volumes: # 自定义模板 ConfigMap
+        - name: wecom-template
+          configMap:
+            name: swanlab-monitor-wecom-bridge-template
 
 ---
 # ---------- WeCom Bridge Service ----------
@@ -1621,22 +1674,26 @@ kubectl logs -n <your_namespace> <pod_name> -c <container_name>
 
 ### Metrics 接口返回的指标分别代表什么？
 
-Metrics 接口遵循 Prometheus 格式规范，通常会返回请求 QPS、请求延迟、请求错误率等信息，同时包含 Node.js、Go 等语言内部运行指标。由于指标数量庞大，很难完全列出所有指标及其含义。通常我们建议您通过前置条件中的验证 Metrics 接口，或者在 Prometheus 面板手动获取所有指标信息，然后借助其他工具（如大语言模型）查询对应指标的含义。
+Metrics 接口遵循 Prometheus 格式规范，通常会返回请求 QPS、请求延迟、请求错误率等信息，同时包含 Node.js、Go 等语言内部运行指标。由于指标数量庞大，Grafana 前端仪表盘仅筛选比较重要的几个指标。
+如果有其他可观测指标需求，可以通过前置条件中的验证 Metrics 接口，或者在 Prometheus 面板手动获取所有指标信息进行筛选做进一步分析。
 
 ### Metrics 接口是否返回了 CPU、内存等指标？
 
-Metrics 接口没有采集 CPU、内存等硬件指标。
+返回，但均为**进程级**指标。这些指标由 Prometheus 客户端库默认采集，开销极小，且只读取进程自身的 `/proc/self` 信息，不需要任何额外权限：
 
-首先，出于性能考虑，SwanLab 应用服务的 Metrics 接口主要暴露应用运行状态指标，不包含 CPU、内存等系统资源指标，采集 CPU 等资源信息可能会加重应用负担。另一方面，CPU、内存指标采集可能要求更高权限，这不符合 SwanLab 的私有化部署要求。最后，在云原生环境中，这类资源指标通常由 [cAdvisor](https://github.com/google/cadvisor)、[node-exporter](https://github.com/prometheus/node_exporter) 或云厂商监控组件统一采集，您可考虑部署对应组件以采集 CPU 等数据。
+- **SwanLab-Server**（Node.js）：`process_cpu_user_seconds_total`、`process_cpu_system_seconds_total`（进程用户态/内核态 CPU 秒数累计值，对其取 `rate()` 即为 CPU 用量，单位核）、`process_resident_memory_bytes`（进程常驻内存 RSS，单位字节）。
+- **SwanLab-House**（Go）：`process_cpu_seconds_total`（用户态与内核态合计的 CPU 秒数累计值）、`process_resident_memory_bytes`（常驻内存 RSS）、`process_virtual_memory_bytes`（虚拟内存）、`process_open_fds`（打开的文件描述符数），以及 `go_goroutines`、`go_memstats_*` 等 Go 运行时指标。
+
+需要注意的是，这些指标反映的是各服务进程自身的资源占用，不包含节点/宿主机级别的资源指标。在云原生环境中，节点级资源指标通常由 [cAdvisor](https://github.com/google/cadvisor)、[node-exporter](https://github.com/prometheus/node_exporter) 或云厂商监控组件统一采集，对权限要求较高，如有需要可部署对应组件。
 
 ### 为什么 SwanLab 监控仪表盘中的面板无数据？
 
-如果是 CPU、内存等面板无数据，正如上一问所述，您需要考虑部署对应的硬件监控组件。如果您确认已部署对应的组件，或者是请求延迟等面板无数据，建议的排查步骤为：
+CPU、内存等面板的数据来自各服务 Metrics 接口暴露的进程级指标（见上一问），与 QPS、延迟等面板一样由 Prometheus 抓取 SwanLab 服务获得，不依赖额外的硬件监控组件。面板无数据时，建议的排查步骤为：
 
 1. 在 Prometheus 面板上查询对应名称的指标是否存在；
 2. 如果存在，则说明在 Grafana 面板上的指标查询配置存在错误，需要修改 Grafana 面板配置；
 3. 如果不存在，说明 Prometheus 的抓取任务存在问题，需要排查对应任务。
 
-### 是否支持监控 PostgreSQL、ClickHouse 等基础服务？
+### 是否支持监控 Redis、 PostgreSQL、ClickHouse 等基础服务？
 
 支持。PostgreSQL、Redis、ClickHouse 均有对应的 Exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)、[redis_exporter](https://github.com/oliver006/redis_exporter)），可参考上文「2.2 数据库 Exporter 服务安装」部署对应的 Exporter 服务，并导入相应的 Grafana 看板，即可观测基础服务指标。
