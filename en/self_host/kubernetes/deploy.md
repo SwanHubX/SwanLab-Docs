@@ -553,21 +553,9 @@ For detailed field descriptions and configuration practices, please refer to the
 - **Built-in Base Services**: PostgreSQL / Redis / ClickHouse / MinIO storage resource configuration
 - **External Service Integration**: Connecting external PostgreSQL, Redis, ClickHouse, S3 object storage
 
-### Updates and Rollback
-
-To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](./upgrade.md) documentation.
-
-### Prometheus Observability Integration Guide
-
-Please refer to the [Monitor & Logging](./monitor-logging.md) documentation.
-
-### Replica Count and Resource Limits
+#### [Replica Count] How should the recommended service replica count be configured?
 
 The following are recommended replica configuration best practices based on online operational experience. You can adjust them by modifying the `replicas` field of the corresponding service in `values.yaml`:
-
-::: warning
-In the current `swanlab-self-hosted` deployment, due to the permission requirements of most private clusters, `redis`, `postgres`, and `clickhouse` all use a **single-replica scheme** and do not use CRDs for now. Therefore, please do not modify the replica count of the base database services.
-:::
 
 | Service Name   | Replica Count | Description                                                                                 |
 | -------------- | ------------- | ------------------------------------------------------------------------------------------- |
@@ -581,3 +569,15 @@ In the current `swanlab-self-hosted` deployment, due to the permission requireme
 | swanlab-house  | ≥ 3           | [Adjustable] SwanLab metrics analysis service, dynamically adjust based on service load     |
 | swanlab-next   | 2             | [Adjustable] SwanLab frontend framework                                                     |
 | swanlab-cloud  | 1             | [Adjustable] SwanLab frontend chart page                                                    |
+
+#### [Resource Limits] How to limit the recommended CPU/memory resource limits for each service?
+
+> To be added
+
+### Updates and Rollback
+
+To update the SwanLab version or rollback after a failed update, please refer to the [Update & Rollback](./upgrade.md) documentation.
+
+### Prometheus Observability Integration Guide
+
+Please refer to the [Monitor & Logging](./monitor-logging.md) documentation.

@@ -553,21 +553,9 @@ swanlab.finish()
 - **内置基础服务**：PostgreSQL / Redis / ClickHouse / MinIO 的存储资源配置
 - **外部服务集成**：接入外部 PostgreSQL、Redis、ClickHouse、S3 对象存储
 
-### 更新与回滚
-
-如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](./upgrade.md)文档。
-
-### Prometheus 可观测接入指引
-
-参考 [监控与日志](./monitor-logging.md) 文档进行配置。
-
-### 副本数与资源限制
+#### 【副本数】推荐服务副本数如何设置?
 
 以下是根据线上运维经验给出的推荐副本配置最佳实践，在 `values.yaml` 中通过修改对应服务的 `replicas` 字段即可调整：
-
-::: warning
-当前 `swanlab-self-hosted` 部署方案中，受制于大部分私有集群的权限要求，`redis`, `postgres` 和 `clickhouse` 均采用**单副本方案**，暂不使用 CRD，因此请勿修改基础数据库服务的副本数。
-:::
 
 | 服务名         | 副本数量 | 说明                                                     |
 | -------------- | -------- | -------------------------------------------------------- |
@@ -581,3 +569,15 @@ swanlab.finish()
 | swanlab-house  | ≥ 3      | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整   |
 | swanlab-next   | 2        | 【按需修改】SwanLab 前端框架                             |
 | swanlab-cloud  | 1        | 【按需修改】SwanLab 前端图表页面                         |
+
+#### 【资源限制】各服务的 CPU/内存 资源 limit 推荐如何限制？
+
+> 待添加
+
+### 更新与回滚
+
+如需更新 SwanLab 版本或在更新失败后进行回滚，请参考[更新与回滚](./upgrade.md)文档。
+
+### Prometheus 可观测接入指引
+
+参考 [监控与日志](./monitor-logging.md) 文档进行配置。
