@@ -7,6 +7,10 @@ COPY . .
 ARG UMAMI_WEBSITE_ID
 ENV UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
 
+# VitePress SSR build + vitepress-plugin-llms (concatenates all docs into
+# llms-full.txt) exceeds Node's default ~2GB heap on this doc set. Raise it.
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
 RUN npm run docs:build
 
 FROM swanlab-registry-vpc.cn-hangzhou.cr.aliyuncs.com/builder/nginx:alpine AS prod
