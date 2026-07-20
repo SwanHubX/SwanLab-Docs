@@ -30,7 +30,7 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 | -------------- | ------------------ | ---- | -------- |
 | SwanLab-Server | 后端核心业务服务   | 3000 | /metrics |
 | SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics |
-| Vector         | 指标转发缓冲队列   | 9090 | /metrics |
+| Vector         | 指标聚合转发   | 9090 | /metrics |
 
 如果 `Redis` / `PostgreSQL` / `ClickHouse` 等基础数据库服务**未外部集成，则需要额外部署对应的 Exporter 采集服务**，将可观测指标转发到 Prometheus（见下文 2.2 节）。
 
@@ -97,7 +97,7 @@ dependencies:
 ```
 
 :::warning
-`dependencies` 下的数据库依赖服务仅在**未集成外部服务**的情况下才能生效；
+`dependencies` 下的数据库依赖服务仅在**未集成外部服务**的情况下才能生效。
 :::
 
 修改完 `values.yaml` 后执行更新：
@@ -770,7 +770,7 @@ spec:
       containers:
         - name: exporter
           image: repo.swanlab.cn/public/postgres-exporter:v0.17.1
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9187
               name: metrics
@@ -863,7 +863,7 @@ spec:
       containers:
         - name: exporter
           image: repo.swanlab.cn/public/redis-exporter:v1.87.0
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9121
               name: metrics
@@ -940,7 +940,7 @@ spec:
       containers:
         - name: exporter
           image: repo.swanlab.cn/public/ch-table-exporter:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9364
               name: metrics
@@ -1335,7 +1335,7 @@ spec:
       containers:
         - name: dingtalk-bridge
           image: repo.swanlab.cn/public/prometheus-webhook-dingtalk:v2.1.0
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1694,4 +1694,4 @@ CPU、内存等面板的数据来自各服务 Metrics 接口暴露的进程级�
 
 ### 是否支持监控 Redis、 PostgreSQL、ClickHouse 等基础服务？
 
-支持。PostgreSQL、Redis、ClickHouse 均有对应的 Exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)、[redis_exporter](https://github.com/oliver006/redis_exporter)），可参考上文「2.2 数据库 Exporter 服务安装」部署对应的 Exporter 服务，并导入相应的 Grafana 看板，即可观测基础服务指标。
+支持。PostgreSQL、Redis、ClickHouse 均有对应的 Exporter（例如 [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)、[redis_exporter](https://github.com/oliver006/redis_exporter)），可参考上文「2.2 可选数据库 Exporter 服务安装」部署对应的 Exporter 服务，并导入相应的 Grafana 看板，即可观测基础服务指标。
