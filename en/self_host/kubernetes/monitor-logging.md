@@ -16,7 +16,7 @@ SwanLab self-hosted deployment uses a microservices architecture. Each applicati
 
 ## 🪜 Flow Diagram
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-scrape-architecture.svg" alt="SwanLab observability scrape architecture" />
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-architecture.drawio.svg" alt="SwanLab observability scrape architecture" />
 
 ## 🧱 Prerequisites
 
