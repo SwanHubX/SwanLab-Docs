@@ -30,7 +30,7 @@ Prometheus 通过监控专用 Headless Service 的 DNS A 记录发现并逐个�
 - 对 SwanLab 私有化服务所在命名空间具有 admin 权限
 - 应用默认 `release_name` 为 `swanlab-self-hosted`，安装命名空间为 `<your_namespace>`，存储类为 `<your_storageclass>`（请根据实际情况替换）
 
-下表为 SwanLab 服务目前支持访问 metrics 信息的应用和对应接口配置、路由：
+下表为 SwanLab 服务目前**支持直接访问** metrics 信息的应用和对应接口配置、路由：
 
 | 服务名称       | 服务说明           | 端口 | 路由     |
 | -------------- | ------------------ | ---- | -------- |
@@ -38,7 +38,7 @@ Prometheus 通过监控专用 Headless Service 的 DNS A 记录发现并逐个�
 | SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics |
 | Vector         | 指标转发缓冲队列   | 9090 | /metrics |
 
-如果安装时 `Redis` / `PostgreSQL` / `ClickHouse` 基础数据库服务**未外部集成**，可以额外部署对应的 Exporter 采集服务，将可观测指标转发到 Prometheus（见下文 2.2 节）。其中 ClickHouse 内置 Prometheus exporter（端口 `9363`），可直接被采集，无需额外部署。
+如果 `Redis` / `PostgreSQL` / `ClickHouse` 等基础数据库服务**未外部集成，则需要额外部署对应的 Exporter 采集服务**，将可观测指标转发到 Prometheus（见下文 2.2 节）。
 
 在实际配置 Prometheus 抓取任务前，建议先验证各服务的 Metrics 接口是否正常：
 
@@ -102,10 +102,9 @@ dependencies:
       enable: true
 ```
 
-> ⚠️ 注意：
->
-> - `dependencies` 下的数据库依赖服务仅在未集成外部服务的情况下才能生效；
-> - PostgreSQL 与 Redis 通过独立的 Exporter 服务采集（见 2.2 节），无需开启 chart 的 `monitor` 配置。
+:::warning
+`dependencies` 下的数据库依赖服务仅在**未集成外部服务**的情况下才能生效；
+:::
 
 修改完 `values.yaml` 后执行更新：
 
@@ -356,8 +355,8 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: "20Gi"
-        storageClassName: <your_storageclass>
+            storage: "20Gi" # ← 可按需修改存储大小
+        storageClassName: <your_storageclass> # ← 需要修改为集群中对应的 storageClass
         volumeMode: Filesystem
 
 ---
@@ -494,8 +493,8 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: "20Gi"
-        storageClassName: <your_storageclass>
+            storage: "20Gi" # ← 可按需修改存储大小
+        storageClassName: <your_storageclass> # ← 需要修改为集群中对应的 storageClass
         volumeMode: Filesystem
 
 ---
@@ -719,7 +718,7 @@ data:
 
 - `<your_namespace>`：安装 SwanLab 私有化服务的命名空间
 - `<your_storageclass>`：存储 Prometheus 指标与 Grafana 配置文件的 StorageClass（PVC）
-- `retention.time` 与 `retention.size`：可观测时序数据的保留时长与轮转存储大小，默认按 7 天 / 15GiB 配置，可按需调整
+- `retention.time` 与 `retention.size`：可观测时序数据的保留时长与轮转存储大小，默认按 **7 天 / 15GiB** 配置，可按需调整
 - `GF_SECURITY_ADMIN_PASSWORD`：Grafana 管理员密码，默认为 `swanlab-monitor@default`，建议修改
 - 抓取配置与告警规则无需额外修改
 
@@ -740,7 +739,7 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-prometheus 9090:909
 
 #### 2.2 「可选」数据库 Exporter 服务安装
 
-针对 `Redis` / `PostgreSQL` / `ClickHouse` 数据库服务，可按需分别部署对应的 Exporter 服务，用于采集并暴露指标：
+针对 `Redis` / `PostgreSQL` / `ClickHouse` 数据库服务，需分别部署对应的 Exporter 服务，用于采集并暴露指标：
 
 ::::details 数据库 Exporter 模板
 :::code-group
@@ -749,7 +748,7 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-prometheus 9090:909
 # ============================================================
 # SwanLab Monitor 组件 — PostgreSQL Exporter（可选，按需安装）
 # 查询 pg_stat_* 系统视图，暴露连接数 / 事务 / 锁 / 缓存命中 / 数据库大小等指标，端口 9187
-# 占位符：<your_namespace>（命名空间）、<your_postgres_exporter_image>（镜像地址）
+# 占位符：<your_namespace>（命名空间）
 # ============================================================
 
 ---
@@ -776,7 +775,7 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: <your_postgres_exporter_image>
+          image: repo.swanlab.cn/public/postgres-exporter:v0.17.1
           imagePullPolicy: Always
           ports:
             - containerPort: 9187
@@ -785,12 +784,12 @@ spec:
             - name: PG_USER
               valueFrom:
                 secretKeyRef:
-                  name: swanlab-self-hosted-postgres-credentials
+                  name: swanlab-self-hosted-postgres-credentials # ← 默认 postgres 的 secret 名称
                   key: username
             - name: PG_PASS
               valueFrom:
                 secretKeyRef:
-                  name: swanlab-self-hosted-postgres-credentials
+                  name: swanlab-self-hosted-postgres-credentials # ← 默认 postgres 的 secret 名称
                   key: password
             - name: DATA_SOURCE_NAME
               value: "postgresql://$(PG_USER):$(PG_PASS)@swanlab-self-hosted-postgres.<your_namespace>.svc.cluster.local:5432/app?sslmode=disable"
@@ -842,7 +841,7 @@ spec:
 # SwanLab Monitor 组件 — Redis Exporter（可选，按需安装）
 # 查询 Redis INFO，暴露内存 / 连接 / 命令统计 / 键空间等指标，端口 9121
 # 当前 chart 的 Redis 无密码，仅需配置 REDIS_ADDR
-# 占位符：<your_namespace>（命名空间）、<your_redis_exporter_image>（镜像地址）
+# 占位符：<your_namespace>（命名空间）
 # ============================================================
 
 ---
@@ -869,7 +868,7 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: <your_redis_exporter_image>
+          image: repo.swanlab.cn/public/redis-exporter:v1.87.0
           imagePullPolicy: Always
           ports:
             - containerPort: 9121
@@ -919,7 +918,7 @@ spec:
 # SwanLab Monitor 组件 — ClickHouse Per-Table Exporter（可选，按需安装）
 # ClickHouse 内置 exporter 只暴露聚合指标，此服务查询 system.parts
 # 暴露每表 bytes / rows / parts 作为 Prometheus gauge 指标，端口 9364
-# 占位符：<your_namespace>（命名空间）、<your_ch_table_exporter_image>（镜像地址）
+# 占位符：<your_namespace>（命名空间）
 # ============================================================
 
 ---
@@ -946,7 +945,7 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: <your_ch_table_exporter_image>
+          image: repo.swanlab.cn/public/ch-table-exporter:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 9364
@@ -959,12 +958,12 @@ spec:
             - name: CLICKHOUSE_USER
               valueFrom:
                 secretKeyRef:
-                  name: swanlab-self-hosted-clickhouse-credentials
+                  name: swanlab-self-hosted-clickhouse-credentials # ← 默认 clickhouse 的 secret 名称
                   key: username
             - name: CLICKHOUSE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: swanlab-self-hosted-clickhouse-credentials
+                  name: swanlab-self-hosted-clickhouse-credentials # ← 默认 clickhouse 的 secret 名称
                   key: password
           securityContext:
             runAsNonRoot: true
@@ -1006,11 +1005,13 @@ spec:
 :::
 ::::
 
+:::tip
 模板说明：
 
 - 数据库的 Service 地址与凭据 Secret 名均按默认 release 名称 `swanlab-self-hosted` 预设（Secret 名形如 `<fullname>-postgres-credentials`），如自定义了 release 名称，请按 `<release名>-self-hosted` 规则同步调整
-- 三个 Exporter 的镜像占位符需替换为您镜像仓库中实际可用的镜像地址
-- PostgreSQL / ClickHouse 的凭据 Secret 由 SwanLab chart 自动创建，可通过 `kubectl get secret -n <your_namespace>` 确认
+- `PostgreSQL` / `ClickHouse` 的 Secret 由 SwanLab chart 自动创建，模板以默认值填充，可通过 `kubectl get secret -n <your_namespace>` 确认
+
+:::
 
 确认需要观测的数据库服务后，执行如下命令安装：
 
@@ -1035,26 +1036,27 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 
 ### 3. 配置仪表盘
 
-先通过端口转发访问 Grafana（默认账号 `admin`，密码为模板中的 `GF_SECURITY_ADMIN_PASSWORD`）：
+| 服务           | 看板 JSON 配置模板                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| SwanLab-Server | [Server 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-server.json)       |
+| SwanLab-House  | [House 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-house.json)         |
+| Vector         | [Vector 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-vector.json)       |
+| Redis          | [Redis 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-redis.json)         |
+| PostgreSQL     | [PostgreSQL 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-postgres.json) |
+| ClickHouse     | [ClickHouse 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-ch.json)       |
+
+先通过端口转发或者路由配置，以便在浏览器访问 Grafana 看板，例如
 
 ```bash
-kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 8080:80
+kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 3000:80
 ```
 
-打开 `http://localhost:8080`，在 **Dashboards → New → Import** 中按需导入对应的看板 JSON 配置（数据源选择 Prometheus）：
+打开 Grafana 前端页面并登录，（默认账号 `admin`，密码为模板中的 `GF_SECURITY_ADMIN_PASSWORD`），在 **Dashboards → New → Import** 中按需导入对应的看板 JSON 配置（数据源选择 Prometheus）：
 
-| 服务           | 看板 JSON 配置模板                              |
-| -------------- | ----------------------------------------------- |
-| SwanLab-Server | `<dashboard_base_url>/k8s-config-server.json`   |
-| SwanLab-House  | `<dashboard_base_url>/k8s-config-house.json`    |
-| Vector         | `<dashboard_base_url>/k8s-config-vector.json`   |
-| Redis          | `<dashboard_base_url>/k8s-config-redis.json`    |
-| PostgreSQL     | `<dashboard_base_url>/k8s-config-postgres.json` |
-| ClickHouse     | `<dashboard_base_url>/k8s-config-ch.json`       |
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720115708296.png"/>
 
-> `<dashboard_base_url>` 为看板 JSON 文件的对象存储下载地址（占位，待补充）。
-
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201624323.png"/>
+根据配置需求，在本章节最开头下载对应服务的看板 JSON 配置模板，并执行导入
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720120016728.png"/>
 
 配置正常后可以看到相关的服务监控指标：
 
