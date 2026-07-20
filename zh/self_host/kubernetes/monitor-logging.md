@@ -30,7 +30,7 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 | -------------- | ------------------ | ---- | -------- |
 | SwanLab-Server | 后端核心业务服务   | 3000 | /metrics |
 | SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics |
-| Vector         | 指标聚合转发   | 9090 | /metrics |
+| Vector         | 指标聚合转发       | 9090 | /metrics |
 
 如果 `Redis` / `PostgreSQL` / `ClickHouse` 等基础数据库服务**未外部集成，则需要额外部署对应的 Exporter 采集服务**，将可观测指标转发到 Prometheus（见下文 2.2 节）。
 

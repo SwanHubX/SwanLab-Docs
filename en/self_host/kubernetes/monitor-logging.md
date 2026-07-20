@@ -115,6 +115,7 @@ SwanLab-Monitor bundles the deployment manifests for `Prometheus + Grafana` alon
 #### 2.1 Install the Prometheus + Grafana monitoring services
 
 :::details swanlab-monitor.yaml template
+
 ```yaml
 # ============================================================
 # SwanLab Monitor — Prometheus + Grafana monitoring stack
@@ -736,6 +737,7 @@ For the `Redis` / `PostgreSQL` / `ClickHouse` database services, deploy the corr
 
 ::::details Database Exporter templates
 :::code-group
+
 ```yaml [postgres-exporter.yaml]
 # ============================================================
 # SwanLab Monitor component — PostgreSQL Exporter (optional, install as needed)
@@ -1028,8 +1030,8 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 
 ### 3. Configure dashboards
 
-| Service        | Dashboard JSON template                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Service        | Dashboard JSON template                                                                                                           |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | SwanLab-Server | [Download Server dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-server.json)       |
 | SwanLab-House  | [Download House dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-house.json)         |
 | Vector         | [Download Vector dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-vector.json)       |
@@ -1064,12 +1066,12 @@ Once configured correctly, you can see the related service monitoring metrics:
 
 SwanLab currently supports the following 4 IM alert channels, enable them as needed:
 
-| Channel      | Placeholders to fill                                     | Description                                                                                    |
-| ------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Slack**    | `<your_slack_token>`                                     | The part after `services/` in the Slack Incoming Webhook URL                                  |
+| Channel      | Placeholders to fill                                     | Description                                                                                                                             |
+| ------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Slack**    | `<your_slack_token>`                                     | The part after `services/` in the Slack Incoming Webhook URL                                                                            |
 | **Feishu**   | `<your_feishu_webhook_url>`, `<your_feishu_secret>`      | The full Webhook URL of the Feishu custom bot and its signature verification secret (leave empty if signature verification is disabled) |
-| **DingTalk** | `<your_dingtalk_access_token>`, `<your_dingtalk_secret>` | The DingTalk bot's `access_token` and signing secret (leave empty if signing is disabled)     |
-| **WeCom**    | `<your_wecom_bot_key>`                                   | The `key` parameter of the WeCom group bot Webhook                                            |
+| **DingTalk** | `<your_dingtalk_access_token>`, `<your_dingtalk_secret>` | The DingTalk bot's `access_token` and signing secret (leave empty if signing is disabled)                                               |
+| **WeCom**    | `<your_wecom_bot_key>`                                   | The `key` parameter of the WeCom group bot Webhook                                                                                      |
 
 All channel secrets are stored together in the `swanlab-monitor-channels-credentials` Secret. The template presets all keys — **just fill in the channels you actually enable**; unused channels can keep empty values without affecting deployment.
 
@@ -1692,4 +1694,3 @@ CPU and memory panels are populated from the process-level metrics exposed by ea
 ### Is monitoring of Redis, PostgreSQL, ClickHouse, and other base services supported?
 
 Yes. PostgreSQL, Redis, and ClickHouse all have corresponding exporters (e.g., [postgres_exporter](https://github.com/prometheus-community/postgres_exporter), [redis_exporter](https://github.com/oliver006/redis_exporter)). Refer to "2.2 Install database Exporter services" above to deploy the corresponding Exporter services and import the corresponding Grafana dashboards to observe base service metrics.
-

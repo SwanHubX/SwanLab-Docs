@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useData } from "vitepress";
 
 /* ============================================================
  * 顶部公告条 — 全站吸顶、可关闭、不持久化
@@ -10,17 +11,34 @@ import { ref } from "vue";
  *
  * 改文案/链接/开关 → 下方 ANNOUNCEMENT；logo → /public/trio-full.svg；
  * 视觉样式 → 本组件 <style> + styles/components.css 的 --vp-banner-height 联动段。
+ * 多语言：text/cta 按语言各配一份，依据 VitePress 当前站点语言（useData().lang）
+ * 切换；非英文一律回退到 zh 文案。
  * ============================================================ */
 const ANNOUNCEMENT = {
   // 总开关：false 则整站不显示公告条。
   enabled: true,
-  // 公告正文（logo 已含 TRIO 字样，这里不再重复产品名）。
-  text: "🎉 新产品上线!  无需 GPU 的 AI 后训练平台 · ",
   // 点击整条跳转的链接。
   url: "https://pytrio.com/home",
+  // 按语言配置的文案（logo 已含 TRIO 字样，正文不再重复产品名）。
+  text: {
+    zh: "🎉 新产品上线!  无需 GPU 的 AI 后训练平台 · ",
+    en: "🎉 New product launched! The GPU-free AI post-training platform · ",
+  },
   // 右侧行动号召文案。
-  cta: "立即体验 →",
+  cta: {
+    zh: "立即体验 →",
+    en: "Try it now →",
+  },
 };
+
+const { lang } = useData();
+const locale = computed<keyof typeof ANNOUNCEMENT.text>(() =>
+  lang.value.startsWith("en") ? "en" : "zh",
+);
+const text = computed(() => ANNOUNCEMENT.text[locale.value]);
+const cta = computed(() => ANNOUNCEMENT.cta[locale.value]);
+// aria-label 也随语言切换，保持无障碍语义。
+const closeLabel = computed(() => (locale.value === "en" ? "Close announcement" : "关闭公告"));
 
 const visible = ref(ANNOUNCEMENT.enabled);
 const dismiss = () => {
@@ -37,10 +55,10 @@ const dismiss = () => {
       rel="noopener noreferrer"
     >
       <img class="announcement-bar__logo" src="/trio-full.svg" alt="TRIO" />
-      <span class="announcement-bar__text">{{ ANNOUNCEMENT.text }}</span>
-      <span class="announcement-bar__cta">{{ ANNOUNCEMENT.cta }}</span>
+      <span class="announcement-bar__text">{{ text }}</span>
+      <span class="announcement-bar__cta">{{ cta }}</span>
     </a>
-    <button class="announcement-bar__close" type="button" aria-label="关闭公告" @click="dismiss">
+    <button class="announcement-bar__close" type="button" :aria-label="closeLabel" @click="dismiss">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
           d="M18 6 6 18M6 6l12 12"
