@@ -1070,6 +1070,17 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 3000:80
 
 `swanlab-monitor.yaml` 中已配置服务指标异常时的告警规则阈值，但未配置通知渠道。如需告警触发后自动发送通知，需要额外安装 Alertmanager 及对应的 IM 通道桥接服务。
 
+SwanLab 目前支持以下 4 个 IM 告警通道，按需启用：
+
+| 通道 | 需要填写的占位符 | 说明 |
+| --- | --- | --- |
+| **Slack** | `<your_slack_token>` | Slack Incoming Webhook URL 中 `services/` 之后的部分 |
+| **飞书** | `<your_feishu_webhook_url>`、`<your_feishu_secret>` | 飞书自定义机器人的完整 Webhook URL 与签名校验 secret（未开签名校验可留空） |
+| **钉钉** | `<your_dingtalk_access_token>`、`<your_dingtalk_secret>` | 钉钉机器人的 `access_token` 与加签 secret（未开加签可留空） |
+| **企业微信** | `<your_wecom_bot_key>` | 企业微信群机器人 Webhook 的 `key` 参数 |
+
+所有通道的密钥统一存放在 `swanlab-monitor-channels-credentials` Secret 中，模板中已预设所有 key，**按需填写实际启用的通道即可**，未启用的通道保留空值不影响部署。
+
 #### 4.1 Alertmanager 服务安装
 
 :::details swanlab-monitor-alertmanager.yaml 模板
@@ -1277,13 +1288,6 @@ spec:
 ```
 
 :::
-
-模板中的密钥占位符（按需填写实际启用的通道即可）：
-
-- `<your_slack_token>`：Slack Incoming Webhook 中 `services/` 之后的部分
-- `<your_wecom_bot_key>`：企业微信群机器人 Webhook 的 `key` 参数
-- `<your_dingtalk_access_token>` / `<your_dingtalk_secret>`：钉钉机器人的 `access_token` 与加签 secret
-- `<your_feishu_webhook_url>` / `<your_feishu_secret>`：飞书自定义机器人的完整 Webhook URL 与签名校验 secret
 
 替换完对应字段后，安装 Alertmanager 服务：
 
