@@ -60,7 +60,7 @@ The **database of the SwanLab self-hosted service uses a single-instance mode**,
 | Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `service.gateway.`              | Reverse proxy / gateway entry                                                    |
 | Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `service.gateway.identifyImage` | Gateway authentication auxiliary image                                           |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | Deployment auxiliary init container                                              |
-| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | Experiment metrics collection buffer queue                                       |
+| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | Metrics aggregation & forwarding                                                 |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL relational database (users, projects, experiment metadata)            |
 | Redis      | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8`                     | `dependencies.redis.image`      | Cache and session storage                                                        |
 | ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3`                   | `dependencies.clickhouse.image` | Experiment metrics and logs column database                                      |
@@ -562,7 +562,7 @@ The following are recommended replica configuration best practices based on onli
 | clickhouse     | 1             | [Not modifiable] Column database, responsible for experiment metrics storage                |
 | postgres       | 1             | [Not modifiable] Relational database, responsible for metadata and relational records       |
 | redis          | 1             | [Not modifiable] In-memory database, caching session data                                   |
-| vector         | 2             | [Not modifiable] ClickHouse metrics write buffer queue                                      |
+| vector         | 2             | [Not modifiable] Metrics aggregation & forwarding                                           |
 | traefik        | 2             | [Adjustable] Main gateway, distributes service traffic                                      |
 | swanlab-server | ≥ 3           | [Adjustable] SwanLab core service, dynamically adjust based on service load                 |
 | swanlab-auth   | 2             | [Adjustable] SwanLab authentication and authorization service, adjust based on service load |

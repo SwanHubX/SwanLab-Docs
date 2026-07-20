@@ -60,7 +60,7 @@ SwanLab 私有化版本服务的**数据库采用单实例模式**，未来在�
 | Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `service.gateway.`              | 反向代理 / 网关入口                              |
 | Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `service.gateway.identifyImage` | 网关鉴权辅助镜像                                 |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | 部署辅助初始化容器                               |
-| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | 实验指标采集缓冲队列                             |
+| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | 指标聚合转发                                     |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL关系型数据库（用户、项目、实验元数据） |
 | Redis      | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8`                     | `dependencies.redis.image`      | 缓存与会话存储                                   |
 | ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3`                   | `dependencies.clickhouse.image` | 实验指标与日志列数据库                           |
@@ -562,7 +562,7 @@ swanlab.finish()
 | clickhouse     | 1        | 【不可修改】列数据库，负责实验指标存储                   |
 | postgres       | 1        | 【不可修改】关系型数据库，负责元数据和关系记录           |
 | redis          | 1        | 【不可修改】内存数据库，缓存会话数据                     |
-| vector         | 2        | 【不可修改】clickhouse 指标写入缓冲队列                  |
+| vector         | 2        | 【不可修改】指标聚合转发                                 |
 | traefik        | 2        | 【按需修改】主网关，分发服务流量                         |
 | swanlab-server | ≥ 3      | 【按需修改】SwanLab 核心服务，根据服务负载动态调整       |
 | swanlab-auth   | 2        | 【按需修改】SwanLab 认证与鉴权服务，根据服务负载动态调整 |
