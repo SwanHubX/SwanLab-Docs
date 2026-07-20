@@ -5,6 +5,28 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.0 - 2026.07.16
+
+**🚀 New Features**
+
+- 📊 The **Multi-View** feature is now fully released, offering more flexible custom chart configurations
+
+**💡 How to Upgrade**
+
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png" width="600"/>
+
+- Open the `project` you want to upgrade and click **"Upgrade to New Dashboard"** in the **top-right corner** to complete the upgrade
+- ⚠️ Note:
+  - The upgrade duration depends on the number of experiments and charts in the project, please be patient
+  - Experiments in progress cannot be upgraded
+  - **The upgrade cannot be rolled back to the old dashboard**, please confirm carefully before proceeding!
+
+**💥 Breaking Changes**
+
+- 😈 The Multi-View feature requires SDK `v0.9.0+`:
+  - After upgrading a project to the new dashboard, you must upgrade the SDK to `v0.9.0+` to create experiments, resume experiments, and log metrics
+  - Projects that have not been upgraded to the new dashboard can still log metrics and create experiments with SDK versions earlier than `v0.9.0`; however, SDK `v0.9.0+` cannot log metrics to or create experiments in projects on the old dashboard
+
 ## v0.8.3 - 2026.06.16
 
 **🚀 New Features**
