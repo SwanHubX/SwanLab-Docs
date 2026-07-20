@@ -16,13 +16,7 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 
 ## 🪜 流程示意
 
-```text
-Server / House / Vector / ClickHouse ──/metrics──► Prometheus ──query──► Grafana
-PostgreSQL / Redis / CH-Table Exporter ───────────►      │
-                                                         └──firing──► Alertmanager ──► Slack / 钉钉 / 飞书 / 企业微信
-```
-
-Prometheus 通过监控专用 Headless Service 的 DNS A 记录发现并逐个抓取 Pod 指标，全程不访问 Kubernetes API，无需额外的 ServiceAccount / RBAC 权限。
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-scrape-architecture.svg" alt="SwanLab 可观测采集交互架构" />
 
 ## 🧱 前置条件
 
@@ -1072,12 +1066,12 @@ kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 3000:80
 
 SwanLab 目前支持以下 4 个 IM 告警通道，按需启用：
 
-| 通道 | 需要填写的占位符 | 说明 |
-| --- | --- | --- |
-| **Slack** | `<your_slack_token>` | Slack Incoming Webhook URL 中 `services/` 之后的部分 |
-| **飞书** | `<your_feishu_webhook_url>`、`<your_feishu_secret>` | 飞书自定义机器人的完整 Webhook URL 与签名校验 secret（未开签名校验可留空） |
-| **钉钉** | `<your_dingtalk_access_token>`、`<your_dingtalk_secret>` | 钉钉机器人的 `access_token` 与加签 secret（未开加签可留空） |
-| **企业微信** | `<your_wecom_bot_key>` | 企业微信群机器人 Webhook 的 `key` 参数 |
+| 通道         | 需要填写的占位符                                         | 说明                                                                       |
+| ------------ | -------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Slack**    | `<your_slack_token>`                                     | Slack Incoming Webhook URL 中 `services/` 之后的部分                       |
+| **飞书**     | `<your_feishu_webhook_url>`、`<your_feishu_secret>`      | 飞书自定义机器人的完整 Webhook URL 与签名校验 secret（未开签名校验可留空） |
+| **钉钉**     | `<your_dingtalk_access_token>`、`<your_dingtalk_secret>` | 钉钉机器人的 `access_token` 与加签 secret（未开加签可留空）                |
+| **企业微信** | `<your_wecom_bot_key>`                                   | 企业微信群机器人 Webhook 的 `key` 参数                                     |
 
 所有通道的密钥统一存放在 `swanlab-monitor-channels-credentials` Secret 中，模板中已预设所有 key，**按需填写实际启用的通道即可**，未启用的通道保留空值不影响部署。
 
