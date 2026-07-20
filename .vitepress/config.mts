@@ -168,7 +168,9 @@ function normalizeLegacyZhMarkdownRequests(): Plugin {
 
 const plugins: PluginOption[] = [
   normalizeLegacyZhMarkdownRequests(),
-  llmstxt(),
+  llmstxt({
+    generateLLMsFullTxt: false,
+  }),
   // Code-block tab icons (pip/conda/python/bash etc.) — see vitepress-plugin-group-icons
   groupIconVitePlugin({}),
 ];
