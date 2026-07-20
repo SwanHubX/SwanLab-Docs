@@ -539,7 +539,9 @@ swanlab.finish()
 - ⬜ 查看 metric 的 csv 下载是否都顺利
 - ⬜ 查看用户头像是否能够正常显示
 
-## 🧱 额外说明
+## ❓ 常见问题
+
+### Value 字段配置
 
 您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看 `swanlab-self-hosted` 的所有可配置项。
 
@@ -558,3 +560,24 @@ swanlab.finish()
 ### Prometheus 可观测接入指引
 
 参考 [监控与日志](./monitor-logging.md) 文档进行配置。
+
+### 副本数与资源限制
+
+以下是根据线上运维经验给出的推荐副本配置最佳实践，在 `values.yaml` 中通过修改对应服务的 `replicas` 字段即可调整：
+
+::: warning
+当前 `swanlab-self-hosted` 部署方案中，受制于大部分私有集群的权限要求，`redis`, `postgres` 和 `clickhouse` 均采用**单副本方案**，暂不使用 CRD，因此请勿修改基础数据库服务的副本数。
+:::
+
+| 服务名         | 副本数量 | 说明                                                     |
+| -------------- | -------- | -------------------------------------------------------- |
+| clickhouse     | 1        | 【不可修改】列数据库，负责实验指标存储                   |
+| postgres       | 1        | 【不可修改】关系型数据库，负责元数据和关系记录           |
+| redis          | 1        | 【不可修改】内存数据库，缓存会话数据                     |
+| vector         | 2        | 【不可修改】clickhouse 指标写入缓冲队列                  |
+| traefik        | 2        | 【按需修改】主网关，分发服务流量                         |
+| swanlab-server | ≥ 3      | 【按需修改】SwanLab 核心服务，根据服务负载动态调整       |
+| swanlab-auth   | 2        | 【按需修改】SwanLab 认证与鉴权服务，根据服务负载动态调整 |
+| swanlab-house  | ≥ 3      | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整   |
+| swanlab-next   | 2        | 【按需修改】SwanLab 前端框架                             |
+| swanlab-cloud  | 1        | 【按需修改】SwanLab 前端图表页面                         |

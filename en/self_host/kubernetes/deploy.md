@@ -539,7 +539,9 @@ You can verify the following features:
 - ⬜ Check if metric CSV downloads work smoothly
 - ⬜ Check if user avatars can be displayed normally
 
-## 🧱 Additional Notes
+## ❓ FAQ
+
+### Value Configuration
 
 You can view all configurable options for `swanlab-self-hosted` [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
@@ -558,3 +560,24 @@ To update the SwanLab version or rollback after a failed update, please refer to
 ### Prometheus Observability Integration Guide
 
 Please refer to the [Monitor & Logging](./monitor-logging.md) documentation.
+
+### Replica Count and Resource Limits
+
+The following are recommended replica configuration best practices based on online operational experience. You can adjust them by modifying the `replicas` field of the corresponding service in `values.yaml`:
+
+::: warning
+In the current `swanlab-self-hosted` deployment, due to the permission requirements of most private clusters, `redis`, `postgres`, and `clickhouse` all use a **single-replica scheme** and do not use CRDs for now. Therefore, please do not modify the replica count of the base database services.
+:::
+
+| Service Name   | Replica Count | Description                                                                                 |
+| -------------- | ------------- | ------------------------------------------------------------------------------------------- |
+| clickhouse     | 1             | [Not modifiable] Column database, responsible for experiment metrics storage                |
+| postgres       | 1             | [Not modifiable] Relational database, responsible for metadata and relational records       |
+| redis          | 1             | [Not modifiable] In-memory database, caching session data                                   |
+| vector         | 2             | [Not modifiable] ClickHouse metrics write buffer queue                                      |
+| traefik        | 2             | [Adjustable] Main gateway, distributes service traffic                                      |
+| swanlab-server | ≥ 3           | [Adjustable] SwanLab core service, dynamically adjust based on service load                 |
+| swanlab-auth   | 2             | [Adjustable] SwanLab authentication and authorization service, adjust based on service load |
+| swanlab-house  | ≥ 3           | [Adjustable] SwanLab metrics analysis service, dynamically adjust based on service load     |
+| swanlab-next   | 2             | [Adjustable] SwanLab frontend framework                                                     |
+| swanlab-cloud  | 1             | [Adjustable] SwanLab frontend chart page                                                    |
