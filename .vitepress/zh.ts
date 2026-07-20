@@ -507,7 +507,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           items: [
             { text: "开放接口", link: "py-api" },
             { text: "开放接口（旧版）", link: "py-api-legacy" },
-            { text: "开放接口（已废弃）", link: "py-openapi" },
           ],
         },
         { text: "环境变量", link: "environment-variable" },

@@ -450,7 +450,6 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           items: [
             { text: "OpenAPI", link: "py-api" },
             { text: "OpenAPI (Legacy)", link: "py-api-legacy" },
-            { text: "OpenAPI (Deprecated)", link: "py-openapi" },
           ],
         },
         { text: "Environment Variables", link: "environment-variable" },

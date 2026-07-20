@@ -40,7 +40,8 @@ api = swanlab.Api(api_key="your-api-key", host="https://your-server.com")
 Workspace（工作空间）
  └── Project（项目）
       └── Experiment/Run（实验）
-           ├── columns（指标列，即指标的`key`/名称）
+           ├── series（指标 key 列表）
+           ├── columns（指标 key 列表，⚠️ 注意 0.9.0+ 多视图版本实验不再兼容支持）
            ├── metrics（标量指标）
            ├── medias（媒体指标）
            └── logs（日志）
@@ -51,8 +52,10 @@ Workspace（工作空间）
 | **Workspace**  | 项目的集合，对应一个团队或用户。分为个人空间（`PERSON`）和组织空间（`TEAM`）。 |
 | **Project**    | 实验的集合，对应一个研发任务，包含名称、描述、标签、可见性等元信息。           |
 | **Experiment** | 单次训练/推理任务，包含指标、配置、日志、环境信息等。                          |
-| **Column**     | 实验下的指标列，如 `loss`、`acc`，支持 FLOAT / STRING / IMAGE 等多种数据类型。 |
-| **Metric**     | 实验下某一指标列对应的指标值。                                                 |
+| **Series**     | 实验下的指标 key 列表，支持按类型 / 分类 / 关键词过滤，迭代返回 `Key` 对象。   |
+| **Key**        | 单个指标 key，可直接查询该 key 的指标数据或导出 CSV。                          |
+| **Column**     | 实验下的指标列（0.9.0+ 多视图版本实验不再支持，请改用 Series）。               |
+| **Metric**     | 实验下某一指标 key 对应的指标值。                                              |
 
 ### 数据类型：metrics / medias / logs
 
@@ -90,20 +93,21 @@ logs = run.logs(offset=0, level="INFO")
 
 `Api` 是所有操作的入口，构造时即完成认证，返回独立的 `Client` 实例（与 SDK 运行时互不干扰）。
 
-| 方法                                      | 描述                          |
-| ----------------------------------------- | ----------------------------- |
-| `api.workspace(username)`                 | 获取单个工作空间              |
-| `api.workspaces(username)`                | 获取工作空间列表（迭代器）    |
-| `api.project(path)`                       | 获取单个项目                  |
-| `api.projects(path, ...)`                 | 获取项目列表（迭代器）        |
-| `api.create_project(username, name, ...)` | 创建项目                      |
-| `api.run(path)`                           | 获取单个实验                  |
-| `api.runs(path, filters=...)`             | 获取实验列表（POST 过滤模式） |
-| `api.runs_get(path, ...)`                 | 获取实验列表（GET 分页模式）  |
-| `api.column(path, key)`                   | 获取单个指标列                |
-| `api.columns(path, ...)`                  | 获取实验的指标列列表          |
-| `api.user()`                              | 获取当前用户信息              |
-| `api.self_hosted()`                       | 私有化部署管理入口            |
+| 方法                                      | 描述                                                 |
+| ----------------------------------------- | ---------------------------------------------------- |
+| `api.workspace(username)`                 | 获取单个工作空间                                     |
+| `api.workspaces(username)`                | 获取工作空间列表（迭代器）                           |
+| `api.project(path)`                       | 获取单个项目                                         |
+| `api.projects(path, ...)`                 | 获取项目列表（迭代器）                               |
+| `api.create_project(username, name, ...)` | 创建项目                                             |
+| `api.run(path)`                           | 获取单个实验                                         |
+| `api.runs(path, filters=...)`             | 获取实验列表（POST 过滤模式）                        |
+| `api.runs_get(path, ...)`                 | 获取实验列表（GET 分页模式）                         |
+| `api.series(path, ...)`                   | 获取实验的指标 key 列表                              |
+| `api.column(path, key)`                   | 获取单个指标列（0.9.0+ 不推荐，改用 `series`）       |
+| `api.columns(path, ...)`                  | 获取实验的指标列列表（0.9.0+ 不推荐，改用 `series`） |
+| `api.user()`                              | 获取当前用户信息                                     |
+| `api.self_hosted()`                       | 私有化部署管理入口                                   |
 
 ## 工作空间(Workspace)
 
@@ -478,7 +482,67 @@ result = run.metrics(keys=["loss"], range_query={"tail": 30})
 
 :::
 
-#### 5. summary
+#### 5. series
+
+获取实验下的指标 key 列表（`0.9.0+` 推荐使用，替代 [columns](#_10-columns)），支持按指标类型、分类、关键词过滤，迭代返回 `Key` 对象。多视图项目下，克隆实验会自动查询根实验的指标数据。
+
+| 参数           | 类型  | 默认值     | 描述                                        |
+| -------------- | ----- | ---------- | ------------------------------------------- |
+| `metric_type`  | `str` | `"SCALAR"` | 指标类型：`SCALAR` 或 `MEDIA`               |
+| `metric_class` | `str` | `"CUSTOM"` | 指标分类：`CUSTOM` 或 `SYSTEM`              |
+| `search`       | `str` | `""`       | 模糊搜索关键词（大小写不敏感，匹配 key 名） |
+
+:::code-group
+
+```python [获取指标 key 列表]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# 获取所有自定义标量 key（迭代返回 Key 对象）
+for key in run.series():
+    print(key.key, key.key_class)
+
+# 模糊搜索 / 系统指标 / 媒体指标
+for key in run.series(search="loss"):
+    print(key.key)
+for key in run.series(metric_class="SYSTEM"):
+    print(key.key)
+for key in run.series(metric_type="MEDIA"):
+    print(key.key)
+
+# 匹配的 key 总数
+print(run.series().total)
+```
+
+```python [检查 key 是否存在]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# 返回 {key: [experiment_id, ...]}，空列表表示该 key 不存在
+result = run.series().availability(keys=["loss", "acc"])
+print(result)
+```
+
+:::
+
+也可以通过 `api.series(path, ...)` 直接获取，等价于 `api.run(path).series(...)`：
+
+```python
+import swanlab
+
+api = swanlab.Api()
+
+for key in api.series(path="my-team/my-project/abc123", search="loss"):
+    print(key.key)
+```
+
+#### 6. summary
 
 获取标量指标的统计摘要（min / max / avg / median / latest），**每个指标以 latest 值为准**。
 
@@ -502,7 +566,7 @@ print(summary)
 
 :::
 
-#### 6. medias
+#### 7. medias
 
 获取图片、音频、视频、echarts 等非结构化媒体数据，存储在对象存储中，响应仅返回预签名 URL。
 
@@ -536,7 +600,7 @@ print(result)
 返回的媒体数据通过预签名 URL 提供，需在过期时间之前下载。
 :::
 
-#### 7. logs
+#### 8. logs
 
 获取实验运行时的文本日志，支持按级别筛选；也可导出为 `.log` 文件。
 
@@ -567,7 +631,7 @@ print(logs)
 
 :::
 
-#### 8. export_logs
+#### 9. export_logs
 
 导出日志为 .log 文件（返回预签名下载链接）
 
@@ -587,7 +651,11 @@ if result.ok:
 
 :::
 
-#### 9. columns
+#### 10. columns
+
+::: warning 不推荐使用
+自 swanlab `0.9.0`（多视图版本）起，`columns` / `column` 不再推荐使用，请改用 [`series`](#_5-series)。
+:::
 
 获取实验下的指标名称，或通过 key 获取单个列。
 
@@ -629,7 +697,7 @@ for col in run.columns(search="loss"):
 col = run.column(key="loss", column_type="FLOAT")
 ```
 
-#### 10.delete
+#### 11. delete
 
 删除实验，通过 `commit` 控制实际删除行为。
 
@@ -643,6 +711,10 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 ```
 
 ## 指标列(Column)
+
+::: warning 不推荐使用
+自 swanlab `0.9.0`（多视图版本）起，`Column` 相关接口不再推荐使用，请改用 [Series](#指标序列-series)。
+:::
 
 表示通过 `swanlab.log()` 上报的指标名称。
 
@@ -776,6 +848,86 @@ col = api.column(path="my-team/my-project/abc123", key="loss")
 result = col.export_csv()
 if result.ok:
     print(result.data["url"])  # CSV 下载链接
+```
+
+:::
+
+## 指标序列(Series)
+
+表示实验下的指标 key 列表（`0.9.0+` 推荐使用，替代 [Column](#指标列-column)）。迭代 `Series` 返回 `Key` 对象，每个 `Key` 可直接查询该 key 的指标数据或导出 CSV。
+
+### Series 属性
+
+| 属性    | 类型  | 描述                                      |
+| ------- | ----- | ----------------------------------------- |
+| `total` | `int` | 过滤后匹配的 key 总数（首次访问触发请求） |
+
+### Key 属性
+
+| 属性          | 类型  | 描述                           |
+| ------------- | ----- | ------------------------------ |
+| `key`         | `str` | 指标 key 名称                  |
+| `metric_type` | `str` | 指标类型：`SCALAR` 或 `MEDIA`  |
+| `key_class`   | `str` | 指标分类：`CUSTOM` 或 `SYSTEM` |
+| `project_id`  | `str` | 项目 ID                        |
+| `run_id`      | `str` | 实验 ID                        |
+
+### Key.metric() 入参
+
+| 参数               | 类型   | 默认值  | 描述                         |
+| ------------------ | ------ | ------- | ---------------------------- |
+| `sample`           | `int`  | `1500`  | 采样数量（最大 1500）        |
+| `ignore_timestamp` | `bool` | `False` | 是否去除时间戳字段           |
+| `media_step`       | `int`  | `None`  | 仅 MEDIA 类型生效，指定 step |
+| `all`              | `bool` | `False` | 获取全量数据（不受采样限制） |
+
+### Series / Key 方法示例
+
+:::code-group
+
+```python [遍历指标 key 列表]
+import swanlab
+
+api = swanlab.Api()
+
+# api.series(path, ...) 等价于 api.run(path).series(...)
+for key in api.series(path="my-team/my-project/abc123", metric_type="SCALAR"):
+    print(key.key, key.key_class)
+```
+
+```python [获取单个 key 指标数据]
+import swanlab
+
+api = swanlab.Api()
+
+series = api.series(path="my-team/my-project/abc123", search="loss")
+
+for key in series:
+    data = key.metric(sample=500)
+    print(data["list"])
+```
+
+```python [导出单个 key 指标 CSV]
+import swanlab
+
+api = swanlab.Api()
+
+series = api.series(path="my-team/my-project/abc123", search="loss")
+
+for key in series:
+    result = key.export_csv()  # 仅 SCALAR 类型支持
+    if result.ok:
+        print(result.data["url"])  # CSV 下载链接
+```
+
+```python [检查 key 是否存在]
+import swanlab
+
+api = swanlab.Api()
+
+result = api.series(path="my-team/my-project/abc123").availability(keys=["loss", "acc"])
+# 返回 {key: [experiment_id, ...]}，空列表表示没有实验包含该 key
+print(result)
 ```
 
 :::
