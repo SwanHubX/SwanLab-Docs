@@ -1,4 +1,5 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
+import { SWANLAB_VERSION } from "./version";
 
 var base_path_guide_cloud = "/guide_cloud";
 var base_path_examples = "/examples";
@@ -119,7 +120,7 @@ export const zh = defineConfig({
         activeMatch: "/api/",
       },
       {
-        text: "v0.8.3",
+        text: `v${SWANLAB_VERSION}`,
         items: [
           { text: "更新日志", link: base_path_guide_cloud + "/general/changelog" },
           { text: "文档仓库", link: "https://github.com/SwanHubX/SwanLab-Docs" },

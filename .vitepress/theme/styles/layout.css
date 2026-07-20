@@ -71,6 +71,21 @@
   overflow-y: auto;
 }
 
+/* Hide the thin scrollbars on the left sidebar and the right aside.
+   The theme already hides the inner aside-container's scrollbar; doing
+   the same here keeps the wide-screen chrome clean (scroll still works). */
+.VPSidebar,
+.VPDoc.has-aside .aside {
+  scrollbar-width: none;
+}
+
+.VPSidebar::-webkit-scrollbar,
+.VPDoc.has-aside .aside::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 /* Navbar + sidebar: desktop layout (≥960px) */
 @media (min-width: 960px) {
   .VPNavBar:not(.has-sidebar) .wrapper {
@@ -108,7 +123,29 @@
   }
 }
 
+/* Sidebar sticky panel aligns below the navbar AND the announcement banner.
+   The base `.VPSidebar { top: var(--vp-nav-height) }` above predates the
+   banner; without the banner-height term the sticky panel sits roughly one
+   banner-height too high and tucks under the navbar (the sidebar then looks
+   flush against it — "贴边"). The visible sidebar panel only exists at lg+,
+   where the banner is also fixed, so the fix is scoped here. When the banner
+   is closed, :has() drops --vp-banner-height and the calc falls back to 0. */
+@media (min-width: 1024px) {
+  .VPSidebar {
+    top: calc(var(--vp-nav-height) + var(--vp-banner-height, 0px)) !important;
+    max-height: calc(100vh - var(--vp-nav-height) - var(--vp-banner-height, 0px));
+  }
+}
+
 /* ===== Doc layout: content + aside ===== */
+/* The theme's doc container uses Tailwind's `container` utility, which caps
+   it at max-width 1536px and centers it — so on ultra-wide displays the
+   doc area becomes a centered strip that ignores the edge-to-edge frame.
+   Let it fill its grid column instead. */
+.VPDoc.has-aside .container {
+  max-width: none !important;
+}
+
 .VPDoc.has-aside .content {
   max-width: none !important;
 }
@@ -121,10 +158,12 @@
 
 .VPDoc.has-aside .aside {
   position: sticky;
-  top: var(--vp-nav-height);
+  /* Align with the sidebar: account for the announcement banner too, else the
+     sticky aside tucks under the navbar the same way the sidebar did. */
+  top: calc(var(--vp-nav-height) + var(--vp-banner-height, 0px));
   width: 240px;
   flex: 0 0 240px;
-  max-height: calc(100vh - var(--vp-nav-height));
+  max-height: calc(100vh - var(--vp-nav-height) - var(--vp-banner-height, 0px));
   overflow-y: auto;
   padding-right: 32px;
 }
@@ -139,15 +178,46 @@
   }
 }
 
-/* Wide screens: relax the content max-width */
-@media (min-width: 1440px) {
-  .VPDoc.has-aside .content-container {
-    max-width: 60rem !important;
+/* Wide screens: span the viewport so the left sidebar and the right
+   outline (aside) align near the screen edges, but pull in slightly so
+   the content-wrapper's vertical divider lines are visibly framed
+   (instead of hugging the screen edge). Adaptive — no fixed cap, so it
+   still grows with the display. The reading column itself stays capped
+   by `.content-container` above. */
+@media (min-width: 90rem) {
+  .content-wrapper,
+  header.wrapper {
+    max-width: calc(100vw - 4rem) !important;
   }
 }
 
-@media (min-width: 1920px) {
-  .VPDoc.has-aside .content-container {
-    max-width: 64rem !important;
+/* Right outline: grow with the viewport on wide screens so longer
+   headings fit on one line instead of wrapping. The base 240px column
+   is kept for laptops (≥1280px); only large displays widen it. The
+   inner .aside-container is widened in lockstep (the theme fixes it at
+   224px). Below 1280px the aside goes full-width anyway (rule above). */
+@media (min-width: 96rem) {
+  /* ≥1536px */
+  .VPDoc.has-aside .aside {
+    width: 296px;
+    flex: 0 0 296px;
+    max-width: 296px;
+  }
+
+  .VPDoc.has-aside .aside-container {
+    width: 264px;
+  }
+}
+
+@media (min-width: 120rem) {
+  /* ≥1920px */
+  .VPDoc.has-aside .aside {
+    width: 344px;
+    flex: 0 0 344px;
+    max-width: 344px;
+  }
+
+  .VPDoc.has-aside .aside-container {
+    width: 312px;
   }
 }

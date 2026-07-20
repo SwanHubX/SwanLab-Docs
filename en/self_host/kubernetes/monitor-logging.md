@@ -1,33 +1,40 @@
-# Monitor & Logging Configuration Guide
+# Monitoring & Logging Configuration Guide
 
-> This guide describes how to configure `Prometheus + Grafana` monitoring for SwanLab backend services.
+> This guide describes how to configure `Prometheus + Grafana` monitoring for SwanLab self-hosted services.
 
-## Architecture Overview
+:::info
+Due to various cluster permission requirements, starting from self-hosted `App ≥ 3.0.0`, SwanLab adopts a monitoring model with independently deployed Prometheus + Grafana + Alertmanager.
+:::
 
-SwanLab self-hosted deployment uses a microservices architecture. The monitoring pipeline works as follows:
+## ☀️ Architecture Overview
+
+SwanLab self-hosted deployment uses a microservices architecture. Each application service is split by responsibility and runs independently. The overall monitoring pipeline is as follows:
 
 1. **Prometheus** periodically scrapes the `/metrics` endpoints exposed by each SwanLab service.
 2. **Grafana** reads data from Prometheus and renders SwanLab monitoring dashboards and alert panels.
 3. **[Optional] Alertmanager** or your existing alerting system sends notifications when Prometheus alert rules trigger.
 
-## Flow Diagram
+## 🪜 Flow Diagram
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-logging-flow.drawio.svg"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/monitor-architecture.drawio.svg" alt="SwanLab observability scrape architecture" />
 
-## Prerequisites
+## 🧱 Prerequisites
 
 - SwanLab self-hosted service has been installed via Helm (see [Kubernetes Deployment Guide](./deploy.md))
-- The default `release_name` is `swanlab-self-hosted`, installed in namespace `<your_namespace>` (replace with your actual namespace)
-- You have the necessary permissions to access Kubernetes resources
+- You have admin permissions on the namespace where the SwanLab self-hosted service is deployed
+- The default `release_name` is `swanlab-self-hosted`, installed in namespace `<your_namespace>`, with storage class `<your_storageclass>` (replace according to your actual setup)
 
-The following SwanLab backend services currently expose Prometheus metrics:
+The table below lists the SwanLab services that currently **support direct access** to metrics, along with their endpoint configuration and routes:
 
-| Service        | Description                     | Port | Path               |
-| -------------- | ------------------------------- | ---- | ------------------ |
-| SwanLab-Server | Core backend service            | 3000 | /metrics           |
-| SwanLab-House  | Experiment metrics OLAP service | 3000 | /api/house/metrics |
+| Service        | Description                      | Port | Path     |
+| -------------- | -------------------------------- | ---- | -------- |
+| SwanLab-Server | Core backend business service    | 3000 | /metrics |
+| SwanLab-House  | Experiment metrics OLAP service  | 3000 | /metrics |
+| Vector         | Metrics aggregation & forwarding | 9090 | /metrics |
 
-Before configuring Prometheus scrape jobs, verify that each service's Prometheus Metrics endpoint is working.
+If base database services such as `Redis` / `PostgreSQL` / `ClickHouse` are **not externally integrated, you need to additionally deploy the corresponding Exporter services** to forward observability metrics to Prometheus (see Section 2.2 below).
+
+Before configuring Prometheus scrape jobs, it is recommended to first verify that each service's Metrics endpoint is working:
 
 - **Verify SwanLab-Server**
 
@@ -46,671 +53,1006 @@ kubectl exec -n <your_namespace> -c house "$(
   kubectl get pod -n <your_namespace> \
     -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=house \
     -o jsonpath='{.items[0].metadata.name}'
-)" -- wget -qO- http://127.0.0.1:3000/api/house/metrics
+)" -- wget -qO- http://127.0.0.1:3000/metrics
 ```
 
 Notes:
 
-- `app.kubernetes.io/instance=<release_name>` uses the default release name `swanlab-self-hosted` — replace with your actual deployment value
-- `<your_namespace>` should be replaced with the namespace where SwanLab is deployed
+- `<release_name>` in `app.kubernetes.io/instance=<release_name>` is the Helm RELEASE name (default `swanlab-self-hosted`) — replace according to your actual deployment
+- `<your_namespace>` should be replaced with the actual cluster namespace used for deployment
 
-## Integrating Monitoring Services
+## 📊 Observability Monitoring Services
 
-Choose the appropriate configuration method based on your environment:
+### 1. Enable monitoring configuration in values
 
-- **Scenario 1: No Prometheus in the cluster** — Deploy an independent Prometheus + Grafana stack in the SwanLab namespace, and configure observability metrics
-- **Scenario 2: Prometheus already exists in the cluster** — Integrate SwanLab metrics into your existing Prometheus monitoring system
-
-### 1. Scenario 1: No Prometheus in the Cluster
-
-This scenario applies when your cluster does not have an existing Prometheus monitoring setup. You will deploy a complete `Prometheus + Grafana` monitoring stack in the SwanLab namespace.
-
-If your cluster already has a mature Prometheus observability service, you can skip this step and go to [Configure Prometheus Scrape Jobs](#_2-scenario-2-prometheus-already-exists-in-the-cluster).
-
-#### 1.1 Create swanlab-monitor PVC
-
-Create persistent storage for Prometheus and Grafana. This example uses 20Gi for each — adjust based on your cluster's actual usage.
-
-::: details swanlab-monitor-pvc.yaml Example
+In `values.yaml`, enable the `monitor` configuration for services that need observability metrics collection. Example:
 
 ```yaml
-# ============================================================
-# Prometheus + Grafana PVC Configuration
-# ============================================================
-# Pre-create persistent storage for Prometheus and Grafana
-# Must be created and Bound before installing kube-prometheus-stack
-#
-# Usage:
-#   kubectl apply -f swanlab-monitor-pvc.yaml
-#
-# Verify status:
-#   kubectl get pvc -n <namespace>
-#
-# Notes:
-#   - Prometheus PVC name must exactly match the Operator (StatefulSet) auto-generated name:
-#     prometheus-<CR-name>-db-prometheus-<CR-name>-<ordinal>
-#     where CR-name = <release>-kube-prome-prometheus (release name + chart name, truncated to 26 chars)
-#     For release swanlab-monitor:
-#     prometheus-swanlab-monitor-kube-prome-prometheus-db-prometheus-swanlab-monitor-kube-prome-prometheus-0
-#     If the name doesn't match, the Operator will create a new PVC and the pre-created one will be unused
-#     After installation, verify with: kubectl get pvc -n <namespace>
-#   - Grafana PVC name is referenced via existingClaim in values
-# ============================================================
-
-# Prometheus data storage
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  # PVC name must exactly match the Operator auto-generated name (see header comments)
-  name: prometheus-swanlab-monitor-kube-prome-prometheus-db-prometheus-swanlab-monitor-kube-prome-prometheus-0
-  namespace: <your_namespace> # TODO: replace with actual namespace
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi # TODO: scale as needed
-  storageClassName: <your_storageClassName> # TODO: replace with actual storage class
-  volumeMode: Filesystem
----
-# Grafana data storage
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  # Grafana PVC name is referenced via existingClaim in values
-  name: swanlab-monitor-grafana-pvc
-  namespace: <your_namespace> # TODO: replace with actual namespace
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi # TODO: scale as needed
-  storageClassName: <your_storageClassName> # TODO: replace with actual storage class
-  volumeMode: Filesystem
-```
-
-:::
-
-Apply the PVC configuration:
-
-```bash
-kubectl apply -f swanlab-monitor-pvc.yaml
-
-# Verify PVC status (ensure all are Bound)
-kubectl get pvc -n <your_namespace>
-```
-
-#### 1.2 Configure swanlab-monitor-value
-
-Create a `swanlab-monitor-value.yaml` file with Prometheus scrape job configuration and PVC references:
-
-::: details swanlab-monitor-value.yaml Example
-
-```yaml
-# ============================================================
-# kube-prometheus-stack values — using Alibaba Cloud ACR images
-# ============================================================
-# For deploying Prometheus + Grafana independently in the SwanLab namespace
-# Auto-discovers SwanLab services via Pod Annotations
-#
-# Usage:
-#   helm install swanlab-monitor prometheus-community/kube-prometheus-stack \
-#     -n <namespace> -f swanlab-monitor-value.yaml
-#
-# Prerequisites:
-#   1. PVC created (see swanlab-monitor-pvc.yaml)
-#   2. Helm repo added:
-#      helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-# ============================================================
-
-# ---------- Grafana ----------
-# Grafana visualizes Prometheus data and provides SwanLab monitoring dashboards
-grafana:
-  persistence:
-    enabled: true
-    # Use pre-created PVC (must be created and Bound before installation)
-    existingClaim: swanlab-monitor-grafana-pvc
-  # Grafana admin default password (default username is admin)
-  # ⚠️ Security note: This is an example default password. Change it immediately after installation,
-  # or use admin.existingSecret to reference a Kubernetes Secret for credential management
-  adminPassword: "swanlab-monitor@default"
-
-  # Grafana image (Alibaba Cloud ACR)
-  image:
-    registry: repo.swanlab.cn
-    repository: public/grafana
-    tag: "13.0.1-security-01"
-
-  # initChownData container image (for initializing data directory permissions)
-  initChownData:
-    image:
-      registry: repo.swanlab.cn
-      repository: public/busybox
-      tag: "1.38.0"
-
-  # sidecar container image (for auto-loading dashboards and datasources from ConfigMap)
-  sidecar:
-    image:
-      registry: repo.swanlab.cn
-      repository: public/k8s-sidecar
-      tag: "2.7.3"
-
-  replicas: 1
-
-  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
-  nodeSelector: {}
-  tolerations: []
-
-# ---------- Prometheus ----------
-# Prometheus collects and stores SwanLab metrics data
-prometheus:
-  prometheusSpec:
-    # Allow selecting all ServiceMonitors (not limited to Helm-managed ones)
-    serviceMonitorSelectorNilUsesHelmValues: false
-
-    # Persistent storage configuration
-    # Operator generates PVC for StatefulSet via volumeClaimTemplate, naming format:
-    #   prometheus-<CR-name>-db-prometheus-<CR-name>-<ordinal> (CR-name = <release>-kube-prome-prometheus)
-    # For this release (swanlab-monitor):
-    #   prometheus-swanlab-monitor-kube-prome-prometheus-db-prometheus-swanlab-monitor-kube-prome-prometheus-0
-    # This PVC has been pre-created with the correct name in swanlab-monitor-pvc.yaml
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: <your_storageClassName> # TODO: replace with actual storage class, must match swanlab-monitor-pvc.yaml
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 20Gi # must match the pre-created PVC capacity in swanlab-monitor-pvc.yaml
-
-    replicas: 1
-
-    # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
-    nodeSelector: {}
-    tolerations: []
-
-    # Prometheus image (Alibaba Cloud ACR)
-    image:
-      registry: repo.swanlab.cn
-      repository: public/prometheus
-      tag: "v3.12.0-distroless"
-
-    # Custom scrape config — SwanLab dedicated scrape job
-    # Auto-discovers SwanLab services via Pod Annotations
-    additionalScrapeConfigs:
-      - job_name: "swanlab"
-        kubernetes_sd_configs:
-          - role: pod
-        relabel_configs:
-          # Only scrape Pods annotated with prometheus.io/scrape: "swanlab"
-          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-            action: keep
-            regex: swanlab
-          # Read metrics_path from annotation
-          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-            action: replace
-            target_label: __metrics_path__
-            regex: (.+)
-          # Read port from annotation
-          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-            action: replace
-            target_label: __address__
-            regex: ([^:]+)(?::\d+)?;(\d+)
-            replacement: $1:$2
-          # Retain common Kubernetes labels for Grafana queries and grouping
-          - source_labels: [__meta_kubernetes_namespace]
-            target_label: namespace
-          - source_labels: [__meta_kubernetes_pod_name]
-            target_label: pod
-          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
-            target_label: release
-          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
-            target_label: service
-
-# ---------- Alertmanager ----------
-# Alertmanager handles Prometheus alert rules and sends notifications
-alertmanager:
-  replicas: 1
-  alertmanagerSpec:
-    # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
-    nodeSelector: {}
-    tolerations: []
-    image:
-      registry: repo.swanlab.cn
-      repository: public/alertmanager
-      tag: "v0.32.2"
-
-# ---------- Prometheus Operator ----------
-# Prometheus Operator manages Prometheus and Alertmanager instances
-prometheusOperator:
-  replicas: 1
-  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
-  nodeSelector: {}
-  tolerations: []
-  image:
-    registry: repo.swanlab.cn
-    repository: public/prometheus-operator
-    tag: "v0.91.0"
-  # admissionWebhook validates PrometheusRule and ServiceMonitor configurations
-  admissionWebhook:
-    image:
-      registry: repo.swanlab.cn
-      repository: public/kube-webhook-certgen
-      tag: "1.8.3"
-    patch:
-      image:
-        registry: repo.swanlab.cn
-        repository: public/kube-webhook-certgen
-        tag: "1.8.3"
-  # prometheusConfigReloader auto-reloads Prometheus config on ConfigMap changes
-  prometheusConfigReloader:
-    image:
-      registry: repo.swanlab.cn
-      repository: public/prometheus-config-reloader
-      tag: "v0.91.0"
-
-# ---------- Kube State Metrics ----------
-# kube-state-metrics exports cluster resource metrics from the Kubernetes API
-kube-state-metrics:
-  replicas: 1
-  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
-  nodeSelector: {}
-  tolerations: []
-  image:
-    registry: repo.swanlab.cn
-    repository: public/kube-state-metrics
-    tag: "v2.19.0"
-
-# ---------- Node Exporter (DaemonSet) ----------
-# node-exporter collects node-level hardware and OS metrics
-# Note: chart defaults distroless: true, which auto-appends -distroless suffix
-#       So tag should be "v1.11.1" without -distroless
-prometheus-node-exporter:
-  # Node scheduling configuration (fill as needed, example: node-role.kubernetes.io/monitor: "")
-  # ⚠️ node-exporter is a DaemonSet — setting nodeSelector limits it to matching nodes only
-  nodeSelector: {}
-  # Disable hostNetwork to avoid port conflicts (default is true)
-  hostNetwork: false
-  hostPort:
-    enabled: false
-  # Tolerate all taints to ensure DaemonSet runs on all nodes (including control plane)
-  tolerations:
-    - effect: NoSchedule
-      operator: Exists
-    - effect: NoExecute
-      operator: Exists
-    - effect: PreferNoSchedule
-      operator: Exists
-  image:
-    registry: repo.swanlab.cn
-    repository: public/node-exporter
-    tag: "v1.11.1"
-```
-
-:::
-
-:::warning ⚠️ Security Note
-The Grafana admin password `swanlab-monitor@default` is an example default value. Change the admin password immediately after installation. For production, use `grafana.admin.existingSecret` to reference a Kubernetes Secret for credential management, avoiding plaintext passwords in values files.
-:::
-
-#### 1.3 Install Prometheus + Grafana
-
-Similar to the [Upgrade & Rollback](./upgrade.md) section, choose the installation method based on whether your cluster can access `github.com`:
-
-- **Cluster can access github**
-
-First add the prometheus-community `kube-prometheus-stack` chart repo:
-
-```bash
-# Add Helm repo
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-
-# Install via Helm repo
-helm install swanlab-monitor prometheus-community/kube-prometheus-stack \
-  -n <your_namespace> \
-  -f swanlab-monitor-value.yaml
-```
-
-- **Cluster cannot access github**
-
-Pull the `kube-prometheus-stack` chart locally via OCI, then install:
-
-```bash
-# 1. Pull chart package locally
-helm pull oci://swanlab-registry.cn-hangzhou.cr.aliyuncs.com/chart/monitoring/kube-prometheus-stack \
-  --version 86.2.1
-# 2. Extract
-tar -zxvf kube-prometheus-stack-86.2.1.tgz
-# 3. Install using local chart
-helm install swanlab-monitor ./kube-prometheus-stack \
-  -n <your_namespace> \
-  -f swanlab-monitor-value.yaml
-```
-
-Wait for all pods and deployments to be ready:
-
-```bash
-# deployments
-kubectl get deployments -n <your_namespace> | grep monitor
-
-# pods
-kubectl get pods -n <your_namespace> | grep monitor
-```
-
-### 2. Scenario 2: Prometheus Already Exists in the Cluster
-
-This scenario applies when your cluster already has a mature Prometheus monitoring setup. You only need to integrate SwanLab metrics into the existing Prometheus scrape jobs. Three integration methods are provided — choose one:
-
-| Method                                                                                            | Description                                           | Prerequisites                                                                                 | Requires Pod Annotation Changes |
-| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------- |
-| [2.1 Method 1: Pod Annotation (Recommended)](#_2-1-method-1-pod-annotation-recommended)           | Single job, dynamic service discovery via annotations | Requires [Step 3](#_3-configure-pod-annotations-and-update-services) to configure annotations | ✅ Yes                          |
-| [2.2 Method 2: Label-Based Dual Jobs](#_2-2-method-2-label-based-dual-jobs)                       | Two independent jobs, discovery via Pod labels        | Uses default labels from SwanLab Helm Chart                                                   | ❌ No                           |
-| [2.3 Method 3: Prometheus Operator](#_2-3-method-3-prometheus-operator-servicemonitor-podmonitor) | Declarative integration via ServiceMonitor/PodMonitor | Cluster has Prometheus Operator deployed                                                      | ❌ No                           |
-
-#### 2.1 Method 1: Pod Annotation (Recommended)
-
-Add a dedicated SwanLab scrape job to your existing `prometheus.yaml` `scrape_configs`. This approach uses a single job to collect both Server and House metrics via Pod annotations — adding new services only requires adding annotations, no Prometheus config changes needed.
-
-::: details prometheus.yaml — Pod Annotation Scrape Job
-
-```yaml
-scrape_configs:
-  - job_name: "swanlab"
-    kubernetes_sd_configs:
-      - role: pod
-
-    relabel_configs:
-      # Only scrape Pods annotated with prometheus.io/scrape: "swanlab"
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-        action: keep
-        regex: swanlab
-
-      # Use prometheus.io/path annotation as metrics_path
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
-
-      # Use prometheus.io/port annotation as scrape port
-      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-        action: replace
-        target_label: __address__
-        regex: ([^:]+)(?::\d+)?;(\d+)
-        replacement: $1:$2
-
-      # Retain common Kubernetes labels for Grafana queries and grouping
-      - source_labels: [__meta_kubernetes_namespace]
-        target_label: namespace
-
-      - source_labels: [__meta_kubernetes_pod_name]
-        target_label: pod
-
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
-        target_label: release
-
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
-        target_label: service
-```
-
-:::
-
-When using Method 1, you must also complete [Step 3: Configure Pod Annotations](#_3-configure-pod-annotations-and-update-services).
-
-#### 2.2 Method 2: Label-Based Dual Jobs
-
-Add two independent scrape jobs to your `prometheus.yaml` `scrape_configs`, one for Server and one for House. This method uses the `app.kubernetes.io/instance` and `app.kubernetes.io/service` labels auto-generated by the SwanLab Helm Chart for service discovery — **no Pod annotation changes required**, works immediately after deployment.
-
-::: details prometheus.yaml — Label-Based Dual Jobs
-
-```yaml
-scrape_configs:
-  - job_name: "swanlab-server"
-    kubernetes_sd_configs:
-      - role: pod
-        namespaces:
-          names:
-            - <your_namespace> # TODO: replace with SwanLab deployment namespace
-    relabel_configs:
-      # Only scrape Pods with release=<release_name> and service=server
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
-        action: keep
-        regex: swanlab-self-hosted # TODO: replace with actual release name
-
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
-        action: keep
-        regex: server
-
-      # Force Metrics port
-      - source_labels: [__address__]
-        action: replace
-        target_label: __address__
-        regex: ([^:]+)(?::\d+)?
-        replacement: $1:3000
-
-      - target_label: __metrics_path__
-        replacement: /metrics
-
-      # Retain common Kubernetes labels
-      - source_labels: [__meta_kubernetes_namespace]
-        target_label: namespace
-
-      - source_labels: [__meta_kubernetes_pod_name]
-        target_label: pod
-
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
-        target_label: service
-
-  - job_name: "swanlab-house"
-    kubernetes_sd_configs:
-      - role: pod
-        namespaces:
-          names:
-            - <your_namespace> # TODO: replace with SwanLab deployment namespace
-    relabel_configs:
-      # Only scrape Pods with release=<release_name> and service=house
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
-        action: keep
-        regex: swanlab-self-hosted # TODO: replace with actual release name
-
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
-        action: keep
-        regex: house
-
-      # Force Metrics port
-      - source_labels: [__address__]
-        action: replace
-        target_label: __address__
-        regex: ([^:]+)(?::\d+)?
-        replacement: $1:3000
-
-      # House Metrics path differs from Server
-      - target_label: __metrics_path__
-        replacement: /api/house/metrics
-
-      # Retain common Kubernetes labels
-      - source_labels: [__meta_kubernetes_namespace]
-        target_label: namespace
-
-      - source_labels: [__meta_kubernetes_pod_name]
-        target_label: pod
-
-      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_service]
-        target_label: service
-```
-
-:::
-
-::: tip Differences from Method 1
-
-- **No Pod annotation changes needed**: Uses default `app.kubernetes.io/*` labels from SwanLab Helm Chart.
-- **Namespace-scoped**: Uses `namespaces.names` to limit SD scope, friendlier to clusters with tightened permissions.
-- **Independent Jobs**: Separate jobs for Server and House, easier to monitor and debug in Prometheus Targets panel.
-- Grafana dashboard template variable `$job` values are `swanlab-server` or `swanlab-house` (not `swanlab`).
-  :::
-
-#### 2.3 Method 3: Prometheus Operator (ServiceMonitor / PodMonitor)
-
-If your cluster's Prometheus is managed by [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) (e.g., kube-prometheus-stack, Bitnami Helm Charts), you can integrate SwanLab declaratively via `ServiceMonitor` or `PodMonitor` resources — no manual `prometheus.yaml` editing needed.
-
-::: details ServiceMonitor Example
-
-```yaml
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: swanlab-server
-  namespace: <your_namespace> # TODO: replace with SwanLab deployment namespace
-  labels:
-    release: kube-prometheus-stack # TODO: match your Prometheus Operator's serviceMonitorSelector
-spec:
-  namespaceSelector:
-    matchNames:
-      - <your_namespace>
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: swanlab-self-hosted # TODO: replace with actual release name
-      app.kubernetes.io/service: server
-  endpoints:
-    - port: http
-      path: /metrics
-      interval: 30s
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: swanlab-house
-  namespace: <your_namespace> # TODO: replace with SwanLab deployment namespace
-  labels:
-    release: kube-prometheus-stack # TODO: match your Prometheus Operator's serviceMonitorSelector
-spec:
-  namespaceSelector:
-    matchNames:
-      - <your_namespace>
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: swanlab-self-hosted # TODO: replace with actual release name
-      app.kubernetes.io/service: house
-  endpoints:
-    - port: http
-      path: /api/house/metrics
-      interval: 30s
-```
-
-:::
-
-::: warning
-
-- `metadata.labels.release` must match the Prometheus Operator's `serviceMonitorSelector`, otherwise the Operator will not pick up this ServiceMonitor. Check your existing Prometheus Helm values for `prometheus.prometheusSpec.serviceMonitorSelector`.
-- Scenario 1's `swanlab-monitor-value.yaml` already sets `serviceMonitorSelectorNilUsesHelmValues: false`, so adding ServiceMonitors in Scenario 1 requires no additional configuration.
-  :::
-
-### 3. Configure Pod Annotations and Update Services
-
-> This step only applies to [Method 1 (Pod Annotation)](#_2-1-method-1-pod-annotation-recommended). If using [Method 2 (Label-Based)](#_2-2-method-2-label-based-dual-jobs) or [Method 3 (ServiceMonitor)](#_2-3-method-3-prometheus-operator-servicemonitor-podmonitor), skip this step and go to [Step 4](#_4-configure-ingress).
-
-In your SwanLab self-hosted `swanlab-self-hosted-value.yaml`, find `service.server.customPodAnnotations` and `service.house.customPodAnnotations`, and add the following Prometheus scrape annotations for SwanLab-Server and SwanLab-House:
-
-::: details swanlab-self-hosted-value.yaml — Pod Annotations
-
-```yaml
-....
+# Application services
 service:
   server:
-    ....
-    customPodAnnotations:
-      prometheus.io/scrape: "swanlab"    # SwanLab dedicated scrape identifier
-      prometheus.io/port: "3000"         # Server Metrics port
-      prometheus.io/path: "/metrics"     # Server Metrics path
-...
+    # ...
+    # Whether to enable the dedicated Headless Service for monitoring metrics collection
+    monitor:
+      enable: true
   house:
-    ...
-    customPodAnnotations:
-      prometheus.io/scrape: "swanlab"    # SwanLab dedicated scrape identifier
-      prometheus.io/port: "3000"         # House Metrics port
-      prometheus.io/path: "/api/house/metrics"  # House Metrics path
-    ...
-```
+    # ...
+    monitor:
+      enable: true
 
-:::
+# Vector log aggregation
+vector:
+  # ...
+  monitor:
+    enable: true
+
+# Base component services
+dependencies:
+  # ...
+  clickhouse:
+    # ...
+    # Whether to enable the dedicated Headless Service for monitoring metrics collection
+    monitor:
+      enable: true
+```
 
 :::warning
-⚠️ **Note**: `prometheus.io/port` and `prometheus.io/path` are built-in SwanLab service requirements and cannot be changed.
+The database dependency services under `dependencies` only take effect when the corresponding service is **not externally integrated**.
 :::
 
-After modifying the annotations, apply the changes using `helm upgrade` (see [Upgrade & Rollback](./upgrade.md)):
+After modifying `values.yaml`, apply the update:
 
 ```bash
-# Online update
-helm upgrade swanlab-self-hosted swanlab/self-hosted \
-  -f swanlab-self-hosted-value.yaml \
-  -n <your_namespace>
-
-# Or update using offline chart package
-helm upgrade swanlab-self-hosted ./self-hosted \
-  -f swanlab-self-hosted-value.yaml \
-  -n <your_namespace>
+helm upgrade swanlab-self-hosted <path_to_chart> -n <your_namespace>
 ```
 
-### 4. Configure Ingress
+Once the update completes, each service with `monitor` enabled will additionally create a standalone `monitor` Headless Service dedicated to observability metrics collection.
 
-Similarly, the `swanlab-monitor` service does not include Ingress gateway configuration. You need to configure an external access entry on your cluster's load balancer (or Ingress) for the **80 port** of the `swanlab-monitor-grafana` Service.
+### 2. Install SwanLab-Monitor standalone monitoring
 
-If you can configure port forwarding, use the following command and open `localhost:3000`:
+SwanLab-Monitor bundles the deployment manifests for `Prometheus + Grafana` along with the observability metrics scrape and alerting configuration. You need to install two single-replica StatefulSet services in the namespace where SwanLab is deployed. The templates are as follows:
+
+#### 2.1 Install the Prometheus + Grafana monitoring services
+
+:::details swanlab-monitor.yaml template
+
+```yaml
+# ============================================================
+# SwanLab Monitor — Prometheus + Grafana monitoring stack
+# Scrape method: per-Pod scraping via the DNS A records of the dedicated monitoring Headless Service, no K8s API access needed
+# Placeholders: <your_namespace> (namespace), <your_storageclass> (StorageClass)
+# ============================================================
+
+# ---------- Prometheus ConfigMap ----------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swanlab-monitor-prometheus-config
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: swanlab-monitor
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 30s
+      evaluation_interval: 30s
+      external_labels:
+        monitor: swanlab-monitor
+
+    scrape_configs:
+      # ---- SwanLab Server ----
+      # dns_sd discovers all Pod IPs via the A records of the dedicated monitoring Headless Service
+      # relabel_configs statically inject the namespace / service labels to match Grafana dashboard variables
+      - job_name: "swanlab-server"
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - swanlab-self-hosted-server-monitor.<your_namespace>.svc.cluster.local
+            type: A
+            port: 3000
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: server
+
+      # ---- SwanLab House ----
+      - job_name: "swanlab-house"
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - swanlab-self-hosted-house-monitor.<your_namespace>.svc.cluster.local
+            type: A
+            port: 3000
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: house
+
+      # ---- Vector log aggregation (built-in prometheus_exporter, port 9090) ----
+      - job_name: "swanlab-vector"
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - swanlab-self-hosted-vector-monitor.<your_namespace>.svc.cluster.local
+            type: A
+            port: 9090
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: vector
+
+      # ---- ClickHouse database (built-in exporter, port 9363, only effective when not externally integrated) ----
+      - job_name: "swanlab-clickhouse"
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - swanlab-self-hosted-clickhouse-monitor.<your_namespace>.svc.cluster.local
+            type: A
+            port: 9363
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: clickhouse
+
+      # ---- ClickHouse per-table exporter (port 9364, requires deploying clickhouse-exporter.yaml) ----
+      - job_name: "swanlab-clickhouse-tables"
+        metrics_path: /metrics
+        static_configs:
+          - targets:
+              - swanlab-monitor-ch-table-exporter.<your_namespace>:9364
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: clickhouse
+
+      # ---- PostgreSQL exporter (port 9187, requires deploying postgres-exporter.yaml) ----
+      - job_name: "swanlab-postgres"
+        metrics_path: /metrics
+        static_configs:
+          - targets:
+              - swanlab-monitor-postgres-exporter.<your_namespace>:9187
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: postgres
+
+      # ---- Redis exporter (port 9121, requires deploying redis-exporter.yaml) ----
+      - job_name: "swanlab-redis"
+        metrics_path: /metrics
+        static_configs:
+          - targets:
+              - swanlab-monitor-redis-exporter.<your_namespace>:9121
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: redis
+
+      # ---- Prometheus itself ----
+      - job_name: "prometheus"
+        static_configs:
+          - targets: ["localhost:9090"]
+
+    rule_files:
+      - /etc/prometheus/rules/*.yml
+
+    # ---- Integrate with Alertmanager (optional, created by swanlab-monitor-alertmanager.yaml) ----
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+                - swanlab-monitor-alertmanager.<your_namespace>:9093
+
+---
+# ---------- Prometheus StatefulSet ----------
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: swanlab-monitor-prometheus
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  serviceName: swanlab-monitor-prometheus
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      # Explicitly use the default SA + disable automatic token mounting (Prometheus does not need K8s API access)
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 65534
+        runAsUser: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: prometheus
+          image: repo.swanlab.cn/public/prometheus:v3.12.0-distroless
+          imagePullPolicy: IfNotPresent
+          securityContext: # Container-level hardening: no privilege escalation + drop all capabilities + read-only root filesystem
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--storage.tsdb.retention.time=7d" # ← adjust retention period as needed (7d/15d/30d, etc.)
+            - "--storage.tsdb.retention.size=15GiB" # ← adjust retention size as needed, must not exceed PVC capacity
+            - "--web.enable-lifecycle"
+          ports:
+            - name: web
+              containerPort: 9090
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus
+              readOnly: true
+            - name: rules
+              mountPath: /etc/prometheus/rules
+              readOnly: true
+            - name: data
+              mountPath: /prometheus
+            - name: tmp # for writing temporary files under a read-only root filesystem
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: web
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: web
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+      volumes:
+        - name: config
+          configMap:
+            name: swanlab-monitor-prometheus-config
+        - name: rules
+          configMap:
+            name: swanlab-monitor-prometheus-rules
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: "20Gi" # ← adjust storage size as needed
+        storageClassName: <your_storageclass> # ← change to the corresponding storageClass in your cluster
+        volumeMode: Filesystem
+
+---
+# ---------- Prometheus Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-prometheus
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 9090
+      targetPort: web
+  selector:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: swanlab-monitor
+
+---
+# ---------- Grafana Datasources ConfigMap ----------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swanlab-monitor-grafana-datasources
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: swanlab-monitor
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://swanlab-monitor-prometheus.<your_namespace>:9090
+        isDefault: true
+        editable: true
+
+---
+# ---------- Grafana StatefulSet ----------
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: swanlab-monitor-grafana
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  serviceName: swanlab-monitor-grafana
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 472
+        runAsNonRoot: true
+        runAsUser: 472
+        runAsGroup: 472
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: grafana
+          image: repo.swanlab.cn/public/grafana:13.0.1-security-01
+          imagePullPolicy: IfNotPresent
+          securityContext: # Container-level hardening: no privilege escalation + drop all capabilities + read-only root filesystem
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: "swanlab-monitor@default" # ← recommend changing the default admin password
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+            - name: GF_SERVER_HTTP_PORT
+              value: "3000"
+          ports:
+            - name: http
+              containerPort: 3000
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/grafana
+            - name: provisioning-datasources
+              mountPath: /etc/grafana/provisioning/datasources
+              readOnly: true
+            - name: tmp # for writing temporary files under a read-only root filesystem
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 45
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+      volumes:
+        - name: provisioning-datasources
+          configMap:
+            name: swanlab-monitor-grafana-datasources
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: "20Gi" # ← adjust storage size as needed
+        storageClassName: <your_storageclass> # ← change to the corresponding storageClass in your cluster
+        volumeMode: Filesystem
+
+---
+# ---------- Grafana Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-grafana
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: swanlab-monitor
+
+---
+# ---------- Prometheus Rules ConfigMap ----------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swanlab-monitor-prometheus-rules
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: swanlab-monitor
+data:
+  swanlab-alerts.yml: |
+    # firing alerts are handled by Alertmanager (see swanlab-monitor-alertmanager.yaml), routed to each IM channel by receiver
+    groups:
+      - name: swanlab-alerts
+        interval: 30s
+        rules:
+          # ---- Scrape health (Server / House) ----
+          - alert: SwanLabScrapeDown
+            expr: up{job=~"swanlab-(server|house)"} == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "{{ $labels.job }} scrape failed"
+              description: "instance={{ $labels.instance }} has been down for over 5 minutes; Prometheus cannot scrape /metrics"
+
+          # ---- Scrape health (Vector / ClickHouse) ----
+          - alert: SwanLabInfraScrapeDown
+            expr: up{job=~"swanlab-(vector|clickhouse)"} == 0
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.job }} scrape failed"
+              description: "instance={{ $labels.instance }} has been down for over 5 minutes; Prometheus cannot scrape /metrics"
+
+          # ---- Server-side 5xx / error rate ----
+          - alert: SwanLabHigh5xxRate
+            expr: |
+              sum by (service, namespace) (
+                rate(http_error_requests_total{error_type=~"server_error|exception", route!="/metrics"}[5m])
+              )
+              /
+              sum by (service, namespace) (
+                rate(http_requests_total{route!="/metrics"}[5m])
+              ) > 0.05
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.service }} 5xx error rate too high"
+              description: "{{ $labels.service }} server-side error rate exceeds 5% for 5 minutes"
+
+          # ---- panic ----
+          - alert: SwanLabPanicSpike
+            expr: rate(http_error_requests_total{error_type="exception", route!="/metrics"}[5m]) > 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "{{ $labels.service }} panic detected"
+              description: "instance={{ $labels.instance }} experienced a panic in the last 5 minutes (captured by middleware recover)"
+
+          # ---- P99 latency too high ----
+          - alert: SwanLabLatencyP99High
+            expr: |
+              histogram_quantile(0.99,
+                sum by (le, service, namespace) (
+                  rate(http_request_duration_seconds_bucket{route!="/metrics"}[5m])
+                )
+              ) > 5
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.service }} P99 latency too high"
+              description: "{{ $labels.service }} P99 latency exceeds 5s for 5 minutes"
+
+          # ---- Pod frequent restarts ----
+          - alert: SwanLabPodRestart
+            expr: changes(process_start_time_seconds{job=~"swanlab-(server|house)"}[10m]) > 2
+            for: 0m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.service }} pod restarting frequently"
+              description: "instance={{ $labels.instance }} restarted more than 2 times within 10 minutes"
+
+          # ---- ClickHouse disk usage too high ----
+          - alert: SwanLabClickHouseDiskHigh
+            expr: |
+              ClickHouseAsyncMetrics_DiskUsed_default{job="swanlab-clickhouse"}
+              /
+              ClickHouseAsyncMetrics_DiskTotal_default{job="swanlab-clickhouse"} > 0.85
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "ClickHouse disk usage too high"
+              description: "instance={{ $labels.instance }} disk usage exceeds 85% for 10 minutes"
+
+          # ---- ClickHouse parts count too high (TooManyParts risk) ----
+          - alert: SwanLabClickHouseTooManyParts
+            expr: ClickHouseAsyncMetrics_MaxPartCountForPartition{job="swanlab-clickhouse"} > 100
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "ClickHouse parts count too high"
+              description: "instance={{ $labels.instance }} max parts per partition exceeds 100, risk of TooManyParts"
+
+          # ---- Vector disk buffer backlog (usually indicates ClickHouse write consumption falling behind) ----
+          - alert: SwanLabVectorDiskBufferBacklog
+            expr: |
+              (
+                vector_buffer_byte_size{buffer_type="disk", job="swanlab-vector"}
+                / on (component_id, host)
+                vector_buffer_max_byte_size{buffer_type="disk", job="swanlab-vector"}
+              ) > 0.5
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Vector disk buffer backlog"
+              description: "component={{ $labels.component_id }} host={{ $labels.host }} disk buffer usage exceeds 50% for 10 minutes"
+
+          # ---- PostgreSQL down (exporter cannot connect or process abnormal) ----
+          - alert: SwanLabPostgresDown
+            expr: pg_up{job="swanlab-postgres"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "PostgreSQL down"
+              description: "instance={{ $labels.instance }} PostgreSQL unavailable for 1 minute"
+
+          # ---- PostgreSQL connections too high ----
+          - alert: SwanLabPostgresConnectionsHigh
+            expr: |
+              sum(pg_stat_activity_count{job="swanlab-postgres"})
+              /
+              pg_settings_max_connections{job="swanlab-postgres"} > 0.8
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "PostgreSQL connections too high"
+              description: "active connections exceed 80% of max connections for 5 minutes"
+
+          # ---- PostgreSQL deadlocks (deadlocks is a cumulative counter; rate > 0 means new deadlocks) ----
+          - alert: SwanLabPostgresDeadlocks
+            expr: rate(pg_stat_database_deadlocks{job="swanlab-postgres"}[5m]) > 0
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "PostgreSQL deadlocks detected"
+              description: "database={{ $labels.datname }} new deadlock occurred"
+
+          # ---- Redis down (exporter cannot connect or process abnormal) ----
+          - alert: SwanLabRedisDown
+            expr: redis_up{job="swanlab-redis"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Redis down"
+              description: "instance={{ $labels.instance }} Redis unavailable for 1 minute"
+
+          # ---- Redis memory usage too high (auto-skipped when maxmemory=0, i.e. unlimited) ----
+          - alert: SwanLabRedisMemoryHigh
+            expr: |
+              redis_memory_used_bytes{job="swanlab-redis"}
+              / redis_memory_max_bytes{job="swanlab-redis"} > 0.85
+              and on(instance)
+              redis_memory_max_bytes{job="swanlab-redis"} > 0
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Redis memory usage too high"
+              description: "instance={{ $labels.instance }} memory usage exceeds 85% for 5 minutes"
+
+          # ---- Redis rejected connections (maxclients reached) ----
+          - alert: SwanLabRedisRejectedConnections
+            expr: increase(redis_rejected_connections_total{job="swanlab-redis"}[5m]) > 0
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Redis rejected new connections"
+              description: "instance={{ $labels.instance }} reached maxclients, connections rejected"
+```
+
+:::
+
+Where:
+
+- `<your_namespace>`: the namespace where the SwanLab self-hosted service is installed
+- `<your_storageclass>`: the StorageClass (PVC) for storing Prometheus metrics and Grafana configuration
+- `retention.time` and `retention.size`: the retention period and rotation storage size for observability time-series data, default **7 days / 15GiB**, adjust as needed
+- `GF_SECURITY_ADMIN_PASSWORD`: the Grafana admin password, default `swanlab-monitor@default`, recommended to change
+- The scrape configuration and alert rules require no additional changes
+
+All service DNS addresses in the template are preset with the default release name `swanlab-self-hosted`. If you **specified a custom release name** during installation (e.g. `swanlab-my`), the full resource name follows the rule `<release>-self-hosted` (e.g. `swanlab-my-self-hosted`), and the corresponding monitoring addresses must be adjusted to `swanlab-my-self-hosted-<service>-monitor.<your_namespace>.svc.cluster.local`.
+
+After replacing the relevant fields, install the two standalone `Prometheus` + `Grafana` StatefulSet services:
 
 ```bash
-kubectl port-forward svc/swanlab-monitor-grafana 3000:80 -n <your_namespace>
+kubectl apply -f swanlab-monitor.yaml -n <your_namespace>
 ```
 
-### 5. Import Grafana Dashboards
+After installation, verify that each scrape job is working via port-forward:
 
-SwanLab provides official Grafana dashboard templates for monitoring visualization in both scenarios.
+```bash
+kubectl port-forward -n <your_namespace> svc/swanlab-monitor-prometheus 9090:9090
+# Open http://localhost:9090/targets and confirm each job's target status is UP
+```
 
-#### 5.1 Download Dashboard Templates
+#### 2.2 [Optional] Install database Exporter services
 
-- [swanlab-monitor-config-server.json](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/swanlab-monitor-config-server.json) — Server service monitoring dashboard
-- [swanlab-monitor-config-house.json](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/swanlab-monitor-config-house.json) — House service monitoring dashboard
+For the `Redis` / `PostgreSQL` / `ClickHouse` database services, deploy the corresponding Exporter services to collect and expose metrics:
 
-#### 5.2 Import Steps
+::::details Database Exporter templates
+:::code-group
 
-1. In Grafana, add a `prometheus` data source: click **Connections** → **Data Sources** → **Add new data source** → select **Prometheus**, and set the URL to your Prometheus endpoint.
+```yaml [postgres-exporter.yaml]
+# ============================================================
+# SwanLab Monitor component — PostgreSQL Exporter (optional, install as needed)
+# Queries pg_stat_* system views, exposing connections / transactions / locks / cache hits / database size, etc., port 9187
+# Placeholders: <your_namespace> (namespace)
+# ============================================================
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609202045722.png"/>
+---
+# ---------- PostgreSQL Exporter ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swanlab-monitor-postgres-exporter
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: postgres-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgres-exporter
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres-exporter
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      containers:
+        - name: exporter
+          image: repo.swanlab.cn/public/postgres-exporter:v0.17.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9187
+              name: metrics
+          env:
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: swanlab-self-hosted-postgres-credentials # ← default postgres secret name
+                  key: username
+            - name: PG_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: swanlab-self-hosted-postgres-credentials # ← default postgres secret name
+                  key: password
+            - name: DATA_SOURCE_NAME
+              value: "postgresql://$(PG_USER):$(PG_PASS)@swanlab-self-hosted-postgres.<your_namespace>.svc.cluster.local:5432/app?sslmode=disable"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+      volumes:
+        - name: tmp
+          emptyDir: {}
 
-For example:
+---
+# ---------- PostgreSQL Exporter Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-postgres-exporter
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: postgres-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: postgres-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+  ports:
+    - port: 9187
+      targetPort: metrics
+      name: metrics
+```
 
-- `swanlab-monitor-kube-prome-prometheus` is the Prometheus Service in the same namespace, exposing port `9090`
-- `tenant-shaobo` is the namespace where `swanlab-self-hosted` is deployed
+```yaml [redis-exporter.yaml]
+# ============================================================
+# SwanLab Monitor component — Redis Exporter (optional, install as needed)
+# Queries Redis INFO, exposing memory / connections / command stats / keyspace, etc., port 9121
+# The current chart's Redis has no password, so only REDIS_ADDR is needed
+# Placeholders: <your_namespace> (namespace)
+# ============================================================
 
-Set the **Prometheus server URL** to `http://swanlab-monitor-kube-prome-prometheus.tenant-shaobo:9090/`
+---
+# ---------- Redis Exporter ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swanlab-monitor-redis-exporter
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: redis-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis-exporter
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis-exporter
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      containers:
+        - name: exporter
+          image: repo.swanlab.cn/public/redis-exporter:v1.87.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9121
+              name: metrics
+          env:
+            - name: REDIS_ADDR
+              value: "redis://swanlab-self-hosted-redis.<your_namespace>.svc.cluster.local:6379"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
 
-> The example above applies when Prometheus is installed in the same namespace as `swanlab-self-hosted` per [Scenario 1](#_1-scenario-1-no-prometheus-in-the-cluster). If your Prometheus is deployed in a different namespace or outside the cluster, replace the URL with your actual accessible Prometheus address.
+---
+# ---------- Redis Exporter Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-redis-exporter
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: redis-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: redis-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+  ports:
+    - port: 9121
+      targetPort: metrics
+      name: metrics
+```
 
-2. In Grafana, navigate to **Dashboards → New → Import**
+```yaml [clickhouse-exporter.yaml]
+# ============================================================
+# SwanLab Monitor component — ClickHouse Per-Table Exporter (optional, install as needed)
+# ClickHouse's built-in exporter only exposes aggregated metrics; this service queries system.parts
+# and exposes per-table bytes / rows / parts as Prometheus gauge metrics, port 9364
+# Placeholders: <your_namespace> (namespace)
+# ============================================================
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609200709949.png"/>
+---
+# ---------- ClickHouse Per-Table Exporter ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swanlab-monitor-ch-table-exporter
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: ch-table-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ch-table-exporter
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ch-table-exporter
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      containers:
+        - name: exporter
+          image: repo.swanlab.cn/public/ch-table-exporter:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9364
+              name: metrics
+          env:
+            - name: CH_HOST
+              value: "swanlab-self-hosted-clickhouse.<your_namespace>.svc.cluster.local"
+            - name: CH_PORT
+              value: "8123"
+            - name: CLICKHOUSE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: swanlab-self-hosted-clickhouse-credentials # ← default clickhouse secret name
+                  key: username
+            - name: CLICKHOUSE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: swanlab-self-hosted-clickhouse-credentials # ← default clickhouse secret name
+                  key: password
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
 
-3. Paste or upload `swanlab-monitor-config-server.json` and `swanlab-monitor-config-house.json`
+---
+# ---------- ClickHouse Per-Table Exporter Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-ch-table-exporter
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: ch-table-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: ch-table-exporter
+    app.kubernetes.io/instance: swanlab-monitor
+  ports:
+    - port: 9364
+      targetPort: metrics
+      name: metrics
+```
 
-4. Select the corresponding **dataSource**, **namespace**, **job**, and **service**.
+:::
+::::
 
-The dashboards use template variables to adapt to different Prometheus configurations. After importing, select from the **top dropdown menus**:
+:::tip
+Template notes:
 
-| Variable      | Description                | Example Value                                                                   |
-| ------------- | -------------------------- | ------------------------------------------------------------------------------- |
-| `$datasource` | Prometheus data source     | Select your configured data source                                              |
-| `$namespace`  | Kubernetes namespace       | `swanlab`                                                                       |
-| `$job`        | Prometheus scrape job name | `swanlab`, `swanlab-server`, or `swanlab-house` (depends on integration method) |
-| `$service`    | SwanLab service name       | `server` or `house`                                                             |
+- The database Service addresses and credential Secret names are all preset with the default release name `swanlab-self-hosted` (Secret names in the form `<fullname>-postgres-credentials`); if you customized the release name, adjust according to the `<release>-self-hosted` rule
+- The `PostgreSQL` / `ClickHouse` Secrets are auto-created by the SwanLab chart; the templates are filled with default values — verify via `kubectl get secret -n <your_namespace>`
 
-> **Note**: Template variables are automatically populated from Prometheus — no manual input needed.
->
-> **Important**: The "CPU Usage" and "Memory Usage" panels in the House dashboard use kubelet/cAdvisor metrics (`container_cpu_usage_seconds_total`, `container_memory_working_set_bytes`), not from SwanLab service Metrics endpoints. Scenario 1's kube-prometheus-stack collects these by default; for Scenario 2, confirm your existing Prometheus is scraping cAdvisor metrics, otherwise these panels will show no data.
+:::
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201624323.png"/>
+After confirming which database services you want to observe, run the following commands to install them:
 
-Once configured correctly, you should see service health metrics:
+```bash
+# Redis
+kubectl apply -f redis-exporter.yaml -n <your_namespace>
+
+# PostgreSQL
+kubectl apply -f postgres-exporter.yaml -n <your_namespace>
+
+# ClickHouse
+kubectl apply -f clickhouse-exporter.yaml -n <your_namespace>
+```
+
+After the Exporters are installed, Prometheus automatically discovers the new targets and includes them in scraping; to take effect immediately, restart manually:
+
+```bash
+kubectl rollout restart statefulset swanlab-monitor-prometheus -n <your_namespace>
+
+kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
+```
+
+### 3. Configure dashboards
+
+| Service        | Dashboard JSON template                                                                                                           |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| SwanLab-Server | [Download Server dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-server.json)       |
+| SwanLab-House  | [Download House dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-house.json)         |
+| Vector         | [Download Vector dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-vector.json)       |
+| Redis          | [Download Redis dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-redis.json)         |
+| PostgreSQL     | [Download PostgreSQL dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-postgres.json) |
+| ClickHouse     | [Download ClickHouse dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-ch.json)       |
+
+First set up port-forwarding or route configuration so you can access the Grafana dashboard in a browser, for example:
+
+```bash
+kubectl port-forward -n <your_namespace> svc/swanlab-monitor-grafana 3000:80
+```
+
+Open the Grafana frontend and log in (default account `admin`, password is the `GF_SECURITY_ADMIN_PASSWORD` in the template). In **Dashboards → New → Import**, import the corresponding dashboard JSON as needed (select Prometheus as the data source):
+
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720115708296.png"/>
+
+Download the dashboard JSON template for the corresponding service from the beginning of this section, then import it:
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720120016728.png"/>
+
+Once configured correctly, you can see the related service monitoring metrics:
 
 - **SwanLab-Server**:
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201132687.png"/>
@@ -718,40 +1060,637 @@ Once configured correctly, you should see service health metrics:
 - **SwanLab-House**:
   <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260609201039152.png"/>
 
-## Log Collection
+### 4. [Optional] Alertmanager alert notification service
 
-> 🚧 The log collection configuration guide (e.g., `Loki + Promtail`, `ELK` etc.) is being written. Stay tuned.
-> In the meantime, you can view service Pod logs via `kubectl logs`, or use your cloud provider's built-in cluster Pod log service:
->
-> ```bash
-> kubectl logs -n <your_namespace> <pod_name> -c <container_name>
-> ```
+`swanlab-monitor.yaml` already configures alert rule thresholds for abnormal service metrics, but does not configure notification channels. To automatically send notifications after alerts trigger, you need to additionally install Alertmanager and the corresponding IM channel bridge services.
 
-## FAQ
+SwanLab currently supports the following 4 IM alert channels, enable them as needed:
+
+| Channel      | Placeholders to fill                                     | Description                                                                                                                             |
+| ------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Slack**    | `<your_slack_token>`                                     | The part after `services/` in the Slack Incoming Webhook URL                                                                            |
+| **Feishu**   | `<your_feishu_webhook_url>`, `<your_feishu_secret>`      | The full Webhook URL of the Feishu custom bot and its signature verification secret (leave empty if signature verification is disabled) |
+| **DingTalk** | `<your_dingtalk_access_token>`, `<your_dingtalk_secret>` | The DingTalk bot's `access_token` and signing secret (leave empty if signing is disabled)                                               |
+| **WeCom**    | `<your_wecom_bot_key>`                                   | The `key` parameter of the WeCom group bot Webhook                                                                                      |
+
+All channel secrets are stored together in the `swanlab-monitor-channels-credentials` Secret. The template presets all keys — **just fill in the channels you actually enable**; unused channels can keep empty values without affecting deployment.
+
+#### 4.1 Install the Alertmanager service
+
+:::details swanlab-monitor-alertmanager.yaml template
+
+```yaml
+# ============================================================
+# SwanLab Monitor — unified alert channel credentials Secret
+# All IM channel secrets are centralized in this Secret; fill them in once, as needed, during deployment
+# ============================================================
+apiVersion: v1
+kind: Secret
+metadata:
+  name: swanlab-monitor-channels-credentials
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: alertmanager-channels
+    app.kubernetes.io/instance: swanlab-monitor
+type: Opaque
+stringData:
+  # ---- Slack (Alertmanager reads via api_url_file) ----
+  slack_webhook_url: "https://hooks.slack.com/services/<your_slack_token>"
+
+  # ---- WeCom (Alertmanager reads via url_file, includes full URL + key) ----
+  wecom_webhook_url: "http://swanlab-monitor-wecom-bridge.<your_namespace>:5001/send?key=<your_wecom_bot_key>"
+
+  # ---- DingTalk (the bridge mounts this key as config.yml via subPath) ----
+  dingtalk_config.yml: |
+    targets:
+      swanlab:
+        url: https://oapi.dingtalk.com/robot/send?access_token=<your_dingtalk_access_token>
+        secret: <your_dingtalk_secret> # leave empty string if signing is disabled
+        mention:
+          all: false
+
+  # ---- Feishu (the bridge injects the following environment variables via envFrom) ----
+  FEISHU_WEBHOOK_URL: "<your_feishu_webhook_url>"
+  FEISHU_SECRET: "<your_feishu_secret>" # leave empty string if signature verification is disabled
+  MESSAGE_TYPE: "interactive" # interactive=card message, text=plain text
+
+---
+# ---------- Alertmanager config Secret (pure routing config, no secrets) ----------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: swanlab-monitor-alertmanager-config
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: swanlab-monitor
+type: Opaque
+stringData:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: im-all
+      group_by: ['alertname', 'service', 'namespace']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+
+    receivers:
+      - name: im-all
+        # Channel switches: comment out the corresponding config block to disable it (keep at least one channel)
+        # Secrets are not in this file — they are read uniformly from /etc/alertmanager/secrets/
+
+        # ---- Slack (native slack_configs) ----
+        slack_configs:
+          - api_url_file: /etc/alertmanager/secrets/slack_webhook_url
+            channel: '#swanlab-alerts' # ← change to your actual channel
+            send_resolved: true
+
+        webhook_configs:
+          # ---- DingTalk (requires deploying dingtalk.yaml) ----
+          - url: 'http://swanlab-monitor-dingtalk-bridge.<your_namespace>:8060/dingtalk/swanlab/send'
+            send_resolved: true
+
+          # ---- Feishu (requires deploying feishu.yaml) ----
+          - url: 'http://swanlab-monitor-feishu-bridge.<your_namespace>:8080/webhook'
+            send_resolved: true
+
+          # ---- WeCom (requires deploying wecom.yaml, URL includes key, read from credentials Secret) ----
+          - url_file: /etc/alertmanager/secrets/wecom_webhook_url
+            send_resolved: true
+
+---
+# ---------- Alertmanager StatefulSet ----------
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: swanlab-monitor-alertmanager
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  serviceName: swanlab-monitor-alertmanager
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alertmanager
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 65534
+        runAsUser: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: alertmanager
+          image: repo.swanlab.cn/public/alertmanager:v0.32.2
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          args:
+            - "--config.file=/etc/alertmanager/alertmanager.yml"
+            - "--storage.path=/alertmanager"
+          ports:
+            - name: web
+              containerPort: 9093
+          volumeMounts:
+            - name: config
+              mountPath: /etc/alertmanager
+              readOnly: true
+            - name: secrets # unified credentials Secret mount (for api_url_file / url_file reads)
+              mountPath: /etc/alertmanager/secrets
+              readOnly: true
+            - name: data
+              mountPath: /alertmanager
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: web
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: web
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+      volumes:
+        - name: config
+          secret:
+            secretName: swanlab-monitor-alertmanager-config
+        - name: secrets
+          secret:
+            secretName: swanlab-monitor-channels-credentials
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: <your_storageclass>
+        volumeMode: Filesystem
+
+---
+# ---------- Alertmanager Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-alertmanager
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 9093
+      targetPort: web
+  selector:
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: swanlab-monitor
+```
+
+:::
+
+After replacing the relevant fields, install the Alertmanager service:
+
+```bash
+kubectl apply -f swanlab-monitor-alertmanager.yaml -n <your_namespace>
+```
+
+#### 4.2 Webhook IM alert notification configuration
+
+Based on the IM channels you actually enable, install the corresponding bridge services (channels not enabled in `alertmanager.yml` do not need to be installed):
+
+::::details IM channel bridge templates
+:::code-group
+
+```yaml [dingtalk.yaml]
+# ============================================================
+# DingTalk bridge — timonwong/prometheus-webhook-dingtalk, listens on 8060
+# Secrets (access_token + signing secret) are read from the unified credentials Secret (swanlab-monitor-channels-credentials)
+# ============================================================
+
+---
+# ---------- DingTalk Bridge Deployment ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swanlab-monitor-dingtalk-bridge
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: dingtalk-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dingtalk-bridge
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dingtalk-bridge
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: dingtalk-bridge
+          image: repo.swanlab.cn/public/prometheus-webhook-dingtalk:v2.1.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          args:
+            - "--config.file=/etc/prometheus-webhook-dingtalk/config.yml"
+            - "--web.listen-address=:8060"
+            - "--web.enable-lifecycle"
+          ports:
+            - name: http
+              containerPort: 8060
+          volumeMounts:
+            - name: credentials # read dingtalk_config.yml from the unified credentials Secret
+              mountPath: /etc/prometheus-webhook-dingtalk
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            tcpSocket:
+              port: 8060
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      volumes:
+        - name: credentials # unified credentials Secret (dingtalk_config.yml key → config.yml file)
+          secret:
+            secretName: swanlab-monitor-channels-credentials
+            items:
+              - key: dingtalk_config.yml
+                path: config.yml
+        - name: tmp
+          emptyDir: {}
+
+---
+# ---------- DingTalk Bridge Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-dingtalk-bridge
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: dingtalk-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8060
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: dingtalk-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+```
+
+```yaml [feishu.yaml]
+# ============================================================
+# Feishu bridge — alertmanager-feishu, listens on 8080
+# Injects FEISHU_WEBHOOK_URL / FEISHU_SECRET / MESSAGE_TYPE from the unified credentials Secret via envFrom
+# ============================================================
+
+---
+# ---------- Feishu Bridge Deployment ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swanlab-monitor-feishu-bridge
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: feishu-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: feishu-bridge
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: feishu-bridge
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: feishu-bridge
+          image: repo.swanlab.cn/public/alertmanager-feishu:dev
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          command: ["/app/.venv/bin/alertmanager-feishu", "serve"]
+          envFrom:
+            - secretRef:
+                name: swanlab-monitor-channels-credentials
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: tmp
+          emptyDir: {}
+
+---
+# ---------- Feishu Bridge Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-feishu-bridge
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: feishu-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: feishu-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+```
+
+```yaml [wecom.yaml]
+# ============================================================
+# WeCom bridge — rea1shane/a2w, listens on 5001
+# key is configured in Alertmanager's webhook URL; the bridge itself needs no credentials
+# To @mention specific users: append &mention=user1&mention=user2 to wecom_webhook_url
+# Mounts standard.tmpl to read standard fields (severity/summary/description), consistent with Slack/DingTalk/Feishu
+# ============================================================
+
+---
+# ---------- WeCom Bridge Template ConfigMap ----------
+# A custom template replaces a2w's built-in base.tmpl (base.tmpl reads level/current/labels).
+# This template reads Alertmanager common fields, making the 4 IM channels' fields consistent so rules don't need WeCom-specific fields.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swanlab-monitor-wecom-bridge-template
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: wecom-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+data:
+  standard.tmpl: |
+    {{ range $i, $alert := .Alerts }}
+
+        {{- if eq $alert.Status "firing" }}
+    <font color="warning">**[firing] {{ or $alert.Annotations.summary $alert.Labels.alertname }}**</font>
+        {{- with $alert.Labels.severity }}
+    **Severity**: {{ . }}
+        {{- end }}
+    **Triggered At**: {{ timeFormat ($alert.StartsAt) }}
+    **Duration**: {{ timeFromNow ($alert.StartsAt) }}
+        {{- with $alert.Annotations.description }}
+    **Details**: {{ . }}
+        {{- end }}
+        {{- else if eq $alert.Status "resolved" }}
+    <font color="info">**[resolved] {{ or $alert.Annotations.summary $alert.Labels.alertname }}**</font>
+    **Triggered At**: {{ timeFormat ($alert.StartsAt) }}
+    **Recovered At**: {{ timeFormat ($alert.EndsAt) }}
+    **Duration**: {{ timeDuration ($alert.StartsAt) ($alert.EndsAt) }}
+        {{- with $alert.Annotations.description }}
+    **Details**: {{ . }}
+        {{- end }}
+        {{- end }}
+        {{- with $alert.GeneratorURL }}
+
+    [🔍 Prometheus]({{ . }})
+        {{- end }}
+
+    {{ end }}
+
+---
+# ---------- WeCom Bridge Deployment ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swanlab-monitor-wecom-bridge
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: wecom-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wecom-bridge
+      app.kubernetes.io/instance: swanlab-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: wecom-bridge
+        app.kubernetes.io/instance: swanlab-monitor
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: wecom-bridge
+          image: repo.swanlab.cn/public/a2w:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--template=/etc/a2w/template/standard.tmpl" # use the custom standard-field template to replace a2w's built-in base.tmpl
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          env:
+            - name: TZ
+              value: Asia/Shanghai # a2w displays alert times in the local timezone
+          ports:
+            - name: http
+              containerPort: 5001
+          readinessProbe: # a2w has no standard health endpoint, use tcpSocket to probe the port
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts: # mount the custom template (read-only)
+            - name: wecom-template
+              mountPath: /etc/a2w/template
+              readOnly: true
+      volumes: # custom template ConfigMap
+        - name: wecom-template
+          configMap:
+            name: swanlab-monitor-wecom-bridge-template
+
+---
+# ---------- WeCom Bridge Service ----------
+apiVersion: v1
+kind: Service
+metadata:
+  name: swanlab-monitor-wecom-bridge
+  namespace: <your_namespace>
+  labels:
+    app.kubernetes.io/name: wecom-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 5001
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: wecom-bridge
+    app.kubernetes.io/instance: swanlab-monitor
+```
+
+:::
+::::
+
+Install the bridge services for the channels you actually enable, as needed:
+
+```bash
+# DingTalk
+kubectl apply -f dingtalk.yaml -n <your_namespace>
+
+# Feishu
+kubectl apply -f feishu.yaml -n <your_namespace>
+
+# WeCom
+kubectl apply -f wecom.yaml -n <your_namespace>
+```
+
+## 📝 Log Collection Service
+
+> 🚧 The log collection configuration guide (e.g., `Loki + Promtail`, `ELK`) is being written. Stay tuned.
+
+In the meantime, you can view each service Pod's runtime logs via `kubectl logs`, or observe them through your public cloud's built-in cluster Pod log service:
+
+```bash
+kubectl logs -n <your_namespace> <pod_name> -c <container_name>
+```
+
+## ❓ FAQ
 
 ### Why does the Metrics endpoint return 404?
 
-The most likely cause is an incorrect request method. Make sure you are using `HTTP GET` to access the metrics endpoint. Additionally, ensure the service, port, and path are all correct.
+The most likely cause is an incorrect request method. Make sure you use `HTTP GET` to access the metrics endpoint. Also ensure the service, port, and path are all correct.
 
 ### What do the metrics returned by the Metrics endpoint represent?
 
-The Metrics endpoint follows the Prometheus format specification and typically returns information such as request QPS, request latency, and request error rate, along with internal runtime metrics for Node.js, Go, and other languages. Due to the large number of metrics, it is difficult to list all of them and their meanings. We recommend verifying the metrics endpoint as described in [Prerequisites](#prerequisites), or manually retrieving all metrics information from the Prometheus panel, and then using other tools (such as large language models) to look up the meaning of specific metrics.
+The Metrics endpoint follows the Prometheus format specification and typically returns information such as request QPS, request latency, and request error rate, along with internal runtime metrics for languages such as Node.js and Go. Because of the large number of metrics, the Grafana dashboards only surface a few of the most important ones. If you have other observability metric needs, you can verify the Metrics endpoint as described in the prerequisites, or manually retrieve all metrics from the Prometheus panel for further filtering and analysis.
 
 ### Does the Metrics endpoint return CPU, memory, and other metrics?
 
-The Metrics endpoint does not collect CPU, memory, or other hardware metrics.
+Yes, but they are all **process-level** metrics. They are collected by the Prometheus client libraries by default, with negligible overhead, and only read the process's own `/proc/self` information, so no extra permissions are required:
 
-First, for performance reasons, the SwanLab service Metrics endpoint primarily exposes application runtime status metrics and does not include system resource metrics such as CPU and memory. Collecting CPU and other resource information may increase the application burden. On the other hand, CPU and memory metric collection may require higher permissions, which does not align with SwanLab's self-hosted deployment requirements. Finally, in cloud-native environments, these resource metrics are typically collected uniformly by [cAdvisor](https://github.com/google/cadvisor), [node-exporter](https://github.com/prometheus/node_exporter), or cloud provider monitoring components. Consider deploying the corresponding components to collect CPU and other data.
+- **SwanLab-Server** (Node.js): `process_cpu_user_seconds_total`, `process_cpu_system_seconds_total` (cumulative user/system CPU seconds consumed by the process; applying `rate()` yields CPU usage in cores), `process_resident_memory_bytes` (process resident memory / RSS, in bytes).
+- **SwanLab-House** (Go): `process_cpu_seconds_total` (cumulative user + system CPU seconds), `process_resident_memory_bytes` (RSS), `process_virtual_memory_bytes` (virtual memory), `process_open_fds` (number of open file descriptors), plus Go runtime metrics such as `go_goroutines` and `go_memstats_*`.
+
+Note that these metrics reflect the resource usage of each service process itself, not node/host-level resource metrics. In cloud-native environments, node-level resource metrics are typically collected by [cAdvisor](https://github.com/google/cadvisor), [node-exporter](https://github.com/prometheus/node_exporter), or cloud provider monitoring components, which require higher permissions — deploy those components if you need them.
 
 ### Why do panels in the SwanLab monitoring dashboards show no data?
 
-If CPU, memory, or other panels show no data, as mentioned in the previous question, you should consider deploying the corresponding hardware monitoring components. If you have already deployed the components, or if panels such as request latency show no data, the recommended troubleshooting steps are:
+CPU and memory panels are populated from the process-level metrics exposed by each service's own Metrics endpoint (see the previous question) — like the QPS and latency panels, they rely on Prometheus scraping the SwanLab services, not on any additional hardware monitoring components. If panels show no data, the recommended troubleshooting steps are:
 
 1. Check whether the corresponding metric exists in the Prometheus panel;
 2. If it exists, the Grafana dashboard metric query configuration may be incorrect and needs to be modified;
 3. If it does not exist, there is an issue with the Prometheus scrape job that needs to be investigated.
 
-### Is monitoring of PostgreSQL, ClickHouse, and other infrastructure services supported?
+### Is monitoring of Redis, PostgreSQL, ClickHouse, and other base services supported?
 
-PostgreSQL and ClickHouse have corresponding exporters (e.g., [postgres_exporter](https://github.com/prometheus-community/postgres_exporter)), but they require higher deployment permissions.
-Future updates will consider integrating infrastructure service metrics into the Grafana dashboards.
+Yes. PostgreSQL, Redis, and ClickHouse all have corresponding exporters (e.g., [postgres_exporter](https://github.com/prometheus-community/postgres_exporter), [redis_exporter](https://github.com/oliver006/redis_exporter)). Refer to "2.2 Install database Exporter services" above to deploy the corresponding Exporter services and import the corresponding Grafana dashboards to observe base service metrics.

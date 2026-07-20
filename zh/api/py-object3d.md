@@ -2,10 +2,10 @@
 
 [Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/object3d/__init__.py)
 
-| 参数    | 描述                                                                                                     |
+| 参数 | 描述 |
 | ------- | -------------------------------------------------------------------------------------------------------- | --- |
-| data    | (Union[np.ndarray, str, Path]) 接收点云文件路径、numpy数组。Object3D类将判断接收的数据类型做相应的转换。 |     |
-| caption | (str) 3D对象的标签。用于在实验看板中展示3D对象时进行标记。                                               |
+| data | (Union[np.ndarray, str, Path]) 接收点云文件路径、numpy数组。Object3D类将判断接收的数据类型做相应的转换。 | |
+| caption | (str) 3D对象的标签。用于在实验看板中展示3D对象时进行标记。 |
 
 ## 介绍
 

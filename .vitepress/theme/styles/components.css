@@ -195,3 +195,151 @@ div.VPNavBarSearch.search {
 .medium-zoom-image {
   z-index: 31;
 }
+
+/* ===== Navbar logo =====
+ * The OSS header renders the icon_docs wordmark at Tailwind `h-4` (16px),
+ * which is too small to read. Scale it up (height + auto width keeps the
+ * 231×47 aspect ratio). Only the desktop header imgs are affected — the
+ * mobile menu logo lives in a separate overlay. */
+header.wrapper img {
+  height: 26px !important;
+  width: auto !important;
+}
+
+/* ===== Navbar layout: right-align search + 官网 + GitHub =====
+ * The OSS header splits items into a left <div> (logo + menu — the 官网
+ * and GitHub buttons sit at the end of this menu via the nav config) and
+ * a right <div> (search + utilities). `order` can't move items across
+ * those two containers, so on wide screens (≥1280px) we flatten the
+ * wrapper divs with `display: contents` and reorder everything in one
+ * flex row:
+ *   [logo · 指南…v0.8.3]  ←push right→  [search][官网][github][…]
+ * The extra/appearance wrappers keep their xl: display toggles (the
+ * `:not(.xl\:hidden)` guard avoids breaking them), and everything below
+ * 1280px is untouched. */
+@media (min-width: 1280px) {
+  header.wrapper {
+    gap: 1rem;
+  }
+
+  header.wrapper > div,
+  header.wrapper nav.VPNavBarMenu,
+  header.wrapper > div > div:not(.xl\:hidden) {
+    display: contents;
+  }
+
+  /* widen + bound the search, and push it (and everything after) right */
+  .VPNavBarSearch {
+    order: 1;
+    flex-grow: 0 !important;
+    width: 320px;
+    margin-left: auto;
+  }
+
+  .header-button {
+    order: 2;
+  }
+
+  .github-button {
+    order: 3;
+  }
+
+  .VPNavBarAppearance {
+    order: 4;
+  }
+
+  .VPNavBarTranslations {
+    order: 5;
+  }
+
+  .VPNavBarSocialLinks {
+    order: 6;
+  }
+}
+
+/* ===== Navbar / footer type scale =====
+ * The OSS navbar renders menu links and flyout buttons with Tailwind's
+ * `text-base` (16px), which reads too large next to the search box and
+ * pushes the 82px header out of proportion. Drop the chrome type a notch.
+ * `!important` is required to beat the unlayered Tailwind utility. */
+header.wrapper nav.VPNavBarMenu .VPLink,
+header.wrapper .VPNavBarMenu a,
+header.wrapper .VPNavBarMenuGroup > button,
+header.wrapper .VPFlyout > button {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  /* 收紧顶级导航项（指南/案例…）之间的水平间距：主题给每个 link/group
+     按钮设了 px-3（12px）侧边距，在压平后的 flex 行里相邻项显得过松。 */
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* 悬浮下拉（VPMenu）子选项行距收紧。VPMenuLink 把每个选项渲染成
+   <a class="link px-3 py-2 text-sm">，py-2（8px）的纵向内边距让下拉
+   列表显得偏松；收到 6px。 */
+.VPMenu .VPMenuLink a {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+/* Doc footer (prev/next pager + edit link) — slightly more compact */
+.VPDocFooter .pager-link .title {
+  font-size: 13px !important;
+}
+
+.VPDocFooter .edit-link-button {
+  font-size: 13px !important;
+}
+
+/* Global copyright footer (when configured) */
+.VPFooter .message,
+.VPFooter .copyright {
+  font-size: 13px !important;
+}
+
+/* ===== 备案 / 版权信息 =====
+ * 这段在首页正文中，外层 <div> 的 font-size 会被 .vp-doc p/a 的
+ * 排版默认值（16px）覆盖（显式声明优先于继承），所以内联设字号无效。
+ * 用类名 + !important 把整块（含 p、a、图标）统一压到小字号。 */
+.beian-footer,
+.beian-footer p,
+.beian-footer a {
+  font-size: 13px !important;
+}
+
+.beian-footer img {
+  width: 12px !important;
+}
+
+/* ===== 正文列表行距 =====
+ * 主题在 @layer docs 给 li 设了 line-height: 1.75rem (28px)，行距偏松。
+ * 这里收紧到 1.5（无层 > @layer docs，无需 !important）。 */
+.vp-doc li {
+  line-height: 1.5;
+}
+
+/* ===== 右侧目录（aside outline）=====
+ * 主题给 .outline-link 设了 white-space: nowrap + ellipsis，长标题会被
+ * 省略号截断，即使宽屏下右侧空间充裕。改为允许换行，完整展示标题。 */
+.outline-link {
+  white-space: normal !important;
+  /* line-height: 1.5 !important; */
+}
+
+/* ===== 顶部公告条（announcement bar）布局腾位 =====
+ * AnnouncementBar 在 lg+ 为 fixed 吸顶（覆盖页面最顶层），需要：
+ *  1) 设 --vp-banner-height，让主题 OSSHeader / VPLocalNav / VPSidebar
+ *     下移到 banner 下方、各 sticky/fixed 的 top 计算正确，不再错位；
+ *  2) 给 .Layout 加 padding-top，把整页内容下推，为 banner 腾出顶部空间
+ *     （复用主题内置 TopBanner 对 .top-banner 的同款机制，但匹配本组件 class）。
+ * md（平板）时 banner 与导航栏都在文档流，不需要这些偏移。
+ * banner 被 v-if 移除（关闭）后 :has() 失配，变量与 padding 自动回到 0。 */
+@media (min-width: 1024px) {
+  :root:has(.announcement-bar) {
+    --vp-banner-height: 36px;
+  }
+
+  .Layout:has(.announcement-bar) {
+    padding-top: var(--vp-banner-height, 0);
+  }
+}

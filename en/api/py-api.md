@@ -481,9 +481,10 @@ result = run.metrics(keys=["loss"], range_query={"tail": 30})
 #### 5. summary
 
 Get statistical summary of scalar metrics (min / max / avg / median / latest), **each metric uses the `latest` value as the authoritative value**.
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `keys` | `list[str]` | Scalar keys to query, `None` means all keys |
+
+| Parameter | Type        | Description                                 |
+| --------- | ----------- | ------------------------------------------- |
+| `keys`    | `list[str]` | Scalar keys to query, `None` means all keys |
 
 :::code-group
 
@@ -658,12 +659,13 @@ Represents metric names reported via `swanlab.log()`.
 ### Column method examples
 
 **column parameters:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `path` | `str` | — | Experiment path `username/project/run_id` |
-| `key` | `str` | — | Search keyword (fuzzy matches column name, returns first match) |
-| `column_class` | `str` | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM` |
-| `column_type` | `str` | `None` | Column data type: `FLOAT`, `STRING`, `IMAGE`, `VIDEO`, etc. |
+
+| Parameter      | Type  | Default    | Description                                                     |
+| -------------- | ----- | ---------- | --------------------------------------------------------------- |
+| `path`         | `str` | —          | Experiment path `username/project/run_id`                       |
+| `key`          | `str` | —          | Search keyword (fuzzy matches column name, returns first match) |
+| `column_class` | `str` | `"CUSTOM"` | Column class: `CUSTOM` or `SYSTEM`                              |
+| `column_type`  | `str` | `None`     | Column data type: `FLOAT`, `STRING`, `IMAGE`, `VIDEO`, etc.     |
 
 **columns parameters:**
 

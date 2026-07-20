@@ -42,13 +42,14 @@ Now open a folder and create the following 5 files:
 ![Insert image description here](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/examples/cats_dogs/02.png)
 
 Their respective functions are:
-| File | Purpose |
-| --- | --- |
-| `checkpoint` | This folder is used to store the model weights generated during training. |
-| `datasets` | This folder is used to place the dataset. |
-| `app.py` | The Python script to run the Gradio Demo. |
-| `load_datasets.py` | Responsible for loading the dataset, including data preprocessing, loading, etc., ensuring that the data is provided to the model in the appropriate format. |
-| `train.py` | The core script for model training. It includes model loading, training loop, loss function selection, optimizer configuration, and other key components, guiding how to use the data to train the model. |
+
+| File               | Purpose                                                                                                                                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `checkpoint`       | This folder is used to store the model weights generated during training.                                                                                                                                 |
+| `datasets`         | This folder is used to place the dataset.                                                                                                                                                                 |
+| `app.py`           | The Python script to run the Gradio Demo.                                                                                                                                                                 |
+| `load_datasets.py` | Responsible for loading the dataset, including data preprocessing, loading, etc., ensuring that the data is provided to the model in the appropriate format.                                              |
+| `train.py`         | The core script for model training. It includes model loading, training loop, loss function selection, optimizer configuration, and other key components, guiding how to use the data to train the model. |
 
 ### 1.3 Download the Cat and Dog Classification Dataset
 

@@ -1,0 +1,9 @@
+/* VoidZero theme design system (includes Tailwind). Loaded before the
+   project overrides in styles/ so the cascade order is:
+   theme → tokens → layout → components. */
+@import "@voidzero-dev/vitepress-theme/src/styles/index.css";
+
+/* Let Tailwind scan project components for utility classes. */
+@source "./**/*.vue";
+
+/* Brand color tuning is intentionally skipped for the skeleton trial. */
