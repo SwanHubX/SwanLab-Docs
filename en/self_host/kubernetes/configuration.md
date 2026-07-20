@@ -72,7 +72,7 @@ You can write your load balancing strategy based on the above information. It is
 
 **Regarding security policies**, the application trusts all `X-Forwarded-*` request headers by default. If you need stricter header validation or forwarding control, be sure to implement it uniformly at the load balancing layer — this may affect the effectiveness of internal S3 signatures. If you use an external object storage service, you don't need to worry about this.
 
-## Metrics Buffer Queue (`vector`)
+## Metrics Aggregation & Forwarding (`vector`)
 
 | Field                             | Type   | Default                         | Description                                                                       |
 | --------------------------------- | ------ | ------------------------------- | --------------------------------------------------------------------------------- |

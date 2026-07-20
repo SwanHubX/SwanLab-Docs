@@ -25,13 +25,13 @@ If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployme
 
 To deploy the self-hosted version of SwanLab using Kubernetes, please ensure your Kubernetes and related infrastructure meet the following requirements:
 
-| Software/Infrastructure | Version/Configuration Requirement | Necessity Explanation                                                                                                                                                                                                                          |
-| ----------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| kubernetes              | v1.24 and above                   | Official testing and validation cover v1.24+ versions. To ensure API compatibility and system stability, it is not recommended to deploy in clusters with versions lower than this.                                                            |
-| helm                    | version>=3.9                      | SwanLab Chart packages require features from Helm v3.9 or newer, and are not compatible with earlier versions or Helm v2 (Tiller mode).                                                                                                        |
-| RBAC Permissions        | Namespace Admin                   | The deploying account needs to have **write permissions** within the namespace for the SwanLab self-hosted service. Core resources include: `Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`, etc.                                   |
-| Network Access (Egress) | \*.swanlab.cn                     | Cluster nodes need to have the ability to access the public internet (or have a configured NAT gateway):<br>1. `repo.swanlab.cn`: Used to pull application images. <br>2. `api.swanlab.cn`: Used for online License activation and validation. |
-| Object Storage          | AWS S3 protocol compatible        | Media resources and other files reported by SwanLab are stored in object storage by default. To save storage costs, **external object storage integration** is recommended, ensuring S3 API compatibility                                      |
+| Software/Infrastructure | Version/Configuration Requirement | Necessity Explanation                                                                                                                                                                                                                                                                                     |
+| ----------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| kubernetes              | v1.24 and above                   | Official testing and validation cover v1.24+ versions. To ensure API compatibility and system stability, it is not recommended to deploy in clusters with versions lower than this.                                                                                                                       |
+| helm                    | version>=3.9                      | SwanLab Chart packages require features from Helm v3.9 or newer, and are not compatible with earlier versions or Helm v2 (Tiller mode).                                                                                                                                                                   |
+| RBAC Permissions        | Namespace Admin                   | The deploying account needs to have **write permissions** within the namespace for the SwanLab self-hosted service. Core resources include: `Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`, etc.                                                                                              |
+| Network Access (Egress) | \*.swanlab.cn                     | Cluster nodes need to have the ability to access the public internet (or have a configured NAT gateway). A public egress **bandwidth of ≥ 100Mbps is recommended** <br>1. `repo.swanlab.cn`: Used to pull application images. <br>2. `api.swanlab.cn`: Used for online License activation and validation. |
+| Object Storage          | AWS S3 protocol compatible        | Media resources and other files reported by SwanLab are stored in object storage by default. To save storage costs, **external object storage integration** is recommended, ensuring S3 API compatibility                                                                                                 |
 
 ## 🧾 Resource Inventory
 
@@ -60,7 +60,7 @@ The **database of the SwanLab self-hosted service uses a single-instance mode**,
 | Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `service.gateway.`              | Reverse proxy / gateway entry                                                    |
 | Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `service.gateway.identifyImage` | Gateway authentication auxiliary image                                           |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | Deployment auxiliary init container                                              |
-| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | Experiment metrics collection buffer queue                                       |
+| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | Metrics aggregation & forwarding                                                 |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL relational database (users, projects, experiment metadata)            |
 | Redis      | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8`                     | `dependencies.redis.image`      | Cache and session storage                                                        |
 | ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3`                   | `dependencies.clickhouse.image` | Experiment metrics and logs column database                                      |
@@ -539,7 +539,9 @@ You can verify the following features:
 - ⬜ Check if metric CSV downloads work smoothly
 - ⬜ Check if user avatars can be displayed normally
 
-## 🧱 Additional Notes
+## ❓ FAQ
+
+### Value Configuration
 
 You can view all configurable options for `swanlab-self-hosted` [here](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
@@ -550,6 +552,27 @@ For detailed field descriptions and configuration practices, please refer to the
 - **Gateway Configuration**: Application access entrypoint, ports, etc.
 - **Built-in Base Services**: PostgreSQL / Redis / ClickHouse / MinIO storage resource configuration
 - **External Service Integration**: Connecting external PostgreSQL, Redis, ClickHouse, S3 object storage
+
+#### [Replica Count] How should the recommended service replica count be configured?
+
+The following are recommended replica configuration best practices based on online operational experience. You can adjust them by modifying the `replicas` field of the corresponding service in `values.yaml`:
+
+| Service Name   | Replica Count | Description                                                                                 |
+| -------------- | ------------- | ------------------------------------------------------------------------------------------- |
+| clickhouse     | 1             | [Not modifiable] Column database, responsible for experiment metrics storage                |
+| postgres       | 1             | [Not modifiable] Relational database, responsible for metadata and relational records       |
+| redis          | 1             | [Not modifiable] In-memory database, caching session data                                   |
+| vector         | 2             | [Not modifiable] Metrics aggregation & forwarding                                           |
+| traefik        | 2             | [Adjustable] Main gateway, distributes service traffic                                      |
+| swanlab-server | ≥ 3           | [Adjustable] SwanLab core service, dynamically adjust based on service load                 |
+| swanlab-auth   | 2             | [Adjustable] SwanLab authentication and authorization service, adjust based on service load |
+| swanlab-house  | ≥ 3           | [Adjustable] SwanLab metrics analysis service, dynamically adjust based on service load     |
+| swanlab-next   | 2             | [Adjustable] SwanLab frontend framework                                                     |
+| swanlab-cloud  | 1             | [Adjustable] SwanLab frontend chart page                                                    |
+
+#### [Resource Limits] How to limit the recommended CPU/memory resource limits for each service?
+
+> To be added
 
 ### Updates and Rollback
 

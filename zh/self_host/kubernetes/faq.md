@@ -13,27 +13,6 @@
 迁移过程中必须停机原服务。如果不停止原服务会出现数据 gap。  
 此时可考虑使用[swanlab sync](../../api/cli-swanlab-sync.md)将数据上传至新服务。
 
-## 【副本数】SwanLab 私有化服务推荐的服务副本数如何设置？
-
-以下是根据线上运维经验给出的推荐副本配置最佳实践，在 `values.yaml` 中通过修改对应服务的 `replicas` 字段即可调整：
-
-::: warning
-当前 `swanlab-self-hosted` 部署方案中，`postgres` 和 `clickhouse` 均采用**单副本方案**。数据库主从复制涉及较大的架构变动，在当前私有化部署版本中**暂不支持**，请勿调整数据库相关的服务副本数量。
-:::
-
-| 服务名         | 副本数量 | 说明                                                     |
-| -------------- | -------- | -------------------------------------------------------- |
-| clickhouse     | 1        | 【不可修改】列数据库，负责实验指标存储                   |
-| postgres       | 1        | 【不可修改】关系型数据库，负责元数据和关系记录           |
-| redis          | 1        | 【不可修改】内存数据库，缓存会话数据                     |
-| vector         | 2        | 【不可修改】clickhouse 指标写入缓冲队列                  |
-| traefik        | 2        | 【按需修改】主网关，分发服务流量                         |
-| swanlab-server | ≥ 3      | 【按需修改】SwanLab 核心服务，根据服务负载动态调整       |
-| swanlab-auth   | ≥ 2      | 【按需修改】SwanLab 认证与鉴权服务，根据服务负载动态调整 |
-| swanlab-house  | ≥ 3      | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整   |
-| swanlab-next   | 2        | 【按需修改】SwanLab 前端框架                             |
-| swanlab-cloud  | 1        | 【按需修改】SwanLab 前端实验页面                         |
-
 ## 【节点指定】如何将 SwanLab 私有化服务 Pod 调度到指定节点？
 
 在 `values.yaml` 中，所有服务均支持通过 `customNodeSelector` 字段指定节点选择器，Kubernetes 只会将 Pod 调度到满足对应标签的节点上。

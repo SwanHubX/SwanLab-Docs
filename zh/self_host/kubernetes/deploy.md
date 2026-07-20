@@ -25,13 +25,13 @@
 
 使用 Kubernetes 部署 SwanLab 私有化版本，请确保您的 Kubernetes 和相关基础设施满足如下要求：
 
-| 软件/基础设施     | 版本/配置要求    | 必要性说明                                                                                                                                           |
-| ----------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| kubernetes        | v1.24 及以上     | 官方测试验证覆盖了 v1.24+ 版本。为确保 API 兼容性与系统稳定性，不建议在低于此版本的集群中部署。                                                      |
-| helm              | version>=3.9     | SwanLab Chart 包依赖于 Helm v3.9+ 的新特性，与早期版本不兼容，也不兼容 Helm v2（Tiller 模式）。                                                      |
-| RBAC 权限         | Namespace Admin  | 账户需具备部署 **SwanLab私有化服务对应命名空间下的写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。             |
-| 网络访问 (Egress) | \*.swanlab.cn    | 集群节点需具备访问公网的能力（或配置 NAT 网关）：<br>1. `repo.swanlab.cn`：用于拉取应用镜像。 <br>2. `api.swanlab.cn`：用于 License 在线激活与校验。 |
-| 对象存储          | 兼容 AWS S3 协议 | SwanLab 上报的媒体资源等文件默认保存在对象存储中，为节约存储成本，推荐**外部集成对象存储**，确保兼容 S3 API                                          |
+| 软件/基础设施     | 版本/配置要求    | 必要性说明                                                                                                                                                                          |
+| ----------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| kubernetes        | v1.24 及以上     | 官方测试验证覆盖了 v1.24+ 版本。为确保 API 兼容性与系统稳定性，不建议在低于此版本的集群中部署。                                                                                     |
+| helm              | version>=3.9     | SwanLab Chart 包依赖于 Helm v3.9+ 的新特性，与早期版本不兼容，也不兼容 Helm v2（Tiller 模式）。                                                                                     |
+| RBAC 权限         | Namespace Admin  | 账户需具备部署 **SwanLab私有化服务对应命名空间下的写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。                                            |
+| 网络访问 (Egress) | \*.swanlab.cn    | 集群节点需具备访问公网的能力（或配置 NAT 网关），建议公网出口**带宽 ≥ 100Mbps** <br>1. `repo.swanlab.cn`：用于拉取应用镜像。 <br>2. `api.swanlab.cn`：用于 License 在线激活与校验。 |
+| 对象存储          | 兼容 AWS S3 协议 | SwanLab 上报的媒体资源等文件默认保存在对象存储中，为节约存储成本，推荐**外部集成对象存储**，确保兼容 S3 API                                                                         |
 
 ## 🧾 资源清单
 
@@ -60,7 +60,7 @@ SwanLab 私有化版本服务的**数据库采用单实例模式**，未来在�
 | Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `service.gateway.`              | 反向代理 / 网关入口                              |
 | Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `service.gateway.identifyImage` | 网关鉴权辅助镜像                                 |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | 部署辅助初始化容器                               |
-| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | 实验指标采集缓冲队列                             |
+| Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | 指标聚合转发                                     |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL关系型数据库（用户、项目、实验元数据） |
 | Redis      | `repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8`                     | `dependencies.redis.image`      | 缓存与会话存储                                   |
 | ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3`                   | `dependencies.clickhouse.image` | 实验指标与日志列数据库                           |
@@ -539,7 +539,9 @@ swanlab.finish()
 - ⬜ 查看 metric 的 csv 下载是否都顺利
 - ⬜ 查看用户头像是否能够正常显示
 
-## 🧱 额外说明
+## ❓ 常见问题
+
+### Value 字段配置
 
 您可以在[此处](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)查看 `swanlab-self-hosted` 的所有可配置项。
 
@@ -550,6 +552,27 @@ swanlab.finish()
 - **网关配置**：应用访问入口、端口等
 - **内置基础服务**：PostgreSQL / Redis / ClickHouse / MinIO 的存储资源配置
 - **外部服务集成**：接入外部 PostgreSQL、Redis、ClickHouse、S3 对象存储
+
+#### 【副本数】推荐服务副本数如何设置?
+
+以下是根据线上运维经验给出的推荐副本配置最佳实践，在 `values.yaml` 中通过修改对应服务的 `replicas` 字段即可调整：
+
+| 服务名         | 副本数量 | 说明                                                     |
+| -------------- | -------- | -------------------------------------------------------- |
+| clickhouse     | 1        | 【不可修改】列数据库，负责实验指标存储                   |
+| postgres       | 1        | 【不可修改】关系型数据库，负责元数据和关系记录           |
+| redis          | 1        | 【不可修改】内存数据库，缓存会话数据                     |
+| vector         | 2        | 【不可修改】指标聚合转发                                 |
+| traefik        | 2        | 【按需修改】主网关，分发服务流量                         |
+| swanlab-server | ≥ 3      | 【按需修改】SwanLab 核心服务，根据服务负载动态调整       |
+| swanlab-auth   | 2        | 【按需修改】SwanLab 认证与鉴权服务，根据服务负载动态调整 |
+| swanlab-house  | ≥ 3      | 【按需修改】SwanLab 指标分析服务，根据服务负载动态调整   |
+| swanlab-next   | 2        | 【按需修改】SwanLab 前端框架                             |
+| swanlab-cloud  | 1        | 【按需修改】SwanLab 前端图表页面                         |
+
+#### 【资源限制】各服务的 CPU/内存 资源 limit 推荐如何限制？
+
+> 待添加
 
 ### 更新与回滚
 
