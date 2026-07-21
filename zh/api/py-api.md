@@ -40,7 +40,8 @@ api = swanlab.Api(api_key="your-api-key", host="https://your-server.com")
 Workspace（工作空间）
  └── Project（项目）
       └── Experiment/Run（实验）
-           ├── columns（指标列，即指标的`key`/名称）
+           ├── series（指标 key 列表）
+           ├── columns（指标 key 列表，⚠️ 注意 0.9.0+ 多视图版本实验不再兼容）
            ├── metrics（标量指标）
            ├── medias（媒体指标）
            └── logs（日志）
@@ -51,8 +52,10 @@ Workspace（工作空间）
 | **Workspace**  | 项目的集合，对应一个团队或用户。分为个人空间（`PERSON`）和组织空间（`TEAM`）。 |
 | **Project**    | 实验的集合，对应一个研发任务，包含名称、描述、标签、可见性等元信息。           |
 | **Experiment** | 单次训练/推理任务，包含指标、配置、日志、环境信息等。                          |
-| **Column**     | 实验下的指标列，如 `loss`、`acc`，支持 FLOAT / STRING / IMAGE 等多种数据类型。 |
-| **Metric**     | 实验下某一指标列对应的指标值。                                                 |
+| **Series**     | 实验下的指标 key 列表，支持按类型 / 分类 / 关键词过滤，迭代返回 `Key` 对象。   |
+| **Key**        | 单个指标 key，可直接查询该 key 的指标数据或导出 CSV。                          |
+| **Column**     | 实验下的指标列（0.9.0+ 多视图版本实验不再支持，请改用 Series）。               |
+| **Metric**     | 实验下某一指标 key 对应的指标值。                                              |
 
 ### 数据类型：metrics / medias / logs
 
@@ -82,7 +85,7 @@ logs = run.logs(offset=0, level="INFO")
 
 **注意事项：**
 
-- `metrics()` 默认采样返回，采样值 `sample` 参数默认上限为 1500，超过会自动截断；可通过设置 `all=True` 返回全量数据，或 `range_query` 按照 `step` 或 `timestamp` 返回精确指标区间；
+- `metrics()` 默认采样返回，`sample` 参数上限为 1500，超过会自动截断；可通过设置 `all=True` 返回全量数据，或通过 `range_query` 按 `step` 或 `timestamp` 返回精确的指标区间；
 - `medias()` 返回的媒体数据通过预签名 URL 提供，需在有效期内下载；
 - `export_logs()` 可导出大量日志为 `.log` 文件，适合持久化保存。
 
@@ -90,33 +93,34 @@ logs = run.logs(offset=0, level="INFO")
 
 `Api` 是所有操作的入口，构造时即完成认证，返回独立的 `Client` 实例（与 SDK 运行时互不干扰）。
 
-| 方法                                      | 描述                          |
-| ----------------------------------------- | ----------------------------- |
-| `api.workspace(username)`                 | 获取单个工作空间              |
-| `api.workspaces(username)`                | 获取工作空间列表（迭代器）    |
-| `api.project(path)`                       | 获取单个项目                  |
-| `api.projects(path, ...)`                 | 获取项目列表（迭代器）        |
-| `api.create_project(username, name, ...)` | 创建项目                      |
-| `api.run(path)`                           | 获取单个实验                  |
-| `api.runs(path, filters=...)`             | 获取实验列表（POST 过滤模式） |
-| `api.runs_get(path, ...)`                 | 获取实验列表（GET 分页模式）  |
-| `api.column(path, key)`                   | 获取单个指标列                |
-| `api.columns(path, ...)`                  | 获取实验的指标列列表          |
-| `api.user()`                              | 获取当前用户信息              |
-| `api.self_hosted()`                       | 私有化部署管理入口            |
+| 方法                                      | 描述                                                 |
+| ----------------------------------------- | ---------------------------------------------------- |
+| `api.workspace(username)`                 | 获取单个工作空间                                     |
+| `api.workspaces(username)`                | 获取工作空间列表（迭代器）                           |
+| `api.project(path)`                       | 获取单个项目                                         |
+| `api.projects(path, ...)`                 | 获取项目列表（迭代器）                               |
+| `api.create_project(username, name, ...)` | 创建项目                                             |
+| `api.run(path)`                           | 获取单个实验                                         |
+| `api.runs(path, filters=...)`             | 获取实验列表（POST 过滤模式）                        |
+| `api.runs_get(path, ...)`                 | 获取实验列表（GET 分页模式）                         |
+| `api.series(path, ...)`                   | 获取实验的指标 key 列表                              |
+| `api.column(path, key)`                   | 获取单个指标列（0.9.0+ 不推荐，改用 `series`）       |
+| `api.columns(path, ...)`                  | 获取实验的指标列列表（0.9.0+ 不推荐，改用 `series`） |
+| `api.user()`                              | 获取当前用户信息                                     |
+| `api.self_hosted()`                       | 私有化部署管理入口                                   |
 
 ## 工作空间(Workspace)
 
 **Workspace 属性：**
 
-| 属性             | 类型   | 描述                                  |
-| ---------------- | ------ | ------------------------------------- |
-| `name`           | `str`  | 空间名称                              |
-| `username`       | `str`  | 空间用户名（唯一ID）                  |
-| `workspace_type` | `str`  | 工作空间类型，`PERSON` 或 `TEAM`      |
-| `role`           | `str`  | 当前用户RBAC角色，`OWNER` 或 `MEMBER` |
-| `profile`        | `dict` | 介绍信息                              |
-| `comment`        | `str`  | 空间简介                              |
+| 属性             | 类型   | 描述                                      |
+| ---------------- | ------ | ----------------------------------------- |
+| `name`           | `str`  | 空间名称                                  |
+| `username`       | `str`  | 空间用户名（唯一ID）                      |
+| `workspace_type` | `str`  | 工作空间类型，`PERSON` 或 `TEAM`          |
+| `role`           | `str`  | 当前用户的 RBAC 角色，`OWNER` 或 `MEMBER` |
+| `profile`        | `dict` | 介绍信息                                  |
+| `comment`        | `str`  | 空间简介                                  |
 
 :::code-group
 
@@ -153,7 +157,7 @@ ws = api.workspace(username="my-team")
 # sort 可选参数:
 # - create: 表示按照创建时间排序
 # - name: 表示按照名称排序
-# None: 为空时默认按照 「最近更新」排序
+# - 不传: 默认按照「最近更新」排序
 
 # search: 模糊搜索关键词
 projects = ws.projects(sort="create", search="v1")
@@ -231,7 +235,7 @@ api = swanlab.Api()
 project = api.project(path="my-team/my-project")
 
 """
-- filters: 过滤规则列表，每项为一个类型为  {key, type, op, value} 的字典
+- filters: 过滤规则列表，每项为一个包含 {key, type, op, value} 4 个字段的字典
 """
 # 示例：返回项目下已结束的实验
 runs = project.runs(filters=[{"key": "state", "type": "STABLE", "op": "EQ", "value": ["FINISHED"]}])
@@ -306,7 +310,7 @@ project.delete_runs(["run_id_1", "run_id_2"], commit=True) # commit=True 确认�
 
 #### 1. 获取单个实验
 
-获取某单个实验的信息，输入符合 `username/project_name/run_id` 的格式
+获取单个实验的信息，输入需符合 `username/project_name/run_id` 的格式
 :::code-group
 
 ```python[获取单个实验]
@@ -325,19 +329,19 @@ data = run.json()
 
 通过条件过滤获取项目下的实验列表。
 
-| 参数      | 类型         | 描述                                                                     |
-| --------- | ------------ | ------------------------------------------------------------------------ |
-| `path`    | `str`        | 项目路径 `username/project`                                              |
-| `filters` | `list[dict]` | 过滤规则列表，每项为固定包含 `{key, type, op, value}` 4 个 key 的 `dict` |
+| 参数      | 类型         | 描述                                                                    |
+| --------- | ------------ | ----------------------------------------------------------------------- |
+| `path`    | `str`        | 项目路径 `username/project`                                             |
+| `filters` | `list[dict]` | 过滤规则列表，每项为包含 `{key, type, op, value}` 4 个固定字段的 `dict` |
 
 **过滤规则（filter）字段：**
 
-| 字段    | 类型   | 必填 | 描述                                                                                                                                                    |
-| ------- | ------ | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `key`   | `str`  | ✓    | 字段名                                                                                                                                                  |
-| `type`  | `str`  | ✓    | 字段类型：`STABLE`、`CONFIG`、`SCALAR`                                                                                                                  |
-| `op`    | `str`  | ✓    | 操作符：`EQ`(=)、`NEQ`(≠)、`GTE`(≥)、`LTE`(≤)、`IN`(元素存在与集合中)、`NOT IN`(某一元素不存在于集合中)、`CONTAIN`(包含) ，括号中为对应运算符的语义说明 |
-| `value` | `list` | ✓    | 比较值                                                                                                                                                  |
+| 字段    | 类型   | 必填 | 描述                                                                                                                                               |
+| ------- | ------ | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key`   | `str`  | ✓    | 字段名                                                                                                                                             |
+| `type`  | `str`  | ✓    | 字段类型：`STABLE`、`CONFIG`、`SCALAR`                                                                                                             |
+| `op`    | `str`  | ✓    | 操作符：`EQ`(=)、`NEQ`(≠)、`GTE`(≥)、`LTE`(≤)、`IN`(元素存在于集合中)、`NOT IN`(元素不存在于集合中)、`CONTAIN`(包含)，括号中为对应运算符的语义说明 |
+| `value` | `list` | ✓    | 比较值                                                                                                                                             |
 
 **type 字段说明：**
 
@@ -351,7 +355,7 @@ data = run.json()
 
 ```python[实验过滤示例]
 # 过滤示例
-# my-team/my-project 下【已完成】且 名称中包含 `v2` 的实验
+# my-team/my-project 下【已完成】且名称中包含 `v2` 的实验
 for run in api.runs(path="my-team/my-project", filters=[
     {"key": "state", "type": "STABLE", "op": "EQ", "value": ["FINISHED"]},
     {"key": "name", "type": "STABLE", "op": "CONTAIN", "value": ["v2"]},
@@ -363,7 +367,7 @@ for run in api.runs(path="my-team/my-project", filters=[
 
 #### 3. 获取实验列表「分页」
 
-通过标准分获取项目下的实验列表，返回精简信息。**不支持过滤**。
+通过标准分页获取项目下的实验列表，返回精简信息。**不支持过滤**。
 
 | 参数   | 类型   | 默认值  | 描述                        |
 | ------ | ------ | ------- | --------------------------- |
@@ -389,24 +393,24 @@ for run in api.runs_get(path="my-team/my-project", page=1, size=100, all=True):
 
 获取标量指标数据（如 loss、acc），支持采样控制、范围查询，返回结构化数据。
 
-| 参数               | 类型                   | 默认值  | 描述                                                        |
-| ------------------ | ---------------------- | ------- | ----------------------------------------------------------- |
-| `keys`             | `list[str]`            | —       | 指标 key 名称列表，如 `["loss", "acc"]`                     |
-| `sample`           | `int`                  | `1500`  | 采样数量（SCALAR 最大 1500），`all` 或 `range_query` 时忽略 |
-| `all`              | `bool`                 | `False` | 获取全量数据（不受采样限制）                                |
-| `range_query`      | `dict` 或 `RangeQuery` | `None`  | 范围查询，仅对 SCALAR 类型有效                              |
-| `ignore_timestamp` | `bool`                 | `False` | 是否去除时间戳字段                                          |
+| 参数               | 类型                   | 默认值  | 描述                                                             |
+| ------------------ | ---------------------- | ------- | ---------------------------------------------------------------- |
+| `keys`             | `list[str]`            | —       | 指标 key 名称列表，如 `["loss", "acc"]`                          |
+| `sample`           | `int`                  | `1500`  | 采样数量（SCALAR 最大 1500），使用 `all` 或 `range_query` 时忽略 |
+| `all`              | `bool`                 | `False` | 获取全量数据（不受采样限制）                                     |
+| `range_query`      | `dict` 或 `RangeQuery` | `None`  | 范围查询，仅对 SCALAR 类型有效                                   |
+| `ignore_timestamp` | `bool`                 | `False` | 是否去除时间戳字段                                               |
 
 **RangeQuery 字段：**
 
-| 字段    | 类型  | 默认值   | 描述                                                                                        |
-| ------- | ----- | -------- | ------------------------------------------------------------------------------------------- |
-| `type`  | `str` | `"step"` | 过滤轴：`"step"` 或 `"timestamp"`                                                           |
-| `start` | `int` | `None`   | 下界（含），`None` 表示从头开始截断，type 为 `timestamp` 时要求**输入为 UNIX 时间戳**       |
-| `end`   | `int` | `None`   | 上界（含），`None` 表示截断到最后一个step，type 为 `timestamp` 时要求**输入为 UNIX 时间戳** |
-| `last`  | `int` | `None`   | 最近 N 毫秒（与 `start`/`end` 互斥）                                                        |
-| `head`  | `int` | `None`   | 取前 N 个数据点（与 `tail` 互斥） ，后采样                                                  |
-| `tail`  | `int` | `None`   | 取后 N 个数据点（与 `head` 互斥） ，后采样                                                  |
+| 字段    | 类型  | 默认值   | 描述                                                                                     |
+| ------- | ----- | -------- | ---------------------------------------------------------------------------------------- |
+| `type`  | `str` | `"step"` | 过滤轴：`"step"` 或 `"timestamp"`                                                        |
+| `start` | `int` | `None`   | 下界（含），`None` 表示不限制，`type` 为 `timestamp` 时**须为 UNIX 毫秒时间戳**          |
+| `end`   | `int` | `None`   | 上界（含），`None` 表示到最后一个 step，`type` 为 `timestamp` 时**须为 UNIX 毫秒时间戳** |
+| `last`  | `int` | `None`   | 最近 N 毫秒（与 `start`/`end` 互斥）                                                     |
+| `head`  | `int` | `None`   | 取前 N 个数据点（与 `tail` 互斥，在范围过滤后截取）                                      |
+| `tail`  | `int` | `None`   | 取后 N 个数据点（与 `head` 互斥，在范围过滤后截取）                                      |
 
 **互斥规则：**
 
@@ -478,7 +482,40 @@ result = run.metrics(keys=["loss"], range_query={"tail": 30})
 
 :::
 
-#### 5. summary
+#### 5. series
+
+获取实验下的指标 key 列表（`0.9.0+` 推荐使用，替代 [columns](#_10-columns)），支持按指标类型、分类、关键词过滤，迭代返回 `Key` 对象。多视图项目下，克隆实验会自动查询根实验的指标数据。
+
+| 参数           | 类型  | 默认值     | 描述                                        |
+| -------------- | ----- | ---------- | ------------------------------------------- |
+| `metric_type`  | `str` | `"SCALAR"` | 指标类型：`SCALAR` 或 `MEDIA`               |
+| `metric_class` | `str` | `"CUSTOM"` | 指标分类：`CUSTOM` 或 `SYSTEM`              |
+| `search`       | `str` | `""`       | 模糊搜索关键词（大小写不敏感，匹配 key 名） |
+
+```python [获取指标 key 列表]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# 获取所有自定义标量 key（迭代返回 Key 对象）
+for item in run.series():
+    print(item.key, item.key_class)
+
+# 模糊搜索 / 系统指标 / 媒体指标
+for item in run.series(search="loss"):
+    print(item.key)
+for item in run.series(metric_class="SYSTEM"):
+    print(item.key)
+for item in run.series(metric_type="MEDIA"):
+    print(item.key)
+
+# 匹配的 key 总数
+print(run.series().total)
+```
+
+#### 6. summary
 
 获取标量指标的统计摘要（min / max / avg / median / latest），**每个指标以 latest 值为准**。
 
@@ -502,7 +539,7 @@ print(summary)
 
 :::
 
-#### 6. medias
+#### 7. medias
 
 获取图片、音频、视频、echarts 等非结构化媒体数据，存储在对象存储中，响应仅返回预签名 URL。
 
@@ -536,7 +573,7 @@ print(result)
 返回的媒体数据通过预签名 URL 提供，需在过期时间之前下载。
 :::
 
-#### 7. logs
+#### 8. logs
 
 获取实验运行时的文本日志，支持按级别筛选；也可导出为 `.log` 文件。
 
@@ -567,7 +604,7 @@ print(logs)
 
 :::
 
-#### 8. export_logs
+#### 9. export_logs
 
 导出日志为 .log 文件（返回预签名下载链接）
 
@@ -587,7 +624,11 @@ if result.ok:
 
 :::
 
-#### 9. columns
+#### 10. columns
+
+::: warning 不推荐使用
+自 swanlab `0.9.0`（多视图版本）起，`columns` / `column` 不再推荐使用，请改用 [`series`](#_5-series)。
+:::
 
 获取实验下的指标名称，或通过 key 获取单个列。
 
@@ -629,7 +670,7 @@ for col in run.columns(search="loss"):
 col = run.column(key="loss", column_type="FLOAT")
 ```
 
-#### 10.delete
+#### 11. delete
 
 删除实验，通过 `commit` 控制实际删除行为。
 
@@ -643,6 +684,10 @@ run.delete(commit=False) # commit=False 时不实际执行删除
 ```
 
 ## 指标列(Column)
+
+::: warning 不推荐使用
+自 swanlab `0.9.0`（多视图版本）起，`Column` 相关接口不再推荐使用，请改用 [Series](#指标序列-series)。
+:::
 
 表示通过 `swanlab.log()` 上报的指标名称。
 
@@ -780,6 +825,76 @@ if result.ok:
 
 :::
 
+## 指标序列(Series)
+
+表示实验下的指标 key 列表（`0.9.0+` 推荐使用，替代 [Column](#指标列-column)）。迭代 `Series` 返回 `Key` 对象，每个 `Key` 可直接查询该 key 的指标数据或导出 CSV。
+
+### Series 属性
+
+| 属性    | 类型  | 描述                                      |
+| ------- | ----- | ----------------------------------------- |
+| `total` | `int` | 过滤后匹配的 key 总数（首次访问触发请求） |
+
+### Key 属性
+
+| 属性          | 类型  | 描述                           |
+| ------------- | ----- | ------------------------------ |
+| `key`         | `str` | 指标 key 名称                  |
+| `metric_type` | `str` | 指标类型：`SCALAR` 或 `MEDIA`  |
+| `key_class`   | `str` | 指标分类：`CUSTOM` 或 `SYSTEM` |
+| `project_id`  | `str` | 项目 ID                        |
+| `run_id`      | `str` | 实验 ID                        |
+
+### Key.metric() 入参
+
+| 参数               | 类型   | 默认值  | 描述                         |
+| ------------------ | ------ | ------- | ---------------------------- |
+| `sample`           | `int`  | `1500`  | 采样数量（最大 1500）        |
+| `ignore_timestamp` | `bool` | `False` | 是否去除时间戳字段           |
+| `media_step`       | `int`  | `None`  | 仅 MEDIA 类型生效，指定 step |
+| `all`              | `bool` | `False` | 获取全量数据（不受采样限制） |
+
+### Series / Key 方法示例
+
+:::code-group
+
+```python [遍历指标 key 列表]
+import swanlab
+
+api = swanlab.Api()
+
+# api.series(path, ...) 等价于 api.run(path).series(...)
+for item in api.series(path="my-team/my-project/abc123", metric_type="SCALAR"):
+    print(item.key, item.key_class)
+```
+
+```python [获取单个 key 指标数据]
+import swanlab
+
+api = swanlab.Api()
+
+series = api.series(path="my-team/my-project/abc123", search="loss")
+
+for item in series:
+    data = item.metric(sample=500)
+    print(data["list"])
+```
+
+```python [导出单个 key 指标 CSV]
+import swanlab
+
+api = swanlab.Api()
+
+series = api.series(path="my-team/my-project/abc123", search="loss")
+
+for item in series:
+    result = item.export_csv()  # 仅 SCALAR 类型支持
+    if result.ok:
+        print(result.data["url"])  # CSV 下载链接
+```
+
+:::
+
 ## 用户信息(User)
 
 ### User 属性
@@ -803,7 +918,7 @@ if result.ok:
 import swanlab
 
 api = swanlab.Api()
-user = api.user() # 无入参，以通过 Api 实例化的用户信息为准
+user = api.user() # 无入参，返回实例化 Api 时认证的用户信息
 
 data = user.json()
 ```

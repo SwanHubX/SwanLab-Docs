@@ -26,18 +26,19 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 
 ### run — 实验
 
-| 子命令                                  | 描述               |
-| --------------------------------------- | ------------------ |
-| `swanlab api run info <path>`           | 获取实验信息       |
-| `swanlab api run list <project_path>`   | 列出项目下的实验   |
-| `swanlab api run filter <project_path>` | 按条件过滤实验     |
-| `swanlab api run metrics`               | 获取实验标量指标   |
-| `swanlab api run summary`               | 获取实验指标汇总   |
-| `swanlab api run column`                | 获取实验单个指标列 |
-| `swanlab api run columns`               | 获取实验指标列列表 |
-| `swanlab api run medias`                | 获取实验媒体指标   |
-| `swanlab api run logs`                  | 获取实验控制台日志 |
-| `swanlab api run export-logs`           | 导出实验日志文件   |
+| 子命令                                  | 描述                                                    |
+| --------------------------------------- | ------------------------------------------------------- |
+| `swanlab api run info <path>`           | 获取实验信息                                            |
+| `swanlab api run list <project_path>`   | 列出项目下的实验                                        |
+| `swanlab api run filter <project_path>` | 按条件过滤实验                                          |
+| `swanlab api run metrics`               | 获取实验标量指标                                        |
+| `swanlab api run summary`               | 获取实验指标汇总                                        |
+| `swanlab api run series`                | 获取实验指标 key 列表                                   |
+| `swanlab api run column`                | 获取实验单个指标列（⚠️ 已废弃，多视图版本实验不再适用） |
+| `swanlab api run columns`               | 获取实验指标列列表（⚠️ 已废弃，多视图版本实验不再适用） |
+| `swanlab api run medias`                | 获取实验媒体指标                                        |
+| `swanlab api run logs`                  | 获取实验控制台日志                                      |
+| `swanlab api run export-logs`           | 导出实验日志文件                                        |
 
 ### user — 用户
 
@@ -318,7 +319,41 @@ swanlab api run summary my-team/image-classification/abc123
 swanlab api run summary my-team/image-classification/abc123 --keys loss,acc
 ```
 
+### run series
+
+获取实验的指标 key 列表（`0.9.0+` 推荐使用，替代 `column` / `columns`），支持按指标类型、分类、关键词过滤。
+
+```bash
+swanlab api run series <path> [OPTIONS]
+```
+
+| 参数/选项  | 类型     | 默认值     | 描述                                        |
+| ---------- | -------- | ---------- | ------------------------------------------- |
+| `path`     | 位置参数 | 必填       | 实验路径                                    |
+| `--type`   | `str`    | `"scalar"` | 指标类型：`scalar` 或 `media`               |
+| `--class`  | `str`    | `"custom"` | 指标分类：`custom` 或 `system`              |
+| `--search` | `str`    | `None`     | 模糊搜索关键词（大小写不敏感，匹配 key 名） |
+| `--save`   | 选项     | —          | 保存输出为 JSON 文件                        |
+
+```bash
+# 列出所有自定义标量 key
+swanlab api run series my-team/image-classification/abc123
+
+# 模糊搜索
+swanlab api run series my-team/image-classification/abc123 --search loss
+
+# 仅列出系统指标
+swanlab api run series my-team/image-classification/abc123 --class system
+
+# 列出媒体指标
+swanlab api run series my-team/image-classification/abc123 --type media
+```
+
 ### run column
+
+::: warning 不推荐使用
+自 swanlab `0.9.0`（多视图版本）起，`column` / `columns` 不再推荐使用，多视图版本实验不再适用，请改用 [`series`](#run-series)。
+:::
 
 获取实验的单个指标列。
 
@@ -339,6 +374,10 @@ swanlab api run column my-team/image-classification/abc123 --key loss
 ```
 
 ### run columns
+
+::: warning 不推荐使用
+自 swanlab `0.9.0`（多视图版本）起，`column` / `columns` 不再推荐使用，多视图版本实验不再适用，请改用 [`series`](#run-series)。
+:::
 
 列出实验的所有指标列。
 

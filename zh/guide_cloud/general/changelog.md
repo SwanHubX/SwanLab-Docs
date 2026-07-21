@@ -13,13 +13,13 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **💡 更新方式**
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png"/>
 
 - 打开需要升级的 `项目/Project`，点击**右上角**的 **「升级至新版看板」**，即可完成看板升级
 - ⚠️ 注意：
   - 升级耗时与项目下的实验数量和图表数量有关，请耐心等待
   - 正在进行中的实验无法升级
-  - **升级后无法回退到旧版看板**，请务必确认！
+  - <span style="color:red">**升级后无法回退到旧版看板**，请务必确认！</span>
 
 **💥 破坏性更新**
 
@@ -324,7 +324,7 @@ bunx skills add SwanHubX/SwanLab-Skill -y -g
 - 新增折线图 **Log Scale** 功能
 - 新增 **实验分组拖拽** 功能
 - 新增实验卡片中**配置**与**指标**表格下载功能
-- 新增[开放接口](../../api/py-openapi.md)，支持通过API获取SwanLab数据
+- 新增[开放接口](../../api/py-api.md)，支持通过API获取SwanLab数据
 - 大幅优化了指标传输性能，提升上千指标的传输速度
 - 集成`paddlenlp`框架
 

@@ -13,13 +13,13 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **💡 How to Upgrade**
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png" width="600"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png"/>
 
 - Open the `project` you want to upgrade and click **"Upgrade to New Dashboard"** in the **top-right corner** to complete the upgrade
 - ⚠️ Note:
   - The upgrade duration depends on the number of experiments and charts in the project, please be patient
   - Experiments in progress cannot be upgraded
-  - **The upgrade cannot be rolled back to the old dashboard**, please confirm carefully before proceeding!
+  - <span style="color:red">**The upgrade cannot be rolled back to the old dashboard**, please confirm carefully before proceeding!</span>
 
 **💥 Breaking Changes**
 
@@ -318,7 +318,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added Log Scale feature for line charts
 - Added Experiment Group Drag-and-Drop feature
 - Added Configuration and Metrics table download functionality in experiment cards
-- Added [Open API](../../api/py-openapi.md), supporting data retrieval from SwanLab via API
+- Added [Open API](../../api/py-api.md), supporting data retrieval from SwanLab via API
 - Significantly optimized metric transmission performance, improving speed for handling thousands of metrics
 - Integrated the `paddlenlp` framework
 
