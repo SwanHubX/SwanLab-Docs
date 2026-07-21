@@ -26,18 +26,19 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 
 ### run — Experiment
 
-| Subcommand                              | Description                      |
-| --------------------------------------- | -------------------------------- |
-| `swanlab api run info <path>`           | Get experiment info              |
-| `swanlab api run list <project_path>`   | List experiments under a project |
-| `swanlab api run filter <project_path>` | Filter experiments by query      |
-| `swanlab api run metrics`               | Get experiment scalar metrics    |
-| `swanlab api run summary`               | Get experiment metric summaries  |
-| `swanlab api run column`                | Get a single experiment column   |
-| `swanlab api run columns`               | List experiment columns          |
-| `swanlab api run medias`                | Get experiment media metrics     |
-| `swanlab api run logs`                  | Get experiment console logs      |
-| `swanlab api run export-logs`           | Export experiment logs as a file |
+| Subcommand                              | Description                                                                              |
+| --------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `swanlab api run info <path>`           | Get experiment info                                                                      |
+| `swanlab api run list <project_path>`   | List experiments under a project                                                         |
+| `swanlab api run filter <project_path>` | Filter experiments by query                                                              |
+| `swanlab api run metrics`               | Get experiment scalar metrics                                                            |
+| `swanlab api run summary`               | Get experiment metric summaries                                                          |
+| `swanlab api run series`                | List experiment metric keys                                                              |
+| `swanlab api run column`                | Get a single experiment column (⚠️ deprecated; not applicable to multi-view experiments) |
+| `swanlab api run columns`               | List experiment columns (⚠️ deprecated; not applicable to multi-view experiments)        |
+| `swanlab api run medias`                | Get experiment media metrics                                                             |
+| `swanlab api run logs`                  | Get experiment console logs                                                              |
+| `swanlab api run export-logs`           | Export experiment logs as a file                                                         |
 
 ### user — User
 
@@ -318,7 +319,41 @@ swanlab api run summary my-team/image-classification/abc123
 swanlab api run summary my-team/image-classification/abc123 --keys loss,acc
 ```
 
+### run series
+
+List metric keys of an experiment (recommended in `0.9.0+`, replacing `column` / `columns`). Supports filtering by metric type, class, and keyword.
+
+```bash
+swanlab api run series <path> [OPTIONS]
+```
+
+| Argument/Option | Type       | Default    | Description                                                |
+| --------------- | ---------- | ---------- | ---------------------------------------------------------- |
+| `path`          | Positional | Required   | Experiment path                                            |
+| `--type`        | `str`      | `"scalar"` | Metric type: `scalar` or `media`                           |
+| `--class`       | `str`      | `"custom"` | Metric class: `custom` or `system`                         |
+| `--search`      | `str`      | `None`     | Fuzzy search keyword (case-insensitive, matches key names) |
+| `--save`        | Option     | —          | Save output as JSON file                                   |
+
+```bash
+# List all custom scalar keys
+swanlab api run series my-team/image-classification/abc123
+
+# Fuzzy search
+swanlab api run series my-team/image-classification/abc123 --search loss
+
+# List system metrics only
+swanlab api run series my-team/image-classification/abc123 --class system
+
+# List media metrics
+swanlab api run series my-team/image-classification/abc123 --type media
+```
+
 ### run column
+
+::: warning Not recommended
+Since swanlab `0.9.0` (multi-view version), `column` / `columns` are no longer recommended and do not apply to multi-view experiments. Use [`series`](#run-series) instead.
+:::
 
 Get a single metric column for an experiment.
 
@@ -339,6 +374,10 @@ swanlab api run column my-team/image-classification/abc123 --key loss
 ```
 
 ### run columns
+
+::: warning Not recommended
+Since swanlab `0.9.0` (multi-view version), `column` / `columns` are no longer recommended and do not apply to multi-view experiments. Use [`series`](#run-series) instead.
+:::
 
 List all metric columns for an experiment.
 
