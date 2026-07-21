@@ -24,8 +24,8 @@ export const en = defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     // 左上角logo
     logo: {
-      light: "/icon_docs.svg",
-      dark: "/icon_docs_dark.svg",
+      light: "/logo_2.svg",
+      dark: "/logo_dark_2.svg",
     },
     siteTitle: false,
 
