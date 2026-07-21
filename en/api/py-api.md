@@ -40,7 +40,8 @@ The new OpenAPI is organized around three core concepts: **Workspace** → **Pro
 Workspace
  └── Project
       └── Experiment/Run
-           ├── columns (metric column keys/names)
+           ├── series (list of metric keys)
+           ├── columns (list of metric keys, ⚠️ no longer compatible with 0.9.0+ multi-view experiments)
            ├── metrics (scalar metrics)
            ├── medias (media metrics)
            └── logs
@@ -51,8 +52,10 @@ Workspace
 | **Workspace**  | A collection of projects, corresponding to a team or user. Divided into personal (`PERSON`) and organization (`TEAM`).             |
 | **Project**    | A collection of experiments, corresponding to a research task, containing metadata like name, description, labels, and visibility. |
 | **Experiment** | A single training/inference run, containing metrics, config, logs, environment info, etc.                                          |
-| **Column**     | A metric column under an experiment, such as `loss` or `acc`, supporting FLOAT / STRING / IMAGE and more.                          |
-| **Metric**     | The metric value corresponding to a specific column in an experiment.                                                              |
+| **Series**     | List of metric keys under an experiment, supporting filtering by type / class / keyword; iterating returns `Key` objects.          |
+| **Key**        | A single metric key; can directly query metric data or export CSV for that key.                                                    |
+| **Column**     | Metric column under an experiment (no longer supported for 0.9.0+ multi-view experiments; use Series instead).                     |
+| **Metric**     | The metric value corresponding to a specific metric key in an experiment.                                                          |
 
 ### Data Types: metrics / medias / logs
 
@@ -82,7 +85,7 @@ logs = run.logs(offset=0, level="INFO")
 
 **Notes:**
 
-- `metrics()` returns sampled data by default, with a `sample` parameter default cap of 1500 (auto-truncated if exceeded). Set `all=True` for full data, or use `range_query` to query exact metric ranges by `step` or `timestamp`.
+- `metrics()` returns sampled data by default; the `sample` parameter is capped at 1500 (auto-truncated if exceeded). Set `all=True` for full data, or use `range_query` to query exact metric ranges by `step` or `timestamp`.
 - `medias()` returns media data via presigned URLs — download within the validity period.
 - `export_logs()` can export large volumes of logs to `.log` files, suitable for persistent storage.
 
@@ -90,20 +93,21 @@ logs = run.logs(offset=0, level="INFO")
 
 `Api` is the entry point for all operations. Authentication is completed at construction time, creating an independent `Client` instance (separate from the SDK runtime).
 
-| Method                                    | Description                               |
-| ----------------------------------------- | ----------------------------------------- |
-| `api.workspace(username)`                 | Get a single workspace                    |
-| `api.workspaces(username)`                | List workspaces (iterator)                |
-| `api.project(path)`                       | Get a single project                      |
-| `api.projects(path, ...)`                 | Get project list (iterator)               |
-| `api.create_project(username, name, ...)` | Create a project                          |
-| `api.run(path)`                           | Get a single experiment                   |
-| `api.runs(path, filters=...)`             | Get experiment list (POST filter mode)    |
-| `api.runs_get(path, ...)`                 | Get experiment list (GET pagination mode) |
-| `api.column(path, key)`                   | Get a single metric column                |
-| `api.columns(path, ...)`                  | Get metric columns for an experiment      |
-| `api.user()`                              | Get current user info                     |
-| `api.self_hosted()`                       | Self-hosted management entry point        |
+| Method                                    | Description                                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
+| `api.workspace(username)`                 | Get a single workspace                                                         |
+| `api.workspaces(username)`                | List workspaces (iterator)                                                     |
+| `api.project(path)`                       | Get a single project                                                           |
+| `api.projects(path, ...)`                 | Get project list (iterator)                                                    |
+| `api.create_project(username, name, ...)` | Create a project                                                               |
+| `api.run(path)`                           | Get a single experiment                                                        |
+| `api.runs(path, filters=...)`             | Get experiment list (POST filter mode)                                         |
+| `api.runs_get(path, ...)`                 | Get experiment list (GET pagination mode)                                      |
+| `api.series(path, ...)`                   | Get the metric key list of an experiment                                       |
+| `api.column(path, key)`                   | Get a single metric column (not recommended in 0.9.0+, use `series`)           |
+| `api.columns(path, ...)`                  | Get metric columns for an experiment (not recommended in 0.9.0+, use `series`) |
+| `api.user()`                              | Get current user info                                                          |
+| `api.self_hosted()`                       | Self-hosted management entry point                                             |
 
 ## Workspace
 
@@ -153,7 +157,7 @@ ws = api.workspace(username="my-team")
 # sort optional parameters:
 # - create: sort by creation time
 # - name: sort by name
-# None: defaults to "recently updated" sorting
+# - omitted: defaults to "recently updated"
 
 # search: fuzzy search keyword
 projects = ws.projects(sort="create", search="v1")
@@ -399,14 +403,14 @@ Fetch scalar metric data (e.g. loss, acc), supports sampling control and range q
 
 **RangeQuery fields:**
 
-| Field   | Type  | Default  | Description                                                                                                             |
-| ------- | ----- | -------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `type`  | `str` | `"step"` | Filter axis: `"step"` or `"timestamp"`                                                                                  |
-| `start` | `int` | `None`   | Lower bound (inclusive), `None` means from the beginning. When type is `timestamp`, **input must be a UNIX timestamp**  |
-| `end`   | `int` | `None`   | Upper bound (inclusive), `None` means up to the last step. When type is `timestamp`, **input must be a UNIX timestamp** |
-| `last`  | `int` | `None`   | Last N milliseconds (mutually exclusive with `start`/`end`)                                                             |
-| `head`  | `int` | `None`   | Take first N data points (mutually exclusive with `tail`), post-sampled                                                 |
-| `tail`  | `int` | `None`   | Take last N data points (mutually exclusive with `head`), post-sampled                                                  |
+| Field   | Type  | Default  | Description                                                                                                                               |
+| ------- | ----- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`  | `str` | `"step"` | Filter axis: `"step"` or `"timestamp"`                                                                                                    |
+| `start` | `int` | `None`   | Lower bound (inclusive), `None` means no limit. When `type` is `timestamp`, **input must be a UNIX timestamp in milliseconds**            |
+| `end`   | `int` | `None`   | Upper bound (inclusive), `None` means up to the last step. When `type` is `timestamp`, **input must be a UNIX timestamp in milliseconds** |
+| `last`  | `int` | `None`   | Last N milliseconds (mutually exclusive with `start`/`end`)                                                                               |
+| `head`  | `int` | `None`   | Take first N data points (mutually exclusive with `tail`, applied after range filtering)                                                  |
+| `tail`  | `int` | `None`   | Take last N data points (mutually exclusive with `head`, applied after range filtering)                                                   |
 
 **Mutual exclusion rules:**
 
@@ -478,7 +482,40 @@ result = run.metrics(keys=["loss"], range_query={"tail": 30})
 
 :::
 
-#### 5. summary
+#### 5. series
+
+Get the list of metric keys under an experiment (recommended in `0.9.0+`, replacing [columns](#_10-columns)). Supports filtering by metric type, class, and keyword; iterating returns `Key` objects. In multi-view projects, cloned experiments automatically query the root experiment's metric data.
+
+| Parameter      | Type  | Default    | Description                                                |
+| -------------- | ----- | ---------- | ---------------------------------------------------------- |
+| `metric_type`  | `str` | `"SCALAR"` | Metric type: `SCALAR` or `MEDIA`                           |
+| `metric_class` | `str` | `"CUSTOM"` | Metric class: `CUSTOM` or `SYSTEM`                         |
+| `search`       | `str` | `""`       | Fuzzy search keyword (case-insensitive, matches key names) |
+
+```python [Get metric key list]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Get all custom scalar keys (iterating returns Key objects)
+for item in run.series():
+    print(item.key, item.key_class)
+
+# Fuzzy search / system metrics / media metrics
+for item in run.series(search="loss"):
+    print(item.key)
+for item in run.series(metric_class="SYSTEM"):
+    print(item.key)
+for item in run.series(metric_type="MEDIA"):
+    print(item.key)
+
+# Total number of matching keys
+print(run.series().total)
+```
+
+#### 6. summary
 
 Get statistical summary of scalar metrics (min / max / avg / median / latest), **each metric uses the `latest` value as the authoritative value**.
 
@@ -502,7 +539,7 @@ print(summary)
 
 :::
 
-#### 6. medias
+#### 7. medias
 
 Fetch images, audio, video, echarts and other unstructured media data stored in object storage, response returns only presigned URLs.
 
@@ -536,7 +573,7 @@ print(result)
 Returned media data is provided via presigned URLs — download before the expiration time.
 :::
 
-#### 7. logs
+#### 8. logs
 
 Fetch text logs from experiment runtime, supports level filtering; can also export as `.log` file.
 
@@ -567,7 +604,7 @@ print(logs)
 
 :::
 
-#### 8. export_logs
+#### 9. export_logs
 
 Export logs as .log file (returns presigned download link)
 
@@ -587,7 +624,11 @@ if result.ok:
 
 :::
 
-#### 9. columns
+#### 10. columns
+
+::: warning Not recommended
+Since swanlab `0.9.0` (multi-view version), `columns` / `column` are no longer recommended — use [`series`](#_5-series) instead.
+:::
 
 Get metric column names under an experiment, or get a single column by key.
 
@@ -629,7 +670,7 @@ for col in run.columns(search="loss"):
 col = run.column(key="loss", column_type="FLOAT")
 ```
 
-#### 10. delete
+#### 11. delete
 
 Delete experiment, controls actual deletion behavior via `commit`.
 
@@ -643,6 +684,10 @@ run.delete(commit=False)  # commit=False does not actually delete
 ```
 
 ## Column
+
+::: warning Not recommended
+Since swanlab `0.9.0` (multi-view version), the `Column` APIs are no longer recommended — use [Series](#series) instead.
+:::
 
 Represents metric names reported via `swanlab.log()`.
 
@@ -780,6 +825,76 @@ if result.ok:
 
 :::
 
+## Series
+
+Represents the list of metric keys under an experiment (recommended in `0.9.0+`, replacing [Column](#column)). Iterating a `Series` returns `Key` objects; each `Key` can directly query metric data or export CSV for that key.
+
+### Series properties
+
+| Property | Type  | Description                                                                        |
+| -------- | ----- | ---------------------------------------------------------------------------------- |
+| `total`  | `int` | Total number of matching keys after filtering (triggers a request on first access) |
+
+### Key properties
+
+| Property      | Type  | Description                        |
+| ------------- | ----- | ---------------------------------- |
+| `key`         | `str` | Metric key name                    |
+| `metric_type` | `str` | Metric type: `SCALAR` or `MEDIA`   |
+| `key_class`   | `str` | Metric class: `CUSTOM` or `SYSTEM` |
+| `project_id`  | `str` | Project ID                         |
+| `run_id`      | `str` | Experiment ID                      |
+
+### Key.metric() parameters
+
+| Parameter          | Type   | Default | Description                                       |
+| ------------------ | ------ | ------- | ------------------------------------------------- |
+| `sample`           | `int`  | `1500`  | Sample count (max 1500)                           |
+| `ignore_timestamp` | `bool` | `False` | Whether to remove timestamp fields                |
+| `media_step`       | `int`  | `None`  | Only effective for MEDIA type, specifies the step |
+| `all`              | `bool` | `False` | Get full data (no sampling limit)                 |
+
+### Series / Key method examples
+
+:::code-group
+
+```python [Iterate metric key list]
+import swanlab
+
+api = swanlab.Api()
+
+# api.series(path, ...) is equivalent to api.run(path).series(...)
+for item in api.series(path="my-team/my-project/abc123", metric_type="SCALAR"):
+    print(item.key, item.key_class)
+```
+
+```python [Get metric data for a single key]
+import swanlab
+
+api = swanlab.Api()
+
+series = api.series(path="my-team/my-project/abc123", search="loss")
+
+for item in series:
+    data = item.metric(sample=500)
+    print(data["list"])
+```
+
+```python [Export a single key's metrics as CSV]
+import swanlab
+
+api = swanlab.Api()
+
+series = api.series(path="my-team/my-project/abc123", search="loss")
+
+for item in series:
+    result = item.export_csv()  # SCALAR type only
+    if result.ok:
+        print(result.data["url"])  # CSV download link
+```
+
+:::
+
 ## User
 
 ### User properties
@@ -803,7 +918,7 @@ if result.ok:
 import swanlab
 
 api = swanlab.Api()
-user = api.user()  # no parameters, uses the user info from the Api instance
+user = api.user()  # no parameters, returns the user authenticated when the Api instance was created
 
 data = user.json()
 ```
