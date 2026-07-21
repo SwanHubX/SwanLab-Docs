@@ -74,14 +74,15 @@ You can write your load balancing strategy based on the above information. It is
 
 ## Metrics Aggregation & Forwarding (`vector`)
 
-| Field                             | Type   | Default                         | Description                                                                       |
-| --------------------------------- | ------ | ------------------------------- | --------------------------------------------------------------------------------- |
-| `vector.replicas`                 | int    | `2`                             | Vector replica count                                                              |
-| `vector.image.repository`         | string | `repo.swanlab.cn/public/vector` | Vector image address                                                              |
-| `vector.image.tag`                | string | `0.51.1-debian`                 | Vector image tag                                                                  |
-| `vector.sinks.bufferMaxSize`      | int    | `10737418240`                   | Maximum buffer size (bytes), **must not exceed 1/3 of `persistence.storageSize`** |
-| `vector.persistence.storageClass` | string | `""`                            | StorageClass (leave empty to use cluster default)                                 |
-| `vector.persistence.storageSize`  | string | `60Gi`                          | Storage volume size, **recommended at least 60Gi**, ensure ≥ 3x `bufferMaxSize`   |
+| Field                             | Type   | Default                         | Description                                                                                                                                             |
+| --------------------------------- | ------ | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vector.replicas`                 | int    | `2`                             | Vector replica count                                                                                                                                    |
+| `vector.image.repository`         | string | `repo.swanlab.cn/public/vector` | Vector image address                                                                                                                                    |
+| `vector.image.tag`                | string | `0.51.1-debian`                 | Vector image tag                                                                                                                                        |
+| `vector.sinks.bufferMaxSize`      | int    | `10737418240`                   | Maximum buffer size (bytes), **must not exceed 1/3 of `persistence.storageSize`**                                                                       |
+| `vector.persistence.storageClass` | string | `""`                            | StorageClass (leave empty to use cluster default)                                                                                                       |
+| `vector.persistence.storageSize`  | string | `60Gi`                          | Storage volume size, **recommended at least 60Gi**, ensure ≥ 3x `bufferMaxSize`                                                                         |
+| `vector.monitor.enable`           | bool   | `false`                         | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
 
 > ⚠️ Vector's PVC names are not modifiable by default (`data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1`).
 
@@ -96,11 +97,12 @@ You can write your load balancing strategy based on the above information. It is
 
 ### SwanLab-Server (Backend Service)
 
-| Field                             | Type   | Default                                      | Description                                                                        |
-| --------------------------------- | ------ | -------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `service.server.replicas`         | int    | `2`                                          | Replica count                                                                      |
-| `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | Image address                                                                      |
-| `service.server.image.tag`        | string | `""`                                         | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
+| Field                             | Type   | Default                                      | Description                                                                                                                                             |
+| --------------------------------- | ------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service.server.replicas`         | int    | `2`                                          | Replica count                                                                                                                                           |
+| `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | Image address                                                                                                                                           |
+| `service.server.image.tag`        | string | `""`                                         | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
+| `service.server.monitor.enable`   | bool   | `false`                                      | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
 
 ### SwanLab-Auth (Authentication and Authorization Service)
 
@@ -112,13 +114,14 @@ You can write your load balancing strategy based on the above information. It is
 
 ### SwanLab-House (Backend Experiment OLAP Service)
 
-| Field                                    | Type   | Default                                     | Description                                                                        |
-| ---------------------------------------- | ------ | ------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `service.house.replicas`                 | int    | `2`                                         | Replica count                                                                      |
-| `service.house.image.repository`         | string | `repo.swanlab.cn/self-hosted/swanlab-house` | Image address                                                                      |
-| `service.house.image.tag`                | string | `""`                                        | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
-| `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                       |
-| `service.house.persistence.storageSize`  | string | `10Gi`                                      | Storage volume size                                                                |
+| Field                                    | Type   | Default                                     | Description                                                                                                                                             |
+| ---------------------------------------- | ------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service.house.replicas`                 | int    | `2`                                         | Replica count                                                                                                                                           |
+| `service.house.image.repository`         | string | `repo.swanlab.cn/self-hosted/swanlab-house` | Image address                                                                                                                                           |
+| `service.house.image.tag`                | string | `""`                                        | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
+| `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                                                                                            |
+| `service.house.persistence.storageSize`  | string | `10Gi`                                      | Storage volume size                                                                                                                                     |
+| `service.house.monitor.enable`           | bool   | `false`                                     | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
 
 > **Storage Note**: `swanlab-house` is deployed as a `StatefulSet` and requires a mounted storage volume. Unlike base services, `existingClaim` is **not supported** here.
 > `swanlab-house` stores some metric intermediate products in the storage volume. Generally, you do not need to care about the data in this storage volume.
@@ -177,37 +180,40 @@ Before customizing the storage class configuration, please ensure:
 
 ### PostgreSQL
 
-| Field                                             | Type   | Default                                | Description                                           |
-| ------------------------------------------------- | ------ | -------------------------------------- | ----------------------------------------------------- |
-| `dependencies.postgres.image.repository`          | string | `repo.swanlab.cn/self-hosted/postgres` | Image address                                         |
-| `dependencies.postgres.image.tag`                 | string | `16.1`                                 | Image tag, recommended 16.x and above                 |
-| `dependencies.postgres.username`                  | string | `""`                                   | Database username                                     |
-| `dependencies.postgres.password`                  | string | `""`                                   | Database password                                     |
-| `dependencies.postgres.persistence.existingClaim` | string | `""`                                   | Use an existing PVC name (leave empty to auto-create) |
-| `dependencies.postgres.persistence.storageClass`  | string | `""`                                   | StorageClass                                          |
-| `dependencies.postgres.persistence.storageSize`   | string | `10Gi`                                 | Storage volume size                                   |
+| Field                                             | Type   | Default                                | Description                                                                                                                                                                                                                                  |
+| ------------------------------------------------- | ------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.postgres.image.repository`          | string | `repo.swanlab.cn/self-hosted/postgres` | Image address                                                                                                                                                                                                                                |
+| `dependencies.postgres.image.tag`                 | string | `16.1`                                 | Image tag, recommended 16.x and above                                                                                                                                                                                                        |
+| `dependencies.postgres.username`                  | string | `""`                                   | Database username                                                                                                                                                                                                                            |
+| `dependencies.postgres.password`                  | string | `""`                                   | Database password                                                                                                                                                                                                                            |
+| `dependencies.postgres.persistence.existingClaim` | string | `""`                                   | Use an existing PVC name (leave empty to auto-create)                                                                                                                                                                                        |
+| `dependencies.postgres.persistence.storageClass`  | string | `""`                                   | StorageClass                                                                                                                                                                                                                                 |
+| `dependencies.postgres.persistence.storageSize`   | string | `10Gi`                                 | Storage volume size                                                                                                                                                                                                                          |
+| `dependencies.postgres.monitor.enable`            | bool   | `false`                                | Whether to create a dedicated monitoring headless Service so postgres-exporter can discover and scrape the PG Pod (only effective when `integrations.postgres.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
 
 ### Redis
 
-| Field                                          | Type   | Default                                   | Description                                           |
-| ---------------------------------------------- | ------ | ----------------------------------------- | ----------------------------------------------------- |
-| `dependencies.redis.image.repository`          | string | `repo.swanlab.cn/self-hosted/redis-stack` | Image address                                         |
-| `dependencies.redis.image.tag`                 | string | `7.4.0-v8`                                | Image tag                                             |
-| `dependencies.redis.persistence.existingClaim` | string | `""`                                      | Use an existing PVC name (leave empty to auto-create) |
-| `dependencies.redis.persistence.storageClass`  | string | `""`                                      | StorageClass                                          |
-| `dependencies.redis.persistence.storageSize`   | string | `10Gi`                                    | Storage volume size                                   |
+| Field                                          | Type   | Default                                   | Description                                                                                                                                                                                                                               |
+| ---------------------------------------------- | ------ | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.redis.image.repository`          | string | `repo.swanlab.cn/self-hosted/redis-stack` | Image address                                                                                                                                                                                                                             |
+| `dependencies.redis.image.tag`                 | string | `7.4.0-v8`                                | Image tag                                                                                                                                                                                                                                 |
+| `dependencies.redis.persistence.existingClaim` | string | `""`                                      | Use an existing PVC name (leave empty to auto-create)                                                                                                                                                                                     |
+| `dependencies.redis.persistence.storageClass`  | string | `""`                                      | StorageClass                                                                                                                                                                                                                              |
+| `dependencies.redis.persistence.storageSize`   | string | `10Gi`                                    | Storage volume size                                                                                                                                                                                                                       |
+| `dependencies.redis.monitor.enable`            | bool   | `false`                                   | Whether to create a dedicated monitoring headless Service so redis-exporter can discover and scrape the Redis Pod (only effective when `integrations.redis.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
 
 ### ClickHouse
 
-| Field                                               | Type   | Default                                         | Description                                             |
-| --------------------------------------------------- | ------ | ----------------------------------------------- | ------------------------------------------------------- |
-| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | Image address                                           |
-| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | Image tag                                               |
-| `dependencies.clickhouse.username`                  | string | `""`                                            | Database username (leave empty if using existingSecret) |
-| `dependencies.clickhouse.password`                  | string | `""`                                            | Database password (leave empty if using existingSecret) |
-| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | Use an existing PVC name (leave empty to auto-create)   |
-| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                            |
-| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | Storage volume size                                     |
+| Field                                               | Type   | Default                                         | Description                                                                                                                                                                                                             |
+| --------------------------------------------------- | ------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | Image address                                                                                                                                                                                                           |
+| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | Image tag                                                                                                                                                                                                               |
+| `dependencies.clickhouse.username`                  | string | `""`                                            | Database username (leave empty if using existingSecret)                                                                                                                                                                 |
+| `dependencies.clickhouse.password`                  | string | `""`                                            | Database password (leave empty if using existingSecret)                                                                                                                                                                 |
+| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | Use an existing PVC name (leave empty to auto-create)                                                                                                                                                                   |
+| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                                                                                                                            |
+| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | Storage volume size                                                                                                                                                                                                     |
+| `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics (only effective when `integrations.clickhouse.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
 
 ### MinIO (Built-in S3 Object Storage)
 
@@ -439,3 +445,57 @@ integrations:
 :::
 
 > Please ensure the above configuration corresponds with the information in the Secret.
+
+## Observability & Monitoring
+
+Every component of `swanlab-self-hosted` can expose Prometheus metrics for integration with an external observability stack (such as Prometheus / VictoriaMetrics + Grafana). Enabling monitoring mainly involves two types of configuration:
+
+1. **Gateway metrics port**: The gateway (Traefik) exposes Prometheus metrics via `gateway.service.ports.metrics` (default `9100`), which is enabled by default.
+2. **Per-component monitoring switch `monitor.enable`**: When set to `true`, the Chart creates an additional dedicated **headless Service** named `<fullname>-monitor` for the corresponding component. This Service is independent of the main business Service and **does not affect normal business traffic**. It is only used to let Prometheus discover all Pod IPs of the component (via `dns_sd` or the corresponding exporter) and scrape metrics.
+
+### Monitoring Switch Field Summary
+
+| Field                                    | Type | Default | Description                                                                                                                                                             |
+| ---------------------------------------- | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vector.monitor.enable`                  | bool | `false` | Create a monitoring headless Service for Vector so Prometheus can discover all Pod IPs                                                                                  |
+| `service.server.monitor.enable`          | bool | `false` | Create a monitoring headless Service for SwanLab-Server so Prometheus can discover all Pod IPs                                                                          |
+| `service.house.monitor.enable`           | bool | `false` | Create a monitoring headless Service for SwanLab-House so Prometheus can discover all Pod IPs                                                                           |
+| `dependencies.postgres.monitor.enable`   | bool | `false` | Create a monitoring headless Service for built-in PostgreSQL so postgres-exporter can discover the PG Pod (only effective when `integrations.postgres.enabled = false`) |
+| `dependencies.redis.monitor.enable`      | bool | `false` | Create a monitoring headless Service for built-in Redis so redis-exporter can discover the Redis Pod (only effective when `integrations.redis.enabled = false`)         |
+| `dependencies.clickhouse.monitor.enable` | bool | `false` | Create a monitoring headless Service for built-in ClickHouse so Prometheus can discover all Pod IPs (only effective when `integrations.clickhouse.enabled = false`)     |
+
+> **Notes**:
+>
+> 1. The monitoring switches under `dependencies.*` only take effect when using the **built-in single-instance** base services. If you have connected an external managed instance via `integrations.<service>.enabled = true`, use the external instance's own monitoring solution.
+> 2. When set to `false` (default), the Chart does not create a monitoring Service. You can still discover Pods for scraping yourself via `kubernetes_sd_configs` or other means.
+
+### Enable Monitoring Configuration Example
+
+::: details Enable observability monitoring for each component
+
+```yaml
+vector:
+  monitor:
+    enable: true
+
+service:
+  server:
+    monitor:
+      enable: true
+  house:
+    monitor:
+      enable: true
+
+dependencies:
+  postgres:
+    monitor:
+      enable: true
+  redis:
+    monitor:
+      enable: true
+  clickhouse:
+    monitor:
+      enable: true
+```
+
+:::

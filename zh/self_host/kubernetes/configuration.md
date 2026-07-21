@@ -74,14 +74,15 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ## 指标聚合转发（`vector`）
 
-| 字段                              | 类型   | 默认值                          | 说明                                                                  |
-| --------------------------------- | ------ | ------------------------------- | --------------------------------------------------------------------- |
-| `vector.replicas`                 | int    | `2`                             | Vector 副本数                                                         |
-| `vector.image.repository`         | string | `repo.swanlab.cn/public/vector` | Vector 镜像地址                                                       |
-| `vector.image.tag`                | string | `0.51.1-debian`                 | Vector 镜像标签                                                       |
-| `vector.sinks.bufferMaxSize`      | int    | `10737418240`                   | 缓冲区最大大小（字节），**不得超过 `persistence.storageSize` 的 1/3** |
-| `vector.persistence.storageClass` | string | `""`                            | StorageClass（留空使用集群默认）                                      |
-| `vector.persistence.storageSize`  | string | `60Gi`                          | 存储卷大小，**建议至少 60Gi**，确保 ≥ `bufferMaxSize` 的 3 倍         |
+| 字段                              | 类型   | 默认值                          | 说明                                                                                                 |
+| --------------------------------- | ------ | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `vector.replicas`                 | int    | `2`                             | Vector 副本数                                                                                        |
+| `vector.image.repository`         | string | `repo.swanlab.cn/public/vector` | Vector 镜像地址                                                                                      |
+| `vector.image.tag`                | string | `0.51.1-debian`                 | Vector 镜像标签                                                                                      |
+| `vector.sinks.bufferMaxSize`      | int    | `10737418240`                   | 缓冲区最大大小（字节），**不得超过 `persistence.storageSize` 的 1/3**                                |
+| `vector.persistence.storageClass` | string | `""`                            | StorageClass（留空使用集群默认）                                                                     |
+| `vector.persistence.storageSize`  | string | `60Gi`                          | 存储卷大小，**建议至少 60Gi**，确保 ≥ `bufferMaxSize` 的 3 倍                                        |
+| `vector.monitor.enable`           | bool   | `false`                         | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
 
 > ⚠️ Vector 的 PVC 名称默认不可修改（`data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1`）。
 
@@ -96,11 +97,12 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### SwanLab-Server（后端服务）
 
-| 字段                              | 类型   | 默认值                                       | 说明                                                    |
-| --------------------------------- | ------ | -------------------------------------------- | ------------------------------------------------------- |
-| `service.server.replicas`         | int    | `2`                                          | 副本数                                                  |
-| `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                |
-| `service.server.image.tag`        | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
+| 字段                              | 类型   | 默认值                                       | 说明                                                                                                 |
+| --------------------------------- | ------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `service.server.replicas`         | int    | `2`                                          | 副本数                                                                                               |
+| `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                                                             |
+| `service.server.image.tag`        | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
+| `service.server.monitor.enable`   | bool   | `false`                                      | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
 
 ### SwanLab-Auth（认证与鉴权服务）
 
@@ -112,13 +114,14 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### SwanLab-House（后端实验 OLAP 服务）
 
-| 字段                                     | 类型   | 默认值                                      | 说明                                                    |
-| ---------------------------------------- | ------ | ------------------------------------------- | ------------------------------------------------------- |
-| `service.house.replicas`                 | int    | `2`                                         | 副本数                                                  |
-| `service.house.image.repository`         | string | `repo.swanlab.cn/self-hosted/swanlab-house` | 镜像地址                                                |
-| `service.house.image.tag`                | string | `""`                                        | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
-| `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                            |
-| `service.house.persistence.storageSize`  | string | `10Gi`                                      | 存储卷大小                                              |
+| 字段                                     | 类型   | 默认值                                      | 说明                                                                                                 |
+| ---------------------------------------- | ------ | ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `service.house.replicas`                 | int    | `2`                                         | 副本数                                                                                               |
+| `service.house.image.repository`         | string | `repo.swanlab.cn/self-hosted/swanlab-house` | 镜像地址                                                                                             |
+| `service.house.image.tag`                | string | `""`                                        | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
+| `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                                         |
+| `service.house.persistence.storageSize`  | string | `10Gi`                                      | 存储卷大小                                                                                           |
+| `service.house.monitor.enable`           | bool   | `false`                                     | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
 
 > **存储说明**：`swanlab-house` 以 `StatefulSet` 部署，需要挂载存储卷。与基础服务不同，此处**不支持**配置 `existingClaim`。
 > `swanlab-house` 会在存储卷下存储一些指标中间产物，一般情况下您不需要关心此存储卷中的数据。
@@ -177,37 +180,40 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### PostgreSQL
 
-| 字段                                              | 类型   | 默认值                                 | 说明                                  |
-| ------------------------------------------------- | ------ | -------------------------------------- | ------------------------------------- |
-| `dependencies.postgres.image.repository`          | string | `repo.swanlab.cn/self-hosted/postgres` | 镜像地址                              |
-| `dependencies.postgres.image.tag`                 | string | `16.1`                                 | 镜像标签，建议 16.x 及以上            |
-| `dependencies.postgres.username`                  | string | `""`                                   | 数据库用户名                          |
-| `dependencies.postgres.password`                  | string | `""`                                   | 数据库密码                            |
-| `dependencies.postgres.persistence.existingClaim` | string | `""`                                   | 使用已有的 PVC 名称（留空则自动创建） |
-| `dependencies.postgres.persistence.storageClass`  | string | `""`                                   | StorageClass                          |
-| `dependencies.postgres.persistence.storageSize`   | string | `10Gi`                                 | 存储卷大小                            |
+| 字段                                              | 类型   | 默认值                                 | 说明                                                                                                                                                           |
+| ------------------------------------------------- | ------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.postgres.image.repository`          | string | `repo.swanlab.cn/self-hosted/postgres` | 镜像地址                                                                                                                                                       |
+| `dependencies.postgres.image.tag`                 | string | `16.1`                                 | 镜像标签，建议 16.x 及以上                                                                                                                                     |
+| `dependencies.postgres.username`                  | string | `""`                                   | 数据库用户名                                                                                                                                                   |
+| `dependencies.postgres.password`                  | string | `""`                                   | 数据库密码                                                                                                                                                     |
+| `dependencies.postgres.persistence.existingClaim` | string | `""`                                   | 使用已有的 PVC 名称（留空则自动创建）                                                                                                                          |
+| `dependencies.postgres.persistence.storageClass`  | string | `""`                                   | StorageClass                                                                                                                                                   |
+| `dependencies.postgres.persistence.storageSize`   | string | `10Gi`                                 | 存储卷大小                                                                                                                                                     |
+| `dependencies.postgres.monitor.enable`            | bool   | `false`                                | 是否创建监控专用 headless Service，供 postgres-exporter 发现并采集指标（仅在未启用 `integrations.postgres` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
 
 ### Redis
 
-| 字段                                           | 类型   | 默认值                                    | 说明                                  |
-| ---------------------------------------------- | ------ | ----------------------------------------- | ------------------------------------- |
-| `dependencies.redis.image.repository`          | string | `repo.swanlab.cn/self-hosted/redis-stack` | 镜像地址                              |
-| `dependencies.redis.image.tag`                 | string | `7.4.0-v8`                                | 镜像标签                              |
-| `dependencies.redis.persistence.existingClaim` | string | `""`                                      | 使用已有的 PVC 名称（留空则自动创建） |
-| `dependencies.redis.persistence.storageClass`  | string | `""`                                      | StorageClass                          |
-| `dependencies.redis.persistence.storageSize`   | string | `10Gi`                                    | 存储卷大小                            |
+| 字段                                           | 类型   | 默认值                                    | 说明                                                                                                                                                     |
+| ---------------------------------------------- | ------ | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.redis.image.repository`          | string | `repo.swanlab.cn/self-hosted/redis-stack` | 镜像地址                                                                                                                                                 |
+| `dependencies.redis.image.tag`                 | string | `7.4.0-v8`                                | 镜像标签                                                                                                                                                 |
+| `dependencies.redis.persistence.existingClaim` | string | `""`                                      | 使用已有的 PVC 名称（留空则自动创建）                                                                                                                    |
+| `dependencies.redis.persistence.storageClass`  | string | `""`                                      | StorageClass                                                                                                                                             |
+| `dependencies.redis.persistence.storageSize`   | string | `10Gi`                                    | 存储卷大小                                                                                                                                               |
+| `dependencies.redis.monitor.enable`            | bool   | `false`                                   | 是否创建监控专用 headless Service，供 redis-exporter 发现并采集指标（仅在未启用 `integrations.redis` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
 
 ### ClickHouse
 
-| 字段                                                | 类型   | 默认值                                          | 说明                                         |
-| --------------------------------------------------- | ------ | ----------------------------------------------- | -------------------------------------------- |
-| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | 镜像地址                                     |
-| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | 镜像标签                                     |
-| `dependencies.clickhouse.username`                  | string | `""`                                            | 数据库用户名（如使用 existingSecret 则留空） |
-| `dependencies.clickhouse.password`                  | string | `""`                                            | 数据库密码（如使用 existingSecret 则留空）   |
-| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | 使用已有的 PVC 名称（留空则自动创建）        |
-| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                 |
-| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | 存储卷大小                                   |
+| 字段                                                | 类型   | 默认值                                          | 说明                                                                                                                                                |
+| --------------------------------------------------- | ------ | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | 镜像地址                                                                                                                                            |
+| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | 镜像标签                                                                                                                                            |
+| `dependencies.clickhouse.username`                  | string | `""`                                            | 数据库用户名（如使用 existingSecret 则留空）                                                                                                        |
+| `dependencies.clickhouse.password`                  | string | `""`                                            | 数据库密码（如使用 existingSecret 则留空）                                                                                                          |
+| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | 使用已有的 PVC 名称（留空则自动创建）                                                                                                               |
+| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                                                        |
+| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | 存储卷大小                                                                                                                                          |
+| `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | 是否创建监控专用 headless Service，供 Prometheus 采集指标（仅在未启用 `integrations.clickhouse` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
 
 ### MinIO（内置 S3 对象存储）
 
@@ -439,3 +445,57 @@ integrations:
 :::
 
 > 请保证上述配置与 Secret 中能对应上。
+
+## 可观测监控（Monitoring）
+
+`swanlab-self-hosted` 各组件均可暴露 Prometheus 指标，用于对接外部的可观测监控体系（如 Prometheus / VictoriaMetrics + Grafana）。开启监控主要涉及两类配置：
+
+1. **网关指标端口**：网关（Traefik）通过 `gateway.service.ports.metrics`（默认 `9100`）暴露 Prometheus 指标，默认即已开启。
+2. **各组件监控开关 `monitor.enable`**：置为 `true` 后，Chart 会为对应组件额外创建一个名为 `<fullname>-monitor` 的**专用 headless Service**。该 Service 与业务主 Service 相互独立、**不影响正常业务流量**，仅用于让 Prometheus 通过 `dns_sd`（或相应的 exporter）发现该组件的所有 Pod IP 并采集指标。
+
+### 监控开关字段汇总
+
+| 字段                                     | 类型 | 默认值  | 说明                                                                                                                                 |
+| ---------------------------------------- | ---- | ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `vector.monitor.enable`                  | bool | `false` | 为 Vector 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                   |
+| `service.server.monitor.enable`          | bool | `false` | 为 SwanLab-Server 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                           |
+| `service.house.monitor.enable`           | bool | `false` | 为 SwanLab-House 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                            |
+| `dependencies.postgres.monitor.enable`   | bool | `false` | 为内置 PostgreSQL 创建监控 headless Service，供 postgres-exporter 发现 PG Pod（仅在 `integrations.postgres.enabled = false` 时生效） |
+| `dependencies.redis.monitor.enable`      | bool | `false` | 为内置 Redis 创建监控 headless Service，供 redis-exporter 发现 Redis Pod（仅在 `integrations.redis.enabled = false` 时生效）         |
+| `dependencies.clickhouse.monitor.enable` | bool | `false` | 为内置 ClickHouse 创建监控 headless Service，供 Prometheus 发现所有 Pod IP（仅在 `integrations.clickhouse.enabled = false` 时生效）  |
+
+> **说明**：
+>
+> 1. `dependencies.*` 下的监控开关仅在使用**内置单实例**基础服务时生效。若已通过 `integrations.<service>.enabled = true` 接入外部托管实例，请使用外部实例自身的监控方案。
+> 2. 若为 `false`（默认），Chart 不会创建监控 Service，您仍可以通过 `kubernetes_sd_configs` 等方式自行发现 Pod 进行采集。
+
+### 开启监控配置示例
+
+::: details 开启各组件可观测监控
+
+```yaml
+vector:
+  monitor:
+    enable: true
+
+service:
+  server:
+    monitor:
+      enable: true
+  house:
+    monitor:
+      enable: true
+
+dependencies:
+  postgres:
+    monitor:
+      enable: true
+  redis:
+    monitor:
+      enable: true
+  clickhouse:
+    monitor:
+      enable: true
+```
+
+:::
