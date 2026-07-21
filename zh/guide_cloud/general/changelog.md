@@ -324,7 +324,7 @@ bunx skills add SwanHubX/SwanLab-Skill -y -g
 - 新增折线图 **Log Scale** 功能
 - 新增 **实验分组拖拽** 功能
 - 新增实验卡片中**配置**与**指标**表格下载功能
-- 新增[开放接口](../../api/py-openapi.md)，支持通过API获取SwanLab数据
+- 新增[开放接口](../../api/py-api.md)，支持通过API获取SwanLab数据
 - 大幅优化了指标传输性能，提升上千指标的传输速度
 - 集成`paddlenlp`框架
 

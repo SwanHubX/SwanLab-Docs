@@ -318,7 +318,7 @@ Released SwanLab Kubernetes version, deployment instructions see [this document]
 - Added Log Scale feature for line charts
 - Added Experiment Group Drag-and-Drop feature
 - Added Configuration and Metrics table download functionality in experiment cards
-- Added [Open API](../../api/py-openapi.md), supporting data retrieval from SwanLab via API
+- Added [Open API](../../api/py-api.md), supporting data retrieval from SwanLab via API
 - Significantly optimized metric transmission performance, improving speed for handling thousands of metrics
 - Integrated the `paddlenlp` framework
 
