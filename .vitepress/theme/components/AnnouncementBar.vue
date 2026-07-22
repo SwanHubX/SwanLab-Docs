@@ -16,7 +16,7 @@ import { useData } from "vitepress";
  * ============================================================ */
 const ANNOUNCEMENT = {
   // 总开关：false 则整站不显示公告条。
-  enabled: true,
+  enabled: false,
   // 点击整条跳转的链接。
   url: "https://pytrio.com/home",
   // 按语言配置的文案（logo 已含 TRIO 字样，正文不再重复产品名）。
