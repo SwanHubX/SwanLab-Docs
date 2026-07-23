@@ -323,10 +323,10 @@ integrations:
 
 接入外部 PostgreSQL（自建 cnpg 集群或云厂商 RDS 关系型数据库）。
 ::: warning
-如外接 PostgreSQL，为保证应用性能，需满足以下条件：
+如外接 PostgreSQL，为保证应用性能，请注意以下几点：
 
-- **请保证该数据库实例与集群在同一 VPC 下**
-- 要求集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
+- **请保证该数据库实例与集群在同地域同 VPC 下**
+- 建议集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
 - 需预先创建名为 `app` 的数据库
   :::
 
@@ -370,7 +370,7 @@ integrations:
   ....
   postgres:
     enabled: true
-    host: "<your_host>" # 修改为实际的数据库主机地址，确保与集群在同一 VPC 下
+    host: "<your_host>" # 修改为实际的数据库主机地址，确保与集群在同地域同 VPC 下
     port: 5432
     database: "app"
     existingSecret: integration-postgres-secret
@@ -384,10 +384,10 @@ integrations:
 
 接入外部 Redis（自建集群或云厂商 Redis 服务）。
 ::: warning
-如外接 Redis，为保证应用性能，需满足以下条件：
+如外接 Redis，为保证应用性能，请注意以下几点：
 
-- **请保证该数据库实例与集群在同一 VPC 下**
-- 要求集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
+- **请保证该数据库实例与集群在同地域同 VPC 下**
+- 建议集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
   :::
 
 | 字段                                | 类型   | 默认值  | 说明                                     |
@@ -441,8 +441,8 @@ integrations:
 ::: warning
 未来几个版本中 ClickHouse 的表引擎与部署模式将有调整，暂不建议外接
 
-- **请保证该数据库实例与集群在同一 VPC 下**
-- 要求集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
+- **请保证该数据库实例与集群在同地域同 VPC 下**
+- 建议集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
 - 需预先创建名为 `app` 的数据库
   :::
 

@@ -323,10 +323,10 @@ integrations:
 
 Connect to external PostgreSQL (self-built cnpg cluster or cloud provider RDS).
 ::: warning
-If using external PostgreSQL, to ensure application performance, the following requirements must be met:
+If using external PostgreSQL, to ensure application performance, please note the following:
 
-- **Please ensure the database instance is in the same VPC as the cluster**
-- The <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance must be within **0.3ms**</span>
+- **Please ensure the database instance is in the same region and VPC as the cluster**
+- It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
 - A database named `app` must be created in advance
   :::
 
@@ -370,7 +370,7 @@ integrations:
   ....
   postgres:
     enabled: true
-    host: "<your_host>" # Replace with actual database host address, ensure it is in the same VPC as the cluster
+    host: "<your_host>" # Replace with actual database host address, ensure it is in the same region and VPC as the cluster
     port: 5432
     database: "app"
     existingSecret: integration-postgres-secret
@@ -384,10 +384,10 @@ integrations:
 
 Connect to external Redis (self-built cluster or cloud provider Redis service).
 ::: warning
-If using external Redis, to ensure application performance, the following requirements must be met:
+If using external Redis, to ensure application performance, please note the following:
 
-- **Please ensure the database instance is in the same VPC as the cluster**
-- The <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance must be within **0.3ms**</span>
+- **Please ensure the database instance is in the same region and VPC as the cluster**
+- It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
   :::
 
 | Field                               | Type   | Default | Description                                                     |
@@ -441,8 +441,8 @@ Connect to external ClickHouse (self-built cluster or cloud provider service).
 ::: warning
 In the next few versions, the ClickHouse table engine and deployment mode will change, so external integration is not recommended for now
 
-- **Please ensure the database instance is in the same VPC as the cluster**
-- The <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance must be within **0.3ms**</span>
+- **Please ensure the database instance is in the same region and VPC as the cluster**
+- It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
 - A database named `app` must be created in advance
   :::
 
