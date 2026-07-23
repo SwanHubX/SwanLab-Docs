@@ -97,7 +97,7 @@ kubectl run redis-rtt --rm -i \
 **ClickHouse**:
 
 ```bash
-# Replace with your actual ClickHouse connection string
+# Replace with your actual ClickHouse username and password
 kubectl run ch-rtt --rm -i \
   --image=repo.swanlab.cn/self-hosted/clickhouse-server:24.3 \
   --image-pull-policy=IfNotPresent \

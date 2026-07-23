@@ -327,6 +327,7 @@ If using external PostgreSQL, to ensure application performance, please note the
 
 - **Please ensure the database instance is in the same region and VPC as the cluster**
 - It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
+- For RTT test commands, see [FAQ: How to test the RTT between the cluster and external databases?](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
 - A database named `app` must be created in advance
   :::
 
@@ -388,6 +389,7 @@ If using external Redis, to ensure application performance, please note the foll
 
 - **Please ensure the database instance is in the same region and VPC as the cluster**
 - It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
+- For RTT test commands, see [FAQ: How to test the RTT between the cluster and external databases?](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
   :::
 
 | Field                               | Type   | Default | Description                                                     |
@@ -443,6 +445,7 @@ In the next few versions, the ClickHouse table engine and deployment mode will c
 
 - **Please ensure the database instance is in the same region and VPC as the cluster**
 - It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
+- For RTT test commands, see [FAQ: How to test the RTT between the cluster and external databases?](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
 - A database named `app` must be created in advance
   :::
 
