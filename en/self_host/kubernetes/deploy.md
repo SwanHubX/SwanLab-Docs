@@ -52,8 +52,10 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 > ⚠️Note: When a storage component chooses to [customize base service resources](./deploy.md#_3-1-customizing-base-service-resources), the corresponding images below can be ignored (using self-built external services).
 
 ::: warning
-The **database of the SwanLab self-hosted service uses a single-instance mode**, and there will be architectural changes in the future. **To ensure consistency between architecture and testing behavior**, except for **S3 object storage**, we **do not recommend using cloud databases** for integration. We recommend using **cloud SSD disks** as the storageClass for the corresponding base service PVC storage resources.
-:::
+
+- Due to the varying permission models of different Kubernetes clusters, the SwanLab K8s version does not use Operator-based deployment yet, and **the base database services are deployed as single instances**
+- To integrate self-built or cloud provider high-availability databases, please refer to [Custom Value Configuration](./configuration.md)
+  :::
 
 | Component  | Image Address                                                          | values.yaml Config Path         | Description                                                                      |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------- |
@@ -70,10 +72,10 @@ The **database of the SwanLab self-hosted service uses a single-instance mode**,
 ## 🪜 Installation Guide
 
 ::: info
-This guide follows the best practices for SwanLab K8s self-hosted service installation. The recommended approach is **[External S3 Object Storage Integration] + [Cluster Databases via PVC-mounted Cloud Disks]**. If you have special integration requirements, please refer to [Custom Value Configuration](./configuration.md) for modifications.
+This guide uses the **[External S3 Object Storage Integration] + [Cluster Databases via PVC-mounted Cloud Disks]** deployment approach.
 :::
 
-### 1. Create S3 Secret
+### 1. Create Secret
 
 It is recommended to use an existing online object storage service (must be compatible with AWS S3 protocol). Please ensure you have created **AK/SK with write permissions**, refer to the following yaml:
 ::: details swanlab-self-hosted-secret.yaml Template

@@ -83,12 +83,12 @@ All services can be configured as needed. When not set, there are no limits by d
 
 Based on database configuration, there are two main scenarios:
 
-「✅ **Recommended**」For local database usage:
+**For local database usage**:
 
 - During deployment, each PVC request corresponds to an **independent cloud SSD disk**, supporting seamless expansion.
 - The cloud disk itself handles persistent storage. Configure a **snapshot policy** on a daily basis, with a TTL expiration time recommended to be set to 2~7 days, ensuring daily data reliability.
 
-「⚠️ **Not Recommended**」For external cloud database usage:
+**For external cloud database usage**:
 
 - This can be ensured by the cloud provider's own database master-slave synchronization. You can contact the cloud database product technical support of each public cloud provider, or the DBA of your self-built cluster for related configuration.
 

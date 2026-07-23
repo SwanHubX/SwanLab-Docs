@@ -416,7 +416,7 @@ metadata:
   namespace: <your_namespace>
 type: Opaque
 stringData:
-  url: "redis://<username>:<passwd>@<redis_host>:6379/0"
+  url: "redis://<username>:<password>@<redis_host>:6379/0"
 ```
 
 ```yaml [integration 字段填写示例]
@@ -488,8 +488,6 @@ integrations:
     database: "app"
     existingSecret: integration-clickhouse-secret
 ```
-
-:::
 
 :::
 

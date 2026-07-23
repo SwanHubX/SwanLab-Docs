@@ -272,7 +272,7 @@ If your cloud object storage distinguishes S3 protocol endpoint access, please p
 | `public.pathStyle` | bool   | `false` | Path access method, usually set to `false` for public cloud object storage                                       |
 | `public.bucket`    | string | `""`    | Bucket name                                                                                                      |
 
-> 📎 Special note: Major cloud providers no longer recommend using pathStyle=True path naming. The default is False. For the difference, please refer to: [Virtual hosting of general purpose buckets - AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html)
+> 📎 Special note: Major cloud providers' object storage services no longer recommend the path-style access method; virtual-host style is the default. For the difference, please refer to: [Virtual hosting of general purpose buckets - AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html)
 
 #### Private Bucket Configuration (`integrations.s3.private`)
 
@@ -316,14 +316,19 @@ integrations:
 - The permission for publicBucket is **public read, private write**. The permission for privateBucket is **private read-write**
 - When you choose a custom object storage service, please ensure your object storage service can be accessed directly from outside (via IP or domain name)
 - Your object storage secret key must have write permissions and S3 signing permissions for both **publicBucket** and **privateBucket**
+- The public bucket and private bucket can reuse the same bucket
   :::
 
-### [Optional] External PostgreSQL (`integrations.postgres`)
+### [Optional for High Availability] External PostgreSQL (`integrations.postgres`)
 
 Connect to external PostgreSQL (self-built cnpg cluster or cloud provider RDS).
-::: tip
-If using external PostgreSQL, to ensure application performance, **please ensure the database instance is in the same VPC as the cluster**.
-:::
+::: warning
+If using external PostgreSQL, to ensure application performance, the following requirements must be met:
+
+- **Please ensure the database instance is in the same VPC as the cluster**
+- The <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance must be within **0.3ms**</span>
+- A database named `app` must be created in advance
+  :::
 
 | Field                                  | Type   | Default | Description                                                          |
 | -------------------------------------- | ------ | ------- | -------------------------------------------------------------------- |
@@ -375,9 +380,15 @@ integrations:
 
 > Please ensure the above configuration corresponds with the information in the Secret. For detailed key data structure descriptions, please refer to [values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml).
 
-### [Not Recommended] External Redis (`integrations.redis`)
+### [Optional for High Availability] External Redis (`integrations.redis`)
 
 Connect to external Redis (self-built cluster or cloud provider Redis service).
+::: warning
+If using external Redis, to ensure application performance, the following requirements must be met:
+
+- **Please ensure the database instance is in the same VPC as the cluster**
+- The <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance must be within **0.3ms**</span>
+  :::
 
 | Field                               | Type   | Default | Description                                                     |
 | ----------------------------------- | ------ | ------- | --------------------------------------------------------------- |
@@ -389,29 +400,51 @@ Connect to external Redis (self-built cluster or cloud provider Redis service).
 
 **Secret Data Structure (`integrations.redis.existingSecret`):**
 
-| `.data.<keys>` | Description                                                                     |
-| -------------- | ------------------------------------------------------------------------------- |
-| `url`          | Database connection string, format: `redis://{username}:${password}@redis:6379` |
+| `.data.<keys>` | Description                                                                      |
+| -------------- | -------------------------------------------------------------------------------- |
+| `url`          | Database connection string, format: `redis://{username}:${password}@<host>:6379` |
 
 ::: details External Redis Integration Configuration Example
 
-```yaml
+:::code-group
+
+```yaml [redis-secret example]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integration-redis-secret
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  url: "redis://<username>:<password>@<redis_host>:6379/0"
+```
+
+```yaml [integration field example]
 integrations:
+  ....
   redis:
     enabled: true
-    host: "example.redis"
+    host: "<redis_host>"
     port: 6379
     database: "0"
-    existingSecret: integration-redis
+    existingSecret: "integration-redis-secret"
 ```
 
 :::
 
 > Please ensure the above configuration corresponds with the information in the Secret.
 
-### [Not Recommended] External ClickHouse (`integrations.clickhouse`)
+### [Not Recommended for Now] External ClickHouse (`integrations.clickhouse`)
 
 Connect to external ClickHouse (self-built cluster or cloud provider service).
+
+::: warning
+In the next few versions, the ClickHouse table engine and deployment mode will change, so external integration is not recommended for now
+
+- **Please ensure the database instance is in the same VPC as the cluster**
+- The <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance must be within **0.3ms**</span>
+- A database named `app` must be created in advance
+  :::
 
 | Field                                    | Type   | Default | Description                                                          |
 | ---------------------------------------- | ------ | ------- | -------------------------------------------------------------------- |
@@ -431,15 +464,29 @@ Connect to external ClickHouse (self-built cluster or cloud provider service).
 
 ::: details External ClickHouse Integration Configuration Example
 
-```yaml
+:::code-group
+
+```yaml [clickhouse-secret example]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integration-clickhouse-secret
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  username: "xxxx"
+  password: "xxxx"
+```
+
+```yaml [integration field example]
 integrations:
   clickhouse:
     enabled: true
-    host: "example.clickhouse"
+    host: "<clickhouse_host>"
     httpPort: 8123
     tcpPort: 9000
     database: "app"
-    existingSecret: integration-clickhouse
+    existingSecret: integration-clickhouse-secret
 ```
 
 :::
