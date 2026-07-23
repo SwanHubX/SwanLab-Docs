@@ -272,7 +272,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `public.pathStyle` | bool   | `false` | 路径访问方式，公有云对象存储通常设为 `false`                                                        |
 | `public.bucket`    | string | `""`    | 桶名称                                                                                              |
 
-> 📎 特别说明：主流云厂商基本不再推荐使用 pathStyle=True 的路径命名方式，默认均为 False，区别可参考阅读: [Virtual hosting of general purpose buckets-AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html)
+> 📎 特别说明：主流云厂商的对象存储服务已不再推荐 path-style（路径风格）的访问方式，默认均使用 virtual-host 方式，区别可参考阅读：[Virtual hosting of general purpose buckets-AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html)
 
 #### Private 桶配置（`integrations.s3.private`）
 
@@ -316,14 +316,19 @@ integrations:
 - publicBucket 的权限为**公有读私有写**，privateBucket 的权限为**私有读写**
 - 当您选择自定义对象存储服务时，请保证您的对象存储服务可以直接通过外部访问（通过 IP 或域名）
 - 您的对象存储密钥必须对 **publicBucket** 和 **privateBucket** 同时有写权限和 S3 签名权限
+- public 桶与 private 桶可以复用同一个桶
   :::
 
-### 【可选】外部 PostgreSQL（`integrations.postgres`）
+### 【高可用可选】外部 PostgreSQL（`integrations.postgres`）
 
 接入外部 PostgreSQL（自建 cnpg 集群或云厂商 RDS 关系型数据库）。
-::: tip
-如外接 PostgreSQL, 为了保证应用性能，**请保证该数据库实例与集群在同一 VPC 下**。
-:::
+::: warning
+如外接 PostgreSQL，为保证应用性能，需满足以下条件：
+
+- **请保证该数据库实例与集群在同一 VPC 下**
+- 要求集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
+- 需预先创建名为 `app` 的数据库
+  :::
 
 | 字段                                   | 类型   | 默认值  | 说明                                          |
 | -------------------------------------- | ------ | ------- | --------------------------------------------- |
@@ -375,9 +380,15 @@ integrations:
 
 > 请保证上述配置与 Secret 中能对应上。详细密钥数据结构说明请参阅 [values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)。
 
-### 【不推荐】外部 Redis（`integrations.redis`）
+### 【高可用可选】外部 Redis（`integrations.redis`）
 
 接入外部 Redis（自建集群或云厂商 Redis 服务）。
+::: warning
+如外接 Redis，为保证应用性能，需满足以下条件：
+
+- **请保证该数据库实例与集群在同一 VPC 下**
+- 要求集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
+  :::
 
 | 字段                                | 类型   | 默认值  | 说明                                     |
 | ----------------------------------- | ------ | ------- | ---------------------------------------- |
@@ -389,29 +400,51 @@ integrations:
 
 **Secret 数据结构（`integrations.redis.existingSecret`）：**
 
-| `.data.<keys>` | 说明                                                            |
-| -------------- | --------------------------------------------------------------- |
-| `url`          | 数据库连接串，格式：`redis://{username}:${password}@redis:6379` |
+| `.data.<keys>` | 说明                                                             |
+| -------------- | ---------------------------------------------------------------- |
+| `url`          | 数据库连接串，格式：`redis://{username}:${password}@<host>:6379` |
 
 ::: details 外部集成 Redis 配置示例
 
-```yaml
+:::code-group
+
+```yaml [redis-secret 填写示例]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integration-redis-secret
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  url: "redis://<username>:<passwd>@<redis_host>:6379/0"
+```
+
+```yaml [integration 字段填写示例]
 integrations:
+  ....
   redis:
     enabled: true
-    host: "example.redis"
+    host: "<redis_host>"
     port: 6379
     database: "0"
-    existingSecret: integration-redis
+    existingSecret: "integration-redis-secret"
 ```
 
 :::
 
 > 请保证上述配置与 Secret 中能对应上。
 
-### 【不推荐】外部 ClickHouse（`integrations.clickhouse`）
+### 【暂不推荐】外部 ClickHouse（`integrations.clickhouse`）
 
 接入外部 ClickHouse（自建集群或云厂商服务）。
+
+::: warning
+未来几个版本中 ClickHouse 的表引擎与部署模式将有调整，暂不建议外接
+
+- **请保证该数据库实例与集群在同一 VPC 下**
+- 要求集群节点与数据库实例之间的 <span style="color:red">RTT（往返时延）在 **0.3ms** 以内</span>
+- 需预先创建名为 `app` 的数据库
+  :::
 
 | 字段                                     | 类型   | 默认值  | 说明                                          |
 | ---------------------------------------- | ------ | ------- | --------------------------------------------- |
@@ -431,16 +464,32 @@ integrations:
 
 ::: details 外部集成 ClickHouse 配置示例
 
-```yaml
+:::code-group
+
+```yaml [clickhouse-secret 填写示例]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: integration-clickhouse-secret
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  username: "xxxx"
+  password: "xxxx"
+```
+
+```yaml [integration 字段填写示例]
 integrations:
   clickhouse:
     enabled: true
-    host: "example.clickhouse"
+    host: "<clickhouse_host>"
     httpPort: 8123
     tcpPort: 9000
     database: "app"
-    existingSecret: integration-clickhouse
+    existingSecret: integration-clickhouse-secret
 ```
+
+:::
 
 :::
 
