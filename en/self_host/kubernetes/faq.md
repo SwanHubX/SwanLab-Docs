@@ -55,6 +55,69 @@ service:
 `customNodeSelector` and `customTolerations` are common fields for all services, including application services (`gateway`, `vector`, `service.server`, `service.auth`, `service.house`, `service.cloud`, `service.next`) and base services (`dependencies.postgres`, `dependencies.redis`, `dependencies.clickhouse`, `dependencies.s3`). Configure them individually for each service as needed.
 :::
 
+## [Slow Response] How to test the RTT between the cluster and external databases?
+
+When integrating external `PostgreSQL`, `Redis`, or `ClickHouse`, you can create temporary test Pods in the cluster to measure the RTT (Round-Trip Time) between cluster nodes and the database instance.
+
+**PostgreSQL**:
+
+```bash
+# Replace with your actual PostgreSQL connection string
+kubectl run pg-client --rm -i --tty=false \
+  --image=repo.swanlab.cn/public/postgres:16.1 \
+  --restart=Never \
+  -n <your_namespace> \
+  -- sh -c '
+export DATABASE_URL="postgres://xxxx:xx@<url>:<port_number>/app"
+psql "$DATABASE_URL" -X -qAt <<'"'"'SQL'"'"'
+\timing on
+select 1;
+select 1;
+select 1;
+select 1;
+select 1;
+select 1;
+select 1;
+select 1;
+SQL
+'
+```
+
+**Redis**:
+
+```bash
+# Replace with your actual Redis connection string
+kubectl run redis-rtt --rm -i \
+  --image=repo.swanlab.cn/self-hosted/redis-stack:7.4.0-v8 \
+  --image-pull-policy=IfNotPresent \
+  --restart=Never -n <your_namespace> -- \
+  sh -c 'redis-cli -u "redis://<user>:<password>@<redis_host>:6379/0" --latency | awk "{printf \"min: %s ms | max: %s ms | avg: %s ms | samples: %s\n\", \$1, \$2, \$3, \$4}"'
+```
+
+**ClickHouse**:
+
+```bash
+# Replace with your actual ClickHouse username and password
+kubectl run ch-rtt --rm -i \
+  --image=repo.swanlab.cn/self-hosted/clickhouse-server:24.3 \
+  --image-pull-policy=IfNotPresent \
+  --restart=Never -n <your_namespace> -- sh -c '
+clickhouse-benchmark --concurrency 1 --iterations 1000 \
+  --host <clickhouse_host> --port 9000 \
+  --user <your_username> --password <your_passwd> \
+  --query "SELECT 1" 2>&1 \
+| awk "
+/QPS:/ { split(\$0, x, \"QPS: \"); split(x[2], y, \",\"); qps=y[1]+0; avg=1000/qps }
+/^99\\.000%/ { split(\$0, t, \" \"); p99=t[2]*1000 }
+END { printf \"clickhouse RTT: avg=%.3f ms  p99=%.3f ms  (QPS %.2f)\n\", avg, p99, qps }
+"
+'
+```
+
+::: tip
+It is recommended that the RTT between cluster nodes and the database instance be within **0.3ms**, and that the nodes running SwanLab services and the database be in the same availability zone whenever possible. See [Custom Value Configuration](./configuration.md) for details.
+:::
+
 ## [Resource Limits] How to limit the CPU and memory usage of SwanLab services?
 
 In `values.yaml`, all application services support setting CPU and memory Requests / Limits through the `resources` field, with the format consistent with Kubernetes native `resources`.
@@ -83,12 +146,12 @@ All services can be configured as needed. When not set, there are no limits by d
 
 Based on database configuration, there are two main scenarios:
 
-「✅ **Recommended**」For local database usage:
+**For local database usage**:
 
 - During deployment, each PVC request corresponds to an **independent cloud SSD disk**, supporting seamless expansion.
 - The cloud disk itself handles persistent storage. Configure a **snapshot policy** on a daily basis, with a TTL expiration time recommended to be set to 2~7 days, ensuring daily data reliability.
 
-「⚠️ **Not Recommended**」For external cloud database usage:
+**For external cloud database usage**:
 
 - This can be ensured by the cloud provider's own database master-slave synchronization. You can contact the cloud database product technical support of each public cloud provider, or the DBA of your self-built cluster for related configuration.
 
