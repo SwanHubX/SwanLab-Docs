@@ -13,23 +13,27 @@
  *    Each browser therefore hits PyPI at most once per 6h, and only when
  *    someone actually visits.
  *
- * Patching is monotonic (never downgrades the displayed version) and
- * incremental: it mutates the nav theme config so future re-renders (route
- * changes, mobile menu) keep the new version, and patches the already-rendered
- * DOM so the update shows immediately. Everything is best-effort — storage or
- * network failures are swallowed and the baked version simply keeps showing.
+ * Patching is monotonic (never downgrades the displayed version). Because
+ * VitePress wraps site/theme data in `readonly()` (vitepress data.ts), we
+ * cannot mutate the nav theme config to make the dropdown trigger reactive.
+ * Instead we patch the rendered text nodes directly and keep a MutationObserver
+ * on the navbar so the patch survives Vue re-renders (route changes, locale
+ * switches, mobile menu toggle) — those always restore the baked version.
+ * Everything is best-effort — storage or network failures are swallowed and
+ * the baked version simply keeps showing.
  */
-import { useData } from "vitepress";
-
 const PYPI_URL = "https://pypi.org/pypi/swanlab/json";
 const STORAGE_KEY = "swanlab:version";
 const TTL_MS = 6 * 60 * 60 * 1000; // 6h
 const FETCH_TIMEOUT_MS = 5000;
 
+/** Build-time version baked into the HTML; the baseline text nodes always carry this. */
+const BAKED_VERSION = __SWANLAB_VERSION__;
+
 type VersionCache = { version: string; fetchedAt: number };
 
-/** Version currently shown in the navbar; only ever moves forward. */
-let currentVersion = __SWANLAB_VERSION__;
+/** Version to display in the navbar; only ever moves forward. */
+let displayVersion = BAKED_VERSION;
 
 function readCache(): VersionCache | null {
   try {
@@ -83,47 +87,47 @@ async function fetchLatestVersion(): Promise<string | null> {
 }
 
 /**
- * Wires the version sync. Must be called in the theme's `setup()` (uses
- * `useData`); returns the init function to invoke on `onMounted`.
+ * Patch the baked version text in the rendered navbar DOM. Idempotent —
+ * finds every text node matching the baked version and replaces it with the
+ * display version. Scoped to the navbar / nav screen so page content is
+ * never touched.
  */
-export function useVersionSync(): () => void {
-  const { themeConfig } = useData();
+function patchDom(): void {
+  const bakedText = `v${BAKED_VERSION}`;
+  const newText = `v${displayVersion}`;
+  if (bakedText === newText) return;
 
-  /** Patch nav config + live DOM. Idempotent and never downgrades. */
-  function applyVersion(version: string): void {
-    if (!isNewer(version, currentVersion)) return;
-    const oldText = `v${currentVersion}`;
-    const newText = `v${version}`;
-    currentVersion = version;
-
-    // 1) Mutate the nav config so any future re-render (route change, mobile
-    //    nav screen open) picks up the new version.
-    const nav = themeConfig.value.nav as Array<{ text?: string }> | undefined;
-    const item = nav?.find((i) => typeof i.text === "string" && /^v\d/.test(i.text));
-    if (item) item.text = newText;
-
-    // 2) Patch the already-rendered DOM immediately — the config above is not
-    //    reactive, and waiting for the next route change would delay the update.
-    //    Scoped to the navbar / nav screen so page content is never touched.
-    for (const root of document.querySelectorAll("header.VPNav, .VPNavScreen")) {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      let node: Node | null;
-      while ((node = walker.nextNode())) {
-        if (node.nodeValue?.trim() === oldText) {
-          node.nodeValue = newText;
-        }
+  for (const root of document.querySelectorAll("header.VPNav, .VPNavScreen")) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node: Node | null;
+    while ((node = walker.nextNode())) {
+      if (node.nodeValue?.trim() === bakedText) {
+        node.nodeValue = newText;
       }
     }
   }
+}
 
-  /** Silent background refresh; writes the cache even when not newer, so the TTL resets. */
-  async function refresh(): Promise<void> {
-    const latest = await fetchLatestVersion();
-    if (!latest) return;
-    writeCache(latest);
-    applyVersion(latest);
-  }
+/** Set the display version (monotonic) and patch the DOM immediately. */
+function applyVersion(version: string): void {
+  if (!isNewer(version, displayVersion)) return;
+  displayVersion = version;
+  patchDom();
+}
 
+/** Silent background refresh; writes the cache even when not newer, so the TTL resets. */
+async function refresh(): Promise<void> {
+  const latest = await fetchLatestVersion();
+  if (!latest) return;
+  writeCache(latest);
+  applyVersion(latest);
+}
+
+/**
+ * Returns the init function to invoke on `onMounted`. No longer needs
+ * `useData()` — the theme config is readonly and patched via DOM instead.
+ */
+export function useVersionSync(): () => void {
   return function initVersionSync(): void {
     const cached = readCache();
     // TTL 内直接用缓存覆盖（不比烤入版本新则 applyVersion 内部忽略）。
@@ -131,6 +135,18 @@ export function useVersionSync(): () => void {
     // 缓存缺失或过期才静默 fetch，保证每个浏览器最多每 6h 一次请求。
     if (!cached || Date.now() - cached.fetchedAt >= TTL_MS) {
       void refresh();
+    }
+
+    // VitePress exposes theme config as readonly(), so Vue re-renders (route
+    // changes, locale switches, mobile menu) always restore the baked version.
+    // Watch the navbar and re-patch whenever that happens.
+    const nav = document.querySelector("header.VPNav");
+    if (nav) {
+      new MutationObserver(() => patchDom()).observe(nav, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+      });
     }
   };
 }
