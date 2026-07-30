@@ -4,9 +4,10 @@
 
 ## Debug Configuration
 
-| Environment Variable | Description                                                                                                                  | Default Value |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `SWANLAB_DEBUG`      | Whether to enable debug mode. When enabled, debug messages are printed in the terminal and mirrored to diagnostic log files. | `false`       |
+| Environment Variable | Description                                                                                                                     | Default Value |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `SWANLAB_DEBUG`      | Whether to enable debug mode. When enabled, debug messages are printed in the terminal and mirrored to diagnostic log files.    | `false`       |
+| `SWANLAB_STRICT_ENV` | Enable strict environment mode. SwanLab checks environment variables at startup and reports invalid configurations immediately. | `false`       |
 
 ## Global Configuration
 
