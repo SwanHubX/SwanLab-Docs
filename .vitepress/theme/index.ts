@@ -30,12 +30,12 @@ export default {
     ctx.app.provide(themeContextKey, {
       // logoDark is rendered in light mode (dark-colored logo on light bg),
       // logoLight in dark mode — see OSS Header.vue (`block dark:hidden` / `dark:block`).
-      logoDark: "/icon_docs.svg",
-      logoLight: "/icon_docs_dark.svg",
+      logoDark: "/logo_2.svg",
+      logoLight: "/logo_dark_2.svg",
       logoAlt: "SwanLab",
       // 1px transparent gif so the OSS footer CTA renders without a photo.
       footerBg: "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=",
-      monoIcon: "/icon_docs.svg",
+      monoIcon: "/logo_2.svg",
     });
     ctx.app.component("HeaderButton", HeaderButton);
     ctx.app.component("HeaderButtonEN", HeaderButtonEN);
