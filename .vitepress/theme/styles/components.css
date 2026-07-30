@@ -204,6 +204,7 @@ div.VPNavBarSearch.search {
 header.wrapper img {
   height: 26px !important;
   width: auto !important;
+  transform: translateY(-5px);
 }
 
 /* ===== Navbar layout: right-align search + 官网 + GitHub =====

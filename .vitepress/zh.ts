@@ -24,11 +24,6 @@ export const zh = defineConfig({
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    // 左上角logo，支持明暗模式
-    logo: {
-      light: "/icon_docs.svg",
-      dark: "/icon_docs_dark.svg",
-    },
     siteTitle: false,
 
     // 导航栏配置
