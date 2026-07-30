@@ -5,12 +5,12 @@
  * so the first paint always has a version and never flashes. This layer keeps
  * long-lived deployments fresh without rebuilds:
  *
- *  - localStorage cache `{ version, fetchedAt }` with a 6h TTL.
+ *  - localStorage cache `{ version, fetchedAt }` with a 1h TTL.
  *  - Within the TTL the cached version is applied straight away (when newer
  *    than the baked one) — no network request at all.
  *  - Once the TTL expires, one silent background fetch to PyPI refreshes the
  *    cache; if a newer version comes back the navbar is patched in place.
- *    Each browser therefore hits PyPI at most once per 6h, and only when
+ *    Each browser therefore hits PyPI at most once per 1h, and only when
  *    someone actually visits.
  *
  * Patching is monotonic (never downgrades the displayed version). Because
@@ -24,8 +24,9 @@
  */
 const PYPI_URL = "https://pypi.org/pypi/swanlab/json";
 const STORAGE_KEY = "swanlab:version";
-const TTL_MS = 6 * 60 * 60 * 1000; // 6h
+const TTL_MS = 1 * 60 * 60 * 1000; // 1h
 const FETCH_TIMEOUT_MS = 5000;
+const NAV_ROOT_SELECTOR = "header .VPNavBarMenu, #mobile-menu";
 
 /** Build-time version baked into the HTML; the baseline text nodes always carry this. */
 const BAKED_VERSION = __SWANLAB_VERSION__;
@@ -34,6 +35,9 @@ type VersionCache = { version: string; fetchedAt: number };
 
 /** Version to display in the navbar; only ever moves forward. */
 let displayVersion = BAKED_VERSION;
+
+/** Versions that Vue may currently have rendered and that are safe to replace. */
+const knownVersions = new Set([BAKED_VERSION]);
 
 function readCache(): VersionCache | null {
   try {
@@ -88,20 +92,20 @@ async function fetchLatestVersion(): Promise<string | null> {
 
 /**
  * Patch the baked version text in the rendered navbar DOM. Idempotent —
- * finds every text node matching the baked version and replaces it with the
- * display version. Scoped to the navbar / nav screen so page content is
- * never touched.
+ * finds every text node matching the baked or a previously displayed version
+ * and replaces it with the latest display version. Scoped to the current
+ * VoidZero desktop navbar and mobile menu so page content is never touched.
  */
 function patchDom(): void {
-  const bakedText = `v${BAKED_VERSION}`;
   const newText = `v${displayVersion}`;
-  if (bakedText === newText) return;
+  const replaceableTexts = new Set(Array.from(knownVersions, (version) => `v${version}`));
 
-  for (const root of document.querySelectorAll("header.VPNav, .VPNavScreen")) {
+  for (const root of document.querySelectorAll(NAV_ROOT_SELECTOR)) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     let node: Node | null;
     while ((node = walker.nextNode())) {
-      if (node.nodeValue?.trim() === bakedText) {
+      const text = node.nodeValue?.trim();
+      if (text !== newText && text && replaceableTexts.has(text)) {
         node.nodeValue = newText;
       }
     }
@@ -111,7 +115,9 @@ function patchDom(): void {
 /** Set the display version (monotonic) and patch the DOM immediately. */
 function applyVersion(version: string): void {
   if (!isNewer(version, displayVersion)) return;
+  knownVersions.add(displayVersion);
   displayVersion = version;
+  knownVersions.add(version);
   patchDom();
 }
 
@@ -132,17 +138,21 @@ export function useVersionSync(): () => void {
     const cached = readCache();
     // TTL 内直接用缓存覆盖（不比烤入版本新则 applyVersion 内部忽略）。
     if (cached) applyVersion(cached.version);
-    // 缓存缺失或过期才静默 fetch，保证每个浏览器最多每 6h 一次请求。
+    // 缓存缺失或过期才静默 fetch，保证每个浏览器最多每 1h 一次请求。
     if (!cached || Date.now() - cached.fetchedAt >= TTL_MS) {
       void refresh();
     }
 
     // VitePress exposes theme config as readonly(), so Vue re-renders (route
     // changes, locale switches, mobile menu) always restore the baked version.
-    // Watch the navbar and re-patch whenever that happens.
-    const nav = document.querySelector("header.VPNav");
-    if (nav) {
-      new MutationObserver(() => patchDom()).observe(nav, {
+    // The current VoidZero theme uses a plain <header>; its mobile menu is a
+    // conditionally mounted sibling (#mobile-menu). Observe their shared
+    // component root so both delayed mounts and Vue re-renders are covered.
+    const navRoot = document
+      .querySelector("header .VPNavBarMenu")
+      ?.closest("header")?.parentElement;
+    if (navRoot) {
+      new MutationObserver(() => patchDom()).observe(navRoot, {
         subtree: true,
         childList: true,
         characterData: true,
