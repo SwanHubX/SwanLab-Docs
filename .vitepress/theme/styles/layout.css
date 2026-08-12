@@ -186,7 +186,8 @@
    by `.content-container` above. */
 @media (min-width: 90rem) {
   .content-wrapper,
-  header.wrapper {
+  header.wrapper,
+  header.wrapper + .tick-left.tick-right {
     max-width: calc(100vw - 4rem) !important;
   }
 }
