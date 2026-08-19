@@ -1,4 +1,4 @@
-# 使用Kubernetes进行部署
+# 使用Kubernetes进行部署 <img src="/kubernetes.svg" class="deploy-logo" alt="Kubernetes" /> <VersionBadge version="v3.1.1" />
 
 > 如需要从Docker版本迁移至Kubernetes版本，请参考[此文档](../docker/migration-docker-kubernetes.md)。  
 > Kubernetes版本支持的SwanLab Python SDK版本为 >= 0.7.4
@@ -16,10 +16,6 @@
 - [SwanHubX/charts - 私有化服务发布地址](https://github.com/SwanHubX/charts/releases)：SwanLab的Kubernetes Helm Chart仓库
 - `swanlab-self-hosted`: 在集群中部署的 SwanLab 私有化服务的**默认 RELEASE 名称**
 - `<your_namespace>`: 在集群中部署的 SwanLab 私有化服务的命名空间，请替换为部署使用的命名空间
-
-::: info
-**当前APP_VERSION: v3.1.1**
-:::
 
 ## 🧱 先决条件
 

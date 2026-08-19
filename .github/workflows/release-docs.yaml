@@ -9,6 +9,7 @@ on:
       - "zh/self_host/docker/offline-deployment.md"
       - "en/self_host/docker/offline-deployment.md"
       - "zh/self_host/docker/deploy.md"
+      - "en/self_host/docker/deploy.md"
       - "zh/self_host/kubernetes/deploy.md"
       - "en/self_host/kubernetes/deploy.md"
   pull_request:
@@ -19,6 +20,7 @@ on:
       - "zh/self_host/docker/offline-deployment.md"
       - "en/self_host/docker/offline-deployment.md"
       - "zh/self_host/docker/deploy.md"
+      - "en/self_host/docker/deploy.md"
       - "zh/self_host/kubernetes/deploy.md"
       - "en/self_host/kubernetes/deploy.md"
   workflow_dispatch:
@@ -48,6 +50,8 @@ jobs:
           FILES=(
             "zh/self_host/docker/offline-deployment.md"
             "en/self_host/docker/offline-deployment.md"
+            "zh/self_host/docker/deploy.md"
+            "en/self_host/docker/deploy.md"
             "zh/self_host/kubernetes/deploy.md"
             "en/self_host/kubernetes/deploy.md"
           )
@@ -75,11 +79,11 @@ jobs:
               FAILED=1
             fi
 
-            # Check header version (当前/Current APP_VERSION)
-            HEADER_MISMATCH=$(grep -nE '\*\*(当前|Current)APP_VERSION: v[0-9]' "$f" | grep -v "$APP_VERSION" || true)
-            if [ -n "$HEADER_MISMATCH" ]; then
-              echo "::error::Header version mismatch in $f:"
-              echo "$HEADER_MISMATCH"
+            # Check VersionBadge version in H1 (<VersionBadge version="vX.Y.Z" />)
+            BADGE_MISMATCH=$(grep -n '<VersionBadge version="v' "$f" | grep -v "$APP_VERSION" || true)
+            if [ -n "$BADGE_MISMATCH" ]; then
+              echo "::error::Badge version mismatch in $f:"
+              echo "$BADGE_MISMATCH"
               FAILED=1
             fi
           done

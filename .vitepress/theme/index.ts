@@ -18,6 +18,7 @@ import HeaderGithubButton from "./components/HeaderGithubButton.vue";
 import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
+import VersionBadge from "./components/VersionBadge.vue";
 import { useVersionSync } from "./version-sync";
 
 export default {
@@ -44,6 +45,7 @@ export default {
     ctx.app.component("HeaderDocHelperButton", HeaderDocHelperButton);
     ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
     ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
+    ctx.app.component("VersionBadge", VersionBadge);
     VoidZeroTheme.enhanceApp(ctx);
   },
   setup() {

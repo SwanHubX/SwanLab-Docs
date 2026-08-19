@@ -344,3 +344,15 @@ header.wrapper .VPFlyout > button {
     padding-top: var(--vp-banner-height, 0);
   }
 }
+
+/* ===== 部署文档 H1 的平台 logo（k8s / docker）=====
+ * zh/en self_host 部署文档标题里内联的 <img class="deploy-logo">，
+ * 与 VersionBadge 并排。em 相对尺寸随 H1 字号缩放；vertical-align 微调
+ * 让 logo 视觉中心与标题文字对齐。 */
+h1 .deploy-logo {
+  display: inline-block;
+  height: 0.85em;
+  width: 0.85em;
+  vertical-align: -0.08em;
+  margin-left: 0.15em;
+}
