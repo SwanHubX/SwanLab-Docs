@@ -18,7 +18,9 @@ import HeaderGithubButton from "./components/HeaderGithubButton.vue";
 import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
+import VersionBadge from "./components/VersionBadge.vue";
 import { useVersionSync } from "./version-sync";
+import { useLogoLinkFix } from "./logo-link";
 
 export default {
   ...VoidZeroTheme,
@@ -44,11 +46,13 @@ export default {
     ctx.app.component("HeaderDocHelperButton", HeaderDocHelperButton);
     ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
     ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
+    ctx.app.component("VersionBadge", VersionBadge);
     VoidZeroTheme.enhanceApp(ctx);
   },
   setup() {
     const route = useRoute();
     const initVersionSync = useVersionSync();
+    const initLogoLinkFix = useLogoLinkFix();
 
     const shouldZoomImage = (img: HTMLImageElement) => {
       // 1. Check if there are clear exclusion marks
@@ -88,6 +92,8 @@ export default {
       initZoom();
       // Browser-side navbar version sync (localStorage 6h TTL + silent PyPI fetch).
       initVersionSync();
+      // Locale-aware navbar logo link (theme hardcodes href="/"; en → /en/).
+      initLogoLinkFix();
     });
 
     watch(

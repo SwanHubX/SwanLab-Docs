@@ -3,7 +3,7 @@ APP_VERSION := $(shell cat $(APP_VERSION_FILE) | tr -d '[:space:]')
 
 # Docs files containing hardcoded SwanLab app version
 DOC_FILES_ZH := zh/self_host/docker/offline-deployment.md zh/self_host/docker/deploy.md zh/self_host/kubernetes/deploy.md
-DOC_FILES_EN := en/self_host/docker/offline-deployment.md en/self_host/kubernetes/deploy.md
+DOC_FILES_EN := en/self_host/docker/offline-deployment.md en/self_host/docker/deploy.md en/self_host/kubernetes/deploy.md
 DOC_FILES := $(DOC_FILES_ZH) $(DOC_FILES_EN)
 
 .PHONY: bump-version verify-version
@@ -31,8 +31,7 @@ _replace-versions:
 			sed -i '' 's|swanlab-cloud:v[0-9][0-9.]*|swanlab-cloud:$(NEW_V)|g' "$$f"; \
 			sed -i '' 's|swanlab-next:v[0-9][0-9.]*|swanlab-next:$(NEW_V)|g' "$$f"; \
 			sed -i '' 's|Self-Hosted Docker v[0-9][0-9.]*|Self-Hosted Docker $(NEW_V)|g' "$$f"; \
-			sed -i '' 's|\*\*当前APP_VERSION: v[0-9][0-9.]*\*\*|**当前APP_VERSION: $(NEW_V)**|g' "$$f"; \
-			sed -i '' 's|\*\*Current APP_VERSION: v[0-9][0-9.]*\*\*|**Current APP_VERSION: $(NEW_V)**|g' "$$f"; \
+			sed -i '' 's|<VersionBadge version="v[0-9][0-9.]*" />|<VersionBadge version="$(NEW_V)" />|g' "$$f"; \
 			echo "  ✅ Updated $$f"; \
 		fi; \
 	done
@@ -55,10 +54,10 @@ verify-version:
 				echo "$$BANNER_MISMATCH"; \
 				FAILED=1; \
 			fi; \
-			HEADER_MISMATCH=$$(grep -nE '\*\*(当前|Current)APP_VERSION: v[0-9]' "$$f" | grep -v "$(APP_VERSION)" || true); \
-			if [ -n "$$HEADER_MISMATCH" ]; then \
-				echo "❌ Header version mismatch in $$f:"; \
-				echo "$$HEADER_MISMATCH"; \
+			BADGE_MISMATCH=$$(grep -n '<VersionBadge version="v' "$$f" | grep -v "$(APP_VERSION)" || true); \
+			if [ -n "$$BADGE_MISMATCH" ]; then \
+				echo "❌ Badge version mismatch in $$f:"; \
+				echo "$$BADGE_MISMATCH"; \
 				FAILED=1; \
 			fi; \
 		fi; \

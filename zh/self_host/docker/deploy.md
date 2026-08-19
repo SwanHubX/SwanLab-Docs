@@ -1,4 +1,4 @@
-# 使用Docker进行部署
+# 使用Docker进行部署 <img src="/docker.svg" class="deploy-logo" alt="Docker" /> <VersionBadge version="v3.1.1" />
 
 如果你想要使用SwanLab私有化部署（社区版），请按照下面的流程进行安装。
 
