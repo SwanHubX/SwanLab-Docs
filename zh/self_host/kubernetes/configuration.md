@@ -40,19 +40,20 @@ global:
 
 ## 网关（`gateway`）
 
-| 字段                               | 类型   | 默认值                                           | 说明                                   |
-| ---------------------------------- | ------ | ------------------------------------------------ | -------------------------------------- |
-| `gateway.replicas`                 | int    | `2`                                              | 网关副本数                             |
-| `gateway.image.repository`         | string | `repo.swanlab.cn/public/traefik`                 | Traefik 网关镜像地址                   |
-| `gateway.image.tag`                | string | `3.6`                                            | Traefik 镜像标签                       |
-| `gateway.identifyImage.repository` | string | `repo.swanlab.cn/public/swanlab-helper/identify` | 网关鉴权辅助镜像地址                   |
-| `gateway.identifyImage.tag`        | string | `v1.2`                                           | 鉴权辅助镜像标签                       |
-| `gateway.service.type`             | string | `ClusterIP`                                      | Service 类型                           |
-| `gateway.service.ports.web`        | int    | `80`                                             | 非安全入口端口（可从集群外部访问）     |
-| `gateway.service.ports.internal`   | int    | `8080`                                           | 内部入口端口（仅集群内部访问）         |
-| `gateway.service.ports.traefik`    | int    | `8081`                                           | Traefik 仪表盘端口                     |
-| `gateway.service.ports.metrics`    | int    | `9100`                                           | Prometheus 指标采集端口                |
-| `gateway.customNodeSelector`       | object | `{}`                                             | 节点选择器，例如 `{ swanlab: "true" }` |
+| 字段                               | 类型   | 默认值                                           | 说明                                                                                   |
+| ---------------------------------- | ------ | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| `gateway.replicas`                 | int    | `2`                                              | 网关副本数                                                                             |
+| `gateway.image.repository`         | string | `repo.swanlab.cn/public/traefik`                 | Traefik 网关镜像地址                                                                   |
+| `gateway.image.tag`                | string | `3.6`                                            | Traefik 镜像标签                                                                       |
+| `gateway.identifyImage.repository` | string | `repo.swanlab.cn/public/swanlab-helper/identify` | 网关鉴权辅助镜像地址                                                                   |
+| `gateway.identifyImage.tag`        | string | `v1.2`                                           | 鉴权辅助镜像标签                                                                       |
+| `gateway.service.type`             | string | `ClusterIP`                                      | Service 类型                                                                           |
+| `gateway.service.ports.web`        | int    | `80`                                             | 非安全入口端口（可从集群外部访问）                                                     |
+| `gateway.service.ports.internal`   | int    | `8080`                                           | 内部入口端口（仅集群内部访问）                                                         |
+| `gateway.service.ports.traefik`    | int    | `8081`                                           | Traefik 仪表盘端口                                                                     |
+| `gateway.service.ports.metrics`    | int    | `9100`                                           | Prometheus 指标采集端口                                                                |
+| `gateway.customNodeSelector`       | object | `{}`                                             | 节点选择器，例如 `{ swanlab: "true" }`                                                 |
+| `gateway.securityContext.enabled`  | bool   | `false`                                          | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
 
 ### 配置应用访问入口
 
@@ -83,6 +84,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `vector.persistence.storageClass` | string | `""`                            | StorageClass（留空使用集群默认）                                                                     |
 | `vector.persistence.storageSize`  | string | `60Gi`                          | 存储卷大小，**建议至少 60Gi**，确保 ≥ `bufferMaxSize` 的 3 倍                                        |
 | `vector.monitor.enable`           | bool   | `false`                         | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
+| `vector.securityContext.enabled`  | bool   | `false`                         | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)               |
 
 > ⚠️ Vector 的 PVC 名称默认不可修改（`data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1`）。
 
@@ -97,20 +99,22 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### SwanLab-Server（后端服务）
 
-| 字段                              | 类型   | 默认值                                       | 说明                                                                                                 |
-| --------------------------------- | ------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `service.server.replicas`         | int    | `2`                                          | 副本数                                                                                               |
-| `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                                                             |
-| `service.server.image.tag`        | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
-| `service.server.monitor.enable`   | bool   | `false`                                      | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
+| 字段                                     | 类型   | 默认值                                       | 说明                                                                                                 |
+| ---------------------------------------- | ------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `service.server.replicas`                | int    | `2`                                          | 副本数                                                                                               |
+| `service.server.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-server` | 镜像地址                                                                                             |
+| `service.server.image.tag`               | string | `""`                                         | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
+| `service.server.monitor.enable`          | bool   | `false`                                      | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
+| `service.server.securityContext.enabled` | bool   | `false`                                      | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)               |
 
 ### SwanLab-Auth（认证与鉴权服务）
 
-| 字段                            | 类型   | 默认值                                     | 说明                                                    |
-| ------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------- |
-| `service.auth.replicas`         | int    | `2`                                        | 副本数                                                  |
-| `service.auth.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | 镜像地址                                                |
-| `service.auth.image.tag`        | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
+| 字段                                   | 类型   | 默认值                                     | 说明                                                                                   |
+| -------------------------------------- | ------ | ------------------------------------------ | -------------------------------------------------------------------------------------- |
+| `service.auth.replicas`                | int    | `2`                                        | 副本数                                                                                 |
+| `service.auth.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | 镜像地址                                                                               |
+| `service.auth.image.tag`               | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                |
+| `service.auth.securityContext.enabled` | bool   | `false`                                    | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
 
 ### SwanLab-House（后端实验 OLAP 服务）
 
@@ -122,25 +126,28 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                                         |
 | `service.house.persistence.storageSize`  | string | `10Gi`                                      | 存储卷大小                                                                                           |
 | `service.house.monitor.enable`           | bool   | `false`                                     | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
+| `service.house.securityContext.enabled`  | bool   | `false`                                     | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)               |
 
 > **存储说明**：`swanlab-house` 以 `StatefulSet` 部署，需要挂载存储卷。与基础服务不同，此处**不支持**配置 `existingClaim`。
 > `swanlab-house` 会在存储卷下存储一些指标中间产物，一般情况下您不需要关心此存储卷中的数据。
 
 ### SwanLab-Cloud（前端图表）
 
-| 字段                             | 类型   | 默认值                                      | 说明                                                    |
-| -------------------------------- | ------ | ------------------------------------------- | ------------------------------------------------------- |
-| `service.cloud.replicas`         | int    | `1`                                         | 副本数                                                  |
-| `service.cloud.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-cloud` | 镜像地址                                                |
-| `service.cloud.image.tag`        | string | `""`                                        | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
+| 字段                                    | 类型   | 默认值                                      | 说明                                                                                   |
+| --------------------------------------- | ------ | ------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `service.cloud.replicas`                | int    | `1`                                         | 副本数                                                                                 |
+| `service.cloud.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-cloud` | 镜像地址                                                                               |
+| `service.cloud.image.tag`               | string | `""`                                        | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                |
+| `service.cloud.securityContext.enabled` | bool   | `false`                                     | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
 
 ### SwanLab-Next（前端UI）
 
-| 字段                            | 类型   | 默认值                                     | 说明                                                    |
-| ------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------- |
-| `service.next.replicas`         | int    | `2`                                        | 副本数                                                  |
-| `service.next.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-next` | 镜像地址                                                |
-| `service.next.image.tag`        | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号 |
+| 字段                                   | 类型   | 默认值                                     | 说明                                                                                   |
+| -------------------------------------- | ------ | ------------------------------------------ | -------------------------------------------------------------------------------------- |
+| `service.next.replicas`                | int    | `2`                                        | 副本数                                                                                 |
+| `service.next.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-next` | 镜像地址                                                                               |
+| `service.next.image.tag`               | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                |
+| `service.next.securityContext.enabled` | bool   | `false`                                    | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
 
 > **应用镜像标签说明**：`service` 下的五个应用镜像（server / auth / house / cloud / next）的 `tag` 均应设置为**空字符串**而非 `latest`，Chart 会在渲染时自动注入正确的版本号。
 
@@ -190,17 +197,23 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `dependencies.postgres.persistence.storageClass`  | string | `""`                                   | StorageClass                                                                                                                                                   |
 | `dependencies.postgres.persistence.storageSize`   | string | `10Gi`                                 | 存储卷大小                                                                                                                                                     |
 | `dependencies.postgres.monitor.enable`            | bool   | `false`                                | 是否创建监控专用 headless Service，供 postgres-exporter 发现并采集指标（仅在未启用 `integrations.postgres` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
+| `dependencies.postgres.securityContext.enabled`   | bool   | `false`                                | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)                                                                         |
 
 ### Redis
 
-| 字段                                           | 类型   | 默认值                                    | 说明                                                                                                                                                     |
-| ---------------------------------------------- | ------ | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dependencies.redis.image.repository`          | string | `repo.swanlab.cn/self-hosted/redis-stack` | 镜像地址                                                                                                                                                 |
-| `dependencies.redis.image.tag`                 | string | `7.4.0-v8`                                | 镜像标签                                                                                                                                                 |
-| `dependencies.redis.persistence.existingClaim` | string | `""`                                      | 使用已有的 PVC 名称（留空则自动创建）                                                                                                                    |
-| `dependencies.redis.persistence.storageClass`  | string | `""`                                      | StorageClass                                                                                                                                             |
-| `dependencies.redis.persistence.storageSize`   | string | `10Gi`                                    | 存储卷大小                                                                                                                                               |
-| `dependencies.redis.monitor.enable`            | bool   | `false`                                   | 是否创建监控专用 headless Service，供 redis-exporter 发现并采集指标（仅在未启用 `integrations.redis` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
+| 字段                                             | 类型   | 默认值                                    | 说明                                                                                                                                                     |
+| ------------------------------------------------ | ------ | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.redis.image.repository`            | string | `repo.swanlab.cn/self-hosted/redis-stack` | 镜像地址                                                                                                                                                 |
+| `dependencies.redis.image.tag`                   | string | `7.4.0-v8`                                | 镜像标签                                                                                                                                                 |
+| `dependencies.redis.persistence.existingClaim`   | string | `""`                                      | 使用已有的 PVC 名称（留空则自动创建）                                                                                                                    |
+| `dependencies.redis.persistence.storageClass`    | string | `""`                                      | StorageClass                                                                                                                                             |
+| `dependencies.redis.persistence.storageSize`     | string | `10Gi`                                    | 存储卷大小                                                                                                                                               |
+| `dependencies.redis.monitor.enable`              | bool   | `false`                                   | 是否创建监控专用 headless Service，供 redis-exporter 发现并采集指标（仅在未启用 `integrations.redis` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
+| `dependencies.redis.persistence.aof.enabled`     | bool   | `false`                                   | 是否开启 AOF 持久化（以 `--appendonly yes` 启动 Redis）                                                                                                  |
+| `dependencies.redis.persistence.aof.appendFsync` | string | `everysec`                                | AOF 刷盘策略：`always` / `everysec` / `no`                                                                                                               |
+| `dependencies.redis.securityContext.enabled`     | bool   | `false`                                   | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)                                                                   |
+
+> **AOF 开启说明**：对**已有数据的存量部署**开启 AOF 时，请先在运行中的 Redis 上执行 `CONFIG SET appendonly yes` 并等待 AOF 重写完成，再执行 `helm upgrade`——否则新 Pod 会从空 AOF 启动并忽略既有 RDB 数据。同理，回滚到未开启 AOF 的旧版本前，请先执行 `BGSAVE` 确认数据已写入 RDB。
 
 ### ClickHouse
 
@@ -214,22 +227,85 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 | `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                                                        |
 | `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | 存储卷大小                                                                                                                                          |
 | `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | 是否创建监控专用 headless Service，供 Prometheus 采集指标（仅在未启用 `integrations.clickhouse` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
+| `dependencies.clickhouse.securityContext.enabled`   | bool   | `false`                                         | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)                                                              |
 
 ### MinIO（内置 S3 对象存储）
 
 > 如已集成外部 S3，可忽略此项。
 
-| 字段                                        | 类型   | 默认值                                    | 说明                             |
-| ------------------------------------------- | ------ | ----------------------------------------- | -------------------------------- |
-| `dependencies.s3.image.repository`          | string | `repo.swanlab.cn/self-hosted/minio/minio` | MinIO 镜像地址                   |
-| `dependencies.s3.image.tag`                 | string | `RELEASE.2025-09-07T16-13-09Z`            | MinIO 镜像标签                   |
-| `dependencies.s3.mcImage.repository`        | string | `repo.swanlab.cn/self-hosted/minio/mc`    | MinIO 客户端镜像地址             |
-| `dependencies.s3.mcImage.tag`               | string | `RELEASE.2025-08-13T08-35-41Z`            | MinIO 客户端镜像标签             |
-| `dependencies.s3.accessKey`                 | string | `""`                                      | Access Key                       |
-| `dependencies.s3.secretKey`                 | string | `""`                                      | Secret Key（留空将自动生成）     |
-| `dependencies.s3.persistence.existingClaim` | string | `""`                                      | 使用已有的 PVC（留空则自动创建） |
-| `dependencies.s3.persistence.storageClass`  | string | `""`                                      | StorageClass                     |
-| `dependencies.s3.persistence.storageSize`   | string | `20Gi`                                    | 存储卷大小                       |
+| 字段                                        | 类型   | 默认值                                    | 说明                                                                                   |
+| ------------------------------------------- | ------ | ----------------------------------------- | -------------------------------------------------------------------------------------- |
+| `dependencies.s3.image.repository`          | string | `repo.swanlab.cn/self-hosted/minio/minio` | MinIO 镜像地址                                                                         |
+| `dependencies.s3.image.tag`                 | string | `RELEASE.2025-09-07T16-13-09Z`            | MinIO 镜像标签                                                                         |
+| `dependencies.s3.mcImage.repository`        | string | `repo.swanlab.cn/self-hosted/minio/mc`    | MinIO 客户端镜像地址                                                                   |
+| `dependencies.s3.mcImage.tag`               | string | `RELEASE.2025-08-13T08-35-41Z`            | MinIO 客户端镜像标签                                                                   |
+| `dependencies.s3.accessKey`                 | string | `""`                                      | Access Key                                                                             |
+| `dependencies.s3.secretKey`                 | string | `""`                                      | Secret Key（留空将自动生成）                                                           |
+| `dependencies.s3.persistence.existingClaim` | string | `""`                                      | 使用已有的 PVC（留空则自动创建）                                                       |
+| `dependencies.s3.persistence.storageClass`  | string | `""`                                      | StorageClass                                                                           |
+| `dependencies.s3.persistence.storageSize`   | string | `20Gi`                                    | 存储卷大小                                                                             |
+| `dependencies.s3.securityContext.enabled`   | bool   | `false`                                   | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
+
+## 安全上下文（SecurityContext）
+
+所有组件均提供 `<component>.securityContext.enabled` 开关（默认 `false`）。**关闭时渲染结果与未提供该特性的历史版本完全一致**，可按需逐组件开启。开启后 Chart 会为对应组件应用以下加固：
+
+- **Pod 级**：以镜像内建的非 root 用户运行（`runAsNonRoot: true`，`runAsUser` / `runAsGroup`），配置 `fsGroup` 与 `fsGroupChangePolicy: OnRootMismatch`，并启用 `seccompProfile: RuntimeDefault`
+- **容器级**：`allowPrivilegeEscalation: false`，drop 全部 Linux capabilities（`gateway` 额外加回 `NET_BIND_SERVICE`）
+- **数据卷属主对齐**（`vector` / `postgres` / `redis` / `clickhouse` / `s3`）：注入一个 root initContainer，启动前逐文件检查数据卷，仅将属主不匹配的文件 `chown` 为服务用户——用于兼容加固前以 root 写入的存量数据，以及 fsGroup 被 CSI 驱动忽略的集群
+- **特权端口**（`gateway`、`service.cloud` 需绑定 80 端口）：通过安全 sysctl `net.ipv4.ip_unprivileged_port_start=80` 允许非 root 进程绑定（要求节点内核 ≥ 4.11）
+
+::: details 开启安全上下文配置示例
+
+```yaml
+gateway:
+  securityContext:
+    enabled: true
+vector:
+  securityContext:
+    enabled: true
+service:
+  server:
+    securityContext:
+      enabled: true
+  auth:
+    securityContext:
+      enabled: true
+  house:
+    securityContext:
+      enabled: true
+  cloud:
+    securityContext:
+      enabled: true
+  next:
+    securityContext:
+      enabled: true
+dependencies:
+  postgres:
+    securityContext:
+      enabled: true
+  redis:
+    securityContext:
+      enabled: true
+  clickhouse:
+    securityContext:
+      enabled: true
+  s3:
+    securityContext:
+      enabled: true
+```
+
+:::
+
+:::warning 注意事项
+
+- 数据卷属主对齐的 initContainer 以 root 运行，与 **restricted** PodSecurityStandard 不兼容；启用该策略的集群请保持 `securityContext.enabled=false`
+- `gateway` / `service.cloud` 依赖安全 sysctl `net.ipv4.ip_unprivileged_port_start`；若集群严格限制可使用的 sysctl，请先确认该项已被允许
+- 首次开启时 initContainer 需遍历整个数据卷：块存储（云盘、本地盘）通常秒级完成；**网络文件系统（NFS / NAS 等）且卷内文件数量巨大时**，遍历可能明显延长 Pod 启动时间
+- `dependencies.*` 下的开关仅对内置单实例生效；通过 `integrations` 外接服务后对应组件不再部署，无需配置
+- 从开启状态回滚到未加固的旧版本无需额外操作（旧版本以 root 运行，可读写任何属主的文件）
+
+:::
 
 ## 外部基础服务集成（`integrations`）
 

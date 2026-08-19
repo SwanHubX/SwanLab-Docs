@@ -40,19 +40,20 @@ By default, the **login host** displayed on the `<Your Host>/space/~/quick-start
 
 ## Gateway (`gateway`)
 
-| Field                              | Type   | Default                                          | Description                                                 |
-| ---------------------------------- | ------ | ------------------------------------------------ | ----------------------------------------------------------- |
-| `gateway.replicas`                 | int    | `2`                                              | Gateway replica count                                       |
-| `gateway.image.repository`         | string | `repo.swanlab.cn/public/traefik`                 | Traefik gateway image address                               |
-| `gateway.image.tag`                | string | `3.6`                                            | Traefik image tag                                           |
-| `gateway.identifyImage.repository` | string | `repo.swanlab.cn/public/swanlab-helper/identify` | Gateway authentication auxiliary image address              |
-| `gateway.identifyImage.tag`        | string | `v1.2`                                           | Authentication auxiliary image tag                          |
-| `gateway.service.type`             | string | `ClusterIP`                                      | Service type                                                |
-| `gateway.service.ports.web`        | int    | `80`                                             | Non-secure entry port (accessible from outside the cluster) |
-| `gateway.service.ports.internal`   | int    | `8080`                                           | Internal entry port (only accessible within the cluster)    |
-| `gateway.service.ports.traefik`    | int    | `8081`                                           | Traefik dashboard port                                      |
-| `gateway.service.ports.metrics`    | int    | `9100`                                           | Prometheus metrics collection port                          |
-| `gateway.customNodeSelector`       | object | `{}`                                             | Node selector, e.g., `{ swanlab: "true" }`                  |
+| Field                              | Type   | Default                                          | Description                                                                                                               |
+| ---------------------------------- | ------ | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `gateway.replicas`                 | int    | `2`                                              | Gateway replica count                                                                                                     |
+| `gateway.image.repository`         | string | `repo.swanlab.cn/public/traefik`                 | Traefik gateway image address                                                                                             |
+| `gateway.image.tag`                | string | `3.6`                                            | Traefik image tag                                                                                                         |
+| `gateway.identifyImage.repository` | string | `repo.swanlab.cn/public/swanlab-helper/identify` | Gateway authentication auxiliary image address                                                                            |
+| `gateway.identifyImage.tag`        | string | `v1.2`                                           | Authentication auxiliary image tag                                                                                        |
+| `gateway.service.type`             | string | `ClusterIP`                                      | Service type                                                                                                              |
+| `gateway.service.ports.web`        | int    | `80`                                             | Non-secure entry port (accessible from outside the cluster)                                                               |
+| `gateway.service.ports.internal`   | int    | `8080`                                           | Internal entry port (only accessible within the cluster)                                                                  |
+| `gateway.service.ports.traefik`    | int    | `8081`                                           | Traefik dashboard port                                                                                                    |
+| `gateway.service.ports.metrics`    | int    | `9100`                                           | Prometheus metrics collection port                                                                                        |
+| `gateway.customNodeSelector`       | object | `{}`                                             | Node selector, e.g., `{ swanlab: "true" }`                                                                                |
+| `gateway.securityContext.enabled`  | bool   | `false`                                          | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
 
 ### Configuring Application Access Entrypoint
 
@@ -83,6 +84,7 @@ You can write your load balancing strategy based on the above information. It is
 | `vector.persistence.storageClass` | string | `""`                            | StorageClass (leave empty to use cluster default)                                                                                                       |
 | `vector.persistence.storageSize`  | string | `60Gi`                          | Storage volume size, **recommended at least 60Gi**, ensure ≥ 3x `bufferMaxSize`                                                                         |
 | `vector.monitor.enable`           | bool   | `false`                         | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
+| `vector.securityContext.enabled`  | bool   | `false`                         | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                               |
 
 > ⚠️ Vector's PVC names are not modifiable by default (`data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1`).
 
@@ -97,20 +99,22 @@ You can write your load balancing strategy based on the above information. It is
 
 ### SwanLab-Server (Backend Service)
 
-| Field                             | Type   | Default                                      | Description                                                                                                                                             |
-| --------------------------------- | ------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `service.server.replicas`         | int    | `2`                                          | Replica count                                                                                                                                           |
-| `service.server.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-server` | Image address                                                                                                                                           |
-| `service.server.image.tag`        | string | `""`                                         | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
-| `service.server.monitor.enable`   | bool   | `false`                                      | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
+| Field                                    | Type   | Default                                      | Description                                                                                                                                             |
+| ---------------------------------------- | ------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service.server.replicas`                | int    | `2`                                          | Replica count                                                                                                                                           |
+| `service.server.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-server` | Image address                                                                                                                                           |
+| `service.server.image.tag`               | string | `""`                                         | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
+| `service.server.monitor.enable`          | bool   | `false`                                      | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
+| `service.server.securityContext.enabled` | bool   | `false`                                      | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                               |
 
 ### SwanLab-Auth (Authentication and Authorization Service)
 
-| Field                           | Type   | Default                                    | Description                                                                        |
-| ------------------------------- | ------ | ------------------------------------------ | ---------------------------------------------------------------------------------- |
-| `service.auth.replicas`         | int    | `2`                                        | Replica count                                                                      |
-| `service.auth.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | Image address                                                                      |
-| `service.auth.image.tag`        | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
+| Field                                  | Type   | Default                                    | Description                                                                                                               |
+| -------------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `service.auth.replicas`                | int    | `2`                                        | Replica count                                                                                                             |
+| `service.auth.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | Image address                                                                                                             |
+| `service.auth.image.tag`               | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                        |
+| `service.auth.securityContext.enabled` | bool   | `false`                                    | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
 
 ### SwanLab-House (Backend Experiment OLAP Service)
 
@@ -122,25 +126,28 @@ You can write your load balancing strategy based on the above information. It is
 | `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                                                                                            |
 | `service.house.persistence.storageSize`  | string | `10Gi`                                      | Storage volume size                                                                                                                                     |
 | `service.house.monitor.enable`           | bool   | `false`                                     | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
+| `service.house.securityContext.enabled`  | bool   | `false`                                     | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                               |
 
 > **Storage Note**: `swanlab-house` is deployed as a `StatefulSet` and requires a mounted storage volume. Unlike base services, `existingClaim` is **not supported** here.
 > `swanlab-house` stores some metric intermediate products in the storage volume. Generally, you do not need to care about the data in this storage volume.
 
 ### SwanLab-Cloud (Frontend Charts)
 
-| Field                            | Type   | Default                                     | Description                                                                        |
-| -------------------------------- | ------ | ------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `service.cloud.replicas`         | int    | `1`                                         | Replica count                                                                      |
-| `service.cloud.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-cloud` | Image address                                                                      |
-| `service.cloud.image.tag`        | string | `""`                                        | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
+| Field                                   | Type   | Default                                     | Description                                                                                                               |
+| --------------------------------------- | ------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `service.cloud.replicas`                | int    | `1`                                         | Replica count                                                                                                             |
+| `service.cloud.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-cloud` | Image address                                                                                                             |
+| `service.cloud.image.tag`               | string | `""`                                        | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                        |
+| `service.cloud.securityContext.enabled` | bool   | `false`                                     | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
 
 ### SwanLab-Next (Frontend UI)
 
-| Field                           | Type   | Default                                    | Description                                                                        |
-| ------------------------------- | ------ | ------------------------------------------ | ---------------------------------------------------------------------------------- |
-| `service.next.replicas`         | int    | `2`                                        | Replica count                                                                      |
-| `service.next.image.repository` | string | `repo.swanlab.cn/self-hosted/swanlab-next` | Image address                                                                      |
-| `service.next.image.tag`        | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart |
+| Field                                  | Type   | Default                                    | Description                                                                                                               |
+| -------------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `service.next.replicas`                | int    | `2`                                        | Replica count                                                                                                             |
+| `service.next.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-next` | Image address                                                                                                             |
+| `service.next.image.tag`               | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                        |
+| `service.next.securityContext.enabled` | bool   | `false`                                    | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
 
 > **Application Image Tag Note**: The `tag` of the five application images under `service` (server / auth / house / cloud / next) should all be set to **empty strings** rather than `latest`. The Chart will automatically inject the correct version number during rendering.
 
@@ -190,17 +197,23 @@ Before customizing the storage class configuration, please ensure:
 | `dependencies.postgres.persistence.storageClass`  | string | `""`                                   | StorageClass                                                                                                                                                                                                                                 |
 | `dependencies.postgres.persistence.storageSize`   | string | `10Gi`                                 | Storage volume size                                                                                                                                                                                                                          |
 | `dependencies.postgres.monitor.enable`            | bool   | `false`                                | Whether to create a dedicated monitoring headless Service so postgres-exporter can discover and scrape the PG Pod (only effective when `integrations.postgres.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
+| `dependencies.postgres.securityContext.enabled`   | bool   | `false`                                | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                                                                                                                    |
 
 ### Redis
 
-| Field                                          | Type   | Default                                   | Description                                                                                                                                                                                                                               |
-| ---------------------------------------------- | ------ | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dependencies.redis.image.repository`          | string | `repo.swanlab.cn/self-hosted/redis-stack` | Image address                                                                                                                                                                                                                             |
-| `dependencies.redis.image.tag`                 | string | `7.4.0-v8`                                | Image tag                                                                                                                                                                                                                                 |
-| `dependencies.redis.persistence.existingClaim` | string | `""`                                      | Use an existing PVC name (leave empty to auto-create)                                                                                                                                                                                     |
-| `dependencies.redis.persistence.storageClass`  | string | `""`                                      | StorageClass                                                                                                                                                                                                                              |
-| `dependencies.redis.persistence.storageSize`   | string | `10Gi`                                    | Storage volume size                                                                                                                                                                                                                       |
-| `dependencies.redis.monitor.enable`            | bool   | `false`                                   | Whether to create a dedicated monitoring headless Service so redis-exporter can discover and scrape the Redis Pod (only effective when `integrations.redis.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
+| Field                                            | Type   | Default                                   | Description                                                                                                                                                                                                                               |
+| ------------------------------------------------ | ------ | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.redis.image.repository`            | string | `repo.swanlab.cn/self-hosted/redis-stack` | Image address                                                                                                                                                                                                                             |
+| `dependencies.redis.image.tag`                   | string | `7.4.0-v8`                                | Image tag                                                                                                                                                                                                                                 |
+| `dependencies.redis.persistence.existingClaim`   | string | `""`                                      | Use an existing PVC name (leave empty to auto-create)                                                                                                                                                                                     |
+| `dependencies.redis.persistence.storageClass`    | string | `""`                                      | StorageClass                                                                                                                                                                                                                              |
+| `dependencies.redis.persistence.storageSize`     | string | `10Gi`                                    | Storage volume size                                                                                                                                                                                                                       |
+| `dependencies.redis.monitor.enable`              | bool   | `false`                                   | Whether to create a dedicated monitoring headless Service so redis-exporter can discover and scrape the Redis Pod (only effective when `integrations.redis.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
+| `dependencies.redis.persistence.aof.enabled`     | bool   | `false`                                   | Whether to enable AOF persistence (starts Redis with `--appendonly yes`)                                                                                                                                                                  |
+| `dependencies.redis.persistence.aof.appendFsync` | string | `everysec`                                | AOF fsync policy: `always` / `everysec` / `no`                                                                                                                                                                                            |
+| `dependencies.redis.securityContext.enabled`     | bool   | `false`                                   | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                                                                                                                 |
+
+> **Note on enabling AOF**: When enabling AOF on an **existing deployment that already holds data**, run `CONFIG SET appendonly yes` on the running Redis first and wait for the AOF rewrite to complete before running `helm upgrade` — otherwise the new Pod starts from an empty AOF and ignores the existing RDB data. Likewise, before rolling back to an older version without AOF enabled, run `BGSAVE` to make sure the data has been flushed to RDB.
 
 ### ClickHouse
 
@@ -214,22 +227,85 @@ Before customizing the storage class configuration, please ensure:
 | `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                                                                                                                            |
 | `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | Storage volume size                                                                                                                                                                                                     |
 | `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics (only effective when `integrations.clickhouse.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
+| `dependencies.clickhouse.securityContext.enabled`   | bool   | `false`                                         | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                                                                                               |
 
 ### MinIO (Built-in S3 Object Storage)
 
 > If external S3 is already integrated, this can be ignored.
 
-| Field                                       | Type   | Default                                   | Description                                      |
-| ------------------------------------------- | ------ | ----------------------------------------- | ------------------------------------------------ |
-| `dependencies.s3.image.repository`          | string | `repo.swanlab.cn/self-hosted/minio/minio` | MinIO image address                              |
-| `dependencies.s3.image.tag`                 | string | `RELEASE.2025-09-07T16-13-09Z`            | MinIO image tag                                  |
-| `dependencies.s3.mcImage.repository`        | string | `repo.swanlab.cn/self-hosted/minio/mc`    | MinIO client image address                       |
-| `dependencies.s3.mcImage.tag`               | string | `RELEASE.2025-08-13T08-35-41Z`            | MinIO client image tag                           |
-| `dependencies.s3.accessKey`                 | string | `""`                                      | Access Key                                       |
-| `dependencies.s3.secretKey`                 | string | `""`                                      | Secret Key (leave empty to auto-generate)        |
-| `dependencies.s3.persistence.existingClaim` | string | `""`                                      | Use an existing PVC (leave empty to auto-create) |
-| `dependencies.s3.persistence.storageClass`  | string | `""`                                      | StorageClass                                     |
-| `dependencies.s3.persistence.storageSize`   | string | `20Gi`                                    | Storage volume size                              |
+| Field                                       | Type   | Default                                   | Description                                                                                                               |
+| ------------------------------------------- | ------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.s3.image.repository`          | string | `repo.swanlab.cn/self-hosted/minio/minio` | MinIO image address                                                                                                       |
+| `dependencies.s3.image.tag`                 | string | `RELEASE.2025-09-07T16-13-09Z`            | MinIO image tag                                                                                                           |
+| `dependencies.s3.mcImage.repository`        | string | `repo.swanlab.cn/self-hosted/minio/mc`    | MinIO client image address                                                                                                |
+| `dependencies.s3.mcImage.tag`               | string | `RELEASE.2025-08-13T08-35-41Z`            | MinIO client image tag                                                                                                    |
+| `dependencies.s3.accessKey`                 | string | `""`                                      | Access Key                                                                                                                |
+| `dependencies.s3.secretKey`                 | string | `""`                                      | Secret Key (leave empty to auto-generate)                                                                                 |
+| `dependencies.s3.persistence.existingClaim` | string | `""`                                      | Use an existing PVC (leave empty to auto-create)                                                                          |
+| `dependencies.s3.persistence.storageClass`  | string | `""`                                      | StorageClass                                                                                                              |
+| `dependencies.s3.persistence.storageSize`   | string | `20Gi`                                    | Storage volume size                                                                                                       |
+| `dependencies.s3.securityContext.enabled`   | bool   | `false`                                   | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
+
+## Security Context (SecurityContext)
+
+All components provide a `<component>.securityContext.enabled` switch (default `false`). **When disabled, the rendered manifests are identical to Chart versions without this feature**, so you can enable it per component as needed. When enabled, the Chart applies the following hardening to the component:
+
+- **Pod level**: runs as the non-root user built into the image (`runAsNonRoot: true`, `runAsUser` / `runAsGroup`), sets `fsGroup` with `fsGroupChangePolicy: OnRootMismatch`, and enables `seccompProfile: RuntimeDefault`
+- **Container level**: `allowPrivilegeEscalation: false` and drops all Linux capabilities (`gateway` adds back `NET_BIND_SERVICE`)
+- **Volume ownership alignment** (`vector` / `postgres` / `redis` / `clickhouse` / `s3`): injects a root initContainer that checks the data volume file by file before startup and only `chown`s files whose ownership does not match the service user — this covers existing data written as root before hardening, and clusters where the CSI driver ignores `fsGroup`
+- **Privileged ports** (`gateway` and `service.cloud` need to bind port 80): uses the safe sysctl `net.ipv4.ip_unprivileged_port_start=80` to allow non-root processes to bind (requires node kernel ≥ 4.11)
+
+::: details Example: enabling security contexts
+
+```yaml
+gateway:
+  securityContext:
+    enabled: true
+vector:
+  securityContext:
+    enabled: true
+service:
+  server:
+    securityContext:
+      enabled: true
+  auth:
+    securityContext:
+      enabled: true
+  house:
+    securityContext:
+      enabled: true
+  cloud:
+    securityContext:
+      enabled: true
+  next:
+    securityContext:
+      enabled: true
+dependencies:
+  postgres:
+    securityContext:
+      enabled: true
+  redis:
+    securityContext:
+      enabled: true
+  clickhouse:
+    securityContext:
+      enabled: true
+  s3:
+    securityContext:
+      enabled: true
+```
+
+:::
+
+:::warning Notes
+
+- The volume-ownership initContainer runs as root and is incompatible with the **restricted** PodSecurityStandard; on clusters enforcing that policy, keep `securityContext.enabled=false`
+- `gateway` / `service.cloud` rely on the safe sysctl `net.ipv4.ip_unprivileged_port_start`; if your cluster restricts which sysctls are allowed, confirm it is permitted first
+- On first enablement the initContainer traverses the entire data volume: block storage (cloud disks, local disks) usually finishes in seconds; on **network filesystems (NFS / NAS, etc.) with a very large number of files**, the traversal can noticeably extend Pod startup time
+- Switches under `dependencies.*` only apply to the built-in single instances; once a service is externalized via `integrations`, the corresponding component is not deployed and needs no configuration
+- Rolling back from an enabled state to an older, non-hardened version requires no extra action (older versions run as root and can read/write files of any ownership)
+
+:::
 
 ## External Base Service Integration (`integrations`)
 
