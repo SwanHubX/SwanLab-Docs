@@ -20,6 +20,7 @@ import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
 import VersionBadge from "./components/VersionBadge.vue";
 import { useVersionSync } from "./version-sync";
+import { useLogoLinkFix } from "./logo-link";
 
 export default {
   ...VoidZeroTheme,
@@ -51,6 +52,7 @@ export default {
   setup() {
     const route = useRoute();
     const initVersionSync = useVersionSync();
+    const initLogoLinkFix = useLogoLinkFix();
 
     const shouldZoomImage = (img: HTMLImageElement) => {
       // 1. Check if there are clear exclusion marks
@@ -90,6 +92,8 @@ export default {
       initZoom();
       // Browser-side navbar version sync (localStorage 6h TTL + silent PyPI fetch).
       initVersionSync();
+      // Locale-aware navbar logo link (theme hardcodes href="/"; en → /en/).
+      initLogoLinkFix();
     });
 
     watch(
