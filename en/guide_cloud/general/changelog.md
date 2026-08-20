@@ -5,6 +5,49 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.5 - 2026.08.20
+
+**⚡️ Improvements**
+
+- Reduced SwanLab process memory usage by orders of magnitude: in large-scale, long-running training tasks, memory usage can drop to as low as **1/360** of the original (↓ 99.7%)
+
+**💥 Breaking Changes**
+
+- 📢 The next-generation backend architecture is being rolled out gradually, and some **metric query APIs** have breaking changes
+- ⚠️ Users of `OpenAPI` / `SwanLab CLI` / `SwanLab-Skill` / `resume` (checkpoint resumption) are strongly advised to upgrade to this version
+
+## v0.9.4 - 2026.08.08
+
+**🔧 Bug Fixes**
+
+- Fixed a credential mismatch in the login flow: when switching hosts without providing a new `api_key`, old credentials are no longer incorrectly reused, preventing authentication failures caused by logging into a new host with an old key
+
+## v0.9.3 - 2026.08.07
+
+**🚀 New Features**
+
+- Added detection and monitoring support for the Ascend 950 NPU
+- Adjusted default constraints for experiment tags: the single-tag length limit is raised to 512 characters, and the maximum number of tags is adjusted to 30
+
+**🔧 Bug Fixes**
+
+- `import swanlab` no longer loads configuration at import time: invalid environment variables, a corrupted `swanlab.yaml`, or unavailable paths no longer block the package import; configuration is now loaded and validated on first use at entry points such as `init()` / `login()` / `Api()`
+- Fixed an issue where `web_host` was not re-derived when only `api_host` was passed to `merge_settings`
+
+## v0.9.2 - 2026.07.29
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where terminal log upload errors were silently swallowed, causing the transport-layer retry mechanism to fail
+
+## v0.9.1 - 2026.07.24
+
+**🔧 Bug Fixes**
+
+- Fixed a crash when initializing `Run` in non-main-thread environments (e.g., Ray actors)
+- Fixed an issue where the default HTTP timeout did not take effect when `timeout=None` was explicitly passed
+- Fixed an issue where high-frequency disk I/O degraded data upload efficiency
+
 ## v0.9.0 - 2026.07.16
 
 **🚀 New Features**
