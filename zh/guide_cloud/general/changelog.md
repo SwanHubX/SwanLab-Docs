@@ -5,6 +5,13 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.6 - 2026.08.20
+
+**🔧修复**
+
+- 修复部分 linux 发行依赖兼容性问题，当前最低兼容版本 `glibc ≥ 2.17`
+- 修复 online 模式下，`swanlab.finish()` 后重新 `swanlab.init()` 认证失效的问题，现在 `swanlab.finish()` 方法会重置 client
+
 ## v0.9.5 - 2026.08.19
 
 **⚡️ 优化**
