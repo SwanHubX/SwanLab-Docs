@@ -5,6 +5,13 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.6 - 2026.08.20
+
+**🔧 Bug Fixes**
+
+- Fixed dependency compatibility issues on certain Linux distributions. Minimum supported `glibc` version is now ≥ `2.17`.
+- Fixed an issue where authentication became invalid when calling `swanlab.init()` again after `swanlab.finish()` in online mode. The `swanlab.finish()` method now properly resets the client.
+
 ## v0.9.5 - 2026.08.19
 
 **⚡️ Improvements**
