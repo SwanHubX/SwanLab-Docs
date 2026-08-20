@@ -32,6 +32,10 @@ Easily compare how different experiments perform on the same metric, identifying
 
 ![chart-comparison](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/chart-comparison.jpg)
 
+::: tip Multi-View
+The new dashboard supports creating multiple independent views within a project — each view saves its own filters, grouping, and chart layouts. See [Multi-View](./multi-view.md) for details.
+:::
+
 ## Logs
 
 From `swanlab.init` to experiment completion, SwanLab records all terminal output in the **Logs** tab—viewable, copyable, and downloadable anytime. Search functionality helps pinpoint critical details.

@@ -16,6 +16,10 @@ Github: https://github.com/SwanHubX/SwanLab
 - 📢 The next-generation backend architecture is being rolled out gradually, and some **metric query APIs** have breaking changes
 - ⚠️ Users of `OpenAPI` / `SwanLab CLI` / `SwanLab-Skill` / `resume` (checkpoint resumption) are strongly advised to upgrade to this version
 
+::: tip Version Migration
+This update does not affect the normal use of existing versions. We will reserve an upgrade window for everyone — please plan your version migration accordingly.
+:::
+
 ## v0.9.4 - 2026.08.08
 
 **🔧 Bug Fixes**
