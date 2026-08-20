@@ -263,6 +263,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
         },
         { text: "记录分布式训练指标", link: "experiment_track/log-distributed-training" },
         { text: "查看实验结果", link: "experiment_track/view-result" },
+        { text: "多视图", link: "experiment_track/multi-view" },
         { text: "结束一个实验", link: "experiment_track/finish-experiment" },
         { text: "GPU监控", link: "experiment_track/system-monitor" },
         { text: "Skill", link: "experiment_track/skill" },

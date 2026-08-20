@@ -239,6 +239,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
         { text: "Set tag", link: "experiment_track/set-experiment-tag" },
         { text: "Group experiments", link: "experiment_track/grouping" },
         { text: "View result", link: "experiment_track/view-result" },
+        { text: "Multi-View", link: "experiment_track/multi-view" },
         { text: "Finish experiment", link: "experiment_track/finish-experiment" },
         { text: "Email Notifications", link: "experiment_track/send-notification" },
         { text: "Jupyter Notebook", link: "experiment_track/jupyter-notebook" },

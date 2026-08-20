@@ -32,6 +32,10 @@
 
 ![chart-comparison](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/chart-comparison.jpg)
 
+::: tip 多视图
+新版看板支持在一个项目中创建多个独立视图，每个视图单独保存筛选、分组和图表布局，详见 [多视图](./multi-view.md)。
+:::
+
 ## 日志
 
 在实验开始到结束，SwanLab会记录下从`swanlab.init`到实验结束的终端输出，并记录在实验的「日志」选项卡，可以随时查看、复制与下载。我们也支持通过搜索找到关键信息。
