@@ -4,7 +4,8 @@ Create multiple independent dashboards within a single project. Each view saves 
 
 Multi-View is built on the new dashboard architecture. **How to upgrade**: open the `project` you want to upgrade and click **"Upgrade to New Dashboard"** in the **top-right corner**. New projects created via the web or the new SDK automatically use the Multi-View dashboard — no manual upgrade needed.
 
-![Upgrade to New Dashboard](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/multi-view/upgrade.png)
+**📊 Upgrading an Existing Project to the New Dashboard**:
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png"/>
 
 ::: warning Before You Upgrade
 
@@ -28,7 +29,7 @@ When tuning models, you might want to watch every wiggle of the loss curve, comp
 
 Multi-View solves this: **one project, multiple dashboards**. Create views for different analysis scenarios — each view remembers its own chart configuration, so switching views means switching perspectives in one click.
 
-![Multi-View overview](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/experiment_track/multi-view/overview.png)
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260820114444509.png"/>
 
 **What Multi-View helps you do:**
 
@@ -75,7 +76,3 @@ A project can have multiple views, with convenient management operations:
 Within the same view, the layouts of **multi-experiment comparison charts** and **single-experiment charts** are bidirectionally synced — any adjustment to charts or groups is mirrored between the two. "Edit once, apply everywhere", keeping the experience consistent across every dimension.
 
 <video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/04-sync-layout.mp4"></video>
-
-::: info About Empty Charts
-Because of layout sync, all experiments in a view share one unified chart layout. If experiment A logs `train/loss` but experiment B does not, B's single-experiment dashboard still keeps an empty `train/loss` chart to preserve the shared layout. The more the metrics differ between experiments, the more empty charts may appear — simply delete them manually.
-:::
