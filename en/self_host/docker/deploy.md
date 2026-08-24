@@ -1,4 +1,4 @@
-# Deploying with Docker <img src="/docker.svg" class="deploy-logo" alt="Docker" /> <VersionBadge version="v3.1.1" />
+# Deploying with Docker <img src="/docker.svg" class="deploy-logo" alt="Docker" /> <VersionBadge version="v3.2.0" />
 
 To deploy SwanLab Community Edition privately, follow the installation steps below.
 
