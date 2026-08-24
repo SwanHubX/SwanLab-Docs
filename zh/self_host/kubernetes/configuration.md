@@ -248,7 +248,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ## 安全上下文（SecurityContext）
 
-所有组件均提供 `<component>.securityContext.enabled` 开关（默认 `false`）。**关闭时渲染结果与未提供该特性的历史版本完全一致**，可按需逐组件开启。开启后 Chart 会为对应组件应用以下加固：
+所有组件均提供 `<component>.securityContext.enabled` 开关（默认 `false`）。该特性要求 **self-hosted Chart ≥ 0.7.0**，在更早版本的 Chart 上配置此开关不会生效。**关闭时渲染结果与未提供该特性的历史版本完全一致**，可按需逐组件开启。开启后 Chart 会为对应组件应用以下加固：
 
 - **Pod 级**：以镜像内建的非 root 用户运行（`runAsNonRoot: true`，`runAsUser` / `runAsGroup`），配置 `fsGroup` 与 `fsGroupChangePolicy: OnRootMismatch`，并启用 `seccompProfile: RuntimeDefault`
 - **容器级**：`allowPrivilegeEscalation: false`，drop 全部 Linux capabilities（`gateway` 额外加回 `NET_BIND_SERVICE`）

@@ -248,7 +248,7 @@ Before customizing the storage class configuration, please ensure:
 
 ## Security Context (SecurityContext)
 
-All components provide a `<component>.securityContext.enabled` switch (default `false`). **When disabled, the rendered manifests are identical to Chart versions without this feature**, so you can enable it per component as needed. When enabled, the Chart applies the following hardening to the component:
+All components provide a `<component>.securityContext.enabled` switch (default `false`). This feature requires **self-hosted Chart ≥ 0.7.0**; on earlier Chart versions the switch is silently ignored. **When disabled, the rendered manifests are identical to Chart versions without this feature**, so you can enable it per component as needed. When enabled, the Chart applies the following hardening to the component:
 
 - **Pod level**: runs as the non-root user built into the image (`runAsNonRoot: true`, `runAsUser` / `runAsGroup`), sets `fsGroup` with `fsGroupChangePolicy: OnRootMismatch`, and enables `seccompProfile: RuntimeDefault`
 - **Container level**: `allowPrivilegeEscalation: false` and drops all Linux capabilities (`gateway` adds back `NET_BIND_SERVICE`)
