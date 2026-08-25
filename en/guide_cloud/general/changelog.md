@@ -5,6 +5,13 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.7 - 2026.08.21
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where literal quotes remained in environment variables injected via shell scripts (e.g., `eval`, command substitution, `/etc/environment`), causing parsing failures. The SDK now automatically strips matched leading/trailing quotes (e.g., `SWANLAB_API_KEY='"abc123"'` is now correctly parsed as `abc123`)
+- Fixed an issue where `OpenAPI` / `swanlab api` CLI failed to parse null data returned by the server
+
 ## v0.9.6 - 2026.08.20
 
 **🔧 Bug Fixes**
