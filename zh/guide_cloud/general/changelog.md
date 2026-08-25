@@ -5,6 +5,13 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.7 - 2026.08.21
+
+**🔧修复**
+
+- 修复通过 shell 脚本（如 `eval`、命令替换、`/etc/environment`）注入环境变量时，字面引号残留导致解析异常的问题：现在 SDK 会自动剥离环境变量首尾的成对引号（如 `SWANLAB_API_KEY='"abc123"'` 会被正确解析为 `abc123`）
+- 修复 `OpenAPI` / `swanlab api` CLI 在服务端返回空值（null）数据时解析异常的问题
+
 ## v0.9.6 - 2026.08.20
 
 **🔧修复**
