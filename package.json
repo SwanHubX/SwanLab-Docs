@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/node": "^25.9.1",
     "@voidzero-dev/vitepress-theme": "^5.0.2",
+    "mermaid": "^11.17.2",
     "oxc-minify": "0.132.0",
     "oxfmt": "0.59.0",
     "oxlint": "1.74.0",

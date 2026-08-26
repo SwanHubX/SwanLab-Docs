@@ -210,6 +210,19 @@ export default extendConfig(
         md.use(copyOrDownloadAsMarkdownButtons);
         // Tab icons on grouped/single code blocks
         md.use(groupIconMdPlugin, { titleBar: { includeSnippet: true } });
+
+        // Render Mermaid fences as a client-side component. Mermaid itself is
+        // loaded lazily, so pages without diagrams do not download it.
+        const defaultFence = md.renderer.rules.fence!;
+        md.renderer.rules.fence = (tokens, index, options, env, self) => {
+          const token = tokens[index];
+
+          if (token.info.trim() === "mermaid") {
+            return `<MermaidDiagram graph="${encodeURIComponent(token.content)}" />`;
+          }
+
+          return defaultFence(tokens, index, options, env, self);
+        };
       },
       image: {
         lazyLoading: true,

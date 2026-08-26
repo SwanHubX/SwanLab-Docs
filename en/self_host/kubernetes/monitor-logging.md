@@ -1,6 +1,6 @@
-# Monitoring & Logging Configuration Guide
+# Observability Configuration Guide
 
-> This guide describes how to configure `Prometheus + Grafana` monitoring for SwanLab self-hosted services.
+> This guide describes how to configure `Prometheus + Grafana` monitoring for SwanLab self-hosted services. For log collection, see the [Logging Guide](./logging.md).
 
 :::info
 Due to various cluster permission requirements, starting from self-hosted `App ≥ 3.0.0`, SwanLab adopts a monitoring model with independently deployed Prometheus + Grafana + Alertmanager.
@@ -1654,15 +1654,9 @@ kubectl apply -f feishu.yaml -n <your_namespace>
 kubectl apply -f wecom.yaml -n <your_namespace>
 ```
 
-## 📝 Log Collection Service
+## 📝 Logging
 
-> 🚧 The log collection configuration guide (e.g., `Loki + Promtail`, `ELK`) is being written. Stay tuned.
-
-In the meantime, you can view each service Pod's runtime logs via `kubectl logs`, or observe them through your public cloud's built-in cluster Pod log service:
-
-```bash
-kubectl logs -n <your_namespace> <pod_name> -c <container_name>
-```
+For log viewing and collection, see the [Logging Guide](./logging.md).
 
 ## ❓ FAQ
 
