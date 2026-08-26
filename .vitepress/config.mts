@@ -207,6 +207,14 @@ export default extendConfig(
 
     markdown: {
       config(md) {
+        // VitePress 2.0.0-alpha.19 caches the markdown-it instance in a
+        // module-level singleton, and the content plugin and local-search
+        // plugin race to create it during configResolved — both can end up
+        // running this config on the surviving instance. Keep customizations
+        // idempotent per instance.
+        if ((md as any).__swanlabConfigured) return;
+        (md as any).__swanlabConfigured = true;
+
         md.use(copyOrDownloadAsMarkdownButtons);
         // Tab icons on grouped/single code blocks
         md.use(groupIconMdPlugin, { titleBar: { includeSnippet: true } });
@@ -225,7 +233,7 @@ export default extendConfig(
         };
       },
       image: {
-        lazyLoading: true,
+        lazyLoad: true,
       },
       math: true,
     },
