@@ -5,6 +5,10 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.9.8 - 2026.08.26
+
+- 更新了一部分提示文案
+
 ## v0.9.7 - 2026.08.21
 
 **🔧修复**
