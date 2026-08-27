@@ -4,13 +4,7 @@
 
 ## 🔍 Quick Log Viewing
 
-For live Pod logs, use `kubectl logs` to view each service Pod's runtime logs:
-
-```bash
-kubectl logs -n <YOUR_NAMESPACE> <POD_NAME> -c <CONTAINER_NAME>
-```
-
-Common variants for on-site troubleshooting:
+For live Pods, use `kubectl logs` to view and export each service Pod's runtime logs:
 
 ```bash
 # Follow the current Pod's logs in real time (Ctrl+C to exit)

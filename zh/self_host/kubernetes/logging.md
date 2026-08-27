@@ -4,13 +4,7 @@
 
 ## 🔍 快速查看日志
 
-对于动态 Pod 日志，可以通过 `kubectl logs` 查看各服务 Pod 的运行日志：
-
-```bash
-kubectl logs -n <YOUR_NAMESPACE> <POD_NAME> -c <CONTAINER_NAME>
-```
-
-现场排查时常用的几个变体：
+对于动态 Pod，可以通过 `kubectl logs` 查看并导出各服务的运行日志：
 
 ```bash
 # 实时跟踪当前 Pod 日志（Ctrl+C 退出）
