@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.4
-
 FROM swanlab-registry-vpc.cn-hangzhou.cr.aliyuncs.com/builder/node:20-bookworm AS builder
 WORKDIR /app
 
