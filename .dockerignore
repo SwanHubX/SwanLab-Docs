@@ -4,3 +4,13 @@ node_modules
 .DS_Store
 .idea
 .git/
+
+# Not part of the built site; playground alone is ~800MB of legacy snapshots
+# and demo videos, excluded to keep the build context small.
+playground
+graphify-out
+.mimocode
+.omx
+.claude
+.vscode
+.worktrees
