@@ -2,7 +2,6 @@
 import type { Theme } from "vitepress";
 import { useRoute } from "vitepress";
 import { VoidZeroTheme, themeContextKey } from "@voidzero-dev/vitepress-theme";
-import mediumZoom from "medium-zoom";
 import { onMounted, watch, nextTick } from "vue";
 import "virtual:group-icons.css";
 // Theme design system first; project overrides after (cascade: tokens → layout → components).
@@ -19,6 +18,8 @@ import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
 import VersionBadge from "./components/VersionBadge.vue";
+import BadgeRow from "./components/BadgeRow.vue";
+import MermaidDiagram from "./components/MermaidDiagram.vue";
 import { useVersionSync } from "./version-sync";
 import { useLogoLinkFix } from "./logo-link";
 
@@ -47,6 +48,8 @@ export default {
     ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
     ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
     ctx.app.component("VersionBadge", VersionBadge);
+    ctx.app.component("BadgeRow", BadgeRow);
+    ctx.app.component("MermaidDiagram", MermaidDiagram);
     VoidZeroTheme.enhanceApp(ctx);
   },
   setup() {
@@ -80,11 +83,15 @@ export default {
         const allImages = document.querySelectorAll<HTMLImageElement>(".vp-doc img");
         const zoomableImages = Array.from(allImages).filter(shouldZoomImage);
 
-        if (zoomableImages.length > 0) {
+        if (zoomableImages.length === 0) return;
+
+        // Lazy-load medium-zoom only when a zoomable image exists,
+        // keeping it out of the critical-path theme chunk.
+        void import("medium-zoom").then(({ default: mediumZoom }) => {
           mediumZoom(zoomableImages, {
             background: "var(--vp-c-bg)",
           });
-        }
+        });
       });
     };
 

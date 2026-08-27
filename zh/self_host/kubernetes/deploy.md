@@ -579,4 +579,4 @@ swanlab.finish()
 
 ### Prometheus 可观测接入指引
 
-参考 [监控与日志](./monitor-logging.md) 文档进行配置。
+参考 [可观测配置](./monitor-logging.md) 文档进行配置。

@@ -579,4 +579,4 @@ To update the SwanLab version or rollback after a failed update, please refer to
 
 ### Prometheus Observability Integration Guide
 
-Please refer to the [Monitor & Logging](./monitor-logging.md) documentation.
+Please refer to the [Observability Configuration](./monitor-logging.md) documentation.

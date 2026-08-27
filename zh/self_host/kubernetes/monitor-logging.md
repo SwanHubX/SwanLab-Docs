@@ -1,6 +1,6 @@
-# 监控与日志配置指南
+# 可观测配置指南
 
-> 本文档介绍利用 `Prometheus + Grafana` 监控 SwanLab 私有化服务的配置方法。
+> 本文档介绍利用 `Prometheus + Grafana` 监控 SwanLab 私有化服务的配置方法，日志接入请参考 [日志接入指南](./logging.md)。
 
 :::info
 受限于各类集群权限要求，自私有化 `App ≥ 3.0.0` 版本起，SwanLab 采用 Prometheus + Grafana + Alertmanager 独立部署的监控模式。
@@ -1654,15 +1654,9 @@ kubectl apply -f feishu.yaml -n <your_namespace>
 kubectl apply -f wecom.yaml -n <your_namespace>
 ```
 
-## 📝 日志采集服务
+## 📝 日志接入
 
-> 🚧 日志采集（如 `Loki + Promtail`、`ELK` 等方案）的配置指南正在编写中，敬请期待。
-
-在此之前，您可以通过 `kubectl logs` 查看各服务 Pod 的运行日志，或通过公有云自带的集群 Pod 日志服务进行观测：
-
-```bash
-kubectl logs -n <your_namespace> <pod_name> -c <container_name>
-```
+日志查看与接入请参考 [日志接入指南](./logging.md)。
 
 ## ❓ 常见问题
 

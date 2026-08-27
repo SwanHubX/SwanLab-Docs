@@ -30,3 +30,4 @@ QWEN.md
 
 # Local experiment worktrees (not committed — keeps PR branches clean)
 .worktrees/
+graphify-out/

@@ -9,9 +9,9 @@ import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 import { extendConfig } from "@voidzero-dev/vitepress-theme/config";
-import { zh } from "./zh";
-import { en } from "./en";
-import { SWANLAB_VERSION } from "./version";
+import { zh } from "./zh.ts";
+import { en } from "./en.ts";
+import { SWANLAB_VERSION } from "./version.ts";
 
 const srcExclude = ["playground/**", "AGENTS.md", "README.md", "TRICK.md"];
 
@@ -207,12 +207,33 @@ export default extendConfig(
 
     markdown: {
       config(md) {
+        // VitePress 2.0.0-alpha.19 caches the markdown-it instance in a
+        // module-level singleton, and the content plugin and local-search
+        // plugin race to create it during configResolved — both can end up
+        // running this config on the surviving instance. Keep customizations
+        // idempotent per instance.
+        if ((md as any).__swanlabConfigured) return;
+        (md as any).__swanlabConfigured = true;
+
         md.use(copyOrDownloadAsMarkdownButtons);
         // Tab icons on grouped/single code blocks
         md.use(groupIconMdPlugin, { titleBar: { includeSnippet: true } });
+
+        // Render Mermaid fences as a client-side component. Mermaid itself is
+        // loaded lazily, so pages without diagrams do not download it.
+        const defaultFence = md.renderer.rules.fence!;
+        md.renderer.rules.fence = (tokens, index, options, env, self) => {
+          const token = tokens[index];
+
+          if (token.info.trim() === "mermaid") {
+            return `<MermaidDiagram graph="${encodeURIComponent(token.content)}" />`;
+          }
+
+          return defaultFence(tokens, index, options, env, self);
+        };
       },
       image: {
-        lazyLoading: true,
+        lazyLoad: true,
       },
       math: true,
     },

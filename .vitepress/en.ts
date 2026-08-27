@@ -1,5 +1,5 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
-import { SWANLAB_VERSION } from "./version";
+import { SWANLAB_VERSION } from "./version.ts";
 
 type SidebarItemBadge = { badge?: { type?: string; text?: string } };
 type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge;
@@ -555,7 +555,8 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
             { text: "Quick Start", link: "kubernetes/deploy" },
             { text: "Custom Configuration", link: "kubernetes/configuration" },
             { text: "Update & Rollback", link: "kubernetes/upgrade" },
-            { text: "Monitor & Logging", link: "kubernetes/monitor-logging" },
+            { text: "Observability", link: "kubernetes/monitor-logging" },
+            { text: "Logging", link: "kubernetes/logging" },
             { text: "Data Migration", link: "kubernetes/data-migration" },
             {
               text: "SSO",
