@@ -55,7 +55,7 @@ flowchart LR
 
 How the flow works:
 
-1. **Generation**: SwanLab services write logs to container stdout/stderr, and the container runtime persists them as `/var/log/pods/<namespace>_<pod>_<uid>/<container>/*.log` files on the node
+1. **Generation**: SwanLab services write logs to container stdout/stderr, and the container runtime persists them as `/var/log/pods/<YOUR_NAMESPACE>_<pod>_<uid>/<container>/*.log` files on the node
 2. **Collection**: A collection Agent (Alloy / Fluent Bit / Vector, etc.) runs as a DaemonSet on each node, reads incremental content from the log files, and parses metadata such as namespace, pod, and container into log labels
 3. **Writing**: The Agent pushes logs to the log engine (Loki, OpenSearch, Elasticsearch, VictoriaLogs, etc.), which handles storage, indexing, and retention policies (TTL)
 4. **Querying**: Use the log engine's visualization UI (Grafana, Kibana, or the engine's built-in WebUI) to search by labels (namespace / pod / level) and keywords
@@ -65,5 +65,5 @@ A self-hosted solution requires you to prepare the following components. We reco
 
 - **Log collector**: a collection Agent running as a DaemonSet (e.g., Fluent Bit, Grafana Alloy, Vector)
 - **Log engine**: the service responsible for storage, indexing, and querying (e.g., Loki, Elasticsearch, OpenSearch)
-- **Persistent storage**: PVCs provisioned by the cluster's CSI storage plugin, or object storage
-  :::
+- **Persistent storage**: PVCs provisioned by the cluster's CSI storage plugin
+:::
