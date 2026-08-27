@@ -1,9 +1,7 @@
 name: "Lint & Format"
 
+# PR gate only — merges into main must not re-run these checks.
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
