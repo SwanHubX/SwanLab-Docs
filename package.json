@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
+    "docs:build": "vitepress build && node scripts/enhance-doc-head.mjs",
     "docs:preview": "vitepress preview",
     "fmt": "oxfmt --write .",
     "fmt:check": "oxfmt --check .",
