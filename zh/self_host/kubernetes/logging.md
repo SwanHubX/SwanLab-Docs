@@ -233,4 +233,5 @@ flowchart LR
 - **日志采集器**：以 DaemonSet 运行的采集 Agent（如 Fluent Bit、Grafana Alloy、Vector）
 - **日志引擎**：负责存储、索引与查询的服务（如 Loki、Elasticsearch、OpenSearch）
 - **持久化存储**：依赖集群的 CSI 存储插件提供 PVC
+
 :::

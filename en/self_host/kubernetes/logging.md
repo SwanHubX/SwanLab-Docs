@@ -72,11 +72,11 @@ kubectl create rolebinding swanlab-logconfig-writer -n <YOUR_NAMESPACE> \
 
 All SwanLab business services write logs to container stdout/stderr with the label `app.kubernetes.io/service=<service name>`. Create one collection configuration per service (each service maps to its own Logstore, making it easy to set retention and query per service):
 
-| Service | Description | Log content |
-| ------ | ----------------- | ------------------------------------ |
-| server | Core business API service | User request handling, business logic, API error stacks |
-| house  | Metrics OLAP service | Experiment data writes and sync, background task execution |
-| auth   | Authentication service | Login authentication, token validation, permission-related requests |
+| Service | Description               | Log content                                                         |
+| ------- | ------------------------- | ------------------------------------------------------------------- |
+| server  | Core business API service | User request handling, business logic, API error stacks             |
+| house   | Metrics OLAP service      | Experiment data writes and sync, background task execution          |
+| auth    | Authentication service    | Login authentication, token validation, permission-related requests |
 
 The three configurations are identical except for `metadata.name`, `logstore`, `configName`, and the label value. Before applying, replace the placeholders in the file (all marked with comments): `<YOUR_NAMESPACE>` is the namespace where SwanLab runs (must match every `K8sNamespaceRegex`); `<PROJECT_NAME>` is an optional target SLS Project — if omitted, logs are written to the cluster's default project `k8s-log-<cluster ID>`.
 
@@ -186,12 +186,12 @@ Wait about 1 minute, then open the corresponding project in the [SLS console](ht
 
 The self-hosted service is not tied to any specific logging platform. It follows the standard **platform-managed collection Agent + declarative label-based selection + cloud logging service query** pattern:
 
-| Platform | Collection Agent | Configuration | Log backend |
-| ---------- | ---------------------------------------- | ------------------------------- | ------------------------ |
-| Alibaba Cloud ACK | loongcollector (formerly logtail; mutually exclusive, pick one) | AliyunLogConfig CRD | SLS logging service |
-| Tencent Cloud TKE | cls-agent | LogConfig CRD | CLS logging service |
-| Huawei Cloud CCE | ICAgent | CCE console / LTS-side configuration | LTS logging service |
-| Self-built cluster | Fluent Bit, Grafana Alloy, Vector | DaemonSet + ConfigMap (no CRD) | Loki, OpenSearch, ELK, etc. |
+| Platform           | Collection Agent                                                | Configuration                        | Log backend                 |
+| ------------------ | --------------------------------------------------------------- | ------------------------------------ | --------------------------- |
+| Alibaba Cloud ACK  | loongcollector (formerly logtail; mutually exclusive, pick one) | AliyunLogConfig CRD                  | SLS logging service         |
+| Tencent Cloud TKE  | cls-agent                                                       | LogConfig CRD                        | CLS logging service         |
+| Huawei Cloud CCE   | ICAgent                                                         | CCE console / LTS-side configuration | LTS logging service         |
+| Self-built cluster | Fluent Bit, Grafana Alloy, Vector                               | DaemonSet + ConfigMap (no CRD)       | Loki, OpenSearch, ELK, etc. |
 
 The integration steps are the same on every platform: **install the collection Agent → declare collection rules (CRD or config file) → select target containers by label → logs are written to the backend service**. Taking Tencent Cloud TKE as an example: after installing the cls-agent component, create a `LogConfig` CR that selects SwanLab services by the `app.kubernetes.io/service` label, and you can query logs in the CLS console — the workflow is exactly analogous to the Alibaba Cloud section above.
 
@@ -233,4 +233,5 @@ A self-hosted solution requires you to prepare the following components. We reco
 - **Log collector**: a collection Agent running as a DaemonSet (e.g., Fluent Bit, Grafana Alloy, Vector)
 - **Log engine**: the service responsible for storage, indexing, and querying (e.g., Loki, Elasticsearch, OpenSearch)
 - **Persistent storage**: PVCs provisioned by the cluster's CSI storage plugin
+
 :::
