@@ -4,10 +4,10 @@
 Image Classification, Machine Learning Introduction, Grayscale Images
 :::
 
-<div style="display: flex; gap: 8px;">
-  <a href="https://swanlab.cn/@ZeyiLin/MNIST-example/runs/4plp6w0qehoqpt0uq2tcy/chart"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg" alt="Visualize in SwanLab" /></a>
-  <a href="https://colab.research.google.com/drive/1Au8aXxU2o0QNWSzGXGsTdHggighXQMNu?usp=sharing"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/colab.svg" alt="Open in Colab" /></a>
-</div>
+<BadgeRow :badges="[
+  { alt: 'Visualize in SwanLab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg', href: 'https://swanlab.cn/@ZeyiLin/MNIST-example/runs/4plp6w0qehoqpt0uq2tcy/chart' },
+  { alt: 'Open in Colab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/colab.svg', href: 'https://colab.research.google.com/drive/1Au8aXxU2o0QNWSzGXGsTdHggighXQMNu?usp=sharing' },
+]" />
 
 ## Overview
 

@@ -18,6 +18,7 @@ import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
 import VersionBadge from "./components/VersionBadge.vue";
+import BadgeRow from "./components/BadgeRow.vue";
 import MermaidDiagram from "./components/MermaidDiagram.vue";
 import { useVersionSync } from "./version-sync";
 import { useLogoLinkFix } from "./logo-link";
@@ -47,6 +48,7 @@ export default {
     ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
     ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
     ctx.app.component("VersionBadge", VersionBadge);
+    ctx.app.component("BadgeRow", BadgeRow);
     ctx.app.component("MermaidDiagram", MermaidDiagram);
     VoidZeroTheme.enhanceApp(ctx);
   },
