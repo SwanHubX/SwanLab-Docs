@@ -3,22 +3,26 @@
 ```python
 define_metric(
     key: str,
+    *,
     x_axis: Optional[str] = None,
     section_name: Optional[str] = None,
     hidden: bool = False,
     step_sync: Optional[bool] = None,
     overwrite: bool = False,
+    **kwargs: Any,
 ) -> None
 ```
 
-| Parameter    | Description                                                                                                                                                                                                          |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| key          | Metric key. Supports an exact key or a glob with a single trailing `*` (e.g. `"train/*"`). Patterns like `"*loss"`, `"train/*/x"` and `"train/**"` are rejected with an error; system metric keys are never matched. |
-| x_axis       | Metric key used as the custom X axis. `None` uses the system step as the X axis. Accepts `step_metric` as a parameter alias.                                                                                         |
-| section_name | Chart section (group) name. `None` uses the default grouping derived from the key prefix.                                                                                                                            |
-| hidden       | Whether to hide the chart. When `True`, charts of the matched metrics are placed in the HIDDEN section. Defaults to `False`.                                                                                         |
-| step_sync    | When X-axis and Y-axis metrics are logged separately, automatically fills each Y value with the most recent X value. Enabled by default when `x_axis`/`step_metric` is set.                                          |
-| overwrite    | `False` merges with the existing definition; `True` resets unspecified fields to their defaults. Defaults to `False`. Only affects keys that have **not been logged yet**.                                           |
+All parameters after `key` are keyword-only; `**kwargs` exists only for the `step_metric` compatibility alias (any other unknown parameters are silently ignored).
+
+| Parameter    | Description                                                                                                                                                                                                                                                                                                    |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| key          | Metric key. Supports an exact key or a glob with a single trailing `*` (e.g. `"train/*"`; a bare `"*"` matches all custom metrics). Patterns like `"*loss"`, `"train/*/x"` and `"train/**"` are rejected (a warning is emitted and the definition does not take effect); system metric keys are never matched. |
+| x_axis       | Metric key used as the custom X axis. `None` uses the system step as the X axis. Accepts `step_metric` as a parameter alias.                                                                                                                                                                                   |
+| section_name | Chart section (group) name. `None` uses the default grouping derived from the key prefix.                                                                                                                                                                                                                      |
+| hidden       | Whether to hide the chart. When `True`, charts of the matched metrics are placed in the HIDDEN section. Defaults to `False`.                                                                                                                                                                                   |
+| step_sync    | When X-axis and Y-axis metrics are logged separately, automatically fills each Y value with the most recent X value. Enabled by default when `x_axis`/`step_metric` is set; currently forcibly enabled — passing `False` explicitly is ignored with a warning.                                                 |
+| overwrite    | `False` merges with the existing definition; `True` resets unspecified fields to their defaults. Defaults to `False`. Only affects keys that have **not been logged yet**.                                                                                                                                     |
 
 ## Introduction
 
@@ -46,6 +50,10 @@ for epoch in range(num_epochs):
 ```
 
 X-axis and Y-axis metrics can be logged separately — `step_sync` automatically fills each Y value with the most recent X value. We recommend logging the X-axis metric **before** the Y-axis metric in each round. If the X value is logged after the Y value, the chart keeps the auto-filled X value and a warning is emitted.
+
+`x_axis` must be a valid metric key (or the system values `"_step"` / `"_relative_time"`) and must not be a system metric key; if validation fails, the whole definition is aborted with an error.
+
+A custom X axis is assumed to be **monotonically non-decreasing**: only the first Y point is kept for a given X value (in practice, only consecutively duplicated X values are dropped). With a non-monotonic X (e.g. 5→6→5), a rolled-back X value is accepted as new, so multiple Y points may appear at the same X value.
 
 ## Batch definition with glob
 
@@ -77,7 +85,7 @@ swanlab.define_metric("debug/grad_norm", hidden=True)
 
 Hidden metric data is still recorded and uploaded as usual — the chart is simply folded into the HIDDEN section, and you can unhide it anytime in the WebUI dashboard.
 
-Note: when a metric is defined multiple times, once `hidden` is set to `True` the result stays `True` — later definitions (including `overwrite=True`) cannot change it back to `False`.
+Note: in the default merge mode (`overwrite=False`), `hidden` is "sticky" — once set to `True` the result stays `True`, and passing `hidden=False` later is indistinguishable from not providing it. To clear a previously set `hidden=True`, use `overwrite=True` (unspecified fields reset to their defaults, so `hidden` returns to `False`).
 
 ## Merge vs. overwrite
 
