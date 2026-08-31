@@ -6,22 +6,21 @@ define_metric(
     *,
     x_axis: Optional[str] = None,
     section_name: Optional[str] = None,
-    hidden: bool = False,
+    hidden: Optional[bool] = None,
     step_sync: Optional[bool] = None,
     overwrite: bool = False,
-    **kwargs: Any,
 ) -> None
 ```
 
-除 `key` 外的参数均为关键字参数；`**kwargs` 仅用于兼容 `step_metric` 别名（其余未知参数会被静默忽略）。
+除 `key` 外的参数均为关键字参数。
 
 | 参数         | 描述                                                                                                                                                                                                                  |
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | key          | 指标名，支持精确 key 或末尾带单个 `*` 的 glob 匹配（如 `"train/*"`，单独的 `"*"` 匹配所有自定义指标）。`"*loss"`、`"train/*/x"`、`"train/**"` 等写法会被拒绝（仅给出告警，该条定义不生效）；系统指标 key 不参与匹配。 |
-| x_axis       | 自定义 X 轴的指标 key。为 `None` 时使用系统 step 作为 X 轴。兼容 `step_metric` 参数别名。                                                                                                                             |
+| x_axis       | 自定义 X 轴的指标 key。为 `None` 时使用系统 step 作为 X 轴。**兼容 `step_metric` 参数别名**。                                                                                                                         |
 | section_name | 图表分组名。为 `None` 时使用默认分组（按指标名前缀分组）。                                                                                                                                                            |
-| hidden       | 是否隐藏。为 `True` 时，匹配指标的图表会被放入 HIDDEN 分组。默认为 `False`。                                                                                                                                          |
-| step_sync    | X 轴与 Y 轴指标分开 log 时，自动为 Y 值补上最近一次的 X 值，传入 `x_axis`/`step_metric` 时默认开启；设为 `False` 时该指标不再自动同步最新值。                                                                         |
+| hidden       | 是否隐藏图表。为 `True` 时对 key 匹配过的图表放入 HIDDEN 分组，为 `False` 时取消隐藏。                                                                                                                                |
+| step_sync    | X 轴与 Y 轴指标分开 log 时，是否自动为 Y 值补上最近一次的 X 值。设置 `x_axis` 后默认开启，一般无需修改。                                                                                                              |
 | overwrite    | `False` 时与已有定义合并；为 `True` 时将未指定的字段重置为默认值。默认为 `False`。仅影响**未被 log 过**的 key。                                                                                                       |
 
 ## 简介
@@ -54,6 +53,7 @@ X 轴指标和 Y 轴指标可以分开记录，`step_sync` 会自动给 Y 值补
 `x_axis` 必须是合法的指标 key（或系统值 `"_step"`、`"_relative_time"`），且不能是系统指标 key；校验失败时整条定义不生效并给出报错。
 
 自定义 X 轴默认假设**单调递增**：同一 X 值只保留首个 Y 点（实现上仅抑制连续重复的 X 值）。如果 X 非单调（如 5→6→5），回退的 X 值会被当作新值接受，同一 X 值上可能出现多个 Y 点。
+自定义 X 轴默认假设**单调递增**：同一个 X 值只保留第一个 Y 点。如果 X 非单调（如 5→6→5），回退的 X 值会被当作新值接受，同一 X 值上可能出现多个 Y 点。
 
 ## glob 批量定义
 
@@ -85,7 +85,7 @@ swanlab.define_metric("debug/grad_norm", hidden=True)
 
 被隐藏的指标数据仍会正常记录和上传，只是图表被折叠进 HIDDEN 分组，可随时在WebUI看板中取消。
 
-需要注意：在默认的合并模式（`overwrite=False`）下，`hidden` 是「sticky」的——只要有一次设为 `True`，结果就是 `True`，之后传 `hidden=False` 与未提供等效，无法把它改回 `False`。如需清除之前设置的 `hidden=True`，请使用 `overwrite=True`（未指定的字段重置为默认值，`hidden` 回到 `False`）。
+不传 `hidden` 时会保留已有设置；如需取消之前的隐藏，显式传入 `hidden=False` 即可。
 
 ## 合并与覆盖
 
