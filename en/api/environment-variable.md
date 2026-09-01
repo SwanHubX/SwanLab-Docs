@@ -88,14 +88,13 @@ Control the types of environment information SwanLab collects at startup via the
 
 ## Core Behavior
 
-| Environment Variable                   | Description                                                                                                                 | Default Value |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | Whether to skip the swanboard version compatibility check. Set to `1` to skip                                               | Not skipped   |
-| `SWANLAB_FS_TIMEOUT`                   | File system operation timeout (seconds), useful for NAS environments with high async latency                                | `5.0`         |
-| `SWANLAB_CORE_SECTION_RULE`            | Metric key segmentation rule, specifies which `/` to use to split section and metric name: `0`=first, `1`=second, `-1`=last | `0`           |
-| `SWANLAB_CORE_RECORD_BATCH`            | Maximum number of records per HTTP request                                                                                  | `10000`       |
-| `SWANLAB_TERMINAL_PROXY_TYPE`          | Terminal log proxy strategy: `all` (all), `stdout`, `stderr`, `none` (no collection)                                        | `all`         |
-| `SWANLAB_TERMINAL_MAX_LENGTH`          | Maximum character length per line for terminal log collection                                                               | `1024`        |
+| Environment Variable                   | Description                                                                                  | Default Value |
+| -------------------------------------- | -------------------------------------------------------------------------------------------- | ------------- |
+| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | Whether to skip the swanboard version compatibility check. Set to `1` to skip                | Not skipped   |
+| `SWANLAB_FS_TIMEOUT`                   | File system operation timeout (seconds), useful for NAS environments with high async latency | `5.0`         |
+| `SWANLAB_CORE_RECORD_BATCH`            | Maximum number of records per HTTP request                                                   | `10000`       |
+| `SWANLAB_TERMINAL_PROXY_TYPE`          | Terminal log proxy strategy: `all` (all), `stdout`, `stderr`, `none` (no collection)         | `all`         |
+| `SWANLAB_TERMINAL_MAX_LENGTH`          | Maximum character length per line for terminal log collection                                | `1024`        |
 
 ## Advanced Configuration
 
