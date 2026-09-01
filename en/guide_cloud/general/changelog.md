@@ -19,7 +19,8 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **⚠️ Deprecation Notice**
 
-- Some legacy compatibility APIs in SwanLab SDK have been updated with `DeprecatedWarning` notices. See the API mapping table below:
+- Some legacy compatibility APIs now emit a `DeprecatedWarning` deprecation notice.
+- ⚠️ The legacy APIs remain compatible for now and will not raise errors, but they will be gradually removed in future versions. Please migrate to the new APIs as soon as possible. API mapping:
 
 | Deprecated API                                         | New API                              |
 | ------------------------------------------------------ | ------------------------------------ |

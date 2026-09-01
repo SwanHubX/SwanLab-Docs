@@ -19,7 +19,8 @@ Github: https://github.com/SwanHubX/SwanLab
 
 **⚠️ 弃用提醒**
 
-- SwanLab SDK 部分历史兼容 API 更新，已增加 `DeprecatedWarning` 提示，API 对照表参考如下：
+- 部分历史兼容 API 现已添加 `DeprecatedWarning` 弃用警告。
+- ⚠️ 旧接口当前仍保持兼容，不会直接报错，但后续版本会逐步移除。请尽快切换至新版 API，API 映射对照表如下：
 
 | 弃用 API                                               | 新版 API                             |
 | ------------------------------------------------------ | ------------------------------------ |
