@@ -45,7 +45,7 @@
 
 ### 基础设施镜像
 
-> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](./deploy.md#_3-1-自定义基础服务资源)时，以下对应镜像可忽略（使用自建的外部服务）。
+> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](./configuration.md#外部基础服务集成-integrations)时，以下对应镜像可忽略（使用自建的外部服务）。
 
 ::: warning
 
@@ -351,7 +351,7 @@ clickhouse: # ClickHouse 配置
 
 #### 3.4 外部 S3 集成配置
 
-`integrations.s3` 字段需要根据您使用的对象存储服务手动填写，推荐 public 桶和 private 桶分离。如您的云厂商对 S3 协议的 endpoint 访问做了区分，请特别注意应填写 S3 endpoint。详细的字段说明与配置示例，请参阅 [外部 S3 集成](./configuration.md#外部对象存储-s3-integrations-s3) 章节。
+`integrations.s3` 字段需要根据您使用的对象存储服务手动填写，推荐 public 桶和 private 桶分离。如您的云厂商对 S3 协议的 endpoint 访问做了区分，请特别注意应填写 S3 endpoint。详细的字段说明与配置示例，请参阅 [外部 S3 集成](./configuration.md#【建议】外部对象存储-s3-integrations-s3) 章节。
 
 ### 4. 添加 helm 仓库
 

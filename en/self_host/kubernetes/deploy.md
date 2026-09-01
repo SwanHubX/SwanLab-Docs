@@ -45,7 +45,7 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 
 ### Infrastructure Images
 
-> ⚠️Note: When a storage component chooses to [customize base service resources](./deploy.md#_3-1-customizing-base-service-resources), the corresponding images below can be ignored (using self-built external services).
+> ⚠️Note: When a storage component chooses to [customize base service resources](./configuration.md#external-base-service-integration-integrations), the corresponding images below can be ignored (using self-built external services).
 
 ::: warning
 
@@ -351,7 +351,7 @@ The `tag` of the five application images under `service` (server / auth / house 
 
 #### 3.4 External S3 Integration Configuration
 
-The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](./configuration.md#external-object-storage-s3-integrations-s3) section.
+The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](./configuration.md#recommended-external-object-storage-s3-integrations-s3) section.
 
 ### 4. Add Helm Repository
 

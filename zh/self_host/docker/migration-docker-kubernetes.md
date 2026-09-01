@@ -2,7 +2,7 @@
 
 ![migration from docker to kubernetes](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/migration.png)
 
-本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](../kubernetes/deploy.md#_3-1-自定义基础服务资源)）。
+本指南用于将 SwanLab Docker 版本的数据迁移到 **SwanLab Kubernetes（K8S）** 版本，并 仅适用于将外部服务集成至 **SwanLab Kubernetes（K8S）** 版本的场景（详见[自定义基础服务资源](../kubernetes/configuration.md#外部基础服务集成-integrations)）。
 
 若您希望迁移至各云厂商提供的托管服务或者迁移至自部署的云原生高可用服务，本指南可作为参考。同时，请参阅相应云厂商和云原生项目的官方迁移文档，并在迁移时确保数据库名称、表名称、对象存储桶名称正确。
 
@@ -13,7 +13,7 @@
 **此方案要求：**
 
 1. 先迁移数据，后部署服务
-2. 您使用[自定义基础服务资源](../kubernetes/deploy.md#_3-1-自定义基础服务资源)功能
+2. 您使用[自定义基础服务资源](../kubernetes/configuration.md#外部基础服务集成-integrations)功能
 3. 您有一个busybox镜像用于实现迁移任务
 4. 确保您的Storage Class的回收策略不会因为Pod卸载而删除数据
 

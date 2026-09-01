@@ -161,7 +161,7 @@ These issues are strongly related to `S3 Object Storage` configuration problems.
 
 ### `values.yaml` Configuration Verification
 
-- First verify whether the configuration in `integrations.s3` is correct. For details, see [External S3 Integration Configuration](./configuration.md#external-object-storage-s3-integrations-s3)
+- First verify whether the configuration in `integrations.s3` is correct. For details, see [External S3 Integration Configuration](./configuration.md#recommended-external-object-storage-s3-integrations-s3)
 
 ### Storage Bucket CORS Rule Configuration
 
