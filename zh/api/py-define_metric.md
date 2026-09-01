@@ -1,5 +1,7 @@
 # define_metric
 
+> 此功能需要 swanlab >= `0.10.0`。
+
 ```python
 define_metric(
     key: str,
