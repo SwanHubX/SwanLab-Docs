@@ -5,6 +5,30 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.0 - 2026.09.01
+
+**🚀 新增**
+
+- 新增 `swanlab.define_metric()` API，支持在log前定义指标的图表行为：自定义 X 轴、图表分组等，参考 [swanlab.define_metric()](../../api/py-define_metric.md)
+- 新增「指标表达式」功能，支持指标间计算和可视化
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260901152505738.png"/>
+
+**🔧修复**
+
+- 修复仅有写入权限的用户在项目已存在时初始化报错 403 的问题：现在会先查询项目，仅在项目不存在时才创建
+
+**⚠️ 弃用提醒**
+
+- SwanLab SDK 部分历史兼容 API 更新，已增加 `DeprecatedWarning` 提示，API 对照表参考如下：
+
+| 弃用 API                                               | 新版 API                             |
+| ------------------------------------------------------ | ------------------------------------ |
+| `swanlab.roc_curve()`                                  | `swanlab.echarts.roc_curve()`        |
+| `swanlab.pr_curve()`                                   | `swanlab.echarts.pr_curve()`         |
+| `swanlab.confusion_matrix()`                           | `swanlab.echarts.confusion_matrix()` |
+| `swanlab.register_callbacks()`                         | `swanlab.merge_callbacks()`          |
+| OpenAPI `experiment.column()` / `experiment.columns()` | `experiment.series()`                |
+
 ## v0.9.8 - 2026.08.26
 
 - 更新了一部分提示文案

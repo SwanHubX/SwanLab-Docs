@@ -5,6 +5,30 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.0 - 2026.09.01
+
+**🚀 New Features**
+
+- Added the `swanlab.define_metric()` API to define chart behavior for metrics before logging: custom X-axis, chart grouping, and more. See [swanlab.define_metric()](../../api/py-define_metric.md)
+- Added the "Metric Expression" feature, supporting computation and visualization across metrics
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260901152505738.png"/>
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where users with write-only permissions encountered a 403 error during initialization when the project already existed: the SDK now queries the project first and only creates it if it does not exist
+
+**⚠️ Deprecation Notice**
+
+- Some legacy compatibility APIs in SwanLab SDK have been updated with `DeprecatedWarning` notices. See the API mapping table below:
+
+| Deprecated API                                         | New API                              |
+| ------------------------------------------------------ | ------------------------------------ |
+| `swanlab.roc_curve()`                                  | `swanlab.echarts.roc_curve()`        |
+| `swanlab.pr_curve()`                                   | `swanlab.echarts.pr_curve()`         |
+| `swanlab.confusion_matrix()`                           | `swanlab.echarts.confusion_matrix()` |
+| `swanlab.register_callbacks()`                         | `swanlab.merge_callbacks()`          |
+| OpenAPI `experiment.column()` / `experiment.columns()` | `experiment.series()`                |
+
 ## v0.9.8 - 2026.08.26
 
 - Update some warning tips
