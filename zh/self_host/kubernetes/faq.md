@@ -161,7 +161,7 @@ service:
 
 ### `value.yaml` 配置校验
 
-- 首先校验一下 `integrations.s3` 中的配置是否正确，详见 [外部 S3 集成配置](./configuration.md#外部-s3-集成-integrations-s3)
+- 首先校验一下 `integrations.s3` 中的配置是否正确，详见 [外部 S3 集成配置](./configuration.md#【建议】外部对象存储-s3-integrations-s3)
 
 ### 存储桶跨域规则配置
 

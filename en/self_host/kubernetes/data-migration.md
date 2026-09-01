@@ -707,7 +707,7 @@ kubectl get jobs -n <your_namespace>
 
 #### Scenario 1: Source Cluster Already Uses S3
 
-If S3 endpoints are already configured, you only need to configure the same S3 endpoint settings in the target cluster's `values.yaml`. See [External S3 Integration Configuration](./configuration.md#external-s3-integrationintegrations-s3) for details.
+If S3 endpoints are already configured, you only need to configure the same S3 endpoint settings in the target cluster's `values.yaml`. See [External S3 Integration Configuration](./configuration.md#recommended-external-object-storage-s3-integrations-s3) for details.
 
 #### Scenario 2: Source Cluster Uses MinIO with PVC
 
