@@ -38,21 +38,11 @@ const PROMO = {
       <div class="home-promo__main">
         <div class="home-promo__logos">
           <span class="home-promo__logo-circle">
-            <img
-              class="no-zoomable"
-              src="/vendor/CANNlogo.svg"
-              alt="CANN"
-              data-no-zoom
-            />
+            <img class="no-zoomable" src="/vendor/CANNlogo.svg" alt="CANN" data-no-zoom />
           </span>
           <span class="home-promo__logo-x">×</span>
           <span class="home-promo__logo-circle">
-            <img
-              class="no-zoomable"
-              src="/vendor/swanlab-logo.svg"
-              alt="SwanLab"
-              data-no-zoom
-            />
+            <img class="no-zoomable" src="/vendor/swanlab-logo.svg" alt="SwanLab" data-no-zoom />
           </span>
         </div>
         <div class="home-promo__info">
