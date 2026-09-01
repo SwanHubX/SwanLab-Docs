@@ -534,6 +534,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         { text: "init", link: "py-init" },
         { text: "log", link: "py-log" },
         { text: "async_log", link: "py-async-log" },
+        { text: "define_metric", link: "py-define_metric" },
         { text: "Settings", link: "py-settings" },
         {
           text: "多媒体数据",

@@ -23,6 +23,7 @@
 ## Python SDK
 
 - [init](./py-init.md)
+- [define_metric](./py-define_metric.md)
 - [login](./py-login.md)
 - [Image](./py-Image.md)
 - [Audio](./py-Audio.md)
