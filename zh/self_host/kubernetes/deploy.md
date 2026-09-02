@@ -109,13 +109,13 @@ SwanLab 私有化服务中，主要依赖以下基础服务的存储资源：
 | PostgreSQL        | `swanlab-postgres-pvc`                                                    | ≥ 100G                            |
 | ClickHouse        | `swanlab-clickhouse-pvc`                                                  | ≥ 1000G                           |
 | Vector            | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | 每个副本各自 ≥ 60G， 两块独立存储 |
-| 「**可选**」MinIO | `swanlab-minio-pvc` / `data-swanlab-self-hosted-vector-1`                 | ≥ 1000G，建议优先使用在线对象存储 |
+| 「**可选**」MinIO | `swanlab-minio-pvc`                                                       | ≥ 1000G，建议优先使用在线对象存储 |
 
 ::: warning
 
 - `storageClassName` 应以**您集群中挂载的云硬盘类型为准**（例如：腾讯云默认的云硬盘 `cbs`），要求**支持动态扩容与快照策略**
 - Vector 部署为 `StatefulSet`，PVC名称默认**不可修改**
-- 务必确保 `postgresr/redis/clickhouse` 相关的 PVC 均已处于 **Bound** 状态后再执行后续安装步骤
+- 建议确保 `vector/postgres/redis/clickhouse` 相关的 PVC 均已处于 **Bound** 状态后再执行后续安装步骤（如果 `storageClass` 的磁盘绑定策略为 `waitForFirstConsumer` 则无需等待 `Bound`）
   :::
 
 ::: details swanlab-self-hosted-pvc.yaml 模板
@@ -213,7 +213,7 @@ spec:
 # 创建 PVC
 kubectl apply -f swanlab-self-hosted-pvc.yaml
 
-# 验证 PVC 状态（务必确保除 vector 外全部 Bound）
+# 验证 PVC 状态
 kubectl get pvc -n <your_namespace>
 ```
 
