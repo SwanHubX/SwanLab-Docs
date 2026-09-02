@@ -62,9 +62,7 @@ const PROMO = {
             >
             <a
               class="home-promo__btn home-promo__btn--cases"
-              href="https://atomgit.com/cann/cann-learning-hub"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/examples/mnist"
               >{{ PROMO.casesText }}</a
             >
           </div>
