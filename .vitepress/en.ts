@@ -1,5 +1,5 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
-import { SWANLAB_VERSION } from "./version";
+import { SWANLAB_VERSION } from "./version.ts";
 
 type SidebarItemBadge = { badge?: { type?: string; text?: string } };
 type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge;

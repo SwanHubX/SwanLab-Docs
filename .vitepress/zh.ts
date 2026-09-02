@@ -1,5 +1,5 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
-import { SWANLAB_VERSION } from "./version";
+import { SWANLAB_VERSION } from "./version.ts";
 
 var base_path_guide_cloud = "/guide_cloud";
 var base_path_examples = "/examples";
