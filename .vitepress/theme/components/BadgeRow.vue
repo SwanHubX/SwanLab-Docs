@@ -36,7 +36,13 @@ const sortedBadges = computed(() =>
 
 <template>
   <div class="badge-row">
-    <a v-for="badge in sortedBadges" :key="badge.href" :href="badge.href">
+    <a
+      v-for="badge in sortedBadges"
+      :key="badge.href"
+      :href="badge.href"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <img :src="badge.img" :alt="badge.alt" />
     </a>
   </div>

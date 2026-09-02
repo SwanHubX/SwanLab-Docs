@@ -20,6 +20,8 @@ import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdo
 import VersionBadge from "./components/VersionBadge.vue";
 import BadgeRow from "./components/BadgeRow.vue";
 import MermaidDiagram from "./components/MermaidDiagram.vue";
+// 首页合作推广区（可选组件，组件内 enabled=false 即可整区下线）
+import HomePromoSection from "./components/HomePromoSection.vue";
 import { useVersionSync } from "./version-sync";
 import { useLogoLinkFix } from "./logo-link";
 
@@ -50,6 +52,7 @@ export default {
     ctx.app.component("VersionBadge", VersionBadge);
     ctx.app.component("BadgeRow", BadgeRow);
     ctx.app.component("MermaidDiagram", MermaidDiagram);
+    ctx.app.component("HomePromoSection", HomePromoSection);
     VoidZeroTheme.enhanceApp(ctx);
   },
   setup() {

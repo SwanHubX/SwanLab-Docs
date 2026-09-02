@@ -378,7 +378,7 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       // collapsed: false,
       items: [
         { text: "Cats and Dogs Classification", link: "cats_dogs_classification" },
-        { text: "Yolo Object Detection", link: "yolo" },
+        { text: "YOLO Object Detection", link: "yolo" },
         { text: "UNet Medical Image Segmentation", link: "unet-medical-segmentation" },
         { text: "QwenVL Finetune", link: "qwen_vl_coco" },
         { text: "Stable Diffusion Finetune", link: "stable_diffusion" },
@@ -390,9 +390,9 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
       items: [
         { text: "BERT Text Classification", link: "bert" },
         { text: "LLM Pretraining", link: "pretrain_llm" },
-        { text: "GLM4 Instruct Finetune", link: "glm4-instruct" },
+        { text: "GLM4 Instruct FineTune", link: "glm4-instruct" },
+        { text: "Qwen SFT", link: "qwen_finetune" },
         { text: "Qwen2 NER", link: "ner" },
-        { text: "Qwen Finetune Case", link: "qwen_finetune" },
         { text: "Qwen3 Medical", link: "qwen3-medical" },
       ],
     },

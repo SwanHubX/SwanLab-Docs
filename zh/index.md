@@ -53,6 +53,9 @@ features:
     link: /self_host/docker/deploy.md
 ---
 
+<!-- CANN & SwanLab 合作推广区（可选组件：下线将组件内 enabled 置 false，或删除本行） -->
+<HomePromoSection />
+
 <!-- 精选文章部分 -->
 <div class="featured-articles">
   <h2>✨精选内容✨</h2>

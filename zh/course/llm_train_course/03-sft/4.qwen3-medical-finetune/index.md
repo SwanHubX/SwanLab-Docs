@@ -1,6 +1,11 @@
 # Qwen3大模型微调实战：医学推理对话
 
-[![](https://raw.githubusercontent.com/SwanHubX/assets/main/badge1.svg)](https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart)
+<!-- TODO: qwen3-medical 跳转 -->
+
+<BadgeRow :badges="[
+  { alt: 'Visualize in SwanLab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg', href: 'https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart' },
+//   { alt: 'Open in CANNLab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/open-in-cannlab.svg', href: 'https://atomgit.com/cann/cann-learning-hub/blob/master/contrib/tutorials/swanlab_examples/qwen3_medical_sft/README.md' },
+]" />
 
 ![09-01](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/course/llm_train_course/03-sft/4.qwen3-medical-finetune/qwen3/01.png)
 
