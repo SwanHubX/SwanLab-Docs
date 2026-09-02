@@ -52,6 +52,7 @@ const PROMO = {
           </h2>
           <p class="home-promo__subtitle">{{ PROMO.subtitle }}</p>
           <div class="home-promo__actions">
+            <!-- 【URL】：在此控制 button 跳转 -->
             <a
               class="home-promo__btn home-promo__btn--join"
               href="https://atomgit.com/cann/cann-learning-hub"
@@ -117,7 +118,7 @@ const PROMO = {
   display: flex;
   align-items: stretch;
   padding: 72px 48px 64px;
-  background-image: url("/vendor/background-line.png");
+  background-image: url("https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/background-line.png");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 100% auto;
@@ -182,7 +183,7 @@ const PROMO = {
   margin: 12px 0 24px;
   padding: 0;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: #b9b9b9;
 }
 
