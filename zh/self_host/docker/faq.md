@@ -33,7 +33,7 @@ SwanLab 自托管版本基于 [Docker](https://www.docker.com/) 部署，默认�
 ```yaml
 traefik:
   <<: *common
-  image: ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0
+  image: repo.swanlab.cn/self-hosted/traefik:v3.1
   container_name: swanlab-traefik
   ports:
     - "8000:80" # [!code --]
