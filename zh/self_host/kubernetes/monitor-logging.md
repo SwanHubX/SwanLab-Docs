@@ -1060,12 +1060,11 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 
 ### 3. 配置仪表盘
 
-<!-- TODO: 补充 SwanLab-Auth 看板模板。 -->
-
 | 服务           | 看板 JSON 配置模板                                                                                                 |
 | -------------- | ------------------------------------------------------------------------------------------------------------------ |
 | SwanLab-Server | [Server 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-server.json)       |
 | SwanLab-House  | [House 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-house.json)         |
+| SwanLab-Auth   | [Auth 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-auth.json)           |
 | Vector         | [Vector 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-vector.json)       |
 | Redis          | [Redis 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-redis.json)         |
 | PostgreSQL     | [PostgreSQL 监控模板下载](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-postgres.json) |

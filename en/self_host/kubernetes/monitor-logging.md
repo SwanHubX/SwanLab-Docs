@@ -1060,12 +1060,11 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 
 ### 3. Configure dashboards
 
-<!-- TODO: Add the SwanLab-Auth dashboard template. -->
-
 | Service        | Dashboard JSON template                                                                                                           |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | SwanLab-Server | [Download Server dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-server.json)       |
 | SwanLab-House  | [Download House dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-house.json)         |
+| SwanLab-Auth   | [Download Auth dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-auth.json)           |
 | Vector         | [Download Vector dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-vector.json)       |
 | Redis          | [Download Redis dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-redis.json)         |
 | PostgreSQL     | [Download PostgreSQL dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-postgres.json) |
