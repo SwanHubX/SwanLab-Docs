@@ -9,9 +9,9 @@ import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 import { extendConfig } from "@voidzero-dev/vitepress-theme/config";
-import { zh } from "./zh.ts";
-import { en } from "./en.ts";
-import { SWANLAB_VERSION } from "./version.ts";
+import { zh } from "./zh";
+import { en } from "./en";
+import { SWANLAB_VERSION } from "./version";
 
 const srcExclude = ["playground/**", "AGENTS.md", "README.md", "TRICK.md"];
 
