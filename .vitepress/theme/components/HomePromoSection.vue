@@ -60,11 +60,9 @@ const PROMO = {
               rel="noopener noreferrer"
               >{{ PROMO.joinText }}</a
             >
-            <a
-              class="home-promo__btn home-promo__btn--cases"
-              href="/examples/mnist"
-              >{{ PROMO.casesText }}</a
-            >
+            <a class="home-promo__btn home-promo__btn--cases" href="/examples/mnist">{{
+              PROMO.casesText
+            }}</a>
           </div>
         </div>
       </div>
