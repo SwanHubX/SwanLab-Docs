@@ -60,9 +60,13 @@ const PROMO = {
               rel="noopener noreferrer"
               >{{ PROMO.joinText }}</a
             >
-            <a class="home-promo__btn home-promo__btn--cases" href="/examples/mnist">{{
-              PROMO.casesText
-            }}</a>
+            <a
+              class="home-promo__btn home-promo__btn--cases"
+              href="https://atomgit.com/cann/cann-learning-hub/tree/test/contrib/tutorials/swanlab_examples"
+              target="_blank"
+              rel="noopener noreferrer"
+              >{{ PROMO.casesText }}</a
+            >
           </div>
         </div>
       </div>
