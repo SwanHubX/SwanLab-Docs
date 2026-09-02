@@ -29,6 +29,7 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 | 服务名称       | 服务说明           | 端口 | 路由     |
 | -------------- | ------------------ | ---- | -------- |
 | SwanLab-Server | 后端核心业务服务   | 3000 | /metrics |
+| SwanLab-Auth   | 认证与鉴权服务     | 3000 | /metrics |
 | SwanLab-House  | 实验指标 OLAP 服务 | 3000 | /metrics |
 | Vector         | 指标聚合转发       | 9090 | /metrics |
 
@@ -42,6 +43,16 @@ SwanLab 私有化部署采用微服务架构，各应用服务按照职责拆分
 kubectl exec -n <your_namespace> -c server "$(
   kubectl get pod -n <your_namespace> \
     -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=server \
+    -o jsonpath='{.items[0].metadata.name}'
+)" -- wget -qO- http://127.0.0.1:3000/metrics
+```
+
+- **验证 SwanLab-Auth**
+
+```bash
+kubectl exec -n <your_namespace> -c auth "$(
+  kubectl get pod -n <your_namespace> \
+    -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=auth \
     -o jsonpath='{.items[0].metadata.name}'
 )" -- wget -qO- http://127.0.0.1:3000/metrics
 ```
@@ -71,6 +82,11 @@ kubectl exec -n <your_namespace> -c house "$(
 # 应用服务
 service:
   server:
+    # ...
+    # 是否开启监控采集专用 Headless Service
+    monitor:
+      enable: true
+  auth:
     # ...
     # 是否开启监控采集专用 Headless Service
     monitor:
@@ -170,6 +186,20 @@ data:
             replacement: <your_namespace>
           - target_label: service
             replacement: house
+
+      # ---- SwanLab Auth ----
+      - job_name: "swanlab-auth"
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - swanlab-self-hosted-auth-monitor.<your_namespace>.svc.cluster.local
+            type: A
+            port: 3000
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: auth
 
       # ---- Vector 日志聚合（内置 prometheus_exporter，端口 9090）----
       - job_name: "swanlab-vector"
@@ -1029,6 +1059,8 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 ```
 
 ### 3. 配置仪表盘
+
+<!-- TODO: 补充 SwanLab-Auth 看板模板。 -->
 
 | 服务           | 看板 JSON 配置模板                                                                                                 |
 | -------------- | ------------------------------------------------------------------------------------------------------------------ |
