@@ -23,18 +23,18 @@
 
 # 定义要下载的镜像列表
 images=(
-  "ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0"
-  "ccr.ccs.tencentyun.com/self-hosted/postgres:16.1"
-  "ccr.ccs.tencentyun.com/self-hosted/redis-stack-server:7.2.0-v15"
-  "ccr.ccs.tencentyun.com/self-hosted/clickhouse:24.3"
-  "ccr.ccs.tencentyun.com/self-hosted/logrotate:v1"
-  "ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0"
-  "ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z"
-  "ccr.ccs.tencentyun.com/self-hosted/minio-mc:RELEASE.2025-04-08T15-39-49Z"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v3.2.0"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v3.2.0"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v3.2.0"
-  "ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v3.2.0"
+  "repo.swanlab.cn/self-hosted/traefik:v3.1"
+  "repo.swanlab.cn/self-hosted/postgres:16.1"
+  "repo.swanlab.cn/self-hosted/redis-stack:7.2.0-v15"
+  "repo.swanlab.cn/self-hosted/clickhouse-server:24.3"
+  "repo.swanlab.cn/self-hosted/logrotate:1.0"
+  "repo.swanlab.cn/self-hosted/fluent-bit:3.1"
+  "repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-02-28T09-55-16Z"
+  "repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-04-08T15-39-49Z"
+  "repo.swanlab.cn/self-hosted/swanlab-server:v3.3.0"
+  "repo.swanlab.cn/self-hosted/swanlab-house:v3.3.0"
+  "repo.swanlab.cn/self-hosted/swanlab-cloud:v3.3.0"
+  "repo.swanlab.cn/self-hosted/swanlab-next:v3.3.0"
 )
 
 # 下载镜像
@@ -88,18 +88,18 @@ $ docker load -i swanlab_images.tar
 ```bash
 (base) root@swanlab:~# docker images
 REPOSITORY                                              TAG                            IMAGE ID       CREATED         SIZE
-ccr.ccs.tencentyun.com/self-hosted/swanlab-server       v2.8.0                         a2b992161a68   8 days ago      1.46GB
-ccr.ccs.tencentyun.com/self-hosted/swanlab-next         v2.8.0                         7a33e5b1afc5   3 weeks ago     265MB
-ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud        v2.8.0                         0bc15f138d79   3 weeks ago     53.3MB
-ccr.ccs.tencentyun.com/self-hosted/swanlab-house        v2.8.0                         007b252f5b6c   3 weeks ago     48.5MB
-ccr.ccs.tencentyun.com/self-hosted/minio-mc             RELEASE.2025-04-08T15-39-49Z   f33e36a42eec   5 weeks ago     84.1MB
-ccr.ccs.tencentyun.com/self-hosted/clickhouse           24.3                           6ffc1e932ef1   2 months ago    942MB
-ccr.ccs.tencentyun.com/self-hosted/fluent-bit           3.0                            97e65b999a4d   2 months ago    84.9MB
-ccr.ccs.tencentyun.com/self-hosted/traefik              v3.0                           0f62db80c71d   2 months ago    190MB
-ccr.ccs.tencentyun.com/self-hosted/minio                RELEASE.2025-02-28T09-55-16Z   377fe6127f60   2 months ago    180MB
-ccr.ccs.tencentyun.com/self-hosted/redis-stack-server   7.2.0-v15                      110cc99f3057   3 months ago    520MB
-ccr.ccs.tencentyun.com/self-hosted/postgres             16.1                           86414087c100   16 months ago   425MB
-ccr.ccs.tencentyun.com/self-hosted/logrotate            v1                             e07b32a4bfda   6 years ago     45.6MB
+repo.swanlab.cn/self-hosted/swanlab-server              v3.3.0                         a2b992161a68   8 days ago      1.46GB
+repo.swanlab.cn/self-hosted/swanlab-next                v3.3.0                         7a33e5b1afc5   3 weeks ago     265MB
+repo.swanlab.cn/self-hosted/swanlab-cloud               v3.3.0                         0bc15f138d79   3 weeks ago     53.3MB
+repo.swanlab.cn/self-hosted/swanlab-house               v3.3.0                         007b252f5b6c   3 weeks ago     48.5MB
+repo.swanlab.cn/self-hosted/minio/mc                    RELEASE.2025-04-08T15-39-49Z   f33e36a42eec   5 weeks ago     84.1MB
+repo.swanlab.cn/self-hosted/clickhouse-server           24.3                           6ffc1e932ef1   2 months ago    942MB
+repo.swanlab.cn/self-hosted/fluent-bit                  3.1                            97e65b999a4d   2 months ago    84.9MB
+repo.swanlab.cn/self-hosted/traefik                     v3.1                           0f62db80c71d   2 months ago    190MB
+repo.swanlab.cn/self-hosted/minio/minio                 RELEASE.2025-02-28T09-55-16Z   377fe6127f60   2 months ago    180MB
+repo.swanlab.cn/self-hosted/redis-stack                 7.2.0-v15                      110cc99f3057   3 months ago    520MB
+repo.swanlab.cn/self-hosted/postgres                    16.1                           86414087c100   16 months ago   425MB
+repo.swanlab.cn/self-hosted/logrotate                   1.0                            e07b32a4bfda   6 years ago     45.6MB
 ```
 
 ### 4. 安装 SwanLab 服务
@@ -129,7 +129,7 @@ $ ./docker/install.sh
   ____) \ V  V / (_| | | | | |___| (_| | |_) |
  |_____/ \_/\_/ \__,_|_| |_|______\__,_|_.__/
 
- Self-Hosted Docker v3.2.0 - @SwanLab
+ Self-Hosted Docker v3.3.0 - @SwanLab
 
 🎉 Wow, the installation is complete. Everything is perfect.
 🥰 Congratulations, self-hosted SwanLab can be accessed using {IP}:8000
@@ -155,17 +155,17 @@ $ ./docker/install.sh
 ```bash
 $ docker compose ps -a
 NAME                 IMAGE                                                                   COMMAND                  SERVICE          CREATED          STATUS                    PORTS
-swanlab-clickhouse   ccr.ccs.tencentyun.com/self-hosted/clickhouse:24.3                      "/entrypoint.sh"         clickhouse       22 minutes ago   Up 22 minutes (healthy)   8123/tcp, 9000/tcp, 9009/tcp
-swanlab-cloud        ccr.ccs.tencentyun.com/self-hosted/swanlab-cloud:v3.2.0                   "/docker-entrypoint.…"   swanlab-cloud    22 minutes ago   Up 21 minutes             80/tcp
-swanlab-fluentbit    ccr.ccs.tencentyun.com/self-hosted/fluent-bit:3.0                       "/fluent-bit/bin/flu…"   fluent-bit       22 minutes ago   Up 22 minutes             2020/tcp
-swanlab-house        ccr.ccs.tencentyun.com/self-hosted/swanlab-house:v3.2.0                   "./app"                  swanlab-house    22 minutes ago   Up 21 minutes (healthy)   3000/tcp
-swanlab-logrotate    ccr.ccs.tencentyun.com/self-hosted/logrotate:v1                         "/sbin/tini -- /usr/…"   logrotate        22 minutes ago   Up 22 minutes
-swanlab-minio        ccr.ccs.tencentyun.com/self-hosted/minio:RELEASE.2025-02-28T09-55-16Z   "/usr/bin/docker-ent…"   minio            22 minutes ago   Up 22 minutes (healthy)   9000/tcp
-swanlab-next         ccr.ccs.tencentyun.com/self-hosted/swanlab-next:v3.2.0                    "docker-entrypoint.s…"   swanlab-next     22 minutes ago   Up 21 minutes             3000/tcp
-swanlab-postgres     ccr.ccs.tencentyun.com/self-hosted/postgres:16.1                        "docker-entrypoint.s…"   postgres         22 minutes ago   Up 22 minutes (healthy)   5432/tcp
-swanlab-redis        ccr.ccs.tencentyun.com/self-hosted/redis-stack-server:7.2.0-v15         "/entrypoint.sh"         redis            22 minutes ago   Up 22 minutes (healthy)   6379/tcp
-swanlab-server       ccr.ccs.tencentyun.com/self-hosted/swanlab-server:v3.2.0                  "docker-entrypoint.s…"   swanlab-server   22 minutes ago   Up 21 minutes (healthy)   3000/tcp
-swanlab-traefik      ccr.ccs.tencentyun.com/self-hosted/traefik:v3.0                         "/entrypoint.sh trae…"   traefik          22 minutes ago   Up 22 minutes (healthy)   0.0.0.0:8000->80/tcp, [::]:8000->80/tcp
+swanlab-clickhouse   repo.swanlab.cn/self-hosted/clickhouse-server:24.3                       "/entrypoint.sh"         clickhouse       22 minutes ago   Up 22 minutes (healthy)   8123/tcp, 9000/tcp, 9009/tcp
+swanlab-cloud        repo.swanlab.cn/self-hosted/swanlab-cloud:v3.3.0                         "/docker-entrypoint.…"   swanlab-cloud    22 minutes ago   Up 21 minutes             80/tcp
+swanlab-fluentbit    repo.swanlab.cn/self-hosted/fluent-bit:3.1                               "/fluent-bit/bin/flu…"   fluent-bit       22 minutes ago   Up 22 minutes             2020/tcp
+swanlab-house        repo.swanlab.cn/self-hosted/swanlab-house:v3.3.0                         "./app"                  swanlab-house    22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-logrotate    repo.swanlab.cn/self-hosted/logrotate:1.0                                "/sbin/tini -- /usr/…"   logrotate        22 minutes ago   Up 22 minutes
+swanlab-minio        repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-02-28T09-55-16Z     "/usr/bin/docker-ent…"   minio            22 minutes ago   Up 22 minutes (healthy)   9000/tcp
+swanlab-next         repo.swanlab.cn/self-hosted/swanlab-next:v3.3.0                          "docker-entrypoint.s…"   swanlab-next     22 minutes ago   Up 21 minutes             3000/tcp
+swanlab-postgres     repo.swanlab.cn/self-hosted/postgres:16.1                                "docker-entrypoint.s…"   postgres         22 minutes ago   Up 22 minutes (healthy)   5432/tcp
+swanlab-redis        repo.swanlab.cn/self-hosted/redis-stack:7.2.0-v15                        "/entrypoint.sh"         redis            22 minutes ago   Up 22 minutes (healthy)   6379/tcp
+swanlab-server       repo.swanlab.cn/self-hosted/swanlab-server:v3.3.0                        "docker-entrypoint.s…"   swanlab-server   22 minutes ago   Up 21 minutes (healthy)   3000/tcp
+swanlab-traefik      repo.swanlab.cn/self-hosted/traefik:v3.1                                 "/entrypoint.sh trae…"   traefik          22 minutes ago   Up 22 minutes (healthy)   0.0.0.0:8000->80/tcp, [::]:8000->80/tcp
 ```
 
 通过执行 `docker compose logs <container_name>` 可以查看每个容器的日志。
