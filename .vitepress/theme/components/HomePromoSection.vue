@@ -17,7 +17,7 @@
  * ============================================================ */
 const PROMO = {
   // 总开关：false 则整区不渲染。
-  enabled: true,
+  enabled: false,
   badge: "🤝 合作计划·PARTNERSHIP PROGRAM",
   titleLine1: "CANN & SwanLab",
   titleLine2: "大模型训练师成长计划",
