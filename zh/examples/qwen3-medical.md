@@ -4,7 +4,7 @@
 
 <BadgeRow :badges="[
   { alt: 'Visualize in SwanLab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/badge1.svg', href: 'https://swanlab.cn/@ZeyiLin/qwen3-sft-medical/runs/agps0dkifth5l1xytcdyk/chart' },
-//   { alt: 'Open in CANNLab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/open-in-cannlab.svg', href: 'https://atomgit.com/cann/cann-learning-hub/blob/master/contrib/tutorials/swanlab_examples/qwen3_medical_sft/README.md' },
+//   { alt: 'Open in CANNLab', img: 'https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/open-in-cannlab.svg', href: 'https://atomgit.com/cann/cann-learning-hub/tree/test/contrib/tutorials/swanlab_examples/qwen3_medical_sft' },
 ]" />
 
 ![09-01](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/examples/qwen3/01.png)
