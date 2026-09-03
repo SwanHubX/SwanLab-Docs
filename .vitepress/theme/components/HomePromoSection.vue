@@ -17,7 +17,7 @@
  * ============================================================ */
 const PROMO = {
   // 总开关：false 则整区不渲染。
-  enabled: false,
+  enabled: true,
   badge: "🤝 合作计划·PARTNERSHIP PROGRAM",
   titleLine1: "CANN & SwanLab",
   titleLine2: "大模型训练师成长计划",
@@ -55,7 +55,7 @@ const PROMO = {
             <!-- 【URL】：在此控制 button 跳转 -->
             <a
               class="home-promo__btn home-promo__btn--join"
-              href="https://atomgit.com/cann/cann-learning-hub"
+              href="https://atomgit.com/org/cann/cannlab"
               target="_blank"
               rel="noopener noreferrer"
               >{{ PROMO.joinText }}</a
