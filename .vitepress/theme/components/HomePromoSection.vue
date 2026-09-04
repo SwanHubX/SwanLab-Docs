@@ -17,7 +17,7 @@
  * ============================================================ */
 const PROMO = {
   // 总开关：false 则整区不渲染。
-  enabled: false,
+  enabled: true,
   badge: "🤝 合作计划·PARTNERSHIP PROGRAM",
   titleLine1: "CANN & SwanLab",
   titleLine2: "大模型训练师成长计划",
@@ -53,13 +53,15 @@ const PROMO = {
           <p class="home-promo__subtitle">{{ PROMO.subtitle }}</p>
           <div class="home-promo__actions">
             <!-- 【URL】：在此控制 button 跳转 -->
-            <a
+            <!-- 【暂下线】「我要加入」跳转页待确认，暂不渲染；
+                 确认跳转位置后取消下方注释即可恢复双按钮布局（拉宽样式会自动失效）。 -->
+            <!-- <a
               class="home-promo__btn home-promo__btn--join"
-              href="https://atomgit.com/cann/cann-learning-hub"
+              href="https://atomgit.com/org/cann/cannlab"
               target="_blank"
               rel="noopener noreferrer"
               >{{ PROMO.joinText }}</a
-            >
+            > -->
             <a
               class="home-promo__btn home-promo__btn--cases"
               href="https://atomgit.com/cann/cann-learning-hub/tree/test/contrib/tutorials/swanlab_examples"
@@ -183,7 +185,7 @@ const PROMO = {
   margin: 12px 0 24px;
   padding: 0;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 550;
   color: #b9b9b9;
 }
 
@@ -192,6 +194,13 @@ const PROMO = {
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* 「我要加入」暂下线期间：仅剩「查看案例」时单独居中并拉宽；
+ * 恢复双按钮（取消模板注释）后 :only-child 不再命中，此规则自动失效。 */
+.home-promo__btn:only-child {
+  width: 100%;
+  max-width: 360px;
 }
 
 .home-promo__btn {
