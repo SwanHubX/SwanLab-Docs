@@ -251,27 +251,29 @@ swanlab api run filter my-team/image-classification -f ./filter.json
 swanlab api run metrics <path> --keys <keys> [OPTIONS]
 ```
 
-| 参数/选项            | 类型     | 默认值  | 描述                                                       |
-| -------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `path`               | 位置参数 | 必填    | 实验路径                                                   |
-| `--keys`             | `str`    | 必填    | 逗号分隔的指标名，如 `"loss,acc"`                          |
-| `--sample` / `-s`    | `int`    | `1500`  | 采样数量，超过自动截断                                     |
-| `--ignore-timestamp` | 布尔标志 | `False` | 去掉指标数据中的时间戳字段                                 |
-| `--all`              | 布尔标志 | `False` | 获取全量数据（CSV 导出）                                   |
-| `--range-type`       | `str`    | `None`  | 范围查询类型：`step` 或 `timestamp`                        |
-| `--range-start`      | `int`    | `None`  | 范围起始值（含），步数或毫秒时间戳                         |
-| `--range-end`        | `int`    | `None`  | 范围结束值（含），步数或毫秒时间戳                         |
-| `--range-head`       | `int`    | `None`  | 返回前 N 条数据                                            |
-| `--range-tail`       | `int`    | `None`  | 返回后 N 条数据                                            |
-| `--range-last`       | `int`    | `None`  | 最近 N 毫秒的数据（与 `--range-start`/`--range-end` 互斥） |
-| `--save`             | 选项     | —       | 保存输出为 JSON 文件                                       |
+| 参数/选项            | 类型     | 默认值   | 描述                                                                                                      |
+| -------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `path`               | 位置参数 | 必填     | 实验路径                                                                                                  |
+| `--keys`             | `str`    | 必填     | 逗号分隔的指标名，如 `"loss,acc"`                                                                         |
+| `--sample` / `-s`    | `int`    | `1500`   | 采样数量，超过自动截断                                                                                    |
+| `--ignore-timestamp` | 布尔标志 | `False`  | 去掉指标数据中的时间戳字段                                                                                |
+| `--all`              | 布尔标志 | `False`  | 获取全量数据（CSV 导出）                                                                                  |
+| `--x-axis`           | `str`    | `"step"` | X 轴：`step`（默认）、内置轴 `time` / `relative_time`，或自定义 x 列 key                                  |
+| `--range-type`       | `str`    | `None`   | 范围查询类型：`step`、`timestamp` 或 `custom`（自定义 x 值域，需配合自定义 `--x-axis` 使用）              |
+| `--range-start`      | `float`  | `None`   | 范围起始值（含）：步数、毫秒时间戳或自定义 x 值；`step`/`timestamp` 须为非负整数，`custom` 允许小数和负数 |
+| `--range-end`        | `float`  | `None`   | 范围结束值（含），数值规则同 `--range-start`                                                              |
+| `--range-head`       | `int`    | `None`   | 返回前 N 条数据                                                                                           |
+| `--range-tail`       | `int`    | `None`   | 返回后 N 条数据                                                                                           |
+| `--range-last`       | `int`    | `None`   | 最近 N 毫秒的数据（与 `--range-start`/`--range-end` 互斥）                                                |
+| `--save`             | 选项     | —        | 保存输出为 JSON 文件                                                                                      |
 
 **注意事项：**
 
 - `--range-head` 和 `--range-tail` 互斥。
 - `--range-last` 与 `--range-start`/`--range-end` 互斥。
 - `--range-head`/`--range-tail` 可与 `--range-start`/`--range-end` 或 `--range-last` 组合（先范围过滤，再截取）。
-- `--range-start` 和 `--range-end` 配合 `--range-type` 使用（`step` 或 `timestamp`），时间戳单位为毫秒。
+- `--range-start` 和 `--range-end` 配合 `--range-type` 使用（`step`、`timestamp` 或 `custom`），时间戳单位为毫秒。
+- 自定义 `--x-axis` 下，数据点额外携带 `index` 字段（自定义 x 值）；全量路径（`--all` / 范围查询）中缺失的数据点以 `NaN` 占位，JSON 输出中渲染为 `null`。
 
 ```bash
 # 获取 loss 指标（默认采样 1500 条）
@@ -295,6 +297,14 @@ swanlab api run metrics my-team/image-classification/abc123 \
 # 步数范围 + 取前 50 个点
 swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-type step --range-start 0 --range-end 500 --range-head 50
+
+# 自定义 x 轴（如 epoch），数据点额外携带 index 字段
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --x-axis epoch
+
+# 自定义 x 轴 + 按自定义 x 值域过滤（允许小数和负数）
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --x-axis lr --range-type custom --range-start 1e-4 --range-end 1e-3
 ```
 
 ### run summary
