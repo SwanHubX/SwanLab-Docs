@@ -52,7 +52,8 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 - Due to the varying permission models of different Kubernetes clusters, the SwanLab K8s version does not use Operator-based deployment yet, and **the base database services are deployed as single instances**
 - To integrate self-built or cloud provider high-availability databases, please refer to [Custom Value Configuration](./configuration.md)
 - Before integrating an external database, it is recommended to test the RTT between the cluster and the database instance by referring to the [FAQ](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
-  :::
+
+:::
 
 | Component  | Image Address                                                          | values.yaml Config Path         | Description                                                                      |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------- |

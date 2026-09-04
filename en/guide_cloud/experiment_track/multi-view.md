@@ -19,7 +19,8 @@ Multi-View is built on the new dashboard architecture. **How to upgrade**: open 
 - After upgrading to the new dashboard, you must upgrade the SDK to `v0.9.0+` to create experiments, resume experiments, and log metrics
 - Projects not yet upgraded can still log metrics and create experiments with SDK versions earlier than `v0.9.0`; however, SDK `v0.9.0+` cannot log metrics to or create experiments in projects on the old dashboard
 - The old dashboard will no longer be maintained after **October 1, 2026** — we recommend upgrading as soon as possible
-  :::
+
+:::
 
 [[toc]]
 
