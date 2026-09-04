@@ -109,12 +109,13 @@ You can write your load balancing strategy based on the above information. It is
 
 ### SwanLab-Auth (Authentication and Authorization Service)
 
-| Field                                  | Type   | Default                                    | Description                                                                                                               |
-| -------------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `service.auth.replicas`                | int    | `2`                                        | Replica count                                                                                                             |
-| `service.auth.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | Image address                                                                                                             |
-| `service.auth.image.tag`               | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                        |
-| `service.auth.securityContext.enabled` | bool   | `false`                                    | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
+| Field                                  | Type   | Default                                    | Description                                                                                                                                             |
+| -------------------------------------- | ------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service.auth.replicas`                | int    | `2`                                        | Replica count                                                                                                                                           |
+| `service.auth.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | Image address                                                                                                                                           |
+| `service.auth.image.tag`               | string | `""`                                       | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
+| `service.auth.monitor.enable`          | bool   | `false`                                    | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
+| `service.auth.securityContext.enabled` | bool   | `false`                                    | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                               |
 
 ### SwanLab-House (Backend Experiment OLAP Service)
 
@@ -585,6 +586,7 @@ Every component of `swanlab-self-hosted` can expose Prometheus metrics for integ
 | ---------------------------------------- | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `vector.monitor.enable`                  | bool | `false` | Create a monitoring headless Service for Vector so Prometheus can discover all Pod IPs                                                                                  |
 | `service.server.monitor.enable`          | bool | `false` | Create a monitoring headless Service for SwanLab-Server so Prometheus can discover all Pod IPs                                                                          |
+| `service.auth.monitor.enable`            | bool | `false` | Create a monitoring headless Service for SwanLab-Auth so Prometheus can discover all Pod IPs                                                                            |
 | `service.house.monitor.enable`           | bool | `false` | Create a monitoring headless Service for SwanLab-House so Prometheus can discover all Pod IPs                                                                           |
 | `dependencies.postgres.monitor.enable`   | bool | `false` | Create a monitoring headless Service for built-in PostgreSQL so postgres-exporter can discover the PG Pod (only effective when `integrations.postgres.enabled = false`) |
 | `dependencies.redis.monitor.enable`      | bool | `false` | Create a monitoring headless Service for built-in Redis so redis-exporter can discover the Redis Pod (only effective when `integrations.redis.enabled = false`)         |
@@ -606,6 +608,9 @@ vector:
 
 service:
   server:
+    monitor:
+      enable: true
+  auth:
     monitor:
       enable: true
   house:

@@ -109,12 +109,13 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### SwanLab-Auth（认证与鉴权服务）
 
-| 字段                                   | 类型   | 默认值                                     | 说明                                                                                   |
-| -------------------------------------- | ------ | ------------------------------------------ | -------------------------------------------------------------------------------------- |
-| `service.auth.replicas`                | int    | `2`                                        | 副本数                                                                                 |
-| `service.auth.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | 镜像地址                                                                               |
-| `service.auth.image.tag`               | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                |
-| `service.auth.securityContext.enabled` | bool   | `false`                                    | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
+| 字段                                   | 类型   | 默认值                                     | 说明                                                                                                 |
+| -------------------------------------- | ------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `service.auth.replicas`                | int    | `2`                                        | 副本数                                                                                               |
+| `service.auth.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-auth` | 镜像地址                                                                                             |
+| `service.auth.image.tag`               | string | `""`                                       | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
+| `service.auth.monitor.enable`          | bool   | `false`                                    | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
+| `service.auth.securityContext.enabled` | bool   | `false`                                    | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)               |
 
 ### SwanLab-House（后端实验 OLAP 服务）
 
@@ -585,6 +586,7 @@ integrations:
 | ---------------------------------------- | ---- | ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `vector.monitor.enable`                  | bool | `false` | 为 Vector 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                   |
 | `service.server.monitor.enable`          | bool | `false` | 为 SwanLab-Server 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                           |
+| `service.auth.monitor.enable`            | bool | `false` | 为 SwanLab-Auth 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                             |
 | `service.house.monitor.enable`           | bool | `false` | 为 SwanLab-House 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                            |
 | `dependencies.postgres.monitor.enable`   | bool | `false` | 为内置 PostgreSQL 创建监控 headless Service，供 postgres-exporter 发现 PG Pod（仅在 `integrations.postgres.enabled = false` 时生效） |
 | `dependencies.redis.monitor.enable`      | bool | `false` | 为内置 Redis 创建监控 headless Service，供 redis-exporter 发现 Redis Pod（仅在 `integrations.redis.enabled = false` 时生效）         |
@@ -606,6 +608,9 @@ vector:
 
 service:
   server:
+    monitor:
+      enable: true
+  auth:
     monitor:
       enable: true
   house:

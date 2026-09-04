@@ -26,11 +26,12 @@ SwanLab self-hosted deployment uses a microservices architecture. Each applicati
 
 The table below lists the SwanLab services that currently **support direct access** to metrics, along with their endpoint configuration and routes:
 
-| Service        | Description                      | Port | Path     |
-| -------------- | -------------------------------- | ---- | -------- |
-| SwanLab-Server | Core backend business service    | 3000 | /metrics |
-| SwanLab-House  | Experiment metrics OLAP service  | 3000 | /metrics |
-| Vector         | Metrics aggregation & forwarding | 9090 | /metrics |
+| Service        | Description                              | Port | Path     |
+| -------------- | ---------------------------------------- | ---- | -------- |
+| SwanLab-Server | Core backend business service            | 3000 | /metrics |
+| SwanLab-Auth   | Authentication and authorization service | 3000 | /metrics |
+| SwanLab-House  | Experiment metrics OLAP service          | 3000 | /metrics |
+| Vector         | Metrics aggregation & forwarding         | 9090 | /metrics |
 
 If base database services such as `Redis` / `PostgreSQL` / `ClickHouse` are **not externally integrated, you need to additionally deploy the corresponding Exporter services** to forward observability metrics to Prometheus (see Section 2.2 below).
 
@@ -42,6 +43,16 @@ Before configuring Prometheus scrape jobs, it is recommended to first verify tha
 kubectl exec -n <your_namespace> -c server "$(
   kubectl get pod -n <your_namespace> \
     -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=server \
+    -o jsonpath='{.items[0].metadata.name}'
+)" -- wget -qO- http://127.0.0.1:3000/metrics
+```
+
+- **Verify SwanLab-Auth**
+
+```bash
+kubectl exec -n <your_namespace> -c auth "$(
+  kubectl get pod -n <your_namespace> \
+    -l app.kubernetes.io/instance=swanlab-self-hosted,app.kubernetes.io/service=auth \
     -o jsonpath='{.items[0].metadata.name}'
 )" -- wget -qO- http://127.0.0.1:3000/metrics
 ```
@@ -71,6 +82,11 @@ In `values.yaml`, enable the `monitor` configuration for services that need obse
 # Application services
 service:
   server:
+    # ...
+    # Whether to enable the dedicated Headless Service for monitoring metrics collection
+    monitor:
+      enable: true
+  auth:
     # ...
     # Whether to enable the dedicated Headless Service for monitoring metrics collection
     monitor:
@@ -170,6 +186,20 @@ data:
             replacement: <your_namespace>
           - target_label: service
             replacement: house
+
+      # ---- SwanLab Auth ----
+      - job_name: "swanlab-auth"
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - swanlab-self-hosted-auth-monitor.<your_namespace>.svc.cluster.local
+            type: A
+            port: 3000
+        relabel_configs:
+          - target_label: namespace
+            replacement: <your_namespace>
+          - target_label: service
+            replacement: auth
 
       # ---- Vector log aggregation (built-in prometheus_exporter, port 9090) ----
       - job_name: "swanlab-vector"
@@ -1034,6 +1064,7 @@ kubectl rollout restart statefulset swanlab-monitor-grafana -n <your_namespace>
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | SwanLab-Server | [Download Server dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-server.json)       |
 | SwanLab-House  | [Download House dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-house.json)         |
+| SwanLab-Auth   | [Download Auth dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-auth.json)           |
 | Vector         | [Download Vector dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-vector.json)       |
 | Redis          | [Download Redis dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-redis.json)         |
 | PostgreSQL     | [Download PostgreSQL dashboard template](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/config-postgres.json) |
