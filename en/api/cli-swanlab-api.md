@@ -251,27 +251,29 @@ Get scalar metrics for an experiment, returned as JSON.
 swanlab api run metrics <path> --keys <keys> [OPTIONS]
 ```
 
-| Argument/Option      | Type       | Default  | Description                                                                               |
-| -------------------- | ---------- | -------- | ----------------------------------------------------------------------------------------- |
-| `path`               | Positional | Required | Experiment path                                                                           |
-| `--keys`             | `str`      | Required | Comma-separated metric keys, e.g. `"loss,acc"`                                            |
-| `--sample` / `-s`    | `int`      | `1500`   | Sample size; auto-capped if exceeded                                                      |
-| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field from metric data                                                   |
-| `--all`              | Flag       | `False`  | Fetch full data (CSV export for scalars)                                                  |
-| `--range-type`       | `str`      | `None`   | Range query type: `step` or `timestamp`                                                   |
-| `--range-start`      | `int`      | `None`   | Range start (inclusive), step number or unix timestamp in ms                              |
-| `--range-end`        | `int`      | `None`   | Range end (inclusive), step number or unix timestamp in ms                                |
-| `--range-head`       | `int`      | `None`   | Return first N data points                                                                |
-| `--range-tail`       | `int`      | `None`   | Return last N data points                                                                 |
-| `--range-last`       | `int`      | `None`   | Data from the last N milliseconds (mutually exclusive with `--range-start`/`--range-end`) |
-| `--save`             | Option     | —        | Save output as JSON file                                                                  |
+| Argument/Option      | Type       | Default  | Description                                                                                                                                                                      |
+| -------------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `path`               | Positional | Required | Experiment path                                                                                                                                                                  |
+| `--keys`             | `str`      | Required | Comma-separated metric keys, e.g. `"loss,acc"`                                                                                                                                   |
+| `--sample` / `-s`    | `int`      | `1500`   | Sample size; auto-capped if exceeded                                                                                                                                             |
+| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field from metric data                                                                                                                                          |
+| `--all`              | Flag       | `False`  | Fetch full data (CSV export for scalars)                                                                                                                                         |
+| `--x-axis`           | `str`      | `"step"` | X axis: `step` (default), built-in axes `time` / `relative_time`, or a custom x column key                                                                                       |
+| `--range-type`       | `str`      | `None`   | Range query type: `step`, `timestamp`, or `custom` (custom x value domain; requires a custom `--x-axis`)                                                                         |
+| `--range-start`      | `float`    | `None`   | Range start (inclusive): step number, unix timestamp in ms, or custom x value. Must be a non-negative integer for `step`/`timestamp`; `custom` allows floats and negative values |
+| `--range-end`        | `float`    | `None`   | Range end (inclusive); same numeric rules as `--range-start`                                                                                                                     |
+| `--range-head`       | `int`      | `None`   | Return first N data points                                                                                                                                                       |
+| `--range-tail`       | `int`      | `None`   | Return last N data points                                                                                                                                                        |
+| `--range-last`       | `int`      | `None`   | Data from the last N milliseconds (mutually exclusive with `--range-start`/`--range-end`)                                                                                        |
+| `--save`             | Option     | —        | Save output as JSON file                                                                                                                                                         |
 
 **Notes:**
 
 - `--range-head` and `--range-tail` are mutually exclusive.
 - `--range-last` is mutually exclusive with `--range-start`/`--range-end`.
 - `--range-head`/`--range-tail` can be combined with `--range-start`/`--range-end` or `--range-last` (range filter is applied first, then truncation).
-- `--range-start` and `--range-end` work with `--range-type` (`step` or `timestamp`); timestamps are in milliseconds.
+- `--range-start` and `--range-end` work with `--range-type` (`step`, `timestamp`, or `custom`); timestamps are in milliseconds.
+- With a custom `--x-axis`, data points additionally carry an `index` field (the custom x value); in the full-data path (`--all` / range queries), points missing the custom x value are emitted as `NaN` placeholders, rendered as `null` in the JSON output.
 
 ```bash
 # Get loss metric (default 1500 samples)
@@ -295,6 +297,14 @@ swanlab api run metrics my-team/image-classification/abc123 \
 # Step range + first 50 points
 swanlab api run metrics my-team/image-classification/abc123 \
   --keys loss --range-type step --range-start 0 --range-end 500 --range-head 50
+
+# Custom x axis (e.g. epoch); data points additionally carry an index field
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --x-axis epoch
+
+# Custom x axis + filter by custom x value domain (floats and negatives allowed)
+swanlab api run metrics my-team/image-classification/abc123 \
+  --keys loss --x-axis lr --range-type custom --range-start 1e-4 --range-end 1e-3
 ```
 
 ### run summary
