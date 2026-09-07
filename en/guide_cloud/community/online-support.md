@@ -2,9 +2,9 @@
 
 ## 👋 Welcome to communicate with us
 
-| WeChat Official Account                                                                                                                             | WeChat Group                                                                                                                                     |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300></div> | <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260907154112320.png" width=300/></div> |
+| WeChat Official Account                                                                                                                             | WeChat Group                                                                                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300></div> | <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/img_v3_0215a_989dbed0-90fd-4cd3-9bbd-1f72f2387d1g.jpg" width=300/></div> |
 
 | Feishu Group                                                                                                                                                                     |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
