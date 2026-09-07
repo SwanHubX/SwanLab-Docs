@@ -15,7 +15,8 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 
 - [Slack-Sending messages using incoming webhooks](https://api.slack.com/messaging/webhooks)
 - [TencentCloudDocs-Slack channel receive messages](https://cloud.tencent.com/document/product/1263/74219)
-  :::
+
+:::
 
 1. Turn into the page of [Slack-API](https://api.slack.com/apps)，click **「Create an App」**
 

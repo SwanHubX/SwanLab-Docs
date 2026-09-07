@@ -16,7 +16,8 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 
 - [Slack-使用传入的webhooks发送消息](https://api.slack.com/messaging/webhooks)
 - [腾讯云-Slack群接收消息](https://cloud.tencent.com/document/product/1263/74219)
-  :::
+
+:::
 
 1. 前往 [Slack-API](https://api.slack.com/apps) 页面，点击 **「Create an App」**
 

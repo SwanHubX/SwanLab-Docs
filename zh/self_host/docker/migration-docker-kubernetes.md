@@ -36,7 +36,8 @@
 1. 您的Docker服务已停止，或者您需要确保迁移的数据基于某一次存储快照提取
 2. 您已寻找到SwanLab Docker版本挂载的数据卷路径。默认情况下，它应该在 [self-hosted](https://github.com/SwanHubX/self-hosted) 项目的`docker/swanlab/data`目录下。如果您忘记了存储的路径，可以通过`docker inspect`命令查找对应服务容器的数据卷挂载位置。
 3. 您已找到swanlab生成的`docker-compose.yaml`。这主要为了迁移账号密码，如果您忘记了`docker-compose.yaml`文件的位置，您依旧可以通过`docker inspect`查找对应的账号密码环境变量。
-   :::
+
+:::
 
 为了方便描述，接下来docker相关命令基于`self-hosted/docker/swanlab/`请根据您的实际情况调整对应的路径。
 

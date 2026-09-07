@@ -32,7 +32,8 @@ accelerator.init_trackers(
 
 1. swanlab项目名由`accelerator.init_trackers`的`project_name`参数指定
 2. 向`init_kwargs`传递的`swanlab`字典，key-value和`swanlab.init`的参数完全一致（除了project）。
-   :::
+
+:::
 
 最小能跑代码：
 

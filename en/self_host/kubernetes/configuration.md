@@ -394,7 +394,8 @@ integrations:
 - When you choose a custom object storage service, please ensure your object storage service can be accessed directly from outside (via IP or domain name)
 - Your object storage secret key must have write permissions and S3 signing permissions for both **publicBucket** and **privateBucket**
 - The public bucket and private bucket can reuse the same bucket
-  :::
+
+:::
 
 ### [Optional for High Availability] External PostgreSQL (`integrations.postgres`)
 
@@ -406,7 +407,8 @@ If using external PostgreSQL, to ensure application performance, please note the
 - It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
 - For RTT test commands, see [FAQ: How to test the RTT between the cluster and external databases?](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
 - A database named `app` must be created in advance
-  :::
+
+:::
 
 | Field                                  | Type   | Default | Description                                                          |
 | -------------------------------------- | ------ | ------- | -------------------------------------------------------------------- |
@@ -467,7 +469,8 @@ If using external Redis, to ensure application performance, please note the foll
 - **Please ensure the database instance is in the same region and VPC as the cluster**
 - It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
 - For RTT test commands, see [FAQ: How to test the RTT between the cluster and external databases?](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
-  :::
+
+:::
 
 | Field                               | Type   | Default | Description                                                     |
 | ----------------------------------- | ------ | ------- | --------------------------------------------------------------- |
@@ -524,7 +527,8 @@ In the next few versions, the ClickHouse table engine and deployment mode will c
 - It is recommended that the <span style="color:red">RTT (round-trip latency) between cluster nodes and the database instance be within **0.3ms**</span>
 - For RTT test commands, see [FAQ: How to test the RTT between the cluster and external databases?](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
 - A database named `app` must be created in advance
-  :::
+
+:::
 
 | Field                                    | Type   | Default | Description                                                          |
 | ---------------------------------------- | ------ | ------- | -------------------------------------------------------------------- |

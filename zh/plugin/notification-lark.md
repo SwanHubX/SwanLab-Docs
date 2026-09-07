@@ -16,7 +16,8 @@ SwanLab插件均为开源代码，你可以在[GitHub源代码](https://github.c
 
 - [自定义机器人API使用指南](https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot?lang=zh-CN#f62e72d5)·
 - [在飞书群组中使用机器人](https://www.feishu.cn/hc/zh-CN/articles/360024984973-%E5%9C%A8%E7%BE%A4%E7%BB%84%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%9C%BA%E5%99%A8%E4%BA%BA)
-  :::
+
+:::
 
 1. 在1个飞书群中，点击右上角的 **「···」-「设置」**
 
