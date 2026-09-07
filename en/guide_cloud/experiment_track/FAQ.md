@@ -48,6 +48,8 @@ swanlab login --host Your_Self-Hosted_Server_Address --api-key Your_API_Key
 
 After logging in, you can specify the data to be uploaded to your self-hosted SwanLab.
 
+:::
+
 ## How to disable SwanLab logging during training (for debugging)?
 
 Set the `mode` parameter of `swanlab.init` to 'disabled' to prevent experiment creation and data logging.

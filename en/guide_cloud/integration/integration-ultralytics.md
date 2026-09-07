@@ -119,7 +119,8 @@ return_swanlab_callback(
 
 1. After writing to the source code, you no longer need to add `add_swanlab_callback` in the training script for subsequent runs.
 2. The project name is defined by the `project` parameter in `model.train()`, and the experiment name is defined by the `name` parameter.
-   :::
+
+:::
 
 ## 2.2 Code Example
 

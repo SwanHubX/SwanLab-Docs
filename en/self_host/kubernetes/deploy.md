@@ -117,7 +117,8 @@ The SwanLab self-hosted service mainly depends on the following base service sto
 - `storageClassName` should be based on **the cloud disk type mounted in your cluster** (e.g., Tencent Cloud's default cloud disk `cbs`), requiring **support for dynamic expansion and snapshot policies**
 - Vector is deployed as a `StatefulSet`, PVC names are **not modifiable** by default
 - It is recommended to ensure that PVCs related to `vector/postgres/redis/clickhouse` are all in **Bound** status before proceeding with subsequent installation steps (if the disk binding policy of the `storageClass` is `waitForFirstConsumer`, there is no need to wait for `Bound`)
-  :::
+
+:::
 
 ::: details swanlab-self-hosted-pvc.yaml Template
 

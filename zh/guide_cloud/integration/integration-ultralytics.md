@@ -119,7 +119,8 @@ return_swanlab_callback(
 
 1. 写入源码之后，之后运行就不需要在训练脚本中增加`add_swanlab_callback`了。
 2. 项目名由model.train()的project参数定义，实验名由name参数定义。
-   :::
+
+:::
 
 ## 2.2 代码案例
 

@@ -13,7 +13,8 @@ SwanLab插件均为开源代码，你可以在[GitHub源代码](https://github.c
 ::: info 参考文档
 
 - [Telegram-Bots: An introduction for developers](https://core.telegram.org/bots)
-  :::
+
+:::
 
 1. 在 Telegram 搜索框中，输入 `@BotFather`
    <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/plugin/notification-telegram/telegram-botfather.png" width="300"/>

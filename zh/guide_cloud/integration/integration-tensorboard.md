@@ -8,7 +8,8 @@
 
 - [Wandb](./integration-wandb.md)
 - [MLflow](./integration-mlflow.md)
-  :::
+
+:::
 
 **你可以用两种方式将使用TensorBoard跟踪的项目同步到SwanLab：**
 

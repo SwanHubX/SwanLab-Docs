@@ -117,7 +117,8 @@ SwanLab 私有化服务中，主要依赖以下基础服务的存储资源：
 - `storageClassName` 应以**您集群中挂载的云硬盘类型为准**（例如：腾讯云默认的云硬盘 `cbs`），要求**支持动态扩容与快照策略**
 - Vector 部署为 `StatefulSet`，PVC名称默认**不可修改**
 - 建议确保 `vector/postgres/redis/clickhouse` 相关的 PVC 均已处于 **Bound** 状态后再执行后续安装步骤（如果 `storageClass` 的磁盘绑定策略为 `waitForFirstConsumer` 则无需等待 `Bound`）
-  :::
+
+:::
 
 ::: details swanlab-self-hosted-pvc.yaml 模板
 

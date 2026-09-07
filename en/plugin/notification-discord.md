@@ -15,7 +15,8 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 ::: info Reference
 
 - [Discord-Intro-to-Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
-  :::
+
+:::
 
 1. Select the Discord channel on which you want to receive notifications of SwanLab events
 

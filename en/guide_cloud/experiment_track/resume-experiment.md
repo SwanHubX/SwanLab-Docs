@@ -8,8 +8,9 @@ Continuing interrupted training means that if you have a previously completed or
 
 1. **Continuing Interrupted Training:** The previous training process was interrupted. When resuming training from a checkpoint, you want the experiment charts to continue from the original SwanLab experiment rather than creating a new one.
 2. **Supplementing Charts:** Training and evaluation are split into two processes, but you want both recorded in the same SwanLab experiment.
-3. **Updating Hyperparameters:** Some parameters in the config were incorrect, and you want to update them.  
-   :::
+3. **Updating Hyperparameters:** Some parameters in the config were incorrect, and you want to update them.
+
+:::
 
 ## Basic Usage
 

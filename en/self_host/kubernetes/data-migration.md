@@ -718,7 +718,8 @@ MinIO data needs to be synced to cloud object storage via `rclone sync`. This Jo
 - `swanlab-cloud-s3-config` `MINIO_ENDPOINT` points to the active MinIO's in-cluster Service address
 - `swanlab-cloud-s3-secret` `MINIO_AK/SK` are the active MinIO's root credentials
 - Business writes have been stopped, ensuring a stable set of objects for reading
-  :::
+
+:::
 
 First create the S3 migration-specific configuration:
 
@@ -914,7 +915,8 @@ Similar to export, each database has an independent import Job that can be execu
 
 - CH's `RESTORE` has no equivalent to `pg_restore --clean`. `allow_non_empty_tables=1` performs a merge, not a replace, which would double the row count. Therefore, the script executes `DROP DATABASE IF EXISTS` before RESTORE.
 - If any single table in the target database exceeds 50GB, CH blocks DROP by default. You must first set `<max_table_size_to_drop>0</max_table_size_to_drop>` in the CH config to unlock.
-  :::
+
+:::
 
 ::: details import-postgres
 

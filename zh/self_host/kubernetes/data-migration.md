@@ -717,7 +717,8 @@ MinIO 数据需要通过 `rclone sync` 同步到公有云对象存储。此 Job 
 - `swanlab-cloud-s3-config` 中的 `MINIO_ENDPOINT` 指向现役 MinIO 的集群内 Service 地址
 - `swanlab-cloud-s3-secret` 中的 `MINIO_AK/SK` 为现役 MinIO 的 root 凭据
 - 业务已停写，保证读到的对象集稳定
-  :::
+
+:::
 
 首先创建 S3 迁移专用配置：
 
@@ -913,7 +914,8 @@ kubectl logs -f job/swanlab-migrate-s3-export -n <your_namespace>
 
 - CH 的 `RESTORE` 没有 `pg_restore --clean` 的等价选项，`allow_non_empty_tables=1` 是 merge 不是 replace，会导致行数翻倍，因此脚本在 RESTORE 前执行 `DROP DATABASE IF EXISTS`
 - 若目标库单表 > 50GB，CH 默认禁止 DROP，需先在 CH config 里设 `<max_table_size_to_drop>0</max_table_size_to_drop>` 解锁
-  :::
+
+:::
 
 ::: details import-postgres
 

@@ -15,7 +15,8 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 ::: info Reference
 
 - [WXWork-Group Robot Configuration Instruction](https://developer.work.weixin.qq.com/document/path/91770)
-  :::
+
+:::
 
 1. In a WXWork group，click the **「···」-「Add Group Robot」**
 

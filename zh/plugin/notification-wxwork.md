@@ -15,7 +15,8 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 ::: info 参考文档
 
 - [企业微信-群机器人配置说明](https://developer.work.weixin.qq.com/document/path/91770)
-  :::
+
+:::
 
 1. 在企业微信群中，点击右上角的 **「···」-「添加群机器人」**
 

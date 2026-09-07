@@ -8,7 +8,8 @@
 
 - [TensorBoard](./integration-tensorboard.md)
 - [Weights & Biases](./integration-wandb.md)
-  :::
+
+:::
 
 **你可以用两种方式将MLflow上的项目同步到SwanLab：**
 

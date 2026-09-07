@@ -15,7 +15,8 @@ SwanLab插件均为开源代码，你可以在[Github源代码](https://github.c
 ::: info 参考文档
 
 - [Discord-Webhook群机器人配置说明](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
-  :::
+
+:::
 
 1. 选择您想要接收SwanLab事件通知的 Discord 频道
 

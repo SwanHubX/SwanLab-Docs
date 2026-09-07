@@ -32,7 +32,8 @@ accelerator.init_trackers(
 
 1. The SwanLab project name is specified by the `project_name` parameter in `accelerator.init_trackers`.
 2. The `swanlab` dictionary passed to `init_kwargs` accepts key-value pairs identical to the arguments of `swanlab.init` (except for `project`).
-   :::
+
+:::
 
 Minimal working example:
 

@@ -8,7 +8,8 @@ Weights & Biases (W&B, wandb) 是一个用于机器学习和深度学习项目�
 
 - [TensorBoard](./integration-tensorboard.md)
 - [MLFlow](./integration-mlflow.md)
-  :::
+
+:::
 
 **你可以用三种方式将Wandb上的项目同步到SwanLab：**
 

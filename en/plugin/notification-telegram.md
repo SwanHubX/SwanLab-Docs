@@ -12,7 +12,8 @@ SwanLab plugins are open-source. You can view the [GitHub source code](https://g
 ::: info References
 
 - [Telegram-Bots: An introduction for developers](https://core.telegram.org/bots)
-  :::
+
+:::
 
 1. In the Telegram search bar, enter `@BotFather`
    <img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/plugin/notification-telegram/telegram-botfather.png" width="300"/>
