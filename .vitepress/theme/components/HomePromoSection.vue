@@ -82,7 +82,7 @@ const PROMO = {
 
 <style scoped>
 /* 设计参数（来自设计稿，1128×500 仅作比例参考，实际宽度随文档容器自适应）：
- * 灰色背景 #C3C3C340 仅包裹底部描述区（参考高度 186px）/
+ * 底部描述区灰底 var(--vp-c-bg-soft)（亮色 #f6f6f7，同精选内容卡片）/
  * 红色按钮 #C7000B / 副标题 #B9B9B9 / 顶部 badge #B6121B */
 .home-promo {
   margin: 0;
@@ -107,15 +107,20 @@ const PROMO = {
   border-radius: 24px;
   overflow: hidden;
   background: var(--vp-c-bg);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .home-promo__card:hover {
-  box-shadow: 0 16px 56px rgba(0, 0, 0, 0.14);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* 上半区：白色底 + 波浪背景，左右各半、各自居中 */
+/* 上半区：白色底 + 波浪背景，左右各半、各自居中；
+ * hover 时整区缩放放大（同精选内容封面 scale(1.05) / 0.5s），
+ * 锚点取底边中点：底缘与下方灰区对齐、顶部与两侧由卡片 overflow 裁切 */
 .home-promo__main {
   display: flex;
   align-items: stretch;
@@ -124,6 +129,12 @@ const PROMO = {
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 100% auto;
+  transform-origin: 50% 100%;
+  transition: transform 0.5s;
+}
+
+.home-promo__card:hover .home-promo__main {
+  transform: scale(1.02);
 }
 
 .home-promo__logos {
@@ -228,9 +239,9 @@ const PROMO = {
   background: #121826;
 }
 
-/* 下半区：灰色背景仅包裹描述段落 */
+/* 下半区：灰色背景仅包裹描述段落（--vp-c-bg-soft 亮色为 #f6f6f7，与精选内容卡片一致） */
 .home-promo__desc {
-  background: #c3c3c340;
+  background: var(--vp-c-bg-soft);
   padding: 28px 48px 32px;
 }
 
