@@ -55,13 +55,13 @@ const PROMO = {
             <!-- 【URL】：在此控制 button 跳转 -->
             <!-- 【暂下线】「我要加入」跳转页待确认，暂不渲染；
                  确认跳转位置后取消下方注释即可恢复双按钮布局（拉宽样式会自动失效）。 -->
-            <!-- <a
+            <a
               class="home-promo__btn home-promo__btn--join"
               href="https://atomgit.com/org/cann/cannlab"
               target="_blank"
               rel="noopener noreferrer"
               >{{ PROMO.joinText }}</a
-            > -->
+            >
             <a
               class="home-promo__btn home-promo__btn--cases"
               href="https://atomgit.com/cann/cann-learning-hub/tree/test/contrib/tutorials/swanlab_examples"
