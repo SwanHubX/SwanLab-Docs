@@ -393,30 +393,37 @@ for run in api.runs_get(path="my-team/my-project", page=1, size=100, all=True):
 
 Fetch scalar metric data (e.g. loss, acc), supports sampling control and range queries, returns structured data.
 
-| Parameter          | Type                   | Default | Description                                                                |
-| ------------------ | ---------------------- | ------- | -------------------------------------------------------------------------- |
-| `keys`             | `list[str]`            | —       | Metric key list, e.g. `["loss", "acc"]`                                    |
-| `sample`           | `int`                  | `1500`  | Sample count (SCALAR max 1500), ignored when `all` or `range_query` is set |
-| `all`              | `bool`                 | `False` | Get full data (no sampling limit)                                          |
-| `range_query`      | `dict` or `RangeQuery` | `None`  | Range query, only valid for SCALAR type                                    |
-| `ignore_timestamp` | `bool`                 | `False` | Whether to remove timestamp fields                                         |
+| Parameter          | Type                   | Default  | Description                                                                                        |
+| ------------------ | ---------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `keys`             | `list[str]`            | —        | Metric key list, e.g. `["loss", "acc"]`                                                            |
+| `sample`           | `int`                  | `1500`   | Sample count (SCALAR max 1500), ignored when `all` or `range_query` is set                         |
+| `all`              | `bool`                 | `False`  | Get full data (no sampling limit)                                                                  |
+| `range_query`      | `dict` or `RangeQuery` | `None`   | Range query, only valid for SCALAR type                                                            |
+| `x_axis`           | `str`                  | `"step"` | X axis: `"step"` (default), built-in axes `"time"` / `"relative_time"`, or any custom x column key |
+| `ignore_timestamp` | `bool`                 | `False`  | Whether to remove timestamp fields                                                                 |
 
 **RangeQuery fields:**
 
-| Field   | Type  | Default  | Description                                                                                                                               |
-| ------- | ----- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`  | `str` | `"step"` | Filter axis: `"step"` or `"timestamp"`                                                                                                    |
-| `start` | `int` | `None`   | Lower bound (inclusive), `None` means no limit. When `type` is `timestamp`, **input must be a UNIX timestamp in milliseconds**            |
-| `end`   | `int` | `None`   | Upper bound (inclusive), `None` means up to the last step. When `type` is `timestamp`, **input must be a UNIX timestamp in milliseconds** |
-| `last`  | `int` | `None`   | Last N milliseconds (mutually exclusive with `start`/`end`)                                                                               |
-| `head`  | `int` | `None`   | Take first N data points (mutually exclusive with `tail`, applied after range filtering)                                                  |
-| `tail`  | `int` | `None`   | Take last N data points (mutually exclusive with `head`, applied after range filtering)                                                   |
+| Field   | Type    | Default  | Description                                                                                                                                                                                                          |
+| ------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`  | `str`   | `"step"` | Filter axis: `"step"`, `"timestamp"`, or `"custom"` (custom x value domain; requires a custom `x_axis`)                                                                                                              |
+| `start` | `float` | `None`   | Lower bound (inclusive), `None` means no limit. Must be a non-negative integer for `step`/`timestamp` (`timestamp` is a UNIX timestamp in milliseconds); `custom` allows any finite float, including negative values |
+| `end`   | `float` | `None`   | Upper bound (inclusive), `None` means up to the last step. Same numeric rules as `start`                                                                                                                             |
+| `last`  | `int`   | `None`   | Last N milliseconds (mutually exclusive with `start`/`end`)                                                                                                                                                          |
+| `head`  | `int`   | `None`   | Take first N data points (mutually exclusive with `tail`, applied after range filtering)                                                                                                                             |
+| `tail`  | `int`   | `None`   | Take last N data points (mutually exclusive with `head`, applied after range filtering)                                                                                                                              |
 
 **Mutual exclusion rules:**
 
 - `last` is mutually exclusive with `start`/`end`
 - `head` and `tail` are mutually exclusive, with the lowest priority
 - `head`/`tail` can be combined with `start`/`end` or `last` (range filter first, then truncate)
+
+**Custom x-axis notes:**
+
+- When `x_axis` is set to a custom key (e.g. `"epoch"`), each data point additionally carries an `index` field — the custom x value — besides `step`, `value`, and `timestamp`.
+- In the full-data path (`all=True` or `range_query`), points missing the custom x value are emitted as `NaN` placeholders (except for timestamp-based filtering via `last` / `type="timestamp"`), so the per-key lists align by position and can be zipped directly; in the sampled path (default) such points are dropped server-side instead.
+- `start`/`end` bounds cannot be NaN or ±Inf.
 
 :::code-group
 
@@ -437,6 +444,27 @@ rq = RangeQuery(last=300_000)
 
 # Or use dict directly — metrics with step in [100, 500]
 result = run.metrics(keys=["loss"], range_query={"type": "step", "start": 100, "end": 500})
+```
+
+```python [Custom x-axis example]
+import swanlab
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Default step axis, behavior unchanged
+result = run.metrics(keys=["loss"])
+
+# Query against a custom axis (e.g. epoch); data points additionally carry an index field
+result = run.metrics(keys=["loss"], x_axis="epoch")
+
+# Custom axis + filter by custom x value domain (floats and negatives allowed)
+result = run.metrics(
+    keys=["loss"],
+    x_axis="lr",
+    range_query={"type": "custom", "start": 1e-4, "end": 1e-3},
+)
 ```
 
 ```python [Query examples]
@@ -478,6 +506,16 @@ result = run.metrics(
 
 # Take last 30 data points
 result = run.metrics(keys=["loss"], range_query={"tail": 30})
+
+# Custom x axis (e.g. epoch); data points additionally carry an index field
+result = run.metrics(keys=["loss"], x_axis="epoch")
+
+# Custom x axis + value-domain filtering
+result = run.metrics(
+    keys=["loss"],
+    x_axis="lr",
+    range_query={"type": "custom", "start": 1e-4, "end": 1e-3},
+)
 ```
 
 :::
@@ -847,12 +885,13 @@ Represents the list of metric keys under an experiment (recommended in `0.9.0+`,
 
 ### Key.metric() parameters
 
-| Parameter          | Type   | Default | Description                                       |
-| ------------------ | ------ | ------- | ------------------------------------------------- |
-| `sample`           | `int`  | `1500`  | Sample count (max 1500)                           |
-| `ignore_timestamp` | `bool` | `False` | Whether to remove timestamp fields                |
-| `media_step`       | `int`  | `None`  | Only effective for MEDIA type, specifies the step |
-| `all`              | `bool` | `False` | Get full data (no sampling limit)                 |
+| Parameter          | Type   | Default  | Description                                                                                                    |
+| ------------------ | ------ | -------- | -------------------------------------------------------------------------------------------------------------- |
+| `sample`           | `int`  | `1500`   | Sample count (max 1500)                                                                                        |
+| `ignore_timestamp` | `bool` | `False`  | Whether to remove timestamp fields                                                                             |
+| `media_step`       | `int`  | `None`   | Only effective for MEDIA type, specifies the step                                                              |
+| `all`              | `bool` | `False`  | Get full data (no sampling limit)                                                                              |
+| `x_axis`           | `str`  | `"step"` | X axis: `"step"` (default), built-in axes `"time"` / `"relative_time"`, or a custom x column key (SCALAR only) |
 
 ### Series / Key method examples
 
@@ -878,6 +917,9 @@ series = api.series(path="my-team/my-project/abc123", search="loss")
 for item in series:
     data = item.metric(sample=500)
     print(data["list"])
+
+    # Custom x axis (e.g. epoch); data points additionally carry an index field
+    data = item.metric(x_axis="epoch")
 ```
 
 ```python [Export a single key's metrics as CSV]
