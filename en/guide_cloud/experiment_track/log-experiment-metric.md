@@ -54,6 +54,12 @@ swanlab.log({"train/batch_cost": batch_cost})
 swanlab.log({"val/acc": acc})
 ```
 
+:::tip
+For metric names with multiple `/` separators, the current strategy uses the last separator.
+For example, a metric named `a/b/c` is grouped under `a/b` by default.
+If you need a custom group name, you can define it via [swanlab.define_metric()](../../api/py-define_metric.md) before the metric is logged.
+:::
+
 ## Specify the Step for Logging
 
 When the logging frequency of some metrics is inconsistent but you want their steps to be aligned, you can achieve alignment by setting the `step` parameter of `swanlab.log`:
@@ -119,3 +125,30 @@ swanlab.finish()
 ```
 
 `swanlab.async_log()` supports multiple execution modes (`threading`, `asyncio`, `spawn`). For detailed usage and all mode options, see the [async_log API documentation](../../api/py-async-log.md).
+
+## Custom X Axis
+
+:::info
+`swanlab.define_metric()` requires SwanLab SDK **v0.10.0 or higher**.
+:::
+
+By default, metric charts use step as the X axis. In some training scenarios (e.g., you want to view metric changes by epoch, learning rate, etc.), you can use `swanlab.define_metric()` to associate a chart's X axis with another metric:
+
+```python
+import swanlab
+
+swanlab.init(project="my-project")
+
+# Use train/epoch as the X axis of train/loss
+swanlab.define_metric("train/loss", x_axis="train/epoch")
+
+for epoch in range(num_epochs):
+    # Log the X-axis metric first
+    swanlab.log({"train/epoch": epoch})
+    # ... training ...
+    swanlab.log({"train/loss": loss})
+```
+
+X-axis and Y-axis metrics can be logged separately — the SDK automatically fills in the most recent X value for each Y value. The `key` also supports glob batch matching (e.g., `train/*`), making it easy to define the X axis for a group of metrics at once.
+
+For detailed parameter descriptions and notes on custom X axes, see the [define_metric API documentation](../../api/py-define_metric.md).

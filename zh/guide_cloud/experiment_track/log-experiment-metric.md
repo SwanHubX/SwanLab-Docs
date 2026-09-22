@@ -43,7 +43,7 @@ swanlab.log({"loss": loss, "iter": iter})
 
 ## 指标分组
 
-在脚本中可以通过指标名的前缀（以“/”为分隔）进行图表分组，例如 `train/loss` 会被分到名为“train”的分组、`val/loss` 会被分到名为“val”的分组：
+在脚本中可以通过指标名的前缀（以“/”为分隔）进行图表分组，例如 `train/loss` 会被分到名为“train”的分组、`val/loss` 会被分到名为 `val` 的分组：
 
 ```python
 # 分到train组
@@ -53,6 +53,12 @@ swanlab.log({"train/batch_cost": batch_cost})
 # 分到val组
 swanlab.log({"val/acc": acc})
 ```
+
+:::tip
+对于存在多个 `/` 分割线的指标名，目前的策略以最后一个分割线为准。
+例如指标名称为 `a/b/c`，默认以 `a/b` 作为分组名称。
+如果需要自定义分组名称，可以通过 [swanlab.define_metric()](../../api/py-define_metric.md) 在指标被上报之前进行定义。
+:::
 
 ## 指定记录的step
 
@@ -119,3 +125,30 @@ swanlab.finish()
 ```
 
 `swanlab.async_log()` 支持多种执行模式（`threading`、`asyncio`、`spawn`）。详细用法和所有模式选项请参阅 [async_log API 文档](../../api/py-async-log.md)。
+
+## 自定义 X 轴
+
+:::info
+`swanlab.define_metric()` 自定义 X 轴需要 SwanLab SDK **v0.10.0 或更高版本**。
+:::
+
+默认情况下，指标图表以 step 作为 X 轴。在部分训练场景下（如希望按 epoch、学习率等查看指标变化），可以通过 `swanlab.define_metric()` 将图表的 X 轴关联为另一个指标：
+
+```python
+import swanlab
+
+swanlab.init(project="my-project")
+
+# train/loss 以 train/epoch 作为 X 轴
+swanlab.define_metric("train/loss", x_axis="train/epoch")
+
+for epoch in range(num_epochs):
+    # 先记录 X 轴指标
+    swanlab.log({"train/epoch": epoch})
+    # ... 训练 ...
+    swanlab.log({"train/loss": loss})
+```
+
+X 轴指标与 Y 轴指标可以分开记录，SDK 会自动为 Y 值补上最近一次的 X 值；`key` 也支持 glob 批量匹配（如 `train/*`），方便对一组指标统一定义 X 轴。
+
+自定义 X 轴的详细参数说明与注意事项，请参阅 [define_metric API 文档](../../api/py-define_metric.md)。
