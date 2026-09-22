@@ -5,6 +5,17 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.1 - 2026.09.22
+
+**🚀 New Features**
+
+- `OpenAPI/CLI` now supports a custom X-axis parameter when querying experiment metrics
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where the writability probe could trigger an IO error on network file systems such as FUSE
+- Fixed an issue where experiment metrics synced via `swanlab sync` in `offline` mode were not visible on the frontend charts
+
 ## v0.10.0 - 2026.09.01
 
 **🚀 New Features**
