@@ -393,24 +393,25 @@ for run in api.runs_get(path="my-team/my-project", page=1, size=100, all=True):
 
 获取标量指标数据（如 loss、acc），支持采样控制、范围查询，返回结构化数据。
 
-| 参数               | 类型                   | 默认值  | 描述                                                             |
-| ------------------ | ---------------------- | ------- | ---------------------------------------------------------------- |
-| `keys`             | `list[str]`            | —       | 指标 key 名称列表，如 `["loss", "acc"]`                          |
-| `sample`           | `int`                  | `1500`  | 采样数量（SCALAR 最大 1500），使用 `all` 或 `range_query` 时忽略 |
-| `all`              | `bool`                 | `False` | 获取全量数据（不受采样限制）                                     |
-| `range_query`      | `dict` 或 `RangeQuery` | `None`  | 范围查询，仅对 SCALAR 类型有效                                   |
-| `ignore_timestamp` | `bool`                 | `False` | 是否去除时间戳字段                                               |
+| 参数               | 类型                   | 默认值   | 描述                                                                                                                                                   |
+| ------------------ | ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `keys`             | `list[str]`            | —        | 指标 key 名称列表，如 `["loss", "acc"]`                                                                                                                |
+| `sample`           | `int`                  | `1500`   | 采样数量（SCALAR 最大 1500），使用 `all` 或 `range_query` 时忽略                                                                                       |
+| `all`              | `bool`                 | `False`  | 获取全量数据（不受采样限制）                                                                                                                           |
+| `range_query`      | `dict` 或 `RangeQuery` | `None`   | 范围查询，仅对 SCALAR 类型有效                                                                                                                         |
+| `ignore_timestamp` | `bool`                 | `False`  | 是否去除时间戳字段                                                                                                                                     |
+| `x_axis`           | `str`                  | `"step"` | 返回数据的 X 轴：`"step"`（默认）、内置轴 `"time"` / `"relative_time"`，或其他非空字符串作为自定义 X 轴指标 key（仅 SCALAR 有效，`swanlab >= 0.10.1`） |
 
 **RangeQuery 字段：**
 
-| 字段    | 类型  | 默认值   | 描述                                                                                     |
-| ------- | ----- | -------- | ---------------------------------------------------------------------------------------- |
-| `type`  | `str` | `"step"` | 过滤轴：`"step"` 或 `"timestamp"`                                                        |
-| `start` | `int` | `None`   | 下界（含），`None` 表示不限制，`type` 为 `timestamp` 时**须为 UNIX 毫秒时间戳**          |
-| `end`   | `int` | `None`   | 上界（含），`None` 表示到最后一个 step，`type` 为 `timestamp` 时**须为 UNIX 毫秒时间戳** |
-| `last`  | `int` | `None`   | 最近 N 毫秒（与 `start`/`end` 互斥）                                                     |
-| `head`  | `int` | `None`   | 取前 N 个数据点（与 `tail` 互斥，在范围过滤后截取）                                      |
-| `tail`  | `int` | `None`   | 取后 N 个数据点（与 `head` 互斥，在范围过滤后截取）                                      |
+| 字段    | 类型  | 默认值   | 描述                                                                                                                                    |
+| ------- | ----- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`  | `str` | `"step"` | 过滤轴：`"step"`、`"timestamp"` 或 `"custom"`（按自定义 X 轴的值域过滤，仅当 `x_axis` 为自定义指标 key 时有效）                         |
+| `start` | `int` | `None`   | 下界（含），`None` 表示不限制，`type` 为 `timestamp` 时**须为 UNIX 毫秒时间戳**；`type` 为 `custom` 时支持任意浮点数（含负数）          |
+| `end`   | `int` | `None`   | 上界（含），`None` 表示到最后一个 step，`type` 为 `timestamp` 时**须为 UNIX 毫秒时间戳**；`type` 为 `custom` 时支持任意浮点数（含负数） |
+| `last`  | `int` | `None`   | 最近 N 毫秒（与 `start`/`end` 互斥）                                                                                                    |
+| `head`  | `int` | `None`   | 取前 N 个数据点（与 `tail` 互斥，在范围过滤后截取）                                                                                     |
+| `tail`  | `int` | `None`   | 取后 N 个数据点（与 `head` 互斥，在范围过滤后截取）                                                                                     |
 
 **互斥规则：**
 
@@ -478,6 +479,16 @@ result = run.metrics(
 
 # 取最后 30 个数据点
 result = run.metrics(keys=["loss"], range_query={"tail": 30})
+
+# 自定义 X 轴：按 epoch 查看 loss（X 轴指标需已随指标上报，如通过 swanlab.define_metric 定义）
+result = run.metrics(keys=["loss"], x_axis="epoch")
+
+# 按自定义 X 轴的值域范围过滤（支持浮点数 / 负数）
+result = run.metrics(
+    keys=["loss"],
+    x_axis="lr",
+    range_query={"type": "custom", "start": 1e-4, "end": 1e-3},
+)
 ```
 
 :::
@@ -847,12 +858,13 @@ if result.ok:
 
 ### Key.metric() 入参
 
-| 参数               | 类型   | 默认值  | 描述                         |
-| ------------------ | ------ | ------- | ---------------------------- |
-| `sample`           | `int`  | `1500`  | 采样数量（最大 1500）        |
-| `ignore_timestamp` | `bool` | `False` | 是否去除时间戳字段           |
-| `media_step`       | `int`  | `None`  | 仅 MEDIA 类型生效，指定 step |
-| `all`              | `bool` | `False` | 获取全量数据（不受采样限制） |
+| 参数               | 类型   | 默认值   | 描述                                                                                                                                 |
+| ------------------ | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `sample`           | `int`  | `1500`   | 采样数量（最大 1500）                                                                                                                |
+| `ignore_timestamp` | `bool` | `False`  | 是否去除时间戳字段                                                                                                                   |
+| `media_step`       | `int`  | `None`   | 仅 MEDIA 类型生效，指定 step                                                                                                         |
+| `all`              | `bool` | `False`  | 获取全量数据（不受采样限制）                                                                                                         |
+| `x_axis`           | `str`  | `"step"` | 返回数据的 X 轴：`"step"`（默认）、内置轴 `"time"` / `"relative_time"`，或自定义 X 轴指标 key（仅 SCALAR 有效，`swanlab >= 0.10.1`） |
 
 ### Series / Key 方法示例
 
