@@ -1,40 +1,75 @@
-# 管理员配置 TRUSTED 登录与第三方平台接入
+# 受信第三方登录配置
 
-本文说明如何在 SwanLab 私有化环境中配置 TRUSTED Provider，以及第三方平台如何签发短期 JWT 并发起 SwanLab 登录。
+本文说明如何在 SwanLab 私有化环境中配置受信第三方 Provider，以及第三方平台如何签发短期 JWT 并发起 SwanLab 登录。
+
+:::tip
+**适用场景**： 希望将 SwanLab 集成到内部训练平台，用户在内部训练平台登录后，可以实现 SwanLab 私有化服务的「无感免登录跳转」。
+:::
 
 ## 一、功能简介
 
-TRUSTED 是 SwanLab 为受信第三方平台提供的简化登录方式，适用于第三方平台没有 OAuth2、OIDC 或 SAML2 IdP 能力，但能够自行认证用户并使用非对称密钥签发 JWT 的场景。
+“受信第三方”（TRUSTED）是 SwanLab 为受信第三方平台提供的简化登录方式，适用于第三方平台 <span style="color: red"><strong>没有 OAuth2、OIDC 或 SAML2 IdP 能力，但能够自行认证用户并使用非对称密钥签发 JWT</strong></span> 的场景。
 
-TRUSTED 登录由第三方平台发起：
+受信第三方登录由第三方平台发起：
 
-1. 用户先在第三方平台完成登录。
+1. 用户已在第三方平台完成登录。
 2. 第三方平台后端为当前用户签发短期、一次性的 JWT。
-3. 第三方平台通过新窗口向 SwanLab Auth 提交 JWT。
+3. 第三方前端通过新窗口向 SwanLab 认证服务提交 JWT（即携带凭证访问 SwanLab 私有化服务）。
 4. SwanLab 使用 Provider 中配置的公钥验证 JWT，并读取第三方用户 ID 和用户名。
-5. 已绑定的第三方用户直接登录；未绑定用户自动创建 SwanLab 账号、建立绑定关系并登录。
+5. **已绑定的第三方用户直接登录**；**未绑定用户自动创建 SwanLab 账号、建立绑定关系并登录**。
 
-TRUSTED 与其他 SSO 协议存在以下区别：
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as 用户 (浏览器)
+    participant ThirdWeb as 第三方平台前端
+    participant ThirdAPI as 第三方平台后端
+    participant SwanLab as SwanLab 私有化服务
 
-- 只用于私有化环境。
+
+    User->>ThirdWeb: 访问 SwanLab 私有化服务
+    ThirdWeb->>ThirdAPI: 请求生成登录凭证
+    ThirdAPI->>ThirdAPI: 校验用户会话，私钥签发短期 JWT
+    ThirdAPI-->>ThirdWeb: 返回 JWT
+    ThirdWeb->>SwanLab: 通过隐藏表单提交 JWT 到 SwanLab 回调地址
+    SwanLab->>SwanLab: 公钥验签、防重放校验、自动匹配绑定关系 / 自动创建账号
+    SwanLab-->>User: 登录成功，重定向进入 SwanLab 工作空间
+```
+
+受信第三方登录与其他 SSO 协议存在以下区别：
+
+- 仅适用于私有化环境。
 - 只支持登录，不支持绑定或 Provider 测试。
 - 不会出现在 SwanLab 公共登录方式列表中。
-- 不调用 SSO Redirect 接口，由第三方平台直接向 TRUSTED callback 提交 JWT。
+- 不调用 SSO Redirect 接口，由第三方平台直接向受信第三方 callback 接口提交 JWT。
 - 第三方平台不能指定 `state`、`action` 或 SwanLab 回调地址。
+
+### 角色分工
+
+受信第三方登录的配置与接入需要 **SwanLab 系统管理员** 与 **第三方平台研发人员** 的协作，各角色职责如下：
+
+| 角色                   | 任务分工                                                  |
+| :--------------------- | :-------------------------------------------------------- |
+| **SwanLab 系统管理员** | 确认访问地址、后台配置 Provider、配置公钥与字段映射       |
+| **第三方平台研发人员** | 生成签名密钥对、后端实现 JWT 签发、前端实现弹窗与表单提交 |
+
+::: tip 前置条件
+在进入登录跳转开发与联调前，必须先由 SwanLab 系统管理员完成域名确认、 受信第三方 Provider 的创建与启用。平台研发人员据此获取 **Provider 名称**（用于拼装 Callback URL）与确认 **第三方平台标识（iss）**。
+:::
 
 ## 二、使用前准备
 
 开始配置前，请确认：
 
-- 已部署支持 TRUSTED 的私有化版本。
-- 已按照[文档](https://docs.swanlab.cn/self_host/kubernetes/configuration.html#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE-global)完成 `global.settings.host` 配置。
+- 已部署支持受信第三方登录的私有化版本。
+- 已按照[value 配置说明](https://docs.swanlab.cn/self_host/kubernetes/configuration.html#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE-global)完成 `global.settings.host` 配置。
 - 第三方平台后端可以安全保存 JWT 私钥。
 - 第三方平台和 SwanLab 服务器均已进行时间同步。
-- SwanLab 使用 HTTPS 对外提供服务。
+- 「建议」SwanLab 私有化服务域名使用 HTTPS 提供服务。
 
 ### 2.1 配置 SwanLab 外部访问地址
 
-TRUSTED 登录完成后，Auth 需要跳转到 SwanLab 的 `/sso` 页面。该地址必须由私有化部署配置确定，不能从第三方请求中读取。
+由于受信第三方平台登录完成后，需要跳转到 SwanLab 私有化服务域名下的 `/sso` 子路由。该地址必须由私有化部署配置确定，不能从第三方请求中读取。
 
 在私有化部署脚本使用的 `values.yaml` 中配置 [`global.settings.host`](https://docs.swanlab.cn/self_host/kubernetes/configuration.html#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE-global)：
 
@@ -42,33 +77,46 @@ TRUSTED 登录完成后，Auth 需要跳转到 SwanLab 的 `/sso` 页面。该�
 global:
   settings:
     host: https://swanlab.example.com
+...
 ```
 
 `global.settings.host` 应填写用户通过浏览器访问 SwanLab 时使用的网关外部 URL：
 
 - 应包含 `http://` 或 `https://`，生产环境必须使用 HTTPS。
-- 不要填写 `/api/auth`、`/sso` 或 TRUSTED callback 路径。
-- 该配置不会自动创建或修改网关转发规则，应确保对应域名已经正确指向 SwanLab 网关。
-- 修改后保证配置同步到相关服务。
+- 不要填写 `/api/auth`、`/sso` 或受信第三方 callback 路径。
 
 示例：
 
 ```text
-正确：https://swanlab.example.com
-错误：https://swanlab.example.com/api/auth
-错误：https://swanlab.example.com/sso
+✅ 正确：https://swanlab.example.com
+❌ 错误：https://swanlab.example.com/api/auth
+❌ 错误：https://swanlab.example.com/sso
 ```
 
-## 三、配置 TRUSTED Provider
+- 如果已经配置过域名，则该步骤可以跳过；
+- 如果配置完成，需要更新部署服务使全局配置生效
+
+```bash
+helm upgrade swanlab-self-hosted  <PATH_TO_SELF_HOSTED_CHART> -f value.yaml -n <YOUR_NAMESPACE>
+```
+
+## 三、配置受信第三方 Provider
 
 ### 3.1 生成签名密钥
 
-TRUSTED 使用非对称签名：
+受信第三方登录使用非对称签名，需要在可信的服务器上，先生成一对公私钥，再配置验证方(Provider)：
 
 - 第三方平台保存私钥，用于签发 JWT。
 - SwanLab Provider 保存公钥，用于验证 JWT。
 
-推荐使用 RSA 2048 位密钥和 `RS256` 算法。可以使用 OpenSSL 生成 PKCS#8 私钥和对应公钥：
+::: info 执行角色与执行环境
+
+- **执行角色**：由**第三方平台研发人员**（或企业安全团队）执行。
+- **执行环境**：在**第三方平台后端的安全受信任环境**（如生产服务器、运维堡垒机或企业密钥管理系统 KMS）中执行，严禁在客户端、浏览器或前端代码中执行或保存私钥。
+
+:::
+
+推荐使用 `RSA 2048 位密钥`和 `RS256` 算法。在可信服务器的终端环境下，使用 OpenSSL 生成 PKCS#8 私钥和对应公钥：
 
 ```bash
 openssl genpkey \
@@ -84,100 +132,101 @@ openssl pkey \
 
 生成后：
 
-- `trusted-private.pem` 只能保存在第三方平台后端的密钥管理系统中。
-- `trusted-public.pem` 填写到 SwanLab Provider 的 JWT 公钥字段。
+- `trusted-private.pem` 私钥，需要严格保存 （如密钥管理系统等），用于签发 JWT Token；
+- `trusted-public.pem` 公钥，用于填写到 SwanLab 管理后台 -> 受信第三方 Provider -> JWT 公钥字段。
 - 不要通过代码仓库、前端环境变量、浏览器存储或日志保存私钥。
 
-TRUSTED 同时支持以下算法：
+受信第三方登录同时支持以下算法：
 
 - RSA：`RS256`、`RS384`、`RS512`
 - ECDSA：`ES256`、`ES384`、`ES512`
 
 不支持 `HS256` 等使用共享密钥的 HMAC 算法。
 
-### 3.2 创建 Provider
+### 3.2 创建验证方
 
-1. 使用 SwanLab 管理员账号进入“身份验证”管理页面，选择创建 `TRUSTED` Provider。
+1. 使用 SwanLab 管理员账号进入 **「身份验证」** 管理页面，选择 **「添加验证方」->「受信第三方登录」**。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260720153228495.png)
 
 2. 填写基础配置
 
-| 字段     | 是否必填 | 说明                                                                                                                  |
-| -------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
-| 名称     | 是       | Provider 唯一标识，最多 25 个字符，只允许字母、数字、下划线和连字符。该值会出现在 callback URL 中，创建后建议不要修改 |
-| 展示名称 | 是       | Provider 的管理和登录流程展示名称，不会作为公共登录按钮显示，仅为管理使用                                             |
+| 字段     | 是否必填 | 说明                                                                                                                                       |
+| -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 名称     | 是       | 受信第三方Provider 唯一标识，**最多 25 个字符，只允许字母、数字、下划线(\_)和连字符(-)**。该值会出现在 callback URL 中，创建后建议不要修改 |
+| 展示名称 | 是       | 受信第三方 Provider 的管理和登录流程展示名称，不会作为公共登录按钮显示，仅为管理使用                                                       |
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260720153433757.png)
 
-3. 填写 TRUSTED 配置
+3. 填写受信第三方配置
 
-| 字段         | 是否必填 | 说明                                                                                           |
-| ------------ | -------- | ---------------------------------------------------------------------------------------------- |
-| 三方平台标识 | 是       | 第三方平台的稳定标识，对应 JWT 的 `iss`，两者必须完全一致，否则后续校验将不通过                |
-| JWT 公钥     | 是       | 用于验证 JWT 签名的 RSA 或 ECDSA PEM 公钥，应包含完整的 `BEGIN PUBLIC KEY` 和 `END PUBLIC KEY` |
+| 字段               | 是否必填 | 说明                                                                                           |
+| ------------------ | -------- | ---------------------------------------------------------------------------------------------- |
+| 受信第三方平台标识 | 是       | 受信第三方平台的稳定标识，对应 JWT 的 `iss`，两者必须完全一致，否则后续校验将不通过            |
+| JWT 公钥           | 是       | 用于验证 JWT 签名的 RSA 或 ECDSA PEM 公钥，应包含完整的 `BEGIN PUBLIC KEY` 和 `END PUBLIC KEY` |
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260720154820031.png)
 
 4. 配置用户字段映射
 
-用户字段映射决定 SwanLab 从 JWT payload 的哪些字段中读取第三方用户身份。
+用户字段映射决定了 SwanLab 从 JWT payload 的哪些字段中读取第三方用户身份
 
-| 字段         | 是否必填 | 推荐值     | 说明                                                                  |
-| ------------ | -------- | ---------- | --------------------------------------------------------------------- |
-| 用户 ID 字段 | 是       | `sub`      | JWT 中第三方用户稳定且唯一的 ID 对应字段                              |
-| 用户名字段   | 是       | `username` | JWT 中第三方用户名对应字段，首次自动创建 SwanLab 账号时作为默认用户名 |
+| 字段             | 是否必填 | 推荐值     | 说明                                                                                     |
+| ---------------- | -------- | ---------- | ---------------------------------------------------------------------------------------- |
+| 用户唯一 ID 字段 | 是       | `sub`      | JWT 解码后的 payload 中，第三方用户稳定且唯一的 ID 对应字段                              |
+| 用户名字段       | 是       | `username` | JWT 解码后的 payload 中，第三方用户名对应字段，首次自动创建 SwanLab 账号时作为默认用户名 |
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260720155100572.png)
 
-使用推荐配置时，JWT payload 至少应包含：
+使用推荐配置时，JWT payload 至少应包含 `sub` 和 `username` 两个 key 字段，例如：
 
 ```json
 {
-  "sub": "external-user-123",
-  "username": "alice"
+  "sub": "external-user-123", // 标准字段，表示用户唯一标识
+  "username": "alice",      //  自定义字段，通常用于表示展示用户名
+  ...
 }
 ```
 
-字段映射可以使用其他名称。例如配置：
+字段映射可以使用其他名称。例如，字段配置为：
 
 ```text
-用户 ID 字段：employee_id
+用户唯一 ID 字段：employee_id
 用户名字段：login_name
 ```
 
-则 JWT 中必须包含：
+则在业务系统的 JWT payload 中，必须包含 `employee_id` 和 `login_name` 两个 key：
 
 ```json
 {
-  "employee_id": "employee-123",
-  "login_name": "alice"
+  "employee_id": "employee-123", // employee_id 为唯一 ID 身份标识
+  "login_name": "alice"         // login_name 为用于展示的用户名
+  ...
 }
 ```
 
-用户 ID 应满足以下要求：
+- <span style="color: red"><strong>用户唯一 ID 应具有唯一性，且在用户更换名称、邮箱或组织后，仍保持不变。</strong></span>
 
-- 在同一个 Provider 中永久唯一。
-- 用户改名、换邮箱或调整组织后仍保持不变。
-- 不要使用可能重复或变化的展示名称作为用户 ID。
-
-若希望首次登录时无需用户修改用户名，JWT 中映射出的用户名还应：
-
-- 只包含字母、数字、下划线和连字符。
-- 不超过 25 个字符。
-- 未被其他 SwanLab 用户占用。
+- 若希望 **首次登录时，用户无需修改用户名**，JWT payload 中，用户名字段应保持如下性质：
+  - 只包含字母、数字、下划线和连字符，且长度不超过 25 个字符。
+  - 此用户名未被其他 SwanLab 用户占用。
 
 如果用户名不合法或已经存在，SwanLab 会在新窗口中要求用户修改用户名后再创建账号。
 
 5. 启用 Provider
 
-创建 Provider 后，在 Provider 列表中将状态切换为“已启用”。
+创建受信第三方 Provider 后，在 Provider 列表中将状态切换为 **「已启用」**。
 
-TRUSTED Provider 不会出现在 SwanLab 普通登录页面，也不会提供 Provider 测试按钮或登录入口 Logo 配置。排序值只影响管理列表中的 Provider 顺序。第三方平台必须通过 callback URL 主动发起登录。
+受信第三方 Provider **不会出现在 SwanLab 普通登录页面**，**也不会提供 Provider 测试按钮或登录入口 Logo 配置**。排序值只影响管理列表中的 Provider 顺序。第三方平台必须通过 callback URL 主动发起登录。
 
 ![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/images/20260720155318452.png)
 
 ## 四、第三方平台签发 JWT
+
+:::warning
+📚 JWT payload 字段说明参考: https://www.jwt.io/introduction
+
+:::
 
 ### 4.1 JWT 必填内容
 
@@ -185,8 +234,8 @@ JWT protected header 示例：
 
 ```json
 {
-  "alg": "RS256",
-  "typ": "JWT"
+  "alg": "RS256", // 签名算法
+  "typ": "JWT" // 令牌类型
 }
 ```
 
@@ -194,40 +243,42 @@ JWT payload 示例：
 
 ```json
 {
-  "iss": "partner-platform",
-  "sub": "external-user-123",
-  "username": "alice",
-  "iat": 1784000000,
-  "exp": 1784000060,
-  "jti": "e39f79d8-faf5-4da8-8fc5-f9115d2e9568"
+  "iss": "partner-platform", // 签发者（平台标识）
+  "sub": "external-user-123", // 用户唯一标识
+  "username": "alice", // 用户名
+  "iat": 1784000000, // 签发时间（Unix 秒级时间戳）
+  "exp": 1784000060, // 过期时间（Unix 秒级时间戳）
+  "jti": "e39f79d8-faf5-4da8-8fc5-f9115d2e9568" // JWT 凭证自身唯一 ID（防重放）
 }
 ```
 
 字段要求：
 
-| Claim         | 是否必填 | 说明                                                                                |
-| ------------- | -------- | ----------------------------------------------------------------------------------- |
-| `iss`         | 是       | 必须与 SwanLab Provider 的“三方平台标识”完全一致                                    |
-| `iat`         | 是       | JWT 签发时间，Unix 秒级时间戳，不能晚于请求到达 SwanLab 时的当前时间                |
-| `exp`         | 是       | JWT 过期时间，Unix 秒级时间戳，必须晚于 `iat`，并且 `exp - iat <= 300` 秒           |
-| `jti`         | 是       | JWT 唯一标识，必须是非空字符串，每次签发都应生成新值，推荐使用 UUIDv4，防止重放攻击 |
-| 用户 ID Claim | 是       | Claim 名称由 Provider 的“用户 ID 字段”决定，值必须能稳定标识第三方用户              |
-| 用户名 Claim  | 是       | Claim 名称由 Provider 的“用户名字段”决定，值不能为空                                |
-| `nbf`         | 否       | 如果提供，不能晚于 SwanLab Auth 当前时间                                            |
+| Key        | 语义               | 是否必填 | 说明                                                                                |
+| ---------- | ------------------ | -------- | ----------------------------------------------------------------------------------- |
+| `iss`      | 签发者（平台标识） | 是       | 必须与 SwanLab 管理后台登录配置的 **「受信第三方平台标识」** 字段完全一致           |
+| `iat`      | 签发时间           | 是       | JWT 签发时间，Unix 秒级时间戳，不能晚于请求到达 SwanLab 时的当前时间                |
+| `exp`      | 过期时间           | 是       | JWT 过期时间，Unix 秒级时间戳，必须晚于 `iat`，并且 `exp - iat <= 300` 秒           |
+| `jti`      | 凭证唯一 ID        | 是       | 防重放唯一标识，必须是非空字符串，每次签发都应生成全新随机值（推荐使用 UUID）       |
+| `sub`      | 用户唯一标识       | 是       | 默认 `sub`，由 Provider 的 「用户唯一 ID 标识字段」决定，值必须稳定且唯一标识该用户 |
+| `username` | 用户名             | 是       | 默认 `username`，由 Provider 的「用户名字段」决定，值不能为空                       |
+| `nbf`      | 生效时间           | 否       | 若提供，则 JWT 在此时间前不可用，且不能晚于 SwanLab Auth 服务的当前时间戳           |
 
 推荐将 JWT 有效期设置为 60 秒。Auth 接受的最大签发有效期为 300 秒。
 
-同一 Provider、三方平台标识和 `jti` 组合只能成功使用一次。重复提交同一个 JWT 会返回凭证已使用错误；请求失败后需要重新签发新的 JWT，不能重用旧 token。
+同一 Provider、三方平台标识和 `jti` 组合只能成功使用一次。重复提交同一个 JWT 会返回凭证已使用错误；请求失败后需要重新签发新的 JWT，不能重复使用旧 token。
 
 ### 4.2 在第三方后端签发 JWT
 
-在第三方平台签发 JWT。以下示例使用 Node.js 和 `jose`：
+::: warning
+**⚠️ 注意**：以下示例代码为**受信第三方平台后端逻辑示例**，**私钥需要存储在第三方平台后端服务可以访问的环境中**
+:::
 
-```bash
-pnpm add jose
-```
+签发 JWT 的逻辑在受信第三方平台后端服务中，以下使用 `Node.js` 和 `jose` 作为示例后端代码：
 
-```ts
+::: code-group
+
+```ts [Node.js]
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { importPKCS8, SignJWT } from "jose";
@@ -235,6 +286,8 @@ import { importPKCS8, SignJWT } from "jose";
 const algorithm = "RS256";
 const issuer = "partner-platform";
 
+// 示例代码的私钥存放在本地
+// 生产环境请确保后端服务能够从安全环境中访问到私钥
 const privateKeyPEM = await readFile("./trusted-private.pem", "utf8");
 const privateKey = await importPKCS8(privateKeyPEM, algorithm);
 
@@ -254,41 +307,47 @@ export async function issueSwanLabToken(user: { id: string; username: string }) 
 }
 ```
 
-如果在 SwanLab 上配置身份验证方时使用的用户信息映射字段不是 `sub` 和 `username`，应同步修改 `SignJWT` payload 中的字段名称。
+:::
 
-第三方只有在确认当前第三方用户已经登录后才能签发 JWT。不要允许浏览器任意指定第三方用户 ID 或用户名后请求签发。
+- 如果在 SwanLab 上配置身份验证方时使用的用户信息映射字段不是 `sub` 和 `username`，应同步修改 `SignJWT` payload 中的字段名称。
+
+- 受信第三方平台需要确认当前用户已经登录后，才能签发 JWT。不可允许浏览器任意指定第三方用户 ID 或用户名后请求签发。
 
 ## 五、第三方平台发起登录
 
 ### 5.1 Callback 地址
 
-TRUSTED callback 地址格式：
+受信第三方平台的回调地址格式如下所示：
 
 ```text
 https://<SwanLab 外部访问地址>/api/auth/sso/trusted/callback/<Provider 名称>
 ```
 
-示例：
+例如，SwanLab 私有化服务域名为 `https://swanlab.example/com`，受信第三方验证方 Provider 名称为 `partner-platform`：
 
 ```text
 https://swanlab.example.com/api/auth/sso/trusted/callback/partner-platform
 ```
 
-请求要求：
+回调请求体要求如下：
 
 - 请求方法必须为 `POST`。
 - Content-Type 推荐使用 `application/x-www-form-urlencoded`。
 - 表单字段名必须为 `token`。
-- 整个表单请求体不能超过 16 KiB。
-- token 不应放在 URL query 中。
+- 整个表单请求体大小**不能超过 16 KiB**
+- token 不得放在 URL query 参数中。
 
 ### 5.2 使用隐藏表单打开 SwanLab
 
-> 以场景“点击第三方平台上的按钮后，在新窗口打开 SwanLab 并自动登录”为例，给出如下示例方案。
+::: warning 前端运行逻辑
+本示例代码为**第三方平台前端**逻辑，运行在用户浏览器中，负责在用户点击时预打开空白标签页、请求第三方后端生成凭据，并通过隐藏表单向 SwanLab 提交 Token 发起免登。
+:::
 
-第三方平台获取刚签发的 JWT 后，应先同步打开空白窗口，再通过隐藏表单向该窗口提交 token。先打开窗口可以避免异步请求完成后被浏览器当作弹窗拦截。
+第三方平台前端获取刚签发的 JWT 后，应先同步打开空白窗口，再通过隐藏表单向该窗口提交 token。先打开窗口可以避免异步请求完成后被浏览器当作弹窗拦截。
 
-```ts
+::: code-group
+
+```ts [前端 (Browser)]
 function submitToken(token: string, target: string) {
   const provider = "partner-platform";
   const form = document.createElement("form");
@@ -338,18 +397,22 @@ export async function startSwanLabLogin() {
 }
 ```
 
+:::
+
 推荐的按钮处理流程：
 
-1. 用户点击“打开 SwanLab”。
+1. 用户请求访问 SwanLab。
 2. 前端立即调用 `window.open('', target)` 创建窗口。
 3. 签发当前用户的短期 JWT。
 4. 获取成功后使用隐藏表单向新窗口提交 JWT。
 5. 获取或提交失败时关闭空白窗口，并在第三方平台显示错误。
 
-> 注意！
-> 必须使用 `window.open` 打开新窗口，因为 SwanLab 在登录失败时提供“关闭”按钮，点击后自动关闭由 `window.open` 打开的 SwanLab 窗口。
+::: warning 注意
+必须使用 `window.open` 打开新窗口，因为 SwanLab 在登录失败时提供“关闭”按钮，点击后自动关闭由 `window.open` 打开的 SwanLab 窗口。
 
-不要使用以下方式传递 token：
+:::
+
+不允许使用以下方式传递 token：
 
 ```text
 https://swanlab.example.com/api/auth/sso/trusted/callback/partner-platform?token=<jwt>
@@ -359,7 +422,7 @@ URL 可能被浏览器历史记录、访问日志、代理日志和 Referer 保�
 
 ### 5.3 登录后的账号行为
 
-SwanLab 根据“Provider + 第三方用户 ID”维护第三方用户与 SwanLab 用户的绑定关系：
+SwanLab 根据「验证方 Provider + 第三方用户唯一 ID」维护第三方用户与 SwanLab 用户的绑定关系：
 
 - 已存在绑定：直接创建 SwanLab 登录态并进入 SwanLab。
 - 不存在绑定：使用映射出的用户名创建 SwanLab 用户（席位不足时将提示失败），建立绑定关系后登录。
@@ -370,13 +433,13 @@ SwanLab 根据“Provider + 第三方用户 ID”维护第三方用户与 SwanLa
 
 ## 六、错误说明与排查
 
-| 错误                     | 含义                                                               | 排查建议                                                                     |
-| ------------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| 受信第三方登录配置不可用 | Provider 不存在、未启用、协议不是 TRUSTED 或 Auth 无法读取配置     | 检查 callback 中的 Provider 名称、Provider 状态以及 SwanLab Server/Auth 连接 |
-| 登录凭证无效或已过期     | token 缺失、签名失败、算法不支持、`iss` 不匹配或时间字段不符合要求 | 重新签发 token；检查公私钥、算法、`iss`、`iat`、`exp` 和服务器时间           |
-| 登录凭证已经使用         | 相同的 `jti` 已经成功提交                                          | 每次登录生成新的 `jti` 和 JWT，不要重试旧 token                              |
-| 无法获取完整用户信息     | 用户字段映射对应的 Claim 缺失、为空或类型不支持                    | 检查 Provider 映射和 JWT payload，确保用户 ID、用户名均为非空字符串          |
-| 登录服务暂时不可用       | Auth 无法写入 JWT 消费记录或 Redis 暂时不可用                      | 检查 Auth Redis 连接，恢复后重新签发 JWT                                     |
+| 错误                     | 含义                                                                                   | 排查建议                                                                     |
+| ------------------------ | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 受信第三方登录配置不可用 | Provider 不存在、未启用、协议不是受信第三方（TRUSTED）或 SwanLab Auth 服务无法读取配置 | 检查 callback 中的 Provider 名称、Provider 状态以及 SwanLab Server/Auth 连接 |
+| 登录凭证无效或已过期     | token 缺失、签名失败、算法不支持、`iss` 不匹配或时间字段不符合要求                     | 重新签发 token；检查公私钥、算法、`iss`、`iat`、`exp` 和服务器时间           |
+| 登录凭证已经使用         | 相同的 `jti` 已经成功提交                                                              | 每次登录生成新的 `jti` 和 JWT，不要重试旧 token                              |
+| 无法获取完整用户信息     | 用户字段映射对应的 Claim 缺失、为空或类型不支持                                        | 检查 Provider 映射和 JWT payload，确保用户 ID、用户名均为非空字符串          |
+| 登录服务暂时不可用       | Auth 无法写入 JWT 消费记录或 Redis 暂时不可用                                          | 检查 Auth Redis 连接，恢复后重新签发 JWT                                     |
 
 常见问题：
 
@@ -412,7 +475,7 @@ Provider 当前只保存一份 JWT 公钥。更新公钥后，使用旧私钥签
 
 ## 七、安全注意事项
 
-- TRUSTED 只应部署在明确受信的私有化环境中。
+- 受信第三方登录只应部署在明确受信的私有化环境中。
 - 私钥必须保存在第三方平台后端或专用密钥管理系统中，不得发送到 SwanLab 或浏览器。
 - JWT 是短期登录凭证，应按密码同等级别保护，不得记录完整 token。
 - JWT 是 Bearer Credential，首个成功提交者会以 JWT 中的用户身份继续登录；只能在已认证用户明确点击进入 SwanLab 后即时签发。
