@@ -568,7 +568,10 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
                 { text: "OAuth2 Configuration", link: "kubernetes/sso/oauth2-configuration" },
                 { text: "OIDC Configuration", link: "kubernetes/sso/oidc-configuration" },
                 { text: "SAML2 Configuration", link: "kubernetes/sso/saml2-configuration" },
-                { text: "TRUSTED Configuration", link: "kubernetes/sso/trusted-configuration" },
+                {
+                  text: "Trusted Third-Party Configuration",
+                  link: "kubernetes/sso/trusted-configuration",
+                },
               ],
             },
             { text: "FAQ", link: "kubernetes/faq" },

@@ -630,7 +630,7 @@ function sidebarSelfHosted(): DefaultTheme.SidebarItem[] {
                 { text: "OAuth2 配置", link: "kubernetes/sso/oauth2-configuration" },
                 { text: "OIDC 配置", link: "kubernetes/sso/oidc-configuration" },
                 { text: "SAML2 配置", link: "kubernetes/sso/saml2-configuration" },
-                { text: "TRUSTED 配置", link: "kubernetes/sso/trusted-configuration" },
+                { text: "受信第三方配置", link: "kubernetes/sso/trusted-configuration" },
               ],
             },
             { text: "常见问题", link: "kubernetes/faq" },
