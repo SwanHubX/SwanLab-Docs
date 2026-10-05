@@ -4,7 +4,7 @@
 
 | WeChat Official Account                                                                                                                             | WeChat Group                                                                                                                                                                     |
 | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300></div> | <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/img_v3_0215v_2ec0af3a-617c-4d18-a066-920a512e41ag.jpg" width=250/></div> |
+| <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/wechat_public_account.jpg" width=300></div> | <div align="center"><img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/img_v3_02166_ff05b1b8-555e-4eff-abc7-4e0387d7a46g.jpg" width=280/></div> |
 
 | Feishu Group                                                                                                                                                                     |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
