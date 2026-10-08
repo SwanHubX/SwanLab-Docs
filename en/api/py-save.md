@@ -79,3 +79,4 @@ swanlab.finish()
 1. The `glob_str` pattern is resolved relative to `base_path` (or current working directory if not specified).
 2. Only regular files are saved — directories are automatically filtered out.
 3. There is a limit on the number of files that can be saved in a single call (controlled by `save_batch` setting).
+4. When `core.skip_store=True`, file watching is unavailable: `policy="live"` is downgraded to `"now"` , and later file changes will not be uploaded automatically.

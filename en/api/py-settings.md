@@ -100,15 +100,16 @@ Passed via the `integration` field, used to configure Webhook and local dashboar
 
 Passed via the `core` field, used to control core upload and save behavior.
 
-| Parameter         | Type  | Description                                                                                                                                                                                          |
-| :---------------- | :---- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `section_rule`    | int   | Metric key segmentation rule, specifies which `/` to use to split section and metric name: `0` = first, `1` = second, `-1` = last. Out-of-range values wrap via `idx % slash_count`. Default is `0`. |
-| `record_batch`    | int   | Maximum number of records per HTTP request. Range: 1-100000, default is `10000`.                                                                                                                     |
-| `record_interval` | float | Batch upload interval for the upload thread (in seconds). Default is `5.0`. Can be reduced (e.g., to `0.5`) in high-throughput scenarios like Converters.                                            |
-| `save_split`      | int   | File size threshold for multipart upload (in bytes). Default is `100 MiB` (104857600 bytes).                                                                                                         |
-| `save_size`       | int   | Maximum save size per file (in bytes). Default is `50 GiB` (53687091200 bytes).                                                                                                                      |
-| `save_part`       | int   | Multipart upload part size (in bytes). Default is `32 MiB` (33554432 bytes).                                                                                                                         |
-| `save_batch`      | int   | Maximum number of files per save upload batch. Default is `100`.                                                                                                                                     |
+| Parameter         | Type  | Description                                                                                                                                                                                                                                                                                                                   |
+| :---------------- | :---- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `section_rule`    | int   | Metric key segmentation rule, specifies which `/` to use to split section and metric name: `0` = first, `1` = second, `-1` = last. Out-of-range values wrap via `idx % slash_count`. Default is `0`.                                                                                                                          |
+| `record_batch`    | int   | Maximum number of records per HTTP request. Range: 1-100000, default is `10000`.                                                                                                                                                                                                                                              |
+| `record_interval` | float | Batch upload interval for the upload thread (in seconds). Default is `5.0`. Can be reduced (e.g., to `0.5`) in high-throughput scenarios like Converters.                                                                                                                                                                     |
+| `save_split`      | int   | File size threshold for multipart upload (in bytes). Default is `100 MiB` (104857600 bytes).                                                                                                                                                                                                                                  |
+| `save_size`       | int   | Maximum save size per file (in bytes). Default is `50 GiB` (53687091200 bytes).                                                                                                                                                                                                                                               |
+| `save_part`       | int   | Multipart upload part size (in bytes). Default is `32 MiB` (33554432 bytes).                                                                                                                                                                                                                                                  |
+| `save_batch`      | int   | Maximum number of files per save upload batch. Default is `100`.                                                                                                                                                                                                                                                              |
+| `skip_store`      | bool  | Whether to skip local log persistence (no `swanlog/`, `run-*.swanlab`, `media/`, `files/`, `debug/`); data is uploaded directly to the cloud. **Only valid in `online` mode**. When enabled, `swanlab sync` / `swanlab watch` do not apply, and records not yet uploaded are unrecoverable after a crash. Default is `False`. |
 
 ### Probe Configuration `ProbeSettings`
 
@@ -235,3 +236,25 @@ swanlab.merge_settings(new_settings)
 swanlab.init()
 ...
 ```
+
+### Skipping Local Log Persistence
+
+For scenarios without persistent storage (e.g., containers), or when you don't want any local files on the training machine. When enabled, the SDK does not create the `swanlog/` directory or any local files — metrics, media, config, and other data are uploaded directly to the cloud:
+
+```python
+import swanlab
+
+swanlab.init(settings=swanlab.Settings(core=swanlab.Settings.Core(skip_store=True)))
+
+# Or via environment variable:
+# SWANLAB_CORE_SKIP_STORE=true
+```
+
+::: warning Note
+
+- Only available in `online` mode; other modes will raise an error during `init`.
+- Un-uploaded records are unrecoverable if the process crashes due to the lack of local logs; `swanlab sync` and `swanlab watch` do not apply.
+- File watching in `swanlab.save()` (`policy="live"`) is unavailable and will automatically downgrade to `"now"`.
+- In default mode, media files (such as images and audio) are written to disk before being uploaded asynchronously. Under `skip_store`, media payloads are buffered in memory and uploaded directly to the cloud; logging high-frequency or large volumes of media under limited network bandwidth may increase process memory usage while awaiting upload confirmation.
+
+:::

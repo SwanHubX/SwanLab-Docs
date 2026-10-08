@@ -88,13 +88,14 @@
 
 ## 核心行为
 
-| 环境变量                               | 描述                                                                  | 默认值  |
-| -------------------------------------- | --------------------------------------------------------------------- | ------- |
-| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | 是否跳过 swanboard 版本兼容性检查，设置为 `1` 可跳过                  | 不跳过  |
-| `SWANLAB_FS_TIMEOUT`                   | 文件系统操作超时时间（秒），适用于 NAS 等异步延迟较高的存储环境       | `5.0`   |
-| `SWANLAB_CORE_RECORD_BATCH`            | 单次 HTTP 请求上传的记录条数上限                                      | `10000` |
-| `SWANLAB_TERMINAL_PROXY_TYPE`          | 终端日志代理策略：`all`（全部）、`stdout`、`stderr`、`none`（不收集） | `all`   |
-| `SWANLAB_TERMINAL_MAX_LENGTH`          | 单行终端日志的最大字符长度                                            | `1024`  |
+| 环境变量                               | 描述                                                                                          | 默认值  |
+| -------------------------------------- | --------------------------------------------------------------------------------------------- | ------- |
+| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | 是否跳过 swanboard 版本兼容性检查，设置为 `1` 可跳过                                          | 不跳过  |
+| `SWANLAB_FS_TIMEOUT`                   | 文件系统操作超时时间（秒），适用于 NAS 等异步延迟较高的存储环境                               | `5.0`   |
+| `SWANLAB_CORE_RECORD_BATCH`            | 单次 HTTP 请求上传的记录条数上限                                                              | `10000` |
+| `SWANLAB_CORE_SKIP_STORE`              | 是否跳过所有 SDK 本地文件、数据仅直传云端，等价于 `core.skip_store`；仅在 `online` 模式下合法 | `false` |
+| `SWANLAB_TERMINAL_PROXY_TYPE`          | 终端日志代理策略：`all`（全部）、`stdout`、`stderr`、`none`（不收集）                         | `all`   |
+| `SWANLAB_TERMINAL_MAX_LENGTH`          | 单行终端日志的最大字符长度                                                                    | `1024`  |
 
 ## 高级配置
 
