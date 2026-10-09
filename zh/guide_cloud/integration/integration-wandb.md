@@ -110,22 +110,23 @@ runid的位置：
 
 首先，需要确保当前环境下，你已登录了 W&B，并有权限访问目标项目。
 
-转换命令行：
+转换命令：
 
 ```bash
-swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]
+swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY] --wb-runid [WANDB_RUN_ID]
 ```
 
 支持的参数如下：
 
-- `-t`: 转换类型，可选wandb与tensorboard。
-- `-p`: SwanLab项目名。
+- `-t`: 转换类型，可选 `tensorboard`、`wandb`、`mlflow`、`wandb-local`，默认为 `tensorboard`。
+- `-p`: SwanLab项目名，默认与 W&B 项目名一致。
 - `-w`: SwanLab工作空间名。
 - `--mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `-l`: logdir路径。
-- `--wb-project`：待转换的 W&B 项目名。
-- `--wb-entity`：W&B 项目所在的空间名。
+- `--wb-project`：待转换的 W&B 项目名（必填）。
+- `--wb-entity`：W&B 项目所在的空间名（必填）。
 - `--wb-runid`: W&B Run（项目下的某一个实验）的id。
+- `--resume`: 续传模式，将 W&B Run 的 id 作为 SwanLab Run 的 id 进行续传，需要与 `--wb-runid` 一起使用。
 
 如果不填写`--wb-runid`，则会将指定项目下的全部Run进行转换；如果填写，则只转换指定的Run。
 
@@ -136,7 +137,7 @@ swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_EN
 1. 数据下载到本地：
 
 ```bash
-swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]
+swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY] --wb-runid [WANDB_RUN_ID]
 ```
 
 2. 上传到swanlab：
@@ -153,7 +154,7 @@ swanlab sync [日志文件夹路径]
 from swanlab.converter import WandbConverter
 
 wb_converter = WandbConverter()
-# wb_runid可选
+# wb_run_id 可选
 wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 ```
 
@@ -164,13 +165,17 @@ wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
 - `mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
-- `logdir`: logdir路径。
+- `log_dir`: SwanLab日志文件的保存路径（`logdir` 参数已弃用，请使用 `log_dir`）。
+- `tags`: (list) 实验标签列表。
+- `resume`: (bool) 续传模式，默认为 False，需配合 `run()` 中的 `wb_run_id` 使用，将 W&B Run 的 id 作为 SwanLab Run 的 id 进行续传。
+- `wb_project`: wandb项目名，也可在 `run()` 中传入（`run()` 中的值优先）。
+- `wb_entity`: wandb项目所在的空间名，也可在 `run()` 中传入（`run()` 中的值优先）。
 
 `WandbConverter.run`支持的参数：
 
-- `wb_project`: wandb项目名。
-- `wb_entity`: wandb项目所在的空间名。
-- `wb_runid`: wandb Run（项目下的某一个实验）的id。
+- `wb_project`: wandb项目名（必填，或在构造函数中传入）。
+- `wb_entity`: wandb项目所在的空间名（必填，或在构造函数中传入）。
+- `wb_run_id`: wandb Run（项目下的某一个实验）的id。
 
 **异步转换方法（先将数据下载到本地，再上传到swanlab）**
 
@@ -180,7 +185,7 @@ wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 from swanlab.converter import WandbConverter
 
 wb_converter = WandbConverter(mode="offline")
-# wb_runid可选
+# wb_run_id 可选
 wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 ```
 
@@ -215,8 +220,10 @@ swanlab convert -t wandb-local --wb-dir [WANDB_LOG_DIR] --wb-run-dir [WANDB_RUN_
 - `-w`: SwanLab工作空间名。
 - `--mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
 - `-l`: logdir路径。
-- `--wb-dir`：待转换的wandb日志目录
+- `--wb-dir`：待转换的wandb日志目录，默认为 `./wandb`。
 - `--wb-run-dir`：指定的wandb run的目录名。如果不写该参数，则将上传整个wb-dir中的run。
+- `--wb-runid`：配合 `--resume` 使用时，作为 SwanLab Run 的 id 进行续传。
+- `--resume`: 续传模式，需要与 `--wb-runid` 一起使用。
 
 案例：
 
@@ -224,11 +231,11 @@ swanlab convert -t wandb-local --wb-dir [WANDB_LOG_DIR] --wb-run-dir [WANDB_RUN_
 
 ### 3.3 方式二：代码转换
 
-```bash
+```python
 from swanlab.converter import WandbLocalConverter
 
 wb_converter = WandbLocalConverter()
-# wb_runid可选
+# wandb_run_dir 可选
 wb_converter.run(root_wandb_dir="WANDB_DIR", wandb_run_dir="WANDB_RUN_DIR")
 ```
 
@@ -237,9 +244,14 @@ wb_converter.run(root_wandb_dir="WANDB_DIR", wandb_run_dir="WANDB_RUN_DIR")
 - `project`: SwanLab项目名。
 - `workspace`: SwanLab工作空间名。
 - `mode`: (str) 选择模式，默认为"online"，可选 `["online", "local", "offline", "disabled"]`
-- `logdir`: logdir路径。
+- `log_dir`: SwanLab日志文件的保存路径（`logdir` 参数已弃用，请使用 `log_dir`）。
+- `tags`: (list) 实验标签列表。
+- `resume`: (bool) 续传模式，默认为 False，需配合 `run()` 中的 `wb_run_id` 使用。
+- `root_wandb_dir`: wandb日志文件目录的路径，默认为 `./wandb`（可在 `run()` 中覆盖）。
+- `wandb_run_dir`: 指定的wandb run目录名（可在 `run()` 中覆盖）。
 
 `WandbLocalConverter.run`支持的参数：
 
 - `root_wandb_dir`: wandb日志文件目录的路径。
-- `wandb_run_dir`: wandb run目录的路径。
+- `wandb_run_dir`: wandb run目录名。
+- `wb_run_id`: 配合 `resume=True` 使用时，作为 SwanLab Run 的 id 进行续传。

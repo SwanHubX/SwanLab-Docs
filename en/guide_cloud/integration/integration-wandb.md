@@ -112,19 +112,20 @@ First, ensure you are logged into W&B and have access to the target project.
 Conversion command:
 
 ```bash
-swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]
+swanlab convert -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY] --wb-runid [WANDB_RUN_ID]
 ```
 
 Supported parameters:
 
-- `-t`: Conversion type (`wandb` or `tensorboard`).
-- `-p`: SwanLab project name.
+- `-t`: Conversion type. Options: `tensorboard`, `wandb`, `mlflow`, `wandb-local`. Default: `tensorboard`.
+- `-p`: SwanLab project name. Defaults to the W&B project name.
 - `-w`: SwanLab workspace name.
 - `--mode`: (str) Logging mode (default: `"online"`), options: `["online", "local", "offline", "disabled"]`.
 - `-l`: Log directory path.
-- `--wb-project`: W&B project name to convert.
-- `--wb-entity`: W&B entity (username/team) where the project resides.
+- `--wb-project`: W&B project name to convert (required).
+- `--wb-entity`: W&B entity (username/team) where the project resides (required).
 - `--wb-runid`: W&B Run ID (specific experiment under the project).
+- `--resume`: Resume mode — uses the W&B Run ID as the SwanLab Run ID for resuming; must be used together with `--wb-runid`.
 
 If `--wb-runid` is omitted, all Runs under the project will be converted. If specified, only the selected Run will be converted.
 
@@ -135,7 +136,7 @@ If `--wb-runid` is omitted, all Runs under the project will be converted. If spe
 1. Download data locally:
 
 ```bash
-swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY]
+swanlab convert --mode 'offline' -t wandb --wb-project [WANDB_PROJECT_NAME] --wb-entity [WANDB_ENTITY] --wb-runid [WANDB_RUN_ID]
 ```
 
 2. Upload to SwanLab:
@@ -152,7 +153,7 @@ swanlab sync [LOG_DIRECTORY_PATH]
 from swanlab.converter import WandbConverter
 
 wb_converter = WandbConverter()
-# wb_runid is optional
+# wb_run_id is optional
 wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 ```
 
@@ -163,13 +164,17 @@ This achieves the same result as command-line conversion.
 - `project`: SwanLab project name.
 - `workspace`: SwanLab workspace name.
 - `mode`: (str) Logging mode (default: `"online"`), options: `["online", "local", "offline", "disabled"]`.
-- `logdir`: Log directory path.
+- `log_dir`: Path where SwanLab log files are stored (the `logdir` parameter is deprecated; use `log_dir` instead).
+- `tags`: (list) List of experiment tags.
+- `resume`: (bool) Resume mode, default is False. Must be used with `wb_run_id` in `run()`; the W&B Run ID is used as the SwanLab Run ID for resuming.
+- `wb_project`: W&B project name. Can also be passed to `run()` (the `run()` value takes precedence).
+- `wb_entity`: W&B entity (username/team). Can also be passed to `run()` (the `run()` value takes precedence).
 
 `WandbConverter.run` parameters:
 
-- `wb_project`: Wandb project name.
-- `wb_entity`: W&B entity (username/team).
-- `wb_runid`: W&B Run ID (specific experiment).
+- `wb_project`: W&B project name (required, either here or in the constructor).
+- `wb_entity`: W&B entity (username/team) (required, either here or in the constructor).
+- `wb_run_id`: W&B Run ID (specific experiment under the project).
 
 **Asynchronous Conversion (Download Data Locally First, Then Upload to SwanLab)**
 
@@ -179,7 +184,7 @@ This achieves the same result as command-line conversion.
 from swanlab.converter import WandbConverter
 
 wb_converter = WandbConverter(mode="offline")
-# wb_runid is optional
+# wb_run_id is optional
 wb_converter.run(wb_project="WANDB_PROJECT_NAME", wb_entity="WANDB_USERNAME")
 ```
 
@@ -214,8 +219,10 @@ Supported parameters are as follows:
 - `-w`: SwanLab workspace name.
 - `--mode`: (str) Selection mode. Default is "online". Options: `["online", "local", "offline", "disabled"]`
 - `-l`: logdir path.
-- `--wb-dir`: The wandb log directory to be converted.
+- `--wb-dir`: The wandb log directory to be converted. Default: `./wandb`.
 - `--wb-run-dir`: The specific wandb run's directory name. If this parameter is omitted, all runs within the wb-dir will be uploaded.
+- `--wb-runid`: When used with `--resume`, serves as the SwanLab Run ID for resuming.
+- `--resume`: Resume mode; must be used together with `--wb-runid`.
 
 Example:
 
@@ -223,11 +230,11 @@ Example:
 
 ### 3.3 Method 2: Code Conversion
 
-```bash
+```python
 from swanlab.converter import WandbLocalConverter
 
 wb_converter = WandbLocalConverter()
-# wb_runid is optional
+# wandb_run_dir is optional
 wb_converter.run(root_wandb_dir="WANDB_DIR", wandb_run_dir="WANDB_RUN_DIR")
 ```
 
@@ -235,10 +242,15 @@ Parameters supported by `WandbLocalConverter`:
 
 - `project`: SwanLab project name.
 - `workspace`: SwanLab workspace name.
-- `mode`: (str) Selection mode. Default is "online". Options: `["online", "local", "offline", "disabled"]`
-- `logdir`: logdir path.
+- `mode`: (str) Logging mode. Default is "online". Options: `["online", "local", "offline", "disabled"]`
+- `log_dir`: Path where SwanLab log files are stored (the `logdir` parameter is deprecated; use `log_dir` instead).
+- `tags`: (list) List of experiment tags.
+- `resume`: (bool) Resume mode, default is False. Must be used with `wb_run_id` in `run()`.
+- `root_wandb_dir`: Path to the wandb log directory. Default: `./wandb` (can be overridden in `run()`).
+- `wandb_run_dir`: The specific wandb run directory name (can be overridden in `run()`).
 
 Parameters supported by `WandbLocalConverter.run`:
 
 - `root_wandb_dir`: The path to the wandb log file directory.
-- `wandb_run_dir`: The path to the wandb run directory.
+- `wandb_run_dir`: The wandb run directory name.
+- `wb_run_id`: When used with `resume=True`, serves as the SwanLab Run ID for resuming.
