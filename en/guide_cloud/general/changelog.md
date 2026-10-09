@@ -5,6 +5,16 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.2 - 2026.10.09
+
+**🚀 New Features**
+
+- Added the `skip_store` setting: when enabled, the SDK skips writing local log files and uploads all experiment metrics directly to the cloud. See [Skipping Local Log Persistence](../../api/py-settings.md#skipping-local-log-persistence)
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where `sync_wandb()` was incompatible with newer versions of the `wandb` SDK
+
 ## v0.10.1 - 2026.09.22
 
 **🚀 New Features**

@@ -247,7 +247,7 @@ import swanlab
 swanlab.init(settings=swanlab.Settings(core=swanlab.Settings.Core(skip_store=True)))
 
 # 或通过环境变量开启：
-# SWANLAB_CORE_SKIP_STORE=true
+# export SWANLAB_CORE_SKIP_STORE=true
 ```
 
 ::: warning 注意
