@@ -79,3 +79,4 @@ swanlab.finish()
 1. `glob_str` 模式相对于 `base_path`（或当前工作目录）解析。
 2. 仅保存普通文件 — 目录会被自动过滤。
 3. 单次调用保存的文件数量有上限（由 `save_batch` 配置项控制）。
+4. 当 `core.skip_store=True` 时文件监听不可用，`policy="live"` 会自动降级为 `"now"` ，之后的文件变更不会自动上传。
