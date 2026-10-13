@@ -399,7 +399,7 @@ integrations:
       region: "cn-beijing"
       pathStyle: false
       port: 443
-      domain: "https://swanlab-public.oss-cn-beijing.aliyuncs.com" # 需携带 https:// 前缀
+      domain: "https://<public_bucket>.oss-cn-beijing.aliyuncs.com" # 需携带 https:// 前缀
       bucket: "swanlab-public-bucket"
     private:
       ssl: true
