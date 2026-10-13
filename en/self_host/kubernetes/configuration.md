@@ -2,6 +2,14 @@
 
 > This document explains the meaning and configuration of each field in `values.yaml`.
 
+`values.yaml` is the default configuration file for a Helm Chart. Custom values passed during deployment via `-f` or `--set` will override the default values, thereby rendering all the cluster resources required to deploy the SwanLab private instance.
+
+For the complete configuration, refer to [values.yaml on GitHub](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). If you want to export the values currently in effect for a deployed instance to a local file, you can use:
+
+```bash
+helm get values <release_name> -n <your_namespace> -o yaml > my-values.yaml
+```
+
 ## Global Configuration (`global`)
 
 | Field                                      | Type   | Default         | Description                                                                                                                                                                                                                                                                                                                    |
