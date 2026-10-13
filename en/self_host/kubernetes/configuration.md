@@ -2,6 +2,14 @@
 
 > This document explains the meaning and configuration of each field in `values.yaml`.
 
+`values.yaml` is the default configuration file for a Helm Chart. Custom values passed during deployment via `-f` or `--set` will override the default values, thereby rendering all the cluster resources required to deploy the SwanLab private instance.
+
+For the complete configuration, refer to [values.yaml on GitHub](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml). If you want to export the values currently in effect for a deployed instance to a local file, you can use:
+
+```bash
+helm get values <release_name> -n <your_namespace> -o yaml > my-values.yaml
+```
+
 ## Global Configuration (`global`)
 
 | Field                                      | Type   | Default         | Description                                                                                                                                                                                                                                                                                                                    |
@@ -70,6 +78,8 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 You can write your load balancing strategy based on the above information. It is generally recommended to prioritize using **dedicated domain names (Host-based)** to configure access policies to avoid routing conflicts caused by complex or changing path rules.
 
 **Based on the principle of architectural decoupling**, `swanlab-self-hosted` does not have a built-in Ingress controller. You need to configure the external access entrypoint on the cluster's load balancer (or Ingress), which is also responsible for **TLS termination (HTTPS offloading)**.
+
+> 💡 **Tip**: After configuring the external access entrypoint, if you plan to enable SSO login or want to fix the API Key login address displayed in the frontend, also set [`global.settings.host`](#login-domain-host) (e.g., `https://swanlab.example.com`) in `values.yaml`.
 
 **Regarding security policies**, the application trusts all `X-Forwarded-*` request headers by default. If you need stricter header validation or forwarding control, be sure to implement it uniformly at the load balancing layer — this may affect the effectiveness of internal S3 signatures. If you use an external object storage service, you don't need to worry about this.
 
@@ -232,7 +242,7 @@ Before customizing the storage class configuration, please ensure:
 
 ### MinIO (Built-in S3 Object Storage)
 
-> If external S3 is already integrated, this can be ignored.
+> It is recommended to enable external object storage (`integrations.s3.enabled: true`). To use the built-in MinIO, explicitly set `integrations.s3.enabled: false`; if external S3 is already integrated, this section can be ignored.
 
 | Field                                       | Type   | Default                                   | Description                                                                                                               |
 | ------------------------------------------- | ------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -325,10 +335,10 @@ If your cloud object storage distinguishes S3 protocol endpoint access, please p
 :::
 ![s3-Config](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260602111133909.png)
 
-| Field                            | Type   | Default             | Description                                                                           |
-| -------------------------------- | ------ | ------------------- | ------------------------------------------------------------------------------------- |
-| `integrations.s3.enabled`        | bool   | `true`              | Enable external S3 integration (when enabled, `dependencies.s3` will not be deployed) |
-| `integrations.s3.existingSecret` | string | `swanlab-secret-s3` | K8s Secret name storing AK/SK                                                         |
+| Field                            | Type   | Default                         | Description                                                                           |
+| -------------------------------- | ------ | ------------------------------- | ------------------------------------------------------------------------------------- |
+| `integrations.s3.enabled`        | bool   | `true`                          | Enable external S3 integration (when enabled, `dependencies.s3` will not be deployed) |
+| `integrations.s3.existingSecret` | string | `swanlab-self-hosted-secret-s3` | K8s Secret name storing AK/SK                                                         |
 
 **Secret Data Structure (`integrations.s3.existingSecret`):**
 
@@ -364,26 +374,40 @@ If your cloud object storage distinguishes S3 protocol endpoint access, please p
 
 ::: details External S3 Object Storage Integration Configuration Example
 
-```yaml
+:::code-group
+
+```yaml [s3-secret example]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: swanlab-self-hosted-secret-s3
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  accessKey: "<your_access_key>"
+  secretKey: "<your_secret_key>"
+```
+
+```yaml [integration field example]
 integrations:
   s3:
     enabled: true
+    existingSecret: swanlab-self-hosted-secret-s3
     public:
       ssl: true
-      endpoint: "xxx.s3.com"
+      endpoint: "oss-cn-beijing.aliyuncs.com" # S3 endpoint (without bucket prefix)
       region: "cn-beijing"
       pathStyle: false
       port: 443
-      domain: "https://xxx.xxxx.s3.com"
-      bucket: "swanlab-public"
+      domain: "https://<public_bucket>.oss-cn-beijing.aliyuncs.com" # Must include the https:// prefix
+      bucket: "swanlab-public-bucket"
     private:
       ssl: true
-      endpoint: "xxx.s3.com"
+      endpoint: "oss-cn-beijing.aliyuncs.com"
       region: "cn-beijing"
       pathStyle: false
       port: 443
-      bucket: "swanlab-private"
-    existingSecret: integration-s3
+      bucket: "swanlab-private-bucket"
 ```
 
 :::
@@ -391,6 +415,7 @@ integrations:
 :::warning
 
 - The permission for publicBucket is **public read, private write**. The permission for privateBucket is **private read-write**
+- Be sure to configure the **bucket CORS rules (allowing GET/POST/PUT/HEAD)** in the object storage console and enable **public read access** for the Public bucket, otherwise experiment image uploads may fail or avatars may not display properly. See [FAQ: Object Storage Configuration Troubleshooting](./faq.md#object-storage-experiment-image-upload-failed-csv-and-logs-cannot-be-downloaded-avatar-display-abnormal)
 - When you choose a custom object storage service, please ensure your object storage service can be accessed directly from outside (via IP or domain name)
 - Your object storage secret key must have write permissions and S3 signing permissions for both **publicBucket** and **privateBucket**
 - The public bucket and private bucket can reuse the same bucket

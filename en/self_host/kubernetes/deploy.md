@@ -1,7 +1,7 @@
-# Deploying with Kubernetes <img src="/kubernetes.svg" class="deploy-logo" alt="Kubernetes" /> <VersionBadge version="v3.4.0" />
+# Deploying with Kubernetes <img src="/kubernetes.svg" class="deploy-logo" alt="Kubernetes" /> <VersionBadge version="v3.5.0" />
 
 > If you need to migrate from the Docker version to the Kubernetes version, please refer to [this document](../docker/migration-docker-kubernetes.md).
-> The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.4
+> The SwanLab Python SDK version supported by the Kubernetes version is >= 0.7.6
 
 If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployment of SwanLab, please follow the installation process below.
 
@@ -57,8 +57,8 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 
 | Component  | Image Address                                                          | values.yaml Config Path         | Description                                                                      |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------- |
-| Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `service.gateway.`              | Reverse proxy / gateway entry                                                    |
-| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `service.gateway.identifyImage` | Gateway authentication auxiliary image                                           |
+| Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `gateway.image`                 | Reverse proxy / gateway entry                                                    |
+| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `gateway.identifyImage`         | Gateway authentication auxiliary image                                           |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | Deployment auxiliary init container                                              |
 | Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | Metrics aggregation & forwarding                                                 |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL relational database (users, projects, experiment metadata)            |
@@ -282,63 +282,65 @@ dependencies:
 ```
 
 ```yaml [Redis]
-redis: # Redis configuration
-  fullnameOverride: ""
+dependencies:
+  redis: # Redis configuration
+    fullnameOverride: ""
 
-  image: # Image configuration
-    # Full image repository path (e.g., redis/redis-stack)
-    repository: repo.swanlab.cn/self-hosted/redis-stack
-    # Image tag/version
-    tag: "7.4.0-v8"
-    # Kubernetes image pull policy (Always, IfNotPresent, Never)
-    pullPolicy: "IfNotPresent"
+    image: # Image configuration
+      # Full image repository path (e.g., redis/redis-stack)
+      repository: repo.swanlab.cn/self-hosted/redis-stack
+      # Image tag/version
+      tag: "7.4.0-v8"
+      # Kubernetes image pull policy (Always, IfNotPresent, Never)
+      pullPolicy: "IfNotPresent"
 
-  persistence: # Persistent storage configuration
-    storageClass: "disk-cloud-auto"
-    storageSize: "10Gi"
+    persistence: # Persistent storage configuration
+      storageClass: "disk-cloud-auto"
+      storageSize: "10Gi"
 
-    # Use an existing PVC (leave empty to auto-create a new PVC)
-    existingClaim: "swanlab-redis-pvc" # ⚠️: Usually only this name needs to be modified to match the created redis PVC name
+      # Use an existing PVC (leave empty to auto-create a new PVC)
+      existingClaim: "swanlab-redis-pvc" # ⚠️: Usually only this name needs to be modified to match the created redis PVC name
 
-  customLabels: {}
-  customAnnotations: {}
-  customPodLabels: {}
-  customPodAnnotations: {}
-  customTolerations: []
-  customNodeSelector: {}
-  resources: {}
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
 ```
 
 ```yaml [ClickHouse]
-clickhouse: # ClickHouse configuration
-  fullnameOverride: ""
+dependencies:
+  clickhouse: # ClickHouse configuration
+    fullnameOverride: ""
 
-  image: # Image configuration
-    # Full image repository path (e.g., clickhouse/clickhouse-server)
-    repository: repo.swanlab.cn/self-hosted/clickhouse-server
-    # Image tag/version
-    tag: "24.3"
-    pullPolicy: "IfNotPresent"
+    image: # Image configuration
+      # Full image repository path (e.g., clickhouse/clickhouse-server)
+      repository: repo.swanlab.cn/self-hosted/clickhouse-server
+      # Image tag/version
+      tag: "24.3"
+      pullPolicy: "IfNotPresent"
 
-  # Authentication credentials
-  # Leave empty if using existingSecret
-  username: ""
-  password: ""
+    # Authentication credentials
+    # Leave empty if using existingSecret
+    username: ""
+    password: ""
 
-  persistence: # Persistent storage configuration
-    storageClass: "disk-cloud-auto"
-    storageSize: "20Gi"
+    persistence: # Persistent storage configuration
+      storageClass: "disk-cloud-auto"
+      storageSize: "20Gi"
 
-    # Use an existing PVC (leave empty to auto-create a new PVC)
-    existingClaim: "swanlab-clickhouse-pvc" # ⚠️: Usually only this name needs to be modified to match the created clickhouse PVC name
+      # Use an existing PVC (leave empty to auto-create a new PVC)
+      existingClaim: "swanlab-clickhouse-pvc" # ⚠️: Usually only this name needs to be modified to match the created clickhouse PVC name
 
-  customLabels: {}
-  customAnnotations: {}
-  customPodLabels: {}
-  customPodAnnotations: {}
-  customTolerations: []
-  customNodeSelector: {}
-  resources: {}
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
 ```
 
 :::
@@ -351,9 +353,43 @@ The `tag` of the five application images under `service` (server / auth / house 
 
 `vector.persistence.storageClass` and `vector.persistence.storageSize` should be consistent with the size when creating the vector PVC. The default size needs to be changed to `60Gi`.
 
+```yaml
+vector:
+  persistence:
+    storageClass: "" # Replace with the actual storageClass in your cluster
+    storageSize: "60Gi"
+```
+
 #### 3.4 External S3 Integration Configuration
 
-The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](./configuration.md#recommended-external-object-storage-s3-integrations-s3) section.
+The `integrations.s3` field needs to be manually filled based on the object storage service you use. It is recommended to separate public and private buckets. If your cloud provider distinguishes S3 protocol endpoint access, please pay special attention to filling in the S3 endpoint. For detailed field descriptions and configuration examples, please refer to the [External S3 Integration](./configuration.md#recommended-external-object-storage-s3-integrations-s3) section. The following uses Alibaba Cloud OSS buckets as a configuration example:
+
+```yaml
+integrations:
+  s3:
+    enabled: true
+    existingSecret: "swanlab-self-hosted-secret-s3"
+    public:
+      ssl: true
+      endpoint: "oss-cn-beijing.aliyuncs.com" # Replace with the actual S3 endpoint (without bucket prefix)
+      region: "cn-beijing"
+      pathStyle: false
+      port: 443
+      domain: "https://<public_bucket>.oss-cn-beijing.aliyuncs.com" # Must include the https:// prefix
+      bucket: "swanlab-public-bucket"
+    private:
+      ssl: true
+      endpoint: "oss-cn-beijing.aliyuncs.com"
+      region: "cn-beijing"
+      pathStyle: false
+      port: 443
+      bucket: "swanlab-private-bucket"
+```
+
+::: warning CORS Configuration Notice
+⚠️ Note: Be sure to configure the **bucket CORS rules (allowing GET/POST/PUT/HEAD)** in the object storage console and enable **public read access** for the Public bucket, otherwise experiment image uploads may fail or avatars may not display properly. See [FAQ: Object Storage Configuration Troubleshooting](./faq.md#object-storage-experiment-image-upload-failed-csv-and-logs-cannot-be-downloaded-avatar-display-abnormal)
+
+:::
 
 ### 4. Add Helm Repository
 
