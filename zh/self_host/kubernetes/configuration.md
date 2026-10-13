@@ -2,6 +2,14 @@
 
 > 本文档说明 `values.yaml` 中各字段的含义与配置方式。
 
+`values.yaml` 是 Helm Chart 的默认配置文件，部署时通过 `-f` 或 `--set` 传入的自定义值会覆盖其中的默认值，从而渲染出部署 SwanLab 私有化服务所需的全部集群资源。
+
+完整配置参考 GitHub 的 [values.yaml](https://github.com/SwanHubX/charts/blob/main/charts/self-hosted/values.yaml)。如果您想导出当前已部署实例实际生效的值到本地文件，可以使用：
+
+```bash
+helm get values <release_name> -n <your_namespace> -o yaml > my-values.yaml
+```
+
 ## 全局配置（`global`）
 
 | 字段                                       | 类型   | 默认值          | 说明                                                                                                                                                                                  |
