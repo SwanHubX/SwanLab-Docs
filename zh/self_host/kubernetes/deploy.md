@@ -57,8 +57,8 @@
 
 | 组件       | 镜像地址                                                               | values.yaml 配置路径            | 说明                                             |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------ |
-| Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `service.gateway.`              | 反向代理 / 网关入口                              |
-| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `service.gateway.identifyImage` | 网关鉴权辅助镜像                                 |
+| Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `gateway.image`                 | 反向代理 / 网关入口                              |
+| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `gateway.identifyImage`         | 网关鉴权辅助镜像                                 |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | 部署辅助初始化容器                               |
 | Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | 指标聚合转发                                     |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL关系型数据库（用户、项目、实验元数据） |
@@ -282,63 +282,65 @@ dependencies:
 ```
 
 ```yaml [Redis]
-redis: # Redis 配置
-  fullnameOverride: ""
+dependencies:
+  redis: # Redis 配置
+    fullnameOverride: ""
 
-  image: # 镜像配置
-    # 完整镜像仓库路径（例如 redis/redis-stack）
-    repository: repo.swanlab.cn/self-hosted/redis-stack
-    # 镜像标签/版本
-    tag: "7.4.0-v8"
-    # Kubernetes 镜像拉取策略（Always、IfNotPresent、Never）
-    pullPolicy: "IfNotPresent"
+    image: # 镜像配置
+      # 完整镜像仓库路径（例如 redis/redis-stack）
+      repository: repo.swanlab.cn/self-hosted/redis-stack
+      # 镜像标签/版本
+      tag: "7.4.0-v8"
+      # Kubernetes 镜像拉取策略（Always、IfNotPresent、Never）
+      pullPolicy: "IfNotPresent"
 
-  persistence: # 持久化存储配置
-    storageClass: "disk-cloud-auto"
-    storageSize: "10Gi"
+    persistence: # 持久化存储配置
+      storageClass: "disk-cloud-auto"
+      storageSize: "10Gi"
 
-    # 使用已有的 PVC（留空则自动创建新的 pvc）
-    existingClaim: "swanlab-redis-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 redis PVC 名称
+      # 使用已有的 PVC（留空则自动创建新的 pvc）
+      existingClaim: "swanlab-redis-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 redis PVC 名称
 
-  customLabels: {}
-  customAnnotations: {}
-  customPodLabels: {}
-  customPodAnnotations: {}
-  customTolerations: []
-  customNodeSelector: {}
-  resources: {}
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
 ```
 
 ```yaml [ClickHouse]
-clickhouse: # ClickHouse 配置
-  fullnameOverride: ""
+dependencies:
+  clickhouse: # ClickHouse 配置
+    fullnameOverride: ""
 
-  image: # 镜像配置
-    # 完整镜像仓库路径（例如 clickhouse/clickhouse-server）
-    repository: repo.swanlab.cn/self-hosted/clickhouse-server
-    # 镜像标签/版本
-    tag: "24.3"
-    pullPolicy: "IfNotPresent"
+    image: # 镜像配置
+      # 完整镜像仓库路径（例如 clickhouse/clickhouse-server）
+      repository: repo.swanlab.cn/self-hosted/clickhouse-server
+      # 镜像标签/版本
+      tag: "24.3"
+      pullPolicy: "IfNotPresent"
 
-  # 认证凭据
-  # 如果使用 existingSecret 则留空
-  username: ""
-  password: ""
+    # 认证凭据
+    # 如果使用 existingSecret 则留空
+    username: ""
+    password: ""
 
-  persistence: # 持久化存储配置
-    storageClass: "disk-cloud-auto"
-    storageSize: "20Gi"
+    persistence: # 持久化存储配置
+      storageClass: "disk-cloud-auto"
+      storageSize: "20Gi"
 
-    # 使用已有的 PVC（留空则自动创建新的 pvc）
-    existingClaim: "swanlab-clickhouse-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 clickhouse PVC 名称
+      # 使用已有的 PVC（留空则自动创建新的 pvc）
+      existingClaim: "swanlab-clickhouse-pvc" # ⚠️： 通常仅修改这一个名称，对齐创建的 clickhouse PVC 名称
 
-  customLabels: {}
-  customAnnotations: {}
-  customPodLabels: {}
-  customPodAnnotations: {}
-  customTolerations: []
-  customNodeSelector: {}
-  resources: {}
+    customLabels: {}
+    customAnnotations: {}
+    customPodLabels: {}
+    customPodAnnotations: {}
+    customTolerations: []
+    customNodeSelector: {}
+    resources: {}
 ```
 
 :::
@@ -351,9 +353,43 @@ clickhouse: # ClickHouse 配置
 
 `vector.persistence.storageClass` 和 `vector.persistence.storageSize`，与创建 vector PVC 时的大小保持一致，默认size 需修改为 `60Gi`。
 
+```yaml
+vector:
+  persistence:
+    storageClass: "" # 替换为您集群中实际的 storageClass
+    storageSize: "60Gi"
+```
+
 #### 3.4 外部 S3 集成配置
 
-`integrations.s3` 字段需要根据您使用的对象存储服务手动填写，推荐 public 桶和 private 桶分离。如您的云厂商对 S3 协议的 endpoint 访问做了区分，请特别注意应填写 S3 endpoint。详细的字段说明与配置示例，请参阅 [外部 S3 集成](./configuration.md#【建议】外部对象存储-s3-integrations-s3) 章节。
+`integrations.s3` 字段需要根据您使用的对象存储服务手动填写，推荐 public 桶和 private 桶分离。如您的云厂商对 S3 协议的 endpoint 访问做了区分，请特别注意应填写 S3 endpoint。详细的字段说明与配置示例，请参阅 [外部 S3 集成](./configuration.md#【建议】外部对象存储-s3-integrations-s3) 章节，以下以阿里云 OSS 对象存储桶的配置作为填写示例：
+
+```yaml
+integrations:
+  s3:
+    enabled: true
+    existingSecret: "swanlab-self-hosted-secret-s3"
+    public:
+      ssl: true
+      endpoint: "oss-cn-beijing.aliyuncs.com" # 替换为实际的 S3 endpoint（不带 bucket 前缀）
+      region: "cn-beijing"
+      pathStyle: false
+      port: 443
+      domain: "https://<public_bucket>.oss-cn-beijing.aliyuncs.com" # 需携带 https:// 前缀
+      bucket: "swanlab-public-bucket"
+    private:
+      ssl: true
+      endpoint: "oss-cn-beijing.aliyuncs.com"
+      region: "cn-beijing"
+      pathStyle: false
+      port: 443
+      bucket: "swanlab-private-bucket"
+```
+
+::: warning 跨域配置提示
+⚠️ 注意：请务必在对象存储控制台配置 **存储桶跨域规则（CORS，允许 GET/POST/PUT/HEAD）** 并开启 Public 桶的 **公共读权限**，否则会导致实验图片上传失败或头像显示异常，详见 [FAQ：对象存储配置排查](./faq.md#【对象存储】实验图片上传失败-csv和日志无法下载-头像显示异常)
+
+:::
 
 ### 4. 添加 helm 仓库
 

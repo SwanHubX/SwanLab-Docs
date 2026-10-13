@@ -79,6 +79,8 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 **基于架构解耦原则**，`swanlab-self-hosted` 不内置 Ingress 控制器。您需要在集群的负载均衡器（或 Ingress）上配置外部访问入口，并由其负责 **TLS 终止（HTTPS 卸载）**。
 
+> 💡 **提示**：配置好外部访问入口后，若您启用了 SSO 登录或需要固定前端显示的 API Key 登录地址，请同步在 `values.yaml` 中设置 [`global.settings.host`](#登录域名-host)（例如 `https://swanlab.example.com`）。
+
 **在安全策略方面**，应用默认信任所有的 `X-Forwarded-*` 请求头。如果您需要更严格的头部校验或转发控制，请务必在负载均衡层统一实施——这有可能影响到内部 S3 的签名效果，如果您使用外部对象存储服务，则不需要有这方面担忧。
 
 ## 指标聚合转发（`vector`）
@@ -240,7 +242,7 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### MinIO（内置 S3 对象存储）
 
-> 如已集成外部 S3，可忽略此项。
+> 推荐启用外部对象存储（`integrations.s3.enabled: true`）。如需使用内置 MinIO，请显式设置 `integrations.s3.enabled: false`；如已集成外部 S3，可忽略此项。
 
 | 字段                                        | 类型   | 默认值                                    | 说明                                                                                   |
 | ------------------------------------------- | ------ | ----------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -321,7 +323,7 @@ dependencies:
 `integrations` 部分用于接入外部已有的基础服务（数据库、缓存、对象存储等），替代 Chart 内置的单实例部署。
 
 :::warning
-如果您将任一集成基础服务资源开启（例如设置 `integrations.postgres.enabled` 为 `true`），`swanlab-self-hosted` 在 `denpendencies` 中部署的对应单实例服务将被销毁。
+如果您将任一集成基础服务资源开启（例如设置 `integrations.postgres.enabled` 为 `true`），`swanlab-self-hosted` 在 `dependencies` 中部署的对应单实例服务将被销毁。
 :::
 
 ### 【建议】外部对象存储 S3（`integrations.s3`）
@@ -333,10 +335,10 @@ dependencies:
 :::
 ![s3-Config](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260602111133909.png)
 
-| 字段                             | 类型   | 默认值              | 说明                                                       |
-| -------------------------------- | ------ | ------------------- | ---------------------------------------------------------- |
-| `integrations.s3.enabled`        | bool   | `true`              | 启用后支持集成外部 S3（启用后 `dependencies.s3` 不会部署） |
-| `integrations.s3.existingSecret` | string | `swanlab-secret-s3` | 存储 AK/SK 的 K8s Secret 名称                              |
+| 字段                             | 类型   | 默认值                          | 说明                                                       |
+| -------------------------------- | ------ | ------------------------------- | ---------------------------------------------------------- |
+| `integrations.s3.enabled`        | bool   | `true`                          | 启用后支持集成外部 S3（启用后 `dependencies.s3` 不会部署） |
+| `integrations.s3.existingSecret` | string | `swanlab-self-hosted-secret-s3` | 存储 AK/SK 的 K8s Secret 名称                              |
 
 **Secret 数据结构（`integrations.s3.existingSecret`）：**
 
@@ -372,26 +374,40 @@ dependencies:
 
 ::: details 外部集成 S3 对象存储配置示例
 
-```yaml
+::: code-group
+
+```yaml [s3-secret 填写示例]
+apiVersion: v1
+kind: Secret
+metadata:
+  name: swanlab-self-hosted-secret-s3
+  namespace: <your_namespace>
+type: Opaque
+stringData:
+  accessKey: "<your_access_key>"
+  secretKey: "<your_secret_key>"
+```
+
+```yaml [integration 字段填写示例]
 integrations:
   s3:
     enabled: true
+    existingSecret: swanlab-self-hosted-secret-s3
     public:
       ssl: true
-      endpoint: "xxx.s3.com"
+      endpoint: "oss-cn-beijing.aliyuncs.com" # S3 接入点（不带 bucket 前缀）
       region: "cn-beijing"
       pathStyle: false
       port: 443
-      domain: "https://xxx.xxxx.s3.com"
-      bucket: "swanlab-public"
+      domain: "https://swanlab-public.oss-cn-beijing.aliyuncs.com" # 需携带 https:// 前缀
+      bucket: "swanlab-public-bucket"
     private:
       ssl: true
-      endpoint: "xxx.s3.com"
+      endpoint: "oss-cn-beijing.aliyuncs.com"
       region: "cn-beijing"
       pathStyle: false
       port: 443
-      bucket: "swanlab-private"
-    existingSecret: integration-s3
+      bucket: "swanlab-private-bucket"
 ```
 
 :::
@@ -399,6 +415,7 @@ integrations:
 :::warning
 
 - publicBucket 的权限为**公有读私有写**，privateBucket 的权限为**私有读写**
+- 请务必在对象存储控制台配置 **存储桶跨域规则（CORS，允许 GET/POST/PUT/HEAD）** 并开启 Public 桶的 **公共读权限**，否则会导致实验图片上传失败或头像显示异常，详见 [FAQ：对象存储配置排查](./faq.md#【对象存储】实验图片上传失败-csv和日志无法下载-头像显示异常)
 - 当您选择自定义对象存储服务时，请保证您的对象存储服务可以直接通过外部访问（通过 IP 或域名）
 - 您的对象存储密钥必须对 **publicBucket** 和 **privateBucket** 同时有写权限和 S3 签名权限
 - public 桶与 private 桶可以复用同一个桶
