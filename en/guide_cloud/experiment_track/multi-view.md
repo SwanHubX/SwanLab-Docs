@@ -1,79 +1,72 @@
 # Multi-View
 
-Create multiple independent dashboards within a single project. Each view saves its own filters, grouping, and chart layouts — without affecting the others.
+> Create multiple independent dashboards within a single project and set up different views for different analysis scenarios. Each view saves its own chart configuration, allowing you to switch analytical perspectives with one click.
 
-Multi-View is built on the new dashboard architecture. **How to upgrade**: open the `project` you want to upgrade and click **"Upgrade to New Dashboard"** in the **top-right corner**. New projects created via the web or the new SDK automatically use the Multi-View dashboard — no manual upgrade needed.
+## 📊 Frontend Chart Updates
 
-**📊 Upgrading an Existing Project to the New Dashboard**:
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260720174505317.png"/>
+Open the project you want to upgrade and click the **"Upgrade to New Dashboard"** button in the upper-right corner to complete the upgrade to the Multi-View dashboard. Please note:
 
-::: warning Before You Upgrade
+- Projects created through the WebUI must be **manually upgraded to the new Multi-View dashboard**
+- New projects created using **SDK ≥ 0.10.0** automatically use the Multi-View dashboard, with no manual upgrade required
 
-- ⚠️ Note:
-  - The upgrade duration depends on the number of experiments and charts in the project — please be patient
-  - Experiments in progress cannot be upgraded
-  - **The upgrade cannot be rolled back to the old dashboard** — please confirm carefully before proceeding!
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20261016142728559.png" alt="Upgrade to the new dashboard" />
 
-**💥 Breaking Changes**:
+::: warning ⚠️ Notes
 
-- After upgrading to the new dashboard, you must upgrade the SDK to `v0.9.0+` to create experiments, resume experiments, and log metrics
-- Projects not yet upgraded can still log metrics and create experiments with SDK versions earlier than `v0.9.0`; however, SDK `v0.9.0+` cannot log metrics to or create experiments in projects on the old dashboard
-- The old dashboard will no longer be maintained after **October 1, 2026** — we recommend upgrading as soon as possible
+- After upgrading a project to the new dashboard, you must use **SwanLab SDK ≥ 0.10.0**. Make sure the SDK in your training environment is updated to the latest version
+- The legacy interface for projects that have not been upgraded will no longer be maintained after **November 15th, 2026**. You will need to switch to the new SwanLab charts to conduct expriments.
 
 :::
 
-[[toc]]
+After upgrading, we recommend checking the following:
 
-## What is Multi-View?
+- Review the view layout: Existing features will be retained, but the view layout will be reset to the default. Adjust it as needed
+- Configure custom views manually: When creating a custom view, the system does not add charts automatically. Select and configure the metric charts you want to focus on
 
-When tuning models, you might want to watch every wiggle of the loss curve, compare final metrics across a dozen experiments, and curate a clean set of result charts for a report — all at the same time. Cramming every chart into a single dashboard gets messy fast.
+## Multi-View Overview
 
-Multi-View solves this: **one project, multiple dashboards**. Create views for different analysis scenarios — each view remembers its own chart configuration, so switching views means switching perspectives in one click.
+Multi-View supports multiple independent dashboards within a single project. Each view can independently save its filters, grouping method, and chart layout. Adjusting the current view does not affect other views.
 
-<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260820114444509.png"/>
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260820114444509.png" alt="Multi-View overview" />
 
-**What Multi-View helps you do:**
+**Multi-View helps you:**
 
-- **Cover different analysis needs**: create dedicated views such as "Experiment Monitoring", "Model Comparison", and "Result Reproduction"
-- **Switch analysis scenarios instantly**: no need to repeatedly adjust filters and layouts — just switch views
-- **Avoid configuration conflicts**: changes in the current view never disturb what you've already organized in other views
-- **Improve team collaboration**: fewer conflicts when multiple people adjust dashboards, keeping everyone's analysis environment stable
+- **Meet different analysis needs**: Create separate views for experiment monitoring, model comparison, result reproduction, and more
+- **Switch analysis scenarios quickly**: No need to repeatedly adjust configurations; switch views to see the corresponding content
+- **Keep view configurations independent**: Adjusting the current view does not change the saved content of other views
+- **Improve team collaboration**: Reduce conflicts when multiple people adjust dashboards and maintain stable analysis environments
 
 ## Default Views and Custom Views
 
-When creating a view, choose between two types:
+When creating a view, you can choose between two types:
 
-- **Default view**: automatically renders charts for all logged metrics — ideal for quick validation and phases where you want a full picture of your data
-- **Custom view**: starts from a blank canvas where you hand-pick and configure the metric charts you care about — ideal when you have too many metrics, or need to focus on core comparisons during hyperparameter tuning
+- **Default view**: Automatically renders charts for all logged metrics. Ideal for quick validation and when you need a complete overview of your data
+- **Custom view**: Starts with a blank canvas, where you **manually select** and configure the metric charts you care about. Ideal when you have many metrics or need to focus on comparing key data during hyperparameter tuning
 
-<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/01-demo.mp4"></video>
-
-::: warning Note
-A newly created custom view is a blank canvas — charts need to be added manually.
-:::
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/videos/multiview-01.mp4"></video>
 
 ## Personal Views and Public Views
 
-Views support two visibility scopes — choose based on personal use or team collaboration:
+Views support two visibility scopes. You can set a view as personal or public based on your individual or team collaboration needs:
 
-- **Personal view**: visible only to you — organize it freely to match your own workflow
-- **Public view**: visible to all project collaborators — ideal as a shared team dashboard
+- **Personal view**: Visible only to you, so you can organize it freely according to your preferences
+- **Public view**: Visible to all project collaborators, making it ideal as a shared dashboard for the team
 
-<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/02-pub-pri.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/videos/multiview-02.mp4"></video>
 
 ## Managing Views
 
-A project can have multiple views, with convenient management operations:
+Each project supports multiple views, allowing you to flexibly organize and compare experiment data for different scenarios. You can also reorder, rename, pin, and duplicate views for easier management.
 
-- **Reorder**: drag to sort, keeping frequently used views within easy reach
-- **Rename**: rename anytime so each view's purpose is clear at a glance
-- **Pin**: pin your most important views to the front
-- **Duplicate**: quickly create a copy of an existing view and fine-tune from there
+- **Reorder**: Drag and drop to place frequently used views where they are most convenient
+- **Rename**: Rename a view at any time so its purpose is clear at a glance
+- **Pin a view**: Pin your most important views to the front
+- **Duplicate a view**: Quickly create a copy of an existing view and fine-tune it
 
-<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/03-self-def.mp4"></video>
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/videos/multiview-03.mp4"></video>
 
 ## Chart Layout Sync
 
-Within the same view, the layouts of **multi-experiment comparison charts** and **single-experiment charts** are bidirectionally synced — any adjustment to charts or groups is mirrored between the two. "Edit once, apply everywhere", keeping the experience consistent across every dimension.
+Within the same view, the layouts of **multi-experiment comparison charts** and **single-experiment charts** stay in sync. Any adjustments to charts or groups are synchronized between the two, ensuring a consistent viewing experience across dimensions.
 
 <video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/04-sync-layout.mp4"></video>
