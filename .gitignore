@@ -32,3 +32,5 @@ QWEN.md
 .worktrees/
 graphify-out/
 skills/
+.vitepress/.temp/
+
