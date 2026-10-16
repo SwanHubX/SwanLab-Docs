@@ -13,8 +13,8 @@ Open the project you want to upgrade and click the **"Upgrade to New Dashboard"*
 
 ::: warning ⚠️ Notes
 
-- After upgrading a project to the new dashboard, you must use **SwanLab SDK ≥ 0.10.0**. Make sure the SDK in your training environment is updated to the latest version
-- The legacy interface for projects that have not been upgraded will no longer be maintained after **November 15th, 2026**. You will need to switch to the new SwanLab charts to conduct expriments.
+- After upgrading a project to the new dashboard, you must use <span style="color: red"><strong>SwanLab SDK ≥ 0.10.0</strong></span>. Make sure the SDK in your training environment is updated to the latest version
+- The legacy interface for projects that have not been upgraded will no longer be maintained after <span style="color: red"><strong>November 15th, 2026</strong></span>. You will need to switch to the new SwanLab charts to conduct expriments.
 
 :::
 

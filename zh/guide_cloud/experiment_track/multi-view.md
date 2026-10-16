@@ -13,8 +13,8 @@
 
 ::: warning ⚠️ 注意事项
 
-- 项目升级为新版看板后，需要使用 **SwanLab SDK ≥ 0.10.0**，请务必确认训练环境中的 SDK 已更新至最新版本
-- 未升级的旧版界面将于 **2026 年 11 月 15 日** 后停止维护，届时需切换至 SwanLab 新版图表完成训练任务
+- 项目升级为新版看板后，需要使用 <span style="color: red"><strong>SwanLab SDK ≥ 0.10.0</strong></span>，请务必确认训练环境中的 SDK 已更新至最新版本
+- 未升级的旧版界面将于 <span style="color: red"><strong>2026 年 11 月 15 日</strong></span> 后停止维护，届时需切换至 SwanLab 新版图表完成训练任务
 
 :::
 
