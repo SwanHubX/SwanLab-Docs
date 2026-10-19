@@ -165,7 +165,19 @@
   flex: 0 0 240px;
   max-height: calc(100vh - var(--vp-nav-height) - var(--vp-banner-height, 0px));
   overflow-y: auto;
-  padding-right: 32px;
+  /* The VPDoc already contributes 32px of right padding. Keep the aside flush
+     with its content edge; the inner container bleeds into that padding so the
+     outline panel (and its divider/scroll area) reaches the content frame. */
+  padding-right: 0;
+}
+
+@media (min-width: 1281px) {
+  /* Let the outline panel fill the VPDoc right padding. Without this the
+     inner 224px container ends ~17-32px before the content-wrapper border,
+     leaving the outline's collapse/scroll edge visually short of the divider. */
+  .VPDoc.has-aside .aside-container {
+    width: calc(100% + 32px);
+  }
 }
 
 @media (max-width: 1280px) {
@@ -194,19 +206,16 @@
 
 /* Right outline: grow with the viewport on wide screens so longer
    headings fit on one line instead of wrapping. The base 240px column
-   is kept for laptops (≥1280px); only large displays widen it. The
-   inner .aside-container is widened in lockstep (the theme fixes it at
-   224px). Below 1280px the aside goes full-width anyway (rule above). */
+   is kept for laptops (≥1281px); only large displays widen it. The
+   inner .aside-container widens in lockstep via the base
+   `calc(100% + 32px)` rule above. Below 1280px the aside goes
+   full-width anyway (rule above). */
 @media (min-width: 96rem) {
   /* ≥1536px */
   .VPDoc.has-aside .aside {
     width: 296px;
     flex: 0 0 296px;
     max-width: 296px;
-  }
-
-  .VPDoc.has-aside .aside-container {
-    width: 264px;
   }
 }
 
@@ -216,9 +225,5 @@
     width: 344px;
     flex: 0 0 344px;
     max-width: 344px;
-  }
-
-  .VPDoc.has-aside .aside-container {
-    width: 312px;
   }
 }

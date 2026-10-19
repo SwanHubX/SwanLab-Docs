@@ -70,6 +70,36 @@ export default {
         hiddenSlots: ["playground", "branding"],
         cols: 2,
       },
+      // 接口示例只保留 JavaScript / Python / Go 三种语言
+      codeSamples: {
+        defaultLang: "javascript",
+        availableLanguages: [
+          {
+            lang: "javascript",
+            label: "JavaScript",
+            target: "js",
+            client: "fetch",
+            highlighter: "javascript",
+            icon: ".js",
+          },
+          {
+            lang: "python",
+            label: "Python",
+            target: "python",
+            client: "requests",
+            highlighter: "python",
+            icon: ".py",
+          },
+          {
+            lang: "go",
+            label: "Go",
+            target: "go",
+            client: "native",
+            highlighter: "go",
+            icon: ".go",
+          },
+        ],
+      },
       i18n: { locale: "zh" },
     });
     openapiTheme.enhanceApp(ctx);

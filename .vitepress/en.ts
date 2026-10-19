@@ -437,6 +437,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   ];
 }
 
+function placeholderOperation(method: string, label: string): DefaultTheme.SidebarItem {
+  return {
+    text: `<span class="OASidebarItem group/oaOperationLink"><span class="OASidebarItem-badge OAMethodBadge--${method}">${method.toUpperCase()}</span><span class="OASidebarItem-text text">${label}</span></span>`,
+  };
+}
+
 function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
   const oa = useSidebar({
     spec: adminApiSpec as never,
@@ -445,7 +451,22 @@ function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
   });
   return [
     { text: "Overview", link: "admin/" },
-    ...oa.generateSidebarGroups().flatMap((group) => group.items ?? []),
+    {
+      text: "User & Permission Management",
+      collapsed: true,
+      // TODO: replace the mock operations once the backend Swagger is synced
+      items: oa.generateSidebarGroups().flatMap((group) => group.items ?? []),
+    },
+    {
+      text: "OAuth2 Authorization",
+      collapsed: true,
+      // TODO: replace with real links after the OAuth2 endpoints are synced
+      items: [
+        placeholderOperation("post", "Obtain or refresh an Access Token"),
+        placeholderOperation("get", "Get user info"),
+        placeholderOperation("get", "Get API Key"),
+      ],
+    },
   ] as DefaultTheme.SidebarItem[];
 }
 
@@ -465,7 +486,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         },
         { text: "Environment Variables", link: "environment-variable" },
         {
-          text: "Admin API",
+          text: "REST API",
           collapsed: true,
           items: sidebarAdminAPI(),
         },

@@ -494,6 +494,12 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   ];
 }
 
+function placeholderOperation(method: string, label: string): DefaultTheme.SidebarItem {
+  return {
+    text: `<span class="OASidebarItem group/oaOperationLink"><span class="OASidebarItem-badge OAMethodBadge--${method}">${method.toUpperCase()}</span><span class="OASidebarItem-text text">${label}</span></span>`,
+  };
+}
+
 function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
   const oa = useSidebar({
     spec: adminApiSpec as never,
@@ -502,7 +508,22 @@ function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
   });
   return [
     { text: "概述", link: "admin/" },
-    ...oa.generateSidebarGroups().flatMap((group) => group.items ?? []),
+    {
+      text: "用户与权限管理",
+      collapsed: true,
+      // TODO: 后端 Swagger 同步后替换为真实接口；当前先用 mock 接口占位
+      items: oa.generateSidebarGroups().flatMap((group) => group.items ?? []),
+    },
+    {
+      text: "OAuth2 授权",
+      collapsed: true,
+      // TODO: 等待后端 OAuth2 接口同步后替换为真实链接
+      items: [
+        placeholderOperation("post", "获取或刷新 Access Token"),
+        placeholderOperation("get", "获取用户信息"),
+        placeholderOperation("get", "获取 API Key"),
+      ],
+    },
   ] as DefaultTheme.SidebarItem[];
 }
 
@@ -522,7 +543,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         },
         { text: "环境变量", link: "environment-variable" },
         {
-          text: "后台管理",
+          text: "REST API",
           collapsed: true,
           items: sidebarAdminAPI(),
         },
