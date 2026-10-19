@@ -1,5 +1,5 @@
 import { usePaths } from "vitepress-openapi";
-import spec from "../../../.vitepress/specs/admin.en.json" with { type: "json" };
+import spec from "../../../.vitepress/specs/rest.en.json" with { type: "json" };
 
 export default {
   paths() {
@@ -8,7 +8,7 @@ export default {
       .map(({ operationId, summary }) => ({
         params: {
           operationId,
-          pageTitle: `${summary} - Admin API`,
+          pageTitle: `${summary} - REST API`,
         },
       }));
   },

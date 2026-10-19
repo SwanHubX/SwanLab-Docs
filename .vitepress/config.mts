@@ -206,7 +206,7 @@ export default extendConfig(
     },
 
     transformPageData(pageData) {
-      // vitepress-openapi spike：动态路由生成的端点页通过 params 传递标题
+      // vitepress-openapi：动态路由生成的端点页通过 params 传递标题
       if (pageData.params?.pageTitle) {
         pageData.title = pageData.params.pageTitle;
       }

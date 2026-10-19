@@ -12,7 +12,7 @@ type AcceptedPlugin = NonNullable<VitePostcss["plugins"]>[number];
 // `.gap-2` beat the theme's layered responsive + dark variants (e.g. the
 // navbar's `lg:fixed`) and break the docs chrome.
 //
-// Scope those rules to the wrapper rendered by the admin API pages. Classes
+// Scope those rules to the wrapper rendered by the REST API pages. Classes
 // that belong to the vendor itself (`OASidebarItem` badges, `vjs-*` JSON
 // viewer) stay global: they are unique, and the sidebar lives outside the
 // page wrapper.

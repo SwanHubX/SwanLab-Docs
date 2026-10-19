@@ -25,14 +25,14 @@ import MermaidDiagram from "./components/MermaidDiagram.vue";
 import HomePromoSection from "./components/HomePromoSection.vue";
 import { useVersionSync } from "./version-sync";
 import { useLogoLinkFix } from "./logo-link";
-// vitepress-openapi spike：渲染 /api/admin/ 下的管理后台接口页（mock spec）
+// vitepress-openapi：渲染 /api/rest/ 下的 REST 接口页（mock spec）
 import {
   theme as openapiTheme,
   useOpenapi,
   useTheme as useOpenapiTheme,
 } from "vitepress-openapi/client";
-import adminApiSpec from "../specs/admin.json" with { type: "json" };
-import adminApiSpecEn from "../specs/admin.en.json" with { type: "json" };
+import restApiSpec from "../specs/rest.zh.json" with { type: "json" };
+import restApiSpecEn from "../specs/rest.en.json" with { type: "json" };
 import { createCodeSampleGenerator } from "../utils/openapi-code-samples";
 
 export default {
@@ -65,8 +65,8 @@ export default {
     ctx.app.component("HomePromoSection", HomePromoSection);
     VoidZeroTheme.enhanceApp(ctx);
 
-    // vitepress-openapi spike：加载 mock spec，隐藏 Try it 控制台与品牌页脚
-    useOpenapi({ spec: adminApiSpec });
+    // vitepress-openapi：加载 mock spec，隐藏 Try it 控制台与品牌页脚
+    useOpenapi({ spec: restApiSpec });
     useOpenapiTheme({
       operation: {
         hiddenSlots: ["playground", "branding"],
@@ -75,7 +75,7 @@ export default {
       // 接口示例只保留 JavaScript / Python / Go 三种语言
       codeSamples: {
         defaultLang: "javascript",
-        generator: createCodeSampleGenerator([adminApiSpec, adminApiSpecEn]),
+        generator: createCodeSampleGenerator([restApiSpec, restApiSpecEn]),
         availableLanguages: [
           {
             lang: "javascript",
@@ -113,7 +113,7 @@ export default {
     const initVersionSync = useVersionSync();
     const initLogoLinkFix = useLogoLinkFix();
 
-    // vitepress-openapi spike：UI 文案跟随当前语言（zh / en）
+    // vitepress-openapi：UI 文案跟随当前语言（zh / en）
     watch(
       () => lang.value,
       (value) => {

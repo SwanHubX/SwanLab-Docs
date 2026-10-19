@@ -1,8 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { SWANLAB_VERSION } from "./version.ts";
-// vitepress-openapi spike: generate the /en/api/admin/ sidebar from the mock spec
+// vitepress-openapi: generate the /en/api/rest/ sidebar from the REST spec
 import { useSidebar } from "vitepress-openapi";
-import adminApiSpec from "./specs/admin.en.json" with { type: "json" };
+import restApiSpec from "./specs/rest.en.json" with { type: "json" };
 
 type SidebarItemBadge = { badge?: { type?: string; text?: string } };
 type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge;
@@ -443,14 +443,14 @@ function placeholderOperation(method: string, label: string): DefaultTheme.Sideb
   };
 }
 
-function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
+function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
   const oa = useSidebar({
-    spec: adminApiSpec as never,
-    // Relative to the sidebar base "/en/api/" — "admin/" resolves to /en/api/admin/...
-    linkPrefix: "admin/",
+    spec: restApiSpec as never,
+    // Relative to the sidebar base "/en/api/" — "rest/" resolves to /en/api/rest/...
+    linkPrefix: "rest/",
   });
   return [
-    { text: "Overview", link: "admin/" },
+    { text: "Overview", link: "rest/" },
     {
       text: "User & Permission Management",
       collapsed: true,
@@ -488,7 +488,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         {
           text: "REST API",
           collapsed: true,
-          items: sidebarAdminAPI(),
+          items: sidebarRestAPI(),
         },
       ],
     },

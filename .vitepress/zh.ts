@@ -1,8 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { SWANLAB_VERSION } from "./version.ts";
-// vitepress-openapi spike：从 mock spec 自动生成 /openapi/ 侧边栏
+// vitepress-openapi：从 REST spec 自动生成 /api/rest/ 侧边栏
 import { useSidebar } from "vitepress-openapi";
-import adminApiSpec from "./specs/admin.json" with { type: "json" };
+import restApiSpec from "./specs/rest.zh.json" with { type: "json" };
 
 var base_path_guide_cloud = "/guide_cloud";
 var base_path_examples = "/examples";
@@ -500,14 +500,14 @@ function placeholderOperation(method: string, label: string): DefaultTheme.Sideb
   };
 }
 
-function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
+function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
   const oa = useSidebar({
-    spec: adminApiSpec as never,
-    // 相对路径：侧边栏 base "/api/" 会统一拼接，写成 "/api/admin/" 会变成 /api/api/...
-    linkPrefix: "admin/",
+    spec: restApiSpec as never,
+    // 相对路径：侧边栏 base "/api/" 会统一拼接，写成 "/api/rest/" 会变成 /api/api/...
+    linkPrefix: "rest/",
   });
   return [
-    { text: "概述", link: "admin/" },
+    { text: "概述", link: "rest/" },
     {
       text: "用户与权限管理",
       collapsed: true,
@@ -545,7 +545,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         {
           text: "REST API",
           collapsed: true,
-          items: sidebarAdminAPI(),
+          items: sidebarRestAPI(),
         },
       ],
     },

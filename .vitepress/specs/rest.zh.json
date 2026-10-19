@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "SwanLab 管理后台开放 API（Mock）",
-    "description": "面向私有化部署管理员的自动化集成接口。本规范为 vitepress-openapi 接入测试用的 Mock 数据，字段以后端最终导出为准。",
+    "title": "SwanLab REST API（Mock）",
+    "description": "面向私有化部署的自动化集成接口。本规范为接入测试用的 Mock 数据，字段以后端最终导出为准。",
     "version": "0.1.0"
   },
   "servers": [

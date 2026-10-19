@@ -1,8 +1,8 @@
-# Admin Open API
+# REST API
 
-> This section is a **vitepress-openapi integration spike**. The endpoints use mock data and are only meant to evaluate the rendered result.
+> The endpoints in this section use mock data for display purposes and will be replaced by the backend export.
 
-Automation endpoints for administrators of self-hosted deployments, covering user and project governance.
+Automation endpoints for self-hosted deployments, covering user and project governance.
 
 ## Authentication
 
