@@ -345,6 +345,67 @@ header.wrapper .VPFlyout > button {
   }
 }
 
+/* ===== OpenAPI 响应状态码 tabs =====
+ * 响应区的 201 / 401 / 409 默认只有极浅的灰色胶囊，亮色模式下几乎与
+ * 页面同色，看起来像纯文本。复用同页「模式 / JSON」分段控件的视觉语言，
+ * 给出明确的选中态与 hover 反馈。
+ * 只作用于带 TabsIndicator 的 tablist，避免影响 Schema 的 tabs。 */
+.swanlab-openapi [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"]) {
+  height: 40px;
+  padding: 4px;
+  border-radius: 6px;
+  background: var(--vp-c-bg-alt);
+}
+
+.swanlab-openapi
+  [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"])
+  [style*="--reka-tabs-indicator"] {
+  display: none;
+}
+
+.swanlab-openapi [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"]) [role="tab"] {
+  height: 100%;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+.swanlab-openapi
+  [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"])
+  [role="tab"]:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-default-soft);
+}
+
+.swanlab-openapi
+  [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"])
+  [role="tab"][data-state="active"] {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+}
+
+/* 暗色下 --vp-c-bg 与 --vp-c-bg-alt 太接近，选中的胶囊几乎与容器同色。
+ * 用文字色混出更亮一级的底色，并加一圈描边，保证选中态清晰。 */
+html.dark .swanlab-openapi [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"]) {
+  box-shadow: inset 0 0 0 1px var(--vp-c-divider);
+}
+
+html.dark
+  .swanlab-openapi
+  [role="tablist"]:has(> div > div[style*="--reka-tabs-indicator"])
+  [role="tab"][data-state="active"] {
+  background: color-mix(in srgb, var(--vp-c-text-1) 14%, var(--vp-c-bg-alt));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--vp-c-text-1) 20%, transparent),
+    0 1px 3px rgb(0 0 0 / 45%);
+}
+
 /* ===== 部署文档 H1 的平台 logo（k8s / docker）=====
  * zh/en self_host 部署文档标题里内联的 <img class="deploy-logo">，
  * 与 VersionBadge 并排。em 相对尺寸随 H1 字号缩放；vertical-align 微调

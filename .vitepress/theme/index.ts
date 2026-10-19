@@ -32,6 +32,8 @@ import {
   useTheme as useOpenapiTheme,
 } from "vitepress-openapi/client";
 import adminApiSpec from "../specs/admin.json" with { type: "json" };
+import adminApiSpecEn from "../specs/admin.en.json" with { type: "json" };
+import { createCodeSampleGenerator } from "../utils/openapi-code-samples";
 
 export default {
   ...VoidZeroTheme,
@@ -73,6 +75,7 @@ export default {
       // 接口示例只保留 JavaScript / Python / Go 三种语言
       codeSamples: {
         defaultLang: "javascript",
+        generator: createCodeSampleGenerator([adminApiSpec, adminApiSpecEn]),
         availableLanguages: [
           {
             lang: "javascript",
