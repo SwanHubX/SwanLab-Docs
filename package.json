@@ -26,6 +26,11 @@
     "vitepress-plugin-group-icons": "^1.7.5",
     "vitepress-plugin-llms": "^1.12.2"
   },
+  "overrides": {
+    "vitepress-openapi": {
+      "vitepress": "$vitepress"
+    }
+  },
   "allowScripts": {
     "fsevents@2.3.3": true,
     "esbuild@0.28.1": true
