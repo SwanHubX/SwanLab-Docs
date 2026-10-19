@@ -1,5 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { SWANLAB_VERSION } from "./version.ts";
+// vitepress-openapi spike：从 mock spec 自动生成 /openapi/ 侧边栏
+import { useSidebar } from "vitepress-openapi";
+import adminApiSpec from "./specs/admin.json" with { type: "json" };
 
 var base_path_guide_cloud = "/guide_cloud";
 var base_path_examples = "/examples";
@@ -491,6 +494,18 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   ];
 }
 
+function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
+  const oa = useSidebar({
+    spec: adminApiSpec as never,
+    // 相对路径：侧边栏 base "/api/" 会统一拼接，写成 "/api/admin/" 会变成 /api/api/...
+    linkPrefix: "admin/",
+  });
+  return [
+    { text: "概述", link: "admin/" },
+    ...oa.generateSidebarGroups().flatMap((group) => group.items ?? []),
+  ] as DefaultTheme.SidebarItem[];
+}
+
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -506,6 +521,11 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           ],
         },
         { text: "环境变量", link: "environment-variable" },
+        {
+          text: "后台管理",
+          collapsed: true,
+          items: sidebarAdminAPI(),
+        },
       ],
     },
     {

@@ -1,5 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { SWANLAB_VERSION } from "./version.ts";
+// vitepress-openapi spike: generate the /en/api/admin/ sidebar from the mock spec
+import { useSidebar } from "vitepress-openapi";
+import adminApiSpec from "./specs/admin.en.json" with { type: "json" };
 
 type SidebarItemBadge = { badge?: { type?: string; text?: string } };
 type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge;
@@ -434,6 +437,18 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   ];
 }
 
+function sidebarAdminAPI(): DefaultTheme.SidebarItem[] {
+  const oa = useSidebar({
+    spec: adminApiSpec as never,
+    // Relative to the sidebar base "/en/api/" — "admin/" resolves to /en/api/admin/...
+    linkPrefix: "admin/",
+  });
+  return [
+    { text: "Overview", link: "admin/" },
+    ...oa.generateSidebarGroups().flatMap((group) => group.items ?? []),
+  ] as DefaultTheme.SidebarItem[];
+}
+
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -449,6 +464,11 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           ],
         },
         { text: "Environment Variables", link: "environment-variable" },
+        {
+          text: "Admin API",
+          collapsed: true,
+          items: sidebarAdminAPI(),
+        },
       ],
     },
     {

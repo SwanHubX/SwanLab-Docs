@@ -9,6 +9,7 @@ import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 import { extendConfig } from "@voidzero-dev/vitepress-theme/config";
+import { scopeOpenapiCss } from "./utils/openapi-css-scope.ts";
 import { zh } from "./zh.ts";
 import { en } from "./en.ts";
 import { SWANLAB_VERSION } from "./version.ts";
@@ -185,6 +186,14 @@ export default extendConfig(
     },
     vite: {
       plugins,
+      css: {
+        postcss: {
+          // Keep vitepress-openapi's standalone Tailwind build from leaking
+          // onto the docs chrome (it breaks the sticky navbar and dark mode
+          // logo variants). See openapi-css-scope.ts.
+          plugins: [scopeOpenapiCss()],
+        },
+      },
       define: {
         // Baked-in build-time version, read by the browser-side sync layer
         // (theme/version-sync.ts) as the baseline it may incrementally patch.
@@ -194,6 +203,13 @@ export default extendConfig(
 
     rewrites(id) {
       return id.startsWith("zh/") ? id.slice(3) : id;
+    },
+
+    transformPageData(pageData) {
+      // vitepress-openapi spike：动态路由生成的端点页通过 params 传递标题
+      if (pageData.params?.pageTitle) {
+        pageData.title = pageData.params.pageTitle;
+      }
     },
 
     themeConfig: {

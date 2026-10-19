@@ -1,0 +1,481 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SwanLab 管理后台开放 API（Mock）",
+    "description": "面向私有化部署管理员的自动化集成接口。本规范为 vitepress-openapi 接入测试用的 Mock 数据，字段以后端最终导出为准。",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://your-swanlab-server.com",
+      "description": "私有化部署地址（替换为你的域名）"
+    }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "tags": [
+    { "name": "用户管理", "description": "组织内账号的增删查改" },
+    { "name": "项目管理", "description": "跨工作空间的项目治理" }
+  ],
+  "paths": {
+    "/admin/v1/users": {
+      "get": {
+        "operationId": "listUsers",
+        "tags": ["用户管理"],
+        "summary": "获取用户列表",
+        "description": "分页返回组织内的全部用户，支持按用户名/邮箱关键词过滤。",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码，从 1 开始。",
+            "schema": { "type": "integer", "default": 1, "minimum": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页数量，最大 100。",
+            "schema": { "type": "integer", "default": 20, "maximum": 100 }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "按用户名或邮箱模糊搜索。",
+            "schema": { "type": "string" },
+            "example": "ada"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "按账号状态过滤。",
+            "schema": { "type": "string", "enum": ["active", "banned"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "用户分页列表。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPage" },
+                "example": {
+                  "total": 42,
+                  "page": 1,
+                  "size": 20,
+                  "items": [
+                    {
+                      "username": "ada",
+                      "email": "ada@example.com",
+                      "role": "admin",
+                      "status": "active",
+                      "createdAt": "2024-01-15T09:30:00Z",
+                      "lastLoginAt": "2026-10-18T12:03:11Z"
+                    },
+                    {
+                      "username": "bob",
+                      "email": "bob@example.com",
+                      "role": "member",
+                      "status": "active",
+                      "createdAt": "2024-03-02T08:00:00Z",
+                      "lastLoginAt": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createUser",
+        "tags": ["用户管理"],
+        "summary": "创建用户",
+        "description": "在组织内创建一个新账号。仅管理员可调用。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateUserRequest" },
+              "example": {
+                "username": "grace",
+                "email": "grace@example.com",
+                "password": "S3cure!pass",
+                "role": "member"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功，返回新用户信息。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" },
+                "example": {
+                  "username": "grace",
+                  "email": "grace@example.com",
+                  "role": "member",
+                  "status": "active",
+                  "createdAt": "2026-10-19T10:00:00Z",
+                  "lastLoginAt": null
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "409": {
+            "description": "用户名或邮箱已存在。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": { "code": "USER_EXISTS", "message": "username 'grace' already exists" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/v1/users/{username}": {
+      "get": {
+        "operationId": "getUser",
+        "tags": ["用户管理"],
+        "summary": "获取用户详情",
+        "description": "返回单个用户的详细信息，包含其项目数与实验数统计。",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "用户名。",
+            "schema": { "type": "string" },
+            "example": "ada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "用户详情。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserDetail" },
+                "example": {
+                  "username": "ada",
+                  "email": "ada@example.com",
+                  "role": "admin",
+                  "status": "active",
+                  "createdAt": "2024-01-15T09:30:00Z",
+                  "lastLoginAt": "2026-10-18T12:03:11Z",
+                  "projectCount": 7,
+                  "experimentCount": 231
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteUser",
+        "tags": ["用户管理"],
+        "summary": "删除用户",
+        "description": "删除指定用户及其名下全部项目与实验数据，**该操作不可恢复**。不允许删除调用者自身。",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "用户名。",
+            "schema": { "type": "string" },
+            "example": "bob"
+          }
+        ],
+        "responses": {
+          "204": { "description": "删除成功，无返回体。" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": {
+            "description": "不允许删除当前登录的管理员账号。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": { "code": "SELF_DELETE", "message": "cannot delete yourself" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/admin/v1/projects": {
+      "get": {
+        "operationId": "listAllProjects",
+        "tags": ["项目管理"],
+        "summary": "获取全站项目列表",
+        "description": "管理员视角的项目列表，覆盖全部工作空间，支持按所有者与可见性过滤。",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "query",
+            "description": "按工作空间（个人或组织 username）过滤。",
+            "schema": { "type": "string" },
+            "example": "my-team"
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "按可见性过滤。",
+            "schema": { "type": "string", "enum": ["public", "private"] }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序字段。",
+            "schema": {
+              "type": "string",
+              "enum": ["createdAt", "updatedAt"],
+              "default": "createdAt"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序方向。",
+            "schema": { "type": "string", "enum": ["asc", "desc"], "default": "desc" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "项目分页列表。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectPage" },
+                "example": {
+                  "total": 128,
+                  "page": 1,
+                  "size": 20,
+                  "items": [
+                    {
+                      "id": "p-8f3k2d",
+                      "name": "llm-finetune",
+                      "owner": "my-team",
+                      "visibility": "private",
+                      "experimentCount": 56,
+                      "createdAt": "2025-11-01T03:20:00Z",
+                      "updatedAt": "2026-10-17T22:41:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/admin/v1/projects/{projectId}/quota": {
+      "patch": {
+        "operationId": "updateProjectQuota",
+        "tags": ["项目管理"],
+        "summary": "更新项目配额",
+        "description": "调整单个项目的实验数上限与存储配额，用于私有化部署的资源治理。",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "项目 ID。",
+            "schema": { "type": "string" },
+            "example": "p-8f3k2d"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateQuotaRequest" },
+              "example": { "maxExperiments": 500, "maxStorageGB": 100 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新后的项目信息。",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Project" },
+                "example": {
+                  "id": "p-8f3k2d",
+                  "name": "llm-finetune",
+                  "owner": "my-team",
+                  "visibility": "private",
+                  "experimentCount": 56,
+                  "createdAt": "2025-11-01T03:20:00Z",
+                  "updatedAt": "2026-10-19T10:05:00Z"
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "管理员 API Key，在管理后台「设置 → API Key」页面生成。"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["username", "email", "role", "status", "createdAt"],
+        "properties": {
+          "username": { "type": "string", "description": "用户名，全局唯一。", "example": "ada" },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "邮箱地址。",
+            "example": "ada@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member"],
+            "description": "角色。",
+            "example": "admin"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "banned"],
+            "description": "账号状态。",
+            "example": "active"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间。",
+            "example": "2024-01-15T09:30:00Z"
+          },
+          "lastLoginAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "最近登录时间，从未登录为 null。",
+            "example": "2026-10-18T12:03:11Z"
+          }
+        }
+      },
+      "UserDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/User" },
+          {
+            "type": "object",
+            "properties": {
+              "projectCount": { "type": "integer", "description": "名下项目数。" },
+              "experimentCount": { "type": "integer", "description": "名下实验数。" }
+            }
+          }
+        ]
+      },
+      "UserPage": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer", "description": "符合条件的用户总数。" },
+          "page": { "type": "integer", "description": "当前页码。" },
+          "size": { "type": "integer", "description": "每页数量。" },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/User" } }
+        }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": ["username", "email", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "pattern": "^[a-z0-9_-]{3,32}$",
+            "description": "用户名，3-32 位小写字母、数字、下划线或短横线。",
+            "example": "grace"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "邮箱地址。",
+            "example": "grace@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "初始密码，至少 8 位。",
+            "example": "S3cure!pass"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member"],
+            "default": "member",
+            "description": "角色，默认 member。",
+            "example": "member"
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "项目 ID。" },
+          "name": { "type": "string", "description": "项目名。" },
+          "owner": { "type": "string", "description": "所属工作空间。" },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"],
+            "description": "可见性。"
+          },
+          "experimentCount": { "type": "integer", "description": "实验数。" },
+          "createdAt": { "type": "string", "format": "date-time", "description": "创建时间。" },
+          "updatedAt": { "type": "string", "format": "date-time", "description": "最近更新时间。" }
+        }
+      },
+      "ProjectPage": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer", "description": "符合条件的项目总数。" },
+          "page": { "type": "integer", "description": "当前页码。" },
+          "size": { "type": "integer", "description": "每页数量。" },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/Project" } }
+        }
+      },
+      "UpdateQuotaRequest": {
+        "type": "object",
+        "properties": {
+          "maxExperiments": { "type": "integer", "description": "实验数上限，0 表示不限制。" },
+          "maxStorageGB": { "type": "integer", "description": "存储配额（GB），0 表示不限制。" }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "机器可读的错误码。" },
+          "message": { "type": "string", "description": "错误描述。" }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "认证失败，API Key 缺失或无效。",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": { "code": "UNAUTHORIZED", "message": "invalid or missing api key" }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "资源不存在。",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": { "code": "NOT_FOUND", "message": "resource not found" }
+          }
+        }
+      }
+    }
+  }
+}

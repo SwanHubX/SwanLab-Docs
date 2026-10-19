@@ -1,6 +1,7 @@
 // .vitepress/theme/index.ts
+import "vitepress-openapi/dist/style.css";
 import type { Theme } from "vitepress";
-import { useRoute } from "vitepress";
+import { useData, useRoute } from "vitepress";
 import { VoidZeroTheme, themeContextKey } from "@voidzero-dev/vitepress-theme";
 import { onMounted, watch, nextTick } from "vue";
 import "virtual:group-icons.css";
@@ -24,6 +25,13 @@ import MermaidDiagram from "./components/MermaidDiagram.vue";
 import HomePromoSection from "./components/HomePromoSection.vue";
 import { useVersionSync } from "./version-sync";
 import { useLogoLinkFix } from "./logo-link";
+// vitepress-openapi spike：渲染 /api/admin/ 下的管理后台接口页（mock spec）
+import {
+  theme as openapiTheme,
+  useOpenapi,
+  useTheme as useOpenapiTheme,
+} from "vitepress-openapi/client";
+import adminApiSpec from "../specs/admin.json" with { type: "json" };
 
 export default {
   ...VoidZeroTheme,
@@ -54,11 +62,34 @@ export default {
     ctx.app.component("MermaidDiagram", MermaidDiagram);
     ctx.app.component("HomePromoSection", HomePromoSection);
     VoidZeroTheme.enhanceApp(ctx);
+
+    // vitepress-openapi spike：加载 mock spec，隐藏 Try it 控制台与品牌页脚
+    useOpenapi({ spec: adminApiSpec });
+    useOpenapiTheme({
+      operation: {
+        hiddenSlots: ["playground", "branding"],
+        cols: 2,
+      },
+      i18n: { locale: "zh" },
+    });
+    openapiTheme.enhanceApp(ctx);
   },
   setup() {
     const route = useRoute();
+    const { lang } = useData();
     const initVersionSync = useVersionSync();
     const initLogoLinkFix = useLogoLinkFix();
+
+    // vitepress-openapi spike：UI 文案跟随当前语言（zh / en）
+    watch(
+      () => lang.value,
+      (value) => {
+        useOpenapiTheme({
+          i18n: { locale: value.toLowerCase().startsWith("zh") ? "zh" : "en" },
+        });
+      },
+      { immediate: true },
+    );
 
     const shouldZoomImage = (img: HTMLImageElement) => {
       // 1. Check if there are clear exclusion marks

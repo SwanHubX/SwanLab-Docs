@@ -1,0 +1,501 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SwanLab Admin API (Mock)",
+    "description": "Automation endpoints for administrators of self-hosted deployments. This is mock data for evaluating the vitepress-openapi integration; field definitions are subject to the final backend export.",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://your-swanlab-server.com",
+      "description": "Self-hosted deployment URL (replace with your domain)"
+    }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "tags": [
+    {
+      "name": "User Management",
+      "description": "Create, read, and delete accounts in the organization"
+    },
+    { "name": "Project Management", "description": "Cross-workspace project governance" }
+  ],
+  "paths": {
+    "/admin/v1/users": {
+      "get": {
+        "operationId": "listUsers",
+        "tags": ["User Management"],
+        "summary": "List users",
+        "description": "Returns a paginated list of all users in the organization. Supports filtering by username or email keyword.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number, starting at 1.",
+            "schema": { "type": "integer", "default": 1, "minimum": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Number of items per page, up to 100.",
+            "schema": { "type": "integer", "default": 20, "maximum": 100 }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "Fuzzy search by username or email.",
+            "schema": { "type": "string" },
+            "example": "ada"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by account status.",
+            "schema": { "type": "string", "enum": ["active", "banned"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated user list.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserPage" },
+                "example": {
+                  "total": 42,
+                  "page": 1,
+                  "size": 20,
+                  "items": [
+                    {
+                      "username": "ada",
+                      "email": "ada@example.com",
+                      "role": "admin",
+                      "status": "active",
+                      "createdAt": "2024-01-15T09:30:00Z",
+                      "lastLoginAt": "2026-10-18T12:03:11Z"
+                    },
+                    {
+                      "username": "bob",
+                      "email": "bob@example.com",
+                      "role": "member",
+                      "status": "active",
+                      "createdAt": "2024-03-02T08:00:00Z",
+                      "lastLoginAt": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createUser",
+        "tags": ["User Management"],
+        "summary": "Create user",
+        "description": "Creates a new account in the organization. Admin only.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateUserRequest" },
+              "example": {
+                "username": "grace",
+                "email": "grace@example.com",
+                "password": "S3cure!pass",
+                "role": "member"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created. Returns the new user.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" },
+                "example": {
+                  "username": "grace",
+                  "email": "grace@example.com",
+                  "role": "member",
+                  "status": "active",
+                  "createdAt": "2026-10-19T10:00:00Z",
+                  "lastLoginAt": null
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "409": {
+            "description": "Username or email already exists.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": { "code": "USER_EXISTS", "message": "username 'grace' already exists" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/v1/users/{username}": {
+      "get": {
+        "operationId": "getUser",
+        "tags": ["User Management"],
+        "summary": "Get user details",
+        "description": "Returns detailed information for a single user, including project and experiment counts.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "Username.",
+            "schema": { "type": "string" },
+            "example": "ada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserDetail" },
+                "example": {
+                  "username": "ada",
+                  "email": "ada@example.com",
+                  "role": "admin",
+                  "status": "active",
+                  "createdAt": "2024-01-15T09:30:00Z",
+                  "lastLoginAt": "2026-10-18T12:03:11Z",
+                  "projectCount": 7,
+                  "experimentCount": 231
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteUser",
+        "tags": ["User Management"],
+        "summary": "Delete user",
+        "description": "Deletes the specified user together with all projects and experiment data they own. **This action cannot be undone.** Deleting the caller is not allowed.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "Username.",
+            "schema": { "type": "string" },
+            "example": "bob"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted. No response body." },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": {
+            "description": "Cannot delete the currently signed-in admin account.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" },
+                "example": { "code": "SELF_DELETE", "message": "cannot delete yourself" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/admin/v1/projects": {
+      "get": {
+        "operationId": "listAllProjects",
+        "tags": ["Project Management"],
+        "summary": "List all projects",
+        "description": "Admin view of projects across all workspaces. Supports filtering by owner and visibility.",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "query",
+            "description": "Filter by workspace (personal or organization username).",
+            "schema": { "type": "string" },
+            "example": "my-team"
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "Filter by visibility.",
+            "schema": { "type": "string", "enum": ["public", "private"] }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by.",
+            "schema": {
+              "type": "string",
+              "enum": ["createdAt", "updatedAt"],
+              "default": "createdAt"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Sort direction.",
+            "schema": { "type": "string", "enum": ["asc", "desc"], "default": "desc" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated project list.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectPage" },
+                "example": {
+                  "total": 128,
+                  "page": 1,
+                  "size": 20,
+                  "items": [
+                    {
+                      "id": "p-8f3k2d",
+                      "name": "llm-finetune",
+                      "owner": "my-team",
+                      "visibility": "private",
+                      "experimentCount": 56,
+                      "createdAt": "2025-11-01T03:20:00Z",
+                      "updatedAt": "2026-10-17T22:41:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/admin/v1/projects/{projectId}/quota": {
+      "patch": {
+        "operationId": "updateProjectQuota",
+        "tags": ["Project Management"],
+        "summary": "Update project quota",
+        "description": "Adjusts the experiment limit and storage quota for a single project. Intended for resource governance in self-hosted deployments.",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "description": "Project ID.",
+            "schema": { "type": "string" },
+            "example": "p-8f3k2d"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateQuotaRequest" },
+              "example": { "maxExperiments": 500, "maxStorageGB": 100 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated project.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Project" },
+                "example": {
+                  "id": "p-8f3k2d",
+                  "name": "llm-finetune",
+                  "owner": "my-team",
+                  "visibility": "private",
+                  "experimentCount": 56,
+                  "createdAt": "2025-11-01T03:20:00Z",
+                  "updatedAt": "2026-10-19T10:05:00Z"
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Admin API key. Generate one under Settings → API Key in the admin console."
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["username", "email", "role", "status", "createdAt"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username, globally unique.",
+            "example": "ada"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address.",
+            "example": "ada@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member"],
+            "description": "Role.",
+            "example": "admin"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "banned"],
+            "description": "Account status.",
+            "example": "active"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Creation time.",
+            "example": "2024-01-15T09:30:00Z"
+          },
+          "lastLoginAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Last login time; null if the user has never signed in.",
+            "example": "2026-10-18T12:03:11Z"
+          }
+        }
+      },
+      "UserDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/User" },
+          {
+            "type": "object",
+            "properties": {
+              "projectCount": { "type": "integer", "description": "Number of projects owned." },
+              "experimentCount": {
+                "type": "integer",
+                "description": "Number of experiments owned."
+              }
+            }
+          }
+        ]
+      },
+      "UserPage": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer", "description": "Total number of matching users." },
+          "page": { "type": "integer", "description": "Current page number." },
+          "size": { "type": "integer", "description": "Items per page." },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/User" } }
+        }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": ["username", "email", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "pattern": "^[a-z0-9_-]{3,32}$",
+            "description": "Username: 3-32 lowercase letters, digits, underscores, or hyphens.",
+            "example": "grace"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address.",
+            "example": "grace@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "Initial password, at least 8 characters.",
+            "example": "S3cure!pass"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "member"],
+            "default": "member",
+            "description": "Role. Defaults to member.",
+            "example": "member"
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Project ID." },
+          "name": { "type": "string", "description": "Project name." },
+          "owner": { "type": "string", "description": "Owning workspace." },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"],
+            "description": "Visibility."
+          },
+          "experimentCount": { "type": "integer", "description": "Number of experiments." },
+          "createdAt": { "type": "string", "format": "date-time", "description": "Creation time." },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last updated time."
+          }
+        }
+      },
+      "ProjectPage": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer", "description": "Total number of matching projects." },
+          "page": { "type": "integer", "description": "Current page number." },
+          "size": { "type": "integer", "description": "Items per page." },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/Project" } }
+        }
+      },
+      "UpdateQuotaRequest": {
+        "type": "object",
+        "properties": {
+          "maxExperiments": {
+            "type": "integer",
+            "description": "Maximum number of experiments; 0 means unlimited."
+          },
+          "maxStorageGB": {
+            "type": "integer",
+            "description": "Storage quota in GB; 0 means unlimited."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "Machine-readable error code." },
+          "message": { "type": "string", "description": "Error message." }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Authentication failed. API key is missing or invalid.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": { "code": "UNAUTHORIZED", "message": "invalid or missing api key" }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" },
+            "example": { "code": "NOT_FOUND", "message": "resource not found" }
+          }
+        }
+      }
+    }
+  }
+}
