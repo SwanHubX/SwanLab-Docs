@@ -86,6 +86,13 @@
   display: none;
 }
 
+/* ===== REST API 侧栏：方法 badge 贴边 =====
+ * vitepress-openapi 给每个接口条目加了 padding-inline: 8px，badge 因此被推离行首，
+ * 这里只去掉左内边距让 badge 贴住行边，右侧保留 8px，使版面缩进美观。 */
+.VPSidebar .OASidebarItem {
+  padding-left: 0;
+}
+
 /* Navbar + sidebar: desktop layout (≥960px) */
 @media (min-width: 960px) {
   .VPNavBar:not(.has-sidebar) .wrapper {
