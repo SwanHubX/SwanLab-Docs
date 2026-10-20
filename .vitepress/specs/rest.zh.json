@@ -25,6 +25,14 @@
     {
       "name": "协作者管理",
       "description": "项目协作者管理接口"
+    },
+    {
+      "name": "组织管理",
+      "description": "组织空间（团队）创建与管理接口"
+    },
+    {
+      "name": "SSO 绑定管理",
+      "description": "管理员绑定与解绑用户三方账号接口"
     }
   ],
   "paths": {
@@ -346,7 +354,7 @@
     "/self_hosted/user/pause": {
       "post": {
         "operationId": "self-hosted-pause-user",
-        "summary": "超管停用指定用户",
+        "summary": "停用指定用户",
         "description": "停用用户会删除该用户的 API Key 和会话缓存，但会保留 SSO ProviderUser 绑定记录。",
         "security": [
           {
@@ -444,7 +452,7 @@
     "/self_hosted/user/unpause": {
       "post": {
         "operationId": "self-hosted-unpause-user",
-        "summary": "超管恢复指定用户",
+        "summary": "恢复指定用户",
         "security": [
           {
             "apiKeyAuth": []
@@ -526,7 +534,7 @@
     "/self_hosted/user/del": {
       "post": {
         "operationId": "self-hosted-delete-user",
-        "summary": "超管删除成员",
+        "summary": "删除成员",
         "description": "1. 只有根用户可以删除成员\n2. 根用户无法删除自己，否则 `409 Conflict`\n3. 删除操作为软删除, `user`表`status`和`group`表`type=PERSON`的`status`会变更为 `DISABLED`\n4. 会硬删除session表中所有关于该用户的会话信息\n5. 删除缓存中所有该用户的会话信息\n6. 若目标用户是某个非个人组织的管理员，则需要先进行退出组织/修改角色等操作\n7. 删除所有关联的项目、协作者、申请信息\n8. 删除该用户关联的 SSO ProviderUser 绑定记录",
         "security": [
           {
@@ -624,7 +632,7 @@
     "/self_hosted/team/member": {
       "post": {
         "operationId": "self-hosted-upsert-team-member",
-        "summary": "超管邀请&修改成员权限",
+        "summary": "邀请&修改成员权限",
         "security": [
           {
             "apiKeyAuth": []
@@ -733,7 +741,7 @@
     "/self_hosted/team/member/del": {
       "post": {
         "operationId": "self-hosted-delete-team-member",
-        "summary": "超管移除成员",
+        "summary": "移除成员",
         "security": [
           {
             "apiKeyAuth": []
@@ -836,7 +844,7 @@
     "/self_hosted/project/collaborator": {
       "post": {
         "operationId": "self-hosted-upsert-collaborator",
-        "summary": "超管邀请协作者&修改协作者权限",
+        "summary": "邀请协作者&修改协作者权限",
         "security": [
           {
             "apiKeyAuth": []
@@ -945,7 +953,7 @@
     "/self_hosted/project/collaborator/del": {
       "post": {
         "operationId": "self-hosted-delete-collaborator",
-        "summary": "超管删除协作者",
+        "summary": "删除协作者",
         "security": [
           {
             "apiKeyAuth": []
@@ -1028,6 +1036,561 @@
           }
         },
         "tags": ["协作者管理"]
+      }
+    },
+    "/self_hosted/user/key/{username}": {
+      "get": {
+        "operationId": "self-hosted-user-latest-key",
+        "summary": "获取用户最新 API Key",
+        "description": "返回指定用户最新创建的一把 API Key；用户没有任何 API Key 时自动创建一把，名称为 `API Key`。仅允许获取启用状态用户的 Key（停用用户的 Key 在停用时已被删除）。",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "用户名 `username`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK，返回用户最新 API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["id", "name", "key", "createdAt"],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": 1,
+                  "name": "API Key",
+                  "key": "xxxxxxxxxxxxxxxxxxxxx",
+                  "createdAt": "2025-11-25T06:36:00.041Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request，路径参数不合法",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid path parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，非根用户调用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found，用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict，用户已停用（停用时其 API Key 已被删除）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "user is disabled"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["用户管理"]
+      }
+    },
+    "/self_hosted/team": {
+      "post": {
+        "operationId": "self-hosted-create-team",
+        "summary": "创建组织空间",
+        "description": "创建组织空间，可指定归属用户。组织类型为 `TEAM`，`owner` 缺省时归属当前根用户，归属用户以 `OWNER` 身份加入组织。组织 `username` 全局唯一且大小写不敏感。",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "组织空间的 `username`，必选，长度 `1~25`，仅允许字母、数字、`-` 和 `_`，全局唯一且大小写不敏感"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "组织名称，可选，长度 `1~512`"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "归属用户的 `username`，可选，缺省时归属当前根用户；归属用户需处于启用状态"
+                  },
+                  "profile": {
+                    "type": "object",
+                    "description": "组织资料，可选，字段与 `POST /group` 的 `profile` 一致",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "主页地址，最长 100 字符"
+                      },
+                      "bio": {
+                        "type": "string",
+                        "description": "简介，最长 200 字符"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "联系邮箱"
+                      },
+                      "school": {
+                        "type": "string",
+                        "description": "所在学校，最长 100 字符"
+                      },
+                      "location": {
+                        "type": "string",
+                        "description": "所在地点，最长 100 字符"
+                      },
+                      "institution": {
+                        "type": "string",
+                        "description": "所在机构，最长 100 字符"
+                      },
+                      "idc": {
+                        "type": "string",
+                        "description": "国际区号，默认 `86`"
+                      },
+                      "telephone": {
+                        "type": "string",
+                        "description": "联系电话"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "username": "my-team",
+                "name": "My Team",
+                "owner": "ada",
+                "profile": {
+                  "institution": "SwanLab",
+                  "location": "Chengdu"
+                }
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created，创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["name", "avatar", "username"],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "name": "My Team",
+                  "avatar": "https://swanlab-dev-static-1301372061.cos.ap-chengdu.myqcloud.com/avatars/xxxx",
+                  "username": "my-team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request，参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，非根用户调用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found，归属用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "owner user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict：组织 `username` 已存在；归属用户已停用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization already exists"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["组织管理"]
+      }
+    },
+    "/self_hosted/sso/bind": {
+      "post": {
+        "operationId": "self-hosted-bind-sso",
+        "summary": "绑定用户与三方账号",
+        "description": "将指定 SwanLab 用户与某启用 Provider 的三方账号绑定，字段口径与 `POST /internal/sso/bind` 一致（`userId` 换成 `username`）。\n\n非幂等：重复绑定同一 `(provider, providerUserId)` 返回 `409`；换绑需先调用 `POST /self_hosted/sso/bind/del` 解绑。",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "provider", "providerUserId"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "SwanLab 用户的 `username`，必选"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider 名称，必选，需处于启用状态"
+                  },
+                  "providerUserId": {
+                    "type": "string",
+                    "description": "第三方用户的唯一标识，必选"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "provider": "corp-oidc",
+                "providerUserId": "00u1a2b3c4d5e6f7g8h9"
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created，绑定成功，无返回体"
+          },
+          "400": {
+            "description": "Bad Request，参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，非根用户调用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found：用户不存在（未注册或已停用）；provider 不存在或未启用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user or provider not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict：三方账号已绑定其他 SwanLab 用户；该用户在此 Provider 下已有绑定",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "third-party account already bound"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["SSO 绑定管理"]
+      }
+    },
+    "/self_hosted/sso/bind/del": {
+      "post": {
+        "operationId": "self-hosted-unbind-sso",
+        "summary": "解绑三方账号绑定",
+        "description": "删除指定用户与指定三方账号的绑定关系，三元组 `username` + `provider` + `providerUserId` 精确匹配才删除；任一不匹配（如三方账号实际绑定在其他用户名下）返回 `404`。\n\n与绑定接口的差异：不要求 Provider 处于启用状态（停用 Provider 下的残留绑定同样允许清理）；`username` 不限用户状态（停用用户的绑定仍保留，需要可清理）。",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "provider", "providerUserId"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "SwanLab 用户的 `username`，必选，不限用户状态"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider 名称，必选，不要求启用"
+                  },
+                  "providerUserId": {
+                    "type": "string",
+                    "description": "第三方用户的唯一标识，必选"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "provider": "corp-oidc",
+                "providerUserId": "00u1a2b3c4d5e6f7g8h9"
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content，解绑成功，无返回体"
+          },
+          "400": {
+            "description": "Bad Request，参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，非根用户调用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found：provider 不存在；用户不存在；绑定关系不存在（含三元组不匹配）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "binding not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["SSO 绑定管理"]
       }
     },
     "/auth/oauth2/token": {

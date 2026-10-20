@@ -25,6 +25,14 @@
     {
       "name": "Collaborator Management",
       "description": "Project collaborator management endpoints"
+    },
+    {
+      "name": "Organization Management",
+      "description": "Organization (team) space creation and management endpoints"
+    },
+    {
+      "name": "SSO Binding Management",
+      "description": "Admin endpoints to bind and unbind a user's third-party account"
     }
   ],
   "paths": {
@@ -346,7 +354,7 @@
     "/self_hosted/user/pause": {
       "post": {
         "operationId": "self-hosted-pause-user",
-        "summary": "Admin deactivates a user",
+        "summary": "Deactivate a user",
         "description": "Deactivating a user deletes their API Key and session cache, but keeps SSO ProviderUser bindings.",
         "security": [
           {
@@ -444,7 +452,7 @@
     "/self_hosted/user/unpause": {
       "post": {
         "operationId": "self-hosted-unpause-user",
-        "summary": "Admin restores a user",
+        "summary": "Restore a user",
         "security": [
           {
             "apiKeyAuth": []
@@ -526,7 +534,7 @@
     "/self_hosted/user/del": {
       "post": {
         "operationId": "self-hosted-delete-user",
-        "summary": "Admin deletes a member",
+        "summary": "Delete a member",
         "description": "1. Only the root user can delete members\n2. The root user cannot delete itself, otherwise `409 Conflict`\n3. Deletion is a soft delete: `status` on the `user` table and on the `group` table (`type=PERSON`) is set to `DISABLED`\n4. All sessions of the user in the session table are hard-deleted\n5. All cached sessions of the user are removed\n6. If the target user is an administrator of a non-personal organization, they must first leave the organization or have their role changed\n7. All related projects, collaborators and applications are deleted\n8. The user's SSO ProviderUser bindings are deleted",
         "security": [
           {
@@ -624,7 +632,7 @@
     "/self_hosted/team/member": {
       "post": {
         "operationId": "self-hosted-upsert-team-member",
-        "summary": "Admin invites & changes member permissions",
+        "summary": "Invite & change member permissions",
         "security": [
           {
             "apiKeyAuth": []
@@ -733,7 +741,7 @@
     "/self_hosted/team/member/del": {
       "post": {
         "operationId": "self-hosted-delete-team-member",
-        "summary": "Admin removes a member",
+        "summary": "Remove a member",
         "security": [
           {
             "apiKeyAuth": []
@@ -836,7 +844,7 @@
     "/self_hosted/project/collaborator": {
       "post": {
         "operationId": "self-hosted-upsert-collaborator",
-        "summary": "Admin invites a collaborator & changes collaborator permissions",
+        "summary": "Invite a collaborator & change collaborator permissions",
         "security": [
           {
             "apiKeyAuth": []
@@ -945,7 +953,7 @@
     "/self_hosted/project/collaborator/del": {
       "post": {
         "operationId": "self-hosted-delete-collaborator",
-        "summary": "Admin deletes a collaborator",
+        "summary": "Delete a collaborator",
         "security": [
           {
             "apiKeyAuth": []
@@ -1028,6 +1036,561 @@
           }
         },
         "tags": ["Collaborator Management"]
+      }
+    },
+    "/self_hosted/user/key/{username}": {
+      "get": {
+        "operationId": "self-hosted-user-latest-key",
+        "summary": "Get a user's latest API Key",
+        "description": "Returns the most recently created API Key of the target user, creating one named `API Key` if the user has none. Only enabled users are allowed: their keys are deleted when the user is deactivated.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "The user's `username`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK, returns the user's latest API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["id", "name", "key", "createdAt"],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": 1,
+                  "name": "API Key",
+                  "key": "xxxxxxxxxxxxxxxxxxxxx",
+                  "createdAt": "2025-11-25T06:36:00.041Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request, invalid path parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid path parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found, the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the user is disabled (their API Keys were deleted on deactivation)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "user is disabled"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"]
+      }
+    },
+    "/self_hosted/team": {
+      "post": {
+        "operationId": "self-hosted-create-team",
+        "summary": "Create an organization space",
+        "description": "Creates an organization space and optionally assigns an owner. The organization type is `TEAM`; when `owner` is omitted the organization belongs to the current root user. The owner joins the organization with the `OWNER` role. The organization `username` is globally unique and case-insensitive.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The organization's `username` (required), 1-25 characters, letters, digits, `-` and `_` only, globally unique and case-insensitive"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Organization display name (optional), 1-512 characters"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "The owner's `username` (optional); defaults to the current root user, and the owner must be enabled"
+                  },
+                  "profile": {
+                    "type": "object",
+                    "description": "Organization profile (optional), same fields as `profile` in `POST /group`",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Homepage URL, up to 100 characters"
+                      },
+                      "bio": {
+                        "type": "string",
+                        "description": "Short bio, up to 200 characters"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Contact email"
+                      },
+                      "school": {
+                        "type": "string",
+                        "description": "School, up to 100 characters"
+                      },
+                      "location": {
+                        "type": "string",
+                        "description": "Location, up to 100 characters"
+                      },
+                      "institution": {
+                        "type": "string",
+                        "description": "Institution, up to 100 characters"
+                      },
+                      "idc": {
+                        "type": "string",
+                        "description": "Country calling code, defaults to `86`"
+                      },
+                      "telephone": {
+                        "type": "string",
+                        "description": "Contact phone number"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "username": "my-team",
+                "name": "My Team",
+                "owner": "ada",
+                "profile": {
+                  "institution": "SwanLab",
+                  "location": "Chengdu"
+                }
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created, created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["name", "avatar", "username"],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "name": "My Team",
+                  "avatar": "https://swanlab-dev-static-1301372061.cos.ap-chengdu.myqcloud.com/avatars/xxxx",
+                  "username": "my-team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request, invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found, the owner user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "owner user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict: the organization `username` already exists; or the owner user is disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization already exists"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organization Management"]
+      }
+    },
+    "/self_hosted/sso/bind": {
+      "post": {
+        "operationId": "self-hosted-bind-sso",
+        "summary": "Bind a user to a third-party account",
+        "description": "Binds the given SwanLab user to a third-party account of an enabled Provider. Fields match `POST /internal/sso/bind`, with `userId` replaced by `username`.\n\nNot idempotent: binding the same `(provider, providerUserId)` again returns `409`; to rebind, call `POST /self_hosted/sso/bind/del` first.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "provider", "providerUserId"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The SwanLab user's `username` (required)"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider name (required); the Provider must be enabled"
+                  },
+                  "providerUserId": {
+                    "type": "string",
+                    "description": "Unique identifier of the third-party user (required)"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "provider": "corp-oidc",
+                "providerUserId": "00u1a2b3c4d5e6f7g8h9"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created, bound successfully, no response body"
+          },
+          "400": {
+            "description": "Bad Request, invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the user does not exist (unregistered or disabled); the provider does not exist or is not enabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user or provider not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict: the third-party account is already bound to another SwanLab user; the user already has a binding under this Provider",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "third-party account already bound"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["SSO Binding Management"]
+      }
+    },
+    "/self_hosted/sso/bind/del": {
+      "post": {
+        "operationId": "self-hosted-unbind-sso",
+        "summary": "Unbind a third-party account",
+        "description": "Deletes the binding between the given user and the given third-party account. The triple `username` + `provider` + `providerUserId` must match exactly; any mismatch (for example, the third-party account is actually bound to another user) returns `404`.\n\nUnlike the bind endpoint: the Provider does not need to be enabled (leftovers under a disabled Provider can still be cleaned up), and `username` is not restricted by user status (bindings of disabled users are kept and must remain removable).",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "provider", "providerUserId"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The SwanLab user's `username` (required), any user status"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider name (required), does not need to be enabled"
+                  },
+                  "providerUserId": {
+                    "type": "string",
+                    "description": "Unique identifier of the third-party user (required)"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "provider": "corp-oidc",
+                "providerUserId": "00u1a2b3c4d5e6f7g8h9"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, unbound successfully, no response body"
+          },
+          "400": {
+            "description": "Bad Request, invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the provider does not exist; the user does not exist; the binding does not exist (including triple mismatch)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "binding not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["SSO Binding Management"]
       }
     },
     "/auth/oauth2/token": {
