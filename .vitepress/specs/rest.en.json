@@ -7,12 +7,24 @@
   },
   "tags": [
     {
-      "name": "OAuth2",
-      "description": "OAuth2 authorization and usage API.\n`POST /auth/oauth2/token` uses `Basic` authentication, with the request header `Authorization: Basic base64(app_id:app_secret)`;\n`GET /auth/oauth2/user/info` and `GET /auth/oauth2/user/api_key` use a `Bearer` token, with the request header `Authorization: Bearer <access_token>`."
+      "name": "OAuth2 Validation",
+      "description": "Obtain and validate/refresh an OAuth2 Access Token"
     },
     {
-      "name": "Self-hosted",
-      "description": "Self-hosted management API. Except for `POST /self_hosted/root`, calling these endpoints requires the instance root user's API Key, with the request header `Authorization: ApiKey <api_key>`."
+      "name": "User Info",
+      "description": "Use an Access Token to retrieve user info and the API Key"
+    },
+    {
+      "name": "Root User Management",
+      "description": "Root user creation and password management endpoints"
+    },
+    {
+      "name": "User Management",
+      "description": "User and team member management endpoints"
+    },
+    {
+      "name": "Collaborator Management",
+      "description": "Project collaborator management endpoints"
     }
   ],
   "paths": {
@@ -151,7 +163,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["Root User Management"]
       }
     },
     "/self_hosted/users": {
@@ -241,7 +253,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["User Management"]
       }
     },
     "/self_hosted/user/password": {
@@ -328,7 +340,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["Root User Management"]
       }
     },
     "/self_hosted/user/pause": {
@@ -426,7 +438,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["User Management"]
       }
     },
     "/self_hosted/user/unpause": {
@@ -508,7 +520,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["User Management"]
       }
     },
     "/self_hosted/user/del": {
@@ -606,7 +618,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["User Management"]
       }
     },
     "/self_hosted/team/member": {
@@ -715,7 +727,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["User Management"]
       }
     },
     "/self_hosted/team/member/del": {
@@ -818,7 +830,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["User Management"]
       }
     },
     "/self_hosted/project/collaborator": {
@@ -927,7 +939,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["Collaborator Management"]
       }
     },
     "/self_hosted/project/collaborator/del": {
@@ -1015,7 +1027,7 @@
             }
           }
         },
-        "tags": ["Self-hosted"]
+        "tags": ["Collaborator Management"]
       }
     },
     "/auth/oauth2/token": {
@@ -1156,7 +1168,7 @@
             }
           }
         },
-        "tags": ["OAuth2"]
+        "tags": ["OAuth2 Validation"]
       }
     },
     "/auth/oauth2/user/info": {
@@ -1286,7 +1298,7 @@
             }
           }
         },
-        "tags": ["OAuth2"]
+        "tags": ["User Info"]
       }
     },
     "/auth/oauth2/user/api_key": {
@@ -1369,7 +1381,7 @@
             }
           }
         },
-        "tags": ["OAuth2"]
+        "tags": ["User Info"]
       }
     }
   },

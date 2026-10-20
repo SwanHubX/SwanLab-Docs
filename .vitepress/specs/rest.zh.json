@@ -7,12 +7,24 @@
   },
   "tags": [
     {
-      "name": "OAuth2 授权",
-      "description": "OAuth2 授权与使用接口\n`POST /auth/oauth2/token` 使用 `Basic` 认证，请求头格式为 `Authorization: Basic base64(app_id:app_secret)`；\n`GET /auth/oauth2/user/info` 与 `GET /auth/oauth2/user/api_key` 使用 `Bearer` token，请求头格式为 `Authorization: Bearer <access_token>`。"
+      "name": "OAuth2 校验",
+      "description": "OAuth2 Access Token 的获取与刷新校验"
     },
     {
-      "name": "私有化用户管理",
-      "description": "私有化部署（Self-hosted）管理接口\n除 `POST /self_hosted/root` 外，调用这些接口需要携带实例 root 用户的 API Key，请求头格式为 `Authorization: ApiKey <api_key>`。"
+      "name": "用户信息获取",
+      "description": "使用 Access Token 获取用户信息与 API Key"
+    },
+    {
+      "name": "根用户管理",
+      "description": "根用户创建与密码管理接口"
+    },
+    {
+      "name": "用户管理",
+      "description": "用户与团队成员管理接口"
+    },
+    {
+      "name": "协作者管理",
+      "description": "项目协作者管理接口"
     }
   ],
   "paths": {
@@ -151,7 +163,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["根用户管理"]
       }
     },
     "/self_hosted/users": {
@@ -241,7 +253,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["用户管理"]
       }
     },
     "/self_hosted/user/password": {
@@ -328,7 +340,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["根用户管理"]
       }
     },
     "/self_hosted/user/pause": {
@@ -426,7 +438,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["用户管理"]
       }
     },
     "/self_hosted/user/unpause": {
@@ -508,7 +520,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["用户管理"]
       }
     },
     "/self_hosted/user/del": {
@@ -606,7 +618,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["用户管理"]
       }
     },
     "/self_hosted/team/member": {
@@ -715,7 +727,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["用户管理"]
       }
     },
     "/self_hosted/team/member/del": {
@@ -818,7 +830,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["用户管理"]
       }
     },
     "/self_hosted/project/collaborator": {
@@ -927,7 +939,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["协作者管理"]
       }
     },
     "/self_hosted/project/collaborator/del": {
@@ -1015,7 +1027,7 @@
             }
           }
         },
-        "tags": ["私有化用户管理"]
+        "tags": ["协作者管理"]
       }
     },
     "/auth/oauth2/token": {
@@ -1156,7 +1168,7 @@
             }
           }
         },
-        "tags": ["OAuth2 授权"]
+        "tags": ["OAuth2 校验"]
       }
     },
     "/auth/oauth2/user/info": {
@@ -1286,7 +1298,7 @@
             }
           }
         },
-        "tags": ["OAuth2 授权"]
+        "tags": ["用户信息获取"]
       }
     },
     "/auth/oauth2/user/api_key": {
@@ -1369,7 +1381,7 @@
             }
           }
         },
-        "tags": ["OAuth2 授权"]
+        "tags": ["用户信息获取"]
       }
     }
   },

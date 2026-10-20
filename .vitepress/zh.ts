@@ -502,7 +502,10 @@ function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
   });
   return [
     { text: "概述", link: "rest/" },
-    ...oa.generateSidebarGroups().map((group) => ({ ...group, collapsed: true })),
+    // 分组与顺序由 spec 的 tags 声明决定，接口只需在 spec 里打 tag
+    ...oa
+      .generateSidebarGroups({ tags: restApiSpec.tags.map((tag) => tag.name) })
+      .map((group) => ({ ...group, collapsed: true })),
   ] as DefaultTheme.SidebarItem[];
 }
 

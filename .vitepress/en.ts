@@ -445,7 +445,10 @@ function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
   });
   return [
     { text: "Overview", link: "rest/" },
-    ...oa.generateSidebarGroups().map((group) => ({ ...group, collapsed: true })),
+    // Groups and their order follow the spec's tags declaration; endpoints only need a tag
+    ...oa
+      .generateSidebarGroups({ tags: restApiSpec.tags.map((tag) => tag.name) })
+      .map((group) => ({ ...group, collapsed: true })),
   ] as DefaultTheme.SidebarItem[];
 }
 
