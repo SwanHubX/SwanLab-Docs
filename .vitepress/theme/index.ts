@@ -18,6 +18,7 @@ import HeaderGithubButton from "./components/HeaderGithubButton.vue";
 import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
+import RestApiExportButtons from "./components/RestApiExportButtons.vue";
 import VersionBadge from "./components/VersionBadge.vue";
 import BadgeRow from "./components/BadgeRow.vue";
 import MermaidDiagram from "./components/MermaidDiagram.vue";
@@ -59,6 +60,7 @@ export default {
     ctx.app.component("HeaderDocHelperButton", HeaderDocHelperButton);
     ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
     ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
+    ctx.app.component("RestApiExportButtons", RestApiExportButtons);
     ctx.app.component("VersionBadge", VersionBadge);
     ctx.app.component("BadgeRow", BadgeRow);
     ctx.app.component("MermaidDiagram", MermaidDiagram);
