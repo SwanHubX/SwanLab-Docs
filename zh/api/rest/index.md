@@ -1,26 +1,19 @@
-# REST API
+# 后台管理
 
-> 本区接口为 mock 数据，仅用于展示，后续替换为后端导出。
+SwanLab 后台管理开放 API，若您有意将 SwanLab 集成到第三方应用中，该部分的内容将会对您有所帮助。
 
-面向私有化部署的自动化集成接口，覆盖用户与项目治理场景。
-
-## 认证
-
-所有接口均通过 `Authorization: Bearer <API_KEY>` 认证。API Key 在管理后台「设置 → API Key」页面生成。
+该组接口覆盖 OAuth2 授权与私有化用户管理场景。
 
 ## 基础信息
 
-- **Base URL**：`https://your-swanlab-server.com`（替换为你的私有化部署域名）
+- **Base URL**：`https://api.swanlab.cn/api`
 - **数据格式**：请求与响应均为 `application/json`
-- **分页**：列表接口统一使用 `page` / `size` 参数，响应中包含 `total`
 
-## 错误码
+## 认证
 
-| 状态码 | 说明                       |
-| ------ | -------------------------- |
-| 401    | API Key 缺失或无效         |
-| 403    | 权限不足或操作被禁止       |
-| 404    | 资源不存在                 |
-| 409    | 资源冲突（如用户名已存在） |
-
-从左侧侧边栏选择具体接口查看参数与示例。
+| 接口                       | 认证方式                                         |
+| -------------------------- | ------------------------------------------------ |
+| `POST /auth/oauth2/token`  | `Authorization: Basic base64(app_id:app_secret)` |
+| `GET /auth/oauth2/user/*`  | `Authorization: Bearer <access_token>`           |
+| `POST /self_hosted/root`   | 无需认证                                         |
+| 其余 `/self_hosted/*` 接口 | `Authorization: ApiKey <root 用户的 API Key>`    |

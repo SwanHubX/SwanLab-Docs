@@ -1,26 +1,19 @@
-# REST API
+# Admin Console
 
-> The endpoints in this section use mock data for display purposes and will be replaced by the backend export.
+Open API for the SwanLab admin console. If you plan to integrate SwanLab into a third-party application, this section will help.
 
-Automation endpoints for self-hosted deployments, covering user and project governance.
-
-## Authentication
-
-All endpoints authenticate with `Authorization: Bearer <API_KEY>`. Generate an API key under "Settings → API Key" in the admin console.
+These endpoints cover OAuth2 authorization and self-hosted user management.
 
 ## Basics
 
-- **Base URL**: `https://your-swanlab-server.com` (replace with your self-hosted domain)
+- **Base URL**: `https://api.swanlab.cn/api`
 - **Content type**: `application/json` for requests and responses
-- **Pagination**: list endpoints use `page` / `size`; responses include `total`
 
-## Error codes
+## Authentication
 
-| Status | Meaning                                        |
-| ------ | ---------------------------------------------- |
-| 401    | Missing or invalid API key                     |
-| 403    | Insufficient permission or forbidden operation |
-| 404    | Resource not found                             |
-| 409    | Conflict (e.g. username already exists)        |
-
-Pick an endpoint from the sidebar to inspect its parameters and examples.
+| Endpoint                         | Authentication                                   |
+| -------------------------------- | ------------------------------------------------ |
+| `POST /auth/oauth2/token`        | `Authorization: Basic base64(app_id:app_secret)` |
+| `GET /auth/oauth2/user/*`        | `Authorization: Bearer <access_token>`           |
+| `POST /self_hosted/root`         | No authentication                                |
+| Other `/self_hosted/*` endpoints | `Authorization: ApiKey <root user's API Key>`    |

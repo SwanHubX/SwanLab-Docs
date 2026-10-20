@@ -1,498 +1,1435 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "SwanLab REST API (Mock)",
-    "description": "Automation endpoints for self-hosted deployments. This is mock data for integration testing; field definitions are subject to the final backend export.",
-    "version": "0.1.0"
+    "title": "SwanLab API",
+    "description": "Open API documentation for SwanLab, covering the OAuth2 authorization and usage API as well as the self-hosted management API.",
+    "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://your-swanlab-server.com",
-      "description": "Self-hosted deployment URL (replace with your domain)"
-    }
-  ],
-  "security": [{ "bearerAuth": [] }],
   "tags": [
     {
-      "name": "User Management",
-      "description": "Create, read, and delete accounts in the organization"
+      "name": "OAuth2",
+      "description": "OAuth2 authorization and usage API.\n`POST /auth/oauth2/token` uses `Basic` authentication, with the request header `Authorization: Basic base64(app_id:app_secret)`;\n`GET /auth/oauth2/user/info` and `GET /auth/oauth2/user/api_key` use a `Bearer` token, with the request header `Authorization: Bearer <access_token>`."
     },
-    { "name": "Project Management", "description": "Cross-workspace project governance" }
+    {
+      "name": "Self-hosted",
+      "description": "Self-hosted management API. Except for `POST /self_hosted/root`, calling these endpoints requires the instance root user's API Key, with the request header `Authorization: ApiKey <api_key>`."
+    }
   ],
   "paths": {
-    "/admin/v1/users": {
-      "get": {
-        "operationId": "listUsers",
-        "tags": ["User Management"],
-        "summary": "List users",
-        "description": "Returns a paginated list of all users in the organization. Supports filtering by username or email keyword.",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number, starting at 1.",
-            "schema": { "type": "integer", "default": 1, "minimum": 1 }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "Number of items per page, up to 100.",
-            "schema": { "type": "integer", "default": 20, "maximum": 100 }
-          },
-          {
-            "name": "keyword",
-            "in": "query",
-            "description": "Fuzzy search by username or email.",
-            "schema": { "type": "string" },
-            "example": "ada"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Filter by account status.",
-            "schema": { "type": "string", "enum": ["active", "banned"] }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Paginated user list.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/UserPage" },
-                "example": {
-                  "total": 42,
-                  "page": 1,
-                  "size": 20,
-                  "items": [
-                    {
-                      "username": "ada",
-                      "email": "ada@example.com",
-                      "role": "admin",
-                      "status": "active",
-                      "createdAt": "2024-01-15T09:30:00Z",
-                      "lastLoginAt": "2026-10-18T12:03:11Z"
-                    },
-                    {
-                      "username": "bob",
-                      "email": "bob@example.com",
-                      "role": "member",
-                      "status": "active",
-                      "createdAt": "2024-03-02T08:00:00Z",
-                      "lastLoginAt": null
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": { "$ref": "#/components/responses/Unauthorized" }
-        }
-      },
+    "/self_hosted/root": {
       "post": {
-        "operationId": "createUser",
-        "tags": ["User Management"],
-        "summary": "Create user",
-        "description": "Creates a new account in the organization. Admin only.",
+        "operationId": "self-hosted-root",
+        "summary": "Create root user",
+        "description": "1. Only one root user can exist; creating another returns `409 Conflict`;\n2. The License is verified online; `cloud_url` is configurable and defaults to `https://api.swanlab.cn/api`\n\t1. an expired license returns `403 Forbidden`;\n\t2. a missing license returns `404 Not Found`;\n\t3. otherwise it returns `502 Bad Gateway`;\n3. A successful creation returns `201`;\n4. The root user is marked by `group.comment` set to `root`;\n5. After online verification a License record is created locally for later validation.\n6. A commercial license must be verified online; offline use returns `403`",
+        "security": [],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateUserRequest" },
+              "schema": {
+                "type": "object",
+                "required": ["username", "password", "license"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "license": {
+                    "type": "string"
+                  }
+                }
+              },
               "example": {
-                "username": "grace",
-                "email": "grace@example.com",
+                "username": "root",
                 "password": "S3cure!pass",
-                "role": "member"
+                "license": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoic3RhbmRhcmQifQ.signature"
               }
             }
-          }
+          },
+          "description": "Request body",
+          "required": true
         },
         "responses": {
           "201": {
-            "description": "Created. Returns the new user.",
+            "description": "Root user created successfully; returns the user information",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/User" },
-                "example": {
-                  "username": "grace",
-                  "email": "grace@example.com",
-                  "role": "member",
-                  "status": "active",
-                  "createdAt": "2026-10-19T10:00:00Z",
-                  "lastLoginAt": null
-                }
-              }
-            }
-          },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "409": {
-            "description": "Username or email already exists.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" },
-                "example": { "code": "USER_EXISTS", "message": "username 'grace' already exists" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/v1/users/{username}": {
-      "get": {
-        "operationId": "getUser",
-        "tags": ["User Management"],
-        "summary": "Get user details",
-        "description": "Returns detailed information for a single user, including project and experiment counts.",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "description": "Username.",
-            "schema": { "type": "string" },
-            "example": "ada"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User details.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/UserDetail" },
-                "example": {
-                  "username": "ada",
-                  "email": "ada@example.com",
-                  "role": "admin",
-                  "status": "active",
-                  "createdAt": "2024-01-15T09:30:00Z",
-                  "lastLoginAt": "2026-10-18T12:03:11Z",
-                  "projectCount": 7,
-                  "experimentCount": 231
-                }
-              }
-            }
-          },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      },
-      "delete": {
-        "operationId": "deleteUser",
-        "tags": ["User Management"],
-        "summary": "Delete user",
-        "description": "Deletes the specified user together with all projects and experiment data they own. **This action cannot be undone.** Deleting the caller is not allowed.",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "description": "Username.",
-            "schema": { "type": "string" },
-            "example": "bob"
-          }
-        ],
-        "responses": {
-          "204": { "description": "Deleted. No response body." },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "403": {
-            "description": "Cannot delete the currently signed-in admin account.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" },
-                "example": { "code": "SELF_DELETE", "message": "cannot delete yourself" }
-              }
-            }
-          },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    },
-    "/admin/v1/projects": {
-      "get": {
-        "operationId": "listAllProjects",
-        "tags": ["Project Management"],
-        "summary": "List all projects",
-        "description": "Admin view of projects across all workspaces. Supports filtering by owner and visibility.",
-        "parameters": [
-          {
-            "name": "owner",
-            "in": "query",
-            "description": "Filter by workspace (personal or organization username).",
-            "schema": { "type": "string" },
-            "example": "my-team"
-          },
-          {
-            "name": "visibility",
-            "in": "query",
-            "description": "Filter by visibility.",
-            "schema": { "type": "string", "enum": ["public", "private"] }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "Field to sort by.",
-            "schema": {
-              "type": "string",
-              "enum": ["createdAt", "updatedAt"],
-              "default": "createdAt"
-            }
-          },
-          {
-            "name": "order",
-            "in": "query",
-            "description": "Sort direction.",
-            "schema": { "type": "string", "enum": ["asc", "desc"], "default": "desc" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Paginated project list.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ProjectPage" },
-                "example": {
-                  "total": 128,
-                  "page": 1,
-                  "size": 20,
-                  "items": [
-                    {
-                      "id": "p-8f3k2d",
-                      "name": "llm-finetune",
-                      "owner": "my-team",
-                      "visibility": "private",
-                      "experimentCount": 56,
-                      "createdAt": "2025-11-01T03:20:00Z",
-                      "updatedAt": "2026-10-17T22:41:00Z"
+                "schema": {
+                  "type": "object",
+                  "required": ["username", "name", "avatar", "createdAt", "verified", "tag"],
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "verified": {
+                      "type": "boolean"
+                    },
+                    "tag": {
+                      "type": "string"
                     }
-                  ]
+                  }
+                },
+                "example": {
+                  "username": "root",
+                  "name": "Root Administrator",
+                  "avatar": "https://api.swanlab.cn/avatars/root.png",
+                  "createdAt": "2026-10-19T10:00:00Z",
+                  "verified": true,
+                  "tag": "admin"
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" }
-        }
-      }
-    },
-    "/admin/v1/projects/{projectId}/quota": {
-      "patch": {
-        "operationId": "updateProjectQuota",
-        "tags": ["Project Management"],
-        "summary": "Update project quota",
-        "description": "Adjusts the experiment limit and storage quota for a single project. Intended for resource governance in self-hosted deployments.",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "description": "Project ID.",
-            "schema": { "type": "string" },
-            "example": "p-8f3k2d"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdateQuotaRequest" },
-              "example": { "maxExperiments": 500, "maxStorageGB": 100 }
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "license error: License_Expired: expired; License_Verification_Failed: invalid token; License_Activation_Expired: past the activation deadline; License_User_Count_Exceeded: the existing user count exceeds the plan limit; License_Activation_Failed: online activation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "License_Expired",
+                  "message": "license has expired"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A root user already exists; repeated activation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Root_Already_Exists",
+                  "message": "root user already exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "Internal_Error",
+                  "message": "internal server error"
+                }
+              }
             }
           }
         },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/users": {
+      "post": {
+        "operationId": "self-hosted-create-users",
+        "summary": "Bulk add users",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["users"],
+                "properties": {
+                  "users": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["username", "password"],
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "description": "Username, required"
+                        },
+                        "password": {
+                          "type": "string",
+                          "description": "Password"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "users": [
+                  {
+                    "username": "ada",
+                    "password": "S3cure!pass"
+                  },
+                  {
+                    "username": "bob",
+                    "password": "S3cure!pass"
+                  }
+                ]
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
         "responses": {
-          "200": {
-            "description": "Updated project.",
+          "201": {
+            "description": "Created, added successfully; existing users and duplicate usernames within the request are skipped"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Project" },
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
                 "example": {
-                  "id": "p-8f3k2d",
-                  "name": "llm-finetune",
-                  "owner": "my-team",
-                  "visibility": "private",
-                  "experimentCount": 56,
-                  "createdAt": "2025-11-01T03:20:00Z",
-                  "updatedAt": "2026-10-19T10:05:00Z"
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
                 }
               }
             }
           },
-          "401": { "$ref": "#/components/responses/Unauthorized" },
-          "404": { "$ref": "#/components/responses/NotFound" }
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "description": "Admin API key. Generate one under Settings → API Key in the admin console."
-      }
-    },
-    "schemas": {
-      "User": {
-        "type": "object",
-        "required": ["username", "email", "role", "status", "createdAt"],
-        "properties": {
-          "username": {
-            "type": "string",
-            "description": "Username, globally unique.",
-            "example": "ada"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "Email address.",
-            "example": "ada@example.com"
-          },
-          "role": {
-            "type": "string",
-            "enum": ["admin", "member"],
-            "description": "Role.",
-            "example": "admin"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["active", "banned"],
-            "description": "Account status.",
-            "example": "active"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Creation time.",
-            "example": "2024-01-15T09:30:00Z"
-          },
-          "lastLoginAt": {
-            "type": ["string", "null"],
-            "format": "date-time",
-            "description": "Last login time; null if the user has never signed in.",
-            "example": "2026-10-18T12:03:11Z"
-          }
-        }
-      },
-      "UserDetail": {
-        "allOf": [
-          { "$ref": "#/components/schemas/User" },
-          {
-            "type": "object",
-            "properties": {
-              "projectCount": { "type": "integer", "description": "Number of projects owned." },
-              "experimentCount": {
-                "type": "integer",
-                "description": "Number of experiments owned."
+          "403": {
+            "description": "Forbidden, no permission to add users; Max_Limit the organization member limit has been reached, and all users added this time are cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Max_Limit",
+                  "message": "user limit exceeded"
+                }
               }
             }
           }
-        ]
-      },
-      "UserPage": {
-        "type": "object",
-        "properties": {
-          "total": { "type": "integer", "description": "Total number of matching users." },
-          "page": { "type": "integer", "description": "Current page number." },
-          "size": { "type": "integer", "description": "Items per page." },
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/User" } }
-        }
-      },
-      "CreateUserRequest": {
-        "type": "object",
-        "required": ["username", "email", "password"],
-        "properties": {
-          "username": {
-            "type": "string",
-            "pattern": "^[a-z0-9_-]{3,32}$",
-            "description": "Username: 3-32 lowercase letters, digits, underscores, or hyphens.",
-            "example": "grace"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "Email address.",
-            "example": "grace@example.com"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 8,
-            "description": "Initial password, at least 8 characters.",
-            "example": "S3cure!pass"
-          },
-          "role": {
-            "type": "string",
-            "enum": ["admin", "member"],
-            "default": "member",
-            "description": "Role. Defaults to member.",
-            "example": "member"
-          }
-        }
-      },
-      "Project": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "description": "Project ID." },
-          "name": { "type": "string", "description": "Project name." },
-          "owner": { "type": "string", "description": "Owning workspace." },
-          "visibility": {
-            "type": "string",
-            "enum": ["public", "private"],
-            "description": "Visibility."
-          },
-          "experimentCount": { "type": "integer", "description": "Number of experiments." },
-          "createdAt": { "type": "string", "format": "date-time", "description": "Creation time." },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Last updated time."
-          }
-        }
-      },
-      "ProjectPage": {
-        "type": "object",
-        "properties": {
-          "total": { "type": "integer", "description": "Total number of matching projects." },
-          "page": { "type": "integer", "description": "Current page number." },
-          "size": { "type": "integer", "description": "Items per page." },
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/Project" } }
-        }
-      },
-      "UpdateQuotaRequest": {
-        "type": "object",
-        "properties": {
-          "maxExperiments": {
-            "type": "integer",
-            "description": "Maximum number of experiments; 0 means unlimited."
-          },
-          "maxStorageGB": {
-            "type": "integer",
-            "description": "Storage quota in GB; 0 means unlimited."
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "string", "description": "Machine-readable error code." },
-          "message": { "type": "string", "description": "Error message." }
-        }
+        },
+        "tags": ["Self-hosted"]
       }
     },
-    "responses": {
-      "Unauthorized": {
-        "description": "Authentication failed. API key is missing or invalid.",
-        "content": {
-          "application/json": {
-            "schema": { "$ref": "#/components/schemas/Error" },
-            "example": { "code": "UNAUTHORIZED", "message": "invalid or missing api key" }
+    "/self_hosted/user/password": {
+      "post": {
+        "operationId": "self-hosted-change-password",
+        "summary": "Root user changes password",
+        "description": "1. The root user can change the password of any user.\n2. A non-root user can only change their own password.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "password": "N3w!passw0rd"
+              }
+            }
+          },
+          "description": "All fields in the request body above are required; the response is empty.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, a non-root user cannot change another user's password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "cannot change another user's password"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found the target user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/user/pause": {
+      "post": {
+        "operationId": "self-hosted-pause-user",
+        "summary": "Admin deactivates a user",
+        "description": "Deactivating a user deletes their API Key and session cache, but keeps SSO ProviderUser bindings.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deactivated successfully and the login credentials of the user were revoked; empty response body"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden no permission to deactivate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to pause the user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not_Found the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict the root user cannot be deactivated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot pause the root user"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/user/unpause": {
+      "post": {
+        "operationId": "self-hosted-unpause-user",
+        "summary": "Admin restores a user",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content restored successfully, empty response body"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden no permission to restore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to unpause the user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not_Found the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/user/del": {
+      "post": {
+        "operationId": "self-hosted-delete-user",
+        "summary": "Admin deletes a member",
+        "description": "1. Only the root user can delete members\n2. The root user cannot delete itself, otherwise `409 Conflict`\n3. Deletion is a soft delete: `status` on the `user` table and on the `group` table (`type=PERSON`) is set to `DISABLED`\n4. All sessions of the user in the session table are hard-deleted\n5. All cached sessions of the user are removed\n6. If the target user is an administrator of a non-personal organization, they must first leave the organization or have their role changed\n7. All related projects, collaborators and applications are deleted\n8. The user's SSO ProviderUser bindings are deleted",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deleted successfully (soft delete); empty response body"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden no permission to delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to delete the user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not_Found the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict the root user cannot be deleted; Conflict the target user is an administrator of an organization (excluding the personal one)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot delete the root user"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/team/member": {
+      "post": {
+        "operationId": "self-hosted-upsert-team-member",
+        "summary": "Admin invites & changes member permissions",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username", "role"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "The organization's `username`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Target user, required"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["OWNER", "MEMBER", "VIEWER"],
+                    "description": "Role to assign (required), one of: `OWNER`, `MEMBER`, `VIEWER`"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada",
+                "role": "MEMBER"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK, updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to invite members to the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the organization does not exist; or the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the organization must keep at least one administrator (returned when downgrading the last OWNER)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization must keep at least one owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/team/member/del": {
+      "post": {
+        "operationId": "self-hosted-delete-team-member",
+        "summary": "Admin removes a member",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "the organization's `username`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "the target user, required"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, removed successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to remove members from the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the organization does not exist; the user does not exist; or the target user is not an organization member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the last administrator of the organization cannot be removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot remove the last owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/project/collaborator": {
+      "post": {
+        "operationId": "self-hosted-upsert-collaborator",
+        "summary": "Admin invites a collaborator & changes collaborator permissions",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username", "role"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "Project `cuid`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Target user, required"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["READ", "WRITE", "ADMIN"],
+                    "description": "Role to assign (required), one of: `READ`, `WRITE`, `ADMIN`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada",
+                "role": "WRITE"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK, updated successfully"
+          },
+          "400": {
+            "description": "Reach_Max, the project collaborator limit has been reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Reach_Max",
+                  "message": "collaborator limit reached"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to invite collaborators to the project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the project does not exist; or the target user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/self_hosted/project/collaborator/del": {
+      "post": {
+        "operationId": "self-hosted-delete-collaborator",
+        "summary": "Admin deletes a collaborator",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "project `cuid`"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "the user's `username`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the user does not exist; the project does not exist; or the user is not a project collaborator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Self-hosted"]
+      }
+    },
+    "/auth/oauth2/token": {
+      "post": {
+        "operationId": "oauth2-token",
+        "summary": "Obtain or refresh an Access Token",
+        "description": "Issue an access token and refresh token from an authorization code, or refresh the access token using a refresh token.",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["grant_type"],
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": ["authorization_code", "refresh_token"],
+                    "description": "Grant type"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The authorization code passed to the callback URL"
+                  },
+                  "refresh_token": {
+                    "type": "string",
+                    "description": "Refresh token"
+                  }
+                }
+              },
+              "example": {
+                "grant_type": "authorization_code",
+                "code": "8f3k2d6a1c9b4e7f0a2d5c8b"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully obtained or refreshed the access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["access_token", "expires_in"],
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "Access token, valid for 2 hours"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": "Refresh token, valid for 30 days (only returned when grant_type=authorization_code)"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "Access token validity period in seconds, fixed at 7200"
+                    }
+                  }
+                },
+                "example": {
+                  "access_token": "sl_at_9c1e4f7a2b6d8e0f3a5c7b9d",
+                  "refresh_token": "sl_rt_2f6a8c0e4b7d9f1a3c5e7b9d",
+                  "expires_in": 7200
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad_request: malformed request body or unsupported grant_type; error_code: the code is invalid, expired, or already consumed; error_token: the refresh_token is invalid or expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "bad_request",
+                  "message": "unsupported grant_type",
+                  "description": "invalid request body or unsupported grant_type"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized: missing Basic Auth, incorrect app_secret, or the code / refresh token does not belong to the current application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "unauthorized",
+                  "message": "invalid app_secret",
+                  "description": "missing Basic auth, invalid app_secret, or the code / refresh token does not belong to this application"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not_found: the app_id does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "not_found",
+                  "message": "app_id not found",
+                  "description": "app_id not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "parse_error: failed to parse JSON; random_error: failed to generate token; database_error: Redis operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "database_error",
+                  "message": "redis operation failed",
+                  "description": "Redis operation failed"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["OAuth2"]
+      }
+    },
+    "/auth/oauth2/user/info": {
+      "get": {
+        "operationId": "oauth2-user-info",
+        "summary": "Get user info",
+        "description": "Retrieve public SwanLab user info based on the access token.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the user info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["username", "nickname", "avatar", "profile"],
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "SwanLab username"
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "description": "SwanLab nickname"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "User avatar URL"
+                    },
+                    "profile": {
+                      "type": "object",
+                      "properties": {
+                        "bio": {
+                          "type": "string",
+                          "description": "Bio"
+                        },
+                        "website": {
+                          "type": "string",
+                          "description": "User's personal website"
+                        },
+                        "location": {
+                          "type": "string",
+                          "description": "Location"
+                        },
+                        "idc": {
+                          "type": "string",
+                          "description": "Country or region"
+                        },
+                        "organization": {
+                          "type": "string",
+                          "description": "Company or organization"
+                        },
+                        "education": {
+                          "type": "string",
+                          "description": "School"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "username": "ada",
+                  "nickname": "Ada",
+                  "avatar": "https://api.swanlab.cn/avatars/ada.png",
+                  "profile": {
+                    "bio": "Machine learning engineer",
+                    "website": "https://ada.dev",
+                    "location": "Hangzhou",
+                    "idc": "CN",
+                    "organization": "SwanLab",
+                    "education": "Zhejiang University"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad_request: missing token or malformed Authorization header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "bad_request",
+                  "message": "missing token",
+                  "description": "missing token or malformed Authorization header"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized: the access token does not exist or has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "unauthorized",
+                  "message": "access token expired",
+                  "description": "access token does not exist or has expired"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error_internal: failed to request user info from the SwanLab Server; parse_error: failed to parse token data; database_error: Redis operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "error_internal",
+                  "message": "failed to fetch user info",
+                  "description": "failed to request user info from SwanLab Server"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["OAuth2"]
+      }
+    },
+    "/auth/oauth2/user/api_key": {
+      "get": {
+        "operationId": "oauth2-user-api_key",
+        "summary": "Get API Key",
+        "description": "Retrieve the user's latest API Key for calling the SwanLab OpenAPI based on the access token. The implementation logic is the same as getting user info: Auth resolves the user context from the access token as a Redis index, then calls the SwanLab Server internal API to fetch the user's latest API Key.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["api_key"],
+                  "properties": {
+                    "api_key": {
+                      "type": "string",
+                      "description": "The user's latest API Key"
+                    }
+                  }
+                },
+                "example": {
+                  "api_key": "sl_ak_4d7f9b1c3e5a7d0f2b4c6e8a"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad_request: missing token or malformed Authorization header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "bad_request",
+                  "message": "missing token",
+                  "description": "missing token or malformed Authorization header"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized: the access token does not exist or has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "unauthorized",
+                  "message": "access token expired",
+                  "description": "access token does not exist or has expired"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error_internal: failed to request the API Key from the SwanLab Server; parse_error: failed to parse token data; database_error: Redis operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "error_internal",
+                  "message": "failed to fetch api key",
+                  "description": "failed to request API Key from SwanLab Server"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["OAuth2"]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.swanlab.cn/api",
+      "description": "SwanLab production environment (api.swanlab.cn)"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "description": "Authorization: Basic <app_id:app_secret(base64-encoded)>",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Authorization: Bearer <access_token>"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Authorization: ApiKey <instance root user's API Key>"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["status", "code", "message"],
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
-      "NotFound": {
-        "description": "Resource not found.",
-        "content": {
-          "application/json": {
-            "schema": { "$ref": "#/components/schemas/Error" },
-            "example": { "code": "NOT_FOUND", "message": "resource not found" }
+      "OAuthError": {
+        "type": "object",
+        "required": ["status", "code", "message"],
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
           }
         }
       }
