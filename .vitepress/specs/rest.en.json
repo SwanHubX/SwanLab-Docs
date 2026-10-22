@@ -1,0 +1,2088 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SwanLab API",
+    "description": "Open API documentation for SwanLab, covering OAuth2 authorization and self-hosted administration APIs.",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "OAuth2 Authorization",
+      "description": "Obtain and refresh OAuth2 Access Tokens, and read user info and API Keys"
+    },
+    {
+      "name": "User Management",
+      "description": "Create, deactivate, and manage passwords and API Keys for self-hosted users"
+    },
+    {
+      "name": "Organization Management",
+      "description": "Manage organization spaces and members on a self-hosted instance"
+    },
+    {
+      "name": "Project Collaboration",
+      "description": "Manage project collaborators on a self-hosted instance"
+    },
+    {
+      "name": "SSO Binding",
+      "description": "Manage bindings between self-hosted users and third-party accounts"
+    }
+  ],
+  "paths": {
+    "/self_hosted/root": {
+      "post": {
+        "operationId": "self-hosted-root",
+        "summary": "Create root user",
+        "description": "1. Only one root user can exist; creating another returns `409 Conflict`;\n2. The License is verified online; `cloud_url` is configurable and defaults to `https://api.swanlab.cn/api`\n\t1. an expired license returns `403 Forbidden`;\n\t2. a missing license returns `404 Not Found`;\n\t3. otherwise it returns `502 Bad Gateway`;\n3. A successful creation returns `201`;\n4. The root user is marked by `group.comment` set to `root`;\n5. After online verification a License record is created locally for later validation.\n6. A commercial license must be verified online; offline use returns `403`",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password", "license"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "license": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "root",
+                "password": "S3cure!pass",
+                "license": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoic3RhbmRhcmQifQ.signature"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Root user created successfully; returns the user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["username", "name", "avatar", "createdAt", "verified", "tag"],
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "verified": {
+                      "type": "boolean"
+                    },
+                    "tag": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "username": "root",
+                  "name": "Root Administrator",
+                  "avatar": "https://api.swanlab.cn/avatars/root.png",
+                  "createdAt": "2026-10-19T10:00:00Z",
+                  "verified": true,
+                  "tag": "admin"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "license error: License_Expired: expired; License_Verification_Failed: invalid token; License_Activation_Expired: past the activation deadline; License_User_Count_Exceeded: the existing user count exceeds the plan limit; License_Activation_Failed: online activation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "License_Expired",
+                  "message": "license has expired"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A root user already exists; repeated activation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Root_Already_Exists",
+                  "message": "root user already exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "Internal_Error",
+                  "message": "internal server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/users": {
+      "post": {
+        "operationId": "self-hosted-create-users",
+        "summary": "Bulk create users",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["users"],
+                "properties": {
+                  "users": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["username", "password"],
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "description": "Username, required"
+                        },
+                        "password": {
+                          "type": "string",
+                          "description": "Password"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "users": [
+                  {
+                    "username": "ada",
+                    "password": "S3cure!pass"
+                  },
+                  {
+                    "username": "bob",
+                    "password": "S3cure!pass"
+                  }
+                ]
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created, added successfully; existing users and duplicate usernames within the request are skipped"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to add users; Max_Limit the organization member limit has been reached, and all users added this time are cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Max_Limit",
+                  "message": "user limit exceeded"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/user/password": {
+      "post": {
+        "operationId": "self-hosted-change-password",
+        "summary": "Change password",
+        "description": "1. The root user can change the password of any user.\n2. A non-root user can only change their own password.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "password": "N3w!passw0rd"
+              }
+            }
+          },
+          "description": "All fields in the request body above are required; the response is empty.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, a non-root user cannot change another user's password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "cannot change another user's password"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found the target user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/user/pause": {
+      "post": {
+        "operationId": "self-hosted-pause-user",
+        "summary": "Deactivate user",
+        "description": "Deactivating a user deletes their API Key and session cache, but keeps SSO ProviderUser bindings.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deactivated successfully and the login credentials of the user were revoked; empty response body"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden no permission to deactivate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to pause the user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not_Found the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict the root user cannot be deactivated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot pause the root user"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/user/unpause": {
+      "post": {
+        "operationId": "self-hosted-unpause-user",
+        "summary": "Restore user",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content restored successfully, empty response body"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden no permission to restore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to unpause the user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not_Found the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/user/del": {
+      "post": {
+        "operationId": "self-hosted-delete-user",
+        "summary": "Delete user",
+        "description": "1. Only the root user can delete members\n2. The root user cannot delete itself, otherwise `409 Conflict`\n3. Deletion is a soft delete: `status` on the `user` table and on the `group` table (`type=PERSON`) is set to `DISABLED`\n4. All sessions of the user in the session table are hard-deleted\n5. All cached sessions of the user are removed\n6. If the target user is an administrator of a non-personal organization, they must first leave the organization or have their role changed\n7. All related projects, collaborators and applications are deleted\n8. The user's SSO ProviderUser bindings are deleted",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deleted successfully (soft delete); empty response body"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden no permission to delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to delete the user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not_Found the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict the root user cannot be deleted; Conflict the target user is an administrator of an organization (excluding the personal one)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot delete the root user"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/user/key/{username}": {
+      "get": {
+        "operationId": "self-hosted-user-latest-key",
+        "summary": "Get user API Key",
+        "description": "Returns the most recently created API Key of the target user, creating one named `API Key` if the user has none. Only enabled users are allowed: their keys are deleted when the user is deactivated.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "The user's `username`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK, returns the user's latest API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["id", "name", "key", "createdAt"],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": 1,
+                  "name": "API Key",
+                  "key": "xxxxxxxxxxxxxxxxxxxxx",
+                  "createdAt": "2025-11-25T06:36:00.041Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request, invalid path parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid path parameters"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found, the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the user is disabled (their API Keys were deleted on deactivation)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "user is disabled"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team": {
+      "post": {
+        "operationId": "self-hosted-create-team",
+        "summary": "Create organization",
+        "description": "Creates an organization space and optionally assigns an owner. The organization type is `TEAM`; when `owner` is omitted the organization belongs to the current root user. The owner joins the organization with the `OWNER` role. The organization `username` is globally unique and case-insensitive.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The organization's `username` (required), 1-25 characters, letters, digits, `-` and `_` only, globally unique and case-insensitive"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Organization display name (optional), 1-512 characters"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "The owner's `username` (optional); defaults to the current root user, and the owner must be enabled"
+                  },
+                  "profile": {
+                    "type": "object",
+                    "description": "Organization profile (optional), same fields as `profile` in `POST /group`",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Homepage URL, up to 100 characters"
+                      },
+                      "bio": {
+                        "type": "string",
+                        "description": "Short bio, up to 200 characters"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Contact email"
+                      },
+                      "school": {
+                        "type": "string",
+                        "description": "School, up to 100 characters"
+                      },
+                      "location": {
+                        "type": "string",
+                        "description": "Location, up to 100 characters"
+                      },
+                      "institution": {
+                        "type": "string",
+                        "description": "Institution, up to 100 characters"
+                      },
+                      "idc": {
+                        "type": "string",
+                        "description": "Country calling code, defaults to `86`"
+                      },
+                      "telephone": {
+                        "type": "string",
+                        "description": "Contact phone number"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "username": "my-team",
+                "name": "My Team",
+                "owner": "ada",
+                "profile": {
+                  "institution": "SwanLab",
+                  "location": "Chengdu"
+                }
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created, created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["name", "avatar", "username"],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "name": "My Team",
+                  "avatar": "https://swanlab-dev-static-1301372061.cos.ap-chengdu.myqcloud.com/avatars/xxxx",
+                  "username": "my-team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request, invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found, the owner user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "owner user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict: the organization `username` already exists; or the owner user is disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization already exists"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organization Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team/member": {
+      "post": {
+        "operationId": "self-hosted-upsert-team-member",
+        "summary": "Add or update member",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username", "role"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "The organization's `username`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Target user, required"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["OWNER", "MEMBER", "VIEWER"],
+                    "description": "Role to assign (required), one of: `OWNER`, `MEMBER`, `VIEWER`"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada",
+                "role": "MEMBER"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK, updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to invite members to the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the organization does not exist; or the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the organization must keep at least one administrator (returned when downgrading the last OWNER)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization must keep at least one owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organization Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team/member/del": {
+      "post": {
+        "operationId": "self-hosted-delete-team-member",
+        "summary": "Remove member",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "the organization's `username`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "the target user, required"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, removed successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to remove members from the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the organization does not exist; the user does not exist; or the target user is not an organization member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the last administrator of the organization cannot be removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot remove the last owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organization Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/project/collaborator": {
+      "post": {
+        "operationId": "self-hosted-upsert-collaborator",
+        "summary": "Add or update collaborator",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username", "role"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "Project `cuid`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Target user, required"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["READ", "WRITE", "ADMIN"],
+                    "description": "Role to assign (required), one of: `READ`, `WRITE`, `ADMIN`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada",
+                "role": "WRITE"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK, updated successfully"
+          },
+          "400": {
+            "description": "Reach_Max, the project collaborator limit has been reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Reach_Max",
+                  "message": "collaborator limit reached"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to invite collaborators to the project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the project does not exist; or the target user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Project Collaboration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/project/collaborator/del": {
+      "post": {
+        "operationId": "self-hosted-delete-collaborator",
+        "summary": "Remove collaborator",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "project `cuid`"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "the user's `username`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the user does not exist; the project does not exist; or the user is not a project collaborator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Project Collaboration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/sso/bind": {
+      "post": {
+        "operationId": "self-hosted-bind-sso",
+        "summary": "Bind third-party account",
+        "description": "Binds the given SwanLab user to a third-party account of an enabled Provider. Fields match `POST /internal/sso/bind`, with `userId` replaced by `username`.\n\nNot idempotent: binding the same `(provider, providerUserId)` again returns `409`; to rebind, call `POST /self_hosted/sso/bind/del` first.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "provider", "providerUserId"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The SwanLab user's `username` (required)"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider name (required); the Provider must be enabled"
+                  },
+                  "providerUserId": {
+                    "type": "string",
+                    "description": "Unique identifier of the third-party user (required)"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "provider": "corp-oidc",
+                "providerUserId": "00u1a2b3c4d5e6f7g8h9"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created, bound successfully, no response body"
+          },
+          "400": {
+            "description": "Bad Request, invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the user does not exist (unregistered or disabled); the provider does not exist or is not enabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "user or provider not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict: the third-party account is already bound to another SwanLab user; the user already has a binding under this Provider",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "third-party account already bound"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["SSO Binding"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/sso/bind/del": {
+      "post": {
+        "operationId": "self-hosted-unbind-sso",
+        "summary": "Unbind third-party account",
+        "description": "Deletes the binding between the given user and the given third-party account. The triple `username` + `provider` + `providerUserId` must match exactly; any mismatch (for example, the third-party account is actually bound to another user) returns `404`.\n\nUnlike the bind endpoint: the Provider does not need to be enabled (leftovers under a disabled Provider can still be cleaned up), and `username` is not restricted by user status (bindings of disabled users are kept and must remain removable).",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "provider", "providerUserId"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The SwanLab user's `username` (required), any user status"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider name (required), does not need to be enabled"
+                  },
+                  "providerUserId": {
+                    "type": "string",
+                    "description": "Unique identifier of the third-party user (required)"
+                  }
+                }
+              },
+              "example": {
+                "username": "ada",
+                "provider": "corp-oidc",
+                "providerUserId": "00u1a2b3c4d5e6f7g8h9"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, unbound successfully, no response body"
+          },
+          "400": {
+            "description": "Bad Request, invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Invalid_Request",
+                  "message": "invalid request body"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, the caller is not the root user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "root user required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the provider does not exist; the user does not exist; the binding does not exist (including triple mismatch)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "binding not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["SSO Binding"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/auth/oauth2/token": {
+      "post": {
+        "operationId": "oauth2-token",
+        "summary": "Obtain an Access Token",
+        "description": "Issue an access token and refresh token from an authorization code, or refresh the access token using a refresh token.",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["grant_type"],
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": ["authorization_code", "refresh_token"],
+                    "description": "Grant type"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The authorization code passed to the callback URL"
+                  },
+                  "refresh_token": {
+                    "type": "string",
+                    "description": "Refresh token"
+                  }
+                }
+              },
+              "example": {
+                "grant_type": "authorization_code",
+                "code": "8f3k2d6a1c9b4e7f0a2d5c8b"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully obtained or refreshed the access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["access_token", "expires_in"],
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "Access token, valid for 2 hours"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": "Refresh token, valid for 30 days (only returned when grant_type=authorization_code)"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "Access token validity period in seconds, fixed at 7200"
+                    }
+                  }
+                },
+                "example": {
+                  "access_token": "sl_at_9c1e4f7a2b6d8e0f3a5c7b9d",
+                  "refresh_token": "sl_rt_2f6a8c0e4b7d9f1a3c5e7b9d",
+                  "expires_in": 7200
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad_request: malformed request body or unsupported grant_type; error_code: the code is invalid, expired, or already consumed; error_token: the refresh_token is invalid or expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "bad_request",
+                  "message": "unsupported grant_type",
+                  "description": "invalid request body or unsupported grant_type"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized: missing Basic Auth, incorrect app_secret, or the code / refresh token does not belong to the current application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "unauthorized",
+                  "message": "invalid app_secret",
+                  "description": "missing Basic auth, invalid app_secret, or the code / refresh token does not belong to this application"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not_found: the app_id does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "not_found",
+                  "message": "app_id not found",
+                  "description": "app_id not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "parse_error: failed to parse JSON; random_error: failed to generate token; database_error: Redis operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "database_error",
+                  "message": "redis operation failed",
+                  "description": "Redis operation failed"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["OAuth2 Authorization"]
+      }
+    },
+    "/auth/oauth2/user/info": {
+      "get": {
+        "operationId": "oauth2-user-info",
+        "summary": "Get user info",
+        "description": "Retrieve public SwanLab user info based on the access token.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the user info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["username", "nickname", "avatar", "profile"],
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "SwanLab username"
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "description": "SwanLab nickname"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "User avatar URL"
+                    },
+                    "profile": {
+                      "type": "object",
+                      "properties": {
+                        "bio": {
+                          "type": "string",
+                          "description": "Bio"
+                        },
+                        "website": {
+                          "type": "string",
+                          "description": "User's personal website"
+                        },
+                        "location": {
+                          "type": "string",
+                          "description": "Location"
+                        },
+                        "idc": {
+                          "type": "string",
+                          "description": "Country or region"
+                        },
+                        "organization": {
+                          "type": "string",
+                          "description": "Company or organization"
+                        },
+                        "education": {
+                          "type": "string",
+                          "description": "School"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "username": "ada",
+                  "nickname": "Ada",
+                  "avatar": "https://api.swanlab.cn/avatars/ada.png",
+                  "profile": {
+                    "bio": "Machine learning engineer",
+                    "website": "https://ada.dev",
+                    "location": "Hangzhou",
+                    "idc": "CN",
+                    "organization": "SwanLab",
+                    "education": "Zhejiang University"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad_request: missing token or malformed Authorization header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "bad_request",
+                  "message": "missing token",
+                  "description": "missing token or malformed Authorization header"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized: the access token does not exist or has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "unauthorized",
+                  "message": "access token expired",
+                  "description": "access token does not exist or has expired"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error_internal: failed to request user info from the SwanLab Server; parse_error: failed to parse token data; database_error: Redis operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "error_internal",
+                  "message": "failed to fetch user info",
+                  "description": "failed to request user info from SwanLab Server"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["OAuth2 Authorization"]
+      }
+    },
+    "/auth/oauth2/user/api_key": {
+      "get": {
+        "operationId": "oauth2-user-api_key",
+        "summary": "Get API Key",
+        "description": "Retrieve the user's latest API Key for calling the SwanLab OpenAPI based on the access token. The implementation logic is the same as getting user info: Auth resolves the user context from the access token as a Redis index, then calls the SwanLab Server internal API to fetch the user's latest API Key.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the API Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["api_key"],
+                  "properties": {
+                    "api_key": {
+                      "type": "string",
+                      "description": "The user's latest API Key"
+                    }
+                  }
+                },
+                "example": {
+                  "api_key": "sl_ak_4d7f9b1c3e5a7d0f2b4c6e8a"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad_request: missing token or malformed Authorization header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "bad_request",
+                  "message": "missing token",
+                  "description": "missing token or malformed Authorization header"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized: the access token does not exist or has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "unauthorized",
+                  "message": "access token expired",
+                  "description": "access token does not exist or has expired"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error_internal: failed to request the API Key from the SwanLab Server; parse_error: failed to parse token data; database_error: Redis operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                },
+                "example": {
+                  "status": 500,
+                  "code": "error_internal",
+                  "message": "failed to fetch api key",
+                  "description": "failed to request API Key from SwanLab Server"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["OAuth2 Authorization"]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.swanlab.cn/api",
+      "description": "SwanLab production environment (for OAuth2 authorization)"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "description": "Authorization: Basic <app_id:app_secret(base64-encoded)>",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Authorization: Bearer <access_token>"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Authorization: ApiKey <instance root user's API Key>. The `ApiKey` prefix is case-sensitive and separated from the key by a single space; a bare key is rejected"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["status", "code", "message"],
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "OAuthError": {
+        "type": "object",
+        "required": ["status", "code", "message"],
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
