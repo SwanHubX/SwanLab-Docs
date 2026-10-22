@@ -443,12 +443,25 @@ function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
     // Relative to the sidebar base "/en/api/" — "rest/" resolves to /en/api/rest/...
     linkPrefix: "rest/",
   });
+  // Groups and their order follow the spec's tags declaration and paths order
+  const pickGroups = (tags: string[]) =>
+    oa.generateSidebarGroups({ tags }).map((group) => ({ ...group, collapsed: true }));
+
   return [
     { text: "Overview", link: "rest/" },
-    // Groups and their order follow the spec's tags declaration; endpoints only need a tag
-    ...oa
-      .generateSidebarGroups({ tags: restApiSpec.tags.map((tag) => tag.name) })
-      .map((group) => ({ ...group, collapsed: true })),
+    // Public-cloud endpoints stay flat
+    ...pickGroups(["OAuth2 Authorization"]),
+    // Self-hosted endpoints get one more level so 14 entries don't flood the sidebar
+    {
+      text: "Self-Hosted Administration",
+      collapsed: false,
+      items: pickGroups([
+        "User Management",
+        "Organization Management",
+        "Project Collaboration",
+        "SSO Binding",
+      ]),
+    },
   ] as DefaultTheme.SidebarItem[];
 }
 
@@ -467,12 +480,12 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
           ],
         },
         { text: "Environment Variables", link: "environment-variable" },
-        {
-          text: "REST API",
-          collapsed: true,
-          items: sidebarRestAPI(),
-        },
       ],
+    },
+    // Always expanded like the other top-level groups, no caret
+    {
+      text: "REST API",
+      items: sidebarRestAPI(),
     },
     {
       text: "CLI",

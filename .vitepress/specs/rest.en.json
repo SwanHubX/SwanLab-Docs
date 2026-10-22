@@ -11,8 +11,20 @@
       "description": "Obtain and refresh OAuth2 Access Tokens, and read user info and API Keys"
     },
     {
-      "name": "Self-Hosted Administration",
-      "description": "Root user, account, organization, collaborator, and SSO binding management for self-hosted deployments"
+      "name": "User Management",
+      "description": "Create, deactivate, and manage passwords and API Keys for self-hosted users"
+    },
+    {
+      "name": "Organization Management",
+      "description": "Manage organization spaces and members on a self-hosted instance"
+    },
+    {
+      "name": "Project Collaboration",
+      "description": "Manage project collaborators on a self-hosted instance"
+    },
+    {
+      "name": "SSO Binding",
+      "description": "Manage bindings between self-hosted users and third-party accounts"
     }
   ],
   "paths": {
@@ -151,7 +163,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -163,7 +175,7 @@
     "/self_hosted/users": {
       "post": {
         "operationId": "self-hosted-create-users",
-        "summary": "Bulk add users",
+        "summary": "Bulk create users",
         "security": [
           {
             "apiKeyAuth": []
@@ -247,7 +259,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -259,7 +271,7 @@
     "/self_hosted/user/password": {
       "post": {
         "operationId": "self-hosted-change-password",
-        "summary": "Root user changes password",
+        "summary": "Change password",
         "description": "1. The root user can change the password of any user.\n2. A non-root user can only change their own password.",
         "security": [
           {
@@ -340,7 +352,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -352,7 +364,7 @@
     "/self_hosted/user/pause": {
       "post": {
         "operationId": "self-hosted-pause-user",
-        "summary": "Deactivate a user",
+        "summary": "Deactivate user",
         "description": "Deactivating a user deletes their API Key and session cache, but keeps SSO ProviderUser bindings.",
         "security": [
           {
@@ -444,7 +456,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -456,7 +468,7 @@
     "/self_hosted/user/unpause": {
       "post": {
         "operationId": "self-hosted-unpause-user",
-        "summary": "Restore a user",
+        "summary": "Restore user",
         "security": [
           {
             "apiKeyAuth": []
@@ -532,7 +544,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -544,7 +556,7 @@
     "/self_hosted/user/del": {
       "post": {
         "operationId": "self-hosted-delete-user",
-        "summary": "Delete a member",
+        "summary": "Delete user",
         "description": "1. Only the root user can delete members\n2. The root user cannot delete itself, otherwise `409 Conflict`\n3. Deletion is a soft delete: `status` on the `user` table and on the `group` table (`type=PERSON`) is set to `DISABLED`\n4. All sessions of the user in the session table are hard-deleted\n5. All cached sessions of the user are removed\n6. If the target user is an administrator of a non-personal organization, they must first leave the organization or have their role changed\n7. All related projects, collaborators and applications are deleted\n8. The user's SSO ProviderUser bindings are deleted",
         "security": [
           {
@@ -636,440 +648,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "Self-hosted instance (replace with your instance domain)"
-          }
-        ]
-      }
-    },
-    "/self_hosted/team/member": {
-      "post": {
-        "operationId": "self-hosted-upsert-team-member",
-        "summary": "Invite & change member permissions",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["group", "username", "role"],
-                "properties": {
-                  "group": {
-                    "type": "string",
-                    "description": "The organization's `username`, required"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "Target user, required"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": ["OWNER", "MEMBER", "VIEWER"],
-                    "description": "Role to assign (required), one of: `OWNER`, `MEMBER`, `VIEWER`"
-                  }
-                }
-              },
-              "example": {
-                "group": "my-team",
-                "username": "ada",
-                "role": "MEMBER"
-              }
-            }
-          },
-          "description": "Request body",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK, updated successfully"
-          },
-          "401": {
-            "description": "Unauthorized, no valid credentials were provided",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden, no permission to invite members to the organization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to invite members"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found: the organization does not exist; or the user does not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "organization or user not found"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict, the organization must keep at least one administrator (returned when downgrading the last OWNER)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 409,
-                  "code": "Conflict",
-                  "message": "organization must keep at least one owner"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Self-Hosted Administration"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "Self-hosted instance (replace with your instance domain)"
-          }
-        ]
-      }
-    },
-    "/self_hosted/team/member/del": {
-      "post": {
-        "operationId": "self-hosted-delete-team-member",
-        "summary": "Remove a member",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["group", "username"],
-                "properties": {
-                  "group": {
-                    "type": "string",
-                    "description": "the organization's `username`, required"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "the target user, required"
-                  }
-                }
-              },
-              "example": {
-                "group": "my-team",
-                "username": "ada"
-              }
-            }
-          },
-          "description": "Request body",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content, removed successfully"
-          },
-          "401": {
-            "description": "Unauthorized, no valid credentials were provided",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden, no permission to remove members from the organization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to remove members"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found: the organization does not exist; the user does not exist; or the target user is not an organization member",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "organization or user not found"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict, the last administrator of the organization cannot be removed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 409,
-                  "code": "Conflict",
-                  "message": "cannot remove the last owner"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Self-Hosted Administration"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "Self-hosted instance (replace with your instance domain)"
-          }
-        ]
-      }
-    },
-    "/self_hosted/project/collaborator": {
-      "post": {
-        "operationId": "self-hosted-upsert-collaborator",
-        "summary": "Invite a collaborator & change collaborator permissions",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["project", "username", "role"],
-                "properties": {
-                  "project": {
-                    "type": "string",
-                    "description": "Project `cuid`, required"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "Target user, required"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": ["READ", "WRITE", "ADMIN"],
-                    "description": "Role to assign (required), one of: `READ`, `WRITE`, `ADMIN`"
-                  }
-                }
-              },
-              "example": {
-                "project": "clx8f3k2d0000abcd",
-                "username": "ada",
-                "role": "WRITE"
-              }
-            }
-          },
-          "description": "Request body",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK, updated successfully"
-          },
-          "400": {
-            "description": "Reach_Max, the project collaborator limit has been reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 400,
-                  "code": "Reach_Max",
-                  "message": "collaborator limit reached"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, no valid credentials were provided",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden, no permission to invite collaborators to the project",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to invite collaborators"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found: the project does not exist; or the target user does not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "project or user not found"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Self-Hosted Administration"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "Self-hosted instance (replace with your instance domain)"
-          }
-        ]
-      }
-    },
-    "/self_hosted/project/collaborator/del": {
-      "post": {
-        "operationId": "self-hosted-delete-collaborator",
-        "summary": "Delete a collaborator",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["project", "username"],
-                "properties": {
-                  "project": {
-                    "type": "string",
-                    "description": "project `cuid`"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "the user's `username`"
-                  }
-                }
-              },
-              "example": {
-                "project": "clx8f3k2d0000abcd",
-                "username": "ada"
-              }
-            }
-          },
-          "description": "Request body",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content, deleted successfully"
-          },
-          "401": {
-            "description": "Unauthorized, no valid credentials were provided",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden, no permission to delete",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to remove collaborators"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found: the user does not exist; the project does not exist; or the user is not a project collaborator",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "project or user not found"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1081,7 +660,7 @@
     "/self_hosted/user/key/{username}": {
       "get": {
         "operationId": "self-hosted-user-latest-key",
-        "summary": "Get a user's latest API Key",
+        "summary": "Get user API Key",
         "description": "Returns the most recently created API Key of the target user, creating one named `API Key` if the user has none. Only enabled users are allowed: their keys are deleted when the user is deactivated.",
         "security": [
           {
@@ -1207,7 +786,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["User Management"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1219,7 +798,7 @@
     "/self_hosted/team": {
       "post": {
         "operationId": "self-hosted-create-team",
-        "summary": "Create an organization space",
+        "summary": "Create organization",
         "description": "Creates an organization space and optionally assigns an owner. The organization type is `TEAM`; when `owner` is omitted the organization belongs to the current root user. The owner joins the organization with the `OWNER` role. The organization `username` is globally unique and case-insensitive.",
         "security": [
           {
@@ -1403,7 +982,440 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["Organization Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team/member": {
+      "post": {
+        "operationId": "self-hosted-upsert-team-member",
+        "summary": "Add or update member",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username", "role"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "The organization's `username`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Target user, required"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["OWNER", "MEMBER", "VIEWER"],
+                    "description": "Role to assign (required), one of: `OWNER`, `MEMBER`, `VIEWER`"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada",
+                "role": "MEMBER"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK, updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to invite members to the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the organization does not exist; or the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the organization must keep at least one administrator (returned when downgrading the last OWNER)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization must keep at least one owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organization Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team/member/del": {
+      "post": {
+        "operationId": "self-hosted-delete-team-member",
+        "summary": "Remove member",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "the organization's `username`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "the target user, required"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, removed successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to remove members from the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the organization does not exist; the user does not exist; or the target user is not an organization member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, the last administrator of the organization cannot be removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot remove the last owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Organization Management"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/project/collaborator": {
+      "post": {
+        "operationId": "self-hosted-upsert-collaborator",
+        "summary": "Add or update collaborator",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username", "role"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "Project `cuid`, required"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Target user, required"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["READ", "WRITE", "ADMIN"],
+                    "description": "Role to assign (required), one of: `READ`, `WRITE`, `ADMIN`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada",
+                "role": "WRITE"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK, updated successfully"
+          },
+          "400": {
+            "description": "Reach_Max, the project collaborator limit has been reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Reach_Max",
+                  "message": "collaborator limit reached"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to invite collaborators to the project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the project does not exist; or the target user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Project Collaboration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
+      }
+    },
+    "/self_hosted/project/collaborator/del": {
+      "post": {
+        "operationId": "self-hosted-delete-collaborator",
+        "summary": "Remove collaborator",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "project `cuid`"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "the user's `username`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "Request body",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content, deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized, no valid credentials were provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, no permission to delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found: the user does not exist; the project does not exist; or the user is not a project collaborator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Project Collaboration"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1415,7 +1427,7 @@
     "/self_hosted/sso/bind": {
       "post": {
         "operationId": "self-hosted-bind-sso",
-        "summary": "Bind a user to a third-party account",
+        "summary": "Bind third-party account",
         "description": "Binds the given SwanLab user to a third-party account of an enabled Provider. Fields match `POST /internal/sso/bind`, with `userId` replaced by `username`.\n\nNot idempotent: binding the same `(provider, providerUserId)` again returns `409`; to rebind, call `POST /self_hosted/sso/bind/del` first.",
         "security": [
           {
@@ -1533,7 +1545,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["SSO Binding"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1545,7 +1557,7 @@
     "/self_hosted/sso/bind/del": {
       "post": {
         "operationId": "self-hosted-unbind-sso",
-        "summary": "Unbind a third-party account",
+        "summary": "Unbind third-party account",
         "description": "Deletes the binding between the given user and the given third-party account. The triple `username` + `provider` + `providerUserId` must match exactly; any mismatch (for example, the third-party account is actually bound to another user) returns `404`.\n\nUnlike the bind endpoint: the Provider does not need to be enabled (leftovers under a disabled Provider can still be cleaned up), and `username` is not restricted by user status (bindings of disabled users are kept and must remain removable).",
         "security": [
           {
@@ -1648,7 +1660,7 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"],
+        "tags": ["SSO Binding"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1660,7 +1672,7 @@
     "/auth/oauth2/token": {
       "post": {
         "operationId": "oauth2-token",
-        "summary": "Obtain or refresh an Access Token",
+        "summary": "Obtain an Access Token",
         "description": "Issue an access token and refresh token from an authorization code, or refresh the access token using a refresh token.",
         "security": [
           {

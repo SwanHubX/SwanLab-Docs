@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "SwanLab API",
-    "description": "SwanLab 开放 API 文档，包含 OAuth2 授权接口，以及私有化后台管理接口。",
+    "description": "SwanLab 开放 API 文档，包含 OAuth2 授权接口与私有化后台管理接口。",
     "version": "1.0.0"
   },
   "tags": [
@@ -11,8 +11,20 @@
       "description": "OAuth2 Access Token 的获取与刷新，以及用户信息、API Key 的读取"
     },
     {
-      "name": "私有化后台管理",
-      "description": "私有化部署的根用户、账号、组织、协作者与 SSO 绑定管理"
+      "name": "用户管理",
+      "description": "私有化部署的用户创建、停用、密码与 API Key 管理"
+    },
+    {
+      "name": "组织管理",
+      "description": "私有化部署的组织空间与组织成员管理"
+    },
+    {
+      "name": "项目协作",
+      "description": "私有化部署的项目协作者管理"
+    },
+    {
+      "name": "SSO 绑定",
+      "description": "私有化部署用户与三方账号的绑定关系管理"
     }
   ],
   "paths": {
@@ -151,7 +163,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -163,7 +175,7 @@
     "/self_hosted/users": {
       "post": {
         "operationId": "self-hosted-create-users",
-        "summary": "批量添加用户",
+        "summary": "批量创建用户",
         "security": [
           {
             "apiKeyAuth": []
@@ -247,7 +259,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -259,7 +271,7 @@
     "/self_hosted/user/password": {
       "post": {
         "operationId": "self-hosted-change-password",
-        "summary": "根用户修改密码",
+        "summary": "修改密码",
         "description": "1. 根用户可以修改所有用户的密码。\n2. 非根用户只能修改自己的密码。",
         "security": [
           {
@@ -340,7 +352,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -352,7 +364,7 @@
     "/self_hosted/user/pause": {
       "post": {
         "operationId": "self-hosted-pause-user",
-        "summary": "停用指定用户",
+        "summary": "停用用户",
         "description": "停用用户会删除该用户的 API Key 和会话缓存，但会保留 SSO ProviderUser 绑定记录。",
         "security": [
           {
@@ -444,7 +456,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -456,7 +468,7 @@
     "/self_hosted/user/unpause": {
       "post": {
         "operationId": "self-hosted-unpause-user",
-        "summary": "恢复指定用户",
+        "summary": "恢复用户",
         "security": [
           {
             "apiKeyAuth": []
@@ -532,7 +544,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -544,7 +556,7 @@
     "/self_hosted/user/del": {
       "post": {
         "operationId": "self-hosted-delete-user",
-        "summary": "删除成员",
+        "summary": "删除用户",
         "description": "1. 只有根用户可以删除成员\n2. 根用户无法删除自己，否则 `409 Conflict`\n3. 删除操作为软删除, `user`表`status`和`group`表`type=PERSON`的`status`会变更为 `DISABLED`\n4. 会硬删除session表中所有关于该用户的会话信息\n5. 删除缓存中所有该用户的会话信息\n6. 若目标用户是某个非个人组织的管理员，则需要先进行退出组织/修改角色等操作\n7. 删除所有关联的项目、协作者、申请信息\n8. 删除该用户关联的 SSO ProviderUser 绑定记录",
         "security": [
           {
@@ -636,440 +648,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
-          }
-        ]
-      }
-    },
-    "/self_hosted/team/member": {
-      "post": {
-        "operationId": "self-hosted-upsert-team-member",
-        "summary": "邀请&修改成员权限",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["group", "username", "role"],
-                "properties": {
-                  "group": {
-                    "type": "string",
-                    "description": "组织空间`username`，必选"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "指定用户, 必选"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": ["OWNER", "MEMBER", "VIEWER"],
-                    "description": "指定角色, 必选, `OWNER`, `MEMBER`, `VIEWER`"
-                  }
-                }
-              },
-              "example": {
-                "group": "my-team",
-                "username": "ada",
-                "role": "MEMBER"
-              }
-            }
-          },
-          "description": "请求体",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK，修改成功"
-          },
-          "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden，对组织无权限邀请成员",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to invite members"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found：组织不存在；用户不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "organization or user not found"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict，组织内至少保留一名管理员（降级最后一名 OWNER 时返回）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 409,
-                  "code": "Conflict",
-                  "message": "organization must keep at least one owner"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["私有化后台管理"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
-          }
-        ]
-      }
-    },
-    "/self_hosted/team/member/del": {
-      "post": {
-        "operationId": "self-hosted-delete-team-member",
-        "summary": "移除成员",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["group", "username"],
-                "properties": {
-                  "group": {
-                    "type": "string",
-                    "description": "组织空间 `username`，必选"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "指定用户, 必选"
-                  }
-                }
-              },
-              "example": {
-                "group": "my-team",
-                "username": "ada"
-              }
-            }
-          },
-          "description": "请求体",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content，移除成功"
-          },
-          "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden，对组织无权限移除成员",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to remove members"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found：组织不存在；用户不存在；目标用户不是组织成员",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "organization or user not found"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict，组织最后一个管理员无法被移除",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 409,
-                  "code": "Conflict",
-                  "message": "cannot remove the last owner"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["私有化后台管理"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
-          }
-        ]
-      }
-    },
-    "/self_hosted/project/collaborator": {
-      "post": {
-        "operationId": "self-hosted-upsert-collaborator",
-        "summary": "邀请协作者&修改协作者权限",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["project", "username", "role"],
-                "properties": {
-                  "project": {
-                    "type": "string",
-                    "description": "项目`cuid`，必选"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "指定用户, 必选"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": ["READ", "WRITE", "ADMIN"],
-                    "description": "指定角色, 必选, `READ`, `WRITE`,  `ADMIN`"
-                  }
-                }
-              },
-              "example": {
-                "project": "clx8f3k2d0000abcd",
-                "username": "ada",
-                "role": "WRITE"
-              }
-            }
-          },
-          "description": "请求体",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK，修改成功"
-          },
-          "400": {
-            "description": "Reach_Max，单项目下协作者数量达上限",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 400,
-                  "code": "Reach_Max",
-                  "message": "collaborator limit reached"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden，对项目无权限邀请协作者",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to invite collaborators"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found：项目不存在；目标用户不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "project or user not found"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["私有化后台管理"],
-        "servers": [
-          {
-            "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
-          }
-        ]
-      }
-    },
-    "/self_hosted/project/collaborator/del": {
-      "post": {
-        "operationId": "self-hosted-delete-collaborator",
-        "summary": "删除协作者",
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["project", "username"],
-                "properties": {
-                  "project": {
-                    "type": "string",
-                    "description": "项目 `cuid`"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "用户的的 `username`"
-                  }
-                }
-              },
-              "example": {
-                "project": "clx8f3k2d0000abcd",
-                "username": "ada"
-              }
-            }
-          },
-          "description": "请求体",
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No Content，删除成功"
-          },
-          "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 401,
-                  "code": "Unauthorized",
-                  "message": "missing or invalid credentials"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden，无权限删除",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 403,
-                  "code": "Forbidden",
-                  "message": "no permission to remove collaborators"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found：用户不存在；项目不存在；用户不是项目协作者",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "example": {
-                  "status": 404,
-                  "code": "Not_Found",
-                  "message": "project or user not found"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1081,7 +660,7 @@
     "/self_hosted/user/key/{username}": {
       "get": {
         "operationId": "self-hosted-user-latest-key",
-        "summary": "获取用户最新 API Key",
+        "summary": "获取用户 API Key",
         "description": "返回指定用户最新创建的一把 API Key；用户没有任何 API Key 时自动创建一把，名称为 `API Key`。仅允许获取启用状态用户的 Key（停用用户的 Key 在停用时已被删除）。",
         "security": [
           {
@@ -1207,7 +786,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["用户管理"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1219,7 +798,7 @@
     "/self_hosted/team": {
       "post": {
         "operationId": "self-hosted-create-team",
-        "summary": "创建组织空间",
+        "summary": "创建组织",
         "description": "创建组织空间，可指定归属用户。组织类型为 `TEAM`，`owner` 缺省时归属当前根用户，归属用户以 `OWNER` 身份加入组织。组织 `username` 全局唯一且大小写不敏感。",
         "security": [
           {
@@ -1403,7 +982,440 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["组织管理"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "私有化部署实例（替换为你的实例域名）"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team/member": {
+      "post": {
+        "operationId": "self-hosted-upsert-team-member",
+        "summary": "添加/修改成员",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username", "role"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "组织空间`username`，必选"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "指定用户, 必选"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["OWNER", "MEMBER", "VIEWER"],
+                    "description": "指定角色, 必选, `OWNER`, `MEMBER`, `VIEWER`"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada",
+                "role": "MEMBER"
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK，修改成功"
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，对组织无权限邀请成员",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found：组织不存在；用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict，组织内至少保留一名管理员（降级最后一名 OWNER 时返回）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "organization must keep at least one owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["组织管理"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "私有化部署实例（替换为你的实例域名）"
+          }
+        ]
+      }
+    },
+    "/self_hosted/team/member/del": {
+      "post": {
+        "operationId": "self-hosted-delete-team-member",
+        "summary": "移除成员",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["group", "username"],
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "description": "组织空间 `username`，必选"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "指定用户, 必选"
+                  }
+                }
+              },
+              "example": {
+                "group": "my-team",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content，移除成功"
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，对组织无权限移除成员",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove members"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found：组织不存在；用户不存在；目标用户不是组织成员",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "organization or user not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict，组织最后一个管理员无法被移除",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 409,
+                  "code": "Conflict",
+                  "message": "cannot remove the last owner"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["组织管理"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "私有化部署实例（替换为你的实例域名）"
+          }
+        ]
+      }
+    },
+    "/self_hosted/project/collaborator": {
+      "post": {
+        "operationId": "self-hosted-upsert-collaborator",
+        "summary": "添加/修改协作者",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username", "role"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "项目`cuid`，必选"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "指定用户, 必选"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["READ", "WRITE", "ADMIN"],
+                    "description": "指定角色, 必选, `READ`, `WRITE`,  `ADMIN`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada",
+                "role": "WRITE"
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK，修改成功"
+          },
+          "400": {
+            "description": "Reach_Max，单项目下协作者数量达上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 400,
+                  "code": "Reach_Max",
+                  "message": "collaborator limit reached"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，对项目无权限邀请协作者",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to invite collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found：项目不存在；目标用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["项目协作"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "私有化部署实例（替换为你的实例域名）"
+          }
+        ]
+      }
+    },
+    "/self_hosted/project/collaborator/del": {
+      "post": {
+        "operationId": "self-hosted-delete-collaborator",
+        "summary": "移除协作者",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project", "username"],
+                "properties": {
+                  "project": {
+                    "type": "string",
+                    "description": "项目 `cuid`"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "用户的的 `username`"
+                  }
+                }
+              },
+              "example": {
+                "project": "clx8f3k2d0000abcd",
+                "username": "ada"
+              }
+            }
+          },
+          "description": "请求体",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content，删除成功"
+          },
+          "401": {
+            "description": "Unauthorized，未携带有效身份凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 401,
+                  "code": "Unauthorized",
+                  "message": "missing or invalid credentials"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden，无权限删除",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 403,
+                  "code": "Forbidden",
+                  "message": "no permission to remove collaborators"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found：用户不存在；项目不存在；用户不是项目协作者",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": 404,
+                  "code": "Not_Found",
+                  "message": "project or user not found"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["项目协作"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1415,7 +1427,7 @@
     "/self_hosted/sso/bind": {
       "post": {
         "operationId": "self-hosted-bind-sso",
-        "summary": "绑定用户与三方账号",
+        "summary": "绑定三方账号",
         "description": "将指定 SwanLab 用户与某启用 Provider 的三方账号绑定，字段口径与 `POST /internal/sso/bind` 一致（`userId` 换成 `username`）。\n\n非幂等：重复绑定同一 `(provider, providerUserId)` 返回 `409`；换绑需先调用 `POST /self_hosted/sso/bind/del` 解绑。",
         "security": [
           {
@@ -1533,7 +1545,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["SSO 绑定"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1545,7 +1557,7 @@
     "/self_hosted/sso/bind/del": {
       "post": {
         "operationId": "self-hosted-unbind-sso",
-        "summary": "解绑三方账号绑定",
+        "summary": "解绑三方账号",
         "description": "删除指定用户与指定三方账号的绑定关系，三元组 `username` + `provider` + `providerUserId` 精确匹配才删除；任一不匹配（如三方账号实际绑定在其他用户名下）返回 `404`。\n\n与绑定接口的差异：不要求 Provider 处于启用状态（停用 Provider 下的残留绑定同样允许清理）；`username` 不限用户状态（停用用户的绑定仍保留，需要可清理）。",
         "security": [
           {
@@ -1648,7 +1660,7 @@
             }
           }
         },
-        "tags": ["私有化后台管理"],
+        "tags": ["SSO 绑定"],
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
@@ -1660,7 +1672,7 @@
     "/auth/oauth2/token": {
       "post": {
         "operationId": "oauth2-token",
-        "summary": "获取或刷新 Access Token",
+        "summary": "获取 Access Token",
         "description": "根据 authorization code 签发 access token 和 refresh token，或使用 refresh token 刷新 access token。",
         "security": [
           {

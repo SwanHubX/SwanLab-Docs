@@ -1,6 +1,6 @@
 # REST API
 
-Open API for the SwanLab admin console. If you plan to integrate SwanLab into a third-party application, this section will help.
+Open API documentation for SwanLab, covering OAuth2 authorization and self-hosted administration. If you plan to integrate SwanLab into a third-party application, this section will help.
 
 ## Basics
 
@@ -33,25 +33,46 @@ For third-party applications integrated with SwanLab, using the public cloud at 
 
 ## Self-Hosted Administration
 
-Account and collaboration operations for self-hosted SwanLab instance, all managed by the root user. Called through your instance domain (`https://your-swanlab-domain.com/api`):
+Account and collaboration operations for self-hosted SwanLab instances, called through your instance domain (`https://your-swanlab-domain.com/api`).
 
-- **User management**: the first deployment creates the single root user (requires a License); afterwards, create users in bulk, reset passwords, deactivate/restore/delete users, and retrieve any user's latest API Key.
-- **Organizations & collaboration**: create organization spaces with a designated owner and adjust member roles; add project collaborators with read/write permissions, and remove members or collaborators.
-- **SSO binding**: administrators bind existing users to third-party accounts directly; unbinding and rebinding are supported, and leftovers under deactivated users or Providers can be cleaned up.
+### User Management
 
-| Endpoint                                     | What it does                                                       | Docs                                                      |
-| -------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------- |
-| `POST /self_hosted/root`                     | Create the single root user on first deployment (License required) | [View](/en/api/rest/self-hosted-root.html)                |
-| `POST /self_hosted/users`                    | Create users in bulk                                               | [View](/en/api/rest/self-hosted-create-users.html)        |
-| `POST /self_hosted/user/password`            | Change a password (the root user can change any user's)            | [View](/en/api/rest/self-hosted-change-password.html)     |
-| `POST /self_hosted/user/pause`               | Deactivate a user and clear their API Key and sessions             | [View](/en/api/rest/self-hosted-pause-user.html)          |
-| `POST /self_hosted/user/unpause`             | Restore a deactivated user                                         | [View](/en/api/rest/self-hosted-unpause-user.html)        |
-| `POST /self_hosted/user/del`                 | Soft-delete a user and purge sessions and cache                    | [View](/en/api/rest/self-hosted-delete-user.html)         |
-| `GET /self_hosted/user/key/{username}`       | Get a user's latest API Key, creating one when none exists         | [View](/en/api/rest/self-hosted-user-latest-key.html)     |
-| `POST /self_hosted/team`                     | Create an organization space with a designated owner               | [View](/en/api/rest/self-hosted-create-team.html)         |
-| `POST /self_hosted/team/member`              | Invite a member to an organization or change their role            | [View](/en/api/rest/self-hosted-upsert-team-member.html)  |
-| `POST /self_hosted/team/member/del`          | Remove a member from an organization                               | [View](/en/api/rest/self-hosted-delete-team-member.html)  |
-| `POST /self_hosted/project/collaborator`     | Invite a project collaborator or change their permission           | [View](/en/api/rest/self-hosted-upsert-collaborator.html) |
-| `POST /self_hosted/project/collaborator/del` | Remove a project collaborator                                      | [View](/en/api/rest/self-hosted-delete-collaborator.html) |
-| `POST /self_hosted/sso/bind`                 | Bind a user to a third-party account (duplicate returns 409)       | [View](/en/api/rest/self-hosted-bind-sso.html)            |
-| `POST /self_hosted/sso/bind/del`             | Unbind an account, including leftovers under a disabled Provider   | [View](/en/api/rest/self-hosted-unbind-sso.html)          |
+The first deployment creates the single root user (requires a License); afterwards, create users in bulk, reset passwords, deactivate/restore/delete users, and retrieve any user's latest API Key.
+
+| Endpoint                               | What it does                                                       | Docs                                                  |
+| -------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
+| `POST /self_hosted/root`               | Create the single root user on first deployment (License required) | [View](/en/api/rest/self-hosted-root.html)            |
+| `POST /self_hosted/users`              | Create users in bulk                                               | [View](/en/api/rest/self-hosted-create-users.html)    |
+| `POST /self_hosted/user/password`      | Change a password (the root user can change any user's)            | [View](/en/api/rest/self-hosted-change-password.html) |
+| `POST /self_hosted/user/pause`         | Deactivate a user and clear their API Key and sessions             | [View](/en/api/rest/self-hosted-pause-user.html)      |
+| `POST /self_hosted/user/unpause`       | Restore a deactivated user                                         | [View](/en/api/rest/self-hosted-unpause-user.html)    |
+| `POST /self_hosted/user/del`           | Soft-delete a user and purge sessions and cache                    | [View](/en/api/rest/self-hosted-delete-user.html)     |
+| `GET /self_hosted/user/key/{username}` | Get a user's latest API Key, creating one when none exists         | [View](/en/api/rest/self-hosted-user-latest-key.html) |
+
+### Organization Management
+
+Create organization spaces with a designated owner and adjust member roles.
+
+| Endpoint                            | What it does                                            | Docs                                                     |
+| ----------------------------------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| `POST /self_hosted/team`            | Create an organization space with a designated owner    | [View](/en/api/rest/self-hosted-create-team.html)        |
+| `POST /self_hosted/team/member`     | Invite a member to an organization or change their role | [View](/en/api/rest/self-hosted-upsert-team-member.html) |
+| `POST /self_hosted/team/member/del` | Remove a member from an organization                    | [View](/en/api/rest/self-hosted-delete-team-member.html) |
+
+### Project Collaboration
+
+Add project collaborators with read/write permissions.
+
+| Endpoint                                     | What it does                                             | Docs                                                      |
+| -------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------- |
+| `POST /self_hosted/project/collaborator`     | Invite a project collaborator or change their permission | [View](/en/api/rest/self-hosted-upsert-collaborator.html) |
+| `POST /self_hosted/project/collaborator/del` | Remove a project collaborator                            | [View](/en/api/rest/self-hosted-delete-collaborator.html) |
+
+### SSO Binding
+
+Administrators bind existing users to third-party accounts directly; unbinding and rebinding are supported, and leftovers under deactivated users or Providers can be cleaned up.
+
+| Endpoint                         | What it does                                                     | Docs                                             |
+| -------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ |
+| `POST /self_hosted/sso/bind`     | Bind a user to a third-party account (duplicate returns 409)     | [View](/en/api/rest/self-hosted-bind-sso.html)   |
+| `POST /self_hosted/sso/bind/del` | Unbind an account, including leftovers under a disabled Provider | [View](/en/api/rest/self-hosted-unbind-sso.html) |
