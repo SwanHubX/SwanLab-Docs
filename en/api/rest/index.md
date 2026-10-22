@@ -4,7 +4,9 @@ Open API for the SwanLab admin console. If you plan to integrate SwanLab into a 
 
 ## Basics
 
-- **Base URL**: `https://api.swanlab.cn/api`
+- **Base URL**:
+  - OAuth2 authorization: `https://api.swanlab.cn/api`
+  - Self-hosted administration: `https://your-swanlab-domain.com/api` (replace with your instance domain)
 - **Content type**: `application/json` for requests and responses
 
 ## Authentication
@@ -18,7 +20,7 @@ Open API for the SwanLab admin console. If you plan to integrate SwanLab into a 
 
 ## OAuth2 Authorization
 
-For third-party applications integrated with SwanLab:
+For third-party applications integrated with SwanLab, using the public cloud at `https://api.swanlab.cn/api`:
 
 - exchange `app_id` & `app_secret` for an Access Token;
 - while the token is valid, fetch the current user's profile or that user's API Key, which authorizes further calls to the open API.
@@ -31,7 +33,7 @@ For third-party applications integrated with SwanLab:
 
 ## Self-Hosted Administration
 
-Account and collaboration operations for a self-hosted instance, all managed by the root user:
+Account and collaboration operations for self-hosted SwanLab instance, all managed by the root user. Called through your instance domain (`https://your-swanlab-domain.com/api`):
 
 - **User management**: the first deployment creates the single root user (requires a License); afterwards, create users in bulk, reset passwords, deactivate/restore/delete users, and retrieve any user's latest API Key.
 - **Organizations & collaboration**: create organization spaces with a designated owner and adjust member roles; add project collaborators with read/write permissions, and remove members or collaborators.

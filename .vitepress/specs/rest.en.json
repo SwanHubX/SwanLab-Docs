@@ -151,7 +151,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/users": {
@@ -241,7 +247,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/user/password": {
@@ -328,7 +340,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/user/pause": {
@@ -426,7 +444,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/user/unpause": {
@@ -508,7 +532,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/user/del": {
@@ -606,7 +636,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/team/member": {
@@ -715,7 +751,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/team/member/del": {
@@ -818,7 +860,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/project/collaborator": {
@@ -927,7 +975,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/project/collaborator/del": {
@@ -1015,7 +1069,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/user/key/{username}": {
@@ -1147,7 +1207,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/team": {
@@ -1337,7 +1403,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/sso/bind": {
@@ -1461,7 +1533,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/self_hosted/sso/bind/del": {
@@ -1570,7 +1648,13 @@
             }
           }
         },
-        "tags": ["Self-Hosted Administration"]
+        "tags": ["Self-Hosted Administration"],
+        "servers": [
+          {
+            "url": "https://your-swanlab-domain.com/api",
+            "description": "Self-hosted instance (replace with your instance domain)"
+          }
+        ]
       }
     },
     "/auth/oauth2/token": {
@@ -1931,7 +2015,7 @@
   "servers": [
     {
       "url": "https://api.swanlab.cn/api",
-      "description": "SwanLab production environment (api.swanlab.cn)"
+      "description": "SwanLab production environment (for OAuth2 authorization)"
     }
   ],
   "components": {

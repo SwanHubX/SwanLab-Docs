@@ -74,6 +74,9 @@ export default {
         hiddenSlots: ["playground", "branding"],
         cols: 1,
       },
+      // 接口页会把选中的 server 持久化到 localStorage；默认 Base URL 改成
+      // 私有化域名后，换前缀让老访客缓存的 api.swanlab.cn 失效。
+      storage: { prefix: "--swanlab-oa" },
       // 接口示例提供 cURL / JavaScript / Python / Go 四种语言
       codeSamples: {
         defaultLang: "curl",

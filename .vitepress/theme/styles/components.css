@@ -406,15 +406,30 @@ html.dark
     0 1px 3px rgb(0 0 0 / 45%);
 }
 
-/* ===== REST API 方法徽章配色：对齐 Umami docs（shiso 框架）=====
- * 来源：docs.umami.is 实测提取。其规则基于 Tailwind v4 默认色板：
+/* ===== REST API 方法徽章 =====
+ * 配色基于 Tailwind v4 默认色板：
  *   亮色 = bg {hue}-100 + text {hue}-800；暗色 = bg {hue}-400/15 + text {hue}-300；
  *   方法→色相映射：GET=green、POST=blue、PUT=orange、PATCH=purple、DELETE=red，
  *   未定义动词（HEAD/OPTIONS）回退中性灰（bg muted + text muted-foreground）。
- * Umami 的徽章 hover 不变色，因此把 vitepress-openapi 默认的 hover 加深
  * （-200→-300 / -800→-700）一并覆盖为与静态相同的颜色。
  * 选择器加 html 前缀提升一档特异性，保证不依赖与本文件和
  * vendor 样式的加载顺序（页面头部徽章与侧栏徽章都走 OAMethodBadge--* 类）。 */
+
+/* 尺寸与字体。项目不额外加载 webfont */
+html [class*="OAMethodBadge--"],
+html .swanlab-openapi [class*="OAMethodBadge--"] {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-family: "JetBrains Mono", var(--vp-font-family-mono);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+}
+
 html .OAMethodBadge--get {
   background-color: oklch(0.962 0.044 156.743); /* green-100 */
   color: oklch(0.448 0.119 151.708); /* green-800 */

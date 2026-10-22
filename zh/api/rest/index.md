@@ -4,7 +4,9 @@ SwanLab 后台管理开放 API，若您有意将 SwanLab 集成到第三方应�
 
 ## 基础信息
 
-- **Base URL**：`https://api.swanlab.cn/api`
+- **Base URL**：
+  - OAuth2 授权：`https://api.swanlab.cn/api`
+  - 私有化后台管理：`https://your-swanlab-domain.com/api`（替换为你的SwanLab 私有化实例域名）
 - **数据格式**：请求与响应均为 `application/json`
 
 ## 认证
@@ -18,7 +20,7 @@ SwanLab 后台管理开放 API，若您有意将 SwanLab 集成到第三方应�
 
 ## OAuth2 授权
 
-面向已接入 SwanLab 的第三方应用：
+面向已接入 SwanLab 的第三方应用，使用公有云地址 `https://api.swanlab.cn/api`：
 
 - 用 `app_id` & `app_secret` 换取 Access Token；
 - 在 Token 有效期内获取当前用户信息，或获取该用户的 API Key，用于后续调用开放接口。
@@ -31,7 +33,7 @@ SwanLab 后台管理开放 API，若您有意将 SwanLab 集成到第三方应�
 
 ## 私有化后台管理
 
-面向私有化部署实例的账号与协作运维，由根用户统一管理：
+面向私有化部署实例的账号与协作管理。使用私有化服务实例域名（`https://your-swanlab-domain.com/api`）前缀调用：
 
 - **用户管理**：首次部署创建唯一的根用户（需要 License），之后支持批量建号、重置密码、停用/恢复/删除用户，以及取用任一用户的最新 API Key；
 - **组织与协作**：创建组织空间并指定归属人，调整成员角色；为项目添加协作者并设定读写权限，成员与协作者均可统一移除；
