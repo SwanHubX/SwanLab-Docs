@@ -18,6 +18,11 @@ Open API documentation for SwanLab, covering OAuth2 authorization and self-hoste
 | `POST /self_hosted/root`         | No authentication                                |
 | Other `/self_hosted/*` endpoints | `Authorization: ApiKey <root user's API Key>`    |
 
+::: warning ⚠️ Warning
+`/self_hosted/*` requests must include the `ApiKey` prefix (case-sensitive, followed by a single space and the key). A bare key is treated as no credentials and returns `401`; a non-root user's key returns `403`.
+
+:::
+
 ## OAuth2 Authorization
 
 For third-party applications integrated with SwanLab, using the public cloud at `https://api.swanlab.cn/api`:

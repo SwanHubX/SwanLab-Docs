@@ -2038,16 +2038,15 @@
         "scheme": "basic"
       },
       "bearerAuth": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
+        "type": "http",
+        "scheme": "bearer",
         "description": "Authorization: Bearer <access_token>"
       },
       "apiKeyAuth": {
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
-        "description": "Authorization: ApiKey <instance root user's API Key>"
+        "description": "Authorization: ApiKey <instance root user's API Key>. The `ApiKey` prefix is case-sensitive and separated from the key by a single space; a bare key is rejected"
       }
     },
     "schemas": {

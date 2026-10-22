@@ -454,7 +454,7 @@ function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
     // Self-hosted endpoints get one more level so 14 entries don't flood the sidebar
     {
       text: "Self-Hosted Administration",
-      collapsed: false,
+      collapsed: true,
       items: pickGroups([
         "User Management",
         "Organization Management",

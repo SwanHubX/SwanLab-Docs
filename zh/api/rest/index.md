@@ -18,6 +18,11 @@ SwanLab 开放 API 文档，包含 OAuth2 授权与私有化后台管理接口�
 | `POST /self_hosted/root`   | 无需认证                                         |
 | 其余 `/self_hosted/*` 接口 | `Authorization: ApiKey <root 用户的 API Key>`    |
 
+::: warning ⚠️ 注意
+`/self_hosted/*` 的请求头必须带 `ApiKey` 前缀（区分大小写，与 Key 之间用一个空格分隔）。只传 Key 本身会被视为未携带身份，返回 `401`；使用非 root 用户的 Key 则返回 `403`。
+
+:::
+
 ## OAuth2 授权
 
 面向已接入 SwanLab 的第三方应用，使用公有云地址 `https://api.swanlab.cn/api`：

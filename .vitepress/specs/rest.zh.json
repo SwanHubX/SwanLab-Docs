@@ -2038,16 +2038,15 @@
         "scheme": "basic"
       },
       "bearerAuth": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
+        "type": "http",
+        "scheme": "bearer",
         "description": "Authorization: Bearer <access_token>"
       },
       "apiKeyAuth": {
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
-        "description": "Authorization: ApiKey <实例 root 用户的 API Key>"
+        "description": "Authorization: ApiKey <实例 root 用户的 API Key>。前缀 `ApiKey` 区分大小写，与 Key 之间用一个空格分隔，不能只传 Key 本身"
       }
     },
     "schemas": {

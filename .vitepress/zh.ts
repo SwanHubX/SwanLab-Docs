@@ -511,7 +511,7 @@ function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
     // 私有化接口再收一层，避免 14 个条目直接铺满侧边栏
     {
       text: "私有化后台管理",
-      collapsed: false,
+      collapsed: true,
       items: pickGroups(["用户管理", "组织管理", "项目协作", "SSO 绑定"]),
     },
   ] as DefaultTheme.SidebarItem[];
