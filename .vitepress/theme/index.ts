@@ -72,13 +72,21 @@ export default {
     useOpenapiTheme({
       operation: {
         hiddenSlots: ["playground", "branding"],
-        cols: 2,
+        cols: 1,
       },
-      // 接口示例只保留 JavaScript / Python / Go 三种语言
+      // 接口示例提供 cURL / JavaScript / Python / Go 四种语言
       codeSamples: {
-        defaultLang: "javascript",
+        defaultLang: "curl",
         generator: createCodeSampleGenerator([restApiSpec, restApiSpecEn]),
         availableLanguages: [
+          {
+            lang: "curl",
+            label: "cURL",
+            target: "shell",
+            client: "curl",
+            highlighter: "bash",
+            icon: "curl",
+          },
           {
             lang: "javascript",
             label: "JavaScript",

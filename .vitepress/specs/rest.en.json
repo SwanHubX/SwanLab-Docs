@@ -2,37 +2,17 @@
   "openapi": "3.1.0",
   "info": {
     "title": "SwanLab API",
-    "description": "Open API documentation for SwanLab, covering the OAuth2 authorization and usage API as well as the self-hosted management API.",
+    "description": "Open API documentation for SwanLab, covering OAuth2 authorization and self-hosted administration APIs.",
     "version": "1.0.0"
   },
   "tags": [
     {
-      "name": "OAuth2 Validation",
-      "description": "Obtain and validate/refresh an OAuth2 Access Token"
+      "name": "OAuth2 Authorization",
+      "description": "Obtain and refresh OAuth2 Access Tokens, and read user info and API Keys"
     },
     {
-      "name": "User Info",
-      "description": "Use an Access Token to retrieve user info and the API Key"
-    },
-    {
-      "name": "Root User Management",
-      "description": "Root user creation and password management endpoints"
-    },
-    {
-      "name": "User Management",
-      "description": "User and team member management endpoints"
-    },
-    {
-      "name": "Collaborator Management",
-      "description": "Project collaborator management endpoints"
-    },
-    {
-      "name": "Organization Management",
-      "description": "Organization (team) space creation and management endpoints"
-    },
-    {
-      "name": "SSO Binding Management",
-      "description": "Admin endpoints to bind and unbind a user's third-party account"
+      "name": "Self-Hosted Administration",
+      "description": "Root user, account, organization, collaborator, and SSO binding management for self-hosted deployments"
     }
   ],
   "paths": {
@@ -171,7 +151,7 @@
             }
           }
         },
-        "tags": ["Root User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/users": {
@@ -261,7 +241,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/user/password": {
@@ -348,7 +328,7 @@
             }
           }
         },
-        "tags": ["Root User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/user/pause": {
@@ -446,7 +426,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/user/unpause": {
@@ -528,7 +508,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/user/del": {
@@ -626,7 +606,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/team/member": {
@@ -735,7 +715,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/team/member/del": {
@@ -838,7 +818,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/project/collaborator": {
@@ -947,7 +927,7 @@
             }
           }
         },
-        "tags": ["Collaborator Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/project/collaborator/del": {
@@ -1035,7 +1015,7 @@
             }
           }
         },
-        "tags": ["Collaborator Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/user/key/{username}": {
@@ -1167,7 +1147,7 @@
             }
           }
         },
-        "tags": ["User Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/team": {
@@ -1357,7 +1337,7 @@
             }
           }
         },
-        "tags": ["Organization Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/sso/bind": {
@@ -1481,7 +1461,7 @@
             }
           }
         },
-        "tags": ["SSO Binding Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/self_hosted/sso/bind/del": {
@@ -1590,7 +1570,7 @@
             }
           }
         },
-        "tags": ["SSO Binding Management"]
+        "tags": ["Self-Hosted Administration"]
       }
     },
     "/auth/oauth2/token": {
@@ -1731,7 +1711,7 @@
             }
           }
         },
-        "tags": ["OAuth2 Validation"]
+        "tags": ["OAuth2 Authorization"]
       }
     },
     "/auth/oauth2/user/info": {
@@ -1861,7 +1841,7 @@
             }
           }
         },
-        "tags": ["User Info"]
+        "tags": ["OAuth2 Authorization"]
       }
     },
     "/auth/oauth2/user/api_key": {
@@ -1944,7 +1924,7 @@
             }
           }
         },
-        "tags": ["User Info"]
+        "tags": ["OAuth2 Authorization"]
       }
     }
   },

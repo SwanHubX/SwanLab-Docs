@@ -468,7 +468,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         },
         { text: "Environment Variables", link: "environment-variable" },
         {
-          text: "Admin Console",
+          text: "REST API",
           collapsed: true,
           items: sidebarRestAPI(),
         },

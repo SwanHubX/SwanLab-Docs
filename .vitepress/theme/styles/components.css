@@ -406,6 +406,143 @@ html.dark
     0 1px 3px rgb(0 0 0 / 45%);
 }
 
+/* ===== REST API 方法徽章配色：对齐 Umami docs（shiso 框架）=====
+ * 来源：docs.umami.is 实测提取。其规则基于 Tailwind v4 默认色板：
+ *   亮色 = bg {hue}-100 + text {hue}-800；暗色 = bg {hue}-400/15 + text {hue}-300；
+ *   方法→色相映射：GET=green、POST=blue、PUT=orange、PATCH=purple、DELETE=red，
+ *   未定义动词（HEAD/OPTIONS）回退中性灰（bg muted + text muted-foreground）。
+ * Umami 的徽章 hover 不变色，因此把 vitepress-openapi 默认的 hover 加深
+ * （-200→-300 / -800→-700）一并覆盖为与静态相同的颜色。
+ * 选择器加 html 前缀提升一档特异性，保证不依赖与本文件和
+ * vendor 样式的加载顺序（页面头部徽章与侧栏徽章都走 OAMethodBadge--* 类）。 */
+html .OAMethodBadge--get {
+  background-color: oklch(0.962 0.044 156.743); /* green-100 */
+  color: oklch(0.448 0.119 151.708); /* green-800 */
+}
+
+html .OAMethodBadge--get:hover,
+html .OAMethodBadge--get:is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.962 0.044 156.743); /* hover 不变色 */
+}
+
+html .OAMethodBadge--get:is(.dark *) {
+  background-color: oklch(0.792 0.209 151.708 / 15%); /* green-400/15 */
+  color: oklch(0.871 0.15 154.449); /* green-300 */
+}
+
+html .OAMethodBadge--get:is(.dark *):hover,
+html .OAMethodBadge--get:is(.dark *):is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.792 0.209 151.708 / 15%); /* hover 不变色 */
+}
+
+html .OAMethodBadge--post {
+  background-color: oklch(0.932 0.032 255.585); /* blue-100 */
+  color: oklch(0.424 0.199 265.638); /* blue-800 */
+}
+
+html .OAMethodBadge--post:hover,
+html .OAMethodBadge--post:is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.932 0.032 255.585); /* hover 不变色 */
+}
+
+html .OAMethodBadge--post:is(.dark *) {
+  background-color: oklch(0.707 0.165 254.624 / 15%); /* blue-400/15 */
+  color: oklch(0.809 0.105 251.813); /* blue-300 */
+}
+
+html .OAMethodBadge--post:is(.dark *):hover,
+html .OAMethodBadge--post:is(.dark *):is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.707 0.165 254.624 / 15%); /* hover 不变色 */
+}
+
+html .OAMethodBadge--put {
+  background-color: oklch(0.954 0.038 75.164); /* orange-100 */
+  color: oklch(0.47 0.157 37.284); /* orange-800 */
+}
+
+html .OAMethodBadge--put:hover,
+html .OAMethodBadge--put:is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.954 0.038 75.164); /* hover 不变色 */
+}
+
+html .OAMethodBadge--put:is(.dark *) {
+  background-color: oklch(0.75 0.183 55.934 / 15%); /* orange-400/15 */
+  color: oklch(0.837 0.128 66.29); /* orange-300 */
+}
+
+html .OAMethodBadge--put:is(.dark *):hover,
+html .OAMethodBadge--put:is(.dark *):is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.75 0.183 55.934 / 15%); /* hover 不变色 */
+}
+
+html .OAMethodBadge--patch {
+  background-color: oklch(0.946 0.033 307.174); /* purple-100 */
+  color: oklch(0.438 0.18 308.229); /* purple-800 */
+}
+
+html .OAMethodBadge--patch:hover,
+html .OAMethodBadge--patch:is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.946 0.033 307.174); /* hover 不变色 */
+}
+
+html .OAMethodBadge--patch:is(.dark *) {
+  background-color: oklch(0.714 0.203 305.504 / 15%); /* purple-400/15 */
+  color: oklch(0.827 0.119 306.728); /* purple-300 */
+}
+
+html .OAMethodBadge--patch:is(.dark *):hover,
+html .OAMethodBadge--patch:is(.dark *):is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.714 0.203 305.504 / 15%); /* hover 不变色 */
+}
+
+html .OAMethodBadge--delete {
+  background-color: oklch(0.936 0.032 17.717); /* red-100 */
+  color: oklch(0.444 0.177 26.899); /* red-800 */
+}
+
+html .OAMethodBadge--delete:hover,
+html .OAMethodBadge--delete:is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.936 0.032 17.717); /* hover 不变色 */
+}
+
+html .OAMethodBadge--delete:is(.dark *) {
+  background-color: oklch(0.704 0.191 22.216 / 15%); /* red-400/15 */
+  color: oklch(0.808 0.114 19.571); /* red-300 */
+}
+
+html .OAMethodBadge--delete:is(.dark *):hover,
+html .OAMethodBadge--delete:is(.dark *):is(:where(.group\/oaOperationLink):hover *) {
+  background-color: oklch(0.704 0.191 22.216 / 15%); /* hover 不变色 */
+}
+
+/* Umami 对未定义动词回退灰（bg-muted + text muted-foreground，
+ * 亮 #f5f5f5/#737373，暗 #262626/#a3a3a3） */
+html .OAMethodBadge--head,
+html .OAMethodBadge--options {
+  background-color: #f5f5f5;
+  color: #737373;
+}
+
+html .OAMethodBadge--head:hover,
+html .OAMethodBadge--head:is(:where(.group\/oaOperationLink):hover *),
+html .OAMethodBadge--options:hover,
+html .OAMethodBadge--options:is(:where(.group\/oaOperationLink):hover *) {
+  background-color: #f5f5f5;
+}
+
+html .OAMethodBadge--head:is(.dark *),
+html .OAMethodBadge--options:is(.dark *) {
+  background-color: #262626;
+  color: #a3a3a3;
+}
+
+html .OAMethodBadge--head:is(.dark *):hover,
+html .OAMethodBadge--head:is(.dark *):is(:where(.group\/oaOperationLink):hover *),
+html .OAMethodBadge--options:is(.dark *):hover,
+html .OAMethodBadge--options:is(.dark *):is(:where(.group\/oaOperationLink):hover *) {
+  background-color: #262626;
+}
+
 /* ===== 部署文档 H1 的平台 logo（k8s / docker）=====
  * zh/en self_host 部署文档标题里内联的 <img class="deploy-logo">，
  * 与 VersionBadge 并排。em 相对尺寸随 H1 字号缩放；vertical-align 微调

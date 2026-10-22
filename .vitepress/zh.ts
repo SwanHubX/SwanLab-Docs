@@ -525,7 +525,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         },
         { text: "环境变量", link: "environment-variable" },
         {
-          text: "后台管理",
+          text: "REST API",
           collapsed: true,
           items: sidebarRestAPI(),
         },

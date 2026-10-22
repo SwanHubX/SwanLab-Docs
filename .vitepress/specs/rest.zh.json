@@ -2,37 +2,17 @@
   "openapi": "3.1.0",
   "info": {
     "title": "SwanLab API",
-    "description": "SwanLab 开放 API 文档，包含 OAuth2 授权与使用接口，以及私有化 root 管理接口。",
+    "description": "SwanLab 开放 API 文档，包含 OAuth2 授权接口，以及私有化后台管理接口。",
     "version": "1.0.0"
   },
   "tags": [
     {
-      "name": "OAuth2 校验",
-      "description": "OAuth2 Access Token 的获取与刷新校验"
+      "name": "OAuth2 授权",
+      "description": "OAuth2 Access Token 的获取与刷新，以及用户信息、API Key 的读取"
     },
     {
-      "name": "用户信息获取",
-      "description": "使用 Access Token 获取用户信息与 API Key"
-    },
-    {
-      "name": "根用户管理",
-      "description": "根用户创建与密码管理接口"
-    },
-    {
-      "name": "用户管理",
-      "description": "用户与团队成员管理接口"
-    },
-    {
-      "name": "协作者管理",
-      "description": "项目协作者管理接口"
-    },
-    {
-      "name": "组织管理",
-      "description": "组织空间（团队）创建与管理接口"
-    },
-    {
-      "name": "SSO 绑定管理",
-      "description": "管理员绑定与解绑用户三方账号接口"
+      "name": "私有化后台管理",
+      "description": "私有化部署的根用户、账号、组织、协作者与 SSO 绑定管理"
     }
   ],
   "paths": {
@@ -171,7 +151,7 @@
             }
           }
         },
-        "tags": ["根用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/users": {
@@ -261,7 +241,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/user/password": {
@@ -348,7 +328,7 @@
             }
           }
         },
-        "tags": ["根用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/user/pause": {
@@ -446,7 +426,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/user/unpause": {
@@ -528,7 +508,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/user/del": {
@@ -626,7 +606,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/team/member": {
@@ -735,7 +715,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/team/member/del": {
@@ -838,7 +818,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/project/collaborator": {
@@ -947,7 +927,7 @@
             }
           }
         },
-        "tags": ["协作者管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/project/collaborator/del": {
@@ -1035,7 +1015,7 @@
             }
           }
         },
-        "tags": ["协作者管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/user/key/{username}": {
@@ -1167,7 +1147,7 @@
             }
           }
         },
-        "tags": ["用户管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/team": {
@@ -1357,7 +1337,7 @@
             }
           }
         },
-        "tags": ["组织管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/sso/bind": {
@@ -1481,7 +1461,7 @@
             }
           }
         },
-        "tags": ["SSO 绑定管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/self_hosted/sso/bind/del": {
@@ -1590,7 +1570,7 @@
             }
           }
         },
-        "tags": ["SSO 绑定管理"]
+        "tags": ["私有化后台管理"]
       }
     },
     "/auth/oauth2/token": {
@@ -1731,7 +1711,7 @@
             }
           }
         },
-        "tags": ["OAuth2 校验"]
+        "tags": ["OAuth2 授权"]
       }
     },
     "/auth/oauth2/user/info": {
@@ -1861,7 +1841,7 @@
             }
           }
         },
-        "tags": ["用户信息获取"]
+        "tags": ["OAuth2 授权"]
       }
     },
     "/auth/oauth2/user/api_key": {
@@ -1944,7 +1924,7 @@
             }
           }
         },
-        "tags": ["用户信息获取"]
+        "tags": ["OAuth2 授权"]
       }
     }
   },

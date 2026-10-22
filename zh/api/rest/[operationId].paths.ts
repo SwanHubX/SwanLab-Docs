@@ -8,7 +8,7 @@ export default {
       .map(({ operationId, summary }) => ({
         params: {
           operationId,
-          pageTitle: `${summary} - 后台管理`,
+          pageTitle: `${summary} - REST API`,
         },
       }));
   },

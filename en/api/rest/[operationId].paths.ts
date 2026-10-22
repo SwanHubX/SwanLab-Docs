@@ -8,7 +8,7 @@ export default {
       .map(({ operationId, summary }) => ({
         params: {
           operationId,
-          pageTitle: `${summary} - Admin Console`,
+          pageTitle: `${summary} - REST API`,
         },
       }));
   },

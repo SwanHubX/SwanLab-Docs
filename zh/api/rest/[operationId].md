@@ -17,22 +17,21 @@ const operationId = route.data.params?.operationId as string;
         <RestApiExportButtons :operation-id="operationId" />
       </div>
     </template>
+    <template #code-samples="{ operationId: id }">
+      <OAHeading level="h2">代码示例</OAHeading>
+      <OACodeSamples :operation-id="id" />
+    </template>
   </OAOperation>
 </ClientOnly>
 
 </div>
 
 <style>
-/* 接口页用整页宽度，不要右边那一列——那里只有一个空的目录。
-   本来想在 md 顶部写 aside: false，但这里不生效：
-   构建时 llms 插件会在正文前插一行隐藏文字，frontmatter 就不在文件开头了，VitePress 认不出来。
-   所以改用 CSS 实现，:has() 保证只作用于 /api/rest/ 下的接口页。 */
-.VPDoc:has(.vp-doc[class*="_api_rest_"]) .aside {
+/* 接口页没有 Markdown 标题，右侧目录永远是空的，所以只隐藏这一列。
+   正文宽度不再覆盖，和普通文档一样保持居中，避免刷新时的宽度跳变。
+   :has(.swanlab-openapi) 只匹配接口页，不影响 /api/rest/ 概述页。 */
+.VPDoc:has(.swanlab-openapi) .aside {
   display: none;
-}
-
-.VPDoc:has(.vp-doc[class*="_api_rest_"]) .content-container {
-  max-width: none !important;
 }
 
 /* 自定义 header：标题 + 导出按钮，与内置 header 的纵向排列保持一致 */
