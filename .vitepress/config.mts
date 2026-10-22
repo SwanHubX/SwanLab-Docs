@@ -186,6 +186,35 @@ export default extendConfig(
     },
     vite: {
       plugins,
+      optimizeDeps: {
+        // VitePress hands Vite no scan entries, so anything outside its own
+        // include list is only discovered on the first browser request: Vite
+        // then optimizes it and forces a full page reload ("optimized
+        // dependencies changed. reloading") on every cold start.
+        include: [
+          // Dynamically imported by the theme
+          "medium-zoom",
+          "mermaid",
+          "vitepress-openapi/client",
+          // extendConfig() excludes @voidzero-dev/vitepress-theme from
+          // optimization, so its @vp-* aliases (TS sources inside the package)
+          // get optimized one by one at runtime instead of up front.
+          "@vp-composables/data",
+          "@vp-composables/edit-link",
+          "@vp-composables/flyout",
+          "@vp-composables/icon",
+          "@vp-composables/langs",
+          "@vp-composables/layout",
+          "@vp-composables/outline",
+          "@vp-composables/prev-next",
+          "@vp-composables/sidebar",
+          "@vp-composables/sponsor-grid",
+          "@vp-support/docsearch",
+          "@vp-support/reactivity",
+          "@vp-support/search-config",
+          "@vp-support/utils",
+        ],
+      },
       css: {
         postcss: {
           // Keep vitepress-openapi's standalone Tailwind build from leaking

@@ -5,6 +5,12 @@
 - [开放接口](./py-api.md)
 - [环境变量](./environment-variable.md)
 
+## REST API
+
+- [REST API 概述](./rest/index.md): 接口总览、Base URL 与认证方式
+- [OAuth2 授权](./rest/index.md#oauth2-授权): 用 Access Token 获取当前用户信息与 API Key
+- [私有化后台管理](./rest/index.md#私有化后台管理): 用户、组织、项目协作与 SSO 绑定
+
 ## 命令行
 
 - [swanlab ping](./cli-swanlab-ping.md): 连通性与环境诊断
