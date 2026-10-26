@@ -4,13 +4,17 @@
 swanlab sync [options] [logdir]
 ```
 
-| Option              | Description                                                                                                                                                                |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-k`, `--api-key`   | API key for authentication. If not specified, the default API key from the environment will be used. If specified, this API key will be used for login but won't be saved. |
-| `-h`, `--host`      | The host address for syncing logs. If not specified, the default host (`https://swanlab.cn`) will be used.                                                                 |
-| `-w`, `--workspace` | The workspace for syncing logs. If not specified, the default workspace will be used.                                                                                      |
-| `-p`, `--project`   | The project for syncing logs. If not specified, the default project will be used.                                                                                          |
-| `-i`, `--id`        | The experiment ID to sync the logs to. It can only be used when the path is a single directory.                                                                            |
+| Option              | Description                                                                                                                                                                  |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-k`, `--api-key`   | API key for authentication. If not specified, the default API key from the environment will be used. If specified, this API key will be used for login but won't be saved.   |
+| `-h`, `--host`      | The host address for syncing logs. If not specified, the default host (`https://swanlab.cn`) will be used.                                                                   |
+| `-w`, `--workspace` | The workspace for syncing logs. If not specified, the default workspace will be used.                                                                                        |
+| `-p`, `--project`   | The project for syncing logs. If not specified, the default project will be used.                                                                                            |
+| `-i`, `--id`        | The experiment ID to sync the logs to. It can only be used when the path is a single directory.                                                                              |
+| `--start-step`      | Only sync scalar/media records whose `step` is greater than or equal to this value (inclusive).                                                                              |
+| `--end-step`        | Only sync scalar/media records whose `step` is less than or equal to this value (inclusive).                                                                                 |
+| `--start-time`      | Only sync records at or after this time. Accepts ISO 8601 (e.g. `2026-10-20 10:00:00`) or a Unix timestamp in seconds/milliseconds; parsed in the local timezone by default. |
+| `--end-time`        | Only sync records at or before this time. Same formats as `--start-time`.                                                                                                    |
 
 ## Introduction
 
@@ -42,6 +46,64 @@ If you see the following output, it indicates a successful sync:
 
 ![swanlab sync](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/en/api/cli-swanlab-sync/console.png)
 
+## Batch Upload
+
+```bash
+swanlab sync ./swanlog/run-*
+```
+
+## Sync to the Original Experiment
+
+If you don't want to create a new experiment but sync to the original one, use the `--id` parameter:
+
+```bash
+swanlab sync ./swanlog/run-xxx --id <experiment ID>
+```
+
+- During synchronization, the target experiment status briefly shows as `RUNNING` and automatically restores to its original finished state once completed.
+- If the experiment is still actively training, it remains `RUNNING` after the sync without interrupting or affecting the ongoing training.
+- By default, syncing incrementally resumes from the latest progress in the cloud. To backfill a missing middle segment, use the range options described in [Range Sync](#range-sync).
+
+Experiment ID can be obtained from [Resume Experiment/Resume Training](../guide_cloud/experiment_track/resume-experiment.md).
+
+## Range Sync
+
+By default, `swanlab sync --id` **incrementally resumes** from the latest progress recorded in the cloud. If a **middle segment** of data is missing (for example, due to a temporary network interruption during training while subsequent data was uploaded normally), the default incremental sync will not backfill that gap automatically.
+
+In this case, you can use the range options to backfill records within a specific window:
+
+| Option                        | Applies to                    | Description                                                                 |
+| ----------------------------- | ----------------------------- | --------------------------------------------------------------------------- |
+| `--start-step` / `--end-step` | Scalars, media                | Sync only records whose `step` falls within the specified range (inclusive) |
+| `--start-time` / `--end-time` | Scalars, media, terminal logs | Filter by the timestamp when the record was generated (inclusive)           |
+
+- When both `step` and time ranges are specified, their intersection is used.
+- When only a `step` range is specified, **terminal logs are not synced** (terminal logs can only be filtered by time). Use a time range if you need to backfill terminal logs.
+- While training is still in progress, you can also run a range sync with `--id` against the same experiment from another terminal without interrupting or affecting the ongoing training.
+- Time options accept standard date-time formats (e.g. `2026-10-20 10:00:00`) as well as Unix timestamps in seconds or milliseconds. Values without a timezone offset are parsed using the local timezone of the machine running the command by default.
+
+```bash
+# Backfill scalars and media for step 100-200 only
+swanlab sync ./swanlog/run-xxx --id <experiment ID> --start-step 100 --end-step 200
+
+# Backfill scalars, media and terminal logs between 10:00 and 12:00
+swanlab sync ./swanlog/run-xxx --id <experiment ID> \
+    --start-time "2026-10-20 10:00:00" --end-time "2026-10-20 12:00:00"
+
+# Intersection of step and time ranges
+swanlab sync ./swanlog/run-xxx --id <experiment ID> \
+    --start-step 100 --end-step 200 --start-time "2026-10-20 10:00:00"
+```
+
+::: warning
+⚠️ Note: Avoid re-syncing ranges that already exist in the cloud. Range sync directly uploads all records within the specified window and does not automatically skip existing cloud data.
+:::
+
+Therefore:
+
+- To append data missing at the end of an experiment, run a default **full sync** (without range options), which never produces duplicates.
+- When using **range sync** to backfill a missing middle segment, keep the range as narrow as the actual gap.
+
 ## Python Code Example
 
 ```python
@@ -49,25 +111,22 @@ import swanlab
 
 swanlab.login(api_key="Your API Key")
 
+# Full sync: uses the project recorded in the log files
+swanlab.sync("./swanlog/run-xxx")
+
+# Specify project/workspace
 swanlab.sync(
-    dir_path="./swanlog/run-xxx",
-    workspace="swanlab",
-    project_name="sync_test",
+    "./swanlog/run-xxx",
+    settings=swanlab.Settings(
+        project=swanlab.Settings.Project(workspace="swanlab", name="sync_test")
+    ),
+)
+
+# Range sync: backfill step 100-200 into an existing experiment
+swanlab.sync(
+    "./swanlog/run-xxx",
+    settings=swanlab.Settings(run=swanlab.Settings.Run(id="<experiment ID>")),
+    start_step=100,
+    end_step=200,
 )
 ```
-
-## Batch Upload
-
-```bash
-swanlab sync ./swanlog/run-*
-```
-
-## Resume Sync
-
-If you don't want to create a new experiment, but sync on the existing experiment (it will compare the data and add the difference part), you can use the `--id` parameter:
-
-```bash
-swanlab sync ./swanlog/run-xxx --id <experiment ID>
-```
-
-Experiment ID can be obtained from [Resume Experiment/Resume Training](../guide_cloud/experiment_track/resume-experiment.md).

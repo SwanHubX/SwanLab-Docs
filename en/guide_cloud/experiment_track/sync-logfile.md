@@ -8,6 +8,7 @@
 2. **Training environment without internet:** You unfortunately discover that your company/school's training server has no internet access and doesn't allow Docker installation.
 3. **Multi-device synchronization:** You're using private deployment but also want to sync experiment records to the cloud.
 4. **Experiment replication:** The experiment is universally applicable to multiple projects you've created (e.g., baseline, benchmark experiments) and you want to replicate it across projects.
+5. **Missing cloud records:** Training finished normally, but only part of it was recorded in the cloud (e.g., due to a temporary network outage or failed uploads), and you need to backfill the middle segment by time window or `step` range.
 
 When encountering the above scenarios, the `swanlab sync` command can help. [API Documentation](../../api/cli-swanlab-sync.md).
 
@@ -56,11 +57,13 @@ If you see the following output, the upload was successful:
 
 ## Sync to Original Experiment
 
-If you don't want to create a new experiment but instead sync to the original one (it will automatically compare data and add differential parts), use the `--id` parameter:
+If you don't want to create a new experiment but instead sync to the original one, use the `--id` parameter:
 
 ```bash
 swanlab sync ./swanlog/run-xxx --id <experiment ID>
 ```
+
+- By default, syncing to an existing experiment incrementally resumes from the latest progress recorded in the cloud. If a middle segment of data is missing, use the range options to backfill that specific range.
 
 For how to obtain the experiment ID, see: [Resume Experiment/Checkpoint Training](./resume-experiment.md)
 
@@ -85,5 +88,37 @@ If you want an experiment to appear in multiple projects, use the above command 
 ## Upload to Private Deployment
 
 ```bash
-swanlab sync ./swanlog/run-xxx --h <private_deployment_address>
+swanlab sync ./swanlog/run-xxx --host <private_deployment_address>
 ```
+
+## Range Sync
+
+A default full sync only appends data after the latest progress recorded in the cloud. If only a middle segment of training data is missing (for example, due to a temporary database outage while subsequent uploads recovered), you can use the range options to backfill records within that specific interval:
+
+```bash
+# By time: backfill scalars, media and terminal logs between 10:00 and 12:00
+swanlab sync ./swanlog/run-xxx --id <experiment ID> \
+    --start-time "2026-10-20 10:00:00" --end-time "2026-10-20 12:00:00"
+
+# By step: backfill scalars and media for step 100-200
+swanlab sync ./swanlog/run-xxx --id <experiment ID> --start-step 100 --end-step 200
+```
+
+| Option                        | Applies to                                |
+| ----------------------------- | ----------------------------------------- |
+| `--start-step` / `--end-step` | Scalars, media (inclusive)                |
+| `--start-time` / `--end-time` | Scalars, media, terminal logs (inclusive) |
+
+When both `step` and time ranges are specified, their intersection is used. Specifying only a `step` range does not sync terminal logs; use a time range if you need to backfill terminal logs.
+
+::: warning Avoid re-syncing existing ranges
+Range sync directly uploads all records within the specified window without automatically skipping data that already exists in the cloud. If the sync window overlaps with existing cloud records:
+
+- **Scalars**: Charts align by `step` and are not duplicated, but experiment summary statistics may be affected;
+- **Media** (images, audio, etc.): Duplicate media uploads at the same `step` are displayed as multiple entries.
+
+Keep the range as narrow as the actual gap. If you only need to append data at the end of an experiment, run a **default full sync (without range options)**, which never produces duplicates.
+
+:::
+
+> While training is still in progress, you can also run a range sync with `--id` against the same experiment from another terminal without interrupting or affecting the ongoing training.
