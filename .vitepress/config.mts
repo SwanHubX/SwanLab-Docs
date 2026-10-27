@@ -9,6 +9,7 @@ import llmstxt from "vitepress-plugin-llms";
 import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 import { extendConfig } from "@voidzero-dev/vitepress-theme/config";
+import { scopeOpenapiCss } from "./utils/openapi-css-scope.ts";
 import { zh } from "./zh.ts";
 import { en } from "./en.ts";
 import { SWANLAB_VERSION } from "./version.ts";
@@ -185,6 +186,43 @@ export default extendConfig(
     },
     vite: {
       plugins,
+      optimizeDeps: {
+        // VitePress hands Vite no scan entries, so anything outside its own
+        // include list is only discovered on the first browser request: Vite
+        // then optimizes it and forces a full page reload ("optimized
+        // dependencies changed. reloading") on every cold start.
+        include: [
+          // Dynamically imported by the theme
+          "medium-zoom",
+          "mermaid",
+          "vitepress-openapi/client",
+          // extendConfig() excludes @voidzero-dev/vitepress-theme from
+          // optimization, so its @vp-* aliases (TS sources inside the package)
+          // get optimized one by one at runtime instead of up front.
+          "@vp-composables/data",
+          "@vp-composables/edit-link",
+          "@vp-composables/flyout",
+          "@vp-composables/icon",
+          "@vp-composables/langs",
+          "@vp-composables/layout",
+          "@vp-composables/outline",
+          "@vp-composables/prev-next",
+          "@vp-composables/sidebar",
+          "@vp-composables/sponsor-grid",
+          "@vp-support/docsearch",
+          "@vp-support/reactivity",
+          "@vp-support/search-config",
+          "@vp-support/utils",
+        ],
+      },
+      css: {
+        postcss: {
+          // Keep vitepress-openapi's standalone Tailwind build from leaking
+          // onto the docs chrome (it breaks the sticky navbar and dark mode
+          // logo variants). See openapi-css-scope.ts.
+          plugins: [scopeOpenapiCss()],
+        },
+      },
       define: {
         // Baked-in build-time version, read by the browser-side sync layer
         // (theme/version-sync.ts) as the baseline it may incrementally patch.
@@ -194,6 +232,13 @@ export default extendConfig(
 
     rewrites(id) {
       return id.startsWith("zh/") ? id.slice(3) : id;
+    },
+
+    transformPageData(pageData) {
+      // vitepress-openapi：动态路由生成的端点页通过 params 传递标题
+      if (pageData.params?.pageTitle) {
+        pageData.title = pageData.params.pageTitle;
+      }
     },
 
     themeConfig: {

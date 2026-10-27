@@ -1,5 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { SWANLAB_VERSION } from "./version.ts";
+// vitepress-openapi: generate the /en/api/rest/ sidebar from the REST spec
+import { useSidebar } from "vitepress-openapi";
+import restApiSpec from "./specs/rest.en.json" with { type: "json" };
 
 type SidebarItemBadge = { badge?: { type?: string; text?: string } };
 type SidebarItemEx = DefaultTheme.SidebarItem & SidebarItemBadge;
@@ -434,6 +437,34 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   ];
 }
 
+function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
+  const oa = useSidebar({
+    spec: restApiSpec as never,
+    // Relative to the sidebar base "/en/api/" — "rest/" resolves to /en/api/rest/...
+    linkPrefix: "rest/",
+  });
+  // Groups and their order follow the spec's tags declaration and paths order
+  const pickGroups = (tags: string[]) =>
+    oa.generateSidebarGroups({ tags }).map((group) => ({ ...group, collapsed: true }));
+
+  return [
+    { text: "Overview", link: "rest/" },
+    // Public-cloud endpoints stay flat
+    ...pickGroups(["OAuth2 Authorization"]),
+    // Self-hosted endpoints get one more level so 14 entries don't flood the sidebar
+    {
+      text: "Self-Hosted Administration",
+      collapsed: true,
+      items: pickGroups([
+        "User Management",
+        "Organization Management",
+        "Project Collaboration",
+        "SSO Binding",
+      ]),
+    },
+  ] as DefaultTheme.SidebarItem[];
+}
+
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -450,6 +481,11 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         },
         { text: "Environment Variables", link: "environment-variable" },
       ],
+    },
+    // Always expanded like the other top-level groups, no caret
+    {
+      text: "REST API",
+      items: sidebarRestAPI(),
     },
     {
       text: "CLI",
