@@ -5,6 +5,22 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.3 - 2026.10.27
+
+**🚀 新增**
+
+- `swanlab sync` 支持按 **step** 或**时间范围** 区间同步数据：`--start-step` / `--end-step` / `--start-time` / `--end-time`，Python API 同步支持，参考 [指定范围同步](../../api/cli-swanlab-sync.md#指定范围同步)
+
+**⚡️ 优化**
+
+- 优化了数据传输层的重试与失败保护机制
+- 优化终端日志大批量输出的处理性能
+
+**🔧 修复**
+
+- 修复 `init` 阶段仅依赖 `SWANLAB_PROJ_NAME` 环境变量设置的项目名不生效的问题
+- 修复终端日志单次写入大量文本时部分内容可能丢失的问题
+
 ## v0.10.2 - 2026.10.09
 
 **🚀 新增**
