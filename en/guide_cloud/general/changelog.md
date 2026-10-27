@@ -5,6 +5,22 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.3 - 2026.10.27
+
+**🚀 New Features**
+
+- `swanlab sync` now supports syncing data by **step** or **time range**: `--start-step` / `--end-step` / `--start-time` / `--end-time`, also available in the Python API. See [Range Sync](../../api/cli-swanlab-sync.md#range-sync)
+
+**⚡️ Improvements**
+
+- Improved the retry and failure-protection mechanisms of the data transport layer
+- Improved terminal log processing performance for large-batch output
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where a project name set only via the `SWANLAB_PROJ_NAME` environment variable was ignored during `init`
+- Fixed an issue where part of the terminal log content could be lost when a large amount of text was written at once
+
 ## v0.10.2 - 2026.10.09
 
 **🚀 New Features**
