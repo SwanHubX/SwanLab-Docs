@@ -8,8 +8,8 @@
 ## REST API
 
 - [REST API overview](./rest/index.md): Endpoint catalog, base URLs and authentication
-- [OAuth2 authorization](./rest/index.md#oauth2-authorization): Fetch the current user's profile and API Key with an Access Token
-- [Self-hosted administration](./rest/index.md#self-hosted-administration): Users, organizations, project collaboration and SSO binding
+- [OAuth2 authorization](./rest/index.md#oauth2-authorization): Fetch the current user's profile and API Key with an Access Token (Public Cloud only)
+- [Self-hosted administration](./rest/index.md#self-hosted-administration): Users, organizations, project collaboration and SSO binding (Self-Hosted Commercial Edition only)
 
 ## CLI
 
