@@ -4,10 +4,13 @@ Open API documentation for SwanLab, covering OAuth2 authorization and self-hoste
 
 ## Basics
 
-- **Base URL & Availability**:
-  - OAuth2 authorization: `https://api.swanlab.cn/api` (**Public Cloud** only; not supported on self-hosted instances)
-  - Self-hosted administration: `https://your-swanlab-domain.com/api` (replace with your instance domain; **Self-Hosted Commercial Edition** only, not supported in Personal Edition)
+| API category               | Base URL                              | Availability                                                                                 |
+| -------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| OAuth2 authorization       | `https://api.swanlab.cn/api`          | Public Cloud only                                                                            |
+| Self-hosted administration | `https://your-swanlab-domain.com/api` | **Self-Hosted Commercial Edition** only (not supported in Personal Edition, **App ≥ 3.6.0**) |
+
 - **Content type**: `application/json` for requests and responses
+- **Domain substitution**: for self-hosted administration, replace `your-swanlab-domain.com` with your self-hosted SwanLab instance host domain
 
 ## Authentication
 
@@ -25,7 +28,11 @@ Open API documentation for SwanLab, covering OAuth2 authorization and self-hoste
 
 ## OAuth2 Authorization
 
-For third-party applications integrated with SwanLab, using the public cloud at `https://api.swanlab.cn/api` (Public Cloud only; not supported on self-hosted instances):
+For third-party applications integrated with SwanLab, using the public cloud at `https://api.swanlab.cn/api`:
+
+::: tip Integration inquiry
+OAuth2 authorization is available on Public Cloud only. To integrate, contact us at <contact@swanlab.cn>.
+:::
 
 - exchange `app_id` & `app_secret` for an Access Token;
 - while the token is valid, fetch the current user's profile or that user's API Key, which authorizes further calls to the open API.
@@ -38,7 +45,7 @@ For third-party applications integrated with SwanLab, using the public cloud at 
 
 ## Self-Hosted Administration
 
-Account and collaboration operations for **Self-Hosted Commercial Edition** instances (not supported in Personal Edition), called through your instance domain (`https://your-swanlab-domain.com/api`).
+Account and collaboration operations for **Self-Hosted Commercial Edition** instances, called through your instance domain (`https://your-swanlab-domain.com/api`).
 
 ### User Management
 

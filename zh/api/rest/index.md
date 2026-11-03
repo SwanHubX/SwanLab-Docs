@@ -4,10 +4,15 @@ SwanLab 开放 API 文档，包含 OAuth2 授权与私有化后台管理接口�
 
 ## 基础信息
 
-- **Base URL 与适用范围**：
-  - OAuth2 授权：`https://api.swanlab.cn/api`（仅支持**公有云**，私有化部署不支持）
-  - 私有化后台管理：`https://your-swanlab-domain.com/api`（替换为你的 SwanLab 私有化实例域名；仅支持**私有化商业版**，个人版不支持）
-- **数据格式**：请求与响应均为 `application/json`
+| 接口类型       | Base URL                              | 适用范围                                                       |
+| -------------- | ------------------------------------- | -------------------------------------------------------------- |
+| OAuth2 授权    | `https://api.swanlab.cn/api`          | 仅公有云                                                       |
+| 私有化后台管理 | `https://your-swanlab-domain.com/api` | 仅**私有化商业版**（个人版暂不支持，版本要求 **APP ≥ 3.6.0**） |
+
+⚠️ 注意：
+
+- 请求体与响应体均为 `application/json`
+- 私有化后台管理相关接口需将 `your-swanlab-domain.com` 换成你的 SwanLab 私有化实例域名
 
 ## 认证
 
@@ -25,7 +30,11 @@ SwanLab 开放 API 文档，包含 OAuth2 授权与私有化后台管理接口�
 
 ## OAuth2 授权
 
-面向已接入 SwanLab 的第三方应用，使用公有云地址 `https://api.swanlab.cn/api`（仅公有云版本支持，暂不支持私有化部署实例）：
+面向已接入 SwanLab 的第三方应用，使用公有云地址 `https://api.swanlab.cn/api`：
+
+::: tip 接入咨询
+OAuth2 授权仅支持公有云服务。如需接入，请联系我们：<contact@swanlab.cn>
+:::
 
 - 用 `app_id` & `app_secret` 换取 Access Token；
 - 在 Token 有效期内获取当前用户信息，或获取该用户的 API Key，用于后续调用开放接口。
@@ -38,7 +47,7 @@ SwanLab 开放 API 文档，包含 OAuth2 授权与私有化后台管理接口�
 
 ## 私有化后台管理
 
-面向**私有化商业版**实例的账号与协作管理（个人版不支持），使用实例域名（`https://your-swanlab-domain.com/api`）调用。
+面向**私有化商业版**实例的账号与协作管理，使用实例域名（`https://your-swanlab-domain.com/api`）调用。
 
 ### 用户管理
 
