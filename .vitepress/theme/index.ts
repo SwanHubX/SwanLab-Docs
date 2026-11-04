@@ -1,6 +1,7 @@
 // .vitepress/theme/index.ts
+import "vitepress-openapi/dist/style.css";
 import type { Theme } from "vitepress";
-import { useRoute } from "vitepress";
+import { useData, useRoute } from "vitepress";
 import { VoidZeroTheme, themeContextKey } from "@voidzero-dev/vitepress-theme";
 import { onMounted, watch, nextTick } from "vue";
 import "virtual:group-icons.css";
@@ -17,6 +18,7 @@ import HeaderGithubButton from "./components/HeaderGithubButton.vue";
 import HeaderDocHelperButton from "./components/HeaderDocHelperButton.vue";
 import HeaderDocHelperButtonEN from "./components/HeaderDocHelperButtonEN.vue";
 import CopyOrDownloadAsMarkdownButtons from "./components/CopyOrDownloadAsMarkdownButtons.vue";
+import RestApiExportButtons from "./components/RestApiExportButtons.vue";
 import VersionBadge from "./components/VersionBadge.vue";
 import BadgeRow from "./components/BadgeRow.vue";
 import MermaidDiagram from "./components/MermaidDiagram.vue";
@@ -24,6 +26,15 @@ import MermaidDiagram from "./components/MermaidDiagram.vue";
 import HomePromoSection from "./components/HomePromoSection.vue";
 import { useVersionSync } from "./version-sync";
 import { useLogoLinkFix } from "./logo-link";
+// vitepress-openapi：渲染 /api/rest/ 下的 REST 接口页（mock spec）
+import {
+  theme as openapiTheme,
+  useOpenapi,
+  useTheme as useOpenapiTheme,
+} from "vitepress-openapi/client";
+import restApiSpec from "../specs/rest.zh.json" with { type: "json" };
+import restApiSpecEn from "../specs/rest.en.json" with { type: "json" };
+import { createCodeSampleGenerator } from "../utils/openapi-code-samples";
 
 export default {
   ...VoidZeroTheme,
@@ -49,16 +60,82 @@ export default {
     ctx.app.component("HeaderDocHelperButton", HeaderDocHelperButton);
     ctx.app.component("HeaderDocHelperButtonEN", HeaderDocHelperButtonEN);
     ctx.app.component("CopyOrDownloadAsMarkdownButtons", CopyOrDownloadAsMarkdownButtons);
+    ctx.app.component("RestApiExportButtons", RestApiExportButtons);
     ctx.app.component("VersionBadge", VersionBadge);
     ctx.app.component("BadgeRow", BadgeRow);
     ctx.app.component("MermaidDiagram", MermaidDiagram);
     ctx.app.component("HomePromoSection", HomePromoSection);
     VoidZeroTheme.enhanceApp(ctx);
+
+    // vitepress-openapi：加载 mock spec，隐藏 Try it 控制台与品牌页脚
+    useOpenapi({ spec: restApiSpec });
+    useOpenapiTheme({
+      operation: {
+        hiddenSlots: ["playground", "branding"],
+        cols: 1,
+      },
+      // 接口页会把选中的 server 持久化到 localStorage；默认 Base URL 改成
+      // 私有化域名后，换前缀让老访客缓存的 api.swanlab.cn 失效。
+      storage: { prefix: "--swanlab-oa" },
+      // 接口示例提供 cURL / JavaScript / Python / Go 四种语言
+      codeSamples: {
+        defaultLang: "curl",
+        generator: createCodeSampleGenerator([restApiSpec, restApiSpecEn]),
+        availableLanguages: [
+          {
+            lang: "curl",
+            label: "cURL",
+            target: "shell",
+            client: "curl",
+            highlighter: "bash",
+            icon: "curl",
+          },
+          {
+            lang: "javascript",
+            label: "JavaScript",
+            target: "js",
+            client: "fetch",
+            highlighter: "javascript",
+            icon: ".js",
+          },
+          {
+            lang: "python",
+            label: "Python",
+            target: "python",
+            client: "requests",
+            highlighter: "python",
+            icon: ".py",
+          },
+          {
+            lang: "go",
+            label: "Go",
+            target: "go",
+            client: "native",
+            highlighter: "go",
+            icon: ".go",
+          },
+        ],
+      },
+      i18n: { locale: "zh" },
+    });
+    openapiTheme.enhanceApp(ctx);
   },
   setup() {
     const route = useRoute();
+    const { lang } = useData();
     const initVersionSync = useVersionSync();
     const initLogoLinkFix = useLogoLinkFix();
+
+    // vitepress-openapi：UI 文案跟随当前语言（zh / en）
+    watch(
+      () => lang.value,
+      (value) => {
+        useOpenapiTheme({
+          i18n: { locale: value.toLowerCase().startsWith("zh") ? "zh" : "en" },
+        });
+      },
+      { immediate: true },
+    );
 
     const shouldZoomImage = (img: HTMLImageElement) => {
       // 1. Check if there are clear exclusion marks

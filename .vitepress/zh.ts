@@ -1,5 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { SWANLAB_VERSION } from "./version.ts";
+// vitepress-openapi：从 REST spec 自动生成 /api/rest/ 侧边栏
+import { useSidebar } from "vitepress-openapi";
+import restApiSpec from "./specs/rest.zh.json" with { type: "json" };
 
 var base_path_guide_cloud = "/guide_cloud";
 var base_path_examples = "/examples";
@@ -491,6 +494,29 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
   ];
 }
 
+function sidebarRestAPI(): DefaultTheme.SidebarItem[] {
+  const oa = useSidebar({
+    spec: restApiSpec as never,
+    // 相对路径：侧边栏 base "/api/" 会统一拼接，写成 "/api/rest/" 会变成 /api/api/...
+    linkPrefix: "rest/",
+  });
+  // 分组与组内顺序由 spec 的 tags 声明和 paths 顺序决定
+  const pickGroups = (tags: string[]) =>
+    oa.generateSidebarGroups({ tags }).map((group) => ({ ...group, collapsed: true }));
+
+  return [
+    { text: "概述", link: "rest/" },
+    // 公有云通用接口保持平铺
+    ...pickGroups(["OAuth2 授权"]),
+    // 私有化接口再收一层，避免 14 个条目直接铺满侧边栏
+    {
+      text: "私有化后台管理",
+      collapsed: true,
+      items: pickGroups(["用户管理", "组织管理", "项目协作", "SSO 绑定"]),
+    },
+  ] as DefaultTheme.SidebarItem[];
+}
+
 function sidebarAPI(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -507,6 +533,11 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         },
         { text: "环境变量", link: "environment-variable" },
       ],
+    },
+    // 和其他一级分组一样常驻展开，不加折叠箭头
+    {
+      text: "REST API",
+      items: sidebarRestAPI(),
     },
     {
       text: "命令行",
