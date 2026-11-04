@@ -5,6 +5,7 @@ Settings(
     model_config = SettingsConfigDict(frozen=True),
     interactive: bool = True,
     mode: Literal["disabled", "local", "online", "offline"] = "online",
+    on_online_error: Literal["disabled", "offline", "raise"] = "offline",
     log_dir: DirectoryPath = Field(default_factory=log_dir_factory),
     api_key: Optional[str] = Field(default=None),
     api_host: str = Field(default="https://api.swanlab.cn"),
@@ -19,14 +20,15 @@ Settings(
 )
 ```
 
-| Parameter     | Type          | Description                                                                                                                                                                                                     |
-| :------------ | :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `interactive` | StrictBool    | Whether to enable interactive mode. When disabled, all user input prompts and related interactions are disabled. Suitable for CI/CD environments or background batch jobs. Default is `True`.                   |
-| `mode`        | Literal       | SwanLab run mode. Available values: `disabled` (disable SwanLab), `local` (run locally), `online` (sync to cloud, `cloud` is an alias), `offline` (run offline). **Note: Case-sensitive**. Default is `online`. |
-| `log_dir`     | DirectoryPath | Directory for SwanLab log files. Default is the `swanlog` folder in the current working directory.                                                                                                              |
-| `api_key`     | str           | API key for SwanLab services.                                                                                                                                                                                   |
-| `api_host`    | str           | Base URL for SwanLab API services. Default is `https://api.swanlab.cn`.                                                                                                                                         |
-| `web_host`    | str           | Base URL for SwanLab web services. This is only a display URL and does not affect SDK behavior. Default is `https://swanlab.cn`.                                                                                |
+| Parameter         | Type          | Description                                                                                                                                                                                                                                                                                                                                                                                                   |
+| :---------------- | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `interactive`     | StrictBool    | Whether to enable interactive mode. When disabled, all user input prompts and related interactions are disabled. Suitable for CI/CD environments or background batch jobs. Default is `True`.                                                                                                                                                                                                                 |
+| `mode`            | Literal       | SwanLab run mode. Available values: `disabled` (disable SwanLab), `local` (run locally), `online` (sync to cloud, `cloud` is an alias), `offline` (run offline). **Note: Case-sensitive**. Default is `online`.                                                                                                                                                                                               |
+| `on_online_error` | Literal       | Fallback strategy when cloud service is unavailable in `online` mode. Available values: `offline` (fallback to offline mode, continuing to log locally), `disabled` (fallback to disabled mode, no data logged), `raise` (raise an error directly). Fallback is triggered only by transient connection or server errors; authentication and configuration errors always raise an error. Default is `offline`. |
+| `log_dir`         | DirectoryPath | Directory for SwanLab log files. Default is the `swanlog` folder in the current working directory.                                                                                                                                                                                                                                                                                                            |
+| `api_key`         | str           | API key for SwanLab services.                                                                                                                                                                                                                                                                                                                                                                                 |
+| `api_host`        | str           | Base URL for SwanLab API services. Default is `https://api.swanlab.cn`.                                                                                                                                                                                                                                                                                                                                       |
+| `web_host`        | str           | Base URL for SwanLab web services. This is only a display URL and does not affect SDK behavior. Default is `https://swanlab.cn`.                                                                                                                                                                                                                                                                              |
 
 ## Nested Configuration
 
@@ -211,6 +213,37 @@ swanlab.merge_settings(new_settings)
 swanlab.init()
 ...
 ```
+
+### Fallback Strategy When Cloud is Unavailable
+
+In `online` mode, if the cloud service is temporarily unavailable during initialization, `swanlab.init()` determines whether to fall back based on `on_online_error` to prevent training from being interrupted due to connection failures:
+
+| Value      | Description                                                                                                                                   |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `offline`  | Default. Falls back to offline mode and continues logging experiment data locally, which can be synced to the cloud via `swanlab sync` later. |
+| `disabled` | Falls back to disabled mode; training continues, but no experiment data is recorded.                                                          |
+| `raise`    | No fallback; raises an error directly during initialization.                                                                                  |
+
+```python
+import swanlab
+
+# Configure via init argument
+swanlab.init(on_online_error="offline")
+
+# Or configure via Settings
+swanlab.init(settings=swanlab.Settings(on_online_error="offline"))
+
+# Or configure via environment variable
+# export SWANLAB_ON_ONLINE_ERROR=offline
+```
+
+::: warning Note
+
+- Only effective in `online` mode, and only transient errors like network timeouts and server unavailability trigger fallback; invalid API Key (401/403), configuration errors, etc. will still raise errors directly.
+- If `core.skip_store` has been enabled, it will automatically be disabled upon fallback; falling back to `offline` will restore local writing.
+- After fallback, `run.mode` returns the actual running mode (`offline` or `disabled`). In this case, `run.url` and `run.path` are unavailable and accessing them will raise a `ValueError`.
+
+:::
 
 ### Configuring Probes
 

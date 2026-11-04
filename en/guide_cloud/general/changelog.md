@@ -5,6 +5,16 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.4 - 2026.11.04
+
+**⚡️ Improvements**
+
+- Added `on_online_error` configuration option: in online mode, defaults to falling back to offline mode and continuing local logging when the cloud service is unavailable, preventing training interruption. See [Fallback Strategy When Cloud is Unavailable](../../api/py-settings.md#fallback-strategy-when-cloud-is-unavailable)
+
+**🔧 Bug Fixes**
+
+- Fixed an issue where the login handshake misreported network errors as API Key errors
+
 ## v0.10.3 - 2026.10.27
 
 **🚀 New Features**
