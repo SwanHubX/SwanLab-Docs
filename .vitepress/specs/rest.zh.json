@@ -826,7 +826,7 @@
                   },
                   "profile": {
                     "type": "object",
-                    "description": "组织资料，可选，字段与 `POST /group` 的 `profile` 一致",
+                    "description": "组织资料，可选，包含机构、地点、简介、学校、邮箱等字段",
                     "properties": {
                       "url": {
                         "type": "string",
@@ -1428,7 +1428,7 @@
       "post": {
         "operationId": "self-hosted-bind-sso",
         "summary": "绑定三方账号",
-        "description": "将指定 SwanLab 用户与某启用 Provider 的三方账号绑定，字段口径与 `POST /internal/sso/bind` 一致（`userId` 换成 `username`）。\n\n非幂等：重复绑定同一 `(provider, providerUserId)` 返回 `409`；换绑需先调用 `POST /self_hosted/sso/bind/del` 解绑。",
+        "description": "将指定 SwanLab 用户与某启用 Provider 的三方账号绑定。\n\n非幂等：重复绑定同一 `(provider, providerUserId)` 返回 `409`；换绑需先调用 `POST /self_hosted/sso/bind/del` 解绑。",
         "security": [
           {
             "apiKeyAuth": []
@@ -1791,7 +1791,7 @@
             }
           },
           "500": {
-            "description": "parse_error：JSON 解析失败；random_error：生成 token 失败；database_error：Redis 操作失败",
+            "description": "parse_error：JSON 解析失败；random_error：生成 token 失败；database_error：存储操作失败",
             "content": {
               "application/json": {
                 "schema": {
@@ -1800,8 +1800,8 @@
                 "example": {
                   "status": 500,
                   "code": "database_error",
-                  "message": "redis operation failed",
-                  "description": "Redis 操作失败"
+                  "message": "storage operation failed",
+                  "description": "存储操作失败"
                 }
               }
             }
@@ -1921,7 +1921,7 @@
             }
           },
           "500": {
-            "description": "error_internal：请求 SwanLab Server 用户信息失败；parse_error：token 数据解析失败；database_error：Redis 操作失败",
+            "description": "error_internal：获取用户信息失败；parse_error：token 数据解析失败；database_error：存储操作失败",
             "content": {
               "application/json": {
                 "schema": {
@@ -1931,7 +1931,7 @@
                   "status": 500,
                   "code": "error_internal",
                   "message": "failed to fetch user info",
-                  "description": "请求 SwanLab Server 用户信息失败"
+                  "description": "获取用户信息失败"
                 }
               }
             }
@@ -1944,7 +1944,7 @@
       "get": {
         "operationId": "oauth2-user-api_key",
         "summary": "获取 API Key",
-        "description": "根据 access token 获取该用户用于调用 SwanLab OpenAPI 的最新 API Key。实现逻辑与获取用户信息一致：Auth 将 access token 作为 Redis 索引解析出用户上下文，再请求 SwanLab Server 内部接口获取该用户最新的 API Key。",
+        "description": "根据 access token 获取该用户用于调用 SwanLab OpenAPI 的最新 API Key。",
         "security": [
           {
             "bearerAuth": []
@@ -2004,7 +2004,7 @@
             }
           },
           "500": {
-            "description": "error_internal：请求 SwanLab Server 获取 API Key 失败；parse_error：token 数据解析失败；database_error：Redis 操作失败",
+            "description": "error_internal：获取 API Key 失败；parse_error：token 数据解析失败；database_error：存储操作失败",
             "content": {
               "application/json": {
                 "schema": {
@@ -2014,7 +2014,7 @@
                   "status": 500,
                   "code": "error_internal",
                   "message": "failed to fetch api key",
-                  "description": "请求 SwanLab Server 获取 API Key 失败"
+                  "description": "获取 API Key 失败"
                 }
               }
             }
