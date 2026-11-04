@@ -10,14 +10,15 @@
 
 ## 全局配置
 
-| 环境变量           | 描述                                                                                                                                           | 默认值                           |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `SWANLAB_ROOT`     | SwanLab 全局文件夹保存的路径，是 `SWANLAB_SAVE_DIR` 的新版环境变量                                                                             | 用户主目录下的 `.swanlab` 文件夹 |
-| `SWANLAB_PUBLIC`   | 是否将实验设为公开，可选值为 `true`、`yes`、`1`，留空则为私有                                                                                  | 私有                             |
-| `SWANLAB_LOGDIR`   | SwanLab 解析日志文件保存的路径                                                                                                                 | 当前运行目录的 `swanlog` 文件夹  |
-| `SWANLAB_MODE`     | SwanLab 的解析模式，涉及操作员注册的回调。可选值：`local`、`online`（`cloud` 为 `online` 的别名）、`offline`、`disabled`。**注意：大小写敏感** | `online`                         |
-| `SWANLAB_API_HOST` | SwanLab 云端环境的 API 地址                                                                                                                    | `https://api.swanlab.cn`         |
-| `SWANLAB_WEB_HOST` | SwanLab 云端环境的 Web 地址。                                                                                                                  | `https://swanlab.cn`             |
+| 环境变量                  | 描述                                                                                                                                                                               | 默认值                           |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `SWANLAB_ROOT`            | SwanLab 全局文件夹保存的路径，是 `SWANLAB_SAVE_DIR` 的新版环境变量                                                                                                                 | 用户主目录下的 `.swanlab` 文件夹 |
+| `SWANLAB_PUBLIC`          | 是否将实验设为公开，可选值为 `true`、`yes`、`1`，留空则为私有                                                                                                                      | 私有                             |
+| `SWANLAB_LOGDIR`          | SwanLab 解析日志文件保存的路径                                                                                                                                                     | 当前运行目录的 `swanlog` 文件夹  |
+| `SWANLAB_MODE`            | SwanLab 的解析模式，涉及操作员注册的回调。可选值：`local`、`online`（`cloud` 为 `online` 的别名）、`offline`、`disabled`。**注意：大小写敏感**                                     | `online`                         |
+| `SWANLAB_ON_ONLINE_ERROR` | `online` 模式下云端服务不可用时的降级策略。可选值：`offline`（继续本地记录）、`disabled`（不记录数据）、`raise`（直接报错）。仅瞬时连接/服务端错误触发降级，认证与配置错误始终报错 | `offline`                        |
+| `SWANLAB_API_HOST`        | SwanLab 云端环境的 API 地址                                                                                                                                                        | `https://api.swanlab.cn`         |
+| `SWANLAB_WEB_HOST`        | SwanLab 云端环境的 Web 地址。                                                                                                                                                      | `https://swanlab.cn`             |
 
 ## 实验配置
 
