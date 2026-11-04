@@ -826,7 +826,7 @@
                   },
                   "profile": {
                     "type": "object",
-                    "description": "Organization profile (optional), same fields as `profile` in `POST /group`",
+                    "description": "Organization profile (optional), including institution, location, bio, school, and email",
                     "properties": {
                       "url": {
                         "type": "string",
@@ -1428,7 +1428,7 @@
       "post": {
         "operationId": "self-hosted-bind-sso",
         "summary": "Bind third-party account",
-        "description": "Binds the given SwanLab user to a third-party account of an enabled Provider. Fields match `POST /internal/sso/bind`, with `userId` replaced by `username`.\n\nNot idempotent: binding the same `(provider, providerUserId)` again returns `409`; to rebind, call `POST /self_hosted/sso/bind/del` first.",
+        "description": "Binds the given SwanLab user to a third-party account of an enabled Provider.\n\nNot idempotent: binding the same `(provider, providerUserId)` again returns `409`; to rebind, call `POST /self_hosted/sso/bind/del` first.",
         "security": [
           {
             "apiKeyAuth": []
@@ -1791,7 +1791,7 @@
             }
           },
           "500": {
-            "description": "parse_error: failed to parse JSON; random_error: failed to generate token; database_error: Redis operation failed",
+            "description": "parse_error: failed to parse JSON; random_error: failed to generate token; database_error: storage operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -1800,8 +1800,8 @@
                 "example": {
                   "status": 500,
                   "code": "database_error",
-                  "message": "redis operation failed",
-                  "description": "Redis operation failed"
+                  "message": "storage operation failed",
+                  "description": "storage operation failed"
                 }
               }
             }
@@ -1921,7 +1921,7 @@
             }
           },
           "500": {
-            "description": "error_internal: failed to request user info from the SwanLab Server; parse_error: failed to parse token data; database_error: Redis operation failed",
+            "description": "error_internal: failed to fetch user info; parse_error: failed to parse token data; database_error: storage operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -1931,7 +1931,7 @@
                   "status": 500,
                   "code": "error_internal",
                   "message": "failed to fetch user info",
-                  "description": "failed to request user info from SwanLab Server"
+                  "description": "failed to fetch user info"
                 }
               }
             }
@@ -1944,7 +1944,7 @@
       "get": {
         "operationId": "oauth2-user-api_key",
         "summary": "Get API Key",
-        "description": "Retrieve the user's latest API Key for calling the SwanLab OpenAPI based on the access token. The implementation logic is the same as getting user info: Auth resolves the user context from the access token as a Redis index, then calls the SwanLab Server internal API to fetch the user's latest API Key.",
+        "description": "Retrieve the user's latest API Key for calling the SwanLab OpenAPI based on the access token.",
         "security": [
           {
             "bearerAuth": []
@@ -2004,7 +2004,7 @@
             }
           },
           "500": {
-            "description": "error_internal: failed to request the API Key from the SwanLab Server; parse_error: failed to parse token data; database_error: Redis operation failed",
+            "description": "error_internal: failed to fetch API Key; parse_error: failed to parse token data; database_error: storage operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -2014,7 +2014,7 @@
                   "status": 500,
                   "code": "error_internal",
                   "message": "failed to fetch api key",
-                  "description": "failed to request API Key from SwanLab Server"
+                  "description": "failed to fetch API Key"
                 }
               }
             }

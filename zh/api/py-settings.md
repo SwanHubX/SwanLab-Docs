@@ -5,6 +5,7 @@ Settings(
     model_config = SettingsConfigDict(frozen=True),
     interactive: bool = True,
     mode: Literal["disabled", "local", "online", "offline"] = "online",
+    on_online_error: Literal["disabled", "offline", "raise"] = "offline",
     log_dir: DirectoryPath = Field(default_factory=log_dir_factory),
     api_key: Optional[str] = Field(default=None),
     api_host: str = Field(default="https://api.swanlab.cn"),
@@ -19,14 +20,15 @@ Settings(
 )
 ```
 
-| 参数          | 类型          | 描述                                                                                                                                                                                |
-| :------------ | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `interactive` | StrictBool    | 是否开启交互模式。关闭后，所有用户输入提示和相关交互将被禁用。适用于 CI/CD 环境或后台批量任务。默认值为 `True`。                                                                    |
-| `mode`        | Literal       | SwanLab 运行模式。可选值：`disabled`（禁用 SwanLab）、`local`（本地运行）、`online`（云端同步，`cloud` 为其别名）、`offline`（离线模式）。**注意：大小写敏感**。默认值为 `online`。 |
-| `log_dir`     | DirectoryPath | SwanLab 日志文件保存的目录。默认值为当前运行目录下的 `swanlog` 文件夹。                                                                                                             |
-| `api_key`     | str           | SwanLab 服务的 API 密钥。                                                                                                                                                           |
-| `api_host`    | str           | SwanLab API 服务的基础 URL。默认值为 `https://api.swanlab.cn`。                                                                                                                     |
-| `web_host`    | str           | SwanLab Web 服务的基础 URL，仅用于展示，不影响 SDK 行为。默认值为 `https://swanlab.cn`。                                                                                            |
+| 参数              | 类型          | 描述                                                                                                                                                                                                                                     |
+| :---------------- | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `interactive`     | StrictBool    | 是否开启交互模式。关闭后，所有用户输入提示和相关交互将被禁用。适用于 CI/CD 环境或后台批量任务。默认值为 `True`。                                                                                                                         |
+| `mode`            | Literal       | SwanLab 运行模式。可选值：`disabled`（禁用 SwanLab）、`local`（本地运行）、`online`（云端同步，`cloud` 为其别名）、`offline`（离线模式）。**注意：大小写敏感**。默认值为 `online`。                                                      |
+| `on_online_error` | Literal       | `online` 模式下云端服务不可用时的降级策略。可选值：`offline`（降级为离线模式，继续本地记录）、`disabled`（降级为禁用模式，不记录数据）、`raise`（直接报错）。仅瞬时连接/服务端错误触发降级，认证与配置错误始终报错。默认值为 `offline`。 |
+| `log_dir`         | DirectoryPath | SwanLab 日志文件保存的目录。默认值为当前运行目录下的 `swanlog` 文件夹。                                                                                                                                                                  |
+| `api_key`         | str           | SwanLab 服务的 API 密钥。                                                                                                                                                                                                                |
+| `api_host`        | str           | SwanLab API 服务的基础 URL。默认值为 `https://api.swanlab.cn`。                                                                                                                                                                          |
+| `web_host`        | str           | SwanLab Web 服务的基础 URL，仅用于展示，不影响 SDK 行为。默认值为 `https://swanlab.cn`。                                                                                                                                                 |
 
 ## 嵌套配置
 
@@ -211,6 +213,37 @@ swanlab.merge_settings(new_settings)
 swanlab.init()
 ...
 ```
+
+### 云端不可用时的降级策略
+
+`online` 模式下，如果初始化阶段云端服务暂时不可用，`swanlab.init()` 会根据 `on_online_error` 决定是否降级，避免训练因连接失败而中断：
+
+| 取值       | 描述                                                                                      |
+| :--------- | :---------------------------------------------------------------------------------------- |
+| `offline`  | 默认。降级为 offline 模式，继续在本地记录实验数据，之后可通过 `swanlab sync` 同步到云端。 |
+| `disabled` | 降级为 disabled 模式，训练继续，但不记录任何实验数据。                                    |
+| `raise`    | 不降级，初始化直接报错。                                                                  |
+
+```python
+import swanlab
+
+# 通过 init 参数设置
+swanlab.init(on_online_error="offline")
+
+# 或通过 Settings 设置
+swanlab.init(settings=swanlab.Settings(on_online_error="offline"))
+
+# 或通过环境变量设置
+# export SWANLAB_ON_ONLINE_ERROR=offline
+```
+
+::: warning 注意
+
+- 仅对 `online` 模式生效，且只有网络超时、服务不可用等瞬时错误会触发降级；API Key 无效（401/403）、配置错误等仍会直接报错。
+- 若已开启 `core.skip_store`，降级时会自动关闭该配置；降级为 `offline` 时会恢复本地写入。
+- 降级后 `run.mode` 返回实际运行模式（`offline` 或 `disabled`），此时 `run.url` 与 `run.path` 不可用，访问会抛出 `ValueError`。
+
+:::
 
 ### 配置探针
 
