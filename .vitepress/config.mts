@@ -14,7 +14,7 @@ import { zh } from "./zh.ts";
 import { en } from "./en.ts";
 import { SWANLAB_VERSION } from "./version.ts";
 
-const srcExclude = ["playground/**", "AGENTS.md", "README.md", "TRICK.md"];
+const srcExclude = ["playground/**", "AGENTS.md", "CLAUDE.md", "README.md", "TRICK.md"];
 
 function normalizePath(filePath: string) {
   return filePath.split(path.sep).join("/");

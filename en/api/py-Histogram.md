@@ -1,0 +1,125 @@
+# swanlab.Histogram
+
+[GitHub Source Code](https://github.com/SwanHubX/SwanLab/blob/feat/histogram/swanlab/sdk/internal/run/transforms/histogram/__init__.py)
+
+::: info Version Availability
+This page describes the new API on the `feat/histogram` branch. Confirm that your installed SDK includes `swanlab.Histogram` before using it. Your cloud or self-hosted deployment must also support Histogram data.
+:::
+
+```python
+Histogram(
+    sequence=None,
+    bins=None,
+    *,
+    num_bins=None,
+    np_histogram=None,
+)
+```
+
+Convert samples into bucket counts and use [`swanlab.log()`](./py-log.md) to record a distribution snapshot at each step. This is useful for tracking changes in model parameter or gradient distributions.
+
+| Parameter      | Description                                                                                                                                                                                                     |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sequence`     | Raw samples as a one-dimensional sequence of real numbers, such as a `list`, `tuple`, `range`, or NumPy array. An existing `Histogram` instance is also accepted. Required when `np_histogram` is not provided. |
+| `bins`         | A bucket count or bucket edges. Counts accept Python / NumPy integers from 1 to 512; edges accept a one-dimensional sequence of real numbers. Defaults to `None`, which uses 64 equal-width buckets.            |
+| `num_bins`     | Bucket count parameter for W&B compatibility. Accepts Python / NumPy integers from 1 to 512. Defaults to `None`. Cannot be specified together with `bins`; booleans are not valid bucket counts.                |
+| `np_histogram` | Precomputed `(counts, bin_edges)`, including the return value of `numpy.histogram()`. Defaults to `None`. When provided, `sequence`, `bins`, and `num_bins` are ignored.                                        |
+
+`num_bins` and `np_histogram` are keyword-only parameters. `bins` also rejects booleans as bucket counts.
+
+## Create from Raw Samples
+
+When given a bucket count, the SDK uses `numpy.histogram()` to generate equal-width buckets over the sample range:
+
+```python
+import numpy as np
+import swanlab
+
+swanlab.init(project="histogram-demo")
+
+rng = np.random.default_rng(42)
+for step in range(10):
+    samples = rng.normal(loc=step * 0.1, size=1000)
+    swanlab.log({"weights": swanlab.Histogram(samples, bins=64)}, step=step)
+
+swanlab.finish()
+```
+
+Each `Histogram` computes its buckets independently, so edges may differ between steps. To keep edges fixed, specify them explicitly as shown below.
+
+### Specify Bucket Edges
+
+`bins` supports unequal-width buckets. N buckets require N+1 edges:
+
+```python
+import swanlab
+
+hist = swanlab.Histogram(
+    [0.0, 0.5, 1.0, 2.0, 3.0],
+    bins=[0.0, 1.0, 3.0],
+)
+
+print(hist.values)  # [2, 3]
+print(hist.bins)  # [0.0, 1.0, 3.0]
+```
+
+Each bucket covers `[bins[i], bins[i+1])`, except the last bucket, which includes its right edge. Samples outside the explicit edge range are discarded with a warning.
+
+## Create from Precomputed Buckets
+
+Pass an existing `numpy.histogram()` result through `np_histogram`. The SDK validates and uses the result directly:
+
+```python
+import numpy as np
+import swanlab
+
+swanlab.init(project="histogram-demo")
+
+samples = [0.0, 0.5, 1.0, 2.0, 3.0]
+counts, bin_edges = np.histogram(samples, bins=[0.0, 1.0, 3.0])
+hist = swanlab.Histogram(np_histogram=(counts, bin_edges))
+swanlab.log({"weights": hist}, step=0)
+
+swanlab.finish()
+```
+
+You can also provide count and edge sequences directly, for example `swanlab.Histogram(np_histogram=([2, 3], [0.0, 1.0, 3.0]))`.
+
+## Log PyTorch Tensors
+
+Convert a Tensor to a NumPy array using `tensor.detach().cpu().numpy()` first. Flatten multidimensional parameters to one dimension:
+
+```python
+import torch
+import swanlab
+
+swanlab.init(project="histogram-demo")
+
+layer = torch.nn.Linear(8, 4)
+weights = layer.weight.detach().cpu().numpy().ravel()
+swanlab.log({"weights": swanlab.Histogram(weights)}, step=0)
+
+swanlab.finish()
+```
+
+## Data Rules and Exceptions
+
+- The bucket count must be between 1 and 512. This limit also applies to explicit edges and precomputed input.
+- `NaN`, `+Inf`, and `-Inf` in raw samples are discarded with a warning. With an integer bucket count, an empty sequence or a sequence with no finite values raises `ValueError`. Valid explicit edges allow a histogram with all counts equal to 0.
+- Edges must be a one-dimensional sequence of finite real numbers in nondecreasing order. Duplicate edges are accepted with a warning about zero-width buckets.
+- Precomputed counts must be one-dimensional, finite, nonnegative integer values no greater than `2**64 - 1`. Integer-valued floats such as `1.0` are converted to integers. Probability densities and fractional weighted counts are not supported.
+- Precomputed input must satisfy `len(bin_edges) == len(counts) + 1`.
+- `swanlab.Histogram(hist)` reuses an existing instance's buckets. In this case, do not specify `bins`, `num_bins`, or `np_histogram`.
+
+Unsupported input types raise `TypeError`. Invalid dimensions, bucket counts, edge order, or array lengths raise `ValueError`.
+
+## Access Bucket Results
+
+A constructed `Histogram` exposes two attributes:
+
+| Attribute | Type          | Description                                   |
+| --------- | ------------- | --------------------------------------------- |
+| `values`  | `list[int]`   | Sample counts for each bucket, with length N. |
+| `bins`    | `list[float]` | Bucket edges, with length N+1.                |
+
+Logged data preserves the counts and edges at each step; the original samples cannot be recovered. Use a separate metric name for histograms and avoid mixing scalars, histograms, or other data types under the same name.

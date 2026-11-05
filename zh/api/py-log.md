@@ -44,6 +44,7 @@ print(swanlab.log({"acc": 0.9, "loss":0.1462}))
 
 ## 更多用法
 
+- 记录[直方图](./py-Histogram.md)
 - 记录[图像](./py-Image.md)
 - 记录[音频](./py-Audio.md)
 - 记录[文本](./py-Text.md)
