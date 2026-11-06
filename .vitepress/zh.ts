@@ -583,6 +583,7 @@ function sidebarAPI(): DefaultTheme.SidebarItem[] {
         {
           text: "指标数据",
           items: [
+            { text: "Histogram", link: "py-Histogram" },
             { text: "pr_curve", link: "py-pr_curve" },
             { text: "roc_curve", link: "py-roc_curve" },
             { text: "confusion_matrix", link: "py-confusion_matrix" },

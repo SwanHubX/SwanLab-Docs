@@ -11,8 +11,8 @@ swanlab sync [options] [logdir]
 | `-w`, `--workspace` | The workspace for syncing logs. If not specified, the default workspace will be used.                                                                                        |
 | `-p`, `--project`   | The project for syncing logs. If not specified, the default project will be used.                                                                                            |
 | `-i`, `--id`        | The experiment ID to sync the logs to. It can only be used when the path is a single directory.                                                                              |
-| `--start-step`      | Only sync scalar/media records whose `step` is greater than or equal to this value (inclusive).                                                                              |
-| `--end-step`        | Only sync scalar/media records whose `step` is less than or equal to this value (inclusive).                                                                                 |
+| `--start-step`      | Only sync scalar/media/histogram records whose `step` is greater than or equal to this value (inclusive).                                                                    |
+| `--end-step`        | Only sync scalar/media/histogram records whose `step` is less than or equal to this value (inclusive).                                                                       |
 | `--start-time`      | Only sync records at or after this time. Accepts ISO 8601 (e.g. `2026-10-20 10:00:00`) or a Unix timestamp in seconds/milliseconds; parsed in the local timezone by default. |
 | `--end-time`        | Only sync records at or before this time. Same formats as `--start-time`.                                                                                                    |
 
@@ -72,10 +72,10 @@ By default, `swanlab sync --id` **incrementally resumes** from the latest progre
 
 In this case, you can use the range options to backfill records within a specific window:
 
-| Option                        | Applies to                    | Description                                                                 |
-| ----------------------------- | ----------------------------- | --------------------------------------------------------------------------- |
-| `--start-step` / `--end-step` | Scalars, media                | Sync only records whose `step` falls within the specified range (inclusive) |
-| `--start-time` / `--end-time` | Scalars, media, terminal logs | Filter by the timestamp when the record was generated (inclusive)           |
+| Option                        | Applies to                                | Description                                                                 |
+| ----------------------------- | ----------------------------------------- | --------------------------------------------------------------------------- |
+| `--start-step` / `--end-step` | Scalars, media, histograms                | Sync only records whose `step` falls within the specified range (inclusive) |
+| `--start-time` / `--end-time` | Scalars, media, histograms, terminal logs | Filter by the timestamp when the record was generated (inclusive)           |
 
 - When both `step` and time ranges are specified, their intersection is used.
 - When only a `step` range is specified, **terminal logs are not synced** (terminal logs can only be filtered by time). Use a time range if you need to backfill terminal logs.
@@ -83,10 +83,10 @@ In this case, you can use the range options to backfill records within a specifi
 - Time options accept standard date-time formats (e.g. `2026-10-20 10:00:00`) as well as Unix timestamps in seconds or milliseconds. Values without a timezone offset are parsed using the local timezone of the machine running the command by default.
 
 ```bash
-# Backfill scalars and media for step 100-200 only
+# Backfill scalars, media and histograms for step 100-200 only
 swanlab sync ./swanlog/run-xxx --id <experiment ID> --start-step 100 --end-step 200
 
-# Backfill scalars, media and terminal logs between 10:00 and 12:00
+# Backfill scalars, media, histograms and terminal logs between 10:00 and 12:00
 swanlab sync ./swanlog/run-xxx --id <experiment ID> \
     --start-time "2026-10-20 10:00:00" --end-time "2026-10-20 12:00:00"
 
