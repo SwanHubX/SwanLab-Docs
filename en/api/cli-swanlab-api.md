@@ -37,6 +37,7 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 | `swanlab api run column`                | Get a single experiment column (⚠️ deprecated; not applicable to multi-view experiments) |
 | `swanlab api run columns`               | List experiment columns (⚠️ deprecated; not applicable to multi-view experiments)        |
 | `swanlab api run medias`                | Get experiment media metrics                                                             |
+| `swanlab api run histograms`            | Get experiment histogram metrics                                                         |
 | `swanlab api run logs`                  | Get experiment console logs                                                              |
 | `swanlab api run export-logs`           | Export experiment logs as a file                                                         |
 
@@ -340,7 +341,7 @@ swanlab api run series <path> [OPTIONS]
 | Argument/Option | Type       | Default    | Description                                                |
 | --------------- | ---------- | ---------- | ---------------------------------------------------------- |
 | `path`          | Positional | Required   | Experiment path                                            |
-| `--type`        | `str`      | `"scalar"` | Metric type: `scalar` or `media`                           |
+| `--type`        | `str`      | `"scalar"` | Metric type: `scalar`, `media` or `histogram`              |
 | `--class`       | `str`      | `"custom"` | Metric class: `custom` or `system`                         |
 | `--search`      | `str`      | `None`     | Fuzzy search keyword (case-insensitive, matches key names) |
 | `--save`        | Option     | —          | Save output as JSON file                                   |
@@ -357,6 +358,9 @@ swanlab api run series my-team/image-classification/abc123 --class system
 
 # List media metrics
 swanlab api run series my-team/image-classification/abc123 --type media
+
+# List histogram metrics
+swanlab api run series my-team/image-classification/abc123 --type histogram
 ```
 
 ### run column
@@ -440,6 +444,40 @@ swanlab api run medias my-team/image-classification/abc123 --keys generated_imag
 
 # Get all audio steps
 swanlab api run medias my-team/image-classification/abc123 --keys audio --all
+```
+
+### run histograms
+
+Get histogram (parameter distribution) metrics for an experiment. Each point is a distribution snapshot at one step: `values` holds per-bin counts, `bins` holds the corresponding `N+1` bin edges, and the x axis is always `step`.
+
+```bash
+swanlab api run histograms <path> --keys <keys> [OPTIONS]
+```
+
+| Argument/Option      | Type       | Default  | Description                                                                     |
+| -------------------- | ---------- | -------- | ------------------------------------------------------------------------------- |
+| `path`               | Positional | Required | Experiment path                                                                 |
+| `--keys`             | `str`      | Required | Comma-separated histogram keys, e.g. `"grad,weight"`                            |
+| `--sample` / `-s`    | `int`      | `1500`   | Max snapshots per key (max 1500), downsampled by the server over steps          |
+| `--range-start`      | `float`    | `None`   | Lower bound (inclusive), a non-negative integer; `0` or omitted means unbounded |
+| `--range-end`        | `float`    | `None`   | Upper bound (inclusive), a non-negative integer; `0` or omitted means unbounded |
+| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field                                                          |
+| `--save`             | Option     | —        | Save output as JSON file                                                        |
+
+**Notes:**
+
+- Histograms only return server-side samples by step — each key returns at most `sample` snapshots. Full export and aggregate statistics are not supported yet
+
+```bash
+# Get the grad histogram (up to 1500 snapshots by default)
+swanlab api run histograms my-team/image-classification/abc123 --keys grad
+
+# Multiple keys, up to 500 snapshots each
+swanlab api run histograms my-team/image-classification/abc123 --keys grad,weight -s 500
+
+# Only snapshots with step in [0, 500]
+swanlab api run histograms my-team/image-classification/abc123 \
+  --keys grad --range-start 0 --range-end 500
 ```
 
 ### run logs
