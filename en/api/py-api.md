@@ -592,7 +592,7 @@ print(result)
 Returned media data is provided via presigned URLs — download before the expiration time.
 :::
 
-#### 8. histogram
+#### 8. histograms
 
 Fetch histogram (parameter distribution) metrics. Each point is a distribution snapshot at one step: `values` holds per-bin counts, `bins` holds the corresponding `N+1` bin edges, and the x axis is fixed to `step`.
 

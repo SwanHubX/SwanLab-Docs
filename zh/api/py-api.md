@@ -592,7 +592,7 @@ print(result)
 返回的媒体数据通过预签名 URL 提供，需在过期时间之前下载。
 :::
 
-#### 8. histogram
+#### 8. histograms
 
 获取直方图（参数分布）指标。每个点是一个 step 的分布快照：`values` 为各桶计数，`bins` 为对应的 `N+1` 个桶边界，横轴固定为 `step`。
 
