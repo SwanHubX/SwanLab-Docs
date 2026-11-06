@@ -96,18 +96,18 @@ swanlab sync ./swanlog/run-xxx --host <private_deployment_address>
 A default full sync only appends data after the latest progress recorded in the cloud. If only a middle segment of training data is missing (for example, due to a temporary database outage while subsequent uploads recovered), you can use the range options to backfill records within that specific interval:
 
 ```bash
-# By time: backfill scalars, media and terminal logs between 10:00 and 12:00
+# By time: backfill scalars, media, histograms and terminal logs between 10:00 and 12:00
 swanlab sync ./swanlog/run-xxx --id <experiment ID> \
     --start-time "2026-10-20 10:00:00" --end-time "2026-10-20 12:00:00"
 
-# By step: backfill scalars and media for step 100-200
+# By step: backfill scalars, media and histograms for step 100-200
 swanlab sync ./swanlog/run-xxx --id <experiment ID> --start-step 100 --end-step 200
 ```
 
-| Option                        | Applies to                                |
-| ----------------------------- | ----------------------------------------- |
-| `--start-step` / `--end-step` | Scalars, media (inclusive)                |
-| `--start-time` / `--end-time` | Scalars, media, terminal logs (inclusive) |
+| Option                        | Applies to                                            |
+| ----------------------------- | ----------------------------------------------------- |
+| `--start-step` / `--end-step` | Scalars, media, histograms (inclusive)                |
+| `--start-time` / `--end-time` | Scalars, media, histograms, terminal logs (inclusive) |
 
 When both `step` and time ranges are specified, their intersection is used. Specifying only a `step` range does not sync terminal logs; use a time range if you need to backfill terminal logs.
 

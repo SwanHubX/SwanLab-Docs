@@ -106,7 +106,7 @@ swanlab.finish()
 - Precomputed input must satisfy `len(bin_edges) == len(counts) + 1`.
 - `swanlab.Histogram(hist)` reuses an existing instance's buckets. In this case, do not specify `bins`, `num_bins`, or `np_histogram`.
 
-Inputs with an unsupported type or shape do not raise an exception: the SDK prints a warning, marks the instance invalid, and `swanlab.log()` skips the invalid histogram. Passing an unsupported object, non-numeric data, a multidimensional array, or a boolean bucket count all follow this path.
+Inputs with an unsupported type or shape do not raise an exception: the instance is marked invalid, the error details are written to the experiment's debug log, and `swanlab.log()` skips that histogram, with the terminal only reporting that the metric produced no data. Passing an unsupported object, non-numeric data, a multidimensional array, or a boolean bucket count all follow this path.
 
 Violating the numeric and length rules listed above raises `ValueError`. Calling without both `sequence` and `np_histogram`, or specifying bucket parameters when nesting a `Histogram` instance, also raises `ValueError`.
 

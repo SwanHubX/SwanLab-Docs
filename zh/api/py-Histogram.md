@@ -106,7 +106,7 @@ swanlab.finish()
 - 预分桶结果必须满足 `len(bin_edges) == len(counts) + 1`。
 - `swanlab.Histogram(hist)` 可以复用已有实例的分桶结果，此时不能额外指定 `bins`、`num_bins` 或 `np_histogram`。
 
-类型或形状不符合要求的输入不会抛出异常：SDK 打印警告并将实例标记为无效，`swanlab.log()` 记录时跳过无效的直方图。传入不支持的对象、非数值数据、多维数组，或把布尔值作为桶数时都会走这条路径。
+类型或形状不符合要求的输入不会抛出异常：实例被标记为无效，错误详情写入实验的调试日志，`swanlab.log()` 记录时跳过该条直方图，终端仅提示该指标没有产生数据。传入不支持的对象、非数值数据、多维数组，或把布尔值作为桶数时都会走这条路径。
 
 上文列出的数值与长度规则不满足时抛出 `ValueError`。`sequence` 与 `np_histogram` 同时缺省、嵌套 `Histogram` 时额外指定分桶参数，同样抛出 `ValueError`。
 
