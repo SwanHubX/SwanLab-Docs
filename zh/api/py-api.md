@@ -923,7 +923,7 @@ if result.ok:
 | `x_axis`           | `str`  | `"step"` | 返回数据的 X 轴：`"step"`（默认）、内置轴 `"time"` / `"relative_time"`，或自定义 X 轴指标 key（仅 SCALAR 有效，`swanlab >= 0.10.1`） |
 
 :::warning
-`HISTOGRAM` 类型的 `Key.metric()` 只返回服务端抽帧结果，不能按 step 过滤；需要指定 `step_range` 时，请改用 [`run.histograms()`](#_8-histograms)。
+`HISTOGRAM` 类型的 `Key.metric()` 只返回服务端抽帧结果，不能按 step 过滤；需要指定 `step_range` 时，请改用 [`run.histograms()`](#_8-histogram)。
 :::
 
 ### Series / Key 方法示例

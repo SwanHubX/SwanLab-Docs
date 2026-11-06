@@ -44,6 +44,7 @@ Workspace
            ├── columns (list of metric keys, ⚠️ no longer compatible with 0.9.0+ multi-view experiments)
            ├── metrics (scalar metrics)
            ├── medias (media metrics)
+           ├── histograms (histogram metrics)
            └── logs
 ```
 
@@ -57,15 +58,16 @@ Workspace
 | **Column**     | Metric column under an experiment (no longer supported for 0.9.0+ multi-view experiments; use Series instead).                     |
 | **Metric**     | The metric value corresponding to a specific metric key in an experiment.                                                          |
 
-### Data Types: metrics / medias / logs
+### Data Types: metrics / medias / histograms / logs
 
-Data under an experiment falls into three categories, accessed through different methods:
+Data under an experiment falls into four categories, accessed through different methods:
 
-| Type               | Method                             | Description                                                                                    | Typical Use Case                          |
-| ------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| **Scalar metrics** | `run.metrics(keys=[...])`          | Numeric metrics (e.g. loss, acc), supports sampling and range queries, returns structured data | Training curve analysis, trend comparison |
-| **Media metrics**  | `run.medias(keys=[...])`           | Images, audio, video and other unstructured media data, returns presigned URLs                 | Visual inspection, result preview         |
-| **Logs**           | `run.logs()` / `run.export_logs()` | Text logs from experiment runtime, supports level filtering                                    | Debugging, troubleshooting, auditing      |
+| Type                  | Method                             | Description                                                                                                          | Typical Use Case                          |
+| --------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| **Scalar metrics**    | `run.metrics(keys=[...])`          | Numeric metrics (e.g. loss, acc), supports sampling and range queries, returns structured data                       | Training curve analysis, trend comparison |
+| **Media metrics**     | `run.medias(keys=[...])`           | Images, audio, video and other unstructured media data, returns presigned URLs                                       | Visual inspection, result preview         |
+| **Histogram metrics** | `run.histograms(keys=[...])`       | Parameter distribution snapshots; each point holds per-bin counts `values` and bin edges `bins`, downsampled by step | Distribution evolution, gradient analysis |
+| **Logs**              | `run.logs()` / `run.export_logs()` | Text logs from experiment runtime, supports level filtering                                                          | Debugging, troubleshooting, auditing      |
 
 ```python
 import swanlab
@@ -79,6 +81,9 @@ scalars = run.metrics(keys=["loss", "acc"], sample=500)
 # Media metrics: images, audio, etc.
 media = run.medias(keys=["generated_image"], step=10)
 
+# Histogram metrics: parameter distribution per step
+hists = run.histograms(keys=["grad"], sample=500)
+
 # Logs: text output
 logs = run.logs(offset=0, level="INFO")
 ```
@@ -87,6 +92,7 @@ logs = run.logs(offset=0, level="INFO")
 
 - `metrics()` returns sampled data by default; the `sample` parameter is capped at 1500 (auto-truncated if exceeded). Set `all=True` for full data, or use `range_query` to query exact metric ranges by `step` or `timestamp`.
 - `medias()` returns media data via presigned URLs — download within the validity period.
+- `histograms()` returns only server-side downsampled results — no full export or aggregate statistics; `all` / `range_query` are unavailable, and the step window is set via `step_range`.
 - `export_logs()` can export large volumes of logs to `.log` files, suitable for persistent storage.
 
 ## Api
@@ -495,11 +501,11 @@ result = run.metrics(
 
 #### 5. series
 
-Get the list of metric keys under an experiment (recommended in `0.9.0+`, replacing [columns](#_10-columns)). Supports filtering by metric type, class, and keyword; iterating returns `Key` objects. In multi-view projects, cloned experiments automatically query the root experiment's metric data.
+Get the list of metric keys under an experiment (recommended in `0.9.0+`, replacing [columns](#_11-columns)). Supports filtering by metric type, class, and keyword; iterating returns `Key` objects. In multi-view projects, cloned experiments automatically query the root experiment's metric data.
 
 | Parameter      | Type  | Default    | Description                                                |
 | -------------- | ----- | ---------- | ---------------------------------------------------------- |
-| `metric_type`  | `str` | `"SCALAR"` | Metric type: `SCALAR` or `MEDIA`                           |
+| `metric_type`  | `str` | `"SCALAR"` | Metric type: `SCALAR`, `MEDIA` or `HISTOGRAM`              |
 | `metric_class` | `str` | `"CUSTOM"` | Metric class: `CUSTOM` or `SYSTEM`                         |
 | `search`       | `str` | `""`       | Fuzzy search keyword (case-insensitive, matches key names) |
 
@@ -514,12 +520,14 @@ run = api.run(path="my-team/my-project/abc123")
 for item in run.series():
     print(item.key, item.key_class)
 
-# Fuzzy search / system metrics / media metrics
+# Fuzzy search / system metrics / media metrics / histogram metrics
 for item in run.series(search="loss"):
     print(item.key)
 for item in run.series(metric_class="SYSTEM"):
     print(item.key)
 for item in run.series(metric_type="MEDIA"):
+    print(item.key)
+for item in run.series(metric_type="HISTOGRAM"):
     print(item.key)
 
 # Total number of matching keys
@@ -584,7 +592,55 @@ print(result)
 Returned media data is provided via presigned URLs — download before the expiration time.
 :::
 
-#### 8. logs
+#### 8. histogram
+
+Fetch histogram (parameter distribution) metrics. Each point is a distribution snapshot at one step: `values` holds per-bin counts, `bins` holds the corresponding `N+1` bin edges, and the x axis is fixed to `step`.
+
+| Parameter          | Type                   | Default | Description                                                           |
+| ------------------ | ---------------------- | ------- | --------------------------------------------------------------------- |
+| `keys`             | `list[str]`            | —       | Histogram key list, e.g. `["grad"]`                                   |
+| `sample`           | `int`                  | `1500`  | Max snapshots per key (max 1500), downsampled by the server over step |
+| `step_range`       | `dict` or `RangeQuery` | `None`  | Filter by step range; only `start` / `end` are used                   |
+| `ignore_timestamp` | `bool`                 | `False` | Whether to remove timestamp fields                                    |
+
+**step_range fields:**
+
+| Field   | Type  | Default  | Description                                                             |
+| ------- | ----- | -------- | ----------------------------------------------------------------------- |
+| `type`  | `str` | `"step"` | Only `"step"` is supported; any other value raises an error             |
+| `start` | `int` | `None`   | Lower bound (inclusive), a non-negative integer, `None` means unbounded |
+| `end`   | `int` | `None`   | Upper bound (inclusive), a non-negative integer, `None` means unbounded |
+
+**Notes:**
+
+- Histograms only return server-side samples by step — each key returns at most `sample` snapshots; full export and aggregate statistics are not supported yet
+
+:::code-group
+
+```python [histogram usage example]
+import swanlab
+from swanlab.api.typings.common import RangeQuery
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# Get histogram data
+result = run.histograms(keys=["grad"])
+
+# Max 1000 snapshots per key
+result = run.histograms(keys=["grad"], sample=1000)
+
+# Only snapshots with step in [0, 500]
+result = run.histograms(keys=["grad"], step_range={"start": 0, "end": 500})
+
+# Equivalent: construct RangeQuery explicitly
+result = run.histograms(keys=["grad"], step_range=RangeQuery(start=0, end=500))
+```
+
+:::
+
+#### 9. logs
 
 Fetch text logs from experiment runtime, supports level filtering; can also export as `.log` file.
 
@@ -615,7 +671,7 @@ print(logs)
 
 :::
 
-#### 9. export_logs
+#### 10. export_logs
 
 Export logs as .log file (returns presigned download link)
 
@@ -635,7 +691,7 @@ if result.ok:
 
 :::
 
-#### 10. columns
+#### 11. columns
 
 ::: warning Not recommended
 Since swanlab `0.9.0` (multi-view version), `columns` / `column` are no longer recommended — use [`series`](#_5-series) instead.
@@ -681,7 +737,7 @@ for col in run.columns(search="loss"):
 col = run.column(key="loss", column_type="FLOAT")
 ```
 
-#### 11. delete
+#### 12. delete
 
 Delete experiment, controls actual deletion behavior via `commit`.
 
@@ -848,13 +904,13 @@ Represents the list of metric keys under an experiment (recommended in `0.9.0+`,
 
 ### Key properties
 
-| Property      | Type  | Description                        |
-| ------------- | ----- | ---------------------------------- |
-| `key`         | `str` | Metric key name                    |
-| `metric_type` | `str` | Metric type: `SCALAR` or `MEDIA`   |
-| `key_class`   | `str` | Metric class: `CUSTOM` or `SYSTEM` |
-| `project_id`  | `str` | Project ID                         |
-| `run_id`      | `str` | Experiment ID                      |
+| Property      | Type  | Description                                   |
+| ------------- | ----- | --------------------------------------------- |
+| `key`         | `str` | Metric key name                               |
+| `metric_type` | `str` | Metric type: `SCALAR`, `MEDIA` or `HISTOGRAM` |
+| `key_class`   | `str` | Metric class: `CUSTOM` or `SYSTEM`            |
+| `project_id`  | `str` | Project ID                                    |
+| `run_id`      | `str` | Experiment ID                                 |
 
 ### Key.metric() parameters
 
@@ -863,8 +919,12 @@ Represents the list of metric keys under an experiment (recommended in `0.9.0+`,
 | `sample`           | `int`  | `1500`   | Sample count (max 1500)                                                                                                                                       |
 | `ignore_timestamp` | `bool` | `False`  | Whether to remove timestamp fields                                                                                                                            |
 | `media_step`       | `int`  | `None`   | Only effective for MEDIA type, specifies the step                                                                                                             |
-| `all`              | `bool` | `False`  | Get full data (no sampling limit)                                                                                                                             |
+| `all`              | `bool` | `False`  | Get full data (no sampling limit); not supported for HISTOGRAM                                                                                                |
 | `x_axis`           | `str`  | `"step"` | X axis of the returned data: `"step"` (default), built-in axes `"time"` / `"relative_time"`, or a custom X-axis metric key (SCALAR only, `swanlab >= 0.10.1`) |
+
+:::warning
+`Key.metric()` on a `HISTOGRAM` key returns server-side downsampled results only and cannot filter by step; use [`run.histograms()`](#_8-histogram) when you need `step_range`.
+:::
 
 ### Series / Key method examples
 
