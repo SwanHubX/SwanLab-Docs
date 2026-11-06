@@ -11,8 +11,8 @@ Histogram(
     sequence=None,
     bins=None,
     *,
-    num_bins=None,
     np_histogram=None,
+    **kwargs,
 )
 ```
 
@@ -20,12 +20,12 @@ Convert samples into bucket counts and use [`swanlab.log()`](./py-log.md) to rec
 
 | Parameter      | Description                                                                                                                                                                                                     |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sequence`     | Raw samples as a one-dimensional sequence of real numbers, such as a `list`, `tuple`, `range`, or NumPy array. An existing `Histogram` instance is also accepted. Required when `np_histogram` is not provided. |
+| `sequence`     | Raw samples as a one-dimensional sequence of real numbers, such as a `list`, `tuple`, `range`, or NumPy array. PyTorch tensors and existing `Histogram` instances are also accepted. Required when `np_histogram` is not provided. |
 | `bins`         | A bucket count or bucket edges. Counts accept Python / NumPy integers from 1 to 512; edges accept a one-dimensional sequence of real numbers. Defaults to `None`, which uses 64 equal-width buckets.            |
-| `num_bins`     | Bucket count parameter for W&B compatibility. Accepts Python / NumPy integers from 1 to 512. Defaults to `None`. Cannot be specified together with `bins`; booleans are not valid bucket counts.                |
 | `np_histogram` | Precomputed `(counts, bin_edges)`, including the return value of `numpy.histogram()`. Defaults to `None`. When provided, `sequence`, `bins`, and `num_bins` are ignored.                                        |
+| `num_bins`     | Bucket count parameter for W&B compatibility, passed as a keyword argument. Accepts Python / NumPy integers from 1 to 512 and takes effect only when `bins` is not given. When both are given, `bins` wins and a warning is emitted. |
 
-`num_bins` and `np_histogram` are keyword-only parameters. `bins` also rejects booleans as bucket counts.
+`np_histogram` and `num_bins` are keyword-only parameters. Other unrecognized keyword arguments are ignored by the constructor.
 
 ## Create from Raw Samples
 
@@ -87,7 +87,7 @@ You can also provide count and edge sequences directly, for example `swanlab.His
 
 ## Log PyTorch Tensors
 
-Convert a Tensor to a NumPy array using `tensor.detach().cpu().numpy()` first. Flatten multidimensional parameters to one dimension:
+PyTorch tensors can be passed directly. The SDK converts them automatically with `detach().cpu()`, so tensors on GPU, tensors with gradients, and `bfloat16` tensors are all supported. Flatten multidimensional parameters to one dimension first:
 
 ```python
 import torch
@@ -96,8 +96,7 @@ import swanlab
 swanlab.init(project="histogram-demo")
 
 layer = torch.nn.Linear(8, 4)
-weights = layer.weight.detach().cpu().numpy().ravel()
-swanlab.log({"weights": swanlab.Histogram(weights)}, step=0)
+swanlab.log({"weights": swanlab.Histogram(layer.weight.flatten())}, step=0)
 
 swanlab.finish()
 ```
@@ -111,15 +110,18 @@ swanlab.finish()
 - Precomputed input must satisfy `len(bin_edges) == len(counts) + 1`.
 - `swanlab.Histogram(hist)` reuses an existing instance's buckets. In this case, do not specify `bins`, `num_bins`, or `np_histogram`.
 
-Unsupported input types raise `TypeError`. Invalid dimensions, bucket counts, edge order, or array lengths raise `ValueError`.
+Inputs with an unsupported type or shape do not raise an exception: the SDK prints a warning, marks the instance invalid, and `swanlab.log()` skips the invalid histogram. Passing an unsupported object, non-numeric data, a multidimensional array, or a boolean bucket count all follow this path.
+
+Violating the numeric and length rules listed above raises `ValueError`. Calling without both `sequence` and `np_histogram`, or specifying bucket parameters when nesting a `Histogram` instance, also raises `ValueError`.
 
 ## Access Bucket Results
 
-A constructed `Histogram` exposes two attributes:
+A constructed `Histogram` exposes the following attributes:
 
 | Attribute | Type          | Description                                   |
 | --------- | ------------- | --------------------------------------------- |
 | `values`  | `list[int]`   | Sample counts for each bucket, with length N. |
 | `bins`    | `list[float]` | Bucket edges, with length N+1.                |
+| `is_valid` | `bool`       | Whether the input passed type and shape validation. Invalid instances are skipped when logged. |
 
 Logged data preserves the counts and edges at each step; the original samples cannot be recovered. Use a separate metric name for histograms and avoid mixing scalars, histograms, or other data types under the same name.
