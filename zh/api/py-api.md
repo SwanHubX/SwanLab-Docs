@@ -44,6 +44,7 @@ Workspace（工作空间）
            ├── columns（指标 key 列表，⚠️ 注意 0.9.0+ 多视图版本实验不再兼容）
            ├── metrics（标量指标）
            ├── medias（媒体指标）
+           ├── histograms（直方图指标）
            └── logs（日志）
 ```
 
@@ -57,15 +58,16 @@ Workspace（工作空间）
 | **Column**     | 实验下的指标列（0.9.0+ 多视图版本实验不再支持，请改用 Series）。               |
 | **Metric**     | 实验下某一指标 key 对应的指标值。                                              |
 
-### 数据类型：metrics / medias / logs
+### 数据类型：metrics / medias / histograms / logs
 
-实验下的数据分为三类，通过不同的方法获取：
+实验下的数据分为四类，通过不同的方法获取：
 
-| 类型         | 方法                               | 说明                                                           | 典型场景               |
-| ------------ | ---------------------------------- | -------------------------------------------------------------- | ---------------------- |
-| **标量指标** | `run.metrics(keys=[...])`          | 数值型指标（如 loss、acc），支持采样、范围查询，返回结构化数据 | 训练曲线分析、趋势对比 |
-| **媒体指标** | `run.medias(keys=[...])`           | 图片、音频、视频等非结构化媒体数据，返回预签名 URL             | 可视化检查、结果预览   |
-| **日志**     | `run.logs()` / `run.export_logs()` | 实验运行时的文本日志，支持按级别筛选                           | 调试、排错、审计       |
+| 类型           | 方法                               | 说明                                                                    | 典型场景               |
+| -------------- | ---------------------------------- | ----------------------------------------------------------------------- | ---------------------- |
+| **标量指标**   | `run.metrics(keys=[...])`          | 数值型指标（如 loss、acc），支持采样、范围查询，返回结构化数据          | 训练曲线分析、趋势对比 |
+| **媒体指标**   | `run.medias(keys=[...])`           | 图片、音频、视频等非结构化媒体数据，返回预签名 URL                      | 可视化检查、结果预览   |
+| **直方图指标** | `run.histograms(keys=[...])`       | 参数分布快照，每个点为一组桶计数 `values` 与桶边界 `bins`，按 step 抽帧 | 分布演化、梯度分析     |
+| **日志**       | `run.logs()` / `run.export_logs()` | 实验运行时的文本日志，支持按级别筛选                                    | 调试、排错、审计       |
 
 ```python
 import swanlab
@@ -79,6 +81,9 @@ scalars = run.metrics(keys=["loss", "acc"], sample=500)
 # 媒体指标：图片、音频等
 media = run.medias(keys=["generated_image"], step=10)
 
+# 直方图指标：每个 step 的参数分布
+hists = run.histograms(keys=["grad"], sample=500)
+
 # 日志：文本输出
 logs = run.logs(offset=0, level="INFO")
 ```
@@ -87,6 +92,7 @@ logs = run.logs(offset=0, level="INFO")
 
 - `metrics()` 默认采样返回，`sample` 参数上限为 1500，超过会自动截断；可通过设置 `all=True` 返回全量数据，或通过 `range_query` 按 `step` 或 `timestamp` 返回精确的指标区间；
 - `medias()` 返回的媒体数据通过预签名 URL 提供，需在有效期内下载；
+- `histograms()` 只有服务端抽帧结果，没有全量导出与聚合统计，`all` / `range_query` 不可用，step 窗口通过 `step_range` 指定；
 - `export_logs()` 可导出大量日志为 `.log` 文件，适合持久化保存。
 
 ## Api
@@ -495,11 +501,11 @@ result = run.metrics(
 
 #### 5. series
 
-获取实验下的指标 key 列表（`0.9.0+` 推荐使用，替代 [columns](#_10-columns)），支持按指标类型、分类、关键词过滤，迭代返回 `Key` 对象。多视图项目下，克隆实验会自动查询根实验的指标数据。
+获取实验下的指标 key 列表（`0.9.0+` 推荐使用，替代 [columns](#_11-columns)），支持按指标类型、分类、关键词过滤，迭代返回 `Key` 对象。多视图项目下，克隆实验会自动查询根实验的指标数据。
 
 | 参数           | 类型  | 默认值     | 描述                                        |
 | -------------- | ----- | ---------- | ------------------------------------------- |
-| `metric_type`  | `str` | `"SCALAR"` | 指标类型：`SCALAR` 或 `MEDIA`               |
+| `metric_type`  | `str` | `"SCALAR"` | 指标类型：`SCALAR`、`MEDIA` 或 `HISTOGRAM`  |
 | `metric_class` | `str` | `"CUSTOM"` | 指标分类：`CUSTOM` 或 `SYSTEM`              |
 | `search`       | `str` | `""`       | 模糊搜索关键词（大小写不敏感，匹配 key 名） |
 
@@ -514,12 +520,14 @@ run = api.run(path="my-team/my-project/abc123")
 for item in run.series():
     print(item.key, item.key_class)
 
-# 模糊搜索 / 系统指标 / 媒体指标
+# 模糊搜索 / 系统指标 / 媒体指标 / 直方图指标
 for item in run.series(search="loss"):
     print(item.key)
 for item in run.series(metric_class="SYSTEM"):
     print(item.key)
 for item in run.series(metric_type="MEDIA"):
+    print(item.key)
+for item in run.series(metric_type="HISTOGRAM"):
     print(item.key)
 
 # 匹配的 key 总数
@@ -584,7 +592,55 @@ print(result)
 返回的媒体数据通过预签名 URL 提供，需在过期时间之前下载。
 :::
 
-#### 8. logs
+#### 8. histogram
+
+获取直方图（参数分布）指标。每个点是一个 step 的分布快照：`values` 为各桶计数，`bins` 为对应的 `N+1` 个桶边界，横轴固定为 `step`。
+
+| 参数               | 类型                   | 默认值  | 描述                                                         |
+| ------------------ | ---------------------- | ------- | ------------------------------------------------------------ |
+| `keys`             | `list[str]`            | —       | 直方图 key 列表，如 `["grad"]`                               |
+| `sample`           | `int`                  | `1500`  | 每个 key 返回的快照数上限（最大 1500），由服务端按 step 抽帧 |
+| `step_range`       | `dict` 或 `RangeQuery` | `None`  | 按 step 范围过滤，仅使用 `start` / `end`                     |
+| `ignore_timestamp` | `bool`                 | `False` | 是否去除时间戳字段                                           |
+
+**step_range 字段：**
+
+| 字段    | 类型  | 默认值   | 描述                                        |
+| ------- | ----- | -------- | ------------------------------------------- |
+| `type`  | `str` | `"step"` | 只支持 `"step"`，其余取值直接报错           |
+| `start` | `int` | `None`   | 下界（含），非负整数，`None` 表示该侧不限制 |
+| `end`   | `int` | `None`   | 上界（含），非负整数，`None` 表示该侧不限制 |
+
+**注意事项：**
+
+- 直方图只有服务端按 step 的采样结果，每个 key 最多返回 `sample` 个直方图快照指标，暂不支持全量导出与聚合统计
+
+:::code-group
+
+```python[histogram使用示例]
+import swanlab
+from swanlab.api.typings.common import RangeQuery
+
+api = swanlab.Api()
+
+run = api.run(path="my-team/my-project/abc123")
+
+# 获取直方图数据
+result = run.histograms(keys=["grad"])
+
+# 每个 key 最多返回 1000 个快照
+result = run.histograms(keys=["grad"], sample=1000)
+
+# 只取 step 在 [0, 500] 的快照
+result = run.histograms(keys=["grad"], step_range={"start": 0, "end": 500})
+
+# 等价写法：显式构造 RangeQuery
+result = run.histograms(keys=["grad"], step_range=RangeQuery(start=0, end=500))
+```
+
+:::
+
+#### 9. logs
 
 获取实验运行时的文本日志，支持按级别筛选；也可导出为 `.log` 文件。
 
@@ -615,7 +671,7 @@ print(logs)
 
 :::
 
-#### 9. export_logs
+#### 10. export_logs
 
 导出日志为 .log 文件（返回预签名下载链接）
 
@@ -635,7 +691,7 @@ if result.ok:
 
 :::
 
-#### 10. columns
+#### 11. columns
 
 ::: warning 不推荐使用
 自 swanlab `0.9.0`（多视图版本）起，`columns` / `column` 不再推荐使用，请改用 [`series`](#_5-series)。
@@ -681,7 +737,7 @@ for col in run.columns(search="loss"):
 col = run.column(key="loss", column_type="FLOAT")
 ```
 
-#### 11. delete
+#### 12. delete
 
 删除实验，通过 `commit` 控制实际删除行为。
 
@@ -848,13 +904,13 @@ if result.ok:
 
 ### Key 属性
 
-| 属性          | 类型  | 描述                           |
-| ------------- | ----- | ------------------------------ |
-| `key`         | `str` | 指标 key 名称                  |
-| `metric_type` | `str` | 指标类型：`SCALAR` 或 `MEDIA`  |
-| `key_class`   | `str` | 指标分类：`CUSTOM` 或 `SYSTEM` |
-| `project_id`  | `str` | 项目 ID                        |
-| `run_id`      | `str` | 实验 ID                        |
+| 属性          | 类型  | 描述                                       |
+| ------------- | ----- | ------------------------------------------ |
+| `key`         | `str` | 指标 key 名称                              |
+| `metric_type` | `str` | 指标类型：`SCALAR`、`MEDIA` 或 `HISTOGRAM` |
+| `key_class`   | `str` | 指标分类：`CUSTOM` 或 `SYSTEM`             |
+| `project_id`  | `str` | 项目 ID                                    |
+| `run_id`      | `str` | 实验 ID                                    |
 
 ### Key.metric() 入参
 
@@ -863,8 +919,12 @@ if result.ok:
 | `sample`           | `int`  | `1500`   | 采样数量（最大 1500）                                                                                                                |
 | `ignore_timestamp` | `bool` | `False`  | 是否去除时间戳字段                                                                                                                   |
 | `media_step`       | `int`  | `None`   | 仅 MEDIA 类型生效，指定 step                                                                                                         |
-| `all`              | `bool` | `False`  | 获取全量数据（不受采样限制）                                                                                                         |
+| `all`              | `bool` | `False`  | 获取全量数据（不受采样限制），HISTOGRAM 类型不支持                                                                                   |
 | `x_axis`           | `str`  | `"step"` | 返回数据的 X 轴：`"step"`（默认）、内置轴 `"time"` / `"relative_time"`，或自定义 X 轴指标 key（仅 SCALAR 有效，`swanlab >= 0.10.1`） |
+
+:::warning
+`HISTOGRAM` 类型的 `Key.metric()` 只返回服务端抽帧结果，不能按 step 过滤；需要指定 `step_range` 时，请改用 [`run.histograms()`](#_8-histograms)。
+:::
 
 ### Series / Key 方法示例
 
