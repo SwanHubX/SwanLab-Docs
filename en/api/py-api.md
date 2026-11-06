@@ -41,7 +41,7 @@ Workspace
  └── Project
       └── Experiment/Run
            ├── series (list of metric keys)
-           ├── columns (list of metric keys, ⚠️ no longer compatible with 0.9.0+ multi-view experiments)
+           ├── columns (⚠️legacy list of metric keys, no longer compatible with 0.9.0+ multi-view projects)
            ├── metrics (scalar metrics)
            ├── medias (media metrics)
            ├── histograms (histogram metrics)

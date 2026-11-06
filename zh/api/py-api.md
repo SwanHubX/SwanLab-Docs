@@ -41,7 +41,7 @@ Workspace（工作空间）
  └── Project（项目）
       └── Experiment/Run（实验）
            ├── series（指标 key 列表）
-           ├── columns（指标 key 列表，⚠️ 注意 0.9.0+ 多视图版本实验不再兼容）
+           ├── columns（⚠️ 旧版指标 key 列表， 0.9.0+ 多视图版本的项目不再使用）
            ├── metrics（标量指标）
            ├── medias（媒体指标）
            ├── histograms（直方图指标）
