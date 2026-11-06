@@ -18,11 +18,11 @@ Histogram(
 
 Convert samples into bucket counts and use [`swanlab.log()`](./py-log.md) to record a distribution snapshot at each step. This is useful for tracking changes in model parameter or gradient distributions.
 
-| Parameter      | Description                                                                                                                                                                                                     |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sequence`     | Raw samples as a one-dimensional sequence of real numbers, such as a `list`, `tuple`, `range`, or NumPy array. PyTorch tensors and existing `Histogram` instances are also accepted. Required when `np_histogram` is not provided. |
-| `bins`         | A bucket count or bucket edges. Counts accept Python / NumPy integers from 1 to 512; edges accept a one-dimensional sequence of real numbers. Defaults to `None`, which uses 64 equal-width buckets.            |
-| `np_histogram` | Precomputed `(counts, bin_edges)`, including the return value of `numpy.histogram()`. Defaults to `None`. When provided, `sequence`, `bins`, and `num_bins` are ignored.                                        |
+| Parameter      | Description                                                                                                                                                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `sequence`     | Raw samples as a one-dimensional sequence of real numbers, such as a `list`, `tuple`, `range`, or NumPy array. PyTorch tensors and existing `Histogram` instances are also accepted. Required when `np_histogram` is not provided.   |
+| `bins`         | A bucket count or bucket edges. Counts accept Python / NumPy integers from 1 to 512; edges accept a one-dimensional sequence of real numbers. Defaults to `None`, which uses 64 equal-width buckets.                                 |
+| `np_histogram` | Precomputed `(counts, bin_edges)`, including the return value of `numpy.histogram()`. Defaults to `None`. When provided, `sequence`, `bins`, and `num_bins` are ignored.                                                             |
 | `num_bins`     | Bucket count parameter for W&B compatibility, passed as a keyword argument. Accepts Python / NumPy integers from 1 to 512 and takes effect only when `bins` is not given. When both are given, `bins` wins and a warning is emitted. |
 
 `np_histogram` and `num_bins` are keyword-only parameters. Other unrecognized keyword arguments are ignored by the constructor.
@@ -118,10 +118,10 @@ Violating the numeric and length rules listed above raises `ValueError`. Calling
 
 A constructed `Histogram` exposes the following attributes:
 
-| Attribute | Type          | Description                                   |
-| --------- | ------------- | --------------------------------------------- |
-| `values`  | `list[int]`   | Sample counts for each bucket, with length N. |
-| `bins`    | `list[float]` | Bucket edges, with length N+1.                |
-| `is_valid` | `bool`       | Whether the input passed type and shape validation. Invalid instances are skipped when logged. |
+| Attribute  | Type          | Description                                                                                    |
+| ---------- | ------------- | ---------------------------------------------------------------------------------------------- |
+| `values`   | `list[int]`   | Sample counts for each bucket, with length N.                                                  |
+| `bins`     | `list[float]` | Bucket edges, with length N+1.                                                                 |
+| `is_valid` | `bool`        | Whether the input passed type and shape validation. Invalid instances are skipped when logged. |
 
 Logged data preserves the counts and edges at each step; the original samples cannot be recovered. Use a separate metric name for histograms and avoid mixing scalars, histograms, or other data types under the same name.
