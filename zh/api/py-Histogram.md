@@ -2,10 +2,6 @@
 
 [GitHub 源代码](https://github.com/SwanHubX/SwanLab/blob/feat/histogram/swanlab/sdk/internal/run/transforms/histogram/__init__.py)
 
-::: info 版本说明
-本页描述 `feat/histogram` 分支中的新增 API，使用前请确认安装的 SDK 版本包含 `swanlab.Histogram`。云端或私有化部署端需要支持 Histogram 数据。
-:::
-
 ```python
 Histogram(
     sequence=None,

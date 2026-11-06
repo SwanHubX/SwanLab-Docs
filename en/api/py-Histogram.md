@@ -2,10 +2,6 @@
 
 [GitHub Source Code](https://github.com/SwanHubX/SwanLab/blob/feat/histogram/swanlab/sdk/internal/run/transforms/histogram/__init__.py)
 
-::: info Version Availability
-This page describes the new API on the `feat/histogram` branch. Confirm that your installed SDK includes `swanlab.Histogram` before using it. Your cloud or self-hosted deployment must also support Histogram data.
-:::
-
 ```python
 Histogram(
     sequence=None,
