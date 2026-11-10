@@ -150,6 +150,16 @@ Please refer to this document: [API-Molecule](../../api/py-molecule.md)
 
 Please refer to this document: [API-Video](../../api/py-video.md)
 
+## 7. HTML
+
+`swanlab.Html` supports logging HTML strings, `.html` file paths, or file handles, allowing you to render rich text, tables, or interactive HTML pages directly in the dashboard. [API Documentation](../../api/py-html.md)
+
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131256046.png)
+
+```python
+swanlab.log({"demo_html": swanlab.Html("path/to/file.html", caption="report")})
+```
+
 ## Q&A
 
 ### 1. What is the role of the `caption` parameter?

@@ -150,6 +150,16 @@ swanlab.log({"examples": text_list})
 
 请参考此文档：[API-Video](../../api/py-video.md)
 
+## 7. HTML
+
+`swanlab.Html` 支持记录 HTML 字符串、`.html` 文件路径或文件句柄，可用于在实验看板中直接渲染富文本、表格或交互式 HTML 页面。[API文档](../../api/py-html.md)
+
+![](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20260616131256046.png)
+
+```python
+swanlab.log({"demo_html": swanlab.Html("path/to/file.html", caption="report")})
+```
+
 ## Q&A
 
 ### 1. caption参数有什么作用？

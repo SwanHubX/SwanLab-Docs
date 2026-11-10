@@ -5,6 +5,12 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.5 - 2026.11.10
+
+**🚀 新增**
+
+- 新增 `swanlab.Histogram` 权重直方图图表类型，可用于记录模型权重、梯度、激活值等，可参考 [记录直方图](../experiment_track/log-histogram.md)
+
 ## v0.10.4 - 2026.11.04
 
 **⚡️ 优化**

@@ -37,6 +37,7 @@ swanlab api [OPTIONS] COMMAND ARGS [ARGS]
 | `swanlab api run column`                | 获取实验单个指标列（⚠️ 已废弃，多视图版本实验不再适用） |
 | `swanlab api run columns`               | 获取实验指标列列表（⚠️ 已废弃，多视图版本实验不再适用） |
 | `swanlab api run medias`                | 获取实验媒体指标                                        |
+| `swanlab api run histograms`            | 获取实验直方图指标                                      |
 | `swanlab api run logs`                  | 获取实验控制台日志                                      |
 | `swanlab api run export-logs`           | 导出实验日志文件                                        |
 
@@ -340,7 +341,7 @@ swanlab api run series <path> [OPTIONS]
 | 参数/选项  | 类型     | 默认值     | 描述                                        |
 | ---------- | -------- | ---------- | ------------------------------------------- |
 | `path`     | 位置参数 | 必填       | 实验路径                                    |
-| `--type`   | `str`    | `"scalar"` | 指标类型：`scalar` 或 `media`               |
+| `--type`   | `str`    | `"scalar"` | 指标类型：`scalar`、`media` 或 `histogram`  |
 | `--class`  | `str`    | `"custom"` | 指标分类：`custom` 或 `system`              |
 | `--search` | `str`    | `None`     | 模糊搜索关键词（大小写不敏感，匹配 key 名） |
 | `--save`   | 选项     | —          | 保存输出为 JSON 文件                        |
@@ -357,6 +358,9 @@ swanlab api run series my-team/image-classification/abc123 --class system
 
 # 列出媒体指标
 swanlab api run series my-team/image-classification/abc123 --type media
+
+# 列出直方图指标
+swanlab api run series my-team/image-classification/abc123 --type histogram
 ```
 
 ### run column
@@ -440,6 +444,40 @@ swanlab api run medias my-team/image-classification/abc123 --keys generated_imag
 
 # 获取所有步数的音频指标
 swanlab api run medias my-team/image-classification/abc123 --keys audio --all
+```
+
+### run histograms
+
+获取实验的直方图（参数分布）指标。每个点是一个 step 的分布快照：`values` 为各桶计数，`bins` 为对应的 `N+1` 个桶边界，横轴恒为 `step`。
+
+```bash
+swanlab api run histograms <path> --keys <keys> [OPTIONS]
+```
+
+| 参数/选项            | 类型     | 默认值  | 描述                                                             |
+| -------------------- | -------- | ------- | ---------------------------------------------------------------- |
+| `path`               | 位置参数 | 必填    | 实验路径                                                         |
+| `--keys`             | `str`    | 必填    | 逗号分隔的直方图指标名，如 `"grad,weight"`                       |
+| `--sample` / `-s`    | `int`    | `1500`  | 每个 key 返回的快照数上限（最大 1500），由服务端按 step 抽帧     |
+| `--range-start`      | `float`  | `None`  | 下界（含），必须为整数值（小数会报错）；`0` 或省略表示该侧不限制 |
+| `--range-end`        | `float`  | `None`  | 上界（含），必须为整数值（小数会报错）；`0` 或省略表示该侧不限制 |
+| `--ignore-timestamp` | 布尔标志 | `False` | 去掉指标数据中的时间戳字段                                       |
+| `--save`             | 选项     | —       | 保存输出为 JSON 文件                                             |
+
+**注意事项：**
+
+- 直方图只有服务端按 step 的采样结果，每个 key 最多返回 `sample` 个直方图快照指标，暂不支持全量导出与聚合统计
+
+```bash
+# 获取 grad 的直方图（默认最多 1500 个快照）
+swanlab api run histograms my-team/image-classification/abc123 --keys grad
+
+# 多个 key，每个最多 500 个快照
+swanlab api run histograms my-team/image-classification/abc123 --keys grad,weight -s 500
+
+# 只取 step 在 [0, 500] 的快照
+swanlab api run histograms my-team/image-classification/abc123 \
+  --keys grad --range-start 0 --range-end 500
 ```
 
 ### run logs

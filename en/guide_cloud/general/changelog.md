@@ -5,6 +5,12 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.5 - 2026.11.10
+
+**🚀 New Features**
+
+- Added the `swanlab.Histogram` weight histogram chart type, which can be used to record model weights, gradients, activations, etc. See [Log Histogram](../experiment_track/log-histogram.md)
+
 ## v0.10.4 - 2026.11.04
 
 **⚡️ Improvements**
