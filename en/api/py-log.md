@@ -26,7 +26,7 @@ The most basic usage is as shown in the following code, which will record the ac
 swanlab.log({"acc": 0.9, "loss":0.1462})
 ```
 
-In addition to scalars, `swanlab.log` supports logging multimedia data, including images, audio, text, etc., and has a good display effect in the UI.
+In addition to scalars, `swanlab.log` supports multimedia data (images, audio, text, etc.) and distribution data (histograms), with good display in the UI.
 
 ## Print the Passed Dictionary
 

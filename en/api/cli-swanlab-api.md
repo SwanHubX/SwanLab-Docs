@@ -454,15 +454,15 @@ Get histogram (parameter distribution) metrics for an experiment. Each point is 
 swanlab api run histograms <path> --keys <keys> [OPTIONS]
 ```
 
-| Argument/Option      | Type       | Default  | Description                                                                     |
-| -------------------- | ---------- | -------- | ------------------------------------------------------------------------------- |
-| `path`               | Positional | Required | Experiment path                                                                 |
-| `--keys`             | `str`      | Required | Comma-separated histogram keys, e.g. `"grad,weight"`                            |
-| `--sample` / `-s`    | `int`      | `1500`   | Max snapshots per key (max 1500), downsampled by the server over steps          |
-| `--range-start`      | `float`    | `None`   | Lower bound (inclusive), a non-negative integer; `0` or omitted means unbounded |
-| `--range-end`        | `float`    | `None`   | Upper bound (inclusive), a non-negative integer; `0` or omitted means unbounded |
-| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field                                                          |
-| `--save`             | Option     | —        | Save output as JSON file                                                        |
+| Argument/Option      | Type       | Default  | Description                                                                                                          |
+| -------------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| `path`               | Positional | Required | Experiment path                                                                                                      |
+| `--keys`             | `str`      | Required | Comma-separated histogram keys, e.g. `"grad,weight"`                                                                 |
+| `--sample` / `-s`    | `int`      | `1500`   | Max snapshots per key (max 1500), downsampled by the server over steps                                               |
+| `--range-start`      | `float`    | `None`   | Lower bound (inclusive), must be an integer value (fractional values raise an error); `0` or omitted means unbounded |
+| `--range-end`        | `float`    | `None`   | Upper bound (inclusive), must be an integer value (fractional values raise an error); `0` or omitted means unbounded |
+| `--ignore-timestamp` | Flag       | `False`  | Remove timestamp field                                                                                               |
+| `--save`             | Option     | —        | Save output as JSON file                                                                                             |
 
 **Notes:**
 

@@ -596,12 +596,12 @@ Returned media data is provided via presigned URLs — download before the expir
 
 Fetch histogram (parameter distribution) metrics. Each point is a distribution snapshot at one step: `values` holds per-bin counts, `bins` holds the corresponding `N+1` bin edges, and the x axis is fixed to `step`.
 
-| Parameter          | Type                   | Default | Description                                                           |
-| ------------------ | ---------------------- | ------- | --------------------------------------------------------------------- |
-| `keys`             | `list[str]`            | —       | Histogram key list, e.g. `["grad"]`                                   |
-| `sample`           | `int`                  | `1500`  | Max snapshots per key (max 1500), downsampled by the server over step |
-| `step_range`       | `dict` or `RangeQuery` | `None`  | Filter by step range; only `start` / `end` are used                   |
-| `ignore_timestamp` | `bool`                 | `False` | Whether to remove timestamp fields                                    |
+| Parameter          | Type                   | Default | Description                                                                  |
+| ------------------ | ---------------------- | ------- | ---------------------------------------------------------------------------- |
+| `keys`             | `list[str]`            | —       | Histogram key list, e.g. `["grad"]`                                          |
+| `sample`           | `int`                  | `1500`  | Max snapshots per key (max 1500), downsampled by the server over step        |
+| `step_range`       | `dict` or `RangeQuery` | `None`  | Filter by step range; only `start` / `end` are used; `type` must be `"step"` |
+| `ignore_timestamp` | `bool`                 | `False` | Whether to remove timestamp fields                                           |
 
 **step_range fields:**
 
@@ -613,7 +613,8 @@ Fetch histogram (parameter distribution) metrics. Each point is a distribution s
 
 **Notes:**
 
-- Histograms only return server-side samples by step — each key returns at most `sample` snapshots; full export and aggregate statistics are not supported yet
+- Histograms are downsampled by step on the server — each key returns at most `sample` snapshots; full export and aggregate statistics are not supported yet
+- `step_range` only supports filtering by step range (`start` / `end`); passing another `type` or setting `last` / `head` / `tail` raises `ValueError`
 
 :::code-group
 
@@ -923,7 +924,7 @@ Represents the list of metric keys under an experiment (recommended in `0.9.0+`,
 | `x_axis`           | `str`  | `"step"` | X axis of the returned data: `"step"` (default), built-in axes `"time"` / `"relative_time"`, or a custom X-axis metric key (SCALAR only, `swanlab >= 0.10.1`) |
 
 :::warning
-`Key.metric()` on a `HISTOGRAM` key returns server-side downsampled results only and cannot filter by step; use [`run.histograms()`](#_8-histogram) when you need `step_range`.
+`Key.metric()` on a `HISTOGRAM` key returns server-side downsampled results only and cannot filter by step; use [`run.histograms()`](#_8-histograms) when you need `step_range`.
 :::
 
 ### Series / Key method examples

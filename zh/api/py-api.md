@@ -596,12 +596,12 @@ print(result)
 
 获取直方图（参数分布）指标。每个点是一个 step 的分布快照：`values` 为各桶计数，`bins` 为对应的 `N+1` 个桶边界，横轴固定为 `step`。
 
-| 参数               | 类型                   | 默认值  | 描述                                                         |
-| ------------------ | ---------------------- | ------- | ------------------------------------------------------------ |
-| `keys`             | `list[str]`            | —       | 直方图 key 列表，如 `["grad"]`                               |
-| `sample`           | `int`                  | `1500`  | 每个 key 返回的快照数上限（最大 1500），由服务端按 step 抽帧 |
-| `step_range`       | `dict` 或 `RangeQuery` | `None`  | 按 step 范围过滤，仅使用 `start` / `end`                     |
-| `ignore_timestamp` | `bool`                 | `False` | 是否去除时间戳字段                                           |
+| 参数               | 类型                   | 默认值  | 描述                                                             |
+| ------------------ | ---------------------- | ------- | ---------------------------------------------------------------- |
+| `keys`             | `list[str]`            | —       | 直方图 key 列表，如 `["grad"]`                                   |
+| `sample`           | `int`                  | `1500`  | 每个 key 返回的快照数上限（最大 1500），由服务端按 step 抽帧     |
+| `step_range`       | `dict` 或 `RangeQuery` | `None`  | 按 step 范围过滤，仅使用 `start` / `end`；`type` 必须为 `"step"` |
+| `ignore_timestamp` | `bool`                 | `False` | 是否去除时间戳字段                                               |
 
 **step_range 字段：**
 
@@ -613,7 +613,8 @@ print(result)
 
 **注意事项：**
 
-- 直方图只有服务端按 step 的采样结果，每个 key 最多返回 `sample` 个直方图快照指标，暂不支持全量导出与聚合统计
+- 直方图由服务端按 step 采样返回，每个 key 最多返回 `sample` 个快照，暂不支持全量导出与聚合统计
+- `step_range` 仅支持按 step 范围查询（`start` / `end`），传入其他 `type` 或设置 `last` / `head` / `tail` 会抛出 `ValueError`
 
 :::code-group
 
@@ -923,7 +924,7 @@ if result.ok:
 | `x_axis`           | `str`  | `"step"` | 返回数据的 X 轴：`"step"`（默认）、内置轴 `"time"` / `"relative_time"`，或自定义 X 轴指标 key（仅 SCALAR 有效，`swanlab >= 0.10.1`） |
 
 :::warning
-`HISTOGRAM` 类型的 `Key.metric()` 只返回服务端抽帧结果，不能按 step 过滤；需要指定 `step_range` 时，请改用 [`run.histograms()`](#_8-histogram)。
+`HISTOGRAM` 类型的 `Key.metric()` 只返回服务端抽帧结果，不能按 step 过滤；需要指定 `step_range` 时，请改用 [`run.histograms()`](#_8-histograms)。
 :::
 
 ### Series / Key 方法示例

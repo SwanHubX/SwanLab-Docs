@@ -1,54 +1,59 @@
 # swanlab.Histogram
 
-[GitHub 源代码](https://github.com/SwanHubX/SwanLab/blob/feat/histogram/swanlab/sdk/internal/run/transforms/histogram/__init__.py)
+[Github源代码](https://github.com/SwanHubX/SwanLab/blob/main/swanlab/sdk/internal/run/transforms/histogram/__init__.py)
 
 ```python
 Histogram(
-    sequence=None,
-    bins=None,
+    sequence: Union[Sequence[float], np.ndarray, torch.Tensor, Histogram] = None,
+    bins: Union[int, Sequence[float]] = None,
     *,
-    np_histogram=None,
-    **kwargs,
-)
+    np_histogram: Tuple[Sequence[int], Sequence[float]] = None,
+) -> None
 ```
 
-将一组样本转换为分桶计数，通过 [`swanlab.log()`](./py-log.md) 记录每个 step 的分布快照，可用于跟踪模型参数、梯度等数据的分布变化。
+`np_histogram` 为关键字参数。
 
-| 参数           | 描述                                                                                                                                                              |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sequence`     | 原始样本，支持一维实数序列，如 `list`、`tuple`、`range` 和 NumPy 数组，也支持 PyTorch Tensor。还可传入已有的 `Histogram` 实例。未提供 `np_histogram` 时必须提供。 |
-| `bins`         | 桶数或桶边界。桶数支持 Python / NumPy 整数，范围为 1–512；边界支持一维实数序列。默认 `None`，使用 64 个等宽桶。                                                   |
-| `np_histogram` | 预分桶结果 `(counts, bin_edges)`，支持 `numpy.histogram()` 的返回值。默认 `None`。提供后忽略 `sequence`、`bins` 和 `num_bins`。                                   |
-| `num_bins`     | 兼容 W&B 的桶数参数，通过关键字传入，仅在 `bins` 未指定时生效，取值要求与 `bins` 的桶数形式相同。与 `bins` 同时给出时以 `bins` 为准，并产生警告。                 |
+| 参数           | 描述                                                                                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sequence`     | 原始样本数据，支持一维数值序列（如 `list`、`tuple`、`range`、NumPy 数组、PyTorch Tensor）或已有的 `Histogram` 实例。未传 `np_histogram` 时必填。           |
+| `bins`         | 分桶数量（`1`–`512` 的整数）或自定义桶边界（一维数值序列）。为 `None` 时默认划分为 `64` 个等宽桶。**兼容 `num_bins` 参数别名**（仅在未传 `bins` 时生效）。 |
+| `np_histogram` | 预分桶结果 `(counts, bin_edges)`，可直接传入 `numpy.histogram()` 的返回值。传入后忽略 `sequence` 和 `bins`。                                               |
 
-`np_histogram` 和 `num_bins` 必须通过关键字传入。构造函数会忽略其余未识别的关键字参数。
+## 简介
 
-## 从原始样本创建
+`swanlab.Histogram` 用于将一组数据转换为直方图，配合 [`swanlab.log`](./py-log.md) 记录每个 step 的数据分布（如模型权重、梯度等）：
 
-传入桶数时，SDK 使用 `numpy.histogram()`，根据样本范围生成等宽桶：
+- **从原始数据创建**：按指定桶数自动等宽分桶，或传入自定义桶边界
+- **从预分桶结果创建**：直接复用 `numpy.histogram()` 的计算结果
+
+## 从原始数据创建
+
+传入整数 `bins`（或不传，默认 `64`）时，会根据当前样本的最小/最大值自动划分等宽桶：
 
 ```python
 import numpy as np
 import swanlab
 
-swanlab.init(project="histogram-demo")
+run = swanlab.init(project="histogram-demo")
 
 rng = np.random.default_rng(42)
 for step in range(10):
     samples = rng.normal(loc=step * 0.1, size=1000)
-    swanlab.log({"weights": swanlab.Histogram(samples, bins=64)}, step=step)
+    run.log({"weights": swanlab.Histogram(samples, bins=64)}, step=step)
 
-swanlab.finish()
+run.finish()
 ```
 
-每次构造 `Histogram` 都会独立计算分桶，不同 step 的桶边界可以不同。需要固定边界时，使用下面的显式边界方式。
+每次构造 `Histogram` 都会按当次样本范围独立计算桶边界。样本中的 `NaN`、`Inf` 会自动过滤并给出告警；如果过滤后没有有效数值，会抛出 `ValueError`。
 
-### 指定桶边界
+### 自定义桶边界
 
-`bins` 可以传入非等宽边界。N 个桶需要 N+1 个边界：
+如需固定各个 step 的桶边界或使用非等宽分桶，可给 `bins` 传入边界序列（`N` 个桶需要 `N+1` 个递增边界值）：
 
 ```python
 import swanlab
+
+run = swanlab.init(project="histogram-demo")
 
 hist = swanlab.Histogram(
     [0.0, 0.5, 1.0, 2.0, 3.0],
@@ -56,68 +61,79 @@ hist = swanlab.Histogram(
 )
 
 print(hist.values)  # [2, 3]
-print(hist.bins)  # [0.0, 1.0, 3.0]
+print(hist.bins)    # [0.0, 1.0, 3.0]
+
+run.log({"weights": hist}, step=0)
+run.finish()
 ```
 
-除最后一桶外，区间为 `[bins[i], bins[i+1])`；最后一桶包含右端点。显式边界范围之外的样本会被丢弃，并产生警告。
+除最后一个桶为闭区间 `[bins[-2], bins[-1]]` 外，其余桶均为左闭右开 `[bins[i], bins[i+1])`。超出边界范围的样本会被忽略并给出告警。
 
 ## 从预分桶结果创建
 
-已有 `numpy.histogram()` 计算结果时，通过 `np_histogram` 传入，SDK 校验后直接使用：
+如果已经通过 `numpy.histogram()` 计算好分桶，可通过 `np_histogram` 直接传入 `(counts, bin_edges)`：
 
 ```python
 import numpy as np
 import swanlab
 
-swanlab.init(project="histogram-demo")
+run = swanlab.init(project="histogram-demo")
 
 samples = [0.0, 0.5, 1.0, 2.0, 3.0]
 counts, bin_edges = np.histogram(samples, bins=[0.0, 1.0, 3.0])
 hist = swanlab.Histogram(np_histogram=(counts, bin_edges))
-swanlab.log({"weights": hist}, step=0)
 
-swanlab.finish()
+run.log({"weights": hist}, step=0)
+run.finish()
 ```
 
-也可以直接传入计数与边界序列，例如 `swanlab.Histogram(np_histogram=([2, 3], [0.0, 1.0, 3.0]))`。
+`bin_edges` 长度需等于 `len(counts) + 1`（桶数同样限 `1`–`512`），`counts` 需为非负整数，不支持概率密度或带小数的加权计数。
 
 ## 记录 PyTorch Tensor
 
-PyTorch Tensor 可以直接传入，SDK 内部自动执行 `detach().cpu()` 转换，GPU 上的 Tensor、带梯度的 Tensor 以及 `bfloat16` 精度均受支持。多维参数需要先展平为一维：
+支持直接传入 PyTorch Tensor（内部自动执行 `detach().cpu()`，支持 GPU Tensor、带梯度的 Tensor 及 `bfloat16`）。多维参数需先通过 `.flatten()` 展平为一维：
 
 ```python
 import torch
 import swanlab
 
-swanlab.init(project="histogram-demo")
+run = swanlab.init(project="histogram-demo")
 
-layer = torch.nn.Linear(8, 4)
-swanlab.log({"weights": swanlab.Histogram(layer.weight.flatten())}, step=0)
+model = torch.nn.Sequential(torch.nn.Linear(8, 16), torch.nn.Linear(16, 4))
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
 
-swanlab.finish()
+for step in range(10):
+    loss = model(torch.randn(32, 8)).pow(2).mean()
+    optimizer.zero_grad()
+    loss.backward()
+
+    histograms = {}
+    for name, param in model.named_parameters():
+        histograms[f"params/{name}"] = swanlab.Histogram(param.detach().flatten())
+        if param.grad is not None:
+            histograms[f"grads/{name}"] = swanlab.Histogram(param.grad.detach().flatten())
+    run.log(histograms, step=step)
+
+    optimizer.step()
+
+run.finish()
 ```
 
-## 数据规则与异常
+## 属性
 
-- 桶数必须在 1–512 之间。显式边界和预分桶输入同样受此限制。
-- 原始样本中的 `NaN`、`+Inf` 和 `-Inf` 会被丢弃，并产生警告。使用桶数分桶时，空序列或过滤后没有有限值会抛出 `ValueError`；提供合法显式边界时，允许生成计数全为 0 的直方图。
-- 桶边界必须是一维有限实数序列，按非递减顺序排列。重复边界允许使用，但会警告产生零宽桶。
-- 预分桶计数必须是一维、有限、非负的整数值，且不超过 `2**64 - 1`。`1.0` 等整数值浮点数会转换为整数；不支持概率密度或含小数的加权计数。
-- 预分桶结果必须满足 `len(bin_edges) == len(counts) + 1`。
-- `swanlab.Histogram(hist)` 可以复用已有实例的分桶结果，此时不能额外指定 `bins`、`num_bins` 或 `np_histogram`。
+构造后的 `Histogram` 实例包含以下属性：
 
-类型或形状不符合要求的输入不会抛出异常：实例被标记为无效，错误详情写入实验的调试日志，`swanlab.log()` 记录时跳过该条直方图，终端仅提示该指标没有产生数据。传入不支持的对象、非数值数据、多维数组，或把布尔值作为桶数时都会走这条路径。
+| 属性       | 类型          | 说明                                                             |
+| ---------- | ------------- | ---------------------------------------------------------------- |
+| `values`   | `list[int]`   | 各桶的样本计数，长度为 `N`。                                     |
+| `bins`     | `list[float]` | 桶边界列表，长度为 `N+1`。                                       |
+| `is_valid` | `bool`        | 输入是否通过类型与维度校验；为 `False` 时在 `log` 时会自动跳过。 |
 
-上文列出的数值与长度规则不满足时抛出 `ValueError`。`sequence` 与 `np_histogram` 同时缺省、嵌套 `Histogram` 时额外指定分桶参数，同样抛出 `ValueError`。
+记录时只保存分桶后的 `values` 和 `bins`，无法还原原始样本。已上传的直方图可通过 [Open API](./py-api.md) 读取。
 
-## 读取分桶结果
+## 注意事项
 
-构造后的 `Histogram` 提供以下属性：
-
-| 属性       | 类型          | 说明                                                 |
-| ---------- | ------------- | ---------------------------------------------------- |
-| `values`   | `list[int]`   | 每个桶的样本计数，长度为 N。                         |
-| `bins`     | `list[float]` | 桶边界，长度为 N+1。                                 |
-| `is_valid` | `bool`        | 输入是否通过类型与形状校验，无效实例在记录时被跳过。 |
-
-记录的数据保留每个 step 的计数和边界，无法恢复原始样本。使用独立的指标名记录直方图，同一个指标名不要混用标量、直方图或其他数据类型。
+1. 单个指标每次只能记录一个 `Histogram`，不支持像 `Image` 一样传入列表（传入列表会报错并丢弃）。如需同时记录多个分布，请使用不同的指标名。
+2. 同一指标在同一个 `step` 只保留首次记录，后续重复记录会被跳过；指标类型在首次 log 时固定，不能将标量与直方图混用同一个指标名。
+3. 直方图图表的 X 轴固定为 `step`，`define_metric(x_axis=...)` 对直方图不生效，仅 `section_name` 和 `hidden` 生效。
+4. 数值或长度不符合要求（如桶数超出 `1`–`512`、桶边界递减、未传 `sequence` 和 `np_histogram` 等）会抛出 `ValueError`；输入类型或维度不合法（如未展平的多维数组、非数值对象）不会抛出异常中断训练，实例会被标记为 `is_valid=False`，在 `log` 时自动跳过并记录到 `debug/debug.log`。
