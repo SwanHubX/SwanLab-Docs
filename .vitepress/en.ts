@@ -216,6 +216,7 @@ function sidebarGuideCloud(): SidebarItemEx[] {
           text: "Log media metric",
           items: [
             { text: "Log Media", link: "experiment_track/log-media" },
+            { text: "Log Histogram", link: "experiment_track/log-histogram" },
             { text: "Log Custom Chart", link: "experiment_track/log-custom-chart" },
             { text: "Log Custom 3D Chart", link: "experiment_track/log-custom-3dchart" },
           ],

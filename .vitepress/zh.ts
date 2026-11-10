@@ -251,6 +251,7 @@ function sidebarGuideCloud(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
             { text: "媒体类型", link: "experiment_track/log-media" },
+            { text: "直方图", link: "experiment_track/log-histogram" },
             { text: "自定义图表", link: "experiment_track/log-custom-chart" },
             { text: "自定义3D图表", link: "experiment_track/log-custom-3dchart" },
           ],
