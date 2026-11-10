@@ -21,6 +21,8 @@ Histogram(
 
 ## 简介
 
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20261110170935776.png"/>
+
 `swanlab.Histogram` 用于将一组数据转换为直方图，配合 [`swanlab.log`](./py-log.md) 记录每个 step 的数据分布（如模型权重、梯度等）：
 
 - **从原始数据创建**：按指定桶数自动等宽分桶，或传入自定义桶边界

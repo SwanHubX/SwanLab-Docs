@@ -21,6 +21,8 @@ Histogram(
 
 ## Introduction
 
+<img src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/images/20261110170935776.png"/>
+
 `swanlab.Histogram` converts a sequence of values into a histogram and works with [`swanlab.log`](./py-log.md) to track data distributions across steps (such as model weights and gradients):
 
 - **From raw data**: automatically split into equal-width bins by bin count, or bin by custom edges
