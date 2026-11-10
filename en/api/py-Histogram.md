@@ -123,11 +123,11 @@ run.finish()
 
 A constructed `Histogram` instance exposes the following attributes:
 
-| Attribute  | Type          | Description                                                                                         |
-| ---------- | ------------- | --------------------------------------------------------------------------------------------------- |
-| `values`   | `list[int]`   | Sample counts per bin, of length `N`.                                                               |
-| `bins`     | `list[float]` | Bin edge list, of length `N+1`.                                                                     |
-| `is_valid` | `bool`        | Whether the input passed type and shape validation; invalid instances are skipped during `log`.     |
+| Attribute  | Type          | Description                                                                                     |
+| ---------- | ------------- | ----------------------------------------------------------------------------------------------- |
+| `values`   | `list[int]`   | Sample counts per bin, of length `N`.                                                           |
+| `bins`     | `list[float]` | Bin edge list, of length `N+1`.                                                                 |
+| `is_valid` | `bool`        | Whether the input passed type and shape validation; invalid instances are skipped during `log`. |
 
 Only the binned `values` and `bins` are stored when logged — raw samples cannot be recovered. Uploaded histograms can be queried via the [Open API](./py-api.md).
 
