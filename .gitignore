@@ -13,7 +13,6 @@ runs/
 
 # lock file
 yarn.lock
-pnpm-lock.yaml
 
 #AI CLI
 .agents/

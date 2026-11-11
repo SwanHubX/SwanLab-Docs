@@ -172,8 +172,30 @@ const plugins: PluginOption[] = [
   llmstxt({
     generateLLMsFullTxt: false,
   }),
-  // Code-block tab icons (pip/conda/python/bash etc.) — see vitepress-plugin-group-icons
-  groupIconVitePlugin({}),
+  // Code-block tab icons — see vitepress-plugin-group-icons. The builtin
+  // vscode-icons logos (npm/bun/...) render noisy at 14px tab size; swap the
+  // package-manager family (plus python) for skill-icons' badge versions,
+  // which ship dedicated light/dark variants (@iconify-json/skill-icons).
+  // js/golang/curl serve the REST API code-sample tabs (see theme/index.ts
+  // availableLanguages); defaultLabels guarantees their CSS is generated —
+  // those tabs live on dynamic routes the plugin's markdown scan can't see.
+  groupIconVitePlugin({
+    customIcon: {
+      npm: { light: "skill-icons:npm-light", dark: "skill-icons:npm-dark" },
+      bun: { light: "skill-icons:bun-light", dark: "skill-icons:bun-dark" },
+      pnpm: { light: "skill-icons:pnpm-light", dark: "skill-icons:pnpm-dark" },
+      yarn: { light: "skill-icons:yarn-light", dark: "skill-icons:yarn-dark" },
+      deno: { light: "skill-icons:deno-light", dark: "skill-icons:deno-dark" },
+      python: { light: "skill-icons:python-light", dark: "skill-icons:python-dark" },
+      js: "skill-icons:javascript",
+      golang: "skill-icons:golang",
+      // cURL tab：skill-icons 没有 curl 图标，logos:curl 是 512×154 的深色
+      // 宽字标——1em 方框里过小且暗色模式不可见；用 bash 徽章（shell 语义）
+      // 保持与其他 tab 一致的方徽章家族和官方深浅变体。
+      curl: { light: "skill-icons:bash-light", dark: "skill-icons:bash-dark" },
+    },
+    defaultLabels: ["curl", "js", "python", "golang"],
+  }),
 ];
 // Wrapped with the VoidZero theme's extendConfig, which injects the
 // Tailwind plugin, @vp-default aliases, and asset handling.
@@ -251,6 +273,10 @@ export default extendConfig(
     },
 
     markdown: {
+      // Code syntax theme — One Light / One Dark Pro. The block chrome colors
+      // (background / dividers / copy pill) are aligned to this pair in
+      // theme/styles/tokens.css.
+      theme: { light: "one-light", dark: "one-dark-pro" },
       config(md) {
         // VitePress 2.0.0-alpha.19 caches the markdown-it instance in a
         // module-level singleton, and the content plugin and local-search
