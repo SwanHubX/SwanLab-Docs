@@ -5,15 +5,25 @@ WORKDIR /app
 # building from networks where the China mirror is undesirable.
 ARG NPM_REGISTRY=https://registry.npmmirror.com/
 
-COPY package.json package-lock.json ./
+# pnpm 版本与 package.json 的 packageManager 字段保持一致。
+COPY package.json pnpm-lock.yaml ./
 
-# npm ci installs strictly per package-lock.json (reproducible, skips resolver
-# work); its replace-registry-host=npmjs default rewrites registry.npmjs.org
-# URLs inside the lockfile to ${NPM_REGISTRY}, so no lockfile edit is needed.
-# The BuildKit cache mount persists downloaded tarballs across builds.
-RUN --mount=type=cache,target=/root/.npm \
-    npm config set registry "${NPM_REGISTRY}" && \
-    npm ci
+# Install pnpm via the configured registry (the builder image ships npm only).
+# npm_config_registry applies to both the pnpm bootstrap install and
+# `pnpm install` itself: the pnpm v9 lockfile stores no tarball URLs for
+# registry packages, so resolution follows the configured registry. Integrity
+# hashes in the lockfile still pin every tarball, so mirror-served content
+# is verified.
+RUN npm config set registry "${NPM_REGISTRY}" && \
+    npm i -g pnpm@12.15.0
+
+ENV npm_config_registry=${NPM_REGISTRY}
+
+# pnpm install --frozen-lockfile installs strictly per pnpm-lock.yaml
+# (reproducible, skips resolver work). The BuildKit cache mount persists the
+# pnpm store across builds.
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 
 COPY . .
 

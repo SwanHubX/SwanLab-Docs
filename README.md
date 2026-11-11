@@ -19,13 +19,12 @@ cd SwanLab-Docs
 
 **2. Install**
 
-You need to install nodejs and npm in advance. For detailed instructions, please refer to the [Node.js tutorial](https://nodejs.org/en/download/package-manager).
+You need to install Node.js and pnpm in advance. For detailed instructions, please refer to the [pnpm tutorial](https://pnpm.io/installation).
 
 Use the following commands to install other dependencies:
 
 ```bash
-npm add -D vitepress
-npm install
+pnpm install
 ```
 
 **3. Run**
@@ -33,12 +32,12 @@ npm install
 If you are performing local development or previewing documents, you can run the following in the project root directory:
 
 ```bash
-npm run docs:dev
+pnpm docs:dev
 ```
 
 If a complete compilation and packaging is required, use the following command:
 
 ```bash
-npm run docs:build
-npm run docs:preview
+pnpm docs:build
+pnpm docs:preview
 ```
