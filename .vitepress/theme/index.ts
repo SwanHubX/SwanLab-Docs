@@ -88,6 +88,11 @@ export default {
             target: "shell",
             client: "curl",
             highlighter: "bash",
+            // icon 值会渲染成 <label data-title="...">，由
+            // vitepress-plugin-group-icons 按 config.mts 里的 customIcon
+            // 生成图标（defaultLabels 保证这些标签总会生成规则）。
+            // 用 js/python/golang 而不是 .js/.py/.go，避免覆盖文件名
+            // 标题栏用的扩展名图标。
             icon: "curl",
           },
           {
@@ -96,7 +101,7 @@ export default {
             target: "js",
             client: "fetch",
             highlighter: "javascript",
-            icon: ".js",
+            icon: "js",
           },
           {
             lang: "python",
@@ -104,7 +109,7 @@ export default {
             target: "python",
             client: "requests",
             highlighter: "python",
-            icon: ".py",
+            icon: "python",
           },
           {
             lang: "go",
@@ -112,7 +117,7 @@ export default {
             target: "go",
             client: "native",
             highlighter: "go",
-            icon: ".go",
+            icon: "golang",
           },
         ],
       },

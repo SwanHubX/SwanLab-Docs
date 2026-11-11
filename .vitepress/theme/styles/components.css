@@ -345,6 +345,21 @@ header.wrapper .VPFlyout > button {
   }
 }
 
+/* ===== OpenAPI 代码示例 tab 图标 =====
+ * REST API 接口页（.swanlab-openapi 内的 <OACodeSamples>）的 tab 渲染成
+ * <label data-title="curl|js|python|golang">，图标规则由 group-icons 生成
+ * （config.mts 的 defaultLabels 保证）。但插件的基础 ::before 样式只覆盖
+ * .vp-code-group / .vp-code-block-title，不含 openapi 的 .tabs，这里补上
+ * 同样的画法（1em、右间距、contain 缩放）。 */
+.swanlab-openapi .tabs label[data-title]::before {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+  margin-bottom: -0.2em;
+  background: var(--icon) no-repeat center / contain;
+}
+
 /* ===== OpenAPI 响应状态码 tabs =====
  * 响应区的 201 / 401 / 409 默认只有极浅的灰色胶囊，亮色模式下几乎与
  * 页面同色，看起来像纯文本。复用同页「模式 / JSON」分段控件的视觉语言，

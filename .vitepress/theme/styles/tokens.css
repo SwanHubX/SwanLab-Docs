@@ -20,6 +20,10 @@
   --swanlab-nav-search-min-width: 180px;
   --swanlab-nav-title-width: 164px;
 
+  /* Code blocks — line rhythm. VoidZero ships 1.7, which reads airy for code;
+     1.6 matches the classic VitePress/VS Code feel. Applies to both modes. */
+  --vp-code-line-height: 1.6;
+
   /* Typography — kill ALL VoidZero bundled webfonts, use native system
      stacks everywhere. The theme ships three custom faces and wires them in
      through these tokens:
@@ -59,4 +63,19 @@
   --vp-c-brand-2: #42b1c1;
   --vp-c-brand-3: #5cc4d2;
   --vp-c-brand-soft: rgba(46, 157, 172, 0.16);
+
+  /* Code blocks (dark) — One Dark Pro palette, paired with markdown.theme in
+     .vitepress/config.mts. VoidZero derives these from --vp-c-bg-alt /
+     --vp-c-bg-soft (#14121A, a purple-black), which muddies One Dark Pro's
+     blue-gray tokens; use the editor's own colors instead. Light mode keeps
+     --vp-c-bg-alt (#f6f6f7), which One Light reads fine on. */
+  --vp-code-block-bg: #282c34; /* one-dark-pro editor.background */
+  --vp-code-block-divider-color: #21252b; /* one-dark-pro sideBar.background */
+  --vp-code-line-highlight-color: #2c313c; /* one-dark-pro lineHighlightBackground */
+  /* Copy pill — VoidZero's dark defaults are purple-black on the now
+     blue-gray block; align to the One Dark darker shades. */
+  --vp-code-copy-code-bg: #21252b;
+  --vp-code-copy-code-hover-bg: #2c313c;
+  --vp-code-copy-code-border-color: #181a1f; /* one-dark-pro editorGroup.border */
+  --vp-code-copy-code-hover-border-color: #181a1f;
 }
