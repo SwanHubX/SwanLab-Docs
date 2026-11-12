@@ -2,29 +2,29 @@
   "openapi": "3.1.0",
   "info": {
     "title": "SwanLab API",
-    "description": "SwanLab 开放 API 文档，包含 OAuth2 授权接口与私有化后台管理接口。",
+    "description": "SwanLab 开放 API 文档，包含 OAuth2 授权接口与私有化实例后台管理接口。",
     "version": "1.0.0"
   },
   "tags": [
     {
       "name": "OAuth2 授权",
-      "description": "OAuth2 Access Token 的获取与刷新，以及用户信息、API Key 的读取"
+      "description": "OAuth2 Access Token 的签发与刷新，以及用户信息和 API Key 的获取"
     },
     {
       "name": "用户管理",
-      "description": "私有化部署的用户创建、停用、密码与 API Key 管理"
+      "description": "私有化部署实例的用户创建、停用、密码重置与 API Key 管理"
     },
     {
       "name": "组织管理",
-      "description": "私有化部署的组织空间与组织成员管理"
+      "description": "私有化部署实例的组织空间与组织成员管理"
     },
     {
       "name": "项目协作",
-      "description": "私有化部署的项目协作者管理"
+      "description": "私有化部署实例的项目协作者与权限管理"
     },
     {
       "name": "SSO 绑定",
-      "description": "私有化部署用户与三方账号的绑定关系管理"
+      "description": "私有化部署用户与第三方 SSO 账号的绑定关系管理"
     }
   ],
   "paths": {
@@ -32,7 +32,7 @@
       "post": {
         "operationId": "self-hosted-root",
         "summary": "创建根用户",
-        "description": "1. 根用户只能存在一个，重复创建会响应 `409 Conflict`;\n2. License 通过云端验证，`cloud_url` 可配置，默认为 `https://api.swanlab.cn/api`\n\t1. license 过期响应 `403 Forbidden`;\n\t2. license 不存在响应 `404 Not Found`;\n\t3. 其他情况下响应 `502 Bad Gateway`;\n3. 创建成功响应 `201`;\n4. 根用户通过 `group.comment` 标识为 `root`;\n5. License 通过云端验证后会在本地创建 License 对象，用于后续验证。\n6. 商业版 license 必须在线验证，离线将以 `403` 返回",
+        "description": "1. 根用户（`root`）全局唯一，重复创建将返回 `409 Conflict`。\n2. License 需通过云端校验（`cloud_url` 可配置，默认为 `https://api.swanlab.cn/api`）：\n\t1. License 已过期时返回 `403 Forbidden`；\n\t2. License 不存在时返回 `404 Not Found`；\n\t3. 其他网关或上游异常返回 `502 Bad Gateway`。\n3. 创建成功返回 `201 Created`。\n4. 根用户在系统中通过 `group.comment = root` 标识。\n5. License 通过云端校验后会在本地持久化许可证记录，供后续校验使用。\n6. 商业版 License 必须在线激活校验，离线环境下调用将返回 `403 Forbidden`。",
         "security": [],
         "requestBody": {
           "content": {
@@ -42,13 +42,16 @@
                 "required": ["username", "password", "license"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "根用户用户名，必选"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "根用户密码，必选"
                   },
                   "license": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "商业版许可证密钥（License Token），必选"
                   }
                 }
               },
@@ -64,7 +67,7 @@
         },
         "responses": {
           "201": {
-            "description": "创建根用户成功，返回用户信息",
+            "description": "Created：根用户创建成功，返回用户信息",
             "content": {
               "application/json": {
                 "schema": {
@@ -103,7 +106,7 @@
             }
           },
           "400": {
-            "description": "参数错误",
+            "description": "Bad Request：请求参数错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,7 +121,7 @@
             }
           },
           "403": {
-            "description": "license 错误：License_Expired: 过期；License_Verification_Failed: token 错误；License_Activation_Expired: 超过激活截止时间；License_User_Count_Exceeded: 系统已有用户超过套餐最大用户数；License_Activation_Failed: 联网激活失败",
+            "description": "Forbidden（License 校验失败）：`License_Expired`（许可证已过期）；`License_Verification_Failed`（许可证 Token 无效）；`License_Activation_Expired`（已超过激活截止时间）；`License_User_Count_Exceeded`（系统当前用户数超出许可证套餐上限）；`License_Activation_Failed`（在线激活失败）",
             "content": {
               "application/json": {
                 "schema": {
@@ -133,7 +136,7 @@
             }
           },
           "409": {
-            "description": "已有根用户，重复激活",
+            "description": "Conflict：根用户已存在，不可重复初始化",
             "content": {
               "application/json": {
                 "schema": {
@@ -148,7 +151,7 @@
             }
           },
           "500": {
-            "description": "异常错误",
+            "description": "Internal Server Error：服务器内部错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -167,7 +170,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -200,7 +203,7 @@
                         },
                         "password": {
                           "type": "string",
-                          "description": "密码"
+                          "description": "初始密码，必选"
                         }
                       }
                     }
@@ -226,10 +229,10 @@
         },
         "responses": {
           "201": {
-            "description": "Created，添加成功；已存在的用户及请求内重复的 username 会被跳过"
+            "description": "Created：批量创建成功；已存在的用户及请求体中重复的 `username` 将自动跳过"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -244,7 +247,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，无权增加用户；Max_Limit 组织人数达到限制，此次添加的用户将全部取消",
+            "description": "Forbidden：当前凭证无权创建用户；或触发 `Max_Limit`（实例用户数超出许可证上限，本次批量创建全部回滚）",
             "content": {
               "application/json": {
                 "schema": {
@@ -263,7 +266,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -272,7 +275,7 @@
       "post": {
         "operationId": "self-hosted-change-password",
         "summary": "修改密码",
-        "description": "1. 根用户可以修改所有用户的密码。\n2. 非根用户只能修改自己的密码。",
+        "description": "1. 根用户可以重置任意用户的密码。\n2. 非根用户仅允许修改自身密码。",
         "security": [
           {
             "apiKeyAuth": []
@@ -286,10 +289,12 @@
                 "required": ["username", "password"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "目标用户的 `username`，必选"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "新密码，必选"
                   }
                 }
               },
@@ -299,15 +304,15 @@
               }
             }
           },
-          "description": "上述请求体包含的字段均为必填项，响应为空。",
+          "description": "请求体（所有字段均为必填项）",
           "required": true
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK：密码修改成功，返回空响应体"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -322,7 +327,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，非 root 用户修改其他用户的密码",
+            "description": "Forbidden：非根用户无权修改其他用户的密码",
             "content": {
               "application/json": {
                 "schema": {
@@ -337,7 +342,7 @@
             }
           },
           "404": {
-            "description": "Not Found 目标用户不存在",
+            "description": "Not Found：目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -356,7 +361,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -365,7 +370,7 @@
       "post": {
         "operationId": "self-hosted-pause-user",
         "summary": "停用用户",
-        "description": "停用用户会删除该用户的 API Key 和会话缓存，但会保留 SSO ProviderUser 绑定记录。",
+        "description": "停用指定用户时将同步清除其所有 API Key 与登录会话缓存，但保留其 SSO `ProviderUser` 绑定记录。",
         "security": [
           {
             "apiKeyAuth": []
@@ -379,7 +384,8 @@
                 "required": ["username"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "目标用户的 `username`，必选"
                   }
                 }
               },
@@ -393,10 +399,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content，停用成功并撤销该用户的登录凭证，返回空响应体"
+            "description": "No Content：停用成功并已吊销该用户的登录凭证，返回空响应体"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -411,7 +417,7 @@
             }
           },
           "403": {
-            "description": "Forbidden 无权限停用",
+            "description": "Forbidden：无权限停用该用户",
             "content": {
               "application/json": {
                 "schema": {
@@ -426,7 +432,7 @@
             }
           },
           "404": {
-            "description": "Not_Found 用户不存在",
+            "description": "Not Found：目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -441,7 +447,7 @@
             }
           },
           "409": {
-            "description": "Conflict 无法停用root用户",
+            "description": "Conflict：不允许停用根用户（`root`）",
             "content": {
               "application/json": {
                 "schema": {
@@ -460,7 +466,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -482,7 +488,8 @@
                 "required": ["username"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "目标用户的 `username`，必选"
                   }
                 }
               },
@@ -496,10 +503,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content 恢复成功，返回空响应体"
+            "description": "No Content：恢复成功，返回空响应体"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -514,7 +521,7 @@
             }
           },
           "403": {
-            "description": "Forbidden 无权限恢复",
+            "description": "Forbidden：无权限恢复该用户",
             "content": {
               "application/json": {
                 "schema": {
@@ -529,7 +536,7 @@
             }
           },
           "404": {
-            "description": "Not_Found 用户不存在",
+            "description": "Not Found：目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -548,7 +555,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -557,7 +564,7 @@
       "post": {
         "operationId": "self-hosted-delete-user",
         "summary": "删除用户",
-        "description": "1. 只有根用户可以删除成员\n2. 根用户无法删除自己，否则 `409 Conflict`\n3. 删除操作为软删除, `user`表`status`和`group`表`type=PERSON`的`status`会变更为 `DISABLED`\n4. 会硬删除session表中所有关于该用户的会话信息\n5. 删除缓存中所有该用户的会话信息\n6. 若目标用户是某个非个人组织的管理员，则需要先进行退出组织/修改角色等操作\n7. 删除所有关联的项目、协作者、申请信息\n8. 删除该用户关联的 SSO ProviderUser 绑定记录",
+        "description": "1. 仅根用户（`root`）有权删除用户。\n2. 根用户不能删除自身，否则返回 `409 Conflict`。\n3. 删除操作为软删除：`user` 表的 `status` 及 `group` 表（`type=PERSON`）的 `status` 将变更为 `DISABLED`。\n4. 硬删除 `session` 表中该用户的所有持久化会话记录。\n5. 清除缓存中该用户的所有会话信息。\n6. 若目标用户是某个非个人组织的管理员（`OWNER`），需先移交权限或将其移出组织后方可删除。\n7. 清理该用户关联的所有项目、协作者关系及加入申请记录。\n8. 删除该用户关联的 SSO `ProviderUser` 绑定记录。",
         "security": [
           {
             "apiKeyAuth": []
@@ -571,7 +578,8 @@
                 "required": ["username"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "目标用户的 `username`，必选"
                   }
                 }
               },
@@ -585,10 +593,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content，删除成功（软删除），返回空响应体"
+            "description": "No Content：删除成功（软删除），返回空响应体"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -603,7 +611,7 @@
             }
           },
           "403": {
-            "description": "Forbidden 无权限删除",
+            "description": "Forbidden：无权限删除该用户",
             "content": {
               "application/json": {
                 "schema": {
@@ -618,7 +626,7 @@
             }
           },
           "404": {
-            "description": "Not_Found 用户不存在",
+            "description": "Not Found：目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -633,7 +641,7 @@
             }
           },
           "409": {
-            "description": "Conflict 无法删除root用户；Conflict 目标用户是某个组织的管理员（排除个人组织）",
+            "description": "Conflict：无法删除根用户（`root`），或目标用户仍担任某个非个人组织的管理员",
             "content": {
               "application/json": {
                 "schema": {
@@ -652,7 +660,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -661,7 +669,7 @@
       "get": {
         "operationId": "self-hosted-user-latest-key",
         "summary": "获取用户 API Key",
-        "description": "返回指定用户最新创建的一把 API Key；用户没有任何 API Key 时自动创建一把，名称为 `API Key`。仅允许获取启用状态用户的 Key（停用用户的 Key 在停用时已被删除）。",
+        "description": "返回指定用户最新创建的 API Key；若该用户尚无 API Key，则自动创建一个名称为 `API Key` 的密钥并返回。仅支持查询启用状态的用户（已停用用户的 API Key 在停用时已被清除）。",
         "security": [
           {
             "apiKeyAuth": []
@@ -672,7 +680,7 @@
             "name": "username",
             "in": "path",
             "required": true,
-            "description": "用户名 `username`",
+            "description": "目标用户的 `username`",
             "schema": {
               "type": "string"
             }
@@ -680,7 +688,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK，返回用户最新 API Key",
+            "description": "OK：返回用户的最新 API Key",
             "content": {
               "application/json": {
                 "schema": {
@@ -711,7 +719,7 @@
             }
           },
           "400": {
-            "description": "Bad Request，路径参数不合法",
+            "description": "Bad Request：路径参数不合法",
             "content": {
               "application/json": {
                 "schema": {
@@ -726,7 +734,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -741,7 +749,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，非根用户调用",
+            "description": "Forbidden：仅允许根用户（`root`）调用",
             "content": {
               "application/json": {
                 "schema": {
@@ -756,7 +764,7 @@
             }
           },
           "404": {
-            "description": "Not Found，用户不存在",
+            "description": "Not Found：目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -771,7 +779,7 @@
             }
           },
           "409": {
-            "description": "Conflict，用户已停用（停用时其 API Key 已被删除）",
+            "description": "Conflict：目标用户已停用（停用时其 API Key 已被清除）",
             "content": {
               "application/json": {
                 "schema": {
@@ -790,7 +798,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -799,7 +807,7 @@
       "post": {
         "operationId": "self-hosted-create-team",
         "summary": "创建组织",
-        "description": "创建组织空间，可指定归属用户。组织类型为 `TEAM`，`owner` 缺省时归属当前根用户，归属用户以 `OWNER` 身份加入组织。组织 `username` 全局唯一且大小写不敏感。",
+        "description": "创建组织空间（类型为 `TEAM`），可指定归属用户。当 `owner` 缺省时默认归属当前根用户，归属用户将以 `OWNER` 角色加入组织。组织 `username` 全局唯一且不区分大小写。",
         "security": [
           {
             "apiKeyAuth": []
@@ -814,19 +822,19 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "组织空间的 `username`，必选，长度 `1~25`，仅允许字母、数字、`-` 和 `_`，全局唯一且大小写不敏感"
+                    "description": "组织空间的 `username`（必选），长度 `1~25`，仅允许字母、数字、`-` 和 `_`，全局唯一且不区分大小写"
                   },
                   "name": {
                     "type": "string",
-                    "description": "组织名称，可选，长度 `1~512`"
+                    "description": "组织显示名称（可选），长度 `1~512`"
                   },
                   "owner": {
                     "type": "string",
-                    "description": "归属用户的 `username`，可选，缺省时归属当前根用户；归属用户需处于启用状态"
+                    "description": "归属用户的 `username`（可选）；缺省时归属当前根用户，且归属用户必须处于启用状态"
                   },
                   "profile": {
                     "type": "object",
-                    "description": "组织资料，可选，包含机构、地点、简介、学校、邮箱等字段",
+                    "description": "组织资料（可选），包含机构、地点、简介、学校、联系邮箱等字段",
                     "properties": {
                       "url": {
                         "type": "string",
@@ -834,7 +842,7 @@
                       },
                       "bio": {
                         "type": "string",
-                        "description": "简介，最长 200 字符"
+                        "description": "组织简介，最长 200 字符"
                       },
                       "email": {
                         "type": "string",
@@ -846,15 +854,15 @@
                       },
                       "location": {
                         "type": "string",
-                        "description": "所在地点，最长 100 字符"
+                        "description": "所在地区，最长 100 字符"
                       },
                       "institution": {
                         "type": "string",
-                        "description": "所在机构，最长 100 字符"
+                        "description": "所属机构，最长 100 字符"
                       },
                       "idc": {
                         "type": "string",
-                        "description": "国际区号，默认 `86`"
+                        "description": "国际电话区号，默认为 `86`"
                       },
                       "telephone": {
                         "type": "string",
@@ -880,7 +888,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created，创建成功",
+            "description": "Created：组织创建成功",
             "content": {
               "application/json": {
                 "schema": {
@@ -907,7 +915,7 @@
             }
           },
           "400": {
-            "description": "Bad Request，参数错误",
+            "description": "Bad Request：请求参数错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -922,7 +930,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -937,7 +945,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，非根用户调用",
+            "description": "Forbidden：仅允许根用户（`root`）调用",
             "content": {
               "application/json": {
                 "schema": {
@@ -952,7 +960,7 @@
             }
           },
           "404": {
-            "description": "Not Found，归属用户不存在",
+            "description": "Not Found：指定的归属用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -967,7 +975,7 @@
             }
           },
           "409": {
-            "description": "Conflict：组织 `username` 已存在；归属用户已停用",
+            "description": "Conflict：组织 `username` 已存在，或指定的归属用户已停用",
             "content": {
               "application/json": {
                 "schema": {
@@ -986,7 +994,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -994,7 +1002,7 @@
     "/self_hosted/team/member": {
       "post": {
         "operationId": "self-hosted-upsert-team-member",
-        "summary": "添加/修改成员",
+        "summary": "添加或更新组织成员",
         "security": [
           {
             "apiKeyAuth": []
@@ -1009,16 +1017,16 @@
                 "properties": {
                   "group": {
                     "type": "string",
-                    "description": "组织空间`username`，必选"
+                    "description": "组织空间的 `username`，必选"
                   },
                   "username": {
                     "type": "string",
-                    "description": "指定用户, 必选"
+                    "description": "目标用户的 `username`，必选"
                   },
                   "role": {
                     "type": "string",
                     "enum": ["OWNER", "MEMBER", "VIEWER"],
-                    "description": "指定角色, 必选, `OWNER`, `MEMBER`, `VIEWER`"
+                    "description": "成员角色（必选），可选值：`OWNER`、`MEMBER`、`VIEWER`"
                   }
                 }
               },
@@ -1034,10 +1042,10 @@
         },
         "responses": {
           "200": {
-            "description": "OK，修改成功"
+            "description": "OK：成员添加或角色更新成功"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -1052,7 +1060,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，对组织无权限邀请成员",
+            "description": "Forbidden：无权限管理该组织的成员",
             "content": {
               "application/json": {
                 "schema": {
@@ -1067,7 +1075,7 @@
             }
           },
           "404": {
-            "description": "Not Found：组织不存在；用户不存在",
+            "description": "Not Found：目标组织不存在或目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -1082,7 +1090,7 @@
             }
           },
           "409": {
-            "description": "Conflict，组织内至少保留一名管理员（降级最后一名 OWNER 时返回）",
+            "description": "Conflict：组织内必须至少保留一名管理员（降级最后一名 `OWNER` 时返回）",
             "content": {
               "application/json": {
                 "schema": {
@@ -1101,7 +1109,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -1109,7 +1117,7 @@
     "/self_hosted/team/member/del": {
       "post": {
         "operationId": "self-hosted-delete-team-member",
-        "summary": "移除成员",
+        "summary": "移除组织成员",
         "security": [
           {
             "apiKeyAuth": []
@@ -1124,11 +1132,11 @@
                 "properties": {
                   "group": {
                     "type": "string",
-                    "description": "组织空间 `username`，必选"
+                    "description": "组织空间的 `username`，必选"
                   },
                   "username": {
                     "type": "string",
-                    "description": "指定用户, 必选"
+                    "description": "目标用户的 `username`，必选"
                   }
                 }
               },
@@ -1143,10 +1151,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content，移除成功"
+            "description": "No Content：成员移除成功"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -1161,7 +1169,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，对组织无权限移除成员",
+            "description": "Forbidden：无权限移除该组织的成员",
             "content": {
               "application/json": {
                 "schema": {
@@ -1176,7 +1184,7 @@
             }
           },
           "404": {
-            "description": "Not Found：组织不存在；用户不存在；目标用户不是组织成员",
+            "description": "Not Found：组织不存在、用户不存在，或目标用户并非该组织成员",
             "content": {
               "application/json": {
                 "schema": {
@@ -1191,7 +1199,7 @@
             }
           },
           "409": {
-            "description": "Conflict，组织最后一个管理员无法被移除",
+            "description": "Conflict：不能移除组织内的最后一名管理员（`OWNER`）",
             "content": {
               "application/json": {
                 "schema": {
@@ -1210,7 +1218,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -1218,7 +1226,7 @@
     "/self_hosted/project/collaborator": {
       "post": {
         "operationId": "self-hosted-upsert-collaborator",
-        "summary": "添加/修改协作者",
+        "summary": "添加或更新项目协作者",
         "security": [
           {
             "apiKeyAuth": []
@@ -1233,16 +1241,16 @@
                 "properties": {
                   "project": {
                     "type": "string",
-                    "description": "项目`cuid`，必选"
+                    "description": "项目的 `cuid`，必选"
                   },
                   "username": {
                     "type": "string",
-                    "description": "指定用户, 必选"
+                    "description": "目标用户的 `username`，必选"
                   },
                   "role": {
                     "type": "string",
                     "enum": ["READ", "WRITE", "ADMIN"],
-                    "description": "指定角色, 必选, `READ`, `WRITE`,  `ADMIN`"
+                    "description": "协作权限角色（必选），可选值：`READ`、`WRITE`、`ADMIN`"
                   }
                 }
               },
@@ -1258,10 +1266,10 @@
         },
         "responses": {
           "200": {
-            "description": "OK，修改成功"
+            "description": "OK：协作者添加或权限更新成功"
           },
           "400": {
-            "description": "Reach_Max，单项目下协作者数量达上限",
+            "description": "Bad Request（`Reach_Max`）：单个项目的协作者数量已达上限",
             "content": {
               "application/json": {
                 "schema": {
@@ -1276,7 +1284,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -1291,7 +1299,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，对项目无权限邀请协作者",
+            "description": "Forbidden：无权限管理该项目的协作者",
             "content": {
               "application/json": {
                 "schema": {
@@ -1306,7 +1314,7 @@
             }
           },
           "404": {
-            "description": "Not Found：项目不存在；目标用户不存在",
+            "description": "Not Found：目标项目不存在或目标用户不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -1325,7 +1333,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -1333,7 +1341,7 @@
     "/self_hosted/project/collaborator/del": {
       "post": {
         "operationId": "self-hosted-delete-collaborator",
-        "summary": "移除协作者",
+        "summary": "移除项目协作者",
         "security": [
           {
             "apiKeyAuth": []
@@ -1348,11 +1356,11 @@
                 "properties": {
                   "project": {
                     "type": "string",
-                    "description": "项目 `cuid`"
+                    "description": "项目的 `cuid`，必选"
                   },
                   "username": {
                     "type": "string",
-                    "description": "用户的的 `username`"
+                    "description": "目标用户的 `username`，必选"
                   }
                 }
               },
@@ -1367,10 +1375,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content，删除成功"
+            "description": "No Content：协作者移除成功"
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -1385,7 +1393,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，无权限删除",
+            "description": "Forbidden：无权限移除该项目的协作者",
             "content": {
               "application/json": {
                 "schema": {
@@ -1400,7 +1408,7 @@
             }
           },
           "404": {
-            "description": "Not Found：用户不存在；项目不存在；用户不是项目协作者",
+            "description": "Not Found：用户不存在、项目不存在，或该用户并非项目协作者",
             "content": {
               "application/json": {
                 "schema": {
@@ -1419,7 +1427,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -1427,8 +1435,8 @@
     "/self_hosted/sso/bind": {
       "post": {
         "operationId": "self-hosted-bind-sso",
-        "summary": "绑定三方账号",
-        "description": "将指定 SwanLab 用户与某启用 Provider 的三方账号绑定。\n\n非幂等：重复绑定同一 `(provider, providerUserId)` 返回 `409`；换绑需先调用 `POST /self_hosted/sso/bind/del` 解绑。",
+        "summary": "绑定第三方 SSO 账号",
+        "description": "将指定的 SwanLab 用户与某个已启用身份提供商（Provider）下的第三方账号进行绑定。\n\n本接口非幂等：对同一 `(provider, providerUserId)` 重复绑定将返回 `409 Conflict`；如需换绑，请先调用 `POST /self_hosted/sso/bind/del` 解绑。",
         "security": [
           {
             "apiKeyAuth": []
@@ -1447,11 +1455,11 @@
                   },
                   "provider": {
                     "type": "string",
-                    "description": "Provider 名称，必选，需处于启用状态"
+                    "description": "SSO Provider 标识名称，必选，且该 Provider 必须处于启用状态"
                   },
                   "providerUserId": {
                     "type": "string",
-                    "description": "第三方用户的唯一标识，必选"
+                    "description": "第三方身份提供商侧的用户唯一标识（Subject / User ID），必选"
                   }
                 }
               },
@@ -1467,10 +1475,10 @@
         },
         "responses": {
           "201": {
-            "description": "Created，绑定成功，无返回体"
+            "description": "Created：绑定成功，返回空响应体"
           },
           "400": {
-            "description": "Bad Request，参数错误",
+            "description": "Bad Request：请求参数错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -1485,7 +1493,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -1500,7 +1508,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，非根用户调用",
+            "description": "Forbidden：仅允许根用户（`root`）调用",
             "content": {
               "application/json": {
                 "schema": {
@@ -1515,7 +1523,7 @@
             }
           },
           "404": {
-            "description": "Not Found：用户不存在（未注册或已停用）；provider 不存在或未启用",
+            "description": "Not Found：目标用户不存在（未注册或已停用），或指定的 Provider 不存在/未启用",
             "content": {
               "application/json": {
                 "schema": {
@@ -1530,7 +1538,7 @@
             }
           },
           "409": {
-            "description": "Conflict：三方账号已绑定其他 SwanLab 用户；该用户在此 Provider 下已有绑定",
+            "description": "Conflict：该第三方账号已绑定其他 SwanLab 用户，或目标用户在该 Provider 下已存在绑定记录",
             "content": {
               "application/json": {
                 "schema": {
@@ -1549,7 +1557,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -1557,8 +1565,8 @@
     "/self_hosted/sso/bind/del": {
       "post": {
         "operationId": "self-hosted-unbind-sso",
-        "summary": "解绑三方账号",
-        "description": "删除指定用户与指定三方账号的绑定关系，三元组 `username` + `provider` + `providerUserId` 精确匹配才删除；任一不匹配（如三方账号实际绑定在其他用户名下）返回 `404`。\n\n与绑定接口的差异：不要求 Provider 处于启用状态（停用 Provider 下的残留绑定同样允许清理）；`username` 不限用户状态（停用用户的绑定仍保留，需要可清理）。",
+        "summary": "解绑第三方 SSO 账号",
+        "description": "解除指定 SwanLab 用户与第三方账号的绑定关系。仅当三元组 `username` + `provider` + `providerUserId` 完全匹配时执行删除；若任一字段不匹配（例如该第三方账号实际绑定在其他用户名下），则返回 `404 Not Found`。\n\n与绑定接口的区别：本接口不要求 Provider 处于启用状态，也不限制用户的启用/停用状态，便于管理员清理已停用 Provider 或已停用用户遗留的绑定记录。",
         "security": [
           {
             "apiKeyAuth": []
@@ -1573,15 +1581,15 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "SwanLab 用户的 `username`，必选，不限用户状态"
+                    "description": "SwanLab 用户的 `username`（必选，不限用户状态）"
                   },
                   "provider": {
                     "type": "string",
-                    "description": "Provider 名称，必选，不要求启用"
+                    "description": "SSO Provider 标识名称（必选，不要求处于启用状态）"
                   },
                   "providerUserId": {
                     "type": "string",
-                    "description": "第三方用户的唯一标识，必选"
+                    "description": "第三方身份提供商侧的用户唯一标识（必选）"
                   }
                 }
               },
@@ -1597,10 +1605,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content，解绑成功，无返回体"
+            "description": "No Content：解绑成功，返回空响应体"
           },
           "400": {
-            "description": "Bad Request，参数错误",
+            "description": "Bad Request：请求参数错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -1615,7 +1623,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized，未携带有效身份凭证",
+            "description": "Unauthorized：未携带有效身份凭证",
             "content": {
               "application/json": {
                 "schema": {
@@ -1630,7 +1638,7 @@
             }
           },
           "403": {
-            "description": "Forbidden，非根用户调用",
+            "description": "Forbidden：仅允许根用户（`root`）调用",
             "content": {
               "application/json": {
                 "schema": {
@@ -1645,7 +1653,7 @@
             }
           },
           "404": {
-            "description": "Not Found：provider 不存在；用户不存在；绑定关系不存在（含三元组不匹配）",
+            "description": "Not Found：Provider 不存在、用户不存在，或对应的三元组绑定记录不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -1664,7 +1672,7 @@
         "servers": [
           {
             "url": "https://your-swanlab-domain.com/api",
-            "description": "私有化部署实例（替换为你的实例域名）"
+            "description": "私有化部署实例（请替换为你的实例域名）"
           }
         ]
       }
@@ -1673,7 +1681,7 @@
       "post": {
         "operationId": "oauth2-token",
         "summary": "获取 Access Token",
-        "description": "根据 authorization code 签发 access token 和 refresh token，或使用 refresh token 刷新 access token。",
+        "description": "使用授权码（`authorization_code`）换取 `access_token` 与 `refresh_token`，或使用 `refresh_token` 刷新 `access_token`。",
         "security": [
           {
             "basicAuth": []
@@ -1689,15 +1697,15 @@
                   "grant_type": {
                     "type": "string",
                     "enum": ["authorization_code", "refresh_token"],
-                    "description": "授权类型"
+                    "description": "授权模式（`authorization_code` 或 `refresh_token`）"
                   },
                   "code": {
                     "type": "string",
-                    "description": "传入回调地址的 authorization code"
+                    "description": "OAuth2 回调地址接收到的授权码（当 `grant_type=authorization_code` 时必填）"
                   },
                   "refresh_token": {
                     "type": "string",
-                    "description": "refresh token"
+                    "description": "用于刷新访问令牌的 `refresh_token`（当 `grant_type=refresh_token` 时必填）"
                   }
                 }
               },
@@ -1712,7 +1720,7 @@
         },
         "responses": {
           "200": {
-            "description": "成功获取或刷新 Access Token",
+            "description": "OK：成功签发或刷新 Access Token",
             "content": {
               "application/json": {
                 "schema": {
@@ -1721,16 +1729,16 @@
                   "properties": {
                     "access_token": {
                       "type": "string",
-                      "description": "access token，有效期 2 小时"
+                      "description": "访问令牌（Access Token），有效期 2 小时"
                     },
                     "refresh_token": {
                       "type": "string",
-                      "description": "refresh token，有效期 30 天（仅在 grant_type=authorization_code 时返回）"
+                      "description": "刷新令牌（Refresh Token），有效期 30 天（仅当 `grant_type=authorization_code` 时返回）"
                     },
                     "expires_in": {
                       "type": "integer",
                       "format": "int32",
-                      "description": "access token 有效期（秒），固定为 7200"
+                      "description": "`access_token` 的有效期（单位：秒），固定为 `7200`"
                     }
                   }
                 },
@@ -1743,7 +1751,7 @@
             }
           },
           "400": {
-            "description": "bad_request：请求体错误或 grant_type 不支持；error_code：code 无效、已过期或已被消费；error_token：refresh_token 无效或已过期",
+            "description": "`bad_request`：请求体格式错误或 `grant_type` 不受支持；`error_code`：授权码无效、已过期或已被使用；`error_token`：`refresh_token` 无效或已过期",
             "content": {
               "application/json": {
                 "schema": {
@@ -1753,13 +1761,13 @@
                   "status": 400,
                   "code": "bad_request",
                   "message": "unsupported grant_type",
-                  "description": "请求体错误或 grant_type 不支持"
+                  "description": "请求体格式错误或 grant_type 不受支持"
                 }
               }
             }
           },
           "401": {
-            "description": "unauthorized：Basic Auth 缺失、app_secret 错误，或 code / refresh token 不属于当前应用",
+            "description": "`unauthorized`：缺少 Basic Auth 认证头、`app_secret` 错误，或 `code` / `refresh_token` 不属于当前应用",
             "content": {
               "application/json": {
                 "schema": {
@@ -1769,13 +1777,13 @@
                   "status": 401,
                   "code": "unauthorized",
                   "message": "invalid app_secret",
-                  "description": "Basic Auth 缺失、app_secret 错误，或 code / refresh token 不属于当前应用"
+                  "description": "缺少 Basic Auth、app_secret 错误，或 code / refresh token 不属于当前应用"
                 }
               }
             }
           },
           "404": {
-            "description": "not_found：app_id 不存在",
+            "description": "`not_found`：`app_id` 不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -1791,7 +1799,7 @@
             }
           },
           "500": {
-            "description": "parse_error：JSON 解析失败；random_error：生成 token 失败；database_error：存储操作失败",
+            "description": "`parse_error`：JSON 解析失败；`random_error`：生成令牌失败；`database_error`：存储操作失败",
             "content": {
               "application/json": {
                 "schema": {
@@ -1814,7 +1822,7 @@
       "get": {
         "operationId": "oauth2-user-info",
         "summary": "获取用户信息",
-        "description": "根据 access token 获取 SwanLab 用户公开信息。",
+        "description": "凭有效的 `access_token` 获取当前授权用户的公开资料信息。",
         "security": [
           {
             "bearerAuth": []
@@ -1822,7 +1830,7 @@
         ],
         "responses": {
           "200": {
-            "description": "成功获取用户信息",
+            "description": "OK：成功返回用户信息",
             "content": {
               "application/json": {
                 "schema": {
@@ -1835,7 +1843,7 @@
                     },
                     "nickname": {
                       "type": "string",
-                      "description": "SwanLab 昵称"
+                      "description": "用户昵称"
                     },
                     "avatar": {
                       "type": "string",
@@ -1846,27 +1854,27 @@
                       "properties": {
                         "bio": {
                           "type": "string",
-                          "description": "简介"
+                          "description": "个人简介"
                         },
                         "website": {
                           "type": "string",
-                          "description": "用户个人网站"
+                          "description": "个人网站地址"
                         },
                         "location": {
                           "type": "string",
-                          "description": "地址"
+                          "description": "所在城市或地区"
                         },
                         "idc": {
                           "type": "string",
-                          "description": "国家或地区"
+                          "description": "国家或地区代码"
                         },
                         "organization": {
                           "type": "string",
-                          "description": "公司或机构"
+                          "description": "所属公司或机构"
                         },
                         "education": {
                           "type": "string",
-                          "description": "学校"
+                          "description": "学校或教育背景"
                         }
                       }
                     }
@@ -1889,7 +1897,7 @@
             }
           },
           "400": {
-            "description": "bad_request：缺少 token 或 Authorization 格式错误",
+            "description": "`bad_request`：缺少访问令牌或 `Authorization` 请求头格式错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -1905,7 +1913,7 @@
             }
           },
           "401": {
-            "description": "unauthorized：access token 不存在或已过期",
+            "description": "`unauthorized`：`access_token` 无效或已过期",
             "content": {
               "application/json": {
                 "schema": {
@@ -1921,7 +1929,7 @@
             }
           },
           "500": {
-            "description": "error_internal：获取用户信息失败；parse_error：token 数据解析失败；database_error：存储操作失败",
+            "description": "`error_internal`：查询用户信息失败；`parse_error`：令牌数据解析失败；`database_error`：存储操作失败",
             "content": {
               "application/json": {
                 "schema": {
@@ -1944,7 +1952,7 @@
       "get": {
         "operationId": "oauth2-user-api_key",
         "summary": "获取 API Key",
-        "description": "根据 access token 获取该用户用于调用 SwanLab OpenAPI 的最新 API Key。",
+        "description": "凭有效的 `access_token` 获取当前授权用户用于调用 SwanLab OpenAPI 的最新 API Key。",
         "security": [
           {
             "bearerAuth": []
@@ -1952,7 +1960,7 @@
         ],
         "responses": {
           "200": {
-            "description": "成功获取 API Key",
+            "description": "OK：成功返回 API Key",
             "content": {
               "application/json": {
                 "schema": {
@@ -1972,7 +1980,7 @@
             }
           },
           "400": {
-            "description": "bad_request：缺少 token 或 Authorization 格式错误",
+            "description": "`bad_request`：缺少访问令牌或 `Authorization` 请求头格式错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -1988,7 +1996,7 @@
             }
           },
           "401": {
-            "description": "unauthorized：access token 不存在或已过期",
+            "description": "`unauthorized`：`access_token` 无效或已过期",
             "content": {
               "application/json": {
                 "schema": {
@@ -2004,7 +2012,7 @@
             }
           },
           "500": {
-            "description": "error_internal：获取 API Key 失败；parse_error：token 数据解析失败；database_error：存储操作失败",
+            "description": "`error_internal`：获取 API Key 失败；`parse_error`：令牌数据解析失败；`database_error`：存储操作失败",
             "content": {
               "application/json": {
                 "schema": {
@@ -2027,14 +2035,14 @@
   "servers": [
     {
       "url": "https://api.swanlab.cn/api",
-      "description": "SwanLab 线上环境（OAuth2 授权使用）"
+      "description": "SwanLab 公有云环境（供 OAuth2 授权接口使用）"
     }
   ],
   "components": {
     "securitySchemes": {
       "basicAuth": {
         "type": "http",
-        "description": "Authorization: Basic <app_id:app_secret(base64编码)>",
+        "description": "Authorization: Basic <base64(app_id:app_secret)>",
         "scheme": "basic"
       },
       "bearerAuth": {
@@ -2046,7 +2054,7 @@
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
-        "description": "Authorization: ApiKey <实例 root 用户的 API Key>。前缀 `ApiKey` 区分大小写，与 Key 之间用一个空格分隔，不能只传 Key 本身"
+        "description": "Authorization: ApiKey <实例 root 用户的 API Key>。前缀 `ApiKey` 区分大小写，与密钥之间以单个空格分隔；未携带前缀将返回 `401 Unauthorized`"
       }
     },
     "schemas": {

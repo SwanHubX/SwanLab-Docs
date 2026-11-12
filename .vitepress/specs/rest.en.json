@@ -2,29 +2,29 @@
   "openapi": "3.1.0",
   "info": {
     "title": "SwanLab API",
-    "description": "Open API documentation for SwanLab, covering OAuth2 authorization and self-hosted administration APIs.",
+    "description": "SwanLab OpenAPI specification covering OAuth2 authorization and self-hosted instance administration endpoints.",
     "version": "1.0.0"
   },
   "tags": [
     {
       "name": "OAuth2 Authorization",
-      "description": "Obtain and refresh OAuth2 Access Tokens, and read user info and API Keys"
+      "description": "Issue and refresh OAuth2 access tokens, and retrieve authenticated user profiles and API Keys"
     },
     {
       "name": "User Management",
-      "description": "Create, deactivate, and manage passwords and API Keys for self-hosted users"
+      "description": "Provision, deactivate, and manage user passwords and API Keys on a self-hosted instance"
     },
     {
       "name": "Organization Management",
-      "description": "Manage organization spaces and members on a self-hosted instance"
+      "description": "Create and manage organizations and organization members on a self-hosted instance"
     },
     {
       "name": "Project Collaboration",
-      "description": "Manage project collaborators on a self-hosted instance"
+      "description": "Manage project collaborators and access permissions on a self-hosted instance"
     },
     {
       "name": "SSO Binding",
-      "description": "Manage bindings between self-hosted users and third-party accounts"
+      "description": "Bind and unbind self-hosted SwanLab users with external SSO identity providers"
     }
   ],
   "paths": {
@@ -32,7 +32,7 @@
       "post": {
         "operationId": "self-hosted-root",
         "summary": "Create root user",
-        "description": "1. Only one root user can exist; creating another returns `409 Conflict`;\n2. The License is verified online; `cloud_url` is configurable and defaults to `https://api.swanlab.cn/api`\n\t1. an expired license returns `403 Forbidden`;\n\t2. a missing license returns `404 Not Found`;\n\t3. otherwise it returns `502 Bad Gateway`;\n3. A successful creation returns `201`;\n4. The root user is marked by `group.comment` set to `root`;\n5. After online verification a License record is created locally for later validation.\n6. A commercial license must be verified online; offline use returns `403`",
+        "description": "1. Only a single root user (`root`) can exist per instance; subsequent attempts return `409 Conflict`.\n2. The commercial license is validated online against `cloud_url` (configurable, defaults to `https://api.swanlab.cn/api`):\n\t1. An expired license returns `403 Forbidden`;\n\t2. A non-existent license returns `404 Not Found`;\n\t3. Upstream or network validation failures return `502 Bad Gateway`.\n3. Returns `201 Created` upon successful initialization.\n4. The root user is identified internally by `group.comment = root`.\n5. Once validated online, a local license record is persisted for subsequent verification.\n6. Commercial licenses require online activation; offline attempts return `403 Forbidden`.",
         "security": [],
         "requestBody": {
           "content": {
@@ -42,13 +42,16 @@
                 "required": ["username", "password", "license"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Root username (required)"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Root password (required)"
                   },
                   "license": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Commercial license token (required)"
                   }
                 }
               },
@@ -64,7 +67,7 @@
         },
         "responses": {
           "201": {
-            "description": "Root user created successfully; returns the user information",
+            "description": "Created: root user initialized successfully; returns the user profile",
             "content": {
               "application/json": {
                 "schema": {
@@ -103,7 +106,7 @@
             }
           },
           "400": {
-            "description": "Invalid parameters",
+            "description": "Bad Request: invalid request parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,7 +121,7 @@
             }
           },
           "403": {
-            "description": "license error: License_Expired: expired; License_Verification_Failed: invalid token; License_Activation_Expired: past the activation deadline; License_User_Count_Exceeded: the existing user count exceeds the plan limit; License_Activation_Failed: online activation failed",
+            "description": "Forbidden (license validation failed): `License_Expired` (license has expired); `License_Verification_Failed` (invalid license token); `License_Activation_Expired` (activation deadline exceeded); `License_User_Count_Exceeded` (existing user count exceeds plan limit); `License_Activation_Failed` (online activation failed)",
             "content": {
               "application/json": {
                 "schema": {
@@ -133,7 +136,7 @@
             }
           },
           "409": {
-            "description": "A root user already exists; repeated activation",
+            "description": "Conflict: root user already exists",
             "content": {
               "application/json": {
                 "schema": {
@@ -148,7 +151,7 @@
             }
           },
           "500": {
-            "description": "Unexpected error",
+            "description": "Internal Server Error: unexpected server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -196,11 +199,11 @@
                       "properties": {
                         "username": {
                           "type": "string",
-                          "description": "Username, required"
+                          "description": "Username (required)"
                         },
                         "password": {
                           "type": "string",
-                          "description": "Password"
+                          "description": "Initial password (required)"
                         }
                       }
                     }
@@ -226,10 +229,10 @@
         },
         "responses": {
           "201": {
-            "description": "Created, added successfully; existing users and duplicate usernames within the request are skipped"
+            "description": "Created: users created successfully; existing users and duplicate `username` entries within the request are automatically skipped"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -244,7 +247,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, no permission to add users; Max_Limit the organization member limit has been reached, and all users added this time are cancelled",
+            "description": "Forbidden: insufficient permissions to create users, or `Max_Limit` exceeded (instance user limit reached; the entire batch operation is rolled back)",
             "content": {
               "application/json": {
                 "schema": {
@@ -272,7 +275,7 @@
       "post": {
         "operationId": "self-hosted-change-password",
         "summary": "Change password",
-        "description": "1. The root user can change the password of any user.\n2. A non-root user can only change their own password.",
+        "description": "1. The root user can reset any user's password.\n2. Non-root users can only change their own password.",
         "security": [
           {
             "apiKeyAuth": []
@@ -286,10 +289,12 @@
                 "required": ["username", "password"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Target user's `username` (required)"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "New password (required)"
                   }
                 }
               },
@@ -299,15 +304,15 @@
               }
             }
           },
-          "description": "All fields in the request body above are required; the response is empty.",
+          "description": "Request body (all fields are required)",
           "required": true
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK: password updated successfully (empty response body)"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -322,7 +327,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, a non-root user cannot change another user's password",
+            "description": "Forbidden: non-root users cannot change another user's password",
             "content": {
               "application/json": {
                 "schema": {
@@ -337,7 +342,7 @@
             }
           },
           "404": {
-            "description": "Not Found the target user does not exist",
+            "description": "Not Found: target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -365,7 +370,7 @@
       "post": {
         "operationId": "self-hosted-pause-user",
         "summary": "Deactivate user",
-        "description": "Deactivating a user deletes their API Key and session cache, but keeps SSO ProviderUser bindings.",
+        "description": "Deactivating a user revokes and deletes all of their API Keys and active sessions, while preserving their SSO `ProviderUser` bindings.",
         "security": [
           {
             "apiKeyAuth": []
@@ -379,7 +384,8 @@
                 "required": ["username"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Target user's `username` (required)"
                   }
                 }
               },
@@ -393,10 +399,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content, deactivated successfully and the login credentials of the user were revoked; empty response body"
+            "description": "No Content: user deactivated and credentials revoked (empty response body)"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -411,7 +417,7 @@
             }
           },
           "403": {
-            "description": "Forbidden no permission to deactivate",
+            "description": "Forbidden: insufficient permissions to deactivate this user",
             "content": {
               "application/json": {
                 "schema": {
@@ -426,7 +432,7 @@
             }
           },
           "404": {
-            "description": "Not_Found the user does not exist",
+            "description": "Not Found: target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -441,7 +447,7 @@
             }
           },
           "409": {
-            "description": "Conflict the root user cannot be deactivated",
+            "description": "Conflict: the root user (`root`) cannot be deactivated",
             "content": {
               "application/json": {
                 "schema": {
@@ -482,7 +488,8 @@
                 "required": ["username"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Target user's `username` (required)"
                   }
                 }
               },
@@ -496,10 +503,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content restored successfully, empty response body"
+            "description": "No Content: user restored successfully (empty response body)"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -514,7 +521,7 @@
             }
           },
           "403": {
-            "description": "Forbidden no permission to restore",
+            "description": "Forbidden: insufficient permissions to restore this user",
             "content": {
               "application/json": {
                 "schema": {
@@ -529,7 +536,7 @@
             }
           },
           "404": {
-            "description": "Not_Found the user does not exist",
+            "description": "Not Found: target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -557,7 +564,7 @@
       "post": {
         "operationId": "self-hosted-delete-user",
         "summary": "Delete user",
-        "description": "1. Only the root user can delete members\n2. The root user cannot delete itself, otherwise `409 Conflict`\n3. Deletion is a soft delete: `status` on the `user` table and on the `group` table (`type=PERSON`) is set to `DISABLED`\n4. All sessions of the user in the session table are hard-deleted\n5. All cached sessions of the user are removed\n6. If the target user is an administrator of a non-personal organization, they must first leave the organization or have their role changed\n7. All related projects, collaborators and applications are deleted\n8. The user's SSO ProviderUser bindings are deleted",
+        "description": "1. Only the root user (`root`) can delete users.\n2. The root user cannot delete itself (returns `409 Conflict`).\n3. Performs a soft delete: `status` on the `user` table and on the personal workspace in the `group` table (`type=PERSON`) is set to `DISABLED`.\n4. Hard-deletes all persistent session records for the user from the `session` table.\n5. Purges all cached sessions belonging to the user.\n6. If the target user is an administrator (`OWNER`) of any non-personal organization, ownership must be transferred or the user removed from the organization before deletion.\n7. Deletes all associated projects, collaborator bindings, and membership requests.\n8. Deletes the user's SSO `ProviderUser` bindings.",
         "security": [
           {
             "apiKeyAuth": []
@@ -571,7 +578,8 @@
                 "required": ["username"],
                 "properties": {
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Target user's `username` (required)"
                   }
                 }
               },
@@ -585,10 +593,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content, deleted successfully (soft delete); empty response body"
+            "description": "No Content: user soft-deleted successfully (empty response body)"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -603,7 +611,7 @@
             }
           },
           "403": {
-            "description": "Forbidden no permission to delete",
+            "description": "Forbidden: insufficient permissions to delete this user",
             "content": {
               "application/json": {
                 "schema": {
@@ -618,7 +626,7 @@
             }
           },
           "404": {
-            "description": "Not_Found the user does not exist",
+            "description": "Not Found: target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -633,7 +641,7 @@
             }
           },
           "409": {
-            "description": "Conflict the root user cannot be deleted; Conflict the target user is an administrator of an organization (excluding the personal one)",
+            "description": "Conflict: cannot delete the root user (`root`), or the target user is still an administrator of a non-personal organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -661,7 +669,7 @@
       "get": {
         "operationId": "self-hosted-user-latest-key",
         "summary": "Get user API Key",
-        "description": "Returns the most recently created API Key of the target user, creating one named `API Key` if the user has none. Only enabled users are allowed: their keys are deleted when the user is deactivated.",
+        "description": "Returns the specified user's most recently created API Key. If the user has no API Key, a new key named `API Key` is automatically generated and returned. Only active (enabled) users are supported, as API Keys are revoked upon user deactivation.",
         "security": [
           {
             "apiKeyAuth": []
@@ -672,7 +680,7 @@
             "name": "username",
             "in": "path",
             "required": true,
-            "description": "The user's `username`",
+            "description": "Target user's `username`",
             "schema": {
               "type": "string"
             }
@@ -680,7 +688,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK, returns the user's latest API Key",
+            "description": "OK: returns the user's latest API Key",
             "content": {
               "application/json": {
                 "schema": {
@@ -711,7 +719,7 @@
             }
           },
           "400": {
-            "description": "Bad Request, invalid path parameters",
+            "description": "Bad Request: invalid path parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -726,7 +734,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -741,7 +749,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, the caller is not the root user",
+            "description": "Forbidden: root user privileges required",
             "content": {
               "application/json": {
                 "schema": {
@@ -756,7 +764,7 @@
             }
           },
           "404": {
-            "description": "Not Found, the user does not exist",
+            "description": "Not Found: target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -771,7 +779,7 @@
             }
           },
           "409": {
-            "description": "Conflict, the user is disabled (their API Keys were deleted on deactivation)",
+            "description": "Conflict: target user is deactivated (API Keys are revoked upon deactivation)",
             "content": {
               "application/json": {
                 "schema": {
@@ -799,7 +807,7 @@
       "post": {
         "operationId": "self-hosted-create-team",
         "summary": "Create organization",
-        "description": "Creates an organization space and optionally assigns an owner. The organization type is `TEAM`; when `owner` is omitted the organization belongs to the current root user. The owner joins the organization with the `OWNER` role. The organization `username` is globally unique and case-insensitive.",
+        "description": "Creates an organization workspace (`type = TEAM`) and optionally assigns an owner. When `owner` is omitted, ownership defaults to the root user. The designated owner joins the organization with the `OWNER` role. The organization `username` is globally unique and case-insensitive.",
         "security": [
           {
             "apiKeyAuth": []
@@ -814,47 +822,47 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "The organization's `username` (required), 1-25 characters, letters, digits, `-` and `_` only, globally unique and case-insensitive"
+                    "description": "Organization `username` (required): 1–25 characters; letters, digits, `-`, and `_` only; globally unique and case-insensitive"
                   },
                   "name": {
                     "type": "string",
-                    "description": "Organization display name (optional), 1-512 characters"
+                    "description": "Organization display name (optional): 1–512 characters"
                   },
                   "owner": {
                     "type": "string",
-                    "description": "The owner's `username` (optional); defaults to the current root user, and the owner must be enabled"
+                    "description": "Owner's `username` (optional): defaults to the root user; the specified user must be active"
                   },
                   "profile": {
                     "type": "object",
-                    "description": "Organization profile (optional), including institution, location, bio, school, and email",
+                    "description": "Organization profile metadata (optional), including institution, location, bio, school, and contact email",
                     "properties": {
                       "url": {
                         "type": "string",
-                        "description": "Homepage URL, up to 100 characters"
+                        "description": "Website URL (up to 100 characters)"
                       },
                       "bio": {
                         "type": "string",
-                        "description": "Short bio, up to 200 characters"
+                        "description": "Short bio (up to 200 characters)"
                       },
                       "email": {
                         "type": "string",
-                        "description": "Contact email"
+                        "description": "Contact email address"
                       },
                       "school": {
                         "type": "string",
-                        "description": "School, up to 100 characters"
+                        "description": "School or university (up to 100 characters)"
                       },
                       "location": {
                         "type": "string",
-                        "description": "Location, up to 100 characters"
+                        "description": "Location (up to 100 characters)"
                       },
                       "institution": {
                         "type": "string",
-                        "description": "Institution, up to 100 characters"
+                        "description": "Institution or company (up to 100 characters)"
                       },
                       "idc": {
                         "type": "string",
-                        "description": "Country calling code, defaults to `86`"
+                        "description": "International dialing code, defaults to `86`"
                       },
                       "telephone": {
                         "type": "string",
@@ -880,7 +888,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created, created successfully",
+            "description": "Created: organization created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -907,7 +915,7 @@
             }
           },
           "400": {
-            "description": "Bad Request, invalid request body",
+            "description": "Bad Request: invalid request body",
             "content": {
               "application/json": {
                 "schema": {
@@ -922,7 +930,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -937,7 +945,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, the caller is not the root user",
+            "description": "Forbidden: root user privileges required",
             "content": {
               "application/json": {
                 "schema": {
@@ -952,7 +960,7 @@
             }
           },
           "404": {
-            "description": "Not Found, the owner user does not exist",
+            "description": "Not Found: the specified owner user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -967,7 +975,7 @@
             }
           },
           "409": {
-            "description": "Conflict: the organization `username` already exists; or the owner user is disabled",
+            "description": "Conflict: the organization `username` already exists, or the specified owner user is deactivated",
             "content": {
               "application/json": {
                 "schema": {
@@ -994,7 +1002,7 @@
     "/self_hosted/team/member": {
       "post": {
         "operationId": "self-hosted-upsert-team-member",
-        "summary": "Add or update member",
+        "summary": "Add or update organization member",
         "security": [
           {
             "apiKeyAuth": []
@@ -1009,16 +1017,16 @@
                 "properties": {
                   "group": {
                     "type": "string",
-                    "description": "The organization's `username`, required"
+                    "description": "Organization `username` (required)"
                   },
                   "username": {
                     "type": "string",
-                    "description": "Target user, required"
+                    "description": "Target user's `username` (required)"
                   },
                   "role": {
                     "type": "string",
                     "enum": ["OWNER", "MEMBER", "VIEWER"],
-                    "description": "Role to assign (required), one of: `OWNER`, `MEMBER`, `VIEWER`"
+                    "description": "Organization role to assign (required): `OWNER`, `MEMBER`, or `VIEWER`"
                   }
                 }
               },
@@ -1034,10 +1042,10 @@
         },
         "responses": {
           "200": {
-            "description": "OK, updated successfully"
+            "description": "OK: member added or role updated successfully"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -1052,7 +1060,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, no permission to invite members to the organization",
+            "description": "Forbidden: insufficient permissions to manage members in this organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -1067,7 +1075,7 @@
             }
           },
           "404": {
-            "description": "Not Found: the organization does not exist; or the user does not exist",
+            "description": "Not Found: organization or target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -1082,7 +1090,7 @@
             }
           },
           "409": {
-            "description": "Conflict, the organization must keep at least one administrator (returned when downgrading the last OWNER)",
+            "description": "Conflict: the organization must retain at least one `OWNER` (returned when attempting to downgrade the last owner)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1109,7 +1117,7 @@
     "/self_hosted/team/member/del": {
       "post": {
         "operationId": "self-hosted-delete-team-member",
-        "summary": "Remove member",
+        "summary": "Remove organization member",
         "security": [
           {
             "apiKeyAuth": []
@@ -1124,11 +1132,11 @@
                 "properties": {
                   "group": {
                     "type": "string",
-                    "description": "the organization's `username`, required"
+                    "description": "Organization `username` (required)"
                   },
                   "username": {
                     "type": "string",
-                    "description": "the target user, required"
+                    "description": "Target user's `username` (required)"
                   }
                 }
               },
@@ -1143,10 +1151,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content, removed successfully"
+            "description": "No Content: member removed successfully"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -1161,7 +1169,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, no permission to remove members from the organization",
+            "description": "Forbidden: insufficient permissions to remove members from this organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -1176,7 +1184,7 @@
             }
           },
           "404": {
-            "description": "Not Found: the organization does not exist; the user does not exist; or the target user is not an organization member",
+            "description": "Not Found: organization does not exist, user does not exist, or the user is not a member of the organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -1191,7 +1199,7 @@
             }
           },
           "409": {
-            "description": "Conflict, the last administrator of the organization cannot be removed",
+            "description": "Conflict: cannot remove the last `OWNER` of the organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -1218,7 +1226,7 @@
     "/self_hosted/project/collaborator": {
       "post": {
         "operationId": "self-hosted-upsert-collaborator",
-        "summary": "Add or update collaborator",
+        "summary": "Add or update project collaborator",
         "security": [
           {
             "apiKeyAuth": []
@@ -1233,16 +1241,16 @@
                 "properties": {
                   "project": {
                     "type": "string",
-                    "description": "Project `cuid`, required"
+                    "description": "Project `cuid` (required)"
                   },
                   "username": {
                     "type": "string",
-                    "description": "Target user, required"
+                    "description": "Target user's `username` (required)"
                   },
                   "role": {
                     "type": "string",
                     "enum": ["READ", "WRITE", "ADMIN"],
-                    "description": "Role to assign (required), one of: `READ`, `WRITE`, `ADMIN`"
+                    "description": "Project permission role to assign (required): `READ`, `WRITE`, or `ADMIN`"
                   }
                 }
               },
@@ -1258,10 +1266,10 @@
         },
         "responses": {
           "200": {
-            "description": "OK, updated successfully"
+            "description": "OK: collaborator added or permission updated successfully"
           },
           "400": {
-            "description": "Reach_Max, the project collaborator limit has been reached",
+            "description": "Bad Request (`Reach_Max`): maximum number of collaborators for this project has been reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -1276,7 +1284,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -1291,7 +1299,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, no permission to invite collaborators to the project",
+            "description": "Forbidden: insufficient permissions to manage collaborators for this project",
             "content": {
               "application/json": {
                 "schema": {
@@ -1306,7 +1314,7 @@
             }
           },
           "404": {
-            "description": "Not Found: the project does not exist; or the target user does not exist",
+            "description": "Not Found: project or target user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -1333,7 +1341,7 @@
     "/self_hosted/project/collaborator/del": {
       "post": {
         "operationId": "self-hosted-delete-collaborator",
-        "summary": "Remove collaborator",
+        "summary": "Remove project collaborator",
         "security": [
           {
             "apiKeyAuth": []
@@ -1348,11 +1356,11 @@
                 "properties": {
                   "project": {
                     "type": "string",
-                    "description": "project `cuid`"
+                    "description": "Project `cuid` (required)"
                   },
                   "username": {
                     "type": "string",
-                    "description": "the user's `username`"
+                    "description": "Target user's `username` (required)"
                   }
                 }
               },
@@ -1367,10 +1375,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content, deleted successfully"
+            "description": "No Content: collaborator removed successfully"
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -1385,7 +1393,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, no permission to delete",
+            "description": "Forbidden: insufficient permissions to remove collaborators from this project",
             "content": {
               "application/json": {
                 "schema": {
@@ -1400,7 +1408,7 @@
             }
           },
           "404": {
-            "description": "Not Found: the user does not exist; the project does not exist; or the user is not a project collaborator",
+            "description": "Not Found: user does not exist, project does not exist, or the user is not a collaborator on this project",
             "content": {
               "application/json": {
                 "schema": {
@@ -1427,8 +1435,8 @@
     "/self_hosted/sso/bind": {
       "post": {
         "operationId": "self-hosted-bind-sso",
-        "summary": "Bind third-party account",
-        "description": "Binds the given SwanLab user to a third-party account of an enabled Provider.\n\nNot idempotent: binding the same `(provider, providerUserId)` again returns `409`; to rebind, call `POST /self_hosted/sso/bind/del` first.",
+        "summary": "Bind third-party SSO account",
+        "description": "Binds a SwanLab user to an external account under an enabled SSO identity provider (`Provider`).\n\nNon-idempotent: binding the same `(provider, providerUserId)` pair again returns `409 Conflict`. To rebind, first remove the existing binding via `POST /self_hosted/sso/bind/del`.",
         "security": [
           {
             "apiKeyAuth": []
@@ -1443,15 +1451,15 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "The SwanLab user's `username` (required)"
+                    "description": "SwanLab user's `username` (required)"
                   },
                   "provider": {
                     "type": "string",
-                    "description": "Provider name (required); the Provider must be enabled"
+                    "description": "SSO Provider identifier (required; the provider must be enabled)"
                   },
                   "providerUserId": {
                     "type": "string",
-                    "description": "Unique identifier of the third-party user (required)"
+                    "description": "Unique user identifier (Subject / User ID) from the external identity provider (required)"
                   }
                 }
               },
@@ -1467,10 +1475,10 @@
         },
         "responses": {
           "201": {
-            "description": "Created, bound successfully, no response body"
+            "description": "Created: account bound successfully (empty response body)"
           },
           "400": {
-            "description": "Bad Request, invalid request body",
+            "description": "Bad Request: invalid request body",
             "content": {
               "application/json": {
                 "schema": {
@@ -1485,7 +1493,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -1500,7 +1508,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, the caller is not the root user",
+            "description": "Forbidden: root user privileges required",
             "content": {
               "application/json": {
                 "schema": {
@@ -1515,7 +1523,7 @@
             }
           },
           "404": {
-            "description": "Not Found: the user does not exist (unregistered or disabled); the provider does not exist or is not enabled",
+            "description": "Not Found: target user does not exist (unregistered or deactivated), or the specified Provider does not exist / is disabled",
             "content": {
               "application/json": {
                 "schema": {
@@ -1530,7 +1538,7 @@
             }
           },
           "409": {
-            "description": "Conflict: the third-party account is already bound to another SwanLab user; the user already has a binding under this Provider",
+            "description": "Conflict: the external account is already bound to another SwanLab user, or the target user already has a binding under this Provider",
             "content": {
               "application/json": {
                 "schema": {
@@ -1557,8 +1565,8 @@
     "/self_hosted/sso/bind/del": {
       "post": {
         "operationId": "self-hosted-unbind-sso",
-        "summary": "Unbind third-party account",
-        "description": "Deletes the binding between the given user and the given third-party account. The triple `username` + `provider` + `providerUserId` must match exactly; any mismatch (for example, the third-party account is actually bound to another user) returns `404`.\n\nUnlike the bind endpoint: the Provider does not need to be enabled (leftovers under a disabled Provider can still be cleaned up), and `username` is not restricted by user status (bindings of disabled users are kept and must remain removable).",
+        "summary": "Unbind third-party SSO account",
+        "description": "Removes the SSO binding between the specified SwanLab user and external account. The `(username, provider, providerUserId)` tuple must match exactly; any mismatch (e.g., if the external account is bound to a different user) returns `404 Not Found`.\n\nUnlike the bind endpoint, this endpoint does not require the Provider to be enabled or the user to be active, allowing administrators to clean up residual bindings for disabled providers or deactivated users.",
         "security": [
           {
             "apiKeyAuth": []
@@ -1573,15 +1581,15 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "The SwanLab user's `username` (required), any user status"
+                    "description": "SwanLab user's `username` (required; any user status)"
                   },
                   "provider": {
                     "type": "string",
-                    "description": "Provider name (required), does not need to be enabled"
+                    "description": "SSO Provider identifier (required; whether enabled or disabled)"
                   },
                   "providerUserId": {
                     "type": "string",
-                    "description": "Unique identifier of the third-party user (required)"
+                    "description": "Unique user identifier from the external identity provider (required)"
                   }
                 }
               },
@@ -1597,10 +1605,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content, unbound successfully, no response body"
+            "description": "No Content: account unbound successfully (empty response body)"
           },
           "400": {
-            "description": "Bad Request, invalid request body",
+            "description": "Bad Request: invalid request body",
             "content": {
               "application/json": {
                 "schema": {
@@ -1615,7 +1623,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, no valid credentials were provided",
+            "description": "Unauthorized: missing or invalid authentication credentials",
             "content": {
               "application/json": {
                 "schema": {
@@ -1630,7 +1638,7 @@
             }
           },
           "403": {
-            "description": "Forbidden, the caller is not the root user",
+            "description": "Forbidden: root user privileges required",
             "content": {
               "application/json": {
                 "schema": {
@@ -1645,7 +1653,7 @@
             }
           },
           "404": {
-            "description": "Not Found: the provider does not exist; the user does not exist; the binding does not exist (including triple mismatch)",
+            "description": "Not Found: Provider does not exist, user does not exist, or no matching binding tuple was found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1673,7 +1681,7 @@
       "post": {
         "operationId": "oauth2-token",
         "summary": "Obtain an Access Token",
-        "description": "Issue an access token and refresh token from an authorization code, or refresh the access token using a refresh token.",
+        "description": "Exchange an OAuth2 `authorization_code` for an `access_token` and `refresh_token`, or use a `refresh_token` to issue a new `access_token`.",
         "security": [
           {
             "basicAuth": []
@@ -1689,15 +1697,15 @@
                   "grant_type": {
                     "type": "string",
                     "enum": ["authorization_code", "refresh_token"],
-                    "description": "Grant type"
+                    "description": "OAuth2 grant type (`authorization_code` or `refresh_token`)"
                   },
                   "code": {
                     "type": "string",
-                    "description": "The authorization code passed to the callback URL"
+                    "description": "Authorization code received at the callback URL (required when `grant_type=authorization_code`)"
                   },
                   "refresh_token": {
                     "type": "string",
-                    "description": "Refresh token"
+                    "description": "Refresh token used to obtain a new access token (required when `grant_type=refresh_token`)"
                   }
                 }
               },
@@ -1712,7 +1720,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully obtained or refreshed the access token",
+            "description": "OK: access token issued or refreshed successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -1721,16 +1729,16 @@
                   "properties": {
                     "access_token": {
                       "type": "string",
-                      "description": "Access token, valid for 2 hours"
+                      "description": "OAuth2 access token (valid for 2 hours)"
                     },
                     "refresh_token": {
                       "type": "string",
-                      "description": "Refresh token, valid for 30 days (only returned when grant_type=authorization_code)"
+                      "description": "OAuth2 refresh token, valid for 30 days (returned only when `grant_type=authorization_code`)"
                     },
                     "expires_in": {
                       "type": "integer",
                       "format": "int32",
-                      "description": "Access token validity period in seconds, fixed at 7200"
+                      "description": "Access token lifetime in seconds, fixed at `7200`"
                     }
                   }
                 },
@@ -1743,7 +1751,7 @@
             }
           },
           "400": {
-            "description": "bad_request: malformed request body or unsupported grant_type; error_code: the code is invalid, expired, or already consumed; error_token: the refresh_token is invalid or expired",
+            "description": "`bad_request`: malformed request body or unsupported `grant_type`; `error_code`: authorization code is invalid, expired, or already redeemed; `error_token`: `refresh_token` is invalid or expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -1759,7 +1767,7 @@
             }
           },
           "401": {
-            "description": "unauthorized: missing Basic Auth, incorrect app_secret, or the code / refresh token does not belong to the current application",
+            "description": "`unauthorized`: missing Basic Auth header, invalid `app_secret`, or the `code` / `refresh_token` does not belong to the requesting application",
             "content": {
               "application/json": {
                 "schema": {
@@ -1775,7 +1783,7 @@
             }
           },
           "404": {
-            "description": "not_found: the app_id does not exist",
+            "description": "`not_found`: `app_id` does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -1791,7 +1799,7 @@
             }
           },
           "500": {
-            "description": "parse_error: failed to parse JSON; random_error: failed to generate token; database_error: storage operation failed",
+            "description": "`parse_error`: failed to parse JSON payload; `random_error`: token generation failed; `database_error`: persistence operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -1814,7 +1822,7 @@
       "get": {
         "operationId": "oauth2-user-info",
         "summary": "Get user info",
-        "description": "Retrieve public SwanLab user info based on the access token.",
+        "description": "Retrieve the authenticated SwanLab user's public profile using a valid `access_token`.",
         "security": [
           {
             "bearerAuth": []
@@ -1822,7 +1830,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved the user info",
+            "description": "OK: successfully retrieved user profile",
             "content": {
               "application/json": {
                 "schema": {
@@ -1835,38 +1843,38 @@
                     },
                     "nickname": {
                       "type": "string",
-                      "description": "SwanLab nickname"
+                      "description": "Display name / nickname"
                     },
                     "avatar": {
                       "type": "string",
-                      "description": "User avatar URL"
+                      "description": "Avatar URL"
                     },
                     "profile": {
                       "type": "object",
                       "properties": {
                         "bio": {
                           "type": "string",
-                          "description": "Bio"
+                          "description": "User bio"
                         },
                         "website": {
                           "type": "string",
-                          "description": "User's personal website"
+                          "description": "Personal website URL"
                         },
                         "location": {
                           "type": "string",
-                          "description": "Location"
+                          "description": "City or location"
                         },
                         "idc": {
                           "type": "string",
-                          "description": "Country or region"
+                          "description": "Country or region code"
                         },
                         "organization": {
                           "type": "string",
-                          "description": "Company or organization"
+                          "description": "Company or institution"
                         },
                         "education": {
                           "type": "string",
-                          "description": "School"
+                          "description": "School or university"
                         }
                       }
                     }
@@ -1889,7 +1897,7 @@
             }
           },
           "400": {
-            "description": "bad_request: missing token or malformed Authorization header",
+            "description": "`bad_request`: missing token or malformed `Authorization` header",
             "content": {
               "application/json": {
                 "schema": {
@@ -1905,7 +1913,7 @@
             }
           },
           "401": {
-            "description": "unauthorized: the access token does not exist or has expired",
+            "description": "`unauthorized`: `access_token` is invalid or has expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -1921,7 +1929,7 @@
             }
           },
           "500": {
-            "description": "error_internal: failed to fetch user info; parse_error: failed to parse token data; database_error: storage operation failed",
+            "description": "`error_internal`: failed to fetch user info; `parse_error`: failed to parse token payload; `database_error`: storage operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -1944,7 +1952,7 @@
       "get": {
         "operationId": "oauth2-user-api_key",
         "summary": "Get API Key",
-        "description": "Retrieve the user's latest API Key for calling the SwanLab OpenAPI based on the access token.",
+        "description": "Retrieve the authenticated user's latest API Key for calling the SwanLab OpenAPI using a valid `access_token`.",
         "security": [
           {
             "bearerAuth": []
@@ -1952,7 +1960,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved the API Key",
+            "description": "OK: successfully retrieved the API Key",
             "content": {
               "application/json": {
                 "schema": {
@@ -1972,7 +1980,7 @@
             }
           },
           "400": {
-            "description": "bad_request: missing token or malformed Authorization header",
+            "description": "`bad_request`: missing token or malformed `Authorization` header",
             "content": {
               "application/json": {
                 "schema": {
@@ -1988,7 +1996,7 @@
             }
           },
           "401": {
-            "description": "unauthorized: the access token does not exist or has expired",
+            "description": "`unauthorized`: `access_token` is invalid or has expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -2004,7 +2012,7 @@
             }
           },
           "500": {
-            "description": "error_internal: failed to fetch API Key; parse_error: failed to parse token data; database_error: storage operation failed",
+            "description": "`error_internal`: failed to fetch API Key; `parse_error`: failed to parse token payload; `database_error`: storage operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -2027,14 +2035,14 @@
   "servers": [
     {
       "url": "https://api.swanlab.cn/api",
-      "description": "SwanLab production environment (for OAuth2 authorization)"
+      "description": "SwanLab Public Cloud environment (for OAuth2 authorization endpoints)"
     }
   ],
   "components": {
     "securitySchemes": {
       "basicAuth": {
         "type": "http",
-        "description": "Authorization: Basic <app_id:app_secret(base64-encoded)>",
+        "description": "Authorization: Basic <base64(app_id:app_secret)>",
         "scheme": "basic"
       },
       "bearerAuth": {
@@ -2046,7 +2054,7 @@
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
-        "description": "Authorization: ApiKey <instance root user's API Key>. The `ApiKey` prefix is case-sensitive and separated from the key by a single space; a bare key is rejected"
+        "description": "Authorization: ApiKey <instance root user's API Key>. The `ApiKey` prefix is case-sensitive and separated from the key by a single space; omitting the prefix returns `401 Unauthorized`."
       }
     },
     "schemas": {
