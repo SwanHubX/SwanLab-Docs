@@ -58,7 +58,7 @@ python -c "import mindspore;mindspore.set_context(device_target='CPU');mindspore
 
 If the following information is output, MindSpore has been successfully installed:
 
-```bash
+```text
 MindSpore version: 2.4.1
 The result of multiplication calculation is correct, MindSpore has been installed on platform [CPU] successfully!
 ```
@@ -137,7 +137,7 @@ If an error occurs at this step, refer to the [Environment Installation Troubles
 
 If the version information and calculation verification are displayed, the installation is successful.
 
-```bash
+```text
 MindSpore version:  2.4.1
 The result of multiplication calculation is correct, MindSpore has been installed on platform [Ascend] successfully!
 ```
@@ -184,7 +184,7 @@ If the download is too slow, you can use the [Huawei Cloud provided domestic lin
 
 Use the following command to start training:
 
-```
+```bash
 python train.py
 ```
 
@@ -502,7 +502,7 @@ predict_sentiment(model, vocab, "This film is terrible")
 
 Ensure that the MindSpore version is consistent with the driver version. Otherwise, the following error will occur:
 
-```bash
+```text
 [WARNING] ME(1049852:281473041023008,MainProcess):2024-12-06-12:23:11.112.000 [mindspore/run_check/_check_version.py:357] MindSpore version 2.3.1 and Ascend AI software package (Ascend Data Center Solution)version 7.5 does not match, the version of software package expect one of ['7.2', '7.3']. Please refer to the match info on: https://www.mindspore.cn/install
 /home/huawei/miniconda3/envs/mindspore231/lib/python3.10/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
   setattr(self, word, getattr(machar, word).flat[0])
@@ -539,7 +539,7 @@ Solution: Install the correct version. For MindSpore 2.4.1, install the **8.0.RC
 
 The following error may occur:
 
-```bash
+```text
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:360] CheckFailed: cannot import name 'version' from 'te' (unknown location)
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:361] MindSpore relies on whl packages of "te" and "hccl" in the "latest" folder of the Ascend AI software package (Ascend Data Center Solution). Please check whether they are installed correctly or not, refer to the match info on: https://www.mindspore.cn/install
 Traceback (most recent call last):
@@ -558,7 +558,7 @@ Aborted (core dumped)
 
 If the following error occurs (there is a probability that pip may report the following error during previous installations):
 
-```bash
+```text
 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 auto-tune 0.1.0 requires decorator, which is not installed.
 dataflow 0.0.1 requires jinja2, which is not installed.
@@ -586,7 +586,7 @@ pip install attrs cloudpickle decorator jinja2 ml-dtypes psutil scipy tornado ab
 
 The following situation is likely to occur when the environment variable command has not been run.
 
-```bash
+```text
 Traceback (most recent call last):
   File "/home/huawei/miniconda3/envs/mindspore241/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
     self.run()

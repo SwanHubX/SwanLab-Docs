@@ -26,7 +26,7 @@ pip install lightning lightning_fabric
 
 DiffSynth Studio 的数据集需要按下面的格式进行构建，比如将图像数据存放在`data/dog`目录下：
 
-```bash
+```text
 data/dog/
 └── train
     ├── 00.jpg

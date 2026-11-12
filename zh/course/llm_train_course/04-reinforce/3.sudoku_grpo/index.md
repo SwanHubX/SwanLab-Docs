@@ -389,7 +389,7 @@ pip install torch_npu-2.4.0.post2-cp311-cp311-manylinux_2_17_aarch64.manylinux20
 python datacreate.py
 ```
 
-```python
+```text
 # 生成的数据
 ├──data
 │   ├── sudoku_4x4_answer.jsonl  # 288条4*4只有答案的数据集
@@ -1040,7 +1040,7 @@ if __name__ == "__main__":
 
 由于我们在训练代码中未添加各种参数config设置，因此我们需要另外的文件去配置这些超参数，然后我们的实验都使用`accelerate`分布式训练来实现训练的加速。
 
-```python
+```text
 # 训练文件
 ├──configs/   # 参数配置文件
 │   ├── deepspeed_zero3.yaml  # deepspeed参数配置
@@ -1144,7 +1144,7 @@ bash ./eval/generate.sh
 
 运行下面的代码可以直接将生成的结果数据进行评估，得到最终的准确度：
 
-```python
+```bash
 python ./eval/eval.py
 ```
 

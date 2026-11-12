@@ -63,7 +63,7 @@ modelscope download --dataset swift/self-cognition --local_dir ./self-cognition
 
 由于MLX-LM框架的数据格式还有点小区别，再来也要替换数据集中的名称，可以使用笔者实现的数据转换脚本进行格式转换，数据脚本命名为`trans_data.py`：
 
-```bash
+```python
 import os
 import json
 import argparse
@@ -139,7 +139,7 @@ python trans_data.py --name 小鹅 --author SwanLab团队 --en_name little-swan 
 
 转换后会在本地路径生成如下两个文件：
 
-```bash
+```text
 Finetune_Qwen3_on_MacBook
 ├── mlx_data
 │   ├── train.jsonl
@@ -246,7 +246,7 @@ mlx_lm.server --model Qwen3-0.6B --adapter-path cog_adapters --chat-template-arg
 
 运行成功后会显示：
 
-```bash
+```text
 2025-09-18 15:51:42,639 - INFO - Starting httpd at 127.0.0.1 on port 8080...
 ```
 
@@ -263,7 +263,7 @@ curl localhost:8080/v1/chat/completions \
 
 看到模型正常返回后，说明API部署成功：
 
-```bash
+```text
 {"id": "chatcmpl-bdfd6f0c-72db-418e-a35a-ecf13cd98ee0", "system_fingerprint": "0.28.0-0.29.1-macOS-15.6.1-arm64-arm-64bit-applegpu_g14g", "object": "chat.completion", "model": "default_model", "created": 1758181778, "choices": [{"index": 0, "finish_reason": "stop", "logprobs": {"token_logprobs": [-1.125, -0.875, -1.5, 0.0, -0.125, 0.0, -0.375, -2.75, -0.25, -0.375, 0.0, 0.0, -0.125, 0.0, -0.5, 0.0, -0.625, 0.0, 0.0, 0.0, -1.25, 0.0], "top_logprobs": [], "tokens": [9707, 11, 419, 374, 264, 1273, 0, 1416, 498, 614, 894, 4755, 476, 1184, 1492, 11, 2666, 1910, 311, 2548, 0, 151645]}, "message": {"role": "assistant", "content": "Hello, this is a test! If you have any questions or need help, feel free to ask!", "tool_calls": []}}], "usage": {"prompt_tokens": 18, "completion_tokens": 22, "total_tokens": 40}}%
 ```
 

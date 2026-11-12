@@ -108,7 +108,7 @@ swanlab login --host <IP地址>
 
 测试脚本：
 
-```bash
+```python
 import swanlab
 import random
 

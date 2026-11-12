@@ -26,7 +26,7 @@ pip install lightning lightning_fabric
 
 The dataset for DiffSynth Studio needs to be structured in the following format. For example, place the image data in the `data/dog` directory:
 
-```bash
+```text
 data/dog/
 └── train
     ├── 00.jpg

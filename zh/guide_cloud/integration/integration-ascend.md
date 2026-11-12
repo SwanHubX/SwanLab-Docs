@@ -58,7 +58,7 @@ python -c "import mindspore;mindspore.set_context(device_target='CPU');mindspore
 
 如果输出如下信息说明MindSpore安装成功了：
 
-```bash
+```text
 MindSpore version: 2.4.1
 The result of multiplication calculation is correct, MindSpore has been installed on platform [CPU] successfully!
 ```
@@ -137,7 +137,7 @@ python -c "import mindspore;mindspore.set_context(device_target='Ascend');mindsp
 
 出现版本号信息和计算验证便意味着安装成功
 
-```bash
+```text
 MindSpore version:  2.4.1
 The result of multiplication calculation is correct, MindSpore has been installed on platform [Ascend] successfully!
 ```
@@ -184,7 +184,7 @@ unzip embedding/glove.6B.zip -d embedding/
 
 使用如下命令开始训练
 
-```
+```bash
 python train.py
 ```
 
@@ -503,7 +503,7 @@ predict_sentiment(model, vocab, "This film is terrible")
 
 务必确保MindSpore版本和驱动一致，否则会出现如下报错：
 
-```bash
+```text
 [WARNING] ME(1049852:281473041023008,MainProcess):2024-12-06-12:23:11.112.000 [mindspore/run_check/_check_version.py:357] MindSpore version 2.3.1 and Ascend AI software package (Ascend Data Center Solution)version 7.5 does not match, the version of software package expect one of ['7.2', '7.3']. Please refer to the match info on: https://www.mindspore.cn/install
 /home/huawei/miniconda3/envs/mindspore231/lib/python3.10/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
   setattr(self, word, getattr(machar, word).flat[0])
@@ -540,7 +540,7 @@ Segmentation fault (core dumped)
 
 这里面
 
-```bash
+```text
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:360] CheckFailed: cannot import name 'version' from 'te' (unknown location)
 [ERROR] ME(1051780:281473416683552,MainProcess):2024-12-06-12:39:02.460.00 [mindspore/run_check/_check_version.py:361] MindSpore relies on whl packages of "te" and "hccl" in the "latest" folder of the Ascend AI software package (Ascend Data Center Solution). Please check whether they are installed correctly or not, refer to the match info on: https://www.mindspore.cn/install
 Traceback (most recent call last):
@@ -559,7 +559,7 @@ Aborted (core dumped)
 
 若出现如下报错（之前安装的时候有概率pip会报如下错误）：
 
-```bash
+```text
 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 auto-tune 0.1.0 requires decorator, which is not installed.
 dataflow 0.0.1 requires jinja2, which is not installed.
@@ -587,7 +587,7 @@ pip install attrs cloudpickle decorator jinja2 ml-dtypes psutil scipy tornado ab
 
 出现如下情况大概率是没有运行环境变量命令。
 
-```bash
+```text
 Traceback (most recent call last):
   File "/home/huawei/miniconda3/envs/mindspore241/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
     self.run()
