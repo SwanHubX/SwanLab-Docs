@@ -126,7 +126,7 @@ export const zh = defineConfig({
           { text: "交流群", link: base_path_guide_cloud + "/community/online-support" },
           {
             text: "建议反馈",
-            link: "https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI",
+            link: "https://rcnpx636fedp.feishu.cn/share/base/form/shrcnwT9dTedqUchdpgzPzKvcmd",
           },
           {
             text: "加入我们",

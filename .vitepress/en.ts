@@ -114,7 +114,7 @@ export const en = defineConfig({
           { text: "Online Support", link: base_path_guide_cloud + "/community/online-support" },
           {
             text: "Feedback",
-            link: "https://geektechstudio.feishu.cn/share/base/form/shrcn8koDFRcH2mMcBYMh9tiKfI",
+            link: "https://rcnpx636fedp.feishu.cn/share/base/form/shrcnwT9dTedqUchdpgzPzKvcmd",
           },
           {
             text: "Join Us",
