@@ -551,7 +551,7 @@ return F.scaled_dot_product_attention(
 
 那么接下来我们就开始训练吧，由于我已经整理过代码，因此可以直接运行脚本文件实现，下面简要说下每个文件的含义和用法：
 
-```python
+```text
 ├── configs
 │   ├── llada-100M-pt-npu.yaml          # llada预训练超参数设置
 │   ├── llada-8b-sft-npu.yaml           # llada微调超参数设置

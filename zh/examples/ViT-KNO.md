@@ -36,7 +36,7 @@ MindSpore Earth 是基于昇思 MindSpore 打造的地球科学智能套件，�
 
 数据集存放于 `./dataset` 目录下，其内部结构示例如下：
 
-```sh
+```text
 .
 ├── statistic
 │   ├── mean.npy
@@ -65,7 +65,7 @@ MindSpore Earth 是基于昇思 MindSpore 打造的地球科学智能套件，�
 
 除数据集路径在 `vit_kno.yaml` 配置文件中指定，其他文件建议的项目结构如下：
 
-```sh
+```text
 .
 ├── vit_kno.yaml              # 模型与训练的配置文件
 ├── src/

@@ -36,7 +36,7 @@ Before starting training, modify the `root_dir`parameter in the `vit_kno.yaml`co
 
 The dataset is stored in the `./dataset`directory. Its internal structure is as follows:
 
-```sh
+```text
 .
 ├── statistic
 │   ├── mean.npy
@@ -65,7 +65,7 @@ The dataset is stored in the `./dataset`directory. Its internal structure is as 
 
 Except for the dataset path specified in the `vit_kno.yaml`configuration file, the recommended project structure for other files is as follows:
 
-```sh
+```text
 .
 ├── vit_kno.yaml              # Model and training configuration file
 ├── src/

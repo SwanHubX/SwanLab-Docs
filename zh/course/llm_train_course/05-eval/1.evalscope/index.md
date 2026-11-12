@@ -41,13 +41,13 @@
 
 **1、安装ms-swift（>=3.1.1）：**
 
-```plaintext
+```bash
 pip install ms-swift
 ```
 
 **_2、安装swanlab：_**
 
-```plaintext
+```bash
 pip install swanlab
 ```
 
@@ -55,19 +55,19 @@ pip install swanlab
 
 如果采用单机多卡分布式训练方式，可以选择DeepSpeed ZeRO2/ZeRO3。
 
-```plaintext
+```bash
 pip install deepspeed
 ```
 
 **4、安装evalscope**
 
-```python
+```bash
 pip install evalscope
 ```
 
 **也可以直接使用下面的代码设置环境**
 
-```plaintext
+```bash
 pip install -r requirement.txt
 ```
 
@@ -208,7 +208,7 @@ evalscope eval \
 
 evalscope官方整理了一个`zip`文件，可以直接下载到本地，包括下面的数据集：
 
-```python
+```text
 .
 ├── arc
 ├── bbh

@@ -33,7 +33,7 @@ swanlab
 
 一键安装命令：
 
-```Plain Text
+```bash
 pip install pytrio swanlab
 ```
 

@@ -64,7 +64,7 @@ accelerator.end_training()
 
 ### 2.1 引入
 
-```bash
+```python
 from swanlab.integration.accelerate import SwanLabTracke
 ```
 

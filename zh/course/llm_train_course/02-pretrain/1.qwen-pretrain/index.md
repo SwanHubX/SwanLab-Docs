@@ -325,7 +325,7 @@ if __name__ == "__main__":
 
 运行如下命令
 
-```
+```bash
 python pretrain.py
 ```
 

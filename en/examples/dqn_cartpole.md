@@ -386,7 +386,7 @@ Before starting the training, if you haven't used [SwanLab](https://swanlab.cn) 
 
 Next, open the command line and type the following command:
 
-```python
+```bash
 swanlab login
 ```
 

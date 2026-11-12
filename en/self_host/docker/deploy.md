@@ -108,7 +108,7 @@ Press Enter, enter your API Key, and complete the login. Your SwanLab experiment
 
 Test Script:
 
-```bash
+```python
 import swanlab
 import random
 

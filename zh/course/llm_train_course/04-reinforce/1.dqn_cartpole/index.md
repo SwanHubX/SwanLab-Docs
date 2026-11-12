@@ -388,7 +388,7 @@ test_env.close()
 
 接下来打开命令行，敲下面的命令：
 
-```python
+```bash
 swanlab login
 ```
 

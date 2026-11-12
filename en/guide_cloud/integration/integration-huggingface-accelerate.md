@@ -64,7 +64,7 @@ For versions of `accelerate` <1.8.0, use the `SwanLabTracker` integration.
 
 ### 2.1 Import
 
-```bash
+```python
 from swanlab.integration.accelerate import SwanLabTracker
 ```
 

@@ -1470,7 +1470,7 @@ git代码👉[[textvqa_grounding_task_qwen2.5-vl-ft](https://github.com/828Tina/
 
 代码总览如下：
 
-```python
+```text
 project/
 ├── configs/
 │   ├── deepspeed_bf16_zero2.yaml

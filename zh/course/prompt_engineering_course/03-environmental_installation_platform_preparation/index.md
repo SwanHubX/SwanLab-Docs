@@ -51,7 +51,7 @@ source ~/miniconda/bin/activate
 
 安装命令：
 
-```python
+```bash
 # 创建环境
 conda create -n test python=3.10
 
