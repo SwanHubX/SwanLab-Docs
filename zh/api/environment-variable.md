@@ -89,14 +89,27 @@
 
 ## 核心行为
 
-| 环境变量                               | 描述                                                                                          | 默认值  |
-| -------------------------------------- | --------------------------------------------------------------------------------------------- | ------- |
-| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | 是否跳过 swanboard 版本兼容性检查，设置为 `1` 可跳过                                          | 不跳过  |
-| `SWANLAB_FS_TIMEOUT`                   | 文件系统操作超时时间（秒），适用于 NAS 等异步延迟较高的存储环境                               | `5.0`   |
-| `SWANLAB_CORE_RECORD_BATCH`            | 单次 HTTP 请求上传的记录条数上限                                                              | `10000` |
-| `SWANLAB_CORE_SKIP_STORE`              | 是否跳过所有 SDK 本地文件、数据仅直传云端，等价于 `core.skip_store`；仅在 `online` 模式下合法 | `false` |
-| `SWANLAB_TERMINAL_PROXY_TYPE`          | 终端日志代理策略：`all`（全部）、`stdout`、`stderr`、`none`（不收集）                         | `all`   |
-| `SWANLAB_TERMINAL_MAX_LENGTH`          | 单行终端日志的最大字符长度                                                                    | `1024`  |
+| 环境变量                               | 描述                                                                  | 默认值 |
+| -------------------------------------- | --------------------------------------------------------------------- | ------ |
+| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | 是否跳过 swanboard 版本兼容性检查，设置为 `1` 可跳过                  | 不跳过 |
+| `SWANLAB_FS_TIMEOUT`                   | 文件系统操作超时时间（秒），适用于 NAS 等异步延迟较高的存储环境       | `5.0`  |
+| `SWANLAB_TERMINAL_PROXY_TYPE`          | 终端日志代理策略：`all`（全部）、`stdout`、`stderr`、`none`（不收集） | `all`  |
+| `SWANLAB_TERMINAL_MAX_LENGTH`          | 单行终端日志的最大字符长度                                            | `1024` |
+
+## Core 配置
+
+以下环境变量对应 [`Settings.Core`](./py-settings.md) 的字段，效果等同于在 `swanlab.Settings(core=...)` 中设置。
+
+| 环境变量                       | 描述                                                                                          | 默认值                  |
+| ------------------------------ | --------------------------------------------------------------------------------------------- | ----------------------- |
+| `SWANLAB_CORE_RECORD_BATCH`    | 单次 HTTP 请求上传的记录条数上限，取值范围 1-99999                                            | `10000`                 |
+| `SWANLAB_CORE_RECORD_INTERVAL` | 上传线程的批量上传间隔（秒），需大于 0                                                        | `1.5`                   |
+| `SWANLAB_CORE_MEDIA_MAX_SIZE`  | 单个媒体文件的大小上限（字节），取值为 10-500 MiB，超限的媒体会被丢弃并告警                   | `52428800`（50 MiB）    |
+| `SWANLAB_CORE_SAVE_SPLIT`      | 分片上传的文件大小阈值（字节）                                                                | `104857600`（100 MiB）  |
+| `SWANLAB_CORE_SAVE_SIZE`       | `run.save()` 单个文件的最大保存大小（字节）                                                   | `53687091200`（50 GiB） |
+| `SWANLAB_CORE_SAVE_PART`       | 分片上传的每个分片大小（字节）                                                                | `33554432`（32 MiB）    |
+| `SWANLAB_CORE_SAVE_BATCH`      | 每次保存上传的最大文件数量                                                                    | `100`                   |
+| `SWANLAB_CORE_SKIP_STORE`      | 是否跳过所有 SDK 本地文件、数据仅直传云端，等价于 `core.skip_store`；仅在 `online` 模式下合法 | `false`                 |
 
 ## 高级配置
 

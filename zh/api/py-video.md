@@ -4,120 +4,120 @@
 
 ```python
 Video(
-    data_or_path: str,
+    data_or_path: Union[str, Path, bytes, BytesIO, np.ndarray, Video],
     caption: str = None,
+    fps: int = None,
+    format: Literal["gif", "mp4", "webm", "ogg"] = None,
 ) -> None
 ```
 
-| 参数         | 描述                                                   |
-| ------------ | ------------------------------------------------------ |
-| data_or_path | (str) 接收视频文件路径。目前仅支持GIF格式文件。        |
-| caption      | (str) 视频的标签。用于在实验看板中展示视频时进行标记。 |
+| 参数         | 描述                                                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| data_or_path | (Union[str, Path, bytes, BytesIO, np.ndarray, Video]) 接收视频文件路径、二进制数据（`bytes` / `BytesIO`）、`numpy` 数组或 `swanlab.Video` 实例。 |
+| caption      | (str, optional) 视频说明文字，展示在实验看板的视频下方。                                                                                         |
+| fps          | (int, optional) 将数组编码为视频时的帧率，默认为 `4`。传入文件、二进制数据或 `Video` 对象时忽略该参数。                                          |
+| format       | (str, optional) 视频格式，可选 `"gif"`、`"mp4"`、`"webm"`、`"ogg"`。传入文件时由扩展名决定；传入数组或非 GIF 二进制数据时必填。                  |
 
 ## 介绍
 
-对视频数据做转换，以被`swanlab.log()`记录。目前仅支持GIF格式的视频文件。
+封装视频数据以供 `swanlab.log()` 记录，支持 **GIF**、**MP4**、**WebM**、**OGG** 四种格式：
 
-::: warning 格式限制
-目前 `swanlab.Video` 仅支持 GIF 格式的文件路径。其他视频格式暂不支持。
+- **视频文件与二进制数据**：原样保存，保留原有画质与音轨；
+- **NumPy 数组 / Tensor**：在本地编码为指定格式的无声视频。
+
+::: warning 环境依赖
+**⚠️注意**：传入`numpy`数组或 Tensor 需安装扩展依赖：`pip install "swanlab[media]"`
 :::
 
-### 记录GIF视频文件
+### 从文件路径创建
 
-记录单个GIF视频：
+支持传入路径字符串或 `pathlib.Path`，格式由扩展名（`.gif`、`.mp4`、`.webm`、`.ogg`）自动推断：
 
 ```python
 import swanlab
 
 swanlab.init()
-video = swanlab.Video("path/to/video.gif", caption="训练过程演示")
+
+video = swanlab.Video("path/to/video.mp4", caption="video example")
 swanlab.log({"video": video})
 ```
 
-记录多个GIF视频：
+### 从二进制数据创建
+
+支持 `bytes` 和 `io.BytesIO`。GIF 可自动识别，其他格式需显式指定 `format`：
+
+```python
+import swanlab
+
+with open("path/to/video.webm", "rb") as f:
+    video = swanlab.Video(f.read(), format="webm", caption="video example")
+
+swanlab.init()
+swanlab.log({"video": video})
+```
+
+### 从 NumPy 数组创建
+
+支持形状为 `(T, C, H, W)` 或 `(B, T, C, H, W)` 的数组，其中 `B` 为批次大小、`T` 为帧数、`C` 为通道数（`1`、`3` 或 `4`）、`H`/`W` 为高宽：
+
+- `dtype` 必须为 `uint8`（`0~255`），其他类型请先转换；
+- 4 通道（RGBA）编码时会忽略 Alpha 通道，按 RGB 输出；
+- 必须指定 `format`，`fps` 默认为 `4`。
+
+```python
+import numpy as np
+import swanlab
+
+swanlab.init()
+
+# 64 帧 128x128 的 RGB 视频
+frames = np.random.randint(0, 256, (64, 3, 128, 128), dtype=np.uint8)
+video = swanlab.Video(frames, format="gif", fps=8, caption="random frame")
+swanlab.log({"video": video})
+```
+
+传入 5D 数组 `(B, T, C, H, W)` 时，`B` 个样本会自动拼接为网格画面（如 `B=4` 时为 `2×2` 网格），画面尺寸随之放大：
+
+```python
+# 4 个样本，每个 32 帧 64x64
+batch = np.random.randint(0, 256, (4, 32, 3, 64, 64), dtype=np.uint8)
+video = swanlab.Video(batch, format="mp4", fps=8)
+swanlab.log({"video": video})
+```
+
+### 从 PyTorch Tensor 创建
+
+`swanlab.Video` 通过 `.numpy()` 方法读取视频帧，传入 Tensor 前需先 `detach`、转到 CPU 并转为 `uint8`：
+
+```python
+# tensor: (T, 3, H, W) 的 float 张量，取值 0~1
+frames = (tensor * 255).clamp(0, 255).to(torch.uint8).detach().cpu()
+video = swanlab.Video(frames, format="mp4", fps=8)
+swanlab.log({"video": video})
+```
+
+### 复用 Video 对象
+
+传入已有的 `swanlab.Video` 实例可直接复用其数据、格式和 `caption`：
+
+```python
+base = swanlab.Video("path/to/video.mp4", caption="raw video")
+copy = swanlab.Video(base)
+```
+
+### 单步记录多个视频
 
 ```python
 import swanlab
 
 swanlab.init()
 
-examples = []
-for i in range(3):
-    video = swanlab.Video(f"video_{i}.gif", caption=f"视频示例 {i}")
-    examples.append(video)
-
-swanlab.log({"examples": examples})
+videos = [swanlab.Video(f"video-{i}.mp4", caption=f"video-{i}") for i in range(3)]
+swanlab.log({"examples": videos})
 ```
-
-## 创建GIF视频示例
-
-以下是一个创建GIF动画并记录的完整示例：
-
-```python
-import os.path
-import random
-from PIL import Image as PILImage
-from PIL import ImageDraw
-import swanlab
-
-swanlab.init()
-
-# 创建一个GIF动画
-def create_mock_gif(output_path, width=200, height=200, frames=10, duration=100):
-    """
-    创建一个简单的mock GIF动画
-
-    参数:
-        output_path: 输出GIF文件路径
-        width: 图像宽度(像素)
-        height: 图像高度(像素)
-        frames: 动画帧数
-        duration: 每帧显示时间(毫秒)
-    """
-    images = []
-
-    for i in range(frames):
-        # 创建一个新的RGB图像
-        img = PILImage.new('RGB', (width, height), color=(255, 255, 255))
-        draw = ImageDraw.Draw(img)
-
-        # 随机生成颜色
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-
-        # 在图像上绘制一个随机的圆形
-        x = random.randint(0, width)
-        y = random.randint(0, height)
-        radius = random.randint(10, min(width, height) // 2)
-        draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill=(r, g, b))
-
-        # 将当前帧添加到列表中
-        images.append(img)
-
-    # 保存为GIF动画
-    images[0].save(output_path, save_all=True, append_images=images[1:], duration=duration, loop=0)
-
-# 创建GIF文件
-gif_path = "test.gif"
-create_mock_gif(gif_path, width=300, height=300, frames=15, duration=200)
-
-# 记录到SwanLab
-swanlab.log({"video": swanlab.Video(gif_path, caption="这是一个测试视频")})
-```
-
-## 使用场景
-
-`swanlab.Video` 适用于以下场景：
-
-1. **训练过程可视化**：记录模型训练过程中的动态变化
-2. **实验结果展示**：展示实验结果的动态演示
-3. **数据可视化**：将时间序列数据转换为动画展示
-4. **模型行为分析**：记录模型在不同输入下的动态响应
 
 ## 注意事项
 
-1. **文件格式**：目前仅支持 GIF 格式，不支持 MP4、AVI 等其他视频格式
-2. **文件大小**：建议控制 GIF 文件大小，过大的文件可能影响加载速度
-3. **帧率控制**：创建 GIF 时可以通过 `duration` 参数控制播放速度
-4. **文件路径**：确保提供的文件路径正确且文件存在
+1. 入参为数组时，画面单边上限为 `4096` 像素（批量拼接后按总宽高计算，如 `B=4` 时宽高各翻倍）。MP4 宽高会自动补齐为偶数，OGG 自动补齐为 16 的倍数。
+2. 单个视频默认上限 `50 MiB`，可通过 [`core.media_max_size`](./py-settings.md#核心行为配置-coresettings) 调整，超出范围限制的视频会被跳过并告警。
+3. 传入文件时校验扩展名，传入二进制数据时校验文件头（Magic Bytes），格式不匹配或不受支持会直接报错。
