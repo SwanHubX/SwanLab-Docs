@@ -4,120 +4,120 @@
 
 ```python
 Video(
-    data_or_path: str,
+    data_or_path: Union[str, Path, bytes, BytesIO, np.ndarray, Video],
     caption: str = None,
+    fps: int = None,
+    format: Literal["gif", "mp4", "webm", "ogg"] = None,
 ) -> None
 ```
 
-| Parameter    | Description                                                                                       |
-| ------------ | ------------------------------------------------------------------------------------------------- |
-| data_or_path | (str) Accepts a video file path. Currently only supports GIF format files.                        |
-| caption      | (str) The label for the video. Used to mark the video when displayed in the experiment dashboard. |
+| Parameter    | Description                                                                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data_or_path | (Union[str, Path, bytes, BytesIO, np.ndarray, Video]) Accepts a video file path, binary data (`bytes` / `BytesIO`), a `numpy` array, or a `swanlab.Video` instance. |
+| caption      | (str, optional) Video caption displayed below the video in the dashboard.                                                                                           |
+| fps          | (int, optional) Frame rate (frames per second) when encoding an array into a video. Defaults to `4`. Ignored for file paths, binary data, or `Video` instances.     |
+| format       | (str, optional) Video format: `"gif"`, `"mp4"`, `"webm"`, or `"ogg"`. Inferred from the file extension for file paths; required for arrays and non-GIF binary data. |
 
 ## Introduction
 
-Convert video data to be recorded by `swanlab.log()`. Currently only supports GIF format video files.
+Wraps video data to be logged via `swanlab.log()`. Supports **GIF**, **MP4**, **WebM**, and **OGG**:
 
-::: warning Format Limitation
-Currently `swanlab.Video` only supports GIF format file paths. Other video formats are not supported yet.
+- **Video files and binary data**: Stored as-is, preserving the original quality and audio track.
+- **NumPy arrays / Tensors**: Encoded locally into a silent video in the specified format.
+
+::: warning Dependencies
+**⚠️ Note**: Passing a `numpy` array or Tensor requires the media extras: `pip install "swanlab[media]"`
 :::
 
-### Logging GIF Video Files
+### From a File Path
 
-Logging a single GIF video:
+Accepts a path string or `pathlib.Path`. The format is inferred from the file extension (`.gif`, `.mp4`, `.webm`, `.ogg`):
 
 ```python
 import swanlab
 
 swanlab.init()
-video = swanlab.Video("path/to/video.gif", caption="Training Process Demo")
+
+video = swanlab.Video("path/to/video.mp4", caption="video example")
 swanlab.log({"video": video})
 ```
 
-Logging multiple GIF videos:
+### From Binary Data
+
+Accepts `bytes` or `io.BytesIO`. GIF is detected automatically; other formats require `format` to be specified explicitly:
+
+```python
+import swanlab
+
+with open("path/to/video.webm", "rb") as f:
+    video = swanlab.Video(f.read(), format="webm", caption="video example")
+
+swanlab.init()
+swanlab.log({"video": video})
+```
+
+### From a NumPy Array
+
+Accepts a 4D array `(T, C, H, W)` or a 5D batch array `(B, T, C, H, W)`, where `B` is batch size, `T` is frame count, `C` is channels (`1`, `3`, or `4`), and `H`/`W` are height and width:
+
+- `dtype` must be `uint8` (`0~255`); convert other dtypes beforehand.
+- 4-channel (RGBA) inputs drop the alpha channel and are encoded as RGB.
+- `format` is required; `fps` defaults to `4`.
+
+```python
+import numpy as np
+import swanlab
+
+swanlab.init()
+
+# 64-frame 128x128 RGB video
+frames = np.random.randint(0, 256, (64, 3, 128, 128), dtype=np.uint8)
+video = swanlab.Video(frames, format="gif", fps=8, caption="random frame")
+swanlab.log({"video": video})
+```
+
+When a 5D array `(B, T, C, H, W)` is passed, the `B` samples are tiled into a single grid frame (e.g., a `2×2` grid when `B=4`), scaling the output resolution accordingly:
+
+```python
+# 4 samples, each 32 frames at 64x64
+batch = np.random.randint(0, 256, (4, 32, 3, 64, 64), dtype=np.uint8)
+video = swanlab.Video(batch, format="mp4", fps=8)
+swanlab.log({"video": video})
+```
+
+### From a PyTorch Tensor
+
+`swanlab.Video` reads frames via the object's `.numpy()` method. Detach the Tensor, move it to CPU, and cast it to `uint8` before passing it in:
+
+```python
+# tensor: float tensor of shape (T, 3, H, W) with values in 0~1
+frames = (tensor * 255).clamp(0, 255).to(torch.uint8).detach().cpu()
+video = swanlab.Video(frames, format="mp4", fps=8)
+swanlab.log({"video": video})
+```
+
+### Reusing a Video Instance
+
+Pass an existing `swanlab.Video` instance to reuse its underlying data, format, and `caption`:
+
+```python
+base = swanlab.Video("path/to/video.mp4", caption="raw video")
+copy = swanlab.Video(base)
+```
+
+### Logging Multiple Videos in One Step
 
 ```python
 import swanlab
 
 swanlab.init()
 
-examples = []
-for i in range(3):
-    video = swanlab.Video(f"video_{i}.gif", caption=f"Video Example {i}")
-    examples.append(video)
-
-swanlab.log({"examples": examples})
+videos = [swanlab.Video(f"video-{i}.mp4", caption=f"video-{i}") for i in range(3)]
+swanlab.log({"examples": videos})
 ```
-
-## Creating GIF Video Example
-
-Here's a complete example of creating a GIF animation and logging it:
-
-```python
-import os.path
-import random
-from PIL import Image as PILImage
-from PIL import ImageDraw
-import swanlab
-
-swanlab.init()
-
-# Create a GIF animation
-def create_mock_gif(output_path, width=200, height=200, frames=10, duration=100):
-    """
-    Create a simple mock GIF animation
-
-    Parameters:
-        output_path: Output GIF file path
-        width: Image width (pixels)
-        height: Image height (pixels)
-        frames: Number of animation frames
-        duration: Display time per frame (milliseconds)
-    """
-    images = []
-
-    for i in range(frames):
-        # Create a new RGB image
-        img = PILImage.new('RGB', (width, height), color=(255, 255, 255))
-        draw = ImageDraw.Draw(img)
-
-        # Generate random colors
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-
-        # Draw a random circle on the image
-        x = random.randint(0, width)
-        y = random.randint(0, height)
-        radius = random.randint(10, min(width, height) // 2)
-        draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill=(r, g, b))
-
-        # Add current frame to the list
-        images.append(img)
-
-    # Save as GIF animation
-    images[0].save(output_path, save_all=True, append_images=images[1:], duration=duration, loop=0)
-
-# Create GIF file
-gif_path = "test.gif"
-create_mock_gif(gif_path, width=300, height=300, frames=15, duration=200)
-
-# Log to SwanLab
-swanlab.log({"video": swanlab.Video(gif_path, caption="This is a test video")})
-```
-
-## Use Cases
-
-`swanlab.Video` is suitable for the following scenarios:
-
-1. **Training Process Visualization**: Record dynamic changes during model training
-2. **Experiment Result Display**: Show dynamic demonstrations of experiment results
-3. **Data Visualization**: Convert time series data into animated displays
-4. **Model Behavior Analysis**: Record dynamic responses of models under different inputs
 
 ## Notes
 
-1. **File Format**: Currently only supports GIF format, does not support other video formats like MP4, AVI, etc.
-2. **File Size**: It's recommended to control GIF file size, as overly large files may affect loading speed
-3. **Frame Rate Control**: When creating GIFs, you can control playback speed through the `duration` parameter
-4. **File Path**: Ensure the provided file path is correct and the file exists
+1. For array inputs, the maximum resolution per side is `4096` pixels (measured after grid tiling for batched inputs, e.g., width and height double when `B=4`). Frame dimensions are automatically padded to multiples of 2 for MP4 and multiples of 16 for OGG.
+2. The default size limit per video is `50 MiB` (configurable via [`core.media_max_size`](./py-settings.md#core-behavior-configuration-coresettings)). Videos exceeding the limit are skipped with a warning.
+3. File paths are validated by extension, and binary inputs are validated by file header (magic bytes). Mismatched or unsupported formats raise an error.

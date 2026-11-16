@@ -89,14 +89,27 @@ Control the types of environment information SwanLab collects at startup via the
 
 ## Core Behavior
 
-| Environment Variable                   | Description                                                                                                               | Default Value |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | Whether to skip the swanboard version compatibility check. Set to `1` to skip                                             | Not skipped   |
-| `SWANLAB_FS_TIMEOUT`                   | File system operation timeout (seconds), useful for NAS environments with high async latency                              | `5.0`         |
-| `SWANLAB_CORE_RECORD_BATCH`            | Maximum number of records per HTTP request                                                                                | `10000`       |
-| `SWANLAB_CORE_SKIP_STORE`              | Skip all SDK-owned local files and upload to the cloud only; equivalent to `core.skip_store`. Only valid in `online` mode | `false`       |
-| `SWANLAB_TERMINAL_PROXY_TYPE`          | Terminal log proxy strategy: `all` (all), `stdout`, `stderr`, `none` (no collection)                                      | `all`         |
-| `SWANLAB_TERMINAL_MAX_LENGTH`          | Maximum character length per line for terminal log collection                                                             | `1024`        |
+| Environment Variable                   | Description                                                                                  | Default Value |
+| -------------------------------------- | -------------------------------------------------------------------------------------------- | ------------- |
+| `SWANLAB_SKIP_SWANBOARD_VERSION_CHECK` | Whether to skip the swanboard version compatibility check. Set to `1` to skip                | Not skipped   |
+| `SWANLAB_FS_TIMEOUT`                   | File system operation timeout (seconds), useful for NAS environments with high async latency | `5.0`         |
+| `SWANLAB_TERMINAL_PROXY_TYPE`          | Terminal log proxy strategy: `all` (all), `stdout`, `stderr`, `none` (no collection)         | `all`         |
+| `SWANLAB_TERMINAL_MAX_LENGTH`          | Maximum character length per line for terminal log collection                                | `1024`        |
+
+## Core Configuration
+
+The following environment variables correspond to fields in [`Settings.Core`](./py-settings.md) and are equivalent to configuring `swanlab.Settings(core=...)`.
+
+| Environment Variable           | Description                                                                                                               | Default Value          |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `SWANLAB_CORE_RECORD_BATCH`    | Maximum number of records uploaded per HTTP request (range: 1–99999)                                                      | `10000`                |
+| `SWANLAB_CORE_RECORD_INTERVAL` | Batch upload interval for the upload thread in seconds (must be > 0)                                                      | `1.5`                  |
+| `SWANLAB_CORE_MEDIA_MAX_SIZE`  | Maximum size per media file in bytes (range: 10–500 MiB); media exceeding the limit are dropped with a warning            | `52428800` (50 MiB)    |
+| `SWANLAB_CORE_SAVE_SPLIT`      | File size threshold for multipart upload (in bytes)                                                                       | `104857600` (100 MiB)  |
+| `SWANLAB_CORE_SAVE_SIZE`       | Maximum save size per file for `run.save()` (in bytes)                                                                    | `53687091200` (50 GiB) |
+| `SWANLAB_CORE_SAVE_PART`       | Part size for multipart upload (in bytes)                                                                                 | `33554432` (32 MiB)    |
+| `SWANLAB_CORE_SAVE_BATCH`      | Maximum number of files per save upload batch                                                                             | `100`                  |
+| `SWANLAB_CORE_SKIP_STORE`      | Skip all SDK-owned local files and upload to the cloud only; equivalent to `core.skip_store`. Only valid in `online` mode | `false`                |
 
 ## Advanced Configuration
 
