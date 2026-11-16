@@ -20,6 +20,8 @@ Video(
 
 ## Introduction
 
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show-v2.mp4" />
+
 Wraps video data to be logged via `swanlab.log()`. Supports **GIF**, **MP4**, **WebM**, and **OGG**:
 
 - **Video files and binary data**: Stored as-is, preserving the original quality and audio track.

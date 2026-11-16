@@ -20,6 +20,8 @@ Video(
 
 ## 介绍
 
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show-v2.mp4" />
+
 封装视频数据以供 `swanlab.log()` 记录，支持 **GIF**、**MP4**、**WebM**、**OGG** 四种格式：
 
 - **视频文件与二进制数据**：原样保存，保留原有画质与音轨；

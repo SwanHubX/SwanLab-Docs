@@ -149,7 +149,7 @@ Please refer to this document: [API-Molecule](../../api/py-molecule.md)
 ## 6. Video
 
 `swanlab.Video` supports logging local video files (GIF, MP4, WebM, and OGG), binary streams, and array-like frame sequences. See the [API Documentation](../../api/py-video.md) for details.
-<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show.mp4" />
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show-v2.mp4" />
 
 ```python
 swanlab.log({"video": swanlab.Video("path/to/video.mp4", caption="video example")})
