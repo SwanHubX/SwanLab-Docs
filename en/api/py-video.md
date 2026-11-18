@@ -18,6 +18,12 @@ Video(
 | fps          | (int, optional) Frame rate (frames per second) when encoding an array into a video. Defaults to `4`. Ignored for file paths, binary data, or `Video` instances.     |
 | format       | (str, optional) Video format: `"gif"`, `"mp4"`, `"webm"`, or `"ogg"`. Inferred from the file extension for file paths; required for arrays and non-GIF binary data. |
 
+::: warning ⚠️ Version Compatibility
+
+Due to architectural limitations, `swanlab.Video` only supports the **new dashboard and the new SDK (v0.10.6+)**. Older versions of the SDK and dashboard can only record `GIF` type files as video charts.
+
+:::
+
 ## Introduction
 
 <video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show-v2.mp4" />

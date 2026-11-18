@@ -18,6 +18,12 @@ Video(
 | fps          | (int, optional) 将数组编码为视频时的帧率，默认为 `4`。传入文件、二进制数据或 `Video` 对象时忽略该参数。                                          |
 | format       | (str, optional) 视频格式，可选 `"gif"`、`"mp4"`、`"webm"`、`"ogg"`。传入文件时由扩展名决定；传入数组或非 GIF 二进制数据时必填。                  |
 
+::: warning ⚠️ 版本兼容说明
+
+由于架构限制， `swanlab.Video` **仅支持新版看板和新版SDK(v0.10.6+)**，旧版本的 SDK 和看板仅能记录 `GIF` 类型文件作为视频图表。
+
+:::
+
 ## 介绍
 
 <video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show-v2.mp4" />
