@@ -5,6 +5,12 @@
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.6 - 2026.11.18
+
+**🚀 新增**
+
+- `swanlab.Video` 现已支持 GIF、MP4、WebM、OGG 四种视频格式，新增 `fps`、`format` 参数，**注意需搭配新版看板**使用，参考 [swanlab.Video](../../api/py-video.md)
+
 ## v0.10.5 - 2026.11.10
 
 **🚀 新增**
