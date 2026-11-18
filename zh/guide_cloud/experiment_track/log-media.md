@@ -148,7 +148,13 @@ swanlab.log({"examples": text_list})
 
 ## 6. 视频
 
-请参考此文档：[API-Video](../../api/py-video.md)
+`swanlab.Video` 支持直接记录本地视频文件（支持 GIF、MP4、WebM、OGG 格式）、二进制字节流以及可编码为视频的数组类型数据，详情可参考 [API文档](../../api/py-video.md)
+
+<video controls src="https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/videos/swan-video-show-v2.mp4" />
+
+```python
+swanlab.log({"video": swanlab.Video("path/to/video.mp4", caption="video example")})
+```
 
 ## 7. HTML
 

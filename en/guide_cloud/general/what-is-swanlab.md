@@ -2,10 +2,6 @@
 
 [Official Website](https://swanlab.cn) · [Framework Integration](../integration/integration-huggingface-transformers.md) · [GitHub](https://github.com/swanhubx/swanlab) · [Quick Start](./quick-start.md) · [Sync WandB](../integration/integration-wandb.md#_1-sync-tracking) · [Benchmark Community](https://swanlab.cn/benchmarks)
 
-::: warning 🎉 Self-Hosted Kubernetes Version Officially Released!  
-The self-hosted Kubernetes version supports local use with features comparable to the public cloud edition. For deployment instructions, see [this document](../../self_host/kubernetes/deploy.md).  
-:::
-
 ![alt text](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/assets/product-swanlab-1.png)
 
 SwanLab is an **open-source, lightweight** AI model training tracking and visualization tool that provides a platform for **tracking, recording, comparing, and collaborating on experiments**.
@@ -185,7 +181,7 @@ Use SwanLab with your favorite frameworks! Below is our integration list. Submit
 - **[GitHub Issues](https://github.com/SwanHubX/SwanLab/issues)**: Report bugs or issues.
 - **Email Support**:
   - <contact@swanlab.cn>
-  - <zeyi.lin@emotionmachine.cn>
+  - <liuchang@emotionmachine.cn>
 - **WeChat & Lark Groups**: See [Online Support](../community/online-support.md).
 - **WeChat Official Account**:
 

@@ -5,6 +5,12 @@ Upgrade to latest version: `pip install -U swanlab`
 Github: https://github.com/SwanHubX/SwanLab
 :::
 
+## v0.10.6 - 2026.11.18
+
+**🚀 New Features**
+
+- `swanlab.Video` now supports GIF, MP4, WebM, and OGG video formats, with new `fps` and `format` parameters. **Note that the new dashboard is required.** See [swanlab.Video](../../api/py-video.md)
+
 ## v0.10.5 - 2026.11.10
 
 **🚀 New Features**

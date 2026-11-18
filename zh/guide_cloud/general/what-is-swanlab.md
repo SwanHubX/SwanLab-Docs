@@ -190,7 +190,7 @@ SwanLab 是一款 **AI训练分析平台**，面向模型训练团队，提供**
 
 - **电子邮件支持**：反馈关于使用SwanLab的问题
   - <contact@swanlab.cn>
-  - <zeyi.lin@emotionmachine.cn>
+  - <liuchang@emotionmachine.cn>
 
 - **微信群与飞书群**: 见[在线支持](../community/online-support.md)
 
