@@ -126,7 +126,7 @@ helm upgrade swanlab-self-hosted <path_to_chart> -n <your_namespace>
 
 :::warning
 
-- `dependencies.clickhouse.monitor.enable` 需要 ClickHouse Pod 重启以加载内置 exporter 配置， ClickHouse Pod 需要重启就绪后再继续安装 SwanLab-Monito。
+- `dependencies.clickhouse.monitor.enable` 需要 ClickHouse Pod 重启以加载内置 exporter 配置，请等待 ClickHouse Pod 重启并就绪后再继续安装 SwanLab-Monitor。
 - 其它组件仅新增 headless Service，不会重启 Pod。
 
 :::
