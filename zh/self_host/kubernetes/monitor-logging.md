@@ -124,6 +124,13 @@ helm upgrade swanlab-self-hosted <path_to_chart> -n <your_namespace>
 
 更新完成后，每个开启了 `monitor` 配置的服务都会额外创建一个独立的 `monitor` Headless Service，专用于可观测指标采集。
 
+:::warning
+
+- `dependencies.clickhouse.monitor.enable` 需要 ClickHouse Pod 重启以加载内置 exporter 配置， ClickHouse Pod 需要重启就绪后再继续安装 SwanLab-Monito。
+- 其它组件仅新增 headless Service，不会重启 Pod。
+
+:::
+
 ### 2. 安装 SwanLab-Monitor 独立监控
 
 SwanLab-Monitor 集成了 `Prometheus + Grafana` 的部署清单与可观测指标的采集、告警配置，需要在 SwanLab 所在命名空间下安装两个单实例 StatefulSet 服务，模板如下：
