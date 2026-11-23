@@ -7,8 +7,6 @@ If you want to use [Kubernetes](https://kubernetes.io/) for self-hosted deployme
 
 ![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
-[[toc]]
-
 <br>
 
 **Resources and Concepts:**
@@ -27,13 +25,26 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 | helm                    | version>=3.9                      | SwanLab Chart packages require features from Helm v3.9 or newer, and are not compatible with earlier versions or Helm v2 (Tiller mode).                                                                                                                                                                   |
 | RBAC Permissions        | Namespace Admin                   | The deploying account needs to have **write permissions** within the namespace for the SwanLab self-hosted service. Core resources include: `Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`, etc.                                                                                              |
 | Network Access (Egress) | \*.swanlab.cn                     | Cluster nodes need to have the ability to access the public internet (or have a configured NAT gateway). A public egress **bandwidth of ≥ 100Mbps is recommended** <br>1. `repo.swanlab.cn`: Used to pull application images. <br>2. `api.swanlab.cn`: Used for online License activation and validation. |
-| Object Storage          | AWS S3 protocol compatible        | Media resources and other files reported by SwanLab are stored in object storage by default. To save storage costs, **external object storage integration** is recommended, ensuring S3 API compatibility                                                                                                 |
+| Object Storage          | AWS S3 protocol compatible        | Media resources and other files reported by SwanLab are stored in object storage by default. To save storage costs, **external object storage integration** is recommended, ensuring AWS S3 API compatibility                                                                                             |
 
 ## 🧾 Resource Inventory
 
+### Cloud Infrastructure
+
+| Resource Type                   | Quantity | Specifications & Requirements                                                              | Notes                                                                           |
+| ------------------------------- | -------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| Cloud Server (Elastic Instance) | ≥ 3      | Minimum ≥ 4C8G                                                                             | Further evaluation based on actual team usage                                   |
+| Object Storage Bucket           | 1        | AWS S3 API compatible                                                                      | Public and private buckets can reuse the same bucket or be split as needed      |
+| Cloud Disk / Block Storage      | 5        | NVMe SSD recommended for IO performance; supports **snapshots** and **seamless expansion** | Persistent storage for the database infrastructure and the Vector buffer queue. |
+
+> The number of cloud disks is estimated for the external object storage option; if using the built-in MinIO (not recommended), prepare 1 additional data disk.
+
 ### Application Service Images
 
-> ⚠️ Note: The `values.yaml` image tags **are set to empty strings by default**, which automatically syncs the latest version number from the template as the image tag. Generally, no modification is needed. Special hotfix patch version images require manual tag filling.
+::: tip
+The `values.yaml` image tags **are set to empty strings by default**, which automatically syncs the latest version number from the template as the image tag. Generally, no modification is needed. Special hotfix patch version images require manual tag filling.
+
+:::
 
 | Component      | Image Address                                              | values.yaml Config Path | Description                                   |
 | -------------- | ---------------------------------------------------------- | ----------------------- | --------------------------------------------- |
@@ -45,11 +56,10 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 
 ### Infrastructure Images
 
-> ⚠️Note: When a storage component chooses to [customize base service resources](./configuration.md#external-base-service-integration-integrations), the corresponding images below can be ignored (using self-built external services).
+::: warning ⚠️ Note
 
-::: warning
-
-- Due to the varying permission models of different Kubernetes clusters, the SwanLab K8s version does not use Operator-based deployment yet, and **the base database services are deployed as single instances**
+- When a storage component chooses to [customize base service resources](./configuration.md#external-base-service-integration-integrations), the corresponding images below can be ignored (using self-built external services).
+- Due to the varying permission models of different clusters, the SwanLab K8s version does not use Operator-based deployment yet, and **the base database services are deployed as single instances**
 - To integrate self-built or cloud provider high-availability databases, please refer to [Custom Value Configuration](./configuration.md)
 - Before integrating an external database, it is recommended to test the RTT between the cluster and the database instance by referring to the [FAQ](./faq.md#slow-response-how-to-test-the-rtt-between-the-cluster-and-external-databases)
 
@@ -58,7 +68,7 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 | Component  | Image Address                                                          | values.yaml Config Path         | Description                                                                      |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------- |
 | Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `gateway.image`                 | Reverse proxy / gateway entry                                                    |
-| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `gateway.identifyImage`         | Gateway authentication auxiliary image                                           |
+| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v2.1`                  | `gateway.identifyImage`         | Gateway authentication auxiliary image                                           |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | Deployment auxiliary init container                                              |
 | Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | Metrics aggregation & forwarding                                                 |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL relational database (users, projects, experiment metadata)            |
@@ -66,6 +76,11 @@ To deploy the self-hosted version of SwanLab using Kubernetes, please ensure you
 | ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3`                   | `dependencies.clickhouse.image` | Experiment metrics and logs column database                                      |
 | MinIO      | `repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-09-07T16-13-09Z` | `dependencies.s3.image`         | S3 compatible object storage (experiment media resources and exported log files) |
 | MinIO MC   | `repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-08-13T08-35-41Z`    | `dependencies.s3.mcImage`       | MinIO client tool (bucket initialization, etc.)                                  |
+
+::: warning
+**⚠️ Note**: Starting from APP **`3.6.4`**, the `identify` image must use version `v2.1`. Before upgrading, be sure to update the image tag in `values.yaml`.
+
+:::
 
 ## 🪜 Installation Guide
 
@@ -104,13 +119,13 @@ kubectl get secret swanlab-self-hosted-secret-s3 -n <your_namespace>
 
 The SwanLab self-hosted service mainly depends on the following base service storage resources:
 
-| Base Resource         | PVC Name                                                                  | Recommended Storage Size                            |
-| --------------------- | ------------------------------------------------------------------------- | --------------------------------------------------- |
-| Redis                 | `swanlab-redis-pvc`                                                       | ≥ 50G                                               |
-| PostgreSQL            | `swanlab-postgres-pvc`                                                    | ≥ 100G                                              |
-| ClickHouse            | `swanlab-clickhouse-pvc`                                                  | ≥ 1000G                                             |
-| Vector                | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | Each replica ≥ 60G, two independent storage volumes |
-| 「**Optional**」MinIO | `swanlab-minio-pvc`                                                       | ≥ 1000G, online object storage is preferred         |
+| Base Resource         | PVC Name                                                                  | Recommended Storage Size                                                       |
+| --------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Redis                 | `swanlab-redis-pvc`                                                       | ≥ 50G                                                                          |
+| PostgreSQL            | `swanlab-postgres-pvc`                                                    | ≥ 100G                                                                         |
+| ClickHouse            | `swanlab-clickhouse-pvc`                                                  | ≥ 1000G                                                                        |
+| Vector                | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | Each replica ≥ 60G, two independent storage volumes                            |
+| 「**Optional**」MinIO | `swanlab-minio-pvc`                                                       | ≥ 1000G; not recommended for now—prefer the platform's existing object storage |
 
 ::: warning
 

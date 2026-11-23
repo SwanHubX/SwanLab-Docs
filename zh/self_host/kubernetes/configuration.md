@@ -54,7 +54,7 @@ global:
 | `gateway.image.repository`         | string | `repo.swanlab.cn/public/traefik`                 | Traefik 网关镜像地址                                                                   |
 | `gateway.image.tag`                | string | `3.6`                                            | Traefik 镜像标签                                                                       |
 | `gateway.identifyImage.repository` | string | `repo.swanlab.cn/public/swanlab-helper/identify` | 网关鉴权辅助镜像地址                                                                   |
-| `gateway.identifyImage.tag`        | string | `v1.2`                                           | 鉴权辅助镜像标签                                                                       |
+| `gateway.identifyImage.tag`        | string | `v2.1`                                           | 鉴权辅助镜像标签                                                                       |
 | `gateway.service.type`             | string | `ClusterIP`                                      | Service 类型                                                                           |
 | `gateway.service.ports.web`        | int    | `80`                                             | 非安全入口端口（可从集群外部访问）                                                     |
 | `gateway.service.ports.internal`   | int    | `8080`                                           | 内部入口端口（仅集群内部访问）                                                         |
@@ -62,6 +62,11 @@ global:
 | `gateway.service.ports.metrics`    | int    | `9100`                                           | Prometheus 指标采集端口                                                                |
 | `gateway.customNodeSelector`       | object | `{}`                                             | 节点选择器，例如 `{ swanlab: "true" }`                                                 |
 | `gateway.securityContext.enabled`  | bool   | `false`                                          | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
+
+::: warning
+**⚠️ 注意**： 自 APP `3.6.4` 起，`identify` 镜像需要使用 `v2.1` 版本，升级前请务必修改 `value.yaml` 的镜像 tag
+
+:::
 
 ### 配置应用访问入口
 
@@ -129,18 +134,15 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### SwanLab-House（后端实验 OLAP 服务）
 
-| 字段                                     | 类型   | 默认值                                      | 说明                                                                                                 |
-| ---------------------------------------- | ------ | ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `service.house.replicas`                 | int    | `2`                                         | 副本数                                                                                               |
-| `service.house.image.repository`         | string | `repo.swanlab.cn/self-hosted/swanlab-house` | 镜像地址                                                                                             |
-| `service.house.image.tag`                | string | `""`                                        | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
-| `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                                         |
-| `service.house.persistence.storageSize`  | string | `10Gi`                                      | 存储卷大小                                                                                           |
-| `service.house.monitor.enable`           | bool   | `false`                                     | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
-| `service.house.securityContext.enabled`  | bool   | `false`                                     | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)               |
+| 字段                                    | 类型   | 默认值                                      | 说明                                                                                                 |
+| --------------------------------------- | ------ | ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `service.house.replicas`                | int    | `2`                                         | 副本数                                                                                               |
+| `service.house.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-house` | 镜像地址                                                                                             |
+| `service.house.image.tag`               | string | `""`                                        | 镜像标签，**置为空字符串**以自动同步 Chart 指定的版本号                                              |
+| `service.house.monitor.enable`          | bool   | `false`                                     | 是否创建监控专用 headless Service，供 Prometheus 采集指标，详见 [可观测监控](#可观测监控-monitoring) |
+| `service.house.securityContext.enabled` | bool   | `false`                                     | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)               |
 
-> **存储说明**：`swanlab-house` 以 `StatefulSet` 部署，需要挂载存储卷。与基础服务不同，此处**不支持**配置 `existingClaim`。
-> `swanlab-house` 会在存储卷下存储一些指标中间产物，一般情况下您不需要关心此存储卷中的数据。
+> **存储说明**：当前 Chart 中 `swanlab-house` 以 `Deployment` 部署，不使用持久化存储；开启安全上下文时工作目录使用 `emptyDir`。`service.house.persistence.*` 字段已不再支持。
 
 ### SwanLab-Cloud（前端图表）
 
@@ -228,17 +230,22 @@ helm install swanlab-self-hosted swanlab/self-hosted -n <your_namespace>
 
 ### ClickHouse
 
-| 字段                                                | 类型   | 默认值                                          | 说明                                                                                                                                                |
-| --------------------------------------------------- | ------ | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | 镜像地址                                                                                                                                            |
-| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | 镜像标签                                                                                                                                            |
-| `dependencies.clickhouse.username`                  | string | `""`                                            | 数据库用户名（如使用 existingSecret 则留空）                                                                                                        |
-| `dependencies.clickhouse.password`                  | string | `""`                                            | 数据库密码（如使用 existingSecret 则留空）                                                                                                          |
-| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | 使用已有的 PVC 名称（留空则自动创建）                                                                                                               |
-| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                                                        |
-| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | 存储卷大小                                                                                                                                          |
-| `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | 是否创建监控专用 headless Service，供 Prometheus 采集指标（仅在未启用 `integrations.clickhouse` 时生效），详见 [可观测监控](#可观测监控-monitoring) |
-| `dependencies.clickhouse.securityContext.enabled`   | bool   | `false`                                         | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext)                                                              |
+| 字段                                                | 类型   | 默认值                                          | 说明                                                                                   |
+| --------------------------------------------------- | ------ | ----------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | 镜像地址                                                                               |
+| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | 镜像标签                                                                               |
+| `dependencies.clickhouse.username`                  | string | `""`                                            | 数据库用户名（如使用 existingSecret 则留空）                                           |
+| `dependencies.clickhouse.password`                  | string | `""`                                            | 数据库密码（如使用 existingSecret 则留空）                                             |
+| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | 使用已有的 PVC 名称（留空则自动创建）                                                  |
+| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                           |
+| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | 存储卷大小                                                                             |
+| `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | 是否启用 ClickHouse 监控，详见 [可观测监控](#可观测监控-monitoring)                    |
+| `dependencies.clickhouse.securityContext.enabled`   | bool   | `false`                                         | 是否启用安全上下文加固（非 root 运行），详见 [安全上下文](#安全上下文-securitycontext) |
+
+::: warning ⚠️ 注意:
+当 `dependencies.clickhouse.monitor.enable` 被设置为 `true` 后，ClickHouse Pod 会挂载内置 Prometheus exporter 配置（端口 `9363`）。该配置不会热加载，需要重启 Pod 才能生效。
+
+:::
 
 ### MinIO（内置 S3 对象存储）
 
@@ -440,7 +447,7 @@ integrations:
 | `integrations.postgres.enabled`        | bool   | `false` | 启用后使用外部 PostgreSQL，内置单实例将被移除 |
 | `integrations.postgres.host`           | string | `""`    | 数据库主机地址                                |
 | `integrations.postgres.port`           | int    | `5432`  | 数据库端口                                    |
-| `integrations.postgres.database`       | string | `""`    | 数据库名称                                    |
+| `integrations.postgres.database`       | string | `app`   | 数据库名称                                    |
 | `integrations.postgres.existingSecret` | string | `""`    | 存储凭据的 K8s Secret 名称                    |
 
 **Secret 数据结构（`integrations.postgres.existingSecret`）：**
@@ -561,7 +568,7 @@ integrations:
 | `integrations.clickhouse.host`           | string | `""`    | ClickHouse 主机地址                           |
 | `integrations.clickhouse.httpPort`       | int    | `8123`  | HTTP 协议端口                                 |
 | `integrations.clickhouse.tcpPort`        | int    | `9000`  | TCP 协议端口                                  |
-| `integrations.clickhouse.database`       | string | `""`    | 数据库名称                                    |
+| `integrations.clickhouse.database`       | string | `app`   | 数据库名称                                    |
 | `integrations.clickhouse.existingSecret` | string | `""`    | 存储凭据的 K8s Secret 名称                    |
 
 **Secret 数据结构（`integrations.clickhouse.existingSecret`）：**
@@ -607,19 +614,21 @@ integrations:
 `swanlab-self-hosted` 各组件均可暴露 Prometheus 指标，用于对接外部的可观测监控体系（如 Prometheus / VictoriaMetrics + Grafana）。开启监控主要涉及两类配置：
 
 1. **网关指标端口**：网关（Traefik）通过 `gateway.service.ports.metrics`（默认 `9100`）暴露 Prometheus 指标，默认即已开启。
-2. **各组件监控开关 `monitor.enable`**：置为 `true` 后，Chart 会为对应组件额外创建一个名为 `<fullname>-monitor` 的**专用 headless Service**。该 Service 与业务主 Service 相互独立、**不影响正常业务流量**，仅用于让 Prometheus 通过 `dns_sd`（或相应的 exporter）发现该组件的所有 Pod IP 并采集指标。
+2. **各组件监控开关 `monitor.enable`**：置为 `true` 后，Chart 会为对应组件额外创建一个名为 `<fullname>-monitor` 的**专用 headless Service**。该 Service 与业务主 Service 相互独立、**不影响正常业务流量**（ClickHouse 例外，见下方说明），仅用于让 Prometheus 通过 `dns_sd`（或相应的 exporter）发现该组件的所有 Pod IP 并采集指标。
+
+> **ClickHouse 注意**：与其它组件仅新增 headless Service 不同，开启 `dependencies.clickhouse.monitor.enable` 还会为 ClickHouse Pod 挂载内置 exporter 配置（端口 `9363`）。ClickHouse Deployment 使用 `Recreate` 策略，开启或关闭该开关都会重建 Pod，期间 ClickHouse 短暂不可用，请安排在业务低峰期操作。
 
 ### 监控开关字段汇总
 
-| 字段                                     | 类型 | 默认值  | 说明                                                                                                                                 |
-| ---------------------------------------- | ---- | ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `vector.monitor.enable`                  | bool | `false` | 为 Vector 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                   |
-| `service.server.monitor.enable`          | bool | `false` | 为 SwanLab-Server 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                           |
-| `service.auth.monitor.enable`            | bool | `false` | 为 SwanLab-Auth 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                             |
-| `service.house.monitor.enable`           | bool | `false` | 为 SwanLab-House 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                            |
-| `dependencies.postgres.monitor.enable`   | bool | `false` | 为内置 PostgreSQL 创建监控 headless Service，供 postgres-exporter 发现 PG Pod（仅在 `integrations.postgres.enabled = false` 时生效） |
-| `dependencies.redis.monitor.enable`      | bool | `false` | 为内置 Redis 创建监控 headless Service，供 redis-exporter 发现 Redis Pod（仅在 `integrations.redis.enabled = false` 时生效）         |
-| `dependencies.clickhouse.monitor.enable` | bool | `false` | 为内置 ClickHouse 创建监控 headless Service，供 Prometheus 发现所有 Pod IP（仅在 `integrations.clickhouse.enabled = false` 时生效）  |
+| 字段                                     | 类型 | 默认值  | 说明                                                                                                                                                                    |
+| ---------------------------------------- | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vector.monitor.enable`                  | bool | `false` | 为 Vector 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                                                      |
+| `service.server.monitor.enable`          | bool | `false` | 为 SwanLab-Server 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                                              |
+| `service.auth.monitor.enable`            | bool | `false` | 为 SwanLab-Auth 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                                                |
+| `service.house.monitor.enable`           | bool | `false` | 为 SwanLab-House 创建监控 headless Service，供 Prometheus 发现所有 Pod IP                                                                                               |
+| `dependencies.postgres.monitor.enable`   | bool | `false` | 为内置 PostgreSQL 创建监控 headless Service，供 postgres-exporter 发现 PG Pod（仅在 `integrations.postgres.enabled = false` 时生效）                                    |
+| `dependencies.redis.monitor.enable`      | bool | `false` | 为内置 Redis 创建监控 headless Service，供 redis-exporter 发现 Redis Pod（仅在 `integrations.redis.enabled = false` 时生效）                                            |
+| `dependencies.clickhouse.monitor.enable` | bool | `false` | 为内置 ClickHouse 创建监控 headless Service 并启用内置 exporter（端口 `9363`），开启/关闭会重启 ClickHouse Pod（仅在 `integrations.clickhouse.enabled = false` 时生效） |
 
 > **说明**：
 >

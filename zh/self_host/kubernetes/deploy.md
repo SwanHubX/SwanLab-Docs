@@ -7,8 +7,6 @@
 
 ![swanlab kubernetes logo](https://swanlab-docs-1301372061.cos.ap-beijing.myqcloud.com/assets/zh/guide_cloud/self_host/kubernetes/logo.png)
 
-[[toc]]
-
 <br>
 
 **资源和概念：**
@@ -27,13 +25,26 @@
 | helm              | version>=3.9     | SwanLab Chart 包依赖于 Helm v3.9+ 的新特性，与早期版本不兼容，也不兼容 Helm v2（Tiller 模式）。                                                                                     |
 | RBAC 权限         | Namespace Admin  | 账户需具备部署 **SwanLab私有化服务对应命名空间下的写权限**。核心资源包括：`Deployment, StatefulSet, Service, PVC, Secret, ConfigMap`等。                                            |
 | 网络访问 (Egress) | \*.swanlab.cn    | 集群节点需具备访问公网的能力（或配置 NAT 网关），建议公网出口**带宽 ≥ 100Mbps** <br>1. `repo.swanlab.cn`：用于拉取应用镜像。 <br>2. `api.swanlab.cn`：用于 License 在线激活与校验。 |
-| 对象存储          | 兼容 AWS S3 协议 | SwanLab 上报的媒体资源等文件默认保存在对象存储中，为节约存储成本，推荐**外部集成对象存储**，确保兼容 S3 API                                                                         |
+| 对象存储          | 兼容 AWS S3 协议 | SwanLab 上报的媒体资源等文件默认保存在对象存储中，为节约存储成本，推荐**外部集成对象存储**，确保兼容 AWS S3 API                                                                     |
 
 ## 🧾 资源清单
 
+### 云基础设施
+
+| 资源类型             | 数量要求 | 规格与要求                                               | 说明                                               |
+| -------------------- | -------- | -------------------------------------------------------- | -------------------------------------------------- |
+| 云服务器（弹性实例） | ≥ 3      | 最低 ≥ 4C8G                                              | 需根据团队实际用量进一步评估                       |
+| 对象存储桶           | 1        | 兼容 AWS S3 API                                          | public / private 桶可复用同一个桶，也可按需拆分    |
+| 云硬盘 / 块存储      | 5        | 建议 NVMe SSD 以确保 IO 性能，支持**快照**与**无感扩容** | 对应数据库基础设施与 vector 缓冲队列的持久化存储。 |
+
+> 云硬盘数量按外部对象存储方案估算；如启用内置 MinIO（暂不推荐），需额外准备 1 块数据盘。
+
 ### 应用服务镜像
 
-> ⚠️ 注意： `value.yaml` 应用镜像的 tag **默认设置为空字符串**，可以从 template 中自动同步最新的版本号作为镜像标签，一般无需修改。特殊热更新补丁版本镜像需要手动填充 tag。
+::: tip
+`value.yaml` 应用镜像的 tag **默认设置为空字符串**，可以从 template 中自动同步最新的版本号作为镜像标签，一般无需修改。特殊热更新补丁版本镜像需要手动填充 tag。
+
+:::
 
 | 组件           | 镜像地址                                                   | values.yaml 配置路径   | 说明                 |
 | -------------- | ---------------------------------------------------------- | ---------------------- | -------------------- |
@@ -45,11 +56,10 @@
 
 ### 基础设施镜像
 
-> ⚠️注意：当某一项存储组件 选择[自定义基础服务资源](./configuration.md#外部基础服务集成-integrations)时，以下对应镜像可忽略（使用自建的外部服务）。
+::: warning ⚠️ 注意
 
-::: warning
-
-- 受不同 Kubernetes 集群权限模型的限制，SwanLab 的 K8s 版本暂未使用 Operator 部署，**基础数据库服务使用单实例部署**
+- 当某一项存储组件 选择[自定义基础服务资源](./configuration.md#外部基础服务集成-integrations)时，以下对应镜像可忽略（使用自建的外部服务）。
+- 受不同集群权限模型的限制，SwanLab 的 K8s 版本暂未使用 Operator 部署，**基础数据库服务使用单实例部署**
 - 如需接入自建或云厂商的高可用数据库，可参考 [自定义 value 配置](./configuration.md) 进行修改
 - 外接数据库前，建议参考 [FAQ](./faq.md#【慢响应】如何测试集群与外部数据库之间的-rtt) 测试集群与数据库实例之间的 RTT
 
@@ -58,7 +68,7 @@
 | 组件       | 镜像地址                                                               | values.yaml 配置路径            | 说明                                             |
 | ---------- | ---------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------ |
 | Traefik    | `repo.swanlab.cn/public/traefik:3.6`                                   | `gateway.image`                 | 反向代理 / 网关入口                              |
-| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v1.2`                  | `gateway.identifyImage`         | 网关鉴权辅助镜像                                 |
+| Identify   | `repo.swanlab.cn/public/swanlab-helper/identify:v2.1`                  | `gateway.identifyImage`         | 网关鉴权辅助镜像                                 |
 | Busybox    | `repo.swanlab.cn/public/busybox:1.37.0`                                | `helper.image`                  | 部署辅助初始化容器                               |
 | Vector     | `repo.swanlab.cn/public/vector:0.51.1-debian`                          | `vector.image`                  | 指标聚合转发                                     |
 | PostgreSQL | `repo.swanlab.cn/self-hosted/postgres:16.1`                            | `dependencies.postgres.image`   | PostgreSQL关系型数据库（用户、项目、实验元数据） |
@@ -66,6 +76,11 @@
 | ClickHouse | `repo.swanlab.cn/self-hosted/clickhouse-server:24.3`                   | `dependencies.clickhouse.image` | 实验指标与日志列数据库                           |
 | MinIO      | `repo.swanlab.cn/self-hosted/minio/minio:RELEASE.2025-09-07T16-13-09Z` | `dependencies.s3.image`         | S3 兼容对象存储（实验媒体资源与导出日志文件）    |
 | MinIO MC   | `repo.swanlab.cn/self-hosted/minio/mc:RELEASE.2025-08-13T08-35-41Z`    | `dependencies.s3.mcImage`       | MinIO 客户端工具（初始化 bucket 等）             |
+
+::: warning
+**⚠️ 注意**： 自 APP **`3.6.4`** 起，`identify` 镜像需要使用 `v2.1` 版本，升级前请务必修改 `value.yaml` 的镜像 tag
+
+:::
 
 ## 🪜 安装指引
 
@@ -104,13 +119,13 @@ kubectl get secret swanlab-self-hosted-secret-s3 -n <your_namespace>
 
 SwanLab 私有化服务中，主要依赖以下基础服务的存储资源：
 
-| 基础资源          | PVC 命名                                                                  | 存储大小推荐                      |
-| ----------------- | ------------------------------------------------------------------------- | --------------------------------- |
-| Redis             | `swanlab-redis-pvc`                                                       | ≥ 50G                             |
-| PostgreSQL        | `swanlab-postgres-pvc`                                                    | ≥ 100G                            |
-| ClickHouse        | `swanlab-clickhouse-pvc`                                                  | ≥ 1000G                           |
-| Vector            | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | 每个副本各自 ≥ 60G， 两块独立存储 |
-| 「**可选**」MinIO | `swanlab-minio-pvc`                                                       | ≥ 1000G，建议优先使用在线对象存储 |
+| 基础资源          | PVC 命名                                                                  | 存储大小推荐                                      |
+| ----------------- | ------------------------------------------------------------------------- | ------------------------------------------------- |
+| Redis             | `swanlab-redis-pvc`                                                       | ≥ 50G                                             |
+| PostgreSQL        | `swanlab-postgres-pvc`                                                    | ≥ 100G                                            |
+| ClickHouse        | `swanlab-clickhouse-pvc`                                                  | ≥ 1000G                                           |
+| Vector            | `data-swanlab-self-hosted-vector-0` / `data-swanlab-self-hosted-vector-1` | 每个副本各自 ≥ 60G， 两块独立存储                 |
+| 「**可选**」MinIO | `swanlab-minio-pvc`                                                       | ≥ 1000G，暂不推荐，建议优先使用平台已有的对象存储 |
 
 ::: warning
 
