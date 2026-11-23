@@ -54,7 +54,7 @@ By default, the **login host** displayed on the `<Your Host>/space/~/quick-start
 | `gateway.image.repository`         | string | `repo.swanlab.cn/public/traefik`                 | Traefik gateway image address                                                                                             |
 | `gateway.image.tag`                | string | `3.6`                                            | Traefik image tag                                                                                                         |
 | `gateway.identifyImage.repository` | string | `repo.swanlab.cn/public/swanlab-helper/identify` | Gateway authentication auxiliary image address                                                                            |
-| `gateway.identifyImage.tag`        | string | `v1.2`                                           | Authentication auxiliary image tag                                                                                        |
+| `gateway.identifyImage.tag`        | string | `v2.1`                                           | Authentication auxiliary image tag                                                                                        |
 | `gateway.service.type`             | string | `ClusterIP`                                      | Service type                                                                                                              |
 | `gateway.service.ports.web`        | int    | `80`                                             | Non-secure entry port (accessible from outside the cluster)                                                               |
 | `gateway.service.ports.internal`   | int    | `8080`                                           | Internal entry port (only accessible within the cluster)                                                                  |
@@ -62,6 +62,11 @@ By default, the **login host** displayed on the `<Your Host>/space/~/quick-start
 | `gateway.service.ports.metrics`    | int    | `9100`                                           | Prometheus metrics collection port                                                                                        |
 | `gateway.customNodeSelector`       | object | `{}`                                             | Node selector, e.g., `{ swanlab: "true" }`                                                                                |
 | `gateway.securityContext.enabled`  | bool   | `false`                                          | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
+
+::: warning
+**⚠️ Note**: Starting from APP `3.6.4`, the `identify` image must use version `v2.1`. Before upgrading, be sure to update the image tag in `values.yaml`.
+
+:::
 
 ### Configuring Application Access Entrypoint
 
@@ -129,18 +134,15 @@ You can write your load balancing strategy based on the above information. It is
 
 ### SwanLab-House (Backend Experiment OLAP Service)
 
-| Field                                    | Type   | Default                                     | Description                                                                                                                                             |
-| ---------------------------------------- | ------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `service.house.replicas`                 | int    | `2`                                         | Replica count                                                                                                                                           |
-| `service.house.image.repository`         | string | `repo.swanlab.cn/self-hosted/swanlab-house` | Image address                                                                                                                                           |
-| `service.house.image.tag`                | string | `""`                                        | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
-| `service.house.persistence.storageClass` | string | `""`                                        | StorageClass                                                                                                                                            |
-| `service.house.persistence.storageSize`  | string | `10Gi`                                      | Storage volume size                                                                                                                                     |
-| `service.house.monitor.enable`           | bool   | `false`                                     | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
-| `service.house.securityContext.enabled`  | bool   | `false`                                     | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                               |
+| Field                                   | Type   | Default                                     | Description                                                                                                                                             |
+| --------------------------------------- | ------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service.house.replicas`                | int    | `2`                                         | Replica count                                                                                                                                           |
+| `service.house.image.repository`        | string | `repo.swanlab.cn/self-hosted/swanlab-house` | Image address                                                                                                                                           |
+| `service.house.image.tag`               | string | `""`                                        | Image tag, **set to empty string** to auto-sync the version specified by the Chart                                                                      |
+| `service.house.monitor.enable`          | bool   | `false`                                     | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics. See [Observability & Monitoring](#observability-monitoring) |
+| `service.house.securityContext.enabled` | bool   | `false`                                     | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                               |
 
-> **Storage Note**: `swanlab-house` is deployed as a `StatefulSet` and requires a mounted storage volume. Unlike base services, `existingClaim` is **not supported** here.
-> `swanlab-house` stores some metric intermediate products in the storage volume. Generally, you do not need to care about the data in this storage volume.
+> **Storage Note**: In the current Chart, `swanlab-house` is deployed as a `Deployment` and does not use persistent storage. When security context is enabled, its working directory uses `emptyDir`. The `service.house.persistence.*` fields are no longer supported.
 
 ### SwanLab-Cloud (Frontend Charts)
 
@@ -228,17 +230,23 @@ Before customizing the storage class configuration, please ensure:
 
 ### ClickHouse
 
-| Field                                               | Type   | Default                                         | Description                                                                                                                                                                                                             |
-| --------------------------------------------------- | ------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | Image address                                                                                                                                                                                                           |
-| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | Image tag                                                                                                                                                                                                               |
-| `dependencies.clickhouse.username`                  | string | `""`                                            | Database username (leave empty if using existingSecret)                                                                                                                                                                 |
-| `dependencies.clickhouse.password`                  | string | `""`                                            | Database password (leave empty if using existingSecret)                                                                                                                                                                 |
-| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | Use an existing PVC name (leave empty to auto-create)                                                                                                                                                                   |
-| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                                                                                                                            |
-| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | Storage volume size                                                                                                                                                                                                     |
-| `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | Whether to create a dedicated monitoring headless Service for Prometheus to scrape metrics (only effective when `integrations.clickhouse.enabled = false`). See [Observability & Monitoring](#observability-monitoring) |
-| `dependencies.clickhouse.securityContext.enabled`   | bool   | `false`                                         | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext)                                                                                               |
+| Field                                               | Type   | Default                                         | Description                                                                                                               |
+| --------------------------------------------------- | ------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `dependencies.clickhouse.image.repository`          | string | `repo.swanlab.cn/self-hosted/clickhouse-server` | Image address                                                                                                             |
+| `dependencies.clickhouse.image.tag`                 | string | `24.3`                                          | Image tag                                                                                                                 |
+| `dependencies.clickhouse.username`                  | string | `""`                                            | Database username (leave empty if using existingSecret)                                                                   |
+| `dependencies.clickhouse.password`                  | string | `""`                                            | Database password (leave empty if using existingSecret)                                                                   |
+| `dependencies.clickhouse.persistence.existingClaim` | string | `""`                                            | Use an existing PVC name (leave empty to auto-create)                                                                     |
+| `dependencies.clickhouse.persistence.storageClass`  | string | `""`                                            | StorageClass                                                                                                              |
+| `dependencies.clickhouse.persistence.storageSize`   | string | `20Gi`                                          | Storage volume size                                                                                                       |
+| `dependencies.clickhouse.monitor.enable`            | bool   | `false`                                         | Whether to enable ClickHouse monitoring. See [Observability & Monitoring](#observability-monitoring)                      |
+| `dependencies.clickhouse.securityContext.enabled`   | bool   | `false`                                         | Whether to enable security context hardening (run as non-root). See [Security Context](#security-context-securitycontext) |
+
+::: warning ⚠️ Note:
+
+When `dependencies.clickhouse.monitor.enable` is set to `true`, the ClickHouse Pod mounts the built-in Prometheus exporter configuration (port `9363`). This configuration is not hot-reloaded and requires a Pod restart to take effect.
+
+:::
 
 ### MinIO (Built-in S3 Object Storage)
 
@@ -440,7 +448,7 @@ If using external PostgreSQL, to ensure application performance, please note the
 | `integrations.postgres.enabled`        | bool   | `false` | Enable external PostgreSQL, built-in single instance will be removed |
 | `integrations.postgres.host`           | string | `""`    | Database host address                                                |
 | `integrations.postgres.port`           | int    | `5432`  | Database port                                                        |
-| `integrations.postgres.database`       | string | `""`    | Database name                                                        |
+| `integrations.postgres.database`       | string | `app`   | Database name                                                        |
 | `integrations.postgres.existingSecret` | string | `""`    | K8s Secret name storing credentials                                  |
 
 **Secret Data Structure (`integrations.postgres.existingSecret`):**
@@ -561,7 +569,7 @@ In the next few versions, the ClickHouse table engine and deployment mode will c
 | `integrations.clickhouse.host`           | string | `""`    | ClickHouse host address                                              |
 | `integrations.clickhouse.httpPort`       | int    | `8123`  | HTTP protocol port                                                   |
 | `integrations.clickhouse.tcpPort`        | int    | `9000`  | TCP protocol port                                                    |
-| `integrations.clickhouse.database`       | string | `""`    | Database name                                                        |
+| `integrations.clickhouse.database`       | string | `app`   | Database name                                                        |
 | `integrations.clickhouse.existingSecret` | string | `""`    | K8s Secret name storing credentials                                  |
 
 **Secret Data Structure (`integrations.clickhouse.existingSecret`):**
@@ -607,19 +615,21 @@ integrations:
 Every component of `swanlab-self-hosted` can expose Prometheus metrics for integration with an external observability stack (such as Prometheus / VictoriaMetrics + Grafana). Enabling monitoring mainly involves two types of configuration:
 
 1. **Gateway metrics port**: The gateway (Traefik) exposes Prometheus metrics via `gateway.service.ports.metrics` (default `9100`), which is enabled by default.
-2. **Per-component monitoring switch `monitor.enable`**: When set to `true`, the Chart creates an additional dedicated **headless Service** named `<fullname>-monitor` for the corresponding component. This Service is independent of the main business Service and **does not affect normal business traffic**. It is only used to let Prometheus discover all Pod IPs of the component (via `dns_sd` or the corresponding exporter) and scrape metrics.
+2. **Per-component monitoring switch `monitor.enable`**: When set to `true`, the Chart creates an additional dedicated **headless Service** named `<fullname>-monitor` for the corresponding component. This Service is independent of the main business Service and **does not affect normal business traffic** (ClickHouse is an exception; see the note below). It is only used to let Prometheus discover all Pod IPs of the component (via `dns_sd` or the corresponding exporter) and scrape metrics.
+
+> **ClickHouse Note**: Unlike other components, which only add a headless Service, enabling `dependencies.clickhouse.monitor.enable` also mounts the built-in exporter configuration (port `9363`) into the ClickHouse Pod. The ClickHouse Deployment uses the `Recreate` strategy, so enabling or disabling this switch recreates the Pod and causes brief ClickHouse unavailability. Schedule this during off-peak hours.
 
 ### Monitoring Switch Field Summary
 
-| Field                                    | Type | Default | Description                                                                                                                                                             |
-| ---------------------------------------- | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vector.monitor.enable`                  | bool | `false` | Create a monitoring headless Service for Vector so Prometheus can discover all Pod IPs                                                                                  |
-| `service.server.monitor.enable`          | bool | `false` | Create a monitoring headless Service for SwanLab-Server so Prometheus can discover all Pod IPs                                                                          |
-| `service.auth.monitor.enable`            | bool | `false` | Create a monitoring headless Service for SwanLab-Auth so Prometheus can discover all Pod IPs                                                                            |
-| `service.house.monitor.enable`           | bool | `false` | Create a monitoring headless Service for SwanLab-House so Prometheus can discover all Pod IPs                                                                           |
-| `dependencies.postgres.monitor.enable`   | bool | `false` | Create a monitoring headless Service for built-in PostgreSQL so postgres-exporter can discover the PG Pod (only effective when `integrations.postgres.enabled = false`) |
-| `dependencies.redis.monitor.enable`      | bool | `false` | Create a monitoring headless Service for built-in Redis so redis-exporter can discover the Redis Pod (only effective when `integrations.redis.enabled = false`)         |
-| `dependencies.clickhouse.monitor.enable` | bool | `false` | Create a monitoring headless Service for built-in ClickHouse so Prometheus can discover all Pod IPs (only effective when `integrations.clickhouse.enabled = false`)     |
+| Field                                    | Type | Default | Description                                                                                                                                                                                                                    |
+| ---------------------------------------- | ---- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `vector.monitor.enable`                  | bool | `false` | Create a monitoring headless Service for Vector so Prometheus can discover all Pod IPs                                                                                                                                         |
+| `service.server.monitor.enable`          | bool | `false` | Create a monitoring headless Service for SwanLab-Server so Prometheus can discover all Pod IPs                                                                                                                                 |
+| `service.auth.monitor.enable`            | bool | `false` | Create a monitoring headless Service for SwanLab-Auth so Prometheus can discover all Pod IPs                                                                                                                                   |
+| `service.house.monitor.enable`           | bool | `false` | Create a monitoring headless Service for SwanLab-House so Prometheus can discover all Pod IPs                                                                                                                                  |
+| `dependencies.postgres.monitor.enable`   | bool | `false` | Create a monitoring headless Service for built-in PostgreSQL so postgres-exporter can discover the PG Pod (only effective when `integrations.postgres.enabled = false`)                                                        |
+| `dependencies.redis.monitor.enable`      | bool | `false` | Create a monitoring headless Service for built-in Redis so redis-exporter can discover the Redis Pod (only effective when `integrations.redis.enabled = false`)                                                                |
+| `dependencies.clickhouse.monitor.enable` | bool | `false` | Create a monitoring headless Service for built-in ClickHouse and enable the built-in exporter (port `9363`); enabling/disabling it restarts the ClickHouse Pod (only effective when `integrations.clickhouse.enabled = false`) |
 
 > **Notes**:
 >
